@@ -1,9 +1,10 @@
-# Checks run on every push and pull request; the site is published from main once they pass.
+# Checks run on every pull request and every push to main; the site is published from main once they pass.
 # Rebuilding the data from its sources stays local (scripts/check.sh, the pipeline's build).
 name: CI
 
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
