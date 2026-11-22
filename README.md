@@ -19,7 +19,7 @@ cd app && npm ci && npm run dev
 
 ## Checks
 
-`scripts/check.sh` runs every lint and test (pipeline, app, end-to-end); `scripts/check.sh <section>` runs one. The GitHub Actions workflow (`.github/workflows/ci.yml`) runs the same lint and tests on every push and pull request (the speed budgets are reported but don't block there, as shared runners vary), and publishes the site to GitHub Pages from `main` once they pass. Rebuilding the data from its sources stays local.
+`scripts/check.sh` runs every lint and test (pipeline, app, end-to-end); `scripts/check.sh <section>` runs one. The GitHub Actions workflow (`.github/workflows/ci.yml`) runs the same lint and tests on every pull request and every push to `main` (the speed budgets are reported but don't block there, as shared runners vary), and publishes the site to GitHub Pages from `main` once they pass. Rebuilding the data from its sources stays local.
 
 ## Licence
 
