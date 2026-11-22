@@ -1,0 +1,42 @@
+{
+  "title": "Énergie et transport",
+  "description": "Réduire les combustibles fossiles des véhicules, des avions, des navires, des centrales et des centres de données : leur CO₂, le méthane qui fuit pour les produire et leur pollution de l'air, dont le refroidissement disparaît aussi.",
+  "family": "Énergie et transport",
+  "page": "Énergie et transport",
+  "electricCars": {
+    "title": "Voitures électriques",
+    "description": "Voitures, bus et deux-roues roulent à l'électricité : leur CO₂ d'échappement disparaît, celui du réseau qui les recharge s'ajoute."
+  },
+  "electricTrucks": {
+    "title": "Camions électriques",
+    "description": "Camions et utilitaires roulent à l'électricité, ce qui économise moins que pour les voitures sur un réseau qui brûle encore du charbon."
+  },
+  "flyLess": {
+    "title": "Moins d'avion",
+    "description": "Moins de vols : moins de CO₂ de l'aviation, et aussitôt moins du réchauffement des traînées et des autres effets des vols."
+  },
+  "cleanAviationFuel": {
+    "title": "Carburant d'aviation propre",
+    "description": "Un carburant fait de déchets ou de CO₂ capté réduit le CO₂ des vols, pas leurs traînées."
+  },
+  "cleanShipping": {
+    "title": "Transport maritime propre",
+    "description": "Les navires utilisent des carburants sans carbone fossile, comme l'ammoniac ou le méthanol verts."
+  },
+  "renewableElectricity": {
+    "title": "Électricité renouvelable",
+    "description": "L'éolien, le solaire et les autres sources propres remplacent le charbon et le gaz : le CO₂ par kWh du réseau baisse, et les véhicules électriques et les centres de données économisent plus."
+  },
+  "cleanDataCentres": {
+    "title": "Centres de données à l'énergie propre",
+    "description": "L'électricité supplémentaire des centres de données de l'IA vient de sources propres ; n'agit que si cette demande est comptée (Options)."
+  },
+  "options": {
+    "dataCentres": {
+      "label": "Centres de données de l'IA",
+      "hint": "La croissance de leur électricité depuis 2024 ajoutée au futur sans les leviers (AIE), ou l'électricité des scénarios telle que publiée.",
+      "iea": "Croissance ajoutée (AIE)",
+      "ssp": "Comme dans le scénario"
+    }
+  }
+}

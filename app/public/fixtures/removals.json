@@ -1,0 +1,59 @@
+{
+  "coverCrops": {
+    "rate": {
+      "World": {
+        "median": 1.1,
+        "low": 0.4,
+        "high": 1.8
+      }
+    },
+    "appliesTo": "cropland",
+    "maxShare": 0.5,
+    "years": 30,
+    "source": "https://doi.org/10.1038/s41893-020-00661-7"
+  },
+  "agroforestry": {
+    "rate": {
+      "World": {
+        "median": 3,
+        "low": 1,
+        "high": 6
+      },
+      "BRA": {
+        "median": 5,
+        "low": 2,
+        "high": 9
+      }
+    },
+    "appliesTo": "farmland",
+    "maxShare": 0.1,
+    "years": 30,
+    "source": "https://doi.org/10.1038/s41893-020-00661-7"
+  },
+  "biochar": {
+    "rate": {
+      "World": {
+        "median": 1.5,
+        "low": 0.5,
+        "high": 3
+      }
+    },
+    "appliesTo": "cropland",
+    "maxShare": 0.3,
+    "years": 20,
+    "source": "https://doi.org/10.1038/s41893-020-00661-7"
+  },
+  "enhancedWeathering": {
+    "rate": {
+      "World": {
+        "median": 1,
+        "low": 0.3,
+        "high": 2
+      }
+    },
+    "appliesTo": "cropland",
+    "maxShare": 0.3,
+    "years": 30,
+    "source": "https://doi.org/10.1038/s41893-020-00661-7"
+  }
+}

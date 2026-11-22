@@ -1,0 +1,31 @@
+{
+  "options": {
+    "population": {
+      "label": "Population mondiale (projection de l'ONU)",
+      "hint": "Le nombre de personnes à nourrir dépend des choix des familles, liés à l'éducation, à la santé et à l'accès à la planification familiale volontaire. Ce sont les projections de l'ONU, pas un levier : l'effet des leviers est mesuré par rapport au futur choisi.",
+      "medium": "Moyenne : 10,2 milliards en 2100",
+      "low": "Basse : 7,0 milliards",
+      "high": "Haute : 14,4 milliards"
+    }
+  },
+  "chart": {
+    "title": "Population mondiale",
+    "label": "Courbe de la population mondiale de {from} à {end} : recensée et estimée, puis les trois projections de l'ONU",
+    "unit": "milliards de personnes",
+    "history": "Recensée et estimée",
+    "chosen": "Projection de l'ONU choisie",
+    "others": "Autres projections de l'ONU",
+    "caption": "Les personnes à nourrir. La population ne cause pas le réchauffement ci-dessus ; elle fixe la quantité de nourriture nécessaire, et donc les émissions agricoles de la référence.",
+    "inconsistent": "La projection {variant} de l'ONU raconte une autre histoire que {ssp}, dont la propre population est {direction} ; les émissions du reste du monde restent celles du scénario.",
+    "notApplied": "Avec la trajectoire SSP2 des émissions agricoles, la population choisie ne change rien.",
+    "variants": {
+      "medium": "moyenne",
+      "low": "basse",
+      "high": "haute"
+    },
+    "billion": "{value} milliards",
+    "larger": "plus grande",
+    "smaller": "plus petite",
+    "projection": "Projection {variant} de l'ONU"
+  }
+}

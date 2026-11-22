@@ -1,0 +1,10 @@
+{
+  "options": {
+    "permafrost": {
+      "label": "Permafrost",
+      "hint": "Off, as in the published scenarios, or thawing ground releasing CO₂ and methane as the world warms, which warms it more.",
+      "off": "Left out",
+      "on": "Thaws"
+    }
+  }
+}

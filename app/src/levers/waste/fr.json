@@ -1,0 +1,14 @@
+{
+  "title": "Gaspillage alimentaire",
+  "description": "Moins de nourriture gaspillée ou perdue, c'est moins à produire pour les mêmes repas.",
+  "family": "Gaspillage",
+  "page": "Pertes et gaspillage",
+  "foodWaste": {
+    "title": "Gaspillage après les magasins",
+    "description": "Part du gaspillage dans les magasins, la restauration et les foyers qui est évitée."
+  },
+  "supplyLosses": {
+    "title": "Pertes avant les magasins",
+    "description": "Part des pertes au stockage, au transport et à la transformation qui est évitée."
+  }
+}

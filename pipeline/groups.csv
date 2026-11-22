@@ -1,0 +1,99 @@
+fbs_code,fbs_item,group,animal,note
+2511,Wheat and products,cereals,false,
+2513,Barley and products,cereals,false,
+2514,Maize and products,cereals,false,
+2515,Rye and products,cereals,false,
+2516,Oats,cereals,false,
+2517,Millet and products,cereals,false,
+2518,Sorghum and products,cereals,false,
+2520,"Cereals, other",cereals,false,
+2807,Rice and products,rice,false,milled equivalent
+2531,Potatoes and products,rootsTubers,false,
+2532,Cassava and products,rootsTubers,false,
+2533,Sweet potatoes,rootsTubers,false,
+2534,"Roots, Other",rootsTubers,false,
+2535,Yams,rootsTubers,false,
+2536,Sugar cane,sugarCrops,false,
+2537,Sugar beet,sugarCrops,false,
+2541,Sugar non-centrifugal,sugarCrops,false,processed from sugar cane
+2542,Sugar (Raw Equivalent),sugarCrops,false,processed from sugar cane and sugar beet
+2543,"Sweeteners, Other",sugarCrops,false,"processed: glucose and fructose syrups, and molasses"
+2546,Beans,pulses,false,
+2547,Peas,pulses,false,
+2549,"Pulses, Other and products",pulses,false,
+2551,Nuts and products,nuts,false,
+2552,Groundnuts,oilCrops,false,
+2555,Soyabeans,oilCrops,false,
+2557,Sunflower seed,oilCrops,false,
+2558,Rape and Mustardseed,oilCrops,false,
+2559,Cottonseed,oilCrops,false,co-product of seed cotton; 15% of the crop's emissions
+2560,Coconuts - Incl Copra,oilCrops,false,
+2561,Sesame seed,oilCrops,false,
+2562,Palm kernels,oilCrops,false,oil palm fruit in the current Food Balance Sheets: its processing gives palm oil and palm kernel oil
+2563,Olives (including preserved),oilCrops,false,
+2570,"Oilcrops, Other",oilCrops,false,
+2571,Soyabean Oil,oilCrops,false,processed from the oilseed
+2572,Groundnut Oil,oilCrops,false,processed from the oilseed
+2573,Sunflowerseed Oil,oilCrops,false,processed from the oilseed
+2574,Rape and Mustard Oil,oilCrops,false,processed from the oilseed
+2575,Cottonseed Oil,oilCrops,false,processed from the oilseed
+2576,Palmkernel Oil,oilCrops,false,processed from oil palm fruit (2562)
+2577,Palm Oil,oilCrops,false,processed from oil palm fruit (2562)
+2578,Coconut Oil,oilCrops,false,processed from the oilseed
+2579,Sesameseed Oil,oilCrops,false,processed from the oilseed
+2580,Olive Oil,oilCrops,false,processed from the oilseed
+2581,Ricebran Oil,oilCrops,false,by-product of rice milling: its farm emissions are counted on rice
+2582,Maize Germ Oil,oilCrops,false,by-product of maize milling: its farm emissions are counted on maize
+2586,"Oilcrops Oil, Other",oilCrops,false,processed from the oilseed
+2601,Tomatoes and products,vegetables,false,
+2602,Onions,vegetables,false,
+2605,"Vegetables, other",vegetables,false,
+2611,"Oranges, Mandarines",fruit,false,
+2612,"Lemons, Limes and products",fruit,false,
+2613,Grapefruit and products,fruit,false,
+2614,"Citrus, Other",fruit,false,
+2615,Bananas,fruit,false,
+2616,Plantains,fruit,false,
+2617,Apples and products,fruit,false,
+2618,Pineapples and products,fruit,false,
+2619,Dates,fruit,false,
+2620,Grapes and products (excl wine),fruit,false,
+2625,"Fruits, other",fruit,false,
+2630,Coffee and products,stimulants,false,
+2633,Cocoa Beans and products,stimulants,false,
+2635,Tea (including mate),stimulants,false,
+2640,Pepper,otherPlant,false,
+2641,Pimento,otherPlant,false,
+2642,Cloves,otherPlant,false,
+2645,"Spices, Other",otherPlant,false,
+2655,Wine,otherPlant,false,processed from grapes
+2656,Beer,otherPlant,false,"processed, mostly from barley"
+2657,"Beverages, Fermented",otherPlant,false,"processed, mostly from sorghum, millet and maize"
+2658,"Beverages, Alcoholic",otherPlant,false,"processed, mostly from grain and sugar cane"
+2731,Bovine Meat,ruminantMeat,true,cattle and buffalo
+2732,Mutton & Goat Meat,ruminantMeat,true,
+2733,Pigmeat,pigMeat,true,
+2734,Poultry Meat,poultryMeat,true,
+2735,"Meat, Other",ruminantMeat,true,"camels, llamas, horses, rabbits, game: mostly herbivores"
+2736,"Offals, Edible",ruminantMeat,true,slaughter co-product: shares the meat animals' emissions by mass
+2737,"Fats, Animals, Raw",pigMeat,true,slaughter co-product (mostly lard): shares the meat animals' emissions by mass
+2740,"Butter, Ghee",dairy,true,processed from milk
+2743,Cream,dairy,true,processed from milk
+2744,Eggs,eggs,true,
+2848,Milk - Excluding Butter,dairy,true,whole-milk equivalent
+2745,Honey,out,true,"out: no farm emissions in FAOSTAT, negligible protein"
+2659,"Alcohol, Non-Food",out,false,out: non-food
+2680,Infant food,out,false,out: processed from items already counted
+2899,Miscellaneous,out,false,out: unspecified
+2761,Freshwater Fish,seafood,true,"freshwater and diadromous fish (carps, tilapias, catfishes, salmons, trouts), live weight"
+2762,Demersal Fish,seafood,true,"cods, hakes, flatfish and coastal fish, live weight"
+2763,Pelagic Fish,seafood,true,"herrings, sardines, anchovies, tunas and mackerels, live weight"
+2764,"Marine Fish, Other",seafood,true,"sharks, rays and marine fish not identified, live weight"
+2765,Crustaceans,seafood,true,"shrimps, prawns, crabs and lobsters, live weight"
+2766,Cephalopods,seafood,true,"squids, cuttlefishes and octopuses, live weight"
+2767,"Molluscs, Other",seafood,true,"oysters, mussels, clams, scallops and snails, live weight with shell"
+2768,"Meat, Aquatic Mammals",out,true,"out: whales and seals, no supply in the base year"
+2769,"Aquatic Animals, Others",seafood,true,"sea cucumbers, sea urchins, frogs and turtles, live weight"
+2775,Aquatic Plants,out,false,"out: seaweeds, a third used for gums and other non-food uses, almost no protein or energy; their farming has no feed, land or fertiliser and its emissions are not in any source used"
+2781,"Fish, Body Oil",out,true,"out: made from fish reduced to meal, whose catch is in the fish items; mostly fed to farmed fish"
+2782,"Fish, Liver Oil",out,true,"out: made from fish whose catch is in the fish items; negligible food use"

@@ -1,0 +1,15 @@
+{
+  "family": "Regrowth on freed land",
+  "options": {
+    "regrowth": {
+      "label": "Freed farmland",
+      "hint": "Left as it is, or growing back to natural vegetation that takes up CO₂ for some decades.",
+      "none": "Left as it is",
+      "natural": "Grows back"
+    }
+  },
+  "summary": {
+    "title": "CO₂ taken up by regrowth in {year}",
+    "detail": "a year, likely {low} to {high}"
+  }
+}

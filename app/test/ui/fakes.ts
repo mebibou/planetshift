@@ -1,0 +1,22 @@
+import type { Group } from '../../src/data/types';
+import type { CountryResult } from '../../src/model/api';
+
+export const countryResult = (over: Partial<CountryResult> = {}): CountryResult => ({
+  iso3: 'FRA',
+  production: { cereals: 100, ruminantMeat: 10 } as Record<Group, number>,
+  productionChange: { cereals: 20, ruminantMeat: -5 } as Record<Group, number>,
+  emissions: { co2: 1000, ch4: 100, n2o: 10 },
+  emissionsChange: { co2: -100, ch4: -50, n2o: 0 },
+  worstTier: 3,
+  worstSource: 'https://www.fao.org/faostat/en/#data/GLE',
+  proteinBefore: 80,
+  proteinAfter: 80,
+  kcalBefore: 3000,
+  kcalAfter: 2900,
+  land: { cropland: 600, pasture: 400 },
+  landChange: { cropland: 50, pasture: -250 },
+  deforestationCo2: 0,
+  deforestationChange: 0,
+  removalsCo2: 0,
+  ...over,
+});

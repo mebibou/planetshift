@@ -1,0 +1,15 @@
+{
+  "title": "Déforestation",
+  "description": "Défricher la forêt pour les cultures et les prairies libère du CO₂. Un changement de régime le fait déjà varier avec la production.",
+  "family": "Déforestation",
+  "page": "Déforestation",
+  "deforestation": {
+    "title": "Déforestation arrêtée",
+    "description": "Part du défrichement de forêts pour l'agriculture qui s'arrête."
+  },
+  "summary": {
+    "avoided": "CO₂ de déforestation évité",
+    "added": "CO₂ de déforestation ajouté",
+    "detail": "par an, {share} du défrichement actuel"
+  }
+}

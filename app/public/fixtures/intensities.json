@@ -1,0 +1,1851 @@
+{
+  "sources": [
+    "https://hestia.earth/",
+    "https://www.fao.org/faostat/en/#data/GLE",
+    "https://doi.org/10.1126/science.aaq0216",
+    "https://www.fao.org/faostat/en/#data/GCE"
+  ],
+  "byCountry": {
+    "FRA": {
+      "2511": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 100,
+            "ch4": 0.3,
+            "n2o": 0.9
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 450,
+            "ch4": 0.815,
+            "n2o": 0.99
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2514": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 90,
+            "ch4": 0.3,
+            "n2o": 0.8
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 420,
+            "ch4": 0.815,
+            "n2o": 0.88
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2516": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 80,
+            "ch4": 0.3,
+            "n2o": 0.8
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 390,
+            "ch4": 0.815,
+            "n2o": 0.88
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2531": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 30,
+            "ch4": 0.1,
+            "n2o": 0.15
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 240,
+            "ch4": 0.605,
+            "n2o": 0.165
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2546": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 50,
+            "ch4": 0.2,
+            "n2o": 0.5
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 0.71,
+            "n2o": 0.55
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2555": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 60,
+            "ch4": 0.2,
+            "n2o": 0.4
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 330,
+            "ch4": 0.71,
+            "n2o": 0.44
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2571": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 400,
+            "ch4": 0.5,
+            "n2o": 2
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1350,
+            "ch4": 1.025,
+            "n2o": 2.2
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2601": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 40,
+            "ch4": 0.1,
+            "n2o": 0.2
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 270,
+            "ch4": 0.605,
+            "n2o": 0.22
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2615": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 30,
+            "ch4": 0.1,
+            "n2o": 0.2
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 240,
+            "ch4": 0.605,
+            "n2o": 0.22
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2731": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 1500,
+            "ch4": 800,
+            "n2o": 15
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 4650,
+            "ch4": 840.5,
+            "n2o": 16.5
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2732": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 1200,
+            "ch4": 900,
+            "n2o": 14
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 3750,
+            "ch4": 945.5,
+            "n2o": 15.4
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2733": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 60,
+            "n2o": 2
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 63.5,
+            "n2o": 2.2
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2734": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 5,
+            "n2o": 1.5
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 5.75,
+            "n2o": 1.65
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2744": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 3,
+            "n2o": 1.2
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 3.65,
+            "n2o": 1.32
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2761": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 0,
+            "ch4": 0,
+            "n2o": 2.1
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 420,
+            "ch4": 0,
+            "n2o": 2.1
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2763": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 0,
+            "ch4": 0,
+            "n2o": 0
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 800,
+            "ch4": 0,
+            "n2o": 0
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2807": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 100,
+            "ch4": 40,
+            "n2o": 0.4
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 450,
+            "ch4": 42.5,
+            "n2o": 0.44
+          },
+          "tier": 1,
+          "source": 0
+        }
+      },
+      "2848": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 60,
+            "ch4": 25,
+            "n2o": 0.6
+          },
+          "tier": 1,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 330,
+            "ch4": 26.75,
+            "n2o": 0.66
+          },
+          "tier": 1,
+          "source": 0
+        }
+      }
+    },
+    "USA": {
+      "2511": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 100,
+            "ch4": 0.3,
+            "n2o": 0.9
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 450,
+            "ch4": 0.815,
+            "n2o": 0.99
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2514": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 90,
+            "ch4": 0.3,
+            "n2o": 0.8
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 420,
+            "ch4": 0.815,
+            "n2o": 0.88
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2516": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 80,
+            "ch4": 0.3,
+            "n2o": 0.8
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 390,
+            "ch4": 0.815,
+            "n2o": 0.88
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2531": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 30,
+            "ch4": 0.1,
+            "n2o": 0.15
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 240,
+            "ch4": 0.605,
+            "n2o": 0.165
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2536": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 5,
+            "ch4": 0.5,
+            "n2o": 0.06
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 165,
+            "ch4": 1.025,
+            "n2o": 0.066
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2546": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 50,
+            "ch4": 0.2,
+            "n2o": 0.5
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 0.71,
+            "n2o": 0.55
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2555": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 60,
+            "ch4": 0.2,
+            "n2o": 0.4
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 330,
+            "ch4": 0.71,
+            "n2o": 0.44
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2571": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 400,
+            "ch4": 0.5,
+            "n2o": 2
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1350,
+            "ch4": 1.025,
+            "n2o": 2.2
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2601": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 40,
+            "ch4": 0.1,
+            "n2o": 0.2
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 270,
+            "ch4": 0.605,
+            "n2o": 0.22
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2615": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 30,
+            "ch4": 0.1,
+            "n2o": 0.2
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 240,
+            "ch4": 0.605,
+            "n2o": 0.22
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2731": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 1200,
+            "ch4": 640,
+            "n2o": 12
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 3750,
+            "ch4": 672.5,
+            "n2o": 13.2
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2732": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 960,
+            "ch4": 720,
+            "n2o": 11.2
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 3030,
+            "ch4": 756.5,
+            "n2o": 12.32
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2733": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 60,
+            "n2o": 2
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 63.5,
+            "n2o": 2.2
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2734": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 5,
+            "n2o": 1.5
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 5.75,
+            "n2o": 1.65
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2744": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 3,
+            "n2o": 1.2
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 3.65,
+            "n2o": 1.32
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2761": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 0,
+            "ch4": 0,
+            "n2o": 2.1
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 420,
+            "ch4": 0,
+            "n2o": 2.1
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2763": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 0,
+            "ch4": 0,
+            "n2o": 0
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 800,
+            "ch4": 0,
+            "n2o": 0
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2807": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 100,
+            "ch4": 40,
+            "n2o": 0.4
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 450,
+            "ch4": 42.5,
+            "n2o": 0.44
+          },
+          "tier": 2,
+          "source": 0
+        }
+      },
+      "2848": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 48,
+            "ch4": 20,
+            "n2o": 0.48
+          },
+          "tier": 2,
+          "source": 0
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 294,
+            "ch4": 21.5,
+            "n2o": 0.528
+          },
+          "tier": 2,
+          "source": 0
+        }
+      }
+    },
+    "IND": {
+      "2511": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 100,
+            "ch4": 0.3,
+            "n2o": 0.9
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 450,
+            "ch4": 0.815,
+            "n2o": 0.99
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2514": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 90,
+            "ch4": 0.3,
+            "n2o": 0.8
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 420,
+            "ch4": 0.815,
+            "n2o": 0.88
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2531": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 30,
+            "ch4": 0.1,
+            "n2o": 0.15
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 240,
+            "ch4": 0.605,
+            "n2o": 0.165
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2536": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 5,
+            "ch4": 0.5,
+            "n2o": 0.06
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 165,
+            "ch4": 1.025,
+            "n2o": 0.066
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2546": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 50,
+            "ch4": 0.2,
+            "n2o": 0.5
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 0.71,
+            "n2o": 0.55
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2555": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 60,
+            "ch4": 0.2,
+            "n2o": 0.4
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 330,
+            "ch4": 0.71,
+            "n2o": 0.44
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2571": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 400,
+            "ch4": 0.5,
+            "n2o": 2
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1350,
+            "ch4": 1.025,
+            "n2o": 2.2
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2601": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 40,
+            "ch4": 0.1,
+            "n2o": 0.2
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 270,
+            "ch4": 0.605,
+            "n2o": 0.22
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2615": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 30,
+            "ch4": 0.1,
+            "n2o": 0.2
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 240,
+            "ch4": 0.605,
+            "n2o": 0.22
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2731": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 2700,
+            "ch4": 1440,
+            "n2o": 27
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 8250,
+            "ch4": 1512.5,
+            "n2o": 29.7
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2732": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 2160,
+            "ch4": 1620,
+            "n2o": 25.2
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 6630,
+            "ch4": 1701.5,
+            "n2o": 27.72
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2733": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 60,
+            "n2o": 2
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 63.5,
+            "n2o": 2.2
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2734": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 5,
+            "n2o": 1.5
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 5.75,
+            "n2o": 1.65
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2744": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 3,
+            "n2o": 1.2
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 3.65,
+            "n2o": 1.32
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2761": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 0,
+            "ch4": 0,
+            "n2o": 2.1
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 420,
+            "ch4": 0,
+            "n2o": 2.1
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2763": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 0,
+            "ch4": 0,
+            "n2o": 0
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 800,
+            "ch4": 0,
+            "n2o": 0
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2807": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 100,
+            "ch4": 40,
+            "n2o": 0.4
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 450,
+            "ch4": 42.5,
+            "n2o": 0.44
+          },
+          "tier": 3,
+          "source": 1
+        }
+      },
+      "2848": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 108,
+            "ch4": 45,
+            "n2o": 1.08
+          },
+          "tier": 3,
+          "source": 1
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 474,
+            "ch4": 47.75,
+            "n2o": 1.188
+          },
+          "tier": 3,
+          "source": 1
+        }
+      }
+    },
+    "BRA": {
+      "2511": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 100,
+            "ch4": 0.3,
+            "n2o": 0.9
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 450,
+            "ch4": 0.815,
+            "n2o": 0.99
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2514": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 90,
+            "ch4": 0.3,
+            "n2o": 0.8
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 420,
+            "ch4": 0.815,
+            "n2o": 0.88
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2516": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 80,
+            "ch4": 0.3,
+            "n2o": 0.8
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 390,
+            "ch4": 0.815,
+            "n2o": 0.88
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2531": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 30,
+            "ch4": 0.1,
+            "n2o": 0.15
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 240,
+            "ch4": 0.605,
+            "n2o": 0.165
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2536": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 5,
+            "ch4": 0.5,
+            "n2o": 0.06
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 165,
+            "ch4": 1.025,
+            "n2o": 0.066
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2546": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 50,
+            "ch4": 0.2,
+            "n2o": 0.5
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 0.71,
+            "n2o": 0.55
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2555": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 60,
+            "ch4": 0.2,
+            "n2o": 0.4
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 330,
+            "ch4": 0.71,
+            "n2o": 0.44
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2571": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 400,
+            "ch4": 0.5,
+            "n2o": 2
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1350,
+            "ch4": 1.025,
+            "n2o": 2.2
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2601": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 40,
+            "ch4": 0.1,
+            "n2o": 0.2
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 270,
+            "ch4": 0.605,
+            "n2o": 0.22
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2615": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 30,
+            "ch4": 0.1,
+            "n2o": 0.2
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 240,
+            "ch4": 0.605,
+            "n2o": 0.22
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2731": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 3000,
+            "ch4": 1600,
+            "n2o": 30
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 9150,
+            "ch4": 1680.5,
+            "n2o": 33
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2732": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 2400,
+            "ch4": 1800,
+            "n2o": 28
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 7350,
+            "ch4": 1890.5,
+            "n2o": 30.8
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2733": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 60,
+            "n2o": 2
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 63.5,
+            "n2o": 2.2
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2734": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 5,
+            "n2o": 1.5
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 5.75,
+            "n2o": 1.65
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2744": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 3,
+            "n2o": 1.2
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 3.65,
+            "n2o": 1.32
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2761": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 0,
+            "ch4": 0,
+            "n2o": 2.1
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 420,
+            "ch4": 0,
+            "n2o": 2.1
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2763": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 0,
+            "ch4": 0,
+            "n2o": 0
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 800,
+            "ch4": 0,
+            "n2o": 0
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2807": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 100,
+            "ch4": 40,
+            "n2o": 0.4
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 450,
+            "ch4": 42.5,
+            "n2o": 0.44
+          },
+          "tier": 4,
+          "source": 2
+        }
+      },
+      "2848": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 108,
+            "ch4": 45,
+            "n2o": 1.08
+          },
+          "tier": 4,
+          "source": 2
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 474,
+            "ch4": 47.75,
+            "n2o": 1.188
+          },
+          "tier": 4,
+          "source": 2
+        }
+      }
+    },
+    "NGA": {
+      "2511": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 100,
+            "ch4": 0.3,
+            "n2o": 0.9
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 450,
+            "ch4": 0.815,
+            "n2o": 0.99
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2514": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 90,
+            "ch4": 0.3,
+            "n2o": 0.8
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 420,
+            "ch4": 0.815,
+            "n2o": 0.88
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2531": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 30,
+            "ch4": 0.1,
+            "n2o": 0.15
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 240,
+            "ch4": 0.605,
+            "n2o": 0.165
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2536": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 5,
+            "ch4": 0.5,
+            "n2o": 0.06
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 165,
+            "ch4": 1.025,
+            "n2o": 0.066
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2546": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 50,
+            "ch4": 0.2,
+            "n2o": 0.5
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 0.71,
+            "n2o": 0.55
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2555": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 60,
+            "ch4": 0.2,
+            "n2o": 0.4
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 330,
+            "ch4": 0.71,
+            "n2o": 0.44
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2571": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 400,
+            "ch4": 0.5,
+            "n2o": 2
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1350,
+            "ch4": 1.025,
+            "n2o": 2.2
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2601": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 40,
+            "ch4": 0.1,
+            "n2o": 0.2
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 270,
+            "ch4": 0.605,
+            "n2o": 0.22
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2615": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 30,
+            "ch4": 0.1,
+            "n2o": 0.2
+          },
+          "tier": 6,
+          "source": 3
+        }
+      },
+      "2731": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 3750,
+            "ch4": 2000,
+            "n2o": 37.5
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 11400,
+            "ch4": 2100.5,
+            "n2o": 41.25
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2732": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 3000,
+            "ch4": 2250,
+            "n2o": 35
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 9150,
+            "ch4": 2363,
+            "n2o": 38.5
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2733": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 60,
+            "n2o": 2
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 63.5,
+            "n2o": 2.2
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2734": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 5,
+            "n2o": 1.5
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 5.75,
+            "n2o": 1.65
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2744": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 300,
+            "ch4": 3,
+            "n2o": 1.2
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1050,
+            "ch4": 3.65,
+            "n2o": 1.32
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2761": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 0,
+            "ch4": 0,
+            "n2o": 2.1
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 420,
+            "ch4": 0,
+            "n2o": 2.1
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2763": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 0,
+            "ch4": 0,
+            "n2o": 0
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 800,
+            "ch4": 0,
+            "n2o": 0
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2807": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 100,
+            "ch4": 40,
+            "n2o": 0.4
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 450,
+            "ch4": 42.5,
+            "n2o": 0.44
+          },
+          "tier": 5,
+          "source": 3
+        }
+      },
+      "2848": {
+        "farmGate": {
+          "kgPerTonne": {
+            "co2": 288,
+            "ch4": 120,
+            "n2o": 2.88
+          },
+          "tier": 5,
+          "source": 3
+        },
+        "cradleToFarmGate": {
+          "kgPerTonne": {
+            "co2": 1014,
+            "ch4": 126.5,
+            "n2o": 3.168
+          },
+          "tier": 5,
+          "source": 3
+        }
+      }
+    }
+  }
+}

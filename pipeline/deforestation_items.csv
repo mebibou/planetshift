@@ -1,0 +1,14 @@
+commodity,fbs_code,share,note
+Cattle meat,2731,1,"pasture expansion; DeDuCE gives it to cattle meat and leather only, so none goes to milk"
+Leather,,1,non-food co-product of cattle: left out
+Natural rubber in primary forms,,1,non-food: left out
+"Chillies and peppers, green (Capsicum spp. and Pimenta spp.)",2605,1,FAOSTAT's longer name for green chillies
+"Edible roots and tubers with high starch or inulin content, n.e.c., fresh",2534,1,"FAOSTAT's longer name for roots, other"
+Guavas,2625,1,"fruit, other"
+Mangoes,2625,1,"fruit, other, as mangoes, guavas and mangosteens"
+"Other nuts (excluding wild edible nuts and groundnuts), in shell, n.e.c.",2551,1,FAOSTAT's longer name for other nuts
+"Other tropical and subtropical fruits, n.e.c.",2625,1,"fruit, other"
+Palm nuts and kernels,2562,1,"oil palm fruit, as in the current Food Balance Sheets"
+"Pulses, n.e.c.",2549,1,"pulses, other"
+"Stimulant, spice and aromatic crops, n.e.c.",2645,1,"spices, other"
+Tangerines and mandarins,2611,1,"oranges and mandarines"

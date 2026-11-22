@@ -1,0 +1,15 @@
+{
+  "title": "Deforestation",
+  "description": "Clearing forest for crops and pasture releases CO₂. A diet shift already changes it with production.",
+  "family": "Deforestation",
+  "page": "Deforestation",
+  "deforestation": {
+    "title": "Deforestation stopped",
+    "description": "Share of the forest clearing for farming that stops."
+  },
+  "summary": {
+    "avoided": "Deforestation CO₂ avoided",
+    "added": "Deforestation CO₂ added",
+    "detail": "a year, {share} of today's clearing"
+  }
+}

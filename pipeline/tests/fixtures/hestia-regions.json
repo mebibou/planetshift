@@ -1,0 +1,102 @@
+{
+ "countries": [
+  {
+   "name": "Fiji",
+   "@id": "GADM-FJI",
+   "subClassOf": [
+    {
+     "nameSearch": "Oceania",
+     "name": "Oceania",
+     "termType": "region",
+     "subClassOf": [
+      {
+       "nameSearch": "World",
+       "name": "World",
+       "termType": "region"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Senegal",
+   "@id": "GADM-SEN",
+   "subClassOf": [
+    {
+     "nameSearch": "Western Africa",
+     "name": "Western Africa",
+     "termType": "region",
+     "subClassOf": [
+      {
+       "nameSearch": "Africa",
+       "name": "Africa",
+       "termType": "region"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "France",
+   "@id": "GADM-FRA",
+   "subClassOf": [
+    {
+     "nameSearch": "Western Europe",
+     "name": "Western Europe",
+     "termType": "region",
+     "subClassOf": [
+      {
+       "nameSearch": "Europe",
+       "name": "Europe",
+       "termType": "region"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Germany",
+   "@id": "GADM-DEU",
+   "subClassOf": [
+    {
+     "nameSearch": "Western Europe",
+     "name": "Western Europe",
+     "termType": "region",
+     "subClassOf": [
+      {
+       "nameSearch": "Europe",
+       "name": "Europe",
+       "termType": "region"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "regions": [
+  {
+   "@id": "region-africa",
+   "name": "Africa"
+  },
+  {
+   "@id": "region-world",
+   "name": "World"
+  },
+  {
+   "@id": "region-oceania",
+   "name": "Oceania"
+  },
+  {
+   "@id": "region-europe",
+   "name": "Europe"
+  },
+  {
+   "@id": "region-western-europe",
+   "name": "Western Europe"
+  },
+  {
+   "@id": "region-western-africa",
+   "name": "Western Africa"
+  }
+ ]
+}

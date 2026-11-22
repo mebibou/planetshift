@@ -1,0 +1,42 @@
+"""breakdown.json: the share of each gas of every intensity by emission source."""
+
+import pandas as pd
+
+from .. import breakdown as B
+from .. import intensities as I
+from .. import seafood as Sf
+from ..inputs import Build, log, optional, write
+
+
+def build(b: Build) -> None:
+    _, emissions = b.faostat_tier3
+    mod = optional("sources.hestia")
+    try:
+        hestia = mod.fetch_breakdown(b.cache) if mod else None
+    except Exception as err:  # noqa: BLE001
+        log.warning("hestia.fetch_breakdown failed (%s): HESTIA rows fall back", err)
+        hestia = None
+    if hestia is None:
+        hestia = pd.DataFrame(
+            columns=["fbs_item_code", "area", "scope", "url", "gas", "source", "kg"]
+        )
+    counted = b.uses("production").merge(b.uses("processing"), on=["iso3", "fbs_code"])
+    weights = {
+        (r.iso3, r.fbs_code): max(r.production - r.processing, 0.0) for r in counted.itertuples()
+    }
+    produced = {(r.iso3, r.fbs_code) for r in counted.itertuples() if r.production > 0}
+    proxies, extraction = I.load_proxies()
+    related = {
+        code: [p for p, _ in extraction.get(code, [])] + proxies.get(code, [])
+        for code in {*proxies, *extraction}
+    }
+    data = B.build(
+        b.merged,
+        B.faostat_frame(emissions, b.iso3),
+        hestia,
+        weights,
+        produced,
+        related,
+        Sf.breakdown_profiles(),
+    )
+    write(b.out, "breakdown.json", data)

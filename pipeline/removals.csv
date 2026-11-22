@@ -1,0 +1,29 @@
+practice,field,zone,value,low,high,source,reasoning
+coverCrops,appliesTo,,cropland,,,poeplau-don-2015,"cover crops grow between the main crops of arable land, so the rate is per hectare of cropland"
+coverCrops,rate,temperateMoist,1.17,0.6,2.0,poeplau-don-2015,"meta-analysis mean 0.32 t C/ha/yr (×44/12 = 1.17 t CO2); low about half of it, high near the larger mean of later syntheses"
+coverCrops,rate,tropicalMoist,1.17,0.6,2.0,poeplau-don-2015;ipcc-2006-cropland,"the meta-analysis finds no climate effect and the IPCC input factor for moist tropics (1.11) equals the temperate one, so the same rate"
+coverCrops,rate,temperateDry,0.45,0.2,0.8,ipcc-2006-cropland,"the IPCC high-input factor is 1.04 in dry climates against 1.11 in moist ones, so about 0.36 of the moist gain, on lower reference stocks"
+coverCrops,rate,tropicalDry,0.45,0.2,0.8,ipcc-2006-cropland,same reasoning as temperate dry: water limits cover-crop growth and carbon inputs
+coverCrops,rate,World,0.95,0.4,1.8,poeplau-don-2015;ipcc-2006-cropland,"for countries without a zone: about two thirds of cropland is in moist climates, so a weighted mean of the moist and dry rates"
+coverCrops,maxShare,,0.25,,,poeplau-don-2015,the meta-analysis' global estimate assumes a quarter of cropland has room for a cover crop between main crops
+coverCrops,years,,20,,,ipcc-2006-cropland;poeplau-don-2015,"the IPCC default time to a new soil carbon equilibrium; the meta-analysis' response function keeps gaining far longer but ever more slowly, so 20 years at the full rate is the conservative reading"
+agroforestry,appliesTo,,farmland,,,cardinael-2018,"trees go into crops (silvoarable, alley cropping) and into pastures (silvopasture), so the rate is per hectare of either"
+agroforestry,rate,temperateMoist,4.3,2.2,8.7,cardinael-2018,"temperate means: silvoarable 1.14 t C/ha/yr in trees + 0.47 in soil, silvopasture 3.03 + 0.07, averaged = 8.6 t CO2 (the high); median half of it for the lower tree densities of systems adopted at scale; low a quarter"
+agroforestry,rate,temperateDry,3.0,1.5,6.0,cardinael-2018;ipcc-2006-cropland,"the synthesis has too few dry temperate sites, so 0.7 times the moist rate, the IPCC ratio of tree growth in dry to moist climates (1.8 / 2.6 t C/ha/yr)"
+agroforestry,rate,tropicalMoist,8.7,4.4,17.5,cardinael-2018,"tropical means: silvoarable 4.50 t C/ha/yr in trees + 0.84 in soil, silvopasture 3.70 + 0.50, averaged = 17.5 t CO2 (the high); median half, low a quarter, as for temperate"
+agroforestry,rate,tropicalDry,6.1,3.1,12.2,cardinael-2018;ipcc-2006-cropland,"0.7 times the moist tropical rate: the dry tropical silvoarable mean of the synthesis rests on six Asian plots and is above the moist one, which the IPCC growth rates do not support"
+agroforestry,rate,World,6.0,1.5,17.5,cardinael-2018,for countries without a zone: between the temperate and tropical medians; the range spans all zones
+agroforestry,maxShare,,0.05,,,roe-2021;ipcc-ar6-ch7,"one hectare in twenty of farmland converted gives about 1.4 Gt CO2/yr worldwide, between the cost-effective and technical potentials of the land-based syntheses"
+agroforestry,years,,20,,,cardinael-2018;ipcc-2006-cropland,the synthesised systems are 8 to 14 years old on average; trees and soil keep gaining to about 20 years (the IPCC default) before growth and harvests level the stock
+biochar,appliesTo,,cropland,,,lehmann-2021,biochar is spread on arable soils
+biochar,rate,World,1.9,0.6,4.9,ipcc-2019-biochar;wang-2016;lehmann-2021,"1 t of biochar/ha/yr (what crop residues and other spare biomass can supply) × 0.65 t C per t × 0.8 still there after 100 years × 44/12; low 0.5 t at 0.5 C and 0.65 kept, high 2 t at 0.75 C and 0.89 kept; no climate split: persistence depends on pyrolysis, not on climate"
+biochar,maxShare,,0.2,,,woolf-2010,"the sustainable feedstock of the global estimate (residues, manures, wastes, no land cleared) is enough for about 1 t of biochar a year on a fifth of cropland"
+biochar,years,,100,,,wang-2016,"no saturation: each year's biochar adds to the stock while it is applied (97% of it has a mean residence time of centuries), so the rate holds through 2100"
+enhancedWeathering,appliesTo,,cropland,,,beerling-2020,crushed basalt is spread on arable land with the machinery used for lime
+enhancedWeathering,rate,temperateMoist,2.0,0.5,3.5,beerling-2024;beerling-2020,"the US Corn Belt trial measured 10.5 ± 3.8 t CO2/ha over 4 years of 50 t basalt/ha/yr (2.6 a year); less about a fifth for mining, grinding and transport; low for the slower uptake other fields show"
+enhancedWeathering,rate,tropicalMoist,3.0,1.0,5.0,beerling-2020,"weathering speeds up with warmth and water, so the modelled removal per hectare is highest in warm humid croplands (Brazil, Indonesia, India's moist east)"
+enhancedWeathering,rate,temperateDry,0.8,0.2,2.0,beerling-2020,"dissolution needs water moving through the soil: in dry croplands a fraction of the moist rate, and the carbonate formed can degas"
+enhancedWeathering,rate,tropicalDry,1.0,0.3,2.5,beerling-2020,warmth helps but water limits as in temperate dry croplands
+enhancedWeathering,rate,World,1.8,0.4,4.0,beerling-2020,for countries without a zone: near the moist temperate rate; the range spans all zones
+enhancedWeathering,maxShare,,0.2,,,beerling-2020,"rock supply, grinding energy and haulage distance limit it to croplands near basalt and roads; a fifth of cropland at about 2 t CO2/ha gives about 0.6 Gt CO2/yr, within the 0.5–2 Gt of the national assessment"
+enhancedWeathering,years,,100,,,beerling-2020,"no saturation while basalt is spread each year; the carbon ends as bicarbonate and carbonate, stable for millennia, so the rate holds through 2100"

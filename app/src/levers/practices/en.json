@@ -1,0 +1,34 @@
+{
+  "title": "Farm practices",
+  "description": "Cut emissions at their source on the farm. Several practices on the same source combine: each acts on what the others leave.",
+  "family": "Farm practices",
+  "page": "Farm practices",
+  "feedAdditives": {
+    "title": "Feed additives",
+    "description": "Additives such as 3-NOP that cut the methane cattle belch, where animals are fed."
+  },
+  "breedingAndFeed": {
+    "title": "Breeding and better feed",
+    "description": "Animals bred and fed to belch less methane per litre or kilo."
+  },
+  "manureManagement": {
+    "title": "Manure management",
+    "description": "Covered stores, digesters and faster removal cut methane and nitrous oxide from manure."
+  },
+  "riceWater": {
+    "title": "Rice paddies drained",
+    "description": "Draining paddies once or more in the season cuts their methane."
+  },
+  "nitrogenEfficiency": {
+    "title": "Less nitrogen, better used",
+    "description": "Fertiliser matched to the crop's needs, so less of it turns into nitrous oxide."
+  },
+  "nitrificationInhibitors": {
+    "title": "Nitrification inhibitors",
+    "description": "Products added to fertiliser that slow its turning into nitrous oxide."
+  },
+  "farmEnergy": {
+    "title": "Clean farm energy",
+    "description": "Machinery, irrigation and buildings run without fossil fuel."
+  }
+}

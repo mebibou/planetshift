@@ -1,0 +1,14 @@
+{
+  "title": "Food waste",
+  "description": "Less food wasted or lost means less to grow for the same meals.",
+  "family": "Food waste",
+  "page": "Food loss and waste",
+  "foodWaste": {
+    "title": "Food wasted after shops",
+    "description": "Share of the food wasted in shops, restaurants and homes that is avoided."
+  },
+  "supplyLosses": {
+    "title": "Losses before shops",
+    "description": "Share of the losses in storage, transport and processing that is avoided."
+  }
+}

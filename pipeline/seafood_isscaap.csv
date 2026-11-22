@@ -1,0 +1,39 @@
+isscaap_group,fbs_code,capture_group,aquaculture_group,note
+"Carps, barbels and other cyprinids",2761,average,cyprinids,freshwater fish; caught in the sea only by accident
+Tilapias and other cichlids,2761,average,tilapias,
+Miscellaneous freshwater fishes,2761,average,freshwaterGeneral,includes catfishes
+"Sturgeons, paddlefishes",2761,average,freshwaterGeneral,diadromous fish are freshwater fish in the Food Balance Sheets
+River eels,2761,average,freshwaterGeneral,
+"Salmons, trouts, smelts",2761,average,salmonids,
+Shads,2761,average,freshwaterGeneral,
+Miscellaneous diadromous fishes,2761,average,freshwaterGeneral,
+"Flounders, halibuts, soles",2762,demersalFish,marineFish,
+"Cods, hakes, haddocks",2762,demersalFish,marineFish,
+Miscellaneous coastal fishes,2762,demersalFish,marineFish,coastal fish are demersal in the Food Balance Sheets
+Miscellaneous demersal fishes,2762,demersalFish,marineFish,
+"Herrings, sardines, anchovies",2763,smallPelagic,marineFish,"Parker et al.'s pelagic fish under 30 cm"
+"Tunas, bonitos, billfishes",2763,largePelagic,marineFish,"Parker et al.'s pelagic fish over 30 cm"
+Miscellaneous pelagic fishes,2763,largePelagic,marineFish,"jacks and mackerels: with tunas, they make up Parker et al.'s 21 Mt of pelagic fish over 30 cm"
+"Sharks, rays, chimaeras",2764,largePelagic,marineFish,mostly caught by longlines with large pelagics
+Marine fishes not identified,2764,average,marineFish,
+Freshwater crustaceans,2765,crustaceans,shrimps,
+"Crabs, sea-spiders",2765,crustaceans,shrimps,
+"Lobsters, spiny-rock lobsters",2765,crustaceans,shrimps,
+"King crabs, squat-lobsters",2765,crustaceans,shrimps,
+"Shrimps, prawns",2765,crustaceans,shrimps,
+"Krill, planktonic crustaceans",2765,crustaceans,shrimps,
+Miscellaneous marine crustaceans,2765,crustaceans,shrimps,
+"Squids, cuttlefishes, octopuses",2766,cephalopods,bivalves,farmed cephalopods are negligible
+"Abalones, winkles, conchs",2767,demersalMolluscs,bivalves,
+"Oysters",2767,demersalMolluscs,bivalves,
+Mussels,2767,demersalMolluscs,bivalves,
+"Scallops, pectens",2767,demersalMolluscs,bivalves,
+"Clams, cockles, arkshells",2767,demersalMolluscs,bivalves,
+Freshwater molluscs,2767,demersalMolluscs,bivalves,
+Miscellaneous marine molluscs,2767,demersalMolluscs,bivalves,
+Frogs and other amphibians,2769,demersalMolluscs,freshwaterGeneral,farmed frogs and turtles are fed like freshwater fish
+Turtles,2769,demersalMolluscs,freshwaterGeneral,
+Sea-squirts and other tunicates,2769,demersalMolluscs,bivalves,unfed filter feeders
+Horseshoe crabs and other arachnoids,2769,demersalMolluscs,bivalves,
+Sea-urchins and other echinoderms,2769,demersalMolluscs,bivalves,sea cucumbers: unfed or fed little
+Miscellaneous aquatic invertebrates,2769,demersalMolluscs,bivalves,

@@ -1,0 +1,193 @@
+{
+  "type": "Topology",
+  "bbox": [
+    -125,
+    -33,
+    97,
+    51
+  ],
+  "objects": {
+    "countries": {
+      "type": "GeometryCollection",
+      "geometries": [
+        {
+          "type": "Polygon",
+          "arcs": [
+            [
+              0
+            ]
+          ],
+          "id": "FRA",
+          "properties": {
+            "iso3": "FRA",
+            "name": "France"
+          }
+        },
+        {
+          "type": "Polygon",
+          "arcs": [
+            [
+              1
+            ]
+          ],
+          "id": "USA",
+          "properties": {
+            "iso3": "USA",
+            "name": "United States of America"
+          }
+        },
+        {
+          "type": "Polygon",
+          "arcs": [
+            [
+              2
+            ]
+          ],
+          "id": "IND",
+          "properties": {
+            "iso3": "IND",
+            "name": "India"
+          }
+        },
+        {
+          "type": "Polygon",
+          "arcs": [
+            [
+              3
+            ]
+          ],
+          "id": "BRA",
+          "properties": {
+            "iso3": "BRA",
+            "name": "Brazil"
+          }
+        },
+        {
+          "type": "Polygon",
+          "arcs": [
+            [
+              4
+            ]
+          ],
+          "id": "NGA",
+          "properties": {
+            "iso3": "NGA",
+            "name": "Nigeria"
+          }
+        }
+      ]
+    }
+  },
+  "arcs": [
+    [
+      [
+        -5,
+        42
+      ],
+      [
+        -5,
+        51
+      ],
+      [
+        8,
+        51
+      ],
+      [
+        8,
+        42
+      ],
+      [
+        -5,
+        42
+      ]
+    ],
+    [
+      [
+        -125,
+        25
+      ],
+      [
+        -125,
+        49
+      ],
+      [
+        -67,
+        49
+      ],
+      [
+        -67,
+        25
+      ],
+      [
+        -125,
+        25
+      ]
+    ],
+    [
+      [
+        68,
+        8
+      ],
+      [
+        68,
+        35
+      ],
+      [
+        97,
+        35
+      ],
+      [
+        97,
+        8
+      ],
+      [
+        68,
+        8
+      ]
+    ],
+    [
+      [
+        -74,
+        -33
+      ],
+      [
+        -74,
+        5
+      ],
+      [
+        -35,
+        5
+      ],
+      [
+        -35,
+        -33
+      ],
+      [
+        -74,
+        -33
+      ]
+    ],
+    [
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        14
+      ],
+      [
+        14,
+        14
+      ],
+      [
+        14,
+        4
+      ],
+      [
+        3,
+        4
+      ]
+    ]
+  ]
+}

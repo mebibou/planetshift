@@ -1,0 +1,14 @@
+{
+  "title": "Bâtiments et industrie",
+  "description": "Réduire les combustibles fossiles brûlés dans les bâtiments et dans les usines d'acier et de ciment : leur CO₂, le méthane qui fuit pour les produire et leur pollution de l'air, dont le refroidissement disparaît aussi.",
+  "family": "Bâtiments et industrie",
+  "page": "Bâtiments et industrie",
+  "cleanHeating": {
+    "title": "Chauffage propre",
+    "description": "Pompes à chaleur et cuisson électrique remplacent les chaudières au gaz et au fioul : leur CO₂ disparaît, celui du réseau pour les faire tourner apparaît."
+  },
+  "cleanIndustry": {
+    "title": "Acier et ciment propres",
+    "description": "Acier fait à l'hydrogène ou à la ferraille au four électrique, ciment avec moins de clinker et son CO₂ capté ; l'électricité qu'ils consomment compte."
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "shares": {
+    "species": {
+      "World": {
+        "2511": {
+          "ruminantMeat": 0.048,
+          "pigMeat": 0.336,
+          "poultryMeat": 0.384,
+          "dairy": 0.096,
+          "eggs": 0.096,
+          "seafood": 0.04
+        },
+        "2514": {
+          "ruminantMeat": 0.096,
+          "pigMeat": 0.288,
+          "poultryMeat": 0.432,
+          "dairy": 0.096,
+          "eggs": 0.048,
+          "seafood": 0.04
+        },
+        "2516": {
+          "ruminantMeat": 0.288,
+          "pigMeat": 0.096,
+          "poultryMeat": 0.096,
+          "dairy": 0.384,
+          "eggs": 0.096,
+          "seafood": 0.04
+        },
+        "2531": {
+          "ruminantMeat": 0.192,
+          "pigMeat": 0.576,
+          "poultryMeat": 0,
+          "dairy": 0.192,
+          "eggs": 0,
+          "seafood": 0.04
+        },
+        "2555": {
+          "ruminantMeat": 0.0576,
+          "pigMeat": 0.24,
+          "poultryMeat": 0.432,
+          "dairy": 0.1152,
+          "eggs": 0.1152,
+          "seafood": 0.04
+        },
+        "2763": {
+          "pigMeat": 0.23,
+          "poultryMeat": 0.07,
+          "seafood": 0.7
+        },
+        "2807": {
+          "ruminantMeat": 0,
+          "pigMeat": 0.384,
+          "poultryMeat": 0.48,
+          "dairy": 0,
+          "eggs": 0.096,
+          "seafood": 0.04
+        },
+        "2848": {
+          "ruminantMeat": 0.48,
+          "pigMeat": 0.192,
+          "poultryMeat": 0,
+          "dairy": 0.288,
+          "eggs": 0,
+          "seafood": 0.04
+        }
+      },
+      "Europe": {
+        "2511": {
+          "ruminantMeat": 0.048,
+          "pigMeat": 0.384,
+          "poultryMeat": 0.288,
+          "dairy": 0.144,
+          "eggs": 0.096,
+          "seafood": 0.04
+        },
+        "2514": {
+          "ruminantMeat": 0.096,
+          "pigMeat": 0.288,
+          "poultryMeat": 0.24,
+          "dairy": 0.288,
+          "eggs": 0.048,
+          "seafood": 0.04
+        }
+      }
+    },
+    "gleam": {
+      "World": {
+        "2511": {
+          "ruminantMeat": 0.0768,
+          "pigMeat": 0.3072,
+          "poultryMeat": 0.336,
+          "dairy": 0.144,
+          "eggs": 0.096,
+          "seafood": 0.04
+        },
+        "2514": {
+          "ruminantMeat": 0.144,
+          "pigMeat": 0.2688,
+          "poultryMeat": 0.336,
+          "dairy": 0.144,
+          "eggs": 0.0672,
+          "seafood": 0.04
+        },
+        "2516": {
+          "ruminantMeat": 0.336,
+          "pigMeat": 0.096,
+          "poultryMeat": 0.048,
+          "dairy": 0.432,
+          "eggs": 0.048,
+          "seafood": 0.04
+        },
+        "2531": {
+          "ruminantMeat": 0.24,
+          "pigMeat": 0.528,
+          "poultryMeat": 0,
+          "dairy": 0.192,
+          "eggs": 0,
+          "seafood": 0.04
+        },
+        "2555": {
+          "ruminantMeat": 0.0768,
+          "pigMeat": 0.288,
+          "poultryMeat": 0.3648,
+          "dairy": 0.1344,
+          "eggs": 0.096,
+          "seafood": 0.04
+        },
+        "2763": {
+          "pigMeat": 0.23,
+          "poultryMeat": 0.07,
+          "seafood": 0.7
+        },
+        "2807": {
+          "ruminantMeat": 0,
+          "pigMeat": 0.432,
+          "poultryMeat": 0.432,
+          "dairy": 0,
+          "eggs": 0.096,
+          "seafood": 0.04
+        },
+        "2848": {
+          "ruminantMeat": 0.528,
+          "pigMeat": 0.144,
+          "poultryMeat": 0,
+          "dairy": 0.288,
+          "eggs": 0,
+          "seafood": 0.04
+        }
+      },
+      "Europe": {
+        "2514": {
+          "ruminantMeat": 0.1152,
+          "pigMeat": 0.2688,
+          "poultryMeat": 0.2112,
+          "dairy": 0.3168,
+          "eggs": 0.048,
+          "seafood": 0.04
+        },
+        "2555": {
+          "ruminantMeat": 0.048,
+          "pigMeat": 0.288,
+          "poultryMeat": 0.288,
+          "dairy": 0.24,
+          "eggs": 0.096,
+          "seafood": 0.04
+        }
+      },
+      "Asia": {
+        "2514": {
+          "ruminantMeat": 0.048,
+          "pigMeat": 0.336,
+          "poultryMeat": 0.384,
+          "dairy": 0.096,
+          "eggs": 0.096,
+          "seafood": 0.04
+        },
+        "2807": {
+          "ruminantMeat": 0,
+          "pigMeat": 0.48,
+          "poultryMeat": 0.384,
+          "dairy": 0,
+          "eggs": 0.096,
+          "seafood": 0.04
+        }
+      }
+    }
+  }
+}

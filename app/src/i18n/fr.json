@@ -1,0 +1,406 @@
+{
+  "load": {
+    "loading": "Chargement des données…",
+    "failedTitle": "Les données n'ont pas pu être chargées",
+    "failed": "Planetshift n'a pas pu lire {file}.",
+    "retry": "Vérifiez votre connexion et rechargez la page. Si l'erreur persiste, les fichiers de données manquent peut-être dans cette version."
+  },
+  "header": {
+    "tagline": "À quoi ressemble le changement ?",
+    "nav": "Sections",
+    "language": "Langue",
+    "darkTheme": "Thème sombre",
+    "skip": "Aller au contenu"
+  },
+  "nav": {
+    "explore": "Explorer",
+    "methodology": "Méthodologie"
+  },
+  "footer": {
+    "text": "Régimes et production : bilans alimentaires de FAOSTAT ({year}) ; intensités d'émission : HESTIA, FAOSTAT et analyses de cycle de vie publiées ; poisson : FishStat de la FAO et études publiées ; surfaces agricoles : FAOSTAT ; déforestation : DeDuCE ; transport et électricité : scénarios SSP, Ember et AIE ; réchauffement : FaIR. Le changement d'usage des terres n'entre que par la variation du défrichement et par la repousse, en option, sur les terres libérées."
+  },
+  "explore": {
+    "panel": "Scénario et réglages",
+    "runError": "Le modèle n'a pas pu calculer ce scénario. Essayez un autre réglage ou rechargez la page."
+  },
+  "controls": {
+    "shift": "Aliments animaux remplacés par des végétaux",
+    "basis": {
+      "label": "Maintenus égaux",
+      "protein": "Protéines",
+      "kcal": "Calories"
+    },
+    "replacement": {
+      "label": "Remplacés par",
+      "current": "Les végétaux riches en protéines d'aujourd'hui",
+      "legumes": "Surtout des légumineuses",
+      "plantMilk": "Boissons soja et avoine"
+    },
+    "rampEnd": "Tous les leviers en place en",
+    "where": {
+      "label": "Où",
+      "world": "Partout",
+      "highIncome": "Pays à revenu élevé"
+    },
+    "advanced": "Régler chaque aliment animal",
+    "groupsHint": "Un aliment réglé ici garde sa propre part ; les autres suivent le curseur principal.",
+    "groupsReset": "Suivre de nouveau le curseur principal",
+    "rampHint": "Chaque levier, l'alimentation comprise, se met en place à partir d'aujourd'hui et l'est entièrement cette année-là."
+  },
+  "levers": {
+    "title": "Leviers",
+    "intro": "Tous les moyens de limiter le réchauffement dans Planetshift, sous la cause du réchauffement sur laquelle ils agissent, la plus grande cause d'abord ; dans une cause, les groupes qui évitent le plus en entier viennent d'abord. Chaque curseur est la part adoptée, atteinte en entier l'année choisie plus haut.",
+    "noData": "Indisponible : les données de ce levier ne sont pas dans cette version.",
+    "maxAll": "Tout adopter en entier",
+    "reset": "Remettre à zéro",
+    "adoptedOf": "{count} sur {total} en place",
+    "noneAdopted": "Aucun des {total} en place",
+    "notAdopted": "Pas en place",
+    "adoptedOne": "En place",
+    "causeWarming": "{value} de réchauffement en {year}"
+  },
+  "quick": {
+    "group": "Mettre {name} à {value}",
+    "cause": "Mettre tous les leviers « {name} » à {value}",
+    "all": "Mettre tous les leviers à {value}",
+    "allLabel": "Tous"
+  },
+  "options": {
+    "title": "Autres options",
+    "intro": "Chaque choix ci-dessous a une valeur par défaut et une alternative. Les changer montre à quel point le résultat en dépend.",
+    "scope": {
+      "label": "Émissions comptées",
+      "hint": "Sur la ferme seulement, ou aussi la fabrication des engrais et l'énergie utilisée. Le poisson sauvage n'émet que le carburant des bateaux : il ne compte qu'avec les intrants.",
+      "farmGate": "Sur la ferme",
+      "cradleToFarmGate": "Avec les intrants"
+    },
+    "feed": {
+      "label": "Répartition des aliments du bétail",
+      "hint": "Comment chaque culture fourragère se partage entre bovins, porcs, volailles et autres.",
+      "species": "Par espèce",
+      "gleam": "Rations régionales"
+    },
+    "baseline": {
+      "label": "Avenir de l'agriculture sans les leviers",
+      "hint": "Le régime actuel qui suit la population, ou la trajectoire SSP2 des émissions agricoles.",
+      "population": "Croissance démographique",
+      "ssp2": "Trajectoire SSP2"
+    },
+    "location": {
+      "label": "Où la production change",
+      "hint": "Chaque producteur selon sa part de la production mondiale, ou chaque pays pour son propre régime.",
+      "fixedTrade": "Parts du commerce fixes",
+      "domestic": "Chaque pays pour lui-même"
+    },
+    "temperature": {
+      "label": "Température observée",
+      "hint": "Deux relevés de la température mondiale en surface depuis 1850.",
+      "hadcrut5": "HadCRUT5",
+      "berkeley": "Berkeley Earth"
+    },
+    "climate": {
+      "label": "Réponse du climat",
+      "hint": "Simulations FaIR avec une fourchette, ou les valeurs publiées du sixième rapport du GIEC.",
+      "fair": "FaIR",
+      "ar6": "Tables AR6"
+    },
+    "ssp": {
+      "label": "Émissions du reste du monde",
+      "hint": "Le scénario des émissions que les leviers laissent telles quelles.",
+      "ssp245": "Moyen (SSP2-4.5)",
+      "ssp126": "Bas (SSP1-2.6)",
+      "ssp370": "Haut (SSP3-7.0)"
+    },
+    "changed": "Modifiées : {count}",
+    "defaults": "Toutes par défaut"
+  },
+  "groups": {
+    "all": "Tous les aliments",
+    "ruminantMeat": "Bœuf et agneau",
+    "pigMeat": "Porc",
+    "poultryMeat": "Volaille",
+    "dairy": "Produits laitiers",
+    "eggs": "Œufs",
+    "seafood": "Poissons et fruits de mer",
+    "cereals": "Céréales",
+    "rice": "Riz",
+    "pulses": "Légumineuses",
+    "oilCrops": "Oléagineux",
+    "vegetables": "Légumes",
+    "fruit": "Fruits",
+    "rootsTubers": "Racines et tubercules",
+    "sugarCrops": "Plantes sucrières",
+    "nuts": "Fruits à coque",
+    "stimulants": "Café, cacao et thé",
+    "otherPlant": "Autres végétaux"
+  },
+  "gases": {
+    "co2e": "CO₂e",
+    "co2": "CO₂",
+    "ch4": "CH₄",
+    "n2o": "N₂O"
+  },
+  "tiers": {
+    "1": "HESTIA, ce pays",
+    "2": "HESTIA, région ou monde",
+    "3": "FAOSTAT, ce pays",
+    "4": "Moyenne mondiale publiée",
+    "5": "Un produit similaire",
+    "6": "Médiane mondiale du groupe"
+  },
+  "map": {
+    "title": "Carte de l'alimentation et de l'agriculture",
+    "label": "Carte du monde par pays",
+    "layer": "Afficher",
+    "layers": {
+      "production": "Production",
+      "emissions": "Émissions",
+      "land": "Surfaces agricoles",
+      "deforestation": "Déforestation",
+      "change": "Variation",
+      "quality": "Qualité des données"
+    },
+    "changeOf": "Variation de",
+    "gas": "Gaz",
+    "group": "Aliment",
+    "country": "Pays",
+    "noData": "Pas de données",
+    "legend": {
+      "production": "Production de : {group} avec les leviers, par an",
+      "emissions": "Émissions agricoles de {gas} avec les leviers, par an",
+      "land": "Surfaces agricoles (cultures et prairies) avec les leviers",
+      "change": "{what} : variation une fois les leviers en place",
+      "quality": "Source la moins précise des données d'émission utilisées",
+      "deforestation": "CO₂ du défrichement avec les leviers, par an"
+    },
+    "notes": {
+      "production": "Là où les aliments sont produits, pas là où ils sont consommés.",
+      "emissions": "Émissions à la ferme, des cultures et des élevages. Le CO₂e pondère le méthane et le protoxyde d'azote sur 100 ans, pour comparaison seulement.",
+      "land": "Surfaces récoltées pour les aliments du modèle, et prairies permanentes réparties entre bovins à viande et laitiers, ovins et caprins.",
+      "change": "La production de chaque pays varie comme la demande mondiale de chaque aliment : les exportateurs suivent leurs clients.",
+      "quality": "Des pays voisins peuvent différer simplement parce que leurs chiffres viennent de sources différentes.",
+      "deforestation": "CO₂ libéré par le défrichement de forêts pour les cultures et les prairies dans chaque pays, une fois les leviers en place ; en tonnes par an, pas rapporté aux émissions agricoles. L'infobulle donne le défrichement d'aujourd'hui et sa variation."
+    },
+    "tooltip": {
+      "noData": "Pas de données pour ce pays",
+      "production": "Production de : {group}",
+      "emissions": "Émissions de {gas}",
+      "before": "Aujourd'hui",
+      "after": "Avec les leviers",
+      "change": "Variation",
+      "tier": "Source la moins précise",
+      "land": "Surfaces agricoles",
+      "cropland": "Cultures",
+      "pasture": "Prairies",
+      "beforeAfter": "{before} → {after}",
+      "deforestation": "CO₂ du défrichement, par an"
+    },
+    "noClearing": "Pas de défrichement ou pas de données",
+    "views": {
+      "label": "Vue",
+      "map": "Carte",
+      "table": "Tableau"
+    },
+    "search": "Chercher un pays",
+    "tableLabel": "Les pays et leurs valeurs, défile de côté sur un petit écran",
+    "pager": {
+      "label": "Pages du tableau",
+      "previous": "Précédente",
+      "next": "Suivante",
+      "page": "Page {page} sur {pages}",
+      "showing": "Pays {from} à {to} sur {total}",
+      "none": "Aucun pays ne correspond à « {query} »"
+    }
+  },
+  "avoidedChart": {
+    "title": "Réchauffement évité",
+    "label": "Réchauffement évité chaque année jusqu'en {year} grâce aux leviers, avec sa fourchette probable",
+    "unit": "°C de réchauffement en moins",
+    "line": "Réchauffement évité",
+    "caption": "De combien le monde est plus frais chaque année avec les leviers que sans. L'écart grandit à mesure que les leviers se mettent en place, et le réchauffement du méthane déjà évité s'efface en quelques décennies."
+  },
+  "chart": {
+    "title": "Température mondiale jusqu'en {year}",
+    "label": "Température mondiale de 1850 à {year} : observée, sans les leviers et avec",
+    "unit": "°C au-dessus de 1850–1900",
+    "observed": "Observée",
+    "baseline": "Sans les leviers",
+    "scenario": "Avec les leviers",
+    "band": "Fourchette probable (5–95 %)",
+    "gap": "{value} en {year}",
+    "caption": "Les bandes ombrées sont la fourchette de 5 à 95 % de la réponse du climat. Écart en {year} : {gap}.",
+    "range": "Années",
+    "ranges": {
+      "full": "Depuis 1850",
+      "recent": "Depuis 2000"
+    },
+    "natural": "Facteurs naturels seuls (soleil et volcans)",
+    "enso": {
+      "legend": "Années El Niño et La Niña",
+      "elNino": "Année El Niño",
+      "laNina": "Année La Niña",
+      "oni": "ONI {value}"
+    }
+  },
+  "summary": {
+    "title": "Ce que les leviers changent",
+    "warming": "Réchauffement évité en {year}",
+    "range": "probablement de {low} à {high}",
+    "co2e": "Émissions évitées en {year}",
+    "co2eDetail": "CO₂e, par an",
+    "ch4": "Méthane évité",
+    "n2o": "Protoxyde d'azote évité",
+    "co2": "CO₂ évité",
+    "ch4Added": "Méthane ajouté",
+    "n2oAdded": "Protoxyde d'azote ajouté",
+    "co2Added": "CO₂ ajouté",
+    "landFreed": "Terres agricoles libérées",
+    "landAdded": "Terres agricoles en plus",
+    "landDetail": "cultures {cropland}, prairies {pasture} ; {share} des terres agricoles du monde",
+    "protein": "Protéines par personne",
+    "kcal": "Calories par personne",
+    "beforeAfter": "{before} → {after}",
+    "gPerDay": "grammes par jour, moyenne mondiale",
+    "kcalPerDay": "kcal par jour, moyenne mondiale",
+    "scope": "Émissions agricoles (poisson sauvage seulement avec les intrants), CO₂ du défrichement tel qu'il varie, et CO₂ fossile que réduisent les leviers d'énergie ; le transport des aliments n'est pas compté.",
+    "clipped": "Dans {count} pays, une baisse a atteint la part d'une culture ou du lait qui est transformée (en huile, sucre, beurre…) et s'y est arrêtée ; cette part baisse sur l'aliment transformé.",
+    "byFamily": {
+      "title": "Réchauffement évité en {year}, par groupe de leviers",
+      "note": "La part de chaque groupe est la moyenne de ce qu'il ajoute dans tous les ordres où les groupes pourraient être comptés : aucun n'est compté en premier ; un groupe qui agit sur plusieurs causes est partagé entre elles. Les parts s'additionnent au total.",
+      "added": "{value} ajoutés",
+      "diet": "Alimentation"
+    }
+  },
+  "link": {
+    "headline": "En {year}, le monde s'est réchauffé de {total}.",
+    "scenario": "Avec les leviers choisis, le monde serait plus frais de {avoided} en {year} que sans eux ({ssp}) : {parts}.",
+    "intro": "L'essentiel du réchauffement vient des combustibles fossiles. L'agriculture y contribue autrement : surtout par le méthane des bovins et des rizières, et le protoxyde d'azote des engrais et des effluents, des gaz qui retiennent bien plus de chaleur que le CO₂ tant qu'ils durent.",
+    "attributionTitle": "Réchauffement par cause depuis {from}",
+    "attributionText": "Chaque bande est le réchauffement dû à une cause ou, sous zéro, le refroidissement. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause ; les contours en pointillés sont les bandes sans les leviers. La ligne est la température mesurée.",
+    "attributionCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui ; chaque cause est le réchauffement qu'ajoutent ses émissions. La pollution de l'air refroidit : ses particules renvoient la lumière du soleil et éclaircissent les nuages. Les leviers de l'énergie, du chauffage et de l'industrie réduisent aussi la pollution de l'air des combustibles qu'ils ne brûlent plus : son refroidissement diminue quand ils agissent.",
+    "attributionLabel": "Graphique empilé du réchauffement par cause de {from} à {year}, avec la température observée",
+    "projection": "Projection",
+    "causes": {
+      "fossilIndustry": "Combustibles fossiles et industrie",
+      "agriculture": "Agriculture",
+      "landUse": "Usage des terres",
+      "other": "Autres émissions humaines",
+      "airPollution": "Pollution de l'air (refroidit)",
+      "natural": "Facteurs naturels (soleil et volcans)"
+    },
+    "gasesTitle": "Émissions agricoles par gaz",
+    "gasesText": "Chaque gaz sur sa propre échelle : une tonne de chacun réchauffe de façon très différente.",
+    "gasLabel": "Émissions agricoles mondiales de {gas} de {from} à {year}",
+    "perYear": "{unit} par an",
+    "whyTitle": "Pourquoi les gaz sont séparés",
+    "whyMethane": "Le méthane a une courte durée de vie : la moitié disparaît en une douzaine d'années. En émettre moins fait baisser le réchauffement qu'il cause en quelques décennies ; c'est pourquoi un changement d'alimentation se voit avant 2050.",
+    "whyNitrous": "Le protoxyde d'azote dure environ un siècle : en émettre moins ralentit le réchauffement sans l'inverser.",
+    "whyCo2": "Le CO₂ reste des siècles, et le réchauffement qu'il a causé aussi. Additionner les gaz en CO₂e masque ces différences ; Planetshift calcule donc la température gaz par gaz.",
+    "part": "{cause} {value}",
+    "separator": " ; ",
+    "withoutLevers": "Sans les leviers",
+    "withoutValue": "{value} ({without} sans les leviers)",
+    "parts": "Ce que chaque cause ajoute ou retire : {parts}."
+  },
+  "methodology": {
+    "title": "Méthodologie",
+    "toc": "Sur cette page",
+    "empty": "Les pages de méthodologie ne sont pas disponibles dans cette version.",
+    "sections": {
+      "overview": "Vue d'ensemble",
+      "data": "Données",
+      "shift": "Le changement",
+      "feed": "Alimentation animale",
+      "emissions": "Émissions",
+      "seafood": "Poissons et fruits de mer",
+      "land": "Terres",
+      "levers": "Leviers",
+      "hestia": "HESTIA",
+      "literature": "Données ACV publiées",
+      "climate": "Climat",
+      "link": "Causes du réchauffement",
+      "options": "Options",
+      "assumptions": "Hypothèses",
+      "limitations": "Limites"
+    }
+  },
+  "charts": {
+    "title": "Graphiques",
+    "horizon": "Jusqu'en",
+    "tabs": {
+      "temperature": "Température mondiale",
+      "avoided": "Réchauffement évité",
+      "cause": "Causes du réchauffement"
+    },
+    "seeCauses": "Voir ce qui cause le réchauffement"
+  },
+  "diet": {
+    "title": "Alimentation",
+    "none": "Pas encore de changement",
+    "moved": "{share} déplacés",
+    "movedOwn": "{share} déplacés, certains aliments à part",
+    "description": "Remplacer une partie des aliments d'origine animale par des aliments végétaux, à protéines ou calories égales."
+  },
+  "worth": {
+    "legend": "−0,01 °C à côté d'un groupe ou d'un levier : la variation du réchauffement en {year} avec lui seul, en entier.",
+    "title": "{value} de réchauffement en {year} avec ceci seul, en entier"
+  },
+  "milestones": {
+    "title": "Niveaux de l'Accord de Paris",
+    "levels": {
+      "short": "Niveaux de l'Accord de Paris",
+      "p15": {
+        "short": "1,5 °C · Paris : poursuivre l'action",
+        "full": "1,5 °C : Accord de Paris, poursuivre l'action pour limiter"
+      },
+      "p2": {
+        "short": "2 °C · Paris : nettement en dessous",
+        "full": "2 °C : Accord de Paris, rester nettement en dessous"
+      }
+    },
+    "policies": {
+      "short": "Politiques actuelles en 2100",
+      "full": "Politiques actuelles en 2100 (PNUE, Climate Action Tracker, 2026) : 2,7–2,8 °C",
+      "caption": "La bande au bord de 2100 est là où mènent les politiques actuelles : 2,7–2,8 °C (rapport du PNUE sur l'écart entre les besoins et les perspectives et Climate Action Tracker, 2026)."
+    },
+    "caption": "Lignes pointillées : 1,5 °C (poursuivre l'action pour limiter) et 2 °C (rester nettement en dessous) de l'Accord de Paris ; les points marquent l'année où chaque médiane les atteint. Les niveaux de réchauffement sont des moyennes sur 20 ans par rapport à 1850–1900, car une année seule s'écarte d'environ ±0,2 °C de la tendance avec El Niño et La Niña : 2024, à 1,55 °C, ne franchit pas 1,5 °C.",
+    "line": "{level} : {text}.",
+    "never": "pas atteint avant {end}, avec ou sans les leviers",
+    "reached": "atteint vers {year}",
+    "without": "vers {year} sans les leviers",
+    "withoutNever": "pas avant {end} sans les leviers",
+    "with": "vers {year} avec",
+    "withNever": "pas avant {end} avec",
+    "separator": ", ",
+    "range": "probablement {early}–{late}",
+    "rangeFrom": "probablement à partir de {early}",
+    "gap": "Écart comblé en {year} : {parts}.",
+    "gapPart": "{share} de l'écart à {level}",
+    "gapWidened": "l'écart à {level} creusé de {share}",
+    "below": "sous {level} même sans les leviers",
+    "peak": "Pic de réchauffement avec les leviers : {value} en {year}.",
+    "peakRising": "Avec les leviers, le réchauffement monte encore en {year} : {value}."
+  },
+  "download": {
+    "button": "Télécharger",
+    "chartButton": "Télécharger les données du graphique",
+    "title": "Télécharger les données",
+    "map": "Cette carte en CSV",
+    "mapText": "Chaque pays avec les valeurs de la couche aujourd’hui et avec les leviers, la variation, l’unité et, pour la production et les émissions, la source la moins précise.",
+    "chart": "{chart} en CSV",
+    "chartText": {
+      "temperature": "Chaque année de 1850 à 2100 : température observée, température sans et avec les leviers avec leurs fourchettes de 5 à 95 %, et réchauffement dû aux seuls facteurs naturels.",
+      "avoided": "Chaque année jusqu’en 2100 : le réchauffement évité par les leviers, avec sa fourchette de 5 à 95 %.",
+      "cause": "Chaque année de 1850 à 2100 selon le scénario choisi : réchauffement par cause avec sa fourchette, température observée et émissions agricoles par gaz."
+    },
+    "scenario": "Scénario et réglages en JSON",
+    "scenarioText": "Tous les réglages de cette page (les mêmes que son adresse), les chiffres du résumé, la licence et la façon de citer.",
+    "format": "Les fichiers CSV sont en UTF-8 avec une marque d’ordre des octets, séparés par des virgules, avec des noms de colonnes en anglais et des nombres bruts (un point pour les décimales, sans séparateur de milliers), pour que tableurs et scripts les lisent de la même façon.",
+    "files": "Fichiers de données source",
+    "filesText": "Les fichiers JSON que lit la page, construits par le pipeline à partir des sources listées sur la page Méthodologie.",
+    "cite": "Comment citer",
+    "citeText": "Citez Planetshift et les sources d’origine :",
+    "licence": "Licence :",
+    "and": " et "
+  }
+}

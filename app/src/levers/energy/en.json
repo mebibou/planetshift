@@ -1,0 +1,42 @@
+{
+  "title": "Energy and transport",
+  "description": "Cut the fossil fuel of vehicles, flights, ships, power stations and data centres: its CO₂, the methane leaked supplying it and its air pollution, whose cooling goes too.",
+  "family": "Energy and transport",
+  "page": "Energy and transport",
+  "electricCars": {
+    "title": "Electric cars",
+    "description": "Cars, buses and two-wheelers run on electricity: their tailpipe CO₂ goes, the grid's CO₂ for charging them comes."
+  },
+  "electricTrucks": {
+    "title": "Electric trucks",
+    "description": "Trucks and vans run on electricity, which saves less than for cars on a grid that still burns coal."
+  },
+  "flyLess": {
+    "title": "Less flying",
+    "description": "Fewer flights: less aviation CO₂, and at once less of the warming from contrails and other effects of flying."
+  },
+  "cleanAviationFuel": {
+    "title": "Clean aviation fuel",
+    "description": "Fuel made from waste or captured CO₂ cuts the flights' CO₂, not their contrails."
+  },
+  "cleanShipping": {
+    "title": "Clean shipping",
+    "description": "Ships run on fuels without fossil carbon, such as green ammonia or methanol."
+  },
+  "renewableElectricity": {
+    "title": "Renewable electricity",
+    "description": "Wind, solar and other clean power replace coal and gas: the grid's CO₂ per kWh falls, so electric vehicles and data centres save more."
+  },
+  "cleanDataCentres": {
+    "title": "Data centres on clean power",
+    "description": "The extra electricity of AI data centres comes from clean sources; it acts only when that demand is counted (Options)."
+  },
+  "options": {
+    "dataCentres": {
+      "label": "AI data centres",
+      "hint": "Their electricity growth since 2024 added to the future without the levers (IEA), or the scenarios' electricity as published.",
+      "iea": "Growth added (IEA)",
+      "ssp": "As in the scenario"
+    }
+  }
+}

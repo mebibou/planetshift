@@ -1,0 +1,13 @@
+{
+  "baseYear": 2022,
+  "builtAt": "2026-11-21",
+  "sources": [
+    {
+      "id": "fixture",
+      "name": "Planetshift test fixture (synthetic, plausible magnitudes)",
+      "version": "1",
+      "url": "https://www.fao.org/faostat/en/#data/FBS",
+      "licence": "CC BY 4.0"
+    }
+  ]
+}

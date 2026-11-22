@@ -1,0 +1,10 @@
+{
+  "options": {
+    "permafrost": {
+      "label": "Pergélisol",
+      "hint": "Désactivé, comme dans les scénarios publiés, ou le sol gelé qui dégèle et libère CO₂ et méthane à mesure que le monde se réchauffe, ce qui le réchauffe davantage.",
+      "off": "Non compté",
+      "on": "Dégèle"
+    }
+  }
+}

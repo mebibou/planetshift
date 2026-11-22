@@ -1,0 +1,834 @@
+{
+ "@id": "riceGrainInHuskFlooded-india-2010-2026-20260308",
+ "name": "Rice, grain (in husk), flooded - India - 2010-2026",
+ "startDate": "2010",
+ "endDate": "2026",
+ "aggregatedDataValidated": true,
+ "country": {
+  "@id": "GADM-IND"
+ },
+ "product": {
+  "term": {
+   "@id": "riceGrainInHuskFlooded",
+   "units": "kg"
+  }
+ },
+ "emissionsResourceUse": [
+  {
+   "term": {
+    "@id": "n2OToAirAquacultureSystemsIndirect"
+   },
+   "value": 0.0,
+   "methodTier": "not relevant",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirCropResidueDecompositionIndirect"
+   },
+   "value": 2.25e-06,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirFuelCombustionIndirect"
+   },
+   "value": 3.73e-06,
+   "methodTier": "tier 1",
+   "inputs": [
+    {
+     "@id": "diesel",
+     "termType": "fuel"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "n2OToAirInorganicFertiliserIndirect"
+   },
+   "value": 3.77e-05,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionNonFossil"
+   },
+   "value": 0.000213,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "seed",
+     "termType": "seed"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "n2OToAirOrganicFertiliserDirect"
+   },
+   "value": 1.69e-05,
+   "methodTier": "tier 2",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirExcretaIndirect"
+   },
+   "value": 0.0,
+   "methodTier": "not relevant",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirNaturalVegetationBurning"
+   },
+   "value": 0.0,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirNaturalVegetationBurningDirect"
+   },
+   "value": 0.0,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirCropResidueBurningDirect"
+   },
+   "value": 5.18e-06,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirFloodedRice"
+   },
+   "value": 0.0167,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirWasteTreatment"
+   },
+   "value": 0.0,
+   "methodTier": "not relevant",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirInorganicFertiliserDirect"
+   },
+   "value": 3.82e-05,
+   "methodTier": "tier 2",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "co2ToAirBelowGroundBiomassStockChangeLandUseChange"
+   },
+   "value": 0.0,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirExcreta"
+   },
+   "value": 0.0,
+   "methodTier": "not relevant",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "co2ToAirBelowGroundBiomassStockChangeManagementChange"
+   },
+   "value": 0.0,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirOrganicSoilCultivationDirect"
+   },
+   "value": 4.93e-08,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirCropResidueDecompositionDirect"
+   },
+   "value": 9.91e-06,
+   "methodTier": "tier 2",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "co2ToAirOrganicSoilCultivation"
+   },
+   "value": 0.00352,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "co2ToAirAboveGroundBiomassStockChangeLandUseChange"
+   },
+   "value": 0.0,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirCropResidueBurning"
+   },
+   "value": 0.000432,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "co2ToAirInputsProduction"
+   },
+   "value": 1e-05,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "seed",
+     "termType": "seed"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "n2OToAirInputsProduction"
+   },
+   "value": 3.57e-09,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "seed",
+     "termType": "seed"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "co2ToAirFuelCombustion"
+   },
+   "value": 0.0361,
+   "methodTier": "tier 1",
+   "inputs": [
+    {
+     "@id": "diesel",
+     "termType": "fuel"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "n2OToAirOrganicFertiliserIndirect"
+   },
+   "value": 3.61e-06,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirWasteTreatmentDirect"
+   },
+   "value": 0.0,
+   "methodTier": "not relevant",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "co2ToAirOrganicSoilBurning"
+   },
+   "value": 0.0,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirEntericFermentation"
+   },
+   "value": 0.0,
+   "methodTier": "not relevant",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "co2ToAirLimeNeutralisation"
+   },
+   "value": 0.0,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirAquacultureSystems"
+   },
+   "value": 0.0,
+   "methodTier": "not relevant",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "co2ToAirSoilOrganicCarbonStockChangeLandUseChange"
+   },
+   "value": 0.291,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirExcretaDirect"
+   },
+   "value": 0.0,
+   "methodTier": "not relevant",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirAquacultureSystemsDirect"
+   },
+   "value": 0.0,
+   "methodTier": "not relevant",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirOrganicSoilBurningIndirect"
+   },
+   "value": 0.0,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirCropResidueBurningIndirect"
+   },
+   "value": 3.64e-06,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "co2ToAirUreaHydrolysis"
+   },
+   "value": 0.0158,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirOrganicSoilCultivation"
+   },
+   "value": 1.45e-05,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionFossil"
+   },
+   "value": 2.82e-06,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "seed",
+     "termType": "seed"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "co2ToAirAboveGroundBiomassStockChangeManagementChange"
+   },
+   "value": 0.0,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirOrganicSoilBurning"
+   },
+   "value": 0.0,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirDiminishingSoilCarbonStocksLandUseChangeDirect"
+   },
+   "value": 2.25e-05,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "n2OToAirFuelCombustionDirect"
+   },
+   "value": 1.56e-06,
+   "methodTier": "tier 1",
+   "inputs": [
+    {
+     "@id": "diesel",
+     "termType": "fuel"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "n2OToAirOrganicSoilBurningDirect"
+   },
+   "value": 0.0,
+   "methodTier": "tier 1",
+   "inputs": []
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirFuelCombustion"
+   },
+   "value": 9.97e-07,
+   "methodTier": "tier 1",
+   "inputs": [
+    {
+     "@id": "diesel",
+     "termType": "fuel"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionFossil"
+   },
+   "value": 1.28e-07,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "pesticideUnspecifiedAi",
+     "termType": "pesticideAI"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionNonFossil"
+   },
+   "value": 4.86e-09,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "pesticideUnspecifiedAi",
+     "termType": "pesticideAI"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "co2ToAirInputsProduction"
+   },
+   "value": 2.5e-05,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "pesticideUnspecifiedAi",
+     "termType": "pesticideAI"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "n2OToAirInputsProduction"
+   },
+   "value": 6.59e-09,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "pesticideUnspecifiedAi",
+     "termType": "pesticideAI"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionFossil"
+   },
+   "value": 0.000152,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "diesel",
+     "termType": "fuel"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionNonFossil"
+   },
+   "value": 5.04e-07,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "diesel",
+     "termType": "fuel"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "co2ToAirInputsProduction"
+   },
+   "value": 0.00411,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "diesel",
+     "termType": "fuel"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "n2OToAirInputsProduction"
+   },
+   "value": 1.85e-06,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "diesel",
+     "termType": "fuel"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionFossil"
+   },
+   "value": 0.000159,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "inorganicNitrogenFertiliserUnspecifiedKgN",
+     "termType": "inorganicFertiliser"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionNonFossil"
+   },
+   "value": 3.86e-06,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "inorganicNitrogenFertiliserUnspecifiedKgN",
+     "termType": "inorganicFertiliser"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "co2ToAirInputsProduction"
+   },
+   "value": 0.0439,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "inorganicNitrogenFertiliserUnspecifiedKgN",
+     "termType": "inorganicFertiliser"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "n2OToAirInputsProduction"
+   },
+   "value": 9.82e-07,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "inorganicNitrogenFertiliserUnspecifiedKgN",
+     "termType": "inorganicFertiliser"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionFossil"
+   },
+   "value": 1.77e-05,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "inorganicPotassiumFertiliserUnspecifiedKgK2O",
+     "termType": "inorganicFertiliser"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionNonFossil"
+   },
+   "value": 2.66e-07,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "inorganicPotassiumFertiliserUnspecifiedKgK2O",
+     "termType": "inorganicFertiliser"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "co2ToAirInputsProduction"
+   },
+   "value": 0.00345,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "inorganicPotassiumFertiliserUnspecifiedKgK2O",
+     "termType": "inorganicFertiliser"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "n2OToAirInputsProduction"
+   },
+   "value": 2.68e-07,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "inorganicPotassiumFertiliserUnspecifiedKgK2O",
+     "termType": "inorganicFertiliser"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionFossil"
+   },
+   "value": 5.61e-06,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "machineryInfrastructureDepreciatedAmountPerCycle",
+     "termType": "material"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionNonFossil"
+   },
+   "value": 1.94e-07,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "machineryInfrastructureDepreciatedAmountPerCycle",
+     "termType": "material"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "co2ToAirInputsProduction"
+   },
+   "value": 0.00219,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "machineryInfrastructureDepreciatedAmountPerCycle",
+     "termType": "material"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "n2OToAirInputsProduction"
+   },
+   "value": 3.29e-08,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "machineryInfrastructureDepreciatedAmountPerCycle",
+     "termType": "material"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionFossil"
+   },
+   "value": 5.11e-09,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "CAS-107534-96-3",
+     "termType": "pesticideAI"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionNonFossil"
+   },
+   "value": 1.96e-10,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "CAS-107534-96-3",
+     "termType": "pesticideAI"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "co2ToAirInputsProduction"
+   },
+   "value": 1.22e-06,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "CAS-107534-96-3",
+     "termType": "pesticideAI"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "n2OToAirInputsProduction"
+   },
+   "value": 4.66e-10,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "CAS-107534-96-3",
+     "termType": "pesticideAI"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionFossil"
+   },
+   "value": 3.95e-05,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "electricityGridMarketMix",
+     "termType": "electricity"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionNonFossil"
+   },
+   "value": 2.89e-06,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "electricityGridMarketMix",
+     "termType": "electricity"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "co2ToAirInputsProduction"
+   },
+   "value": 0.015,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "electricityGridMarketMix",
+     "termType": "electricity"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "n2OToAirInputsProduction"
+   },
+   "value": 2.84e-07,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "electricityGridMarketMix",
+     "termType": "electricity"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionFossil"
+   },
+   "value": 6.48e-05,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "inorganicPhosphorusFertiliserUnspecifiedKgP2O5",
+     "termType": "inorganicFertiliser"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "ch4ToAirInputsProductionNonFossil"
+   },
+   "value": 2.32e-06,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "inorganicPhosphorusFertiliserUnspecifiedKgP2O5",
+     "termType": "inorganicFertiliser"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "co2ToAirInputsProduction"
+   },
+   "value": 0.0152,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "inorganicPhosphorusFertiliserUnspecifiedKgP2O5",
+     "termType": "inorganicFertiliser"
+    }
+   ]
+  },
+  {
+   "term": {
+    "@id": "n2OToAirInputsProduction"
+   },
+   "value": 6.11e-07,
+   "methodTier": "background",
+   "inputs": [
+    {
+     "@id": "inorganicPhosphorusFertiliserUnspecifiedKgP2O5",
+     "termType": "inorganicFertiliser"
+    }
+   ]
+  }
+ ],
+ "impacts": [
+  {
+   "term": {
+    "@id": "gwp100"
+   },
+   "value": 0.953
+  }
+ ]
+}

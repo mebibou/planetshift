@@ -1,0 +1,629 @@
+{
+  "world": {
+    "2511": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      }
+    },
+    "2514": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      }
+    },
+    "2516": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      }
+    },
+    "2531": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      }
+    },
+    "2536": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      }
+    },
+    "2546": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      }
+    },
+    "2555": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      }
+    },
+    "2571": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      }
+    },
+    "2601": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      }
+    },
+    "2615": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "residues": 0.6,
+          "other": 0.4
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.65,
+          "organicFertiliser": 0.1,
+          "residues": 0.25
+        }
+      }
+    },
+    "2731": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "enteric": 0.85,
+          "manure": 0.15
+        },
+        "n2o": {
+          "manure": 0.5,
+          "organicFertiliser": 0.2,
+          "syntheticFertiliser": 0.2,
+          "residues": 0.1
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "enteric": 0.85,
+          "manure": 0.15
+        },
+        "n2o": {
+          "manure": 0.5,
+          "organicFertiliser": 0.2,
+          "syntheticFertiliser": 0.2,
+          "residues": 0.1
+        }
+      }
+    },
+    "2732": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "enteric": 0.85,
+          "manure": 0.15
+        },
+        "n2o": {
+          "manure": 0.5,
+          "organicFertiliser": 0.2,
+          "syntheticFertiliser": 0.2,
+          "residues": 0.1
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "enteric": 0.85,
+          "manure": 0.15
+        },
+        "n2o": {
+          "manure": 0.5,
+          "organicFertiliser": 0.2,
+          "syntheticFertiliser": 0.2,
+          "residues": 0.1
+        }
+      }
+    },
+    "2733": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "manure": 0.8,
+          "enteric": 0.2
+        },
+        "n2o": {
+          "manure": 0.6,
+          "syntheticFertiliser": 0.3,
+          "other": 0.1
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "manure": 0.8,
+          "enteric": 0.2
+        },
+        "n2o": {
+          "manure": 0.6,
+          "syntheticFertiliser": 0.3,
+          "other": 0.1
+        }
+      }
+    },
+    "2734": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "manure": 0.8,
+          "enteric": 0.2
+        },
+        "n2o": {
+          "manure": 0.6,
+          "syntheticFertiliser": 0.3,
+          "other": 0.1
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "manure": 0.8,
+          "enteric": 0.2
+        },
+        "n2o": {
+          "manure": 0.6,
+          "syntheticFertiliser": 0.3,
+          "other": 0.1
+        }
+      }
+    },
+    "2744": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "manure": 0.8,
+          "enteric": 0.2
+        },
+        "n2o": {
+          "manure": 0.6,
+          "syntheticFertiliser": 0.3,
+          "other": 0.1
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "manure": 0.8,
+          "enteric": 0.2
+        },
+        "n2o": {
+          "manure": 0.6,
+          "syntheticFertiliser": 0.3,
+          "other": 0.1
+        }
+      }
+    },
+    "2761": {
+      "farmGate": {
+        "co2": {
+          "energy": 1
+        },
+        "n2o": {
+          "other": 1
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 1
+        },
+        "n2o": {
+          "other": 1
+        }
+      }
+    },
+    "2763": {
+      "farmGate": {
+        "co2": {
+          "energy": 1
+        },
+        "n2o": {
+          "other": 1
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 1
+        },
+        "n2o": {
+          "other": 1
+        }
+      }
+    },
+    "2807": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "rice": 0.95,
+          "residues": 0.05
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.6,
+          "organicFertiliser": 0.1,
+          "residues": 0.3
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "rice": 0.95,
+          "residues": 0.05
+        },
+        "n2o": {
+          "syntheticFertiliser": 0.6,
+          "organicFertiliser": 0.1,
+          "residues": 0.3
+        }
+      }
+    },
+    "2848": {
+      "farmGate": {
+        "co2": {
+          "energy": 0.6,
+          "other": 0.4
+        },
+        "ch4": {
+          "enteric": 0.85,
+          "manure": 0.15
+        },
+        "n2o": {
+          "manure": 0.5,
+          "organicFertiliser": 0.2,
+          "syntheticFertiliser": 0.2,
+          "residues": 0.1
+        }
+      },
+      "cradleToFarmGate": {
+        "co2": {
+          "energy": 0.3,
+          "inputsManufacture": 0.5,
+          "other": 0.2
+        },
+        "ch4": {
+          "enteric": 0.85,
+          "manure": 0.15
+        },
+        "n2o": {
+          "manure": 0.5,
+          "organicFertiliser": 0.2,
+          "syntheticFertiliser": 0.2,
+          "residues": 0.1
+        }
+      }
+    }
+  },
+  "byCountry": {
+    "FRA": {
+      "2731": {
+        "farmGate": {
+          "co2": {
+            "energy": 0.6,
+            "other": 0.4
+          },
+          "ch4": {
+            "enteric": 0.8,
+            "manure": 0.2
+          },
+          "n2o": {
+            "manure": 0.5,
+            "organicFertiliser": 0.2,
+            "syntheticFertiliser": 0.2,
+            "residues": 0.1
+          }
+        }
+      }
+    }
+  }
+}

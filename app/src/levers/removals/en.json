@@ -1,0 +1,26 @@
+{
+  "title": "Carbon in farmland",
+  "description": "Store CO₂ in farm soils and trees, on part of the cropland or pasture, for some decades.",
+  "family": "Carbon in farmland",
+  "page": "Carbon in farmland",
+  "coverCrops": {
+    "title": "Cover crops",
+    "description": "Crops grown between harvests store carbon in cropland soils."
+  },
+  "agroforestry": {
+    "title": "Trees on farms",
+    "description": "Trees planted in fields and pastures store carbon as they grow."
+  },
+  "biochar": {
+    "title": "Biochar",
+    "description": "Charred crop residues added to soil keep their carbon for centuries."
+  },
+  "enhancedWeathering": {
+    "title": "Rock dust",
+    "description": "Crushed basalt spread on fields takes up CO₂ as it weathers."
+  },
+  "summary": {
+    "title": "CO₂ stored in farmland in {year}",
+    "detail": "a year, likely {low} to {high}"
+  }
+}

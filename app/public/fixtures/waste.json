@@ -1,0 +1,30 @@
+{
+  "byCountry": {
+    "FRA": {
+      "retail": 12,
+      "foodService": 25,
+      "household": 50
+    },
+    "USA": {
+      "retail": 15,
+      "foodService": 40,
+      "household": 60
+    },
+    "IND": {
+      "retail": 7,
+      "foodService": 12,
+      "household": 30
+    },
+    "BRA": {
+      "retail": 3,
+      "foodService": 25,
+      "household": 35
+    },
+    "NGA": {
+      "retail": 5,
+      "foodService": 10,
+      "household": 40
+    }
+  },
+  "source": "https://wedocs.unep.org/20.500.11822/45230"
+}

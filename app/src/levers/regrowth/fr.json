@@ -1,0 +1,15 @@
+{
+  "family": "Repousse sur les terres libérées",
+  "options": {
+    "regrowth": {
+      "label": "Terres libérées",
+      "hint": "Laissées en l'état, ou rendues à une végétation naturelle qui absorbe du CO₂ pendant quelques décennies.",
+      "none": "Laissées en l'état",
+      "natural": "Végétation spontanée"
+    }
+  },
+  "summary": {
+    "title": "CO₂ absorbé par la repousse en {year}",
+    "detail": "par an, probablement de {low} à {high}"
+  }
+}

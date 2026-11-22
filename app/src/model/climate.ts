@@ -1,0 +1,85 @@
+import {
+  GASES,
+  type Climate,
+  type ClimateMethod,
+  type Gas,
+  type GasVector,
+  type Ssp,
+} from '../data/types';
+import { END_YEAR, range, sum, valueAt } from './util';
+
+export type Band = 'median' | 'p05' | 'p95';
+export const BANDS: readonly Band[] = ['median', 'p05', 'p95'];
+
+/** The AGTP curve of a gas for a band; a method without a range uses its median for all three. */
+export const agtpOf = (climate: Climate, method: ClimateMethod, gas: Gas, band: Band): number[] => {
+  const curves = climate.agtp[method][gas];
+  return curves[band].length > 0 ? curves[band] : curves.median;
+};
+
+/**
+ * Temperature response to an emission series: ΔT(t) = Σ_τ≤t E(τ)·AGTP(t−τ), with E[k] the
+ * emission in startYear + k and AGTP held at its last value beyond its horizon.
+ */
+export const convolve = (
+  emissions: readonly number[],
+  startYear: number,
+  agtp: readonly number[],
+  years: readonly number[],
+): number[] => {
+  const last = agtp.length - 1;
+  return years.map((t) => {
+    if (last < 0 || t < startYear) return 0;
+    // Emissions after t (h < 0) add nothing: stop there, adding in the same order.
+    const end = Math.min(emissions.length, t - startYear + 1);
+    let acc = 0;
+    for (let k = 0; k < end; k++) {
+      const e = emissions[k] as number;
+      if (e !== 0) acc += e * (agtp[Math.min(t - startYear - k, last)] as number);
+    }
+    return acc;
+  });
+};
+
+/** Sum over gases of each gas's convolution. */
+export const warmingFrom = (
+  emissions: readonly GasVector[],
+  startYear: number,
+  climate: Climate,
+  method: ClimateMethod,
+  band: Band,
+  years: readonly number[],
+): number[] => {
+  const perGas = GASES.map((gas) =>
+    convolve(
+      emissions.map((e) => e[gas]),
+      startYear,
+      agtpOf(climate, method, gas, band),
+      years,
+    ),
+  );
+  return years.map((_, i) => sum(perGas.map((series) => series[i] as number)));
+};
+
+/**
+ * Emissions the 'population' baseline adds to the SSP's own agricultural path from the base
+ * year: PRIMAP's base-year agricultural emissions scaled by population, minus the SSP's.
+ */
+export const populationAdjustmentEmissions = (
+  climate: Climate,
+  ssp: Ssp,
+  baseYear: number,
+  populationRatio: (year: number) => number,
+): GasVector[] =>
+  range(baseYear, END_YEAR).map(
+    (y) =>
+      Object.fromEntries(
+        GASES.map((gas) => {
+          const { years, values } = climate.agricultureEmissions[ssp][gas];
+          return [
+            gas,
+            valueAt(years, values, baseYear) * populationRatio(y) - valueAt(years, values, y),
+          ];
+        }),
+      ) as GasVector,
+  );

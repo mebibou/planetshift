@@ -1,0 +1,31 @@
+{
+  "options": {
+    "population": {
+      "label": "World population (UN projection)",
+      "hint": "How many people the world will feed depends on choices families make, shaped by education, health care and access to voluntary family planning. These are the UN's projections, not a lever: the levers' effect is measured against the future you pick.",
+      "medium": "Medium: 10.2 billion in 2100",
+      "low": "Low: 7.0 billion",
+      "high": "High: 14.4 billion"
+    }
+  },
+  "chart": {
+    "title": "World population",
+    "label": "Line chart of world population from {from} to {end}: counted and estimated, then the UN's three projections",
+    "unit": "billion people",
+    "history": "Counted and estimated",
+    "chosen": "UN projection chosen",
+    "others": "Other UN projections",
+    "caption": "People to feed. Population does not cause the warming above; it sets how much food is needed, and so farming's emissions in the baseline.",
+    "inconsistent": "The UN's {variant} projection tells a different story from {ssp}, whose own population is {direction}; the rest of the world's emissions stay the scenario's.",
+    "notApplied": "With the SSP2 path for farm emissions, the population chosen changes nothing.",
+    "variants": {
+      "medium": "medium",
+      "low": "low",
+      "high": "high"
+    },
+    "billion": "{value} billion",
+    "larger": "larger",
+    "smaller": "smaller",
+    "projection": "UN {variant} projection"
+  }
+}

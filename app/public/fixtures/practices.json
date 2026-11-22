@@ -1,0 +1,129 @@
+{
+  "feedAdditives": {
+    "sources": [
+      "enteric"
+    ],
+    "gases": [
+      "ch4"
+    ],
+    "groups": [
+      "ruminantMeat",
+      "dairy"
+    ],
+    "reduction": {
+      "median": 0.3,
+      "low": 0.2,
+      "high": 0.4
+    },
+    "applicable": {
+      "World": 0.3,
+      "FRA": 0.6,
+      "USA": 0.6
+    },
+    "source": "https://doi.org/10.1126/science.aaq0216"
+  },
+  "breedingAndFeed": {
+    "sources": [
+      "enteric"
+    ],
+    "gases": [
+      "ch4"
+    ],
+    "reduction": {
+      "median": 0.1,
+      "low": 0.05,
+      "high": 0.15
+    },
+    "applicable": {
+      "World": 0.8
+    },
+    "source": "https://doi.org/10.1126/science.aaq0216"
+  },
+  "manureManagement": {
+    "sources": [
+      "manure"
+    ],
+    "gases": [
+      "ch4",
+      "n2o"
+    ],
+    "reduction": {
+      "median": 0.3,
+      "low": 0.15,
+      "high": 0.5
+    },
+    "applicable": {
+      "World": 0.5
+    },
+    "source": "https://doi.org/10.1126/science.aaq0216"
+  },
+  "riceWater": {
+    "sources": [
+      "rice"
+    ],
+    "gases": [
+      "ch4"
+    ],
+    "reduction": {
+      "median": 0.35,
+      "low": 0.2,
+      "high": 0.5
+    },
+    "applicable": {
+      "World": 0.6
+    },
+    "source": "https://doi.org/10.1126/science.aaq0216"
+  },
+  "nitrogenEfficiency": {
+    "sources": [
+      "syntheticFertiliser",
+      "organicFertiliser"
+    ],
+    "gases": [
+      "n2o"
+    ],
+    "reduction": {
+      "median": 0.2,
+      "low": 0.1,
+      "high": 0.3
+    },
+    "applicable": {
+      "World": 0.7
+    },
+    "source": "https://doi.org/10.1126/science.aaq0216"
+  },
+  "nitrificationInhibitors": {
+    "sources": [
+      "syntheticFertiliser"
+    ],
+    "gases": [
+      "n2o"
+    ],
+    "reduction": {
+      "median": 0.35,
+      "low": 0.2,
+      "high": 0.5
+    },
+    "applicable": {
+      "World": 0.6
+    },
+    "source": "https://doi.org/10.1126/science.aaq0216"
+  },
+  "farmEnergy": {
+    "sources": [
+      "energy"
+    ],
+    "gases": [
+      "co2"
+    ],
+    "reduction": {
+      "median": 0.5,
+      "low": 0.3,
+      "high": 0.7
+    },
+    "applicable": {
+      "World": 0.8
+    },
+    "source": "https://doi.org/10.1126/science.aaq0216"
+  }
+}

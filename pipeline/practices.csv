@@ -1,0 +1,106 @@
+practice,field,key,value,reason,citation
+feedAdditives,sources,,enteric,3-NOP and similar inhibitors act on the methane made in the rumen,
+feedAdditives,gases,,ch4,only enteric methane is inhibited,
+feedAdditives,groups,,dairy;ruminantMeat,cattle are where the trials are; sheep and goats are mostly grazed,
+feedAdditives,reduction,median,0.28,meta-analyses find 33% for dairy cattle at the usual dose and about 22-26% for beef cattle,"Kebreab et al. 2023, A meta-analysis of effects of 3-nitrooxypropanol on methane production, yield, and intensity in dairy cattle, J Dairy Sci, https://doi.org/10.3168/jds.2022-22211"
+feedAdditives,reduction,low,0.20,beef cattle and high-fibre diets respond less,"Dijkstra et al. 2018, Short communication: Antimethanogenic effects of 3-nitrooxypropanol depend on supplementation dose, dietary fiber content, and cattle type, J Dairy Sci 101 (beef -22.2%), https://doi.org/10.3168/jds.2018-14456"
+feedAdditives,reduction,high,0.38,dairy cattle on low-fibre diets at higher doses,"Dijkstra et al. 2018, J Dairy Sci 101 (dairy -39.0%), https://doi.org/10.3168/jds.2018-14456"
+feedAdditives,applicable,World,0.10,the additive must be eaten every day with a ration: housed or feedlot animals only,"Arndt et al. 2022, Full adoption of the most effective strategies to mitigate methane emissions by ruminants can help meet the 1.5 °C target by 2030 but not 2050, PNAS, https://doi.org/10.1073/pnas.2111294119"
+feedAdditives,applicable,income:High income,0.45,most dairy cows are housed or fed a mixed ration; beef is finished in feedlots but cow-calf herds graze,
+feedAdditives,applicable,income:Upper middle income,0.15,intensive dairies and feedlots exist beside large grazing herds,
+feedAdditives,applicable,income:Lower middle income,0.07,mostly smallholder and grazing herds without a daily ration,
+feedAdditives,applicable,income:Low income,0.03,pastoral and smallholder herds,
+feedAdditives,applicable,NZL,0.05,dairy and beef are grazed all year,
+feedAdditives,applicable,AUS,0.15,beef is mostly rangeland; some feedlot finishing and supplemented dairy,
+feedAdditives,applicable,IRL,0.20,grass-based dairy and beef housed only in winter,
+feedAdditives,applicable,URY,0.10,grass-fed beef,
+feedAdditives,applicable,CHN,0.25,dairy has moved to large housed farms,
+breedingAndFeed,sources,,enteric,better diets and genetics cut methane per kg of milk or meat,
+breedingAndFeed,gases,,ch4,enteric methane intensity,
+breedingAndFeed,groups,,dairy;ruminantMeat,ruminants,
+breedingAndFeed,reduction,median,0.12,"higher feeding level, younger grass and less forage in the diet cut methane intensity by 12% on average",Arndt et al. 2022 https://doi.org/10.1073/pnas.2111294119
+breedingAndFeed,reduction,low,0.05,one practice alone or where diets are already good,Arndt et al. 2022 https://doi.org/10.1073/pnas.2111294119
+breedingAndFeed,reduction,high,0.20,combined with breeding for low methane and productivity where the gap is large,"Gerber et al. 2013, Tackling climate change through livestock, FAO, https://www.fao.org/3/i3437e/i3437e.pdf"
+breedingAndFeed,applicable,World,0.65,most herds can improve feed quality or genetics,
+breedingAndFeed,applicable,income:High income,0.50,diets and genetics are already close to the frontier,
+breedingAndFeed,applicable,income:Upper middle income,0.70,a large productivity gap and the means to close part of it,
+breedingAndFeed,applicable,income:Lower middle income,0.70,the largest productivity gap,
+breedingAndFeed,applicable,income:Low income,0.60,"the largest gap, but feed, breeding services and extension are scarce",
+manureManagement,sources,,manure,"anaerobic digestion, covers, acidification and frequent removal act on stored manure",
+manureManagement,gases,,ch4;n2o,both gases of manure storage,
+manureManagement,reduction,median,0.45,"frequent removal, digesters and acidification cut methane by 29-74% and N2O by 21-55% across 89 studies","Sajeev et al. 2018, Greenhouse gas and ammonia emissions from different stages of liquid manure management chains: abatement options and emission interactions, J Environ Qual, https://doi.org/10.2134/jeq2017.05.0199"
+manureManagement,reduction,low,0.25,the low end of the N2O range and covers alone,Sajeev et al. 2018 https://doi.org/10.2134/jeq2017.05.0199
+manureManagement,reduction,high,0.70,the high end of the methane range (digesters with gas-tight storage),Sajeev et al. 2018 https://doi.org/10.2134/jeq2017.05.0199
+manureManagement,applicable,World,0.30,manure must be collected and stored on farms large enough for a digester or a covered store,
+manureManagement,applicable,income:High income,0.60,"slurry stores on dairy and pig farms, already regulated in places",
+manureManagement,applicable,income:Upper middle income,0.40,large pig and dairy farms beside small ones,
+manureManagement,applicable,income:Lower middle income,0.20,mostly dry manure in small heaps or dung cakes,
+manureManagement,applicable,income:Low income,0.10,little manure is stored,
+manureManagement,applicable,CHN,0.45,most pigs are now in large farms with slurry,
+riceWater,sources,,rice,draining the paddy stops the methane-making bacteria,
+riceWater,gases,,ch4,"rice methane; the N2O increase is netted into the reduction",
+riceWater,groups,,rice,paddy rice,
+riceWater,reduction,median,0.45,"IPCC scales multiple drainage at 0.55 of continuous flooding; a meta-analysis finds -53% CH4, +105% N2O and -44% for both together, about -50% of the methane alone","IPCC 2019 Refinement, vol. 4 ch. 5, table 5.12, https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html"
+riceWater,reduction,low,0.25,"a single mid-season drainage (scaling factor 0.71), less the N2O increase","Jiang et al. 2019, Water management to mitigate the global warming potential of rice systems: a global meta-analysis, Field Crops Res, https://doi.org/10.1016/j.fcr.2019.02.010"
+riceWater,reduction,high,0.55,the lower end of the multiple-drainage factor (0.41) less the N2O increase,IPCC 2019 Refinement table 5.12
+riceWater,applicable,World,0.40,AWD needs irrigated paddies where farmers control the water and that are still kept flooded,
+riceWater,applicable,income:High income,0.50,"irrigated, but often already drained once",
+riceWater,applicable,income:Upper middle income,0.40,"mostly irrigated, part already drained",
+riceWater,applicable,income:Lower middle income,0.35,a mix of irrigated and rainfed lowland rice,
+riceWater,applicable,income:Low income,0.10,mostly rainfed or flood-prone rice without water control,
+riceWater,applicable,region:Western Africa,0.10,mostly rainfed lowland and upland rice,
+riceWater,applicable,region:Eastern Africa,0.15,"mostly rainfed, some irrigated schemes",
+riceWater,applicable,region:Middle Africa,0.05,almost all rainfed,
+riceWater,applicable,CHN,0.35,"irrigated, but mid-season drainage is already common",
+riceWater,applicable,IND,0.45,about 60% of the rice area is irrigated,
+riceWater,applicable,BGD,0.45,the irrigated dry-season (boro) crop is half the harvest,
+riceWater,applicable,IDN,0.50,"mostly irrigated in Java, rainfed elsewhere",
+riceWater,applicable,VNM,0.60,"irrigated deltas, with AWD promoted in the Mekong",
+riceWater,applicable,PHL,0.50,where AWD was developed; about two thirds irrigated,
+riceWater,applicable,THA,0.25,mostly rainfed lowland rice,
+riceWater,applicable,MMR,0.20,mostly rainfed or deep-water rice,
+riceWater,applicable,KHM,0.15,mostly rainfed,
+riceWater,applicable,LAO,0.10,mostly rainfed,
+riceWater,applicable,PAK,0.60,all irrigated,
+riceWater,applicable,EGY,0.70,all irrigated,
+riceWater,applicable,USA,0.70,all irrigated and mechanised,
+riceWater,applicable,BRA,0.50,"irrigated in the south, upland elsewhere",
+riceWater,applicable,JPN,0.20,mid-season drainage is already the norm,
+riceWater,applicable,KOR,0.30,mid-season drainage is common,
+riceWater,applicable,ITA,0.60,irrigated and continuously flooded,
+riceWater,applicable,ESP,0.60,irrigated and continuously flooded,
+nitrogenEfficiency,sources,,syntheticFertiliser;inputsManufacture,"less nitrogen spread more precisely: less soil N2O, and less fertiliser to make",
+nitrogenEfficiency,gases,,n2o;co2;ch4,"N2O from the field and from nitric acid plants, CO2 of urea and of making ammonia, methane of the gas used",
+nitrogenEfficiency,reduction,median,0.25,"eleven measures (rate, timing, placement, enhanced fertilisers, rotations) cut fertiliser use by 21% and nitrogen losses by 32% at equal or higher yields","Gu et al. 2023, Cost-effective mitigation of nitrogen pollution from global croplands, Nature, https://doi.org/10.1038/s41586-022-05481-8"
+nitrogenEfficiency,reduction,low,0.12,rate and timing alone,Gu et al. 2023 https://doi.org/10.1038/s41586-022-05481-8
+nitrogenEfficiency,reduction,high,0.35,"N2O falls faster than the rate where nitrogen is in excess, as its response to nitrogen is not linear","Shcherbak et al. 2014, Global metaanalysis of the nonlinear response of soil nitrous oxide (N2O) emissions to fertilizer nitrogen, PNAS, https://doi.org/10.1073/pnas.1322434111"
+nitrogenEfficiency,applicable,World,0.50,the share of synthetic nitrogen spread beyond what crops take up and that better practice can avoid,"IPCC AR6 WGIII ch. 7, https://doi.org/10.1017/9781009157926.009"
+nitrogenEfficiency,applicable,income:High income,0.50,surpluses have fallen but remain,
+nitrogenEfficiency,applicable,income:Upper middle income,0.60,large nitrogen surpluses,
+nitrogenEfficiency,applicable,income:Lower middle income,0.50,surpluses on irrigated cereals,
+nitrogenEfficiency,applicable,income:Low income,0.20,most soils get too little nitrogen,
+nitrogenEfficiency,applicable,region:Western Africa,0.20,nitrogen is short rather than in excess,
+nitrogenEfficiency,applicable,region:Eastern Africa,0.20,nitrogen is short rather than in excess,
+nitrogenEfficiency,applicable,region:Middle Africa,0.20,nitrogen is short rather than in excess,
+nitrogenEfficiency,applicable,CHN,0.80,the largest surpluses in the world,
+nitrogenEfficiency,applicable,IND,0.70,"large surpluses on rice and wheat, subsidised urea",
+nitrificationInhibitors,sources,,syntheticFertiliser,an inhibitor added to the fertiliser slows its turning into nitrate,
+nitrificationInhibitors,gases,,n2o,the soil N2O of fertiliser,
+nitrificationInhibitors,reduction,median,0.30,"inhibitors cut direct N2O by 38% on average; more ammonia volatilises, adding indirect N2O, and indirect N2O is about a fifth of fertiliser N2O","Akiyama et al. 2010, Evaluation of effectiveness of enhanced-efficiency fertilizers as mitigation options for N2O and NO emissions from agricultural soils: meta-analysis, Glob Change Biol, https://doi.org/10.1111/j.1365-2486.2009.02031.x"
+nitrificationInhibitors,reduction,low,0.10,"direct N2O falls by 8-57% across studies, and the ammonia lost can offset part of it","Lam et al. 2017, Using nitrification inhibitors to mitigate agricultural N2O emission: a double-edged sword?, Glob Change Biol, https://doi.org/10.1111/gcb.13338"
+nitrificationInhibitors,reduction,high,0.45,the best results with DMPP on wet soils,Akiyama et al. 2010 https://doi.org/10.1111/j.1365-2486.2009.02031.x
+nitrificationInhibitors,applicable,World,0.40,"the fertiliser that farmers could buy treated, given its price and supply",
+nitrificationInhibitors,applicable,income:High income,0.60,available and partly used already,
+nitrificationInhibitors,applicable,income:Upper middle income,0.50,available on the main crops,
+nitrificationInhibitors,applicable,income:Lower middle income,0.30,costly next to subsidised urea,
+nitrificationInhibitors,applicable,income:Low income,0.10,hard to find and little fertiliser used,
+farmEnergy,sources,,energy,"electric pumps and heat on renewable power, efficient machines, biofuels",
+farmEnergy,gases,,co2,the CO2 of fuel and electricity,
+farmEnergy,reduction,median,0.50,"efficiency, renewable electricity for pumps, greenhouses and barns, and some cleaner fuel in tractors","FAO 2011, Energy-smart food for people and climate, https://www.fao.org/3/i2454e/i2454e.pdf"
+farmEnergy,reduction,low,0.25,efficiency and a cleaner grid only,"IPCC AR6 WGIII ch. 7, https://doi.org/10.1017/9781009157926.009"
+farmEnergy,reduction,high,0.80,"electric or biofuel machinery and fully renewable power, leaving residual fuel",FAO 2011 https://www.fao.org/3/i2454e/i2454e.pdf
+farmEnergy,applicable,World,0.60,most on-farm energy use can switch,
+farmEnergy,applicable,income:High income,0.80,electricity grids and capital are available,
+farmEnergy,applicable,income:Upper middle income,0.70,much irrigation pumping on grids that can be cleaned,
+farmEnergy,applicable,income:Lower middle income,0.50,diesel pumps and tractors with fewer options,
+farmEnergy,applicable,income:Low income,0.40,little grid access,

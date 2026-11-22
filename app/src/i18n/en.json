@@ -1,0 +1,406 @@
+{
+  "load": {
+    "loading": "Loading the data…",
+    "failedTitle": "The data did not load",
+    "failed": "Planetshift could not read {file}.",
+    "retry": "Check your connection and reload the page. If it keeps failing, the data files may be missing from this build."
+  },
+  "header": {
+    "tagline": "What does change look like?",
+    "nav": "Sections",
+    "language": "Language",
+    "darkTheme": "Dark theme",
+    "skip": "Skip to the content"
+  },
+  "nav": {
+    "explore": "Explore",
+    "methodology": "Methodology"
+  },
+  "footer": {
+    "text": "Diets and production from FAOSTAT Food Balance Sheets ({year}); emission intensities from HESTIA, FAOSTAT and published life-cycle studies; fish from FAO FishStat and published studies; farmland from FAOSTAT; deforestation from DeDuCE; transport and electricity from the SSP scenarios, Ember and the IEA; warming from FaIR. Land-use change only as the change in forest clearing and as optional regrowth on freed land."
+  },
+  "explore": {
+    "panel": "Scenario and controls",
+    "runError": "The model could not compute this scenario. Try another setting or reload the page."
+  },
+  "controls": {
+    "shift": "Animal foods moved to plant foods",
+    "basis": {
+      "label": "Kept equal",
+      "protein": "Protein",
+      "kcal": "Calories"
+    },
+    "replacement": {
+      "label": "Replaced by",
+      "current": "Today's protein-rich plant foods",
+      "legumes": "Mostly legumes",
+      "plantMilk": "Soy and oat drinks"
+    },
+    "rampEnd": "All levers fully in place by",
+    "where": {
+      "label": "Where",
+      "world": "Everywhere",
+      "highIncome": "High-income countries"
+    },
+    "advanced": "Shift each animal food",
+    "groupsHint": "A food you set here keeps its own share; the others follow the main slider.",
+    "groupsReset": "Follow the main slider again",
+    "rampHint": "Every lever, the diet included, ramps in from today and is in place in full by this year."
+  },
+  "levers": {
+    "title": "Levers",
+    "intro": "Every way to limit warming in Planetshift, under the cause of warming it acts on, the biggest cause first; within a cause, the groups that avoid the most in full come first. Each slider is the share adopted, reached in full by the year above.",
+    "noData": "Not available: this lever's data is not in this build.",
+    "maxAll": "Adopt all in full",
+    "reset": "Reset",
+    "adoptedOf": "{count} of {total} adopted",
+    "noneAdopted": "None of {total} adopted",
+    "notAdopted": "Not adopted",
+    "adoptedOne": "Adopted",
+    "causeWarming": "{value} of warming by {year}"
+  },
+  "quick": {
+    "group": "Set {name} to {value}",
+    "cause": "Set every lever under {name} to {value}",
+    "all": "Set all levers to {value}",
+    "allLabel": "All"
+  },
+  "options": {
+    "title": "Other options",
+    "intro": "Each choice below has a default and an alternative. Switching shows how much the answer depends on it.",
+    "scope": {
+      "label": "Emissions counted",
+      "hint": "On the farm only, or also making the fertiliser and energy used. Wild fish emit only the boats' fuel, so they count only with inputs.",
+      "farmGate": "On the farm",
+      "cradleToFarmGate": "With inputs"
+    },
+    "feed": {
+      "label": "Feed shared out",
+      "hint": "How each feed crop is divided between cattle, pigs, poultry and others.",
+      "species": "By species",
+      "gleam": "Regional rations"
+    },
+    "baseline": {
+      "label": "Farming's future without the levers",
+      "hint": "Today's diet growing with population, or the SSP2 path for farm emissions.",
+      "population": "Population growth",
+      "ssp2": "SSP2 path"
+    },
+    "location": {
+      "label": "Where production changes",
+      "hint": "Every producer by its share of world output, or each country for its own diet.",
+      "fixedTrade": "Trade shares held",
+      "domestic": "Each country itself"
+    },
+    "temperature": {
+      "label": "Observed temperature",
+      "hint": "Two records of global surface temperature since 1850.",
+      "hadcrut5": "HadCRUT5",
+      "berkeley": "Berkeley Earth"
+    },
+    "climate": {
+      "label": "Climate response",
+      "hint": "FaIR model runs with a range, or the IPCC AR6 published values.",
+      "fair": "FaIR",
+      "ar6": "AR6 tables"
+    },
+    "ssp": {
+      "label": "Rest of the world's emissions",
+      "hint": "The scenario for the emissions the levers leave as they are.",
+      "ssp245": "Middle (SSP2-4.5)",
+      "ssp126": "Low (SSP1-2.6)",
+      "ssp370": "High (SSP3-7.0)"
+    },
+    "changed": "Changed: {count}",
+    "defaults": "All at their defaults"
+  },
+  "groups": {
+    "all": "All foods",
+    "ruminantMeat": "Beef and lamb",
+    "pigMeat": "Pig meat",
+    "poultryMeat": "Poultry",
+    "dairy": "Dairy",
+    "eggs": "Eggs",
+    "seafood": "Fish and seafood",
+    "cereals": "Cereals",
+    "rice": "Rice",
+    "pulses": "Pulses",
+    "oilCrops": "Oil crops",
+    "vegetables": "Vegetables",
+    "fruit": "Fruit",
+    "rootsTubers": "Roots and tubers",
+    "sugarCrops": "Sugar crops",
+    "nuts": "Nuts",
+    "stimulants": "Coffee, cocoa and tea",
+    "otherPlant": "Other plant foods"
+  },
+  "gases": {
+    "co2e": "CO₂e",
+    "co2": "CO₂",
+    "ch4": "CH₄",
+    "n2o": "N₂O"
+  },
+  "tiers": {
+    "1": "HESTIA, this country",
+    "2": "HESTIA, region or world",
+    "3": "FAOSTAT, this country",
+    "4": "Published global average",
+    "5": "A similar product",
+    "6": "World median of the group"
+  },
+  "map": {
+    "title": "Food and farming map",
+    "label": "World map by country",
+    "layer": "Show",
+    "layers": {
+      "production": "Production",
+      "emissions": "Emissions",
+      "land": "Farmland",
+      "deforestation": "Deforestation",
+      "change": "Change",
+      "quality": "Data quality"
+    },
+    "changeOf": "Change in",
+    "gas": "Gas",
+    "group": "Food",
+    "country": "Country",
+    "noData": "No data",
+    "legend": {
+      "production": "Production of {group} with the levers, a year",
+      "emissions": "Farm emissions of {gas} with the levers, a year",
+      "land": "Farmland (cropland and pasture) with the levers",
+      "change": "{what}: change once the levers are fully in place",
+      "quality": "Least precise source of emission data used",
+      "deforestation": "CO₂ from forest clearing with the levers, a year"
+    },
+    "notes": {
+      "production": "Where food is grown, not where it is eaten.",
+      "emissions": "Emissions on the farm from growing food and raising animals. CO₂e weighs methane and nitrous oxide over 100 years, for comparison only.",
+      "land": "Cropland harvested for the foods in the model, and permanent pasture shared out by beef and dairy cattle, sheep and goats.",
+      "change": "Each country's output changes by the same share as world demand for each food, so exporters change with their customers.",
+      "quality": "Neighbouring countries can differ only because their figures come from different sources.",
+      "deforestation": "CO₂ released by clearing forest for crops and pasture in each country, once the levers are fully in place; tonnes a year, not relative to farm emissions. The tooltip gives today's clearing and the change."
+    },
+    "tooltip": {
+      "noData": "No data for this country",
+      "production": "Production of {group}",
+      "emissions": "Emissions of {gas}",
+      "before": "Today",
+      "after": "With the levers",
+      "change": "Change",
+      "tier": "Least precise source",
+      "land": "Farmland",
+      "cropland": "Cropland",
+      "pasture": "Pasture",
+      "beforeAfter": "{before} → {after}",
+      "deforestation": "CO₂ from forest clearing, a year"
+    },
+    "noClearing": "No clearing or no data",
+    "views": {
+      "label": "View",
+      "map": "Map",
+      "table": "Table"
+    },
+    "search": "Search countries",
+    "tableLabel": "Countries and their values, scrolls sideways on a small screen",
+    "pager": {
+      "label": "Pages of the table",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {page} of {pages}",
+      "showing": "Countries {from}–{to} of {total}",
+      "none": "No country matches “{query}”"
+    }
+  },
+  "avoidedChart": {
+    "title": "Warming avoided",
+    "label": "Warming avoided by the levers each year to {year}, with its likely range",
+    "unit": "°C less warming",
+    "line": "Warming avoided",
+    "caption": "How much cooler the world is each year with the levers than without them. It grows as the levers ramp up, and the warming of methane already avoided fades within decades."
+  },
+  "chart": {
+    "title": "Global temperature to {year}",
+    "label": "Global temperature from 1850 to {year}: observed, without the levers and with them",
+    "unit": "°C above 1850–1900",
+    "observed": "Observed",
+    "baseline": "Without the levers",
+    "scenario": "With the levers",
+    "band": "Likely range (5–95%)",
+    "gap": "{value} in {year}",
+    "caption": "The shaded bands are the 5–95% range of the climate response. Difference in {year}: {gap}.",
+    "range": "Years",
+    "ranges": {
+      "full": "Since 1850",
+      "recent": "Since 2000"
+    },
+    "natural": "Natural factors only (sun and volcanoes)",
+    "enso": {
+      "legend": "El Niño and La Niña years",
+      "elNino": "El Niño year",
+      "laNina": "La Niña year",
+      "oni": "ONI {value}"
+    }
+  },
+  "summary": {
+    "title": "What the levers change",
+    "warming": "Less warming in {year}",
+    "range": "likely {low} to {high}",
+    "co2e": "Emissions avoided in {year}",
+    "co2eDetail": "CO₂e, a year",
+    "ch4": "Methane avoided",
+    "n2o": "Nitrous oxide avoided",
+    "co2": "CO₂ avoided",
+    "ch4Added": "Methane added",
+    "n2oAdded": "Nitrous oxide added",
+    "co2Added": "CO₂ added",
+    "landFreed": "Farmland freed",
+    "landAdded": "Farmland added",
+    "landDetail": "cropland {cropland}, pasture {pasture}; {share} of the world's farmland",
+    "protein": "Protein per person",
+    "kcal": "Calories per person",
+    "beforeAfter": "{before} → {after}",
+    "gPerDay": "grams a day, world average",
+    "kcalPerDay": "kcal a day, world average",
+    "scope": "Farm emissions (wild fish only with inputs), the CO₂ of forest clearing as it changes, and the fossil CO₂ the energy levers cut; food transport is left out.",
+    "clipped": "In {count} countries a cut reached the part of a crop or milk that is processed (into oil, sugar, butter…) and was stopped there; that part is cut on the processed food instead.",
+    "byFamily": {
+      "title": "Warming avoided in {year}, by lever group",
+      "note": "Each group's part is the mean of what it adds over every order the groups could be counted in, so no group is counted first; a group acting on several causes is split between them. The parts add up to the total.",
+      "added": "{value} added",
+      "diet": "Diet"
+    }
+  },
+  "link": {
+    "headline": "By {year} the world has warmed by {total}.",
+    "scenario": "With the levers chosen, the world would be {avoided} cooler in {year} than without them ({ssp}): {parts}.",
+    "intro": "Most warming comes from burning fossil fuels. Farming adds to it in a different way: mostly through methane from cattle and rice paddies, and nitrous oxide from fertiliser and manure, gases that trap far more heat than CO₂ while they last.",
+    "attributionTitle": "Warming by cause since {from}",
+    "attributionText": "Each band is the warming from one cause, or, below zero, the cooling. After today, each band is what is left once the levers chosen act on its cause; the dashed outlines are the bands without the levers. The line is the temperature measured.",
+    "attributionCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today; each cause is the warming its emissions add. Air pollution cools: its particles reflect sunlight and brighten clouds. The energy, heating and industry levers also cut the air pollution of the fuel they no longer burn, so its cooling shrinks when they act.",
+    "attributionLabel": "Stacked chart of warming by cause from {from} to {year}, with observed temperature",
+    "projection": "Projection",
+    "causes": {
+      "fossilIndustry": "Fossil fuels and industry",
+      "agriculture": "Farming",
+      "landUse": "Land use",
+      "other": "Other human emissions",
+      "airPollution": "Air pollution (cooling)",
+      "natural": "Natural factors (sun and volcanoes)"
+    },
+    "gasesTitle": "Farming's emissions by gas",
+    "gasesText": "Each gas on its own scale: a tonne of each warms very differently.",
+    "gasLabel": "World farm emissions of {gas} from {from} to {year}",
+    "perYear": "{unit} a year",
+    "whyTitle": "Why the gases are kept apart",
+    "whyMethane": "Methane is short-lived: about half of it is gone within twelve years. Emit less of it and the warming it causes starts to fall within decades, which is why a change in what we eat shows up before 2050.",
+    "whyNitrous": "Nitrous oxide lasts about a century, so less of it slows warming steadily rather than reversing it.",
+    "whyCo2": "CO₂ stays for centuries; the warming it has caused stays too. Adding the gases up as CO₂e hides these differences, so Planetshift computes the temperature from each gas separately.",
+    "part": "{cause} {value}",
+    "separator": "; ",
+    "withoutLevers": "Without the levers",
+    "withoutValue": "{value} ({without} without the levers)",
+    "parts": "What each cause adds or takes away: {parts}."
+  },
+  "methodology": {
+    "title": "Methodology",
+    "toc": "On this page",
+    "empty": "The methodology pages are not available in this build.",
+    "sections": {
+      "overview": "Overview",
+      "data": "Data",
+      "shift": "The shift",
+      "feed": "Feed",
+      "emissions": "Emissions",
+      "seafood": "Fish and seafood",
+      "land": "Land",
+      "levers": "Levers",
+      "hestia": "HESTIA",
+      "literature": "Published LCA data",
+      "climate": "Climate",
+      "link": "Causes of warming",
+      "options": "Options",
+      "assumptions": "Assumptions",
+      "limitations": "Limitations"
+    }
+  },
+  "charts": {
+    "title": "Charts",
+    "horizon": "Up to",
+    "tabs": {
+      "temperature": "Global temperature",
+      "avoided": "Warming avoided",
+      "cause": "Causes of warming"
+    },
+    "seeCauses": "See what causes the warming"
+  },
+  "diet": {
+    "title": "Diet",
+    "none": "No shift yet",
+    "moved": "{share} moved",
+    "movedOwn": "{share} moved, some foods set apart",
+    "description": "Move part of the animal foods people eat to plant foods, keeping protein or calories equal."
+  },
+  "worth": {
+    "legend": "−0.01 °C beside a group or a lever: the change in warming in {year} from it alone, in full.",
+    "title": "{value} of warming in {year} with this alone, in full"
+  },
+  "milestones": {
+    "title": "Paris Agreement levels",
+    "levels": {
+      "short": "Paris Agreement levels",
+      "p15": {
+        "short": "1.5 °C · Paris: pursue efforts",
+        "full": "1.5 °C: Paris Agreement, pursue efforts to limit"
+      },
+      "p2": {
+        "short": "2 °C · Paris: well below",
+        "full": "2 °C: Paris Agreement, stay well below"
+      }
+    },
+    "policies": {
+      "short": "Current policies by 2100",
+      "full": "Current policies by 2100 (UNEP, Climate Action Tracker, 2026): 2.7–2.8 °C",
+      "caption": "The band at the 2100 edge is where current policies lead: 2.7–2.8 °C (UNEP Emissions Gap Report and Climate Action Tracker, 2026)."
+    },
+    "caption": "Dashed lines: the Paris Agreement's 1.5 °C (pursue efforts to limit) and 2 °C (stay well below); dots mark the year each median reaches them. Warming levels are 20-year averages above 1850–1900, because single years swing about ±0.2 °C around the trend with El Niño and La Niña: 2024, at 1.55 °C, does not cross 1.5 °C.",
+    "line": "{level}: {text}.",
+    "never": "not reached before {end}, with or without the levers",
+    "reached": "reached around {year}",
+    "without": "around {year} without the levers",
+    "withoutNever": "not before {end} without the levers",
+    "with": "around {year} with them",
+    "withNever": "not before {end} with them",
+    "separator": ", ",
+    "range": "likely {early}–{late}",
+    "rangeFrom": "likely from {early}",
+    "gap": "Gap closed in {year}: {parts}.",
+    "gapPart": "{share} of the gap to {level}",
+    "gapWidened": "the gap to {level} widened by {share}",
+    "below": "below {level} even without the levers",
+    "peak": "Peak warming with the levers: {value} in {year}.",
+    "peakRising": "With the levers, warming is still rising in {year}: {value}."
+  },
+  "download": {
+    "button": "Download",
+    "chartButton": "Download this chart’s data",
+    "title": "Download the data",
+    "map": "This map as CSV",
+    "mapText": "Every country with the layer’s values today and with the levers, the change, the unit and, for production and emissions, the least precise source.",
+    "chart": "{chart} as CSV",
+    "chartText": {
+      "temperature": "Each year from 1850 to 2100: observed temperature, temperature without and with the levers with their 5–95% ranges, and warming from natural factors only.",
+      "avoided": "Each year to 2100: the warming the levers avoid, with its 5–95% range.",
+      "cause": "Each year from 1850 to 2100 under the chosen scenario: warming by cause with its range, observed temperature and farm emissions by gas."
+    },
+    "scenario": "Scenario and settings as JSON",
+    "scenarioText": "Every setting of this page (the same as its address), the summary’s figures, the licence and how to cite.",
+    "format": "CSV files are UTF-8 with a byte order mark, comma-separated, with English column names and plain numbers (a point for decimals, no thousands separator), so that spreadsheets and scripts read them alike.",
+    "files": "Source data files",
+    "filesText": "The JSON files the page reads, built by the pipeline from the sources listed on the Methodology page.",
+    "cite": "How to cite",
+    "citeText": "Credit Planetshift and the original sources:",
+    "licence": "Licence:",
+    "and": " and "
+  }
+}

@@ -1,0 +1,88 @@
+fbs_code,fbs_item,proxies,extraction,reason
+2511,Wheat and products,2513;2515,,another temperate cereal
+2513,Barley and products,2511;2516,,another temperate cereal
+2514,Maize and products,2518;2511,,another cereal grown with similar inputs
+2515,Rye and products,2513;2511,,another temperate cereal
+2516,Oats,2513;2511,,another temperate cereal
+2517,Millet and products,2518;2514,,another dryland cereal
+2518,Sorghum and products,2517;2514,,another dryland cereal
+2520,"Cereals, other",2513;2511,,"mostly triticale, buckwheat and mixed grain, grown like barley"
+2807,Rice and products,2514;2511,,another cereal (misses rice's paddy methane)
+2531,Potatoes and products,2533;2534,,another root or tuber
+2532,Cassava and products,2535;2533,,another tropical root
+2533,Sweet potatoes,2531;2532,,another root or tuber
+2534,"Roots, Other",2535;2531,,"taro, yautia and other tubers, grown like yams"
+2535,Yams,2532;2534,,another tropical root
+2536,Sugar cane,2537,,the other sugar crop
+2537,Sugar beet,2536,,the other sugar crop
+2546,Beans,2547;2549,,another pulse
+2547,Peas,2546;2549,,another pulse
+2549,"Pulses, Other and products",2546;2547,,"chickpeas, lentils and other pulses, grown like beans"
+2551,Nuts and products,2625,,"tree crops, grown like orchard fruit"
+2552,Groundnuts,2555;2561,,another legume oilseed
+2555,Soyabeans,2552;2546,,another legume
+2557,Sunflower seed,2558;2570,,another annual oilseed
+2558,Rape and Mustardseed,2557;2570,,another annual oilseed
+2559,Cottonseed,2555;2557,,an annual oilseed
+2560,Coconuts - Incl Copra,2562;2570,,another tropical oil tree crop
+2561,Sesame seed,2552;2570,,another small annual oilseed
+2562,Palm kernels,2560;2570,,"oil palm fruit, proxied by another tropical oil tree crop"
+2563,Olives (including preserved),2625;2560,,a tree crop
+2570,"Oilcrops, Other",2557;2558,,"linseed, safflower and other annual oilseeds"
+2601,Tomatoes and products,2605;2602,,another vegetable
+2602,Onions,2605;2601,,another vegetable
+2605,"Vegetables, other",2601;2602,,another vegetable
+2611,"Oranges, Mandarines",2614;2625,,another citrus fruit
+2612,"Lemons, Limes and products",2611;2614,,another citrus fruit
+2613,Grapefruit and products,2611;2614,,another citrus fruit
+2614,"Citrus, Other",2611;2625,,another citrus fruit
+2615,Bananas,2616;2625,,the other banana
+2616,Plantains,2615;2625,,the other banana
+2617,Apples and products,2625;2620,,another orchard fruit
+2618,Pineapples and products,2625;2615,,another tropical fruit
+2619,Dates,2625;2620,,another tree fruit
+2620,Grapes and products (excl wine),2625;2617,,another perennial fruit
+2625,"Fruits, other",2617;2611,,another fruit
+2630,Coffee and products,2633;2635,,another tropical stimulant crop
+2633,Cocoa Beans and products,2630;2635,,another tropical stimulant crop
+2635,Tea (including mate),2630;2633,,another stimulant crop
+2640,Pepper,2605,,"spices, grown like vegetables"
+2641,Pimento,2605,,"spices, grown like vegetables"
+2642,Cloves,2605,,"spices, grown like vegetables"
+2645,"Spices, Other",2605,,"spices, grown like vegetables"
+2731,Bovine Meat,2732;2735,,another ruminant meat
+2732,Mutton & Goat Meat,2731;2735,,another ruminant meat
+2733,Pigmeat,2734,,the other monogastric meat
+2734,Poultry Meat,2733,,the other monogastric meat
+2735,"Meat, Other",2732;2731,,"camels, llamas and rabbits: other herbivores"
+2736,"Offals, Edible",2731;2733,,the matching meat (cattle and pig offal dominate)
+2737,"Fats, Animals, Raw",2733;2731,,the matching meat (mostly pig fat)
+2744,Eggs,2734,,poultry meat (the same birds and feed)
+2541,Sugar non-centrifugal,,2536:0.10,"FAO technical conversion factors: about 0.10 t of non-centrifugal sugar per t of cane"
+2542,Sugar (Raw Equivalent),,2536:0.11;2537:0.16,"world balance 2023: 0.11 t of raw sugar per t of cane processed and 0.16 per t of beet together give the world sugar output"
+2543,"Sweeteners, Other",,2514:1.7,"world balance 2023: sweetener output per t of maize processed (molasses, a sugar by-product, is part of the item)"
+2571,Soyabean Oil,,2555:0.19,"world balance 2023: oil produced per t of soybeans crushed"
+2572,Groundnut Oil,,2552:0.26,"world balance 2023: oil produced per t of groundnuts crushed"
+2573,Sunflowerseed Oil,,2557:0.44,"world balance 2023: oil produced per t of seed crushed"
+2574,Rape and Mustard Oil,,2558:0.41,"world balance 2023: oil produced per t of seed crushed"
+2575,Cottonseed Oil,,2559:0.17,"world balance 2023: oil produced per t of seed crushed"
+2576,Palmkernel Oil,,2562:0.22,"world balance 2023: kernel oil per t of the tenth of processed oil palm fruit given to it"
+2577,Palm Oil,,2562:0.23,"world balance 2023: palm oil per t of the nine tenths of processed oil palm fruit given to it"
+2578,Coconut Oil,,2560:0.13,"world balance 2023: oil produced per t of coconuts processed"
+2579,Sesameseed Oil,,2561:0.46,"world balance 2023: oil produced per t of seed crushed"
+2580,Olive Oil,,2563:0.16,"world balance 2023: oil produced per t of olives pressed"
+2586,"Oilcrops Oil, Other",,2570:0.35,"FAO technical conversion factors: about 0.35 t of oil per t of linseed, safflower and similar seeds (the world balance ratio is above 1: the item also holds oils of seeds listed elsewhere)"
+2655,Wine,,2620:0.63,"world balance 2023: wine per t of grapes processed (FAO factors give about 0.7)"
+2656,Beer,,2513:5.8,"world balance 2023: beer per t of barley processed"
+2657,"Beverages, Fermented",,2518:4,"FAO technical conversion factors: about 0.25 t of grain per t of sorghum or millet beer"
+2658,"Beverages, Alcoholic",,2514:0.9,"FAO technical conversion factors: about 1.1 t of grain per t of spirits at 40% alcohol"
+2740,"Butter, Ghee",,2848:0.056,"world balance 2023: butter per t of the 85% of processed milk given to it (FAO factors: about 0.045 t per t of whole milk)"
+2743,Cream,,2848:0.09,"world balance 2023: cream per t of the 15% of processed milk given to it"
+2761,Freshwater Fish,2762;2763,,"another fish; a country that lands or farms no freshwater fish but has some in its balance"
+2762,Demersal Fish,2764;2763,,another marine fish
+2763,Pelagic Fish,2764;2762,,another marine fish
+2764,"Marine Fish, Other",2762;2763,,another marine fish
+2765,Crustaceans,2766;2762,,"another shellfish, then demersal fish (often caught by the same trawlers)"
+2766,Cephalopods,2762;2767,,"demersal fish, often caught by the same trawlers"
+2767,"Molluscs, Other",2766;2765,,another shellfish
+2769,"Aquatic Animals, Others",2767;2766,,"another invertebrate fishery or farm"

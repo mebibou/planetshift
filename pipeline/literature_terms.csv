@@ -1,0 +1,52 @@
+fbs_item_code,fbs_item,product,farm_kg_co2e_per_kg,weight_kt,kg_product_per_kg_item,gas_profile,note
+2511,Wheat and products,Wheat & Rye (Bread),0.847,482152,1,hestia:2511,P&N's FBS unit is grain equivalent
+2515,Rye and products,Wheat & Rye (Bread),0.847,482152,1,hestia:2511,wheat and rye are one P&N product
+2514,Maize and products,Maize (Meal),0.475,194554,1,hestia:2514,P&N's FBS unit is grain equivalent
+2516,Oats,Oatmeal,1.37,4463,1,hestia:2516,P&N's FBS unit is grain equivalent
+2807,Rice and products,Rice,3.553,397780,0.667,hestia:2807,P&N's FBS unit is milled rice (FBS before 2010); the current FBS counts paddy and milled rice is 66.7% of paddy
+2531,Potatoes and products,Potatoes,0.193,332343,1,hestia:2531,fresh tubers
+2532,Cassava and products,Cassava,0.22,173814,1,hestia:2532,fresh roots
+2536,Sugar cane,Cane Sugar,0.485,141702,0.11,hestia:2536,P&N's FBS unit is raw sugar; 0.11 kg raw sugar per kg cane
+2537,Sugar beet,Beet Sugar,0.536,34038,0.15,hestia:2537,P&N's FBS unit is raw sugar; 0.15 kg raw sugar per kg beet
+2542,Sugar (Raw Equivalent),Cane Sugar,0.485,141702,1,hestia:2536,raw sugar equivalent
+2542,Sugar (Raw Equivalent),Beet Sugar,0.536,34038,1,hestia:2537,raw sugar equivalent
+2546,Beans,Other Pulses,1.089,42765,1,hestia:2546,dry pulses
+2547,Peas,Peas,0.717,6026,1,hestia:2547,dry peas
+2549,"Pulses, Other and products",Other Pulses,1.089,42765,1,hestia:2549,dry pulses
+2551,Nuts and products,Nuts,2.126,15296,1,hestia:2551,P&N's FBS unit is nuts in shell
+2552,Groundnuts,Groundnuts,1.425,11827,0.7,hestia:2552,P&N's FBS unit is shelled groundnuts (FBS before 2010); the current FBS counts them in shell and kernels are 70% of it
+2520,"Cereals, other",Cereals & Oilcrops Misc.,0.744,97562,1,hestia:2520,P&N's estimate for the FBS items it did not survey
+2570,"Oilcrops, Other",Cereals & Oilcrops Misc.,0.744,97562,1,hestia:2570,P&N's estimate for the FBS items it did not survey
+2571,Soyabean Oil,Soybean Oil,1.519,24148,1,hestia:2555,per kg oil with economic allocation between oil and meal
+2573,Sunflowerseed Oil,Sunflower Oil,2.148,9554,1,hestia:2557,per kg oil with economic allocation between oil and meal
+2574,Rape and Mustard Oil,Rapeseed Oil,2.343,10311,1,hestia:2558,per kg oil with economic allocation between oil and meal
+2577,Palm Oil,Palm Oil,2.107,16691,1,hestia:2562,per kg oil with economic allocation between oil and kernels
+2580,Olive Oil,Olive Oil,4.272,2997,1,hestia:2563,per kg oil
+2586,"Oilcrops Oil, Other",Oils Misc.,2.03,13404,1,hestia:2558,P&N's estimate for the FBS items it did not survey
+2601,Tomatoes and products,Tomatoes,0.704,148957,1,hestia:2601,fresh produce
+2602,Onions,Onions & Leeks,0.211,77927,1,hestia:2602,fresh produce
+2605,"Vegetables, other",Other Vegetables,0.174,654375,1,hestia:2605,fresh produce
+2605,"Vegetables, other",Brassicas,0.278,77045,1,hestia:2605,fresh produce
+2605,"Vegetables, other",Root Vegetables,0.154,35154,1,hestia:2605,fresh produce
+2611,"Oranges, Mandarines",Citrus Fruit,0.307,127923,1,hestia:2611,fresh fruit
+2612,"Lemons, Limes and products",Citrus Fruit,0.307,127923,1,hestia:2611,fresh fruit
+2613,Grapefruit and products,Citrus Fruit,0.307,127923,1,hestia:2611,fresh fruit
+2614,"Citrus, Other",Citrus Fruit,0.307,127923,1,hestia:2611,fresh fruit
+2615,Bananas,Bananas,0.266,128971,1,hestia:2615,fresh fruit
+2616,Plantains,Bananas,0.266,128971,1,hestia:2615,P&N's bananas (129 Mt of food and waste in 2009-11) appear to include plantains
+2617,Apples and products,Apples,0.225,75781,1,hestia:2617,fresh fruit
+2618,Pineapples and products,Other Fruit,0.369,210650,1,hestia:2625,fresh fruit
+2619,Dates,Other Fruit,0.369,210650,1,hestia:2625,fresh fruit
+2620,Grapes and products (excl wine),Berries & Grapes,0.722,67079,1,hestia:2620,fresh fruit
+2625,"Fruits, other",Other Fruit,0.369,210650,1,hestia:2625,fresh fruit
+2630,Coffee and products,Coffee,10.386,7778,1,hestia:2630,P&N's FBS unit is green coffee
+2633,Cocoa Beans and products,Dark Chocolate,3.706,4416,1,hestia:2633,P&N's FBS unit is cocoa beans
+2635,Tea (including mate),Stimulants & Spices Misc.,4.938,13269,1,hestia:2630,P&N's estimate for the FBS items it did not survey; coffee's gas profile
+2731,Bovine Meat,Bovine Meat (beef herd),39.388,40571,1,"faostat:Cattle, non-dairy",carcass weight
+2731,Bovine Meat,Bovine Meat (dairy herd),15.689,31425,1,"faostat:Cattle, dairy",carcass weight
+2731,Bovine Meat,Buffalo,29.044,6618,1,faostat:Buffalo,carcass weight
+2732,Mutton & Goat Meat,Lamb & Mutton,19.508,14195,1,faostat:Sheep and Goats,carcass weight
+2733,Pigmeat,Pig Meat,1.694,112892,1,faostat:Swine,carcass weight
+2734,Poultry Meat,Poultry Meat,0.672,96439,1,"faostat:Chickens, broilers",carcass weight
+2848,Milk - Excluding Butter,Milk,1.458,470267,1,"faostat:Cattle, dairy",fresh milk
+2744,Eggs,Eggs,1.317,63489,1,"faostat:Chickens, layers",eggs in shell

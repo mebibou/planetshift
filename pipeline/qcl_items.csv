@@ -1,0 +1,206 @@
+qcl_code,qcl_item,fbs_code,share,n_class
+15,Wheat,2511,1,wheat
+27,Rice,2807,1,rice
+44,Barley,2513,1,otherCereals
+56,Maize (corn),2514,1,maize
+71,Rye,2515,1,otherCereals
+75,Oats,2516,1,otherCereals
+79,Millet,2517,1,otherCereals
+83,Sorghum,2518,1,otherCereals
+89,Buckwheat,2520,1,otherCereals
+92,Quinoa,2520,1,otherCereals
+94,Fonio,2520,1,otherCereals
+97,Triticale,2520,1,otherCereals
+101,Canary seed,2520,1,otherCereals
+103,Mixed grain,2520,1,otherCereals
+108,Cereals n.e.c.,2520,1,otherCereals
+116,Potatoes,2531,1,roots
+122,Sweet potatoes,2533,1,roots
+125,"Cassava, fresh",2532,1,roots
+135,Yautia,2534,1,roots
+136,Taro,2534,1,roots
+137,Yams,2535,1,roots
+149,Edible roots and tubers with high starch or inulin content n.e.c.,2534,1,roots
+156,Sugar cane,2536,1,sugar
+157,Sugar beet,2537,1,sugar
+161,Other sugar crops n.e.c.,2536,1,sugar
+176,"Beans, dry",2546,1,residual
+181,"Broad beans and horse beans, dry",2549,1,residual
+187,"Peas, dry",2547,1,residual
+191,"Chick peas, dry",2549,1,residual
+195,"Cow peas, dry",2549,1,residual
+197,"Pigeon peas, dry",2549,1,residual
+201,"Lentils, dry",2549,1,residual
+203,"Bambara beans, dry",2549,1,residual
+205,Vetches,2549,1,residual
+210,Lupins,2549,1,residual
+211,Other pulses n.e.c.,2549,1,residual
+216,"Brazil nuts, in shell",2551,1,residual
+217,"Cashew nuts, in shell",2551,1,residual
+220,"Chestnuts, in shell",2551,1,residual
+221,"Almonds, in shell",2551,1,residual
+222,"Walnuts, in shell",2551,1,residual
+223,"Pistachios, in shell",2551,1,residual
+224,Kola nuts,2551,1,residual
+225,"Hazelnuts, in shell",2551,1,residual
+226,Areca nuts,2551,1,residual
+234,Other nuts (excluding wild edible nuts and groundnuts),2551,1,residual
+236,Soya beans,2555,1,soybean
+242,"Groundnuts, excluding shelled",2552,1,otherOilseeds
+249,"Coconuts, in shell",2560,1,otherOilseeds
+254,Oil palm fruit,2562,1,oilPalm
+260,Olives,2563,1,otherOilseeds
+263,Karite nuts (sheanuts),2570,1,otherOilseeds
+265,Castor oil seeds,,1,otherOilseeds
+267,Sunflower seed,2557,1,otherOilseeds
+270,Rape or colza seed,2558,1,otherOilseeds
+275,Tung nuts,,1,otherOilseeds
+277,Jojoba seeds,,1,otherOilseeds
+280,Safflower seed,2570,1,otherOilseeds
+289,Sesame seed,2561,1,otherOilseeds
+292,Mustard seed,2558,1,otherOilseeds
+296,Poppy seed,2570,1,otherOilseeds
+299,Melonseed,2570,1,otherOilseeds
+305,Tallowtree seeds,,1,otherOilseeds
+310,Kapok fruit,,1,fibre
+328,"Seed cotton, unginned",2559,0.15,fibre
+333,Linseed,2570,1,otherOilseeds
+336,Hempseed,2570,1,otherOilseeds
+339,"Other oil seeds, n.e.c.",2570,1,otherOilseeds
+358,Cabbages,2605,1,vegetables
+366,Artichokes,2605,1,vegetables
+367,Asparagus,2605,1,vegetables
+372,Lettuce and chicory,2605,1,vegetables
+373,Spinach,2605,1,vegetables
+378,Cassava leaves,2605,1,vegetables
+388,Tomatoes,2601,1,vegetables
+393,Cauliflowers and broccoli,2605,1,vegetables
+394,"Pumpkins, squash and gourds",2605,1,vegetables
+397,Cucumbers and gherkins,2605,1,vegetables
+399,Eggplants (aubergines),2605,1,vegetables
+401,"Chillies and peppers, green",2605,1,vegetables
+402,"Onions and shallots, green",2602,1,vegetables
+403,"Onions and shallots, dry (excluding dehydrated)",2602,1,vegetables
+406,Green garlic,2605,1,vegetables
+407,Leeks and other alliaceous vegetables,2605,1,vegetables
+414,"Other beans, green",2605,1,vegetables
+417,"Peas, green",2605,1,vegetables
+420,"Broad beans and horse beans, green",2605,1,vegetables
+423,String beans,2605,1,vegetables
+426,Carrots and turnips,2605,1,vegetables
+430,Okra,2605,1,vegetables
+446,Green corn (maize),2605,1,vegetables
+449,Mushrooms and truffles,2605,1,vegetables
+459,Chicory roots,2605,1,vegetables
+461,Locust beans (carobs),2625,1,fruits
+463,"Other vegetables, fresh n.e.c.",2605,1,vegetables
+486,Bananas,2615,1,fruits
+489,Plantains and cooking bananas,2616,1,fruits
+490,Oranges,2611,1,fruits
+495,"Tangerines, mandarins, clementines",2611,1,fruits
+497,Lemons and limes,2612,1,fruits
+507,Pomelos and grapefruits,2613,1,fruits
+512,"Other citrus fruit, n.e.c.",2614,1,fruits
+515,Apples,2617,1,fruits
+521,Pears,2625,1,fruits
+523,Quinces,2625,1,fruits
+526,Apricots,2625,1,fruits
+530,Sour cherries,2625,1,fruits
+531,Cherries,2625,1,fruits
+534,Peaches and nectarines,2625,1,fruits
+536,Plums and sloes,2625,1,fruits
+541,Other stone fruits,2625,1,fruits
+542,Other pome fruits,2625,1,fruits
+544,Strawberries,2625,1,fruits
+547,Raspberries,2625,1,fruits
+549,Gooseberries,2625,1,fruits
+550,Currants,2625,1,fruits
+552,Blueberries,2625,1,fruits
+554,Cranberries,2625,1,fruits
+558,Other berries and fruits of the genus vaccinium n.e.c.,2625,1,fruits
+560,Grapes,2620,1,fruits
+567,Watermelons,2625,1,fruits
+568,Cantaloupes and other melons,2625,1,fruits
+569,Figs,2625,1,fruits
+571,"Mangoes, guavas and mangosteens",2625,1,fruits
+572,Avocados,2625,1,fruits
+574,Pineapples,2618,1,fruits
+577,Dates,2619,1,fruits
+587,Persimmons,2625,1,fruits
+591,Cashewapple,2625,1,fruits
+592,Kiwi fruit,2625,1,fruits
+600,Papayas,2625,1,fruits
+603,"Other tropical fruits, n.e.c.",2625,1,fruits
+619,"Other fruits, n.e.c.",2625,1,fruits
+656,"Coffee, green",2630,1,residual
+661,Cocoa beans,2633,1,residual
+667,Tea leaves,2635,1,residual
+671,Maté leaves,2635,1,residual
+677,Hop cones,,1,residual
+687,"Pepper (Piper spp.), raw",2640,1,residual
+689,"Chillies and peppers, dry (Capsicum spp., Pimenta spp.), raw",2641,1,residual
+692,"Vanilla, raw",2645,1,residual
+693,"Cinnamon and cinnamon-tree flowers, raw",2645,1,residual
+698,"Cloves (whole stems), raw",2642,1,residual
+702,"Nutmeg, mace, cardamoms, raw",2645,1,residual
+711,"Anise, badian, coriander, cumin, caraway, fennel and juniper berries, raw",2645,1,residual
+720,"Ginger, raw",2645,1,residual
+723,"Other stimulant, spice and aromatic crops, n.e.c.",2645,1,residual
+748,"Peppermint, spearmint",,1,residual
+754,"Pyrethrum, dried flowers",,1,residual
+771,"Flax, raw or retted",,1,fibre
+777,"True hemp, raw or retted",,1,fibre
+780,"Jute, raw or retted",,1,fibre
+782,"Kenaf, and other textile bast fibres, raw or retted",,1,fibre
+788,"Ramie, raw or retted",,1,fibre
+789,"Sisal, raw",,1,fibre
+800,"Agave fibres, raw, n.e.c.",,1,fibre
+809,"Abaca, manila hemp, raw",,1,fibre
+821,"Other fibre crops, raw, n.e.c.",,1,fibre
+826,Unmanufactured tobacco,,1,residual
+836,Natural rubber in primary forms,,1,residual
+867,Meat of cattle with the bone,2731,1,
+947,Meat of buffalo,2731,1,
+977,Meat of sheep,2732,1,
+1017,Meat of goat,2732,1,
+1035,Meat of pig with the bone,2733,1,
+1058,Meat of chickens,2734,1,
+1069,Meat of ducks,2734,1,
+1073,Meat of geese,2734,1,
+1080,Meat of turkeys,2734,1,
+1089,Meat of pigeons and other birds n.e.c.,2734,1,
+1097,Horse meat,2735,1,
+1108,Meat of asses,2735,1,
+1111,Meat of mules,2735,1,
+1127,Meat of camels,2735,1,
+1141,Meat of rabbits and hares,2735,1,
+1151,Meat of other domestic rodents,2735,1,
+1158,Meat of other domestic camelids,2735,1,
+1163,Game meat,2735,1,
+1166,Other meat of mammals,2735,1,
+882,Raw milk of cattle,2848,1,
+951,Raw milk of buffalo,2848,1,
+982,Raw milk of sheep,2848,1,
+1020,Raw milk of goats,2848,1,
+1130,Raw milk of camel,2848,1,
+1062,"Hen eggs in shell, fresh",2744,1,
+1091,"Eggs from other birds in shell, fresh, n.e.c.",2744,1,
+944,Meat of cattle (indigenous),2731,1,
+972,Meat of buffalo (indigenous),2731,1,
+1012,Meat of sheep (indigenous),2732,1,
+1032,Meat of goat (indigenous),2732,1,
+1055,Meat of pig (indigenous),2733,1,
+1094,Meat of chickens (indigenous),2734,1,
+1070,Meat of ducks (indigenous),2734,1,
+1077,Meat of geese (indigenous),2734,1,
+1087,Meat of turkeys (indigenous),2734,1,
+1084,Meat of pigeons and other birds (indigenous),2734,1,
+1120,Horse meat (indigenous),2735,1,
+1122,Meat of asses (indigenous),2735,1,
+1124,Meat of mules (indigenous),2735,1,
+1137,Meat of camels (indigenous),2735,1,
+1144,Meat of rabbits and hares (indigenous),2735,1,
+1161,Meat of other domestic camelids (indigenous),2735,1,
+987,"Shorn wool, greasy",,1,
+1182,Natural honey,,1,
+1185,Silk-worm cocoons,,1,

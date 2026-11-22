@@ -1,0 +1,26 @@
+{
+  "title": "Carbone dans les terres agricoles",
+  "description": "Stocker du CO₂ dans les sols et les arbres des fermes, sur une partie des cultures ou des prairies, pendant quelques décennies.",
+  "family": "Carbone dans les terres",
+  "page": "Carbone dans les terres",
+  "coverCrops": {
+    "title": "Couverts végétaux",
+    "description": "Des cultures entre deux récoltes stockent du carbone dans les sols cultivés."
+  },
+  "agroforestry": {
+    "title": "Arbres dans les fermes",
+    "description": "Des arbres plantés dans les champs et les prairies stockent du carbone en poussant."
+  },
+  "biochar": {
+    "title": "Biochar",
+    "description": "Des résidus de culture carbonisés, enfouis dans le sol, gardent leur carbone des siècles."
+  },
+  "enhancedWeathering": {
+    "title": "Poudre de roche",
+    "description": "Du basalte broyé épandu sur les champs capte du CO₂ en s'altérant."
+  },
+  "summary": {
+    "title": "CO₂ stocké dans les terres en {year}",
+    "detail": "par an, probablement de {low} à {high}"
+  }
+}

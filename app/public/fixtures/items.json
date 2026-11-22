@@ -1,0 +1,211 @@
+[
+  {
+    "code": 2511,
+    "name": {
+      "en": "Wheat and products",
+      "fr": "Blé et produits"
+    },
+    "group": "cereals",
+    "animal": false,
+    "kcalPerTonne": 3340000,
+    "proteinPerTonne": 0.105
+  },
+  {
+    "code": 2514,
+    "name": {
+      "en": "Maize and products",
+      "fr": "Maïs et produits"
+    },
+    "group": "cereals",
+    "animal": false,
+    "kcalPerTonne": 3600000,
+    "proteinPerTonne": 0.09
+  },
+  {
+    "code": 2516,
+    "name": {
+      "en": "Oats",
+      "fr": "Avoine"
+    },
+    "group": "cereals",
+    "animal": false,
+    "kcalPerTonne": 3000000,
+    "proteinPerTonne": 0.1
+  },
+  {
+    "code": 2807,
+    "name": {
+      "en": "Rice and products",
+      "fr": "Riz et produits"
+    },
+    "group": "rice",
+    "animal": false,
+    "kcalPerTonne": 3600000,
+    "proteinPerTonne": 0.07
+  },
+  {
+    "code": 2546,
+    "name": {
+      "en": "Beans",
+      "fr": "Haricots"
+    },
+    "group": "pulses",
+    "animal": false,
+    "kcalPerTonne": 3400000,
+    "proteinPerTonne": 0.21
+  },
+  {
+    "code": 2555,
+    "name": {
+      "en": "Soyabeans",
+      "fr": "Soja"
+    },
+    "group": "oilCrops",
+    "animal": false,
+    "kcalPerTonne": 3900000,
+    "proteinPerTonne": 0.35
+  },
+  {
+    "code": 2571,
+    "name": {
+      "en": "Soyabean Oil",
+      "fr": "Huile de soja"
+    },
+    "group": "oilCrops",
+    "animal": false,
+    "kcalPerTonne": 8840000,
+    "proteinPerTonne": 0
+  },
+  {
+    "code": 2531,
+    "name": {
+      "en": "Potatoes and products",
+      "fr": "Pommes de terre et produits"
+    },
+    "group": "rootsTubers",
+    "animal": false,
+    "kcalPerTonne": 670000,
+    "proteinPerTonne": 0.016
+  },
+  {
+    "code": 2601,
+    "name": {
+      "en": "Tomatoes and products",
+      "fr": "Tomates et produits"
+    },
+    "group": "vegetables",
+    "animal": false,
+    "kcalPerTonne": 170000,
+    "proteinPerTonne": 0.009
+  },
+  {
+    "code": 2615,
+    "name": {
+      "en": "Bananas",
+      "fr": "Bananes"
+    },
+    "group": "fruit",
+    "animal": false,
+    "kcalPerTonne": 600000,
+    "proteinPerTonne": 0.008
+  },
+  {
+    "code": 2536,
+    "name": {
+      "en": "Sugar cane",
+      "fr": "Canne à sucre"
+    },
+    "group": "sugarCrops",
+    "animal": false,
+    "kcalPerTonne": 300000,
+    "proteinPerTonne": 0
+  },
+  {
+    "code": 2731,
+    "name": {
+      "en": "Bovine Meat",
+      "fr": "Viande de bovins"
+    },
+    "group": "ruminantMeat",
+    "animal": true,
+    "kcalPerTonne": 2000000,
+    "proteinPerTonne": 0.15
+  },
+  {
+    "code": 2732,
+    "name": {
+      "en": "Mutton & Goat Meat",
+      "fr": "Viande d'ovins et de caprins"
+    },
+    "group": "ruminantMeat",
+    "animal": true,
+    "kcalPerTonne": 2200000,
+    "proteinPerTonne": 0.14
+  },
+  {
+    "code": 2733,
+    "name": {
+      "en": "Pigmeat",
+      "fr": "Viande de porc"
+    },
+    "group": "pigMeat",
+    "animal": true,
+    "kcalPerTonne": 3000000,
+    "proteinPerTonne": 0.13
+  },
+  {
+    "code": 2734,
+    "name": {
+      "en": "Poultry Meat",
+      "fr": "Viande de volaille"
+    },
+    "group": "poultryMeat",
+    "animal": true,
+    "kcalPerTonne": 1600000,
+    "proteinPerTonne": 0.17
+  },
+  {
+    "code": 2848,
+    "name": {
+      "en": "Milk - Excluding Butter",
+      "fr": "Lait - Excl. beurre"
+    },
+    "group": "dairy",
+    "animal": true,
+    "kcalPerTonne": 600000,
+    "proteinPerTonne": 0.032
+  },
+  {
+    "code": 2744,
+    "name": {
+      "en": "Eggs",
+      "fr": "Œufs"
+    },
+    "group": "eggs",
+    "animal": true,
+    "kcalPerTonne": 1300000,
+    "proteinPerTonne": 0.11
+  },
+  {
+    "code": 2761,
+    "name": {
+      "en": "Freshwater Fish",
+      "fr": "Poissons eau douce"
+    },
+    "group": "seafood",
+    "animal": true,
+    "kcalPerTonne": 760000,
+    "proteinPerTonne": 0.108
+  },
+  {
+    "code": 2763,
+    "name": {
+      "en": "Pelagic Fish",
+      "fr": "Poissons pélagiques"
+    },
+    "group": "seafood",
+    "animal": true,
+    "kcalPerTonne": 1000000,
+    "proteinPerTonne": 0.12
+  }
+]

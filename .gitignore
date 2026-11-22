@@ -1,0 +1,9 @@
+plan.md
+node_modules/
+dist/
+.venv/
+__pycache__/
+pipeline/cache
+.DS_Store
+playwright-report/
+test-results/

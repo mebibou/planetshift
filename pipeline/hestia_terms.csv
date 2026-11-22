@@ -1,0 +1,102 @@
+fbs_item_code,fbs_item,hestia_term_id,priority,kg_product_per_kg_item,note
+2511,Wheat and products,wheatGrain,1,1,FBS wheat is grain; same quantity
+2511,Wheat and products,durumWheatGrain,1,1,durum wheat is part of FAOSTAT wheat
+2513,Barley and products,barleyGrainWhole,1,1,whole grain as harvested
+2514,Maize and products,maizeGrain,1,1,dry grain as harvested
+2515,Rye and products,ryeGrain,1,1,grain as harvested
+2516,Oats,oatGrainInHusk,1,1,FAOSTAT oats are grain in husk
+2516,Oats,oatGrain,2,0.7,dehulled grain; groats are about 70% of oats in husk and carry all emissions
+2517,Millet and products,pearlMilletGrainInHusk,1,1,FAOSTAT millet is threshed grain as harvested
+2517,Millet and products,fingerMilletGrainInHusk,1,1,FAOSTAT millet is threshed grain as harvested
+2518,Sorghum and products,sorghumGrain,1,1,grain as harvested
+2520,"Cereals, other",quinoaGrain,1,1,quinoa is one of FAOSTAT's other cereals
+2807,Rice and products,riceGrainInHuskFlooded,1,1,FBS rice is in paddy equivalent (788.8 Mt world production in 2022)
+2531,Potatoes and products,potatoTuber,1,1,fresh tubers
+2532,Cassava and products,cassavaRoot,1,1,fresh roots
+2533,Sweet potatoes,sweetPotatoRoot,1,1,fresh roots
+2536,Sugar cane,sugarcaneStalk,1,1,fresh stalks
+2537,Sugar beet,sugarBeetRoot,1,1,fresh roots
+2546,Beans,commonBeanSeedWhole,1,1,dry beans (Phaseolus)
+2546,Beans,mungBeanSeedWhole,1,1,FAOSTAT dry beans include Vigna species
+2546,Beans,uradBeanSeedWhole,1,1,FAOSTAT dry beans include Vigna species
+2547,Peas,peaSeedWhole,1,1,dry peas
+2549,"Pulses, Other and products",chickpeaSeedWhole,1,1,dry seed
+2549,"Pulses, Other and products",lentilSeedWhole,1,1,dry seed
+2549,"Pulses, Other and products",broadBeanSeedWhole,1,1,dry seed
+2549,"Pulses, Other and products",pigeonPeaSeedWhole,1,1,dry seed
+2549,"Pulses, Other and products",lupinSeedWhole,1,1,dry seed
+2551,Nuts and products,almondInShell,1,1,FAOSTAT tree nuts are in shell
+2551,Nuts and products,hazelnutInShell,1,1,FAOSTAT tree nuts are in shell
+2551,Nuts and products,pistachioInShell,1,1,FAOSTAT tree nuts are in shell
+2555,Soyabeans,soybeanSeedWhole,1,1,dry beans
+2552,Groundnuts,peanutInShell,1,1,FBS groundnuts are in shell (55.1 Mt world production in 2022)
+2557,Sunflower seed,sunflowerSeedWhole,1,1,dry seed
+2558,Rape and Mustardseed,rapeseedSeedWhole,1,1,dry seed
+2558,Rape and Mustardseed,mustardSeedWhole,1,1,dry seed
+2561,Sesame seed,sesameSeedWhole,1,1,dry seed
+2562,Palm kernels,oilPalmFruit,1,1,FBS palm kernels production equals oil palm fruit bunches (408.9 Mt world production in 2022)
+2563,Olives (including preserved),oliveFruit,1,1,fresh fruit
+2570,"Oilcrops, Other",safflowerSeedWhole,1,1,dry seed
+2570,"Oilcrops, Other",hempSeedWhole,1,1,dry seed
+2601,Tomatoes and products,tomatoFruit,1,1,fresh fruit
+2602,Onions,onionBulb,1,1,fresh bulbs
+2605,"Vegetables, other",aubergineFruit,1,1,fresh produce
+2605,"Vegetables, other",africanAubergineFruit,1,1,fresh produce
+2605,"Vegetables, other",africanNightshadeFruit,1,1,fresh produce
+2605,"Vegetables, other",artichokeHead,1,1,fresh produce
+2605,"Vegetables, other",broccoliHead,1,1,fresh produce
+2605,"Vegetables, other",cabbageHead,1,1,fresh produce
+2605,"Vegetables, other",carrotRoot,1,1,FAOSTAT counts carrots as vegetables
+2605,"Vegetables, other",cauliflowerHead,1,1,fresh produce
+2605,"Vegetables, other",chivesLeaf,1,1,fresh produce
+2605,"Vegetables, other",courgetteFruit,1,1,fresh produce
+2605,"Vegetables, other",cucumberFruit,1,1,fresh produce
+2605,"Vegetables, other",greenBeanPod,1,1,fresh produce
+2605,"Vegetables, other",lettuceHead,1,1,fresh produce
+2605,"Vegetables, other",okraFruit,1,1,fresh produce
+2605,"Vegetables, other",peaYoungSeedWhole,1,1,green peas are vegetables in FAOSTAT
+2605,"Vegetables, other",sorrelLeaf,1,1,fresh produce
+2605,"Vegetables, other",spinachLeaf,1,1,fresh produce
+2605,"Vegetables, other",sweetPepperFruit,1,1,fresh produce
+2605,"Vegetables, other",melonFruit,1,1,FAOSTAT counts melons as vegetables
+2605,"Vegetables, other",watermelonFruit,1,1,FAOSTAT counts watermelons as vegetables
+2611,"Oranges, Mandarines",orangeFruit,1,1,fresh fruit
+2611,"Oranges, Mandarines",mandarinFruit,1,1,fresh fruit
+2612,"Lemons, Limes and products",lemonFruit,1,1,fresh fruit
+2615,Bananas,bananaFruit,1,1,fresh fruit
+2617,Apples and products,appleFruit,1,1,fresh fruit
+2620,Grapes and products (excl wine),grapesFruit,1,1,fresh fruit
+2625,"Fruits, other",avocadoFruit,1,1,fresh fruit
+2625,"Fruits, other",blueberryFruit,1,1,fresh fruit
+2625,"Fruits, other",guavaFruit,1,1,fresh fruit
+2625,"Fruits, other",jujubeFruit,1,1,fresh fruit
+2625,"Fruits, other",kiwifruitFruit,1,1,fresh fruit
+2625,"Fruits, other",mangoFruit,1,1,fresh fruit
+2625,"Fruits, other",peachFruit,1,1,fresh fruit
+2625,"Fruits, other",strawberryFruit,1,1,fresh fruit
+2630,Coffee and products,coffeeSeedDehulled,1,1,FAOSTAT coffee is green coffee
+2633,Cocoa Beans and products,cocoaSeedWhole,1,1,dried cocoa beans
+2731,Bovine Meat,meatBeefCattleColdCarcassWeight,1,1,FBS meat is carcass weight
+2731,Bovine Meat,meatBeefCattleColdDressedCarcassWeight,1,1,dressed carcass taken as carcass weight
+2731,Bovine Meat,meatBuffaloColdCarcassWeight,1,1,FBS meat is carcass weight
+2731,Bovine Meat,meatBeefCattleLiveweight,2,1.82,dressing percentage of 55% carcass per liveweight
+2731,Bovine Meat,meatBuffaloLiveweight,2,1.92,dressing percentage of 52% carcass per liveweight
+2732,Mutton & Goat Meat,meatSheepColdCarcassWeight,1,1,FBS meat is carcass weight
+2732,Mutton & Goat Meat,meatGoatColdCarcassWeight,1,1,FBS meat is carcass weight
+2732,Mutton & Goat Meat,meatSheepLiveweight,2,2.13,dressing percentage of 47% carcass per liveweight
+2732,Mutton & Goat Meat,meatGoatLiveweight,2,2.13,dressing percentage of 47% carcass per liveweight
+2733,Pigmeat,meatPigColdCarcassWeight,1,1,FBS meat is carcass weight
+2733,Pigmeat,meatPigColdDressedCarcassWeight,1,1,dressed carcass taken as carcass weight
+2733,Pigmeat,meatPigLiveweight,2,1.33,dressing percentage of 75% carcass per liveweight
+2734,Poultry Meat,meatChickenColdCarcassWeight,1,1,FBS meat is carcass weight
+2734,Poultry Meat,meatChickenReadyToCookWeight,1,1,ready-to-cook weight taken as carcass weight
+2734,Poultry Meat,meatTurkeyColdCarcassWeight,1,1,FBS meat is carcass weight
+2734,Poultry Meat,meatDuckColdCarcassWeight,1,1,FBS meat is carcass weight
+2734,Poultry Meat,meatChickenLiveweight,2,1.39,dressing percentage of 72% carcass per liveweight
+2848,Milk - Excluding Butter,milkCowRaw,1,1,FBS milk is fresh whole milk
+2848,Milk - Excluding Butter,milkBuffaloRaw,1,1,FBS milk is fresh whole milk
+2848,Milk - Excluding Butter,milkSheepRaw,1,1,FBS milk is fresh whole milk
+2848,Milk - Excluding Butter,milkGoatRaw,1,1,FBS milk is fresh whole milk
+2848,Milk - Excluding Butter,milkCowRawFpcm,2,1,fat and protein corrected milk (4% fat; 3.3% protein) taken as fresh milk
+2744,Eggs,eggsHenInShell,1,1,FBS eggs are in shell
+2744,Eggs,eggsHenInShellNumber,2,16.7,eggs per kg at 60 g an egg
