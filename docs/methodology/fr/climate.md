@@ -38,11 +38,11 @@ Ce que montrent les courbes (médiane de FaIR, fourchette de 5 à 95 %, °C par 
 
 ### Comment l'application utilise les courbes
 
-Le changement d'alimentation modifie les émissions de chaque gaz de ΔE_gaz(τ) chaque année τ. L'application additionne le réchauffement dû à la variation de chaque année :
+Les leviers modifient les émissions de chaque gaz de ΔE_gaz(τ) chaque année τ. L'application additionne le réchauffement dû à la variation de chaque année :
 
 ΔT(t) = Σ_gaz Σ_{τ ≤ t} ΔE_gaz(τ) · AGTP_gaz(t − τ)
 
-C'est exact pour un modèle dont la réponse est proportionnelle à ce qu'il reçoit, et proche pour FaIR, car un changement d'alimentation est petit à côté des émissions mondiales. Chaque valeur d'AGTP est la variation de la température moyenne d'une année civile due à une année d'émission répartie uniformément sur cette année : AGTP(0) est donc l'effet dans l'année même. La construction vérifie la convolution par rapport à FaIR lui-même : convoluer les émissions historiques de l'agriculture avec les courbes donne le réchauffement dû à l'agriculture en 2010–2019 à environ 6 % près de ce que donne FaIR lancé avec et sans ces émissions.
+C'est exact pour un modèle dont la réponse est proportionnelle à ce qu'il reçoit, et proche pour FaIR tant que la variation due aux leviers reste petite à côté des émissions mondiales (voir [Limites](#method-limitations) pour les leviers d'énergie au maximum). Chaque valeur d'AGTP est la variation de la température moyenne d'une année civile due à une année d'émission répartie uniformément sur cette année : AGTP(0) est donc l'effet dans l'année même. La construction vérifie la convolution par rapport à FaIR lui-même : convoluer les émissions historiques de l'agriculture avec les courbes donne le réchauffement dû à l'agriculture en 2010–2019 à environ 6 % près de ce que donne FaIR lancé avec et sans ces émissions.
 
 ### L'alternative AR6
 
