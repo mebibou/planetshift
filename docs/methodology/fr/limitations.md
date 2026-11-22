@@ -39,7 +39,7 @@ Le réchauffement évité en 2050 est petit : quelques centièmes de degré pour
 ## Hypothèses
 
 - Laisser de côté l'usage des terres, comme le fait le réglage par défaut, est prudent : compter la repousse rend le réchauffement évité plus grand.
-- La réponse du climat est linéarisée autour du scénario de référence, ce qui tient bien pour un changement d'alimentation, petit à côté de l'ensemble des émissions mondiales, et moins bien pour les leviers d'énergie au maximum, qui retirent une grande partie du CO₂ du scénario : leur réchauffement évité est une estimation au premier ordre.
+- La réponse du climat est linéarisée autour du scénario de référence, ce qui tient bien pour les leviers qui changent une petite part des émissions mondiales (la plupart des leviers agricoles et fonciers, un levier d'énergie seul), et moins bien pour les leviers d'énergie au maximum, qui retirent une grande partie du CO₂ du scénario : leur réchauffement évité est une estimation au premier ordre.
 
 ## Sources
 

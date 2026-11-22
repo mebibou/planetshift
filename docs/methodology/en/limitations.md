@@ -39,7 +39,7 @@ The avoided warming in 2050 is small, a few hundredths of a degree for a modest 
 ## Assumptions
 
 - Leaving out land use, as the default does, is conservative: counting regrowth makes the warming avoided larger.
-- The climate response is linearised around the baseline scenario, which holds well for a diet shift, a small change next to all the world's emissions, and less well for the energy levers in full, which remove a large part of the scenario's CO₂: their warming avoided is a first-order estimate.
+- The climate response is linearised around the baseline scenario, which holds well for levers that change a small part of the world's emissions (most farming and land levers, single energy levers), and less well for the energy levers in full, which remove a large part of the scenario's CO₂: their warming avoided is a first-order estimate.
 
 ## Sources
 

@@ -38,11 +38,11 @@ FaIR's CO₂ curve at 100 years is 11% below AR6's, its N₂O curve 9% above, an
 
 ### How the app uses the curves
 
-The diet shift changes each gas's emissions by ΔE_gas(τ) in each year τ. The app adds up the warming from every year's change:
+The levers change each gas's emissions by ΔE_gas(τ) in each year τ. The app adds up the warming from every year's change:
 
 ΔT(t) = Σ_gas Σ_{τ ≤ t} ΔE_gas(τ) · AGTP_gas(t − τ)
 
-This is exact for a model whose response is proportional to its input, and close for FaIR because a diet shift is small next to the world's emissions. Each AGTP value is the change in a calendar year's mean temperature from a year's worth of emission spread evenly over that year, so AGTP(0) is the same-year effect. The build checks the convolution against FaIR itself: convolving agriculture's historical emissions with the curves gives agriculture's warming in 2010–2019 within about 6% of what FaIR gives when it is run with and without those emissions.
+This is exact for a model whose response is proportional to its input, and close for FaIR as long as the levers' change is small next to the world's emissions (see [Limitations](#method-limitations) for the energy levers in full). Each AGTP value is the change in a calendar year's mean temperature from a year's worth of emission spread evenly over that year, so AGTP(0) is the same-year effect. The build checks the convolution against FaIR itself: convolving agriculture's historical emissions with the curves gives agriculture's warming in 2010–2019 within about 6% of what FaIR gives when it is run with and without those emissions.
 
 ### The AR6 alternative
 

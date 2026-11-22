@@ -1,6 +1,6 @@
 # Planetshift
 
-*What does change look like?* Planetshift shows where the world's food is produced and what it emits, lets you move part of the diet from animal to plant foods, keeping protein or calories equal, adopt levers in farming, energy and transport, and shows what that does to global warming up to 2050 or 2100. A second view shows how much of the warming since 1850 comes from farming, and the Methodology page explains every step and assumption.
+*What does change look like?* Planetshift shows the causes of global warming and the levers that limit it — energy and transport, buildings and industry, farming and diets, forests and farmland — with the warming each would avoid by 2050 or 2100, on equal terms. A chart splits the warming since 1850 by cause and shows how each cause changes with the levers, a map shows where food is produced and what it emits, and the Methodology page explains every step and assumption.
 
 ## Layout
 
