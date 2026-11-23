@@ -6,7 +6,7 @@
     "retry": "Check your connection and reload the page. If it keeps failing, the data files may be missing from this build.",
     "failedOther": "Planetshift could not read the data ({reason}).",
     "startTitle": "The page could not start",
-    "startFailed": "The data loaded, but an error stopped the page ({reason}). Reload the page; if it keeps failing, please report it."
+    "startFailed": "The data loaded, but an error stopped the page ({reason}). Reload the page. If it keeps failing, please report it."
   },
   "header": {
     "tagline": "What does change look like?",
@@ -20,7 +20,7 @@
     "methodology": "Methodology"
   },
   "footer": {
-    "text": "Diets and production from FAOSTAT Food Balance Sheets ({year}); emission intensities from HESTIA, FAOSTAT and published life-cycle studies; fish from FAO FishStat and published studies; farmland from FAOSTAT; deforestation from DeDuCE; transport and electricity from the SSP scenarios, Ember and the IEA; warming from FaIR. Land-use change only as the change in forest clearing and as optional regrowth on freed land.",
+    "text": "Diets and production from FAOSTAT Food Balance Sheets ({year}); emission intensities from HESTIA, FAOSTAT and published life-cycle studies; fish from FAO FishStat and published studies; farmland from FAOSTAT; deforestation from DeDuCE; transport and electricity from the SSP scenarios, Ember and the IEA; warming from FaIR. Land-use change is counted only as the change in forest clearing and as optional regrowth on freed land.",
     "copyright": "© {year} Planetshift contributors",
     "code": "Code under the Apache License 2.0",
     "data": "Data under each source's licence",
@@ -51,15 +51,15 @@
       "highIncome": "High-income countries"
     },
     "advanced": "Shift each animal food",
-    "groupsHint": "A food you set here keeps its own share; the others follow the main slider.",
+    "groupsHint": "A food you set here keeps its own share. The other foods follow the main slider.",
     "groupsReset": "Follow the main slider again",
-    "rampHint": "Every lever, the diet included, ramps in from today and is in place in full by this year.",
+    "rampHint": "Every lever, the diet included, ramps up from today and is fully in place by this year.",
     "horizon": "Results up to",
     "info": "About: {name}"
   },
   "levers": {
     "title": "Levers",
-    "intro": "Every way to limit warming in Planetshift, under the cause of warming it acts on, the biggest cause first; within a cause, the groups that avoid the most in full come first. Each slider is the share adopted, reached in full by the year above.",
+    "intro": "Every way to limit warming in Planetshift, listed under the cause of warming it acts on, with the biggest cause first. Within a cause, the groups that avoid the most in full come first. Each slider is the share adopted, reached in full by the year above.",
     "noData": "Not available: this lever's data is not in this build.",
     "maxAll": "Adopt all in full",
     "reset": "Reset",
@@ -80,7 +80,7 @@
     "intro": "Each choice below has a default and an alternative. Switching shows how much the answer depends on it.",
     "scope": {
       "label": "Emissions counted",
-      "hint": "On the farm only, or also making the fertiliser and energy used. Wild fish emit only the boats' fuel, so they count only with inputs.",
+      "hint": "On the farm only, or also making the fertiliser and energy used. Wild fish add only the fuel their boats burn, which counts only with inputs.",
       "farmGate": "On the farm",
       "cradleToFarmGate": "With inputs"
     },
@@ -98,7 +98,7 @@
     },
     "location": {
       "label": "Where production changes",
-      "hint": "Every producer by its share of world output, or each country for its own diet.",
+      "hint": "Producers keep their share of world output, or each country produces for its own diet.",
       "fixedTrade": "Trade shares held",
       "domestic": "Each country itself"
     },
@@ -110,13 +110,13 @@
     },
     "climate": {
       "label": "Climate response",
-      "hint": "FaIR model runs with a range, or the IPCC AR6 published values.",
+      "hint": "FaIR model runs with an uncertainty range, or the published IPCC AR6 values.",
       "fair": "FaIR",
       "ar6": "AR6 tables"
     },
     "ssp": {
       "label": "Rest of the world's emissions",
-      "hint": "The scenario for the emissions the levers leave as they are.",
+      "hint": "The scenario for the emissions the levers do not change.",
       "ssp245": "Middle (SSP2-4.5)",
       "ssp126": "Low (SSP1-2.6)",
       "ssp370": "High (SSP3-7.0)"
@@ -187,10 +187,10 @@
     "notes": {
       "production": "Where food is grown, not where it is eaten.",
       "emissions": "Emissions on the farm from growing food and raising animals. CO₂e weighs methane and nitrous oxide over 100 years, for comparison only.",
-      "land": "Cropland harvested for the foods in the model and permanent pasture, as a share of each country's land area: how much of it farming takes. Eating less meat frees pasture and the cropland that grows feed; the tooltip gives the hectares.",
-      "change": "Each country's output changes by the same share as world demand for each food, so exporters change with their customers.",
+      "land": "Cropland harvested for the foods in the model and permanent pasture, as a share of each country's land area. That is how much of the land farming takes. Eating less meat frees pasture and the cropland that grows feed. The tooltip gives the hectares.",
+      "change": "Each country's output changes by the same share as world demand for each food. Exporters change along with the countries that buy from them.",
       "quality": "Neighbouring countries can differ only because their figures come from different sources.",
-      "deforestation": "Forest cleared for crops and pasture in each country, once the levers are fully in place; hectares a year. The tooltip gives today's clearing, the change and the CO₂ it releases."
+      "deforestation": "Forest cleared for crops and pasture in each country once the levers are fully in place, in hectares a year. The tooltip gives today's clearing, the change and the CO₂ it releases."
     },
     "tooltip": {
       "noData": "No data for this country",
@@ -231,7 +231,7 @@
     "label": "Warming avoided by the levers each year to {year}, with its likely range",
     "unit": "°C less warming",
     "line": "Warming avoided",
-    "caption": "How much cooler the world is each year with the levers than without them. It grows as the levers ramp up, and the warming of methane already avoided fades within decades."
+    "caption": "How much cooler the world is each year with the levers than without them. It grows as the levers ramp up. The warming of methane already avoided fades within decades."
   },
   "chart": {
     "title": "Global temperature to {year}",
@@ -255,7 +255,7 @@
       "laNina": "La Niña year",
       "oni": "ONI {value}"
     },
-    "keys": "Arrow keys read the values year by year; Home and End go to the first and last year."
+    "keys": "Arrow keys read the values year by year. Home and End go to the first and last year."
   },
   "summary": {
     "title": "What the levers change",
@@ -277,11 +277,11 @@
     "beforeAfter": "{before} → {after}",
     "gPerDay": "grams a day, world average",
     "kcalPerDay": "kcal a day, world average",
-    "scope": "Farm emissions (wild fish only with inputs), the CO₂ of forest clearing as it changes, and the fossil CO₂ the energy levers cut; food transport is left out.",
-    "clipped": "In {count} countries a cut reached the part of a crop or milk that is processed (into oil, sugar, butter…) and was stopped there; that part is cut on the processed food instead.",
+    "scope": "Farm emissions (wild fish only with inputs), the CO₂ of forest clearing as it changes, and the fossil CO₂ the energy levers cut. Food transport is left out.",
+    "clipped": "In {count} countries a cut reached the part of a crop or milk that is processed (into oil, sugar, butter…) and was stopped there. That part is cut on the processed food instead.",
     "byFamily": {
       "title": "Warming avoided in {year}, by lever group",
-      "note": "Each group's part is the mean of what it adds over every order the groups could be counted in, so no group is counted first; a group acting on several causes is split between them. The parts add up to the total.",
+      "note": "Each group's part is the mean of what it adds over every order the groups could be counted in, so no group is counted first. A group acting on several causes is split between them. The parts add up to the total.",
       "added": "{value} added",
       "diet": "Diet"
     },
@@ -290,10 +290,10 @@
   "link": {
     "headline": "By {year} the world has warmed by {total}.",
     "scenario": "With the levers chosen, the world would be {avoided} cooler in {year} than without them ({ssp}): {parts}.",
-    "intro": "Most warming comes from burning fossil fuels. Farming adds to it in a different way: mostly through methane from cattle and rice paddies, and nitrous oxide from fertiliser and manure, gases that trap far more heat than CO₂ while they last.",
+    "intro": "Most warming comes from burning fossil fuels. Farming adds to it in a different way, mostly through methane from cattle and rice paddies, and nitrous oxide from fertiliser and manure. These gases trap far more heat than CO₂ while they last.",
     "attributionTitle": "Warming by cause since {from}",
-    "attributionText": "Each band is the warming from one cause, or, below zero, the cooling. After today, each band is what is left once the levers chosen act on its cause; the dashed outlines are the bands without the levers. The line is the temperature measured.",
-    "attributionCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today; each cause is the warming its emissions add. Air pollution cools: its particles reflect sunlight and brighten clouds. The energy, heating and industry levers also cut the air pollution of the fuel they no longer burn, so its cooling shrinks when they act.",
+    "attributionText": "Each band is the warming from one cause, or, below zero, the cooling. After today, each band is what is left once the levers chosen act on its cause. The dashed outlines are the bands without the levers. The line is the measured temperature.",
+    "attributionCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today. Each cause is the warming its emissions add. Air pollution cools: its particles reflect sunlight and brighten clouds. The energy, heating and industry levers also cut the air pollution of the fuel they no longer burn, so its cooling shrinks when they act.",
     "attributionLabel": "Stacked chart of warming by cause from {from} to {year}, with observed temperature",
     "projection": "Projection",
     "causes": {
@@ -317,14 +317,14 @@
       "n2o": "N₂O"
     },
     "gasTitle": "Warming from {gas} by cause since {from}",
-    "gasText": "Each band is the warming this gas causes from one cause's emissions of it. After today, each band is what is left once the levers chosen act on its cause; the dashed outlines are the bands without the levers. Air pollution, aviation's contrails and the natural factors are not greenhouse gases: they show under All gases only.",
-    "gasCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today; each cause is the warming its emissions of this gas add, and the other sources and interactions are the rest of the gas's warming.",
+    "gasText": "Each band is the warming from one cause's emissions of this gas. After today, each band is what is left once the levers chosen act on its cause. The dashed outlines are the bands without the levers. Air pollution, aviation's contrails and the natural factors are not greenhouse gases: they show under All gases only.",
+    "gasCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today. Each cause is the warming its emissions of this gas add. The other sources and interactions are the rest of the gas's warming.",
     "gasOther": "Other sources and interactions",
     "gasAttributionLabel": "Stacked chart of the warming from {gas} by cause from {from} to {year}",
     "whyTitle": "Why the gases are kept apart",
     "whyMethane": "Methane is short-lived: about half of it is gone within twelve years. Emit less of it and the warming it causes starts to fall within decades, which is why a change in what we eat shows up before 2050.",
     "whyNitrous": "Nitrous oxide lasts about a century, so less of it slows warming steadily rather than reversing it.",
-    "whyCo2": "CO₂ stays for centuries; the warming it has caused stays too. Adding the gases up as CO₂e hides these differences, so Planetshift computes the temperature from each gas separately.",
+    "whyCo2": "CO₂ stays for centuries. The warming it has caused stays too. Adding the gases up as CO₂e hides these differences, so Planetshift computes the temperature from each gas separately.",
     "part": "{cause} {value}",
     "separator": "; ",
     "withoutLevers": "Without the levers",
@@ -391,7 +391,7 @@
       "full": "Current policies by 2100 (UNEP, Climate Action Tracker, 2026): 2.7–2.8 °C",
       "caption": "The band at the 2100 edge is where current policies lead: 2.7–2.8 °C (UNEP Emissions Gap Report and Climate Action Tracker, 2026)."
     },
-    "caption": "Dashed lines: the Paris Agreement's 1.5 °C (pursue efforts to limit) and 2 °C (stay well below); dots mark the year each median reaches them. Warming levels are 20-year averages above 1850–1900, because single years swing about ±0.2 °C around the trend with El Niño and La Niña: 2024, at 1.55 °C, does not cross 1.5 °C.",
+    "caption": "Dashed lines: the Paris Agreement's 1.5 °C (pursue efforts to limit) and 2 °C (stay well below). Dots mark the year each median reaches them. Warming levels are 20-year averages above 1850–1900, because single years swing about ±0.2 °C around the trend with El Niño and La Niña. So 2024, at 1.55 °C, does not cross 1.5 °C.",
     "line": "{level}: {text}.",
     "never": "not reached before {end}, with or without the levers",
     "reached": "reached around {year}",
@@ -423,7 +423,7 @@
     },
     "scenario": "Scenario and settings as JSON",
     "scenarioText": "Every setting of this page (the same as its address), the summary’s figures, the licence and how to cite.",
-    "format": "CSV files are UTF-8 with a byte order mark, comma-separated, with English column names and plain numbers (a point for decimals, no thousands separator), so that spreadsheets and scripts read them alike.",
+    "format": "CSV files are UTF-8 with a byte order mark, comma-separated. They use English column names and plain numbers (a point for decimals, no thousands separator), so that spreadsheets and scripts read them alike.",
     "files": "Source data files",
     "filesText": "The JSON files the page reads, built by the pipeline from the sources listed on the Methodology page.",
     "cite": "How to cite",
@@ -446,11 +446,11 @@
       },
       "levers": {
         "title": "How the levers work",
-        "text": "The Levers panel lists every lever under the cause of warming it acts on. Open a group and move a slider to set how much of a lever is adopted: the chart, the summary and the map change at once. The figure beside each group is the warming it would avoid alone, in full. Every setting is kept in the page address, so a link reopens it."
+        "text": "The Levers panel lists every lever under the cause of warming it acts on. Open a group and move a slider to set how much of a lever is adopted. The chart, the summary and the map change at once. The figure beside each group is the warming it would avoid alone, in full. Every setting is kept in the page address, so a link to it reopens the same settings."
       },
       "causes": {
         "title": "Where the causes are",
-        "text": "The Causes of warming tab, above the chart, splits the warming by cause (fossil fuels and industry, farming, land use and the others) and shows what the levers take off each. The Methodology page explains every step and its sources."
+        "text": "The Causes of warming tab, above the chart, splits the warming by cause (fossil fuels and industry, farming, land use and the others) and shows how much the levers remove from each. The Methodology page explains every step and its sources."
       }
     }
   },
