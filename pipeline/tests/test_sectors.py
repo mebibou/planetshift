@@ -118,6 +118,27 @@ def test_with_forcing_adds_one_step_at_the_closing_bound():
     assert natural["2036"].tolist() == [0.1, 0.0]
 
 
+def test_the_shipping_sulphur_forcing_follows_each_scenarios_shipping_fuel():
+    years = [str(y) for y in range(1750, 2501)]
+    co2 = {"ssp126": 2.0, "ssp245": 1.0, "ssp370": 1.0}
+    rows = [
+        {
+            "Scenario": ssp,
+            "Region": "World",
+            "Variable": climate.SHIPPING_CO2_RCMIP,
+            "Unit": "Mt CO2/yr",
+            **{y: 1000.0 * (1 if int(y) <= 2020 else co2[ssp]) for y in years},
+        }
+        for ssp in climate.SSPS
+    ]
+    out = climate.shipping_sulphur(pd.DataFrame(rows))
+    assert out["years"][0] == 2020 and out["years"][-1] == 2100
+    erf = out["erf"]
+    assert erf["ssp245"]["median"] == [0.12] * len(out["years"])
+    assert erf["ssp126"]["median"][0] == 0.12 and erf["ssp126"]["median"][-1] == 0.24
+    assert erf["ssp370"]["low"][0] < erf["ssp370"]["median"][0] < erf["ssp370"]["high"][0]
+
+
 def test_permafrost_matches_the_contract_and_ar6():
     permafrost = climate.permafrost()
     assert set(permafrost) == {"kgCPerDegree", "ch4Share", "releaseYears", "source"}

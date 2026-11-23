@@ -53,21 +53,21 @@ The **Buildings and industry** fold of the Levers section has two sliders, each 
 - Clean heating (`ch`) saves *a* × buildings' CO₂ × (1 − `heatPumpKwhPerKgCo2` × *g′*).
 - Clean steel and cement (`ci`) saves *a* × industry's CO₂ × Σ share × cut × (1 − `kwhPerKgCo2` × *g′*) over steel and cement.
 
-The CO₂ changes are convolved with the CO₂ AGTP curve, and the methane and air pollution that come with them as for transport, the methane under *fossil fuels and industry* and the air pollution under its own cause. The likely range pairs the 95% AGTP with the high end of each cut and the low end of each electricity use (and the 5% with the opposite ends). In the summary's breakdown by lever, all of it counts as *Buildings and industry*, including the extra saving renewable electricity brings to these levers when both are on; renewable electricity alone is counted under *Energy and transport*. The farm emissions, the map and the farming band of the Causes of warming chart are not changed.
+The CO₂ changes are convolved with the CO₂ AGTP curve, and what comes with them as for transport: the CO₂ of producing the fuel (for steel, its coke ovens' and coal mines'), methane and N₂O under *fossil fuels and industry*, and the air pollution, CO and VOCs included, under its own cause. The likely range pairs the 95% AGTP with the high end of each cut and the low end of each electricity use (and the 5% with the opposite ends). In the summary's breakdown by lever, all of it counts as *Buildings and industry*, including the extra saving renewable electricity brings to these levers when both are on; renewable electricity alone is counted under *Energy and transport*. The farm emissions, the map and the farming band of the Causes of warming chart are not changed.
 
 ## Results
 
-Warming avoided in °C, median (likely range), each lever at 100% from 2026 to 2035, on the real data and SSP2-4.5 with the default options, with the methane and air pollution that come with the fuel (CO₂ alone in brackets after):
+Warming avoided in °C, median (likely range), each lever at 100% from 2026 to 2035, on the real data and SSP2-4.5 with the default options, with the supply CO₂, methane, N₂O and air pollution that come with the fuel (CO₂ alone in brackets after):
 
 | Levers | 2050 | 2100 |
 | --- | --- | --- |
-| Clean heating | 0.014 (0.001–0.036); CO₂ alone 0.009 | 0.066 (0.040–0.112); CO₂ alone 0.052 |
-| Clean steel and cement | 0.012 (−0.005–0.051); CO₂ alone 0.025 | 0.088 (0.036–0.177); CO₂ alone 0.092 |
-| Renewable electricity alone | 0.085 (0.043–0.162); CO₂ alone 0.096 | 0.253 (0.167–0.377); CO₂ alone 0.234 |
-| Clean heating with renewable electricity | 0.106 (0.053–0.200); CO₂ alone 0.113 | 0.338 (0.224–0.502); CO₂ alone 0.303 |
-| Clean steel and cement with renewable electricity | 0.106 (0.050–0.215); CO₂ alone 0.131 | 0.361 (0.223–0.560); CO₂ alone 0.345 |
+| Clean heating | 0.014 (0.000–0.039); CO₂ alone 0.009 | 0.068 (0.041–0.118); CO₂ alone 0.052 |
+| Clean steel and cement | 0.013 (−0.007–0.059); CO₂ alone 0.025 | 0.091 (0.036–0.189); CO₂ alone 0.092 |
+| Renewable electricity alone | 0.092 (0.047–0.176); CO₂ alone 0.096 | 0.273 (0.180–0.406); CO₂ alone 0.234 |
+| Clean heating with renewable electricity | 0.114 (0.056–0.217); CO₂ alone 0.113 | 0.361 (0.239–0.538); CO₂ alone 0.303 |
+| Clean steel and cement with renewable electricity | 0.115 (0.053–0.237); CO₂ alone 0.131 | 0.385 (0.237–0.601); CO₂ alone 0.345 |
 
-Clean heating gains from the co-emissions from the start: the gas it no longer burns leaked methane, and burning gas emits little SO₂. Clean steel and cement lose most of their 2050 effect: their plants' SO₂ cools, and the hydrogen route draws a lot of grid power whose CO₂ and methane it adds; by 2100 the loss is small. With renewable electricity in full, clean heating adds 0.021 °C in 2050 and 0.085 °C in 2100 to it, and clean steel and cement 0.021 and 0.108 °C: on a clean grid each saves more than alone. The effects are small in 2050 because the CO₂ avoided adds up slowly and today's grid takes back much of what the electricity-hungry routes save.
+Clean heating gains from the co-emissions from the start: the gas it no longer burns leaked methane, and burning gas emits little SO₂. Clean steel and cement lose most of their 2050 effect: their plants' SO₂ cools, and the hydrogen route draws a lot of grid power whose CO₂ and methane it adds; by 2100 the loss is small, the coke ovens' CO₂ and the CO their furnaces emit, which now go with the coal, making up for most of it. With renewable electricity in full, clean heating adds 0.022 °C in 2050 and 0.088 °C in 2100 to it, and clean steel and cement 0.023 and 0.112 °C: on a clean grid each saves more than alone. The effects are small in 2050 because the CO₂ avoided adds up slowly and today's grid takes back much of what the electricity-hungry routes save.
 
 ## Other industries
 
@@ -85,7 +85,7 @@ Left out as levers, for want of a scenario trajectory or of a clear figure, or b
 - A heat pump needs 1.49 kWh per kg of a boiler's CO₂ avoided, in every year; heat pumps and boilers do not get more efficient over time.
 - Clean steel and clean cement cut 90% and 80% of their direct CO₂ at full adoption and draw 1.5 and 0.25 kWh of electricity per kg avoided, on the grid left after renewable electricity.
 - Making the equipment is not counted.
-- The methane and air pollution that come with buildings' and steel and cement plants' fuel are CEDS's 2022 ratios per kg of their fossil CO₂, process CO₂ included for industry, changed with the scenario's emission factors; the electricity drawn brings the grid's (see [Energy and transport](#method-sectors)).
+- What comes with buildings' and steel and cement plants' fuel (the CO₂ of producing it, methane, N₂O and air pollution) is CEDS's 2022 ratios per kg of their fossil CO₂, process CO₂ included for industry, changed with the scenario's emission factors; the electricity drawn brings the grid's (see [Energy and transport](#method-sectors)).
 
 ## Sources
 

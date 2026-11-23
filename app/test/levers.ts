@@ -1,6 +1,7 @@
 // Helpers for the lever modules' tests (app/src/levers/<id>/*.test.ts), on the fixtures.
 import { expect } from 'vitest';
 import { GASES, type Gas } from '../src/data/types';
+import type { CoSector } from '../src/levers/energy/data';
 import {
   DEFAULT_OPTIONS,
   type Options,
@@ -14,6 +15,10 @@ import { CURRENT_YEAR, loadFixtures } from './model/fixtures';
 
 export { CURRENT_YEAR };
 export const data = loadFixtures();
+
+/** The fixtures' CO₂ of producing a sector's fuel per kg of its own, the same every year. */
+export const supply = (sector: CoSector): number =>
+  data.coemissions.perKgCo2.ssp245[sector].co2[0] as number;
 
 export const run = (scenario: Partial<Scenario> = {}, options: Partial<Options> = {}) =>
   runScenario(

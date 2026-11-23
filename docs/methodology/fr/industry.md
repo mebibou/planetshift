@@ -53,21 +53,21 @@ Le volet **Bâtiments et industrie** de la section Leviers compte deux curseurs,
 - Chauffage propre (`ch`) économise *a* × le CO₂ des bâtiments × (1 − `heatPumpKwhPerKgCo2` × *g′*).
 - Acier et ciment propres (`ci`) économise *a* × le CO₂ de l'industrie × Σ part × réduction × (1 − `kwhPerKgCo2` × *g′*) sur l'acier et le ciment.
 
-Les variations de CO₂ sont convoluées avec la courbe d'AGTP du CO₂, et le méthane et la pollution de l'air qui les accompagnent sont traités comme pour le transport, le méthane sous *combustibles fossiles et industrie* et la pollution de l'air sous sa propre cause. La fourchette probable associe l'AGTP à 95 % au haut de chaque réduction et au bas de chaque consommation d'électricité (et l'AGTP à 5 % aux extrémités opposées). Dans la répartition par levier du résumé, tout compte sous *Bâtiments et industrie*, y compris l'économie supplémentaire qu'apporte l'électricité renouvelable à ces leviers quand les deux sont activés ; l'électricité renouvelable seule est comptée sous *Énergie et transport*. Les émissions agricoles, la carte et la bande de l'agriculture du graphique Causes du réchauffement ne changent pas.
+Les variations de CO₂ sont convoluées avec la courbe d'AGTP du CO₂, et ce qui les accompagne est traité comme pour le transport : le CO₂ de la production du combustible (pour l'acier, celui de ses fours à coke et de ses mines de charbon), le méthane et le N₂O sous *combustibles fossiles et industrie*, et la pollution de l'air, monoxyde de carbone et composés organiques volatils compris, sous sa propre cause. La fourchette probable associe l'AGTP à 95 % au haut de chaque réduction et au bas de chaque consommation d'électricité (et l'AGTP à 5 % aux extrémités opposées). Dans la répartition par levier du résumé, tout compte sous *Bâtiments et industrie*, y compris l'économie supplémentaire qu'apporte l'électricité renouvelable à ces leviers quand les deux sont activés ; l'électricité renouvelable seule est comptée sous *Énergie et transport*. Les émissions agricoles, la carte et la bande de l'agriculture du graphique Causes du réchauffement ne changent pas.
 
 ## Résultats
 
-Réchauffement évité en °C, médiane (fourchette probable), chaque levier à 100 % de 2026 à 2035, sur les données réelles et SSP2-4.5 avec les options par défaut, en comptant le méthane et la pollution de l'air qui accompagnent le combustible (le CO₂ seul indiqué ensuite) :
+Réchauffement évité en °C, médiane (fourchette probable), chaque levier à 100 % de 2026 à 2035, sur les données réelles et SSP2-4.5 avec les options par défaut, en comptant le CO₂ de l'approvisionnement, le méthane, le N₂O et la pollution de l'air qui accompagnent le combustible (le CO₂ seul indiqué ensuite) :
 
 | Leviers | 2050 | 2100 |
 | --- | --- | --- |
-| Chauffage propre | 0,014 (0,001–0,036) ; CO₂ seul 0,009 | 0,066 (0,040–0,112) ; CO₂ seul 0,052 |
-| Acier et ciment propres | 0,012 (−0,005 à 0,051) ; CO₂ seul 0,025 | 0,088 (0,036–0,177) ; CO₂ seul 0,092 |
-| Électricité renouvelable seule | 0,085 (0,043–0,162) ; CO₂ seul 0,096 | 0,253 (0,167–0,377) ; CO₂ seul 0,234 |
-| Chauffage propre avec électricité renouvelable | 0,106 (0,053–0,200) ; CO₂ seul 0,113 | 0,338 (0,224–0,502) ; CO₂ seul 0,303 |
-| Acier et ciment propres avec électricité renouvelable | 0,106 (0,050–0,215) ; CO₂ seul 0,131 | 0,361 (0,223–0,560) ; CO₂ seul 0,345 |
+| Chauffage propre | 0,014 (0,000–0,039) ; CO₂ seul 0,009 | 0,068 (0,041–0,118) ; CO₂ seul 0,052 |
+| Acier et ciment propres | 0,013 (−0,007 à 0,059) ; CO₂ seul 0,025 | 0,091 (0,036–0,189) ; CO₂ seul 0,092 |
+| Électricité renouvelable seule | 0,092 (0,047–0,176) ; CO₂ seul 0,096 | 0,273 (0,180–0,406) ; CO₂ seul 0,234 |
+| Chauffage propre avec électricité renouvelable | 0,114 (0,056–0,217) ; CO₂ seul 0,113 | 0,361 (0,239–0,538) ; CO₂ seul 0,303 |
+| Acier et ciment propres avec électricité renouvelable | 0,115 (0,053–0,237) ; CO₂ seul 0,131 | 0,385 (0,237–0,601) ; CO₂ seul 0,345 |
 
-Le chauffage propre gagne aux co-émissions dès le départ : le gaz qu'il ne brûle plus avait des fuites de méthane, et brûler du gaz émet peu de SO₂. L'acier et le ciment propres perdent l'essentiel de leur effet de 2050 : le SO₂ de leurs usines refroidit, et la filière hydrogène consomme beaucoup d'électricité du réseau, dont elle ajoute le CO₂ et le méthane ; en 2100, la perte est faible. Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,021 °C en 2050 et 0,085 °C en 2100, et l'acier et le ciment propres 0,021 et 0,108 °C : sur un réseau propre, chacun économise plus que seul. Les effets sont petits en 2050, parce que le CO₂ évité s'accumule lentement et que le réseau actuel reprend une grande partie de ce qu'économisent les procédés gourmands en électricité.
+Le chauffage propre gagne aux co-émissions dès le départ : le gaz qu'il ne brûle plus avait des fuites de méthane, et brûler du gaz émet peu de SO₂. L'acier et le ciment propres perdent l'essentiel de leur effet de 2050 : le SO₂ de leurs usines refroidit, et la filière hydrogène consomme beaucoup d'électricité du réseau, dont elle ajoute le CO₂ et le méthane ; en 2100, la perte est faible, le CO₂ des fours à coke et le CO qu'émettent leurs fours, qui accompagnent désormais le charbon, en compensant l'essentiel. Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,022 °C en 2050 et 0,088 °C en 2100, et l'acier et le ciment propres 0,023 et 0,112 °C : sur un réseau propre, chacun économise plus que seul. Les effets sont petits en 2050, parce que le CO₂ évité s'accumule lentement et que le réseau actuel reprend une grande partie de ce qu'économisent les procédés gourmands en électricité.
 
 ## Autres industries
 
@@ -85,7 +85,7 @@ Laissées de côté comme leviers, faute de trajectoire dans les scénarios ou d
 - Une pompe à chaleur demande 1,49 kWh par kg de CO₂ de chaudière évité, chaque année ; pompes à chaleur et chaudières ne deviennent pas plus efficaces avec le temps.
 - L'acier et le ciment propres réduisent de 90 % et 80 % leur CO₂ direct à adoption complète et consomment 1,5 et 0,25 kWh d'électricité par kg évité, sur le réseau qui reste après l'électricité renouvelable.
 - La fabrication des équipements n'est pas comptée.
-- Le méthane et la pollution de l'air qui accompagnent le combustible des bâtiments et des usines d'acier et de ciment sont les rapports de CEDS en 2022 par kg de leur CO₂ fossile, CO₂ de procédé compris pour l'industrie, qui évoluent avec les facteurs d'émission du scénario ; l'électricité consommée apporte ceux du réseau (voir [Énergie et transport](#method-sectors)).
+- Ce qui accompagne le combustible des bâtiments et des usines d'acier et de ciment (le CO₂ de sa production, le méthane, le N₂O et la pollution de l'air) correspond aux rapports de CEDS en 2022 par kg de leur CO₂ fossile, CO₂ de procédé compris pour l'industrie, qui évoluent avec les facteurs d'émission du scénario ; l'électricité consommée apporte ceux du réseau (voir [Énergie et transport](#method-sectors)).
 
 ## Sources
 

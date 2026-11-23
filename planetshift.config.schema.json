@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "planetshift.config.schema.json",
+  "title": "Planetshift fork configuration",
+  "description": "Read by the pipeline and, when the site is built, by the app. Each switch under `departures` is a place where Planetshift departs from FaIR's own physics: `default` is the website's value and `plainFair` the value that keeps to FaIR. A switch left out takes its default. Visitors never see these switches.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "departures": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "noxMethane": {
+          "description": "The methane a kg less NOx leaves in the air. hoor: FaIR's global coefficient shared between land and sea by Hoor et al. (2009)'s ratio, its world total kept. fair: FaIR's one coefficient for every source. chemistry: land NOx's methane set to the chemistry models' (Hoor et al. 2009, about 0.3 kg of methane per kg of NO₂ from road traffic) and ships' to theirs, each following FaIR's change with the scenario.",
+          "enum": ["hoor", "fair", "chemistry"],
+          "default": "hoor",
+          "plainFair": "fair"
+        },
+        "aviationNonCo2": {
+          "description": "What less flying cuts besides CO₂. lee2021: Lee et al. (2021)'s non-CO₂ forcing (contrails, NOx, soot, sulphate, water vapour) per kg of aviation CO₂. fair: aviation's own NOx, SO₂, black and organic carbon as co-emissions through FaIR's coefficients, and no contrails, which FaIR does not have.",
+          "enum": ["lee2021", "fair"],
+          "default": "lee2021",
+          "plainFair": "fair"
+        },
+        "permafrost": {
+          "description": "on: the Permafrost option is offered to visitors (off for them by default). off: the permafrost module is left out of the build, with its option.",
+          "enum": ["on", "off"],
+          "default": "on",
+          "plainFair": "off"
+        },
+        "shippingSulphur2020": {
+          "description": "on: the IMO's 2020 limit on ships' fuel sulphur adds its published forcing (0.12 W/m², 0.08–0.14) outside FaIR's calibrated ensemble, in the baseline and the scenario alike, as FaIR's response to the world's SO₂ barely sees it. off: plain FaIR, with the scenario's own shipping SO₂ only.",
+          "enum": ["on", "off"],
+          "default": "on",
+          "plainFair": "off"
+        }
+      }
+    }
+  }
+}

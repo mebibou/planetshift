@@ -6,6 +6,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
+from . import config
 from .cache import DEFAULT_CACHE
 from .inputs import OUT_DIR, Build, log
 from .sections import (
@@ -94,6 +95,7 @@ def main(argv: list[str] | None = None) -> None:
     unknown = set(wanted) - set(names)
     if unknown:
         parser.error(f"unknown sections: {', '.join(sorted(unknown))}")
+    log.info("departures from FaIR: %s", config.load())
     build = Build(args.cache, args.out, args.allow_missing)
     for section in (s for s in SECTIONS if s.name in wanted):
         log.info("section %s", section.name)

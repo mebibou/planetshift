@@ -43,6 +43,7 @@ def test_document_matches_the_contract(built):
         "attribution",
         "naturalOnly",
         "permafrost",
+        "shippingSulphur2020",
     }
     for method in ("fair", "ar6"):
         for gas in ("co2", "ch4", "n2o"):

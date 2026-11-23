@@ -1,5 +1,6 @@
 // The lever modules, and what the core reads from them. The only file a new module shares.
 
+import { DEPARTURES } from '../config';
 import type { Cause, CountedCause, LeverCause, ModelData } from '../data/types';
 import type { Levers } from '../model/api';
 import { deforestation } from './deforestation';
@@ -10,6 +11,7 @@ import { population } from './population';
 import { practices } from './practices';
 import { regrowth } from './regrowth';
 import { removals } from './removals';
+import { shippingSulphur } from './shippingSulphur';
 import type { DataFileDef, LeverDef, LeverModule, OptionDef } from './types';
 import { waste } from './waste';
 
@@ -27,8 +29,9 @@ export const MODULES: readonly LeverModule[] = [
   removals,
   energy,
   industry,
+  shippingSulphur,
   permafrost,
-];
+].filter((m) => m.departure === undefined || DEPARTURES[m.departure] === 'on');
 
 /**
  * The order of the levers in the URL and of the modules' Methodology pages; the panel orders its

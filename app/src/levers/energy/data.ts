@@ -1,3 +1,4 @@
+import type { Departures } from '../../config';
 import type { Range3, Series, Ssp } from '../../data/types';
 
 /** Parts of the economy outside farming whose emissions a lever can cut. */
@@ -46,14 +47,32 @@ export const CO_SECTORS = [
   'electricity',
   'buildings',
   'industry',
+  'aviationOwn',
 ] as const;
 export type CoSector = (typeof CO_SECTORS)[number];
 
-/** What comes with fossil CO₂: methane, and air pollution (sulphur dioxide, black and organic
- * carbon, nitrogen oxides). */
-export const CO_SPECIES = ['ch4', 'so2', 'bc', 'oc', 'nox'] as const;
+/** The variants of NOx's methane coemissions.json holds, one per value of the departure. */
+export type NoxMethane = Departures['noxMethane'];
+
+/**
+ * What comes with fossil CO₂: the CO₂ of producing the fuel (refineries, coke ovens, flaring),
+ * methane and N₂O, and air pollution (sulphur dioxide, black and organic carbon, ammonia,
+ * nitrogen oxides, carbon monoxide and volatile organic compounds).
+ */
+export const CO_SPECIES = [
+  'co2',
+  'ch4',
+  'n2o',
+  'so2',
+  'bc',
+  'oc',
+  'nh3',
+  'nox',
+  'co',
+  'voc',
+] as const;
 export type CoSpecies = (typeof CO_SPECIES)[number];
-export const AIR_POLLUTANTS = ['so2', 'bc', 'oc', 'nox'] as const;
+export const AIR_POLLUTANTS = ['so2', 'bc', 'oc', 'nh3', 'nox', 'co', 'voc'] as const;
 export type AirPollutant = (typeof AIR_POLLUTANTS)[number];
 
 /** A value by year of `CoEmissions.years`, with the 5–95% range of FaIR's ensemble. */
@@ -66,26 +85,34 @@ export interface RangeSeries {
 /**
  * coemissions.json: what each sector's fossil CO₂ comes with under each SSP, on `years`.
  * perKgCo2[ssp][sector][species]: kg emitted per kg of the sector's fossil CO₂, producing its
- * fuel (methane from coal mines, oil and gas) and burning it; aviation's own are in
- * `Sectors.aviationNonCo2`, so only its fuel's supply is here.
+ * fuel (methane from coal mines, oil and gas; `co2` is producing it alone) and burning it;
+ * aviation's own are in
+ * `Sectors.aviationNonCo2`, so only its fuel's supply is under aviation, and aviationOwn holds
+ * them, without the supply, for the plain-FaIR aviationNonCo2 departure.
  * erfPerKg[ssp][pollutant]: effective radiative forcing per kg a year, W/m² per (kg/yr), at the
  * SSP's level of air pollution that year (FaIR's aerosol-cloud effect is a logarithm).
  * noxCh4PerKg[ssp]: kg of methane a kg less NOx leaves in the air each year, as NOx shortens
  * methane's lifetime.
- * noxCh4PerKgCo2[ssp][sector]: kg of methane left in the air per kg of the sector's CO₂ cut,
- * through its NOx, scaled for where the NOx is emitted (noxPlaceFactor: land and sea, relative
- * to FaIR's global coefficient, averaging 1 over each year's NOx).
- * particleErfPerKgCo2[ssp][sector]: forcing of the SO₂, black and organic carbon that come with
- * a kg a year of the sector's CO₂, W/m² per (kg/yr), its range added up member by member.
+ * noxCh4PerKgCo2[variant][ssp][sector]: kg of methane left in the air per kg of the sector's CO₂
+ * cut, through its NOx, scaled for where the NOx is emitted by the variant (noxPlaceFactor: land
+ * and sea, relative to FaIR's global coefficient).
+ * vocCh4PerKg[ssp], vocCh4PerKgCo2[ssp][sector]: the same for VOCs, which lengthen methane's
+ * lifetime, so a kg less leaves less methane (negative); one coefficient everywhere.
+ * particleErfPerKgCo2[ssp][sector]: forcing of the SO₂, black and organic carbon and ammonia that
+ * come with a kg a year of the sector's CO₂, W/m² per (kg/yr), its range added up member by
+ * member; ozoneErfPerKgCo2, the same for the ozone of carbon monoxide and VOCs.
  */
 export interface CoEmissions {
   years: number[];
   perKgCo2: Record<Ssp, Record<CoSector, Record<CoSpecies, number[]>>>;
   erfPerKg: Record<Ssp, Record<AirPollutant, RangeSeries>>;
   noxCh4PerKg: Record<Ssp, RangeSeries>;
-  noxCh4PerKgCo2: Record<Ssp, Record<CoSector, RangeSeries>>;
-  noxPlaceFactor: Record<Ssp, Record<'land' | 'sea', RangeSeries>>;
+  noxCh4PerKgCo2: Record<NoxMethane, Record<Ssp, Record<CoSector, RangeSeries>>>;
+  noxPlaceFactor: Record<NoxMethane, Record<Ssp, Record<'land' | 'sea', RangeSeries>>>;
+  vocCh4PerKg: Record<Ssp, RangeSeries>;
+  vocCh4PerKgCo2: Record<Ssp, Record<CoSector, RangeSeries>>;
   particleErfPerKgCo2: Record<Ssp, Record<CoSector, RangeSeries>>;
+  ozoneErfPerKgCo2: Record<Ssp, Record<CoSector, RangeSeries>>;
   source: string;
 }
 

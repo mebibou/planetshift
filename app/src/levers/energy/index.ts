@@ -1,9 +1,17 @@
+import { departuresOf } from '../../config';
 import { bandRecord } from '../../model/bands';
-import { agtpOf, convolve } from '../../model/climate';
-import { END_YEAR, range, zerosOn } from '../../model/util';
+import { convolve, warmingFrom } from '../../model/climate';
+import { addSeries, END_YEAR, range, zerosOn } from '../../model/util';
 import { anyAdopted, lever, option } from '../define';
 import type { LeverModule } from '../types';
-import { airPollutionPaths, airPollutionWarming, hasCoEmissions, type CoYear } from './coemissions';
+import {
+  airPollutionPaths,
+  airPollutionWarming,
+  coChange,
+  coGases,
+  hasCoEmissions,
+  type CoYear,
+} from './coemissions';
 import { EMPTY_COEMISSIONS, EMPTY_SECTORS } from './data';
 import {
   dataCentreBaseline,
@@ -62,17 +70,12 @@ export const energy: LeverModule = {
           band,
           years,
           shareAt,
+          departuresOf(prepared.data).aviationNonCo2,
         ),
       );
       const acting = anyAdopted(adoption, LEVERS);
       return {
-        extraEmissions: bandRecord((band) =>
-          paths[band].co2.map((co2, i) => ({
-            co2,
-            ch4: (paths[band].co[i] as CoYear).change.ch4,
-            n2o: 0,
-          })),
-        ),
+        extraEmissions: bandRecord((band) => coGases(paths[band].co2, paths[band].co)),
         extraWarming: acting
           ? bandRecord((band) =>
               convolve(paths[band].forcing, currentYear, forcingResponseOf(sectors, band), tYears),
@@ -83,7 +86,14 @@ export const energy: LeverModule = {
             ? {
                 airPollution: bandRecord((band) =>
                   airPollutionWarming(
-                    airPollutionPaths(coemissions, options.ssp, band, years, paths[band].co),
+                    airPollutionPaths(
+                      coemissions,
+                      options.ssp,
+                      band,
+                      years,
+                      paths[band].co,
+                      departuresOf(prepared.data).noxMethane,
+                    ),
                     currentYear,
                     forcingResponseOf(sectors, band),
                     climate,
@@ -97,19 +107,37 @@ export const energy: LeverModule = {
       };
     },
     baseline: ({ prepared, options, band, tYears }) => {
-      const { climate, sectors } = prepared.data;
+      const { climate, sectors, coemissions } = prepared.data;
       const dcYears = sectors?.dataCentresTwh?.years ?? [];
-      const dcStart = dcYears[0] ?? END_YEAR;
+      if (options.dataCentres !== 'iea' || dcYears.length === 0)
+        return { warming: zerosOn(tYears) };
+      const dcStart = dcYears[0] as number;
+      const years = range(dcStart, END_YEAR);
+      const co2 = dataCentreBaseline(sectors, options.ssp, 'iea', years, band);
+      const co: CoYear[] = years.map((y, i) => {
+        const electricity = { electricity: co2[i] as number };
+        return { co2: electricity, change: coChange(coemissions, options.ssp, y, electricity) };
+      });
       return {
-        warming:
-          options.dataCentres === 'iea' && dcYears.length > 0
-            ? convolve(
-                dataCentreBaseline(sectors, options.ssp, 'iea', range(dcStart, END_YEAR), band),
-                dcStart,
-                agtpOf(climate, options.climate, 'co2', band),
-                tYears,
-              )
-            : zerosOn(tYears),
+        warming: addSeries(
+          warmingFrom(coGases(co2, co), dcStart, climate, options.climate, band, tYears),
+          airPollutionWarming(
+            airPollutionPaths(
+              coemissions,
+              options.ssp,
+              band,
+              years,
+              co,
+              departuresOf(prepared.data).noxMethane,
+            ),
+            dcStart,
+            forcingResponseOf(sectors, band),
+            climate,
+            options.climate,
+            band,
+            tYears,
+          ),
+        ),
       };
     },
   },

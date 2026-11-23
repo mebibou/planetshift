@@ -1,6 +1,7 @@
-import { readdirSync, statSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
+import { resolveDepartures, type ConfigSchema } from './src/configSchema';
 
 /** The JSON files of a folder of public/ and their sizes, for the download list. */
 const filesIn = (folder: string) => {
@@ -11,10 +12,20 @@ const filesIn = (folder: string) => {
     .map((name) => ({ name, bytes: statSync(dir + name).size }));
 };
 
+/** A JSON file at the repository's root. */
+const root = (name: string): unknown =>
+  JSON.parse(readFileSync(fileURLToPath(new URL(`../${name}`, import.meta.url)), 'utf8'));
+
 export default defineConfig({
   base: './',
   define: {
     __DATA_FILES__: JSON.stringify({ 'data/': filesIn('data'), 'fixtures/': filesIn('fixtures') }),
+    __PLANETSHIFT_DEPARTURES__: JSON.stringify(
+      resolveDepartures(
+        root('planetshift.config.schema.json') as ConfigSchema,
+        root('planetshift.config.json'),
+      ),
+    ),
   },
   test: {
     include: ['test/**/*.test.ts', 'src/**/*.test.ts'],

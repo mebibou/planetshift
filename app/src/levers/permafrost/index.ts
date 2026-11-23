@@ -1,3 +1,4 @@
+import { departs } from '../../config';
 import { warmingFrom } from '../../model/climate';
 import { addSeries, END_YEAR, FIRST_YEAR, subtractPaths } from '../../model/util';
 import type { GasVector } from '../../data/types';
@@ -29,6 +30,7 @@ interface Memo {
  */
 export const permafrost: LeverModule = {
   id: ID,
+  departure: 'permafrost',
   levers: [],
   options: [option(ID, 'permafrost', 'pf', ['off', 'on'])],
   files: [],
@@ -36,7 +38,7 @@ export const permafrost: LeverModule = {
     baseline: ({ prepared, options, currentYear, band, tYears, temperature }) => {
       const { climate } = prepared.data;
       const release =
-        options.permafrost === 'on' && climate.permafrost
+        options.permafrost === 'on' && climate.permafrost && departs(prepared.data, 'permafrost')
           ? permafrostEmissions(
               climate.permafrost,
               band,
@@ -58,7 +60,9 @@ export const permafrost: LeverModule = {
     feedback: ({ prepared, options, currentYear, band, tYears, memo, delta }) => {
       const { climate } = prepared.data;
       const { before, release } = memo as Memo;
-      return options.permafrost === 'on' && climate.permafrost
+      return options.permafrost === 'on' &&
+        climate.permafrost &&
+        departs(prepared.data, 'permafrost')
         ? warmingFrom(
             subtractPaths(
               permafrostEmissions(

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { DEFAULT_OPTIONS, type Options, type Scenario } from '../../model/api';
 import { towards } from '../../model/bands';
-import { coChange, noxMethane } from './coemissions';
+import { coChange, noxMethane, vocMethane } from './coemissions';
 import { CO_SPECIES, EMPTY_COEMISSIONS, type CoSector, type CoSpecies } from './data';
 import {
   CLEAN_FUEL_KEEPS_NOX,
@@ -16,6 +16,7 @@ import { BASE_SCENARIO } from '../../model/scenarios';
 import { decodeState, encodeState } from '../../model/state';
 import { CURRENT_YEAR, loadFixtures } from '../../../test/model/fixtures';
 import { sampleById } from '../../../test/model/samples';
+import { supply } from '../../../test/levers';
 
 const data = loadFixtures();
 const run = (scenario: Partial<Scenario> = {}, options: Partial<Options> = {}) =>
@@ -42,7 +43,7 @@ describe('energy levers', () => {
     expect(w2050(r)).toBeGreaterThan(0);
     expect(r.summary.byFamily.avoidedWarming2050.energy).toBeCloseTo(w2050(r), 12);
     expect(r.summary.avoided.ch4).toBeGreaterThan(0);
-    expect(r.summary.avoided.n2o).toBe(0);
+    expect(r.summary.avoided.n2o).toBeGreaterThan(0);
     expect(r.summary.landFreed).toEqual({ cropland: 0, pasture: 0 });
   });
 
@@ -50,10 +51,13 @@ describe('energy levers', () => {
     const r = lever('electricCars');
     const tailpipe = tailpipe2035('roadPassenger');
     expect(r.summary.avoided.co2).toBeGreaterThan(0);
-    expect(r.summary.avoided.co2).toBeLessThan(tailpipe);
+    expect(r.summary.avoided.co2).toBeLessThan(tailpipe * (1 + supply('roadPassenger')));
     const grid = data.sectors.gridIntensity.ssp245;
     const g = grid.values[grid.years.indexOf(2035)] as number;
-    expect(r.summary.avoided.co2).toBeCloseTo(tailpipe * (1 - 1.11 * g), -6);
+    expect(r.summary.avoided.co2).toBeCloseTo(
+      tailpipe * (1 + supply('roadPassenger') - 1.11 * g * (1 + supply('electricity'))),
+      -6,
+    );
   });
 
   it('renewable electricity makes electric cars save more', () => {
@@ -151,26 +155,73 @@ describe('what comes with the fossil fuel the levers cut', () => {
     const range = (r: { median: number[] }) => valueAt(co.years, r.median, 2040);
     const roadNox = ratio('roadPassenger', 'nox', 2040);
     const global = range(co.noxCh4PerKg.ssp245);
-    expect(range(co.noxCh4PerKgCo2.ssp245.roadPassenger)).toBeLessThan(roadNox * global);
-    expect(range(co.noxCh4PerKgCo2.ssp245.shipping)).toBeGreaterThan(
+    expect(range(co.noxCh4PerKgCo2.hoor.ssp245.roadPassenger)).toBeLessThan(roadNox * global);
+    expect(range(co.noxCh4PerKgCo2.hoor.ssp245.shipping)).toBeGreaterThan(
       ratio('shipping', 'nox', 2040) * global,
     );
     const co2 = energyCo2BySource(ctx, 2040, only({ electricCars: 1 }));
     const change = changeOf({ electricCars: 1 });
-    const kept = noxMethane(co, 'ssp245', 'median', 2040, { co2, change });
+    const kept = noxMethane(co, 'ssp245', 'median', 2040, { co2, change }, 'hoor');
     expect(kept).toBeCloseTo(
-      -co2.roadPassenger * range(co.noxCh4PerKgCo2.ssp245.roadPassenger) -
-        co2.electricity * range(co.noxCh4PerKgCo2.ssp245.electricity),
+      -co2.roadPassenger * range(co.noxCh4PerKgCo2.hoor.ssp245.roadPassenger) -
+        co2.electricity * range(co.noxCh4PerKgCo2.hoor.ssp245.electricity),
       0,
     );
     const ships = energyCo2BySource(ctx, 2040, only({ cleanShipping: 1 }));
     expect(
-      noxMethane(co, 'ssp245', 'median', 2040, {
-        co2: ships,
-        change: changeOf({ cleanShipping: 1 }),
-        keepsNox: CLEAN_FUEL_KEEPS_NOX,
-      }),
+      noxMethane(
+        co,
+        'ssp245',
+        'median',
+        2040,
+        {
+          co2: ships,
+          change: changeOf({ cleanShipping: 1 }),
+          keepsNox: CLEAN_FUEL_KEEPS_NOX,
+        },
+        'hoor',
+      ),
     ).toBe(0);
+  });
+
+  it('gives every place FaIR’s one coefficient in plain FaIR', () => {
+    const range = (r: { median: number[] }) => valueAt(co.years, r.median, 2040);
+    const global = range(co.noxCh4PerKg.ssp245);
+    (['roadPassenger', 'shipping', 'electricity'] as const).forEach((s) =>
+      expect(range(co.noxCh4PerKgCo2.fair.ssp245[s])).toBeCloseTo(
+        ratio(s, 'nox', 2040) * global,
+        5,
+      ),
+    );
+  });
+
+  it('leaves less methane as VOCs fall, ships cutting theirs with the fuel', () => {
+    const co2 = energyCo2BySource(ctx, 2040, only({ cleanShipping: 1 }));
+    const change = changeOf({ cleanShipping: 1 });
+    expect(change.voc).toBeLessThan(0);
+    expect(change.co2).toBeCloseTo(co2.shipping * ratio('shipping', 'co2', 2040), 0);
+    expect(vocMethane(co, 'ssp245', 'median', 2040, { co2, change })).toBeLessThan(0);
+  });
+
+  it('adds the data centres’ co-emissions to the baseline with their CO₂', () => {
+    const at = (r: ReturnType<typeof run>) => r.temperature.baseline.median[2050 - 1850] as number;
+    const without = runScenario(
+      { ...data, coemissions: EMPTY_COEMISSIONS },
+      BASE_SCENARIO,
+      DEFAULT_OPTIONS,
+      CURRENT_YEAR,
+    );
+    expect(at(run())).not.toBe(at(without));
+    expect(at(run({}, { dataCentres: 'ssp' }))).toBe(
+      at(
+        runScenario(
+          { ...data, coemissions: EMPTY_COEMISSIONS },
+          BASE_SCENARIO,
+          { ...DEFAULT_OPTIONS, dataCentres: 'ssp' },
+          CURRENT_YEAR,
+        ),
+      ),
+    );
   });
 
   it('charges electric vehicles the grid’s co-emissions, less once renewables clean it', () => {

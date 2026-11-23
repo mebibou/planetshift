@@ -1,9 +1,10 @@
+import { departuresOf } from '../../config';
 import { bandRecord } from '../../model/bands';
 import {
   airPollutionPaths,
   airPollutionWarming,
   hasCoEmissions,
-  type CoYear,
+  coGases,
 } from '../energy/coemissions';
 import { forcingResponseOf, hasSectors } from '../energy/model';
 import { anyAdopted, lever } from '../define';
@@ -36,19 +37,20 @@ export const industry: LeverModule = {
         industryPaths(industry, sectors, coemissions, adoption, options.ssp, band, years, shareAt),
       );
       return {
-        extraEmissions: bandRecord((band) =>
-          paths[band].co2.map((co2, i) => ({
-            co2,
-            ch4: (paths[band].co[i] as CoYear).change.ch4,
-            n2o: 0,
-          })),
-        ),
+        extraEmissions: bandRecord((band) => coGases(paths[band].co2, paths[band].co)),
         warmingByCause:
           anyAdopted(adoption, LEVERS) && hasCoEmissions(coemissions)
             ? {
                 airPollution: bandRecord((band) =>
                   airPollutionWarming(
-                    airPollutionPaths(coemissions, options.ssp, band, years, paths[band].co),
+                    airPollutionPaths(
+                      coemissions,
+                      options.ssp,
+                      band,
+                      years,
+                      paths[band].co,
+                      departuresOf(prepared.data).noxMethane,
+                    ),
                     currentYear,
                     forcingResponseOf(sectors, band),
                     climate,
