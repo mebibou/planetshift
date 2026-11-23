@@ -1,0 +1,287 @@
+import { lazy, Suspense, useEffect, useMemo, useState, type KeyboardEvent } from 'react';
+import type { AppState, ViewContext } from '../app/context';
+import { valueAt, worldPerCapita } from '../app/summaryModel';
+import { tabKeys } from '../app/tabs';
+import { CHARTS, type ChartTab, type Horizon } from '../app/url';
+import { avoidedChart } from '../chart/avoided';
+import { hoverLink } from '../chart/frame';
+import { populationChart } from '../chart/population';
+import { RANGE_START, temperatureChart, type Range } from '../chart/temperature';
+import { dataFolder } from '../data/load';
+import type { ModelData } from '../data/types';
+import { leverAvailable } from '../levers/registry';
+import type { Options } from '../model/api';
+import type { RunResult } from '../model/engine';
+import { SidePanel } from './Panel';
+import { Summary } from './Summary';
+import { Segmented } from './Segmented';
+import { useChartDownload } from './Download';
+import { useDrawn } from './useDrawn';
+import { useLatest } from './useLatest';
+import { useWorth, WorthContext } from './Worth';
+
+/** A counter that goes up each time `data` changes: a deferred lever file arriving. */
+const useVersion = (data: unknown): number => {
+  const [seen, setSeen] = useState({ data, version: 0 });
+  if (seen.data !== data) setSeen({ data, version: seen.version + 1 });
+  return seen.data === data ? seen.version : seen.version + 1;
+};
+
+export interface ExploreProps {
+  ctx: ViewContext;
+  state: AppState;
+  /** Undefined until the first run is back; null when a run failed. */
+  result: RunResult | null | undefined;
+  /** The data as loaded so far, a deferred lever file included once it has arrived. */
+  data: ModelData;
+  failures: number;
+}
+
+// Below the fold or behind a tab: loaded once the page has drawn, each in its own file.
+const MapCard = lazy(() => import('./MapCard').then((m) => ({ default: m.MapCard })));
+const CauseView = lazy(() => import('./CauseView').then((m) => ({ default: m.CauseView })));
+
+/** The temperature chart with the population chart under it, sharing the hovered year. */
+const makeTemperature = (ctx: ViewContext) => {
+  const link = hoverLink();
+  const chart = temperatureChart(ctx.t, ctx.locale, ctx.currentYear, link);
+  const people = populationChart(ctx.t, ctx.locale, ctx.currentYear, link);
+  chart.slot.append(people.el);
+  return { el: chart.el, chart, people };
+};
+
+/** The baseline at `end` under the UN's medium projection, when another one is chosen. */
+const mediumBaseline = (result: RunResult, end: number): number | null =>
+  result.mediumBaseline && valueAt(result.mediumBaseline.years, result.mediumBaseline.values, end);
+
+const ChartTabs = ({ ctx, chart }: { ctx: ViewContext; chart: ChartTab }) => {
+  const select = (tab: ChartTab) => ctx.setUi((u) => ({ ...u, chart: tab }));
+  return (
+    <div className="chart-tabs" role="tablist" aria-label={ctx.t('charts.title')}>
+      {CHARTS.map((tab) => (
+        <button
+          key={tab}
+          type="button"
+          role="tab"
+          id={`chart-tab-${tab}`}
+          className="chart-tab"
+          aria-controls={`chart-panel-${tab}`}
+          aria-selected={tab === chart}
+          tabIndex={tab === chart ? 0 : -1}
+          onClick={() => select(tab)}
+          onKeyDown={(e: KeyboardEvent) =>
+            tabKeys(CHARTS, tab, select, (target) => `chart-tab-${target}`)(e.nativeEvent)
+          }
+        >
+          {ctx.t(`charts.tabs.${tab}`)}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+interface Draw {
+  result: RunResult | null | undefined;
+  ui: AppState['ui'];
+  options: Options;
+  data: ModelData;
+  currentYear: number;
+}
+
+interface Drawn {
+  temperature: ReturnType<typeof makeTemperature>;
+  avoided: ReturnType<typeof avoidedChart>;
+}
+
+/** How each chart that a run draws is drawn from it. */
+const DRAW: Record<
+  Exclude<ChartTab, 'cause'>,
+  (d: Drawn, draw: Draw & { result: RunResult }) => void
+> = {
+  temperature: ({ temperature }, { result, ui, data }) => {
+    const end = Number(ui.horizon);
+    temperature.chart.update(result, ui.range, end, data.climate.naturalOnly, data.enso);
+    temperature.people.update(result, ui.range, end, mediumBaseline(result, end));
+  },
+  avoided: ({ avoided }, { result, ui }) => avoided.update(result, Number(ui.horizon)),
+};
+
+/** The charts, drawn again from the latest result and choices. */
+const useCharts = ({ ctx, state, result, data }: ExploreProps) => {
+  const [temperature, temperatureRef] = useDrawn(() => makeTemperature(ctx));
+  const [avoided, avoidedRef] = useDrawn(() => avoidedChart(ctx.t, ctx.locale, ctx.currentYear));
+  const { ui, options } = state;
+  useEffect(() => {
+    const draw = { result, ui, options, data, currentYear: ctx.currentYear };
+    if (result && ui.chart !== 'cause')
+      DRAW[ui.chart]({ temperature, avoided }, { ...draw, result });
+  }, [result, ui, options, data, temperature, avoided, ctx.currentYear]);
+  return { temperatureRef, avoidedRef };
+};
+
+/** The chart card: its tabs, its switches and the chart shown. */
+const ChartCard = (props: ExploreProps) => {
+  const { ctx, state, result } = props;
+  const { t } = ctx;
+  const { temperatureRef, avoidedRef } = useCharts(props);
+  const latest = useLatest({ result, state, climate: props.data.climate });
+  const download = useChartDownload(t, () => ({
+    ...latest.current,
+    result: latest.current.result ?? null,
+    currentYear: ctx.currentYear,
+  }));
+  const failed = ctx.failedFiles();
+  const { chart, range } = state.ui;
+  return (
+    <section
+      className="card chart-card"
+      aria-label={t('charts.title')}
+      aria-busy={result === undefined}
+    >
+      <ChartTabs ctx={ctx} chart={chart} />
+      <div className="chart-switches">
+        <Segmented<Range>
+          name="range"
+          legend={t('chart.range')}
+          options={(['full', 'recent'] as const).map((v) => ({
+            value: v,
+            label: t(`chart.ranges.${v}`),
+          }))}
+          value={range}
+          hidden={chart === 'avoided'}
+          onChange={(r) => ctx.setUi((u) => ({ ...u, range: r }))}
+        />
+        {download.button}
+      </div>
+      {download.status}
+      <div
+        role="tabpanel"
+        id="chart-panel-temperature"
+        aria-labelledby="chart-tab-temperature"
+        hidden={chart !== 'temperature'}
+      >
+        <span className="drawn" ref={temperatureRef} />
+        <button
+          type="button"
+          className="link-button see-causes"
+          aria-controls="chart-panel-cause"
+          onClick={() => ctx.setUi((u) => ({ ...u, chart: 'cause' }))}
+        >
+          {t('charts.seeCauses')}
+        </button>
+      </div>
+      <div
+        role="tabpanel"
+        id="chart-panel-avoided"
+        aria-labelledby="chart-tab-avoided"
+        hidden={chart !== 'avoided'}
+      >
+        <span className="drawn" ref={avoidedRef} />
+      </div>
+      <div
+        role="tabpanel"
+        id="chart-panel-cause"
+        aria-labelledby="chart-tab-cause"
+        hidden={chart !== 'cause'}
+      >
+        {chart === 'cause' && (
+          <Suspense fallback={<div className="cause-view" aria-busy="true" />}>
+            <CauseView
+              t={t}
+              locale={ctx.locale}
+              currentYear={ctx.currentYear}
+              result={result ?? null}
+              climate={props.data.climate}
+              ssp={state.options.ssp}
+              temperature={state.options.temperature}
+              from={RANGE_START[range]}
+              end={Number(state.ui.horizon)}
+              gas={state.ui.causeGas}
+              onGas={(causeGas) => ctx.setUi((u) => ({ ...u, causeGas }))}
+            />
+          </Suspense>
+        )}
+      </div>
+      <p className="run-error" role="alert" hidden={result !== null}>
+        {result === null ? t('explore.runError') : ''}
+      </p>
+      <p className="run-error" role="alert" hidden={failed.length === 0}>
+        {failed.length
+          ? t('explore.fileError', { files: failed.map((f) => `${f}.json`).join(', ') })
+          : ''}
+      </p>
+    </section>
+  );
+};
+
+/** The Explore view: the charts, the panel of levers beside them, the summary and the map. */
+export const Explore = (props: ExploreProps) => {
+  const { ctx, state, data } = props;
+  const { t, locale } = ctx;
+  const values = useWorth(
+    (scenario, options) => {
+      ctx.loadAll();
+      return ctx.model.avoided(scenario, options, ctx.currentYear);
+    },
+    state.scenario,
+    state.options,
+    data,
+  );
+  const dataVersion = useVersion(data);
+  const horizon = state.ui.horizon;
+  const worth = useMemo(() => ({ values, horizon, t, locale }), [values, horizon, t, locale]);
+  const shown = props.result ?? null;
+  return (
+    <WorthContext.Provider value={worth}>
+      <div className="explore">
+        <ChartCard {...props} />
+        <SidePanel
+          t={t}
+          locale={locale}
+          scenario={state.scenario}
+          setScenario={ctx.setScenario}
+          options={state.options}
+          setOptions={ctx.setOptions}
+          horizon={horizon}
+          setHorizon={(h: Horizon) => ctx.setUi((u) => ({ ...u, horizon: h }))}
+          rampEnd={state.scenario.rampEnd}
+          currentYear={ctx.currentYear}
+          climate={data.climate}
+          values={values}
+          dataVersion={dataVersion}
+          available={(id) => leverAvailable(data, id)}
+        />
+        <Summary
+          t={t}
+          locale={locale}
+          currentYear={ctx.currentYear}
+          result={shown}
+          perCapita={
+            shown ? worldPerCapita(shown.countries, data.countries, data.meta.baseYear) : null
+          }
+          completeYear={state.scenario.rampEnd}
+          horizon={horizon}
+          options={state.options}
+        />
+        <Suspense fallback={<section className="card map-card" aria-busy="true" />}>
+          <MapCard
+            t={t}
+            locale={locale}
+            lang={ctx.lang}
+            world={ctx.world}
+            countries={data.countries}
+            intensities={data.intensities}
+            climate={data.climate}
+            meta={data.meta}
+            currentYear={ctx.currentYear}
+            folder={dataFolder(location.search)}
+            files={__DATA_FILES__[dataFolder(location.search)] ?? []}
+            result={shown}
+            state={state}
+            setUi={ctx.setUi}
+          />
+        </Suspense>
+      </div>
+    </WorthContext.Provider>
+  );
+};

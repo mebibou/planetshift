@@ -5,32 +5,14 @@ import type { Band } from '../../model/climate';
 import { dataValueAt, recordFrom } from '../../model/util';
 import { coChange, NO_CO_CHANGE, type CoYear, type KeepsNox } from './coemissions';
 import type { CoEmissions, CoSector, Sector, Sectors } from './data';
+import { ENERGY_LEVERS, hasSectors, type DataCentres, type EnergyLever } from './data';
+export { ENERGY_LEVERS, hasSectors, type DataCentres, type EnergyLever };
 
 export type AviationNonCo2 = Departures['aviationNonCo2'];
 
 /** Levers on the fossil CO₂ of transport, electricity and data centres (sectors.md). */
-export const ENERGY_LEVERS = [
-  'electricCars',
-  'electricTrucks',
-  'flyLess',
-  'cleanAviationFuel',
-  'cleanShipping',
-  'renewableElectricity',
-  'cleanDataCentres',
-] as const;
-export type EnergyLever = (typeof ENERGY_LEVERS)[number];
-
-/**
- * 'iea': data centres' electricity beyond 2024, which the SSPs did not foresee, is added to the
- * baseline (IEA, Energy and AI). 'ssp': the SSPs' own electricity, as published.
- */
-export type DataCentres = 'iea' | 'ssp';
 
 const KWH_PER_TWH = 1e9;
-
-/** Whether sectors.json was loaded with data for every lever to act on. */
-export const hasSectors = (sectors: Partial<Sectors> | undefined): sectors is Sectors =>
-  sectors?.co2 !== undefined && Object.keys(sectors.co2).length > 0;
 
 /** kg of CO₂ a sector emits in a year under an SSP. */
 export const sectorCo2 = (sectors: Sectors, ssp: Ssp, sector: Sector, year: number): number => {

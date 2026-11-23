@@ -1,10 +1,8 @@
 import { bandRecord } from '../../model/bands';
 import { netFreedHa, uptakeAsEmissions } from '../../model/land';
-import { option } from '../define';
 import type { LeverModule } from '../types';
+import { regrowthSpec } from './spec';
 import { regrowthPaths } from './model';
-
-const ID = 'regrowth';
 
 /** 'natural': freed farmland takes up CO₂ as vegetation grows back on it. */
 export type Regrowth = 'none' | 'natural';
@@ -25,13 +23,7 @@ declare module '../../model/api' {
 
 /** Natural regrowth on the farmland a shift frees: an option, counted as its own family. */
 export const regrowth: LeverModule = {
-  id: ID,
-  family: 'regrowth',
-  farm: true,
-  cause: 'landUse',
-  levers: [],
-  options: [option(ID, 'regrowth', 'regrow', ['none', 'natural'])],
-  files: [],
+  ...regrowthSpec,
   hooks: {
     world: ({ prepared, options }, { countries, years, shareAt, completeIndex }) => {
       const paths = regrowthPaths(
@@ -47,19 +39,4 @@ export const regrowth: LeverModule = {
       };
     },
   },
-  ui: {
-    stat: ({ summary: s }, options, completeYear, f) =>
-      options.regrowth === 'natural'
-        ? {
-            label: f.t(`levers.${ID}.summary.title`, { year: completeYear }),
-            value: f.mass(s.regrowthCo2.median),
-            detail: f.t(`levers.${ID}.summary.detail`, {
-              low: f.mass(Math.min(s.regrowthCo2.p05, s.regrowthCo2.p95)),
-              high: f.mass(Math.max(s.regrowthCo2.p05, s.regrowthCo2.p95)),
-            }),
-            className: 'stat-regrowth',
-          }
-        : null,
-  },
-  methodology: { coveredBy: 'land' },
 };

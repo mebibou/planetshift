@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
 import { resolveDepartures, type ConfigSchema } from './src/configSchema';
 
@@ -18,6 +19,20 @@ const root = (name: string): unknown =>
 
 export default defineConfig({
   base: './',
+  plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        // React and D3 change far less often than the app, so a deploy leaves them cached.
+        manualChunks: (id) =>
+          /node_modules\/(react|react-dom|scheduler)\//.test(id)
+            ? 'react'
+            : /node_modules\/d3-(?!geo)/.test(id)
+              ? 'd3'
+              : undefined,
+      },
+    },
+  },
   define: {
     __DATA_FILES__: JSON.stringify({ 'data/': filesIn('data'), 'fixtures/': filesIn('fixtures') }),
     __PLANETSHIFT_DEPARTURES__: JSON.stringify(
@@ -28,7 +43,7 @@ export default defineConfig({
     ),
   },
   test: {
-    include: ['test/**/*.test.ts', 'src/**/*.test.ts'],
+    include: ['test/**/*.test.{ts,tsx}', 'src/**/*.test.{ts,tsx}'],
     environment: 'node',
   },
 });

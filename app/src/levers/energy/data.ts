@@ -124,3 +124,24 @@ declare module '../../data/types' {
     coemissions: CoEmissions;
   }
 }
+
+export const ENERGY_LEVERS = [
+  'electricCars',
+  'electricTrucks',
+  'flyLess',
+  'cleanAviationFuel',
+  'cleanShipping',
+  'renewableElectricity',
+  'cleanDataCentres',
+] as const;
+export type EnergyLever = (typeof ENERGY_LEVERS)[number];
+
+/**
+ * 'iea': data centres' electricity beyond 2024, which the SSPs did not foresee, is added to the
+ * baseline (IEA, Energy and AI). 'ssp': the SSPs' own electricity, as published.
+ */
+export type DataCentres = 'iea' | 'ssp';
+
+/** Whether sectors.json was loaded with data for every lever to act on. */
+export const hasSectors = (sectors: Partial<Sectors> | undefined): sectors is Sectors =>
+  sectors?.co2 !== undefined && Object.keys(sectors.co2).length > 0;

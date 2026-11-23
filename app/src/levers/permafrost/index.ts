@@ -2,11 +2,9 @@ import { departs } from '../../config';
 import { warmingFrom } from '../../model/climate';
 import { addSeries, END_YEAR, FIRST_YEAR, subtractPaths } from '../../model/util';
 import type { GasVector } from '../../data/types';
-import { option } from '../define';
 import type { LeverModule } from '../types';
+import { permafrostSpec } from './spec';
 import { permafrostEmissions } from './model';
-
-const ID = 'permafrost';
 
 /** 'on': permafrost releases carbon as the world warms (climate.md), in the baseline and the scenario. */
 export type PermafrostOption = 'off' | 'on';
@@ -29,11 +27,7 @@ interface Memo {
  * change with the scenario is shared out between the families in proportion to their warming.
  */
 export const permafrost: LeverModule = {
-  id: ID,
-  departure: 'permafrost',
-  levers: [],
-  options: [option(ID, 'permafrost', 'pf', ['off', 'on'])],
-  files: [],
+  ...permafrostSpec,
   hooks: {
     baseline: ({ prepared, options, currentYear, band, tYears, temperature }) => {
       const { climate } = prepared.data;
@@ -84,6 +78,4 @@ export const permafrost: LeverModule = {
         : null;
     },
   },
-  ui: {},
-  methodology: { coveredBy: 'climate' },
 };

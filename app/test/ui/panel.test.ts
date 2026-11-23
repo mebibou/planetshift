@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { adoptedCount } from '../../src/controls/levers';
-import { changedOptions } from '../../src/controls/options';
-import { dietMeta } from '../../src/controls/panel';
+import { adoptedCount } from '../../src/controls/panelModel';
+import { changedOptions } from '../../src/controls/panelModel';
+import { dietMeta } from '../../src/controls/panelModel';
 import { PANEL_MODULES } from '../../src/levers/registry';
 import { DEFAULT_OPTIONS } from '../../src/model/api';
 import { BASE_SCENARIO } from '../../src/model/scenarios';

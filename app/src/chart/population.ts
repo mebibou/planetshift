@@ -5,7 +5,8 @@ import { formatNumber, formatTemperature } from '../i18n/format';
 import type { Ssp } from '../data/types';
 import type { ScenarioResult } from '../model/api';
 import { valueAt } from '../app/summaryModel';
-import { VARIANTS, type WorldPopulation } from '../levers/population/model';
+import { VARIANTS } from '../levers/population/data';
+import type { WorldPopulation } from '../levers/population/model';
 import {
   addHover,
   drawAxes,
@@ -109,7 +110,10 @@ export const populationChart = (
   currentYear: number,
   link?: HoverLink,
 ): PopulationChart => {
-  const plotEl = h('div', { class: 'chart-plot' });
+  const plotEl = h('div', {
+    class: 'chart-plot',
+    style: '--plot-h: 140px; --plot-h-narrow: 120px',
+  });
   const caption = h('p', { class: 'chart-caption' }, t('levers.population.chart.caption'));
   const notes = h('p', { class: 'chart-caption population-note', role: 'note' });
   const el = h(

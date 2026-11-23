@@ -1234,7 +1234,7 @@ test('the quick pairs are reached and pressed with the keyboard', async ({ page 
 test('an (i) button shows its text under it, and Escape or a click elsewhere closes it', async ({
   page,
 }) => {
-  await page.goto('/');
+  await open(page);
   const button = page.locator('[data-control="timing"] .info');
   const tip = page.locator('[data-control="timing"] .info-tip');
   await expect(tip).toBeHidden();
@@ -1262,7 +1262,10 @@ test('the contents mark the section and heading being read as the page scrolls',
   expect(id).toMatch(/^method-climate-/);
   await head.scrollIntoViewIfNeeded();
   await page.evaluate((h) => document.getElementById(h)!.scrollIntoView(), id!);
-  await expect(page.locator(`.toc-sub a[href="#${id}"]`)).toHaveAttribute('aria-current', '');
+  await expect(page.locator(`.toc-sub a[href="#${id}"]`)).toHaveAttribute(
+    'aria-current',
+    'location',
+  );
   await expect(page.locator('.toc [aria-current]')).toHaveCount(1);
 });
 

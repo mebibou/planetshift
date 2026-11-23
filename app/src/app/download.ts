@@ -4,6 +4,7 @@ import { causesIn, type Attribution } from '../chart/series';
 import { measureOf, type LayerSpec, type Measure } from '../map/layers';
 import type { TableRow } from '../map/table';
 import type { ChartTab, UiState } from './url';
+import { formatSignificant } from '../i18n/format';
 
 export type Cell = string | number | null | undefined;
 
@@ -326,3 +327,8 @@ export const saveFile = (file: DownloadFile): void => {
   a.remove();
   setTimeout(() => URL.revokeObjectURL(href), 0);
 };
+
+export const formatBytes = (locale: string, bytes: number): string =>
+  bytes >= 1e6
+    ? `${formatSignificant(locale, bytes / 1e6, 2)} MB`
+    : `${formatSignificant(locale, Math.max(bytes / 1e3, 1), 2)} kB`;

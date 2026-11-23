@@ -6,17 +6,13 @@ import { coChange, NO_CO_CHANGE, type CoYear } from '../energy/coemissions';
 import type { CoEmissions, Sectors } from '../energy/data';
 import { gridAt, hasSectors } from '../energy/model';
 import { INDUSTRY_PARTS, type Industry, type IndustrySector, type PartDef } from './data';
+import { hasIndustry, INDUSTRY_LEVERS, type IndustryLever } from './data';
+export { hasIndustry, INDUSTRY_LEVERS, type IndustryLever };
 
 /** Levers on the direct fossil CO₂ of buildings and of industry (industry.md). */
-export const INDUSTRY_LEVERS = ['cleanHeating', 'cleanIndustry'] as const;
-export type IndustryLever = (typeof INDUSTRY_LEVERS)[number];
 
 /** The energy lever whose cleaner grid the heat pumps and clean industry draw on. */
 export const RENEWABLE_ELECTRICITY = 'renewableElectricity';
-
-/** Whether industry.json was loaded with data for the levers to act on. */
-export const hasIndustry = (industry: Partial<Industry> | undefined): industry is Industry =>
-  industry?.co2 !== undefined && Object.keys(industry.co2).length > 0;
 
 /** kg of CO₂ a sector emits in a year under an SSP. */
 export const industryCo2 = (

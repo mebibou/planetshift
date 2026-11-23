@@ -6,11 +6,11 @@ import {
   hasCoEmissions,
   coGases,
 } from '../energy/coemissions';
-import { forcingResponseOf, hasSectors } from '../energy/model';
+import { forcingResponseOf } from '../energy/model';
 import { anyAdopted, lever } from '../define';
 import type { LeverModule } from '../types';
-import { EMPTY_INDUSTRY } from './data';
-import { hasIndustry, INDUSTRY_LEVERS, industryPaths, type IndustryLever } from './model';
+import { industrySpec } from './spec';
+import { INDUSTRY_LEVERS, industryPaths, type IndustryLever } from './model';
 
 const ID = 'industry';
 const KEYS: Record<IndustryLever, string> = { cleanHeating: 'ch', cleanIndustry: 'ci' };
@@ -22,14 +22,7 @@ const LEVERS = INDUSTRY_LEVERS.map((id) => lever(ID, id, KEYS[id]));
  * electricity leaves, from sectors.json, and read coemissions.json, which the energy module loads.
  */
 export const industry: LeverModule = {
-  id: ID,
-  family: 'industry',
-  farm: false,
-  cause: 'fossilIndustry',
-  levers: LEVERS,
-  options: [],
-  files: [{ name: 'industry', empty: EMPTY_INDUSTRY }],
-  available: (data) => hasIndustry(data.industry) && hasSectors(data.sectors),
+  ...industrySpec,
   hooks: {
     world: ({ prepared, options, adoption, currentYear }, { years, tYears, shareAt }) => {
       const { industry, sectors, coemissions, climate } = prepared.data;
@@ -64,6 +57,4 @@ export const industry: LeverModule = {
       };
     },
   },
-  ui: { section: 'levers' },
-  methodology: { page: 'industry' },
 };

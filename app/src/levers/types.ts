@@ -186,6 +186,9 @@ export interface Format {
   percent: (share: number, digits?: number) => string;
 }
 
+/** A module without its hooks: what the interface reads of it, with no model code. */
+export type LeverSpec = Omit<LeverModule, 'hooks'>;
+
 export interface LeverModule {
   id: string;
   /** The family its effect is counted in, in the by-family breakdown; none for a feedback. */

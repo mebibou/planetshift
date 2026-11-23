@@ -1,6 +1,7 @@
 import { anyAdopted, lever } from '../define';
 import type { LeverModule } from '../types';
-import { EMPTY_BREAKDOWN, EMPTY_PRACTICES, PRACTICES, type PracticeId } from './data';
+import { practicesSpec } from './spec';
+import { PRACTICES, type PracticeId } from './data';
 import { practiceCutsOf, practicesKey } from './model';
 
 const ID = 'practices';
@@ -17,17 +18,7 @@ const LEVERS = PRACTICES.map((id) => lever(ID, id, KEYS[id]));
 
 /** Farm practices that cut emissions at their source, one share of each item's intensity. */
 export const practices: LeverModule = {
-  id: ID,
-  family: 'practices',
-  farm: true,
-  cause: 'agriculture',
-  levers: LEVERS,
-  options: [],
-  files: [
-    { name: 'breakdown', empty: EMPTY_BREAKDOWN, deferred: true },
-    { name: 'practices', empty: EMPTY_PRACTICES },
-  ],
-  available: (data, id) => data.practices[id as PracticeId] !== undefined,
+  ...practicesSpec,
   hooks: {
     intensity: ({ prepared, options, adoption }) => {
       const key = practicesKey(options.scope, adoption);
@@ -36,6 +27,4 @@ export const practices: LeverModule = {
         : null;
     },
   },
-  ui: { section: 'levers' },
-  methodology: { page: 'practices' },
 };

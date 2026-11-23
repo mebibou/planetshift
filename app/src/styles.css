@@ -533,10 +533,10 @@ main {
     & > .panel {
       grid-area: panel;
     }
-    & > .summary {
+    & .summary {
       grid-area: summary;
     }
-    & > .map-card {
+    & .map-card {
       grid-area: map;
     }
   }
@@ -546,6 +546,10 @@ main {
     position: static;
     max-height: none;
   }
+  /* About its drawn height until the first result is back, so the panel under it does not jump. */
+  .chart-card[aria-busy='true'] {
+    min-height: 1000px;
+  }
 }
 @media (min-width: 1400px) {
   .explore {
@@ -553,7 +557,7 @@ main {
     grid-template-areas:
       'panel chart summary'
       'panel map summary';
-    & > .summary {
+    & .summary {
       position: sticky;
       top: calc(var(--header-h) + 20px);
       max-height: calc(100vh - var(--header-h) - 32px);
@@ -1262,6 +1266,15 @@ input[type='range']:disabled {
   position: relative;
   width: 100%;
   touch-action: pan-y pinch-zoom;
+  /* Its height until the first result is drawn, so the panel below does not jump. */
+  &:empty {
+    min-height: var(--plot-h);
+  }
+}
+@media (max-width: 600px) {
+  .chart-plot:empty {
+    min-height: var(--plot-h-narrow);
+  }
 }
 .chart-svg {
   display: block;
@@ -1478,6 +1491,12 @@ input[type='range']:disabled {
 .headline-parts {
   font-size: 1.05rem;
   padding-left: 18px;
+}
+
+/* An element drawn by its own code (D3 charts, the map) sits in this wrapper, which takes no box. */
+.drawn,
+.explore-host {
+  display: contents;
 }
 
 /* Methodology */
@@ -1951,6 +1970,9 @@ input[type='range']:disabled {
     outline: 2px solid var(--focus);
     outline-offset: 1px;
   }
+}
+.info-tip:not([data-placed]) {
+  visibility: hidden;
 }
 .info-tip {
   position: fixed;
