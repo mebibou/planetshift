@@ -4,7 +4,7 @@ Planetshift indique, pays par pays, combien de terres agricoles chaque scénario
 
 ## Les terres agricoles aujourd'hui
 
-L'agriculture utilise environ 4,7 milliards d'hectares, un tiers des terres du monde. Cela fait à peu près 1,6 milliard d'hectares de terres cultivées et 3,1 milliards d'hectares de prairies et pâturages permanents. Ces chiffres viennent des données actuelles d'utilisation des terres de FAOSTAT pour 2023.
+L'agriculture utilise environ 4,7 milliards d'hectares, un tiers des terres du monde. Cela fait à peu près 1,6 milliard d'hectares de terres cultivées et 3,1 milliards d'hectares de prairies et pâturages permanents. Ces chiffres viennent des données actuelles d'utilisation des terres de FAOSTAT pour 2023. Our World in Data présente les mêmes données : 36,9 % des terres du monde en 2023 ([graphique](https://ourworldindata.org/grapher/share-of-land-area-used-for-agriculture)).
 
 Les notes antérieures de la FAO donnaient environ 4,8 et 3,2 milliards d'hectares. Elles reposaient sur des versions plus anciennes des mêmes données. Le pipeline lit la surface totale des « prairies et pâturages permanents », pas seulement leur partie cultivée. La différence vient de la révision de la série par FAOSTAT.
 

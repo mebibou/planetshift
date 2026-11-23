@@ -323,6 +323,26 @@ India's intensity is HESTIA's (tier 1): 16.7 kg of methane from flooding per ton
 
 HESTIA's model applies the IPCC's 2019 Refinement to the water regimes and amendments of its Indian rice data. FAOSTAT applies the IPCC's Tier 1 method with its own assumptions on water regimes. The difference is one of method, so the HESTIA value is kept as the better-documented tier. With FAOSTAT's intensity for India, the world total would be about 24.1 Mt.
 
+### Per kilogram, against Poore and Nemecek
+
+Our World in Data shows Poore and Nemecek's (2018) emissions per kilogram of food, split by stage of the supply chain. Their farm stage is the one that compares with Planetshift's intensities, which leave out feed (counted on the crops), land-use change and everything after the farm. World averages weighted by production, from cradle to farm gate, in kg of CO₂-equivalent per kg:
+
+| Item | Planetshift | Poore and Nemecek, farm stage |
+| --- | --- | --- |
+| Beef | 24.7 | 21.9 (dairy herd) to 56.2 (beef herd) |
+| Sheep and goat meat | 21.4 | 27.0 |
+| Pig meat | 1.70 | 2.48 |
+| Poultry meat | 0.88 | 0.93 |
+| Eggs | 0.82 | 1.32 |
+| Milk | 1.19 | 1.51 |
+| Rice | 1.07 per kg of paddy, 1.6 per kg milled | 3.55 |
+| Wheat | 0.46 | 0.82 |
+| Maize | 0.38 | 0.72 |
+| Potatoes | 0.13 | 0.19 |
+| Peas | 0.46 | 0.72 |
+
+Planetshift is lower for every item, by a third to a half for most, and beef lies between their two herds. Three differences explain most of it. Planetshift weighs methane and N₂O with AR6's factors (27 and 273), and Poore and Nemecek with AR5's with climate-carbon feedbacks (34 and 298). Their data are a meta-analysis of studies from around 2010, and Planetshift's come from FAOSTAT's IPCC Tier 1 method and HESTIA. And the units differ: Planetshift's meat is in carcass weight. Rice is furthest apart, for the reasons above and because their paddy emissions come from field measurements.
+
 ## Emissions by source
 
 Each intensity is also split by source in `breakdown.json`: enteric fermentation, manure management, rice, synthetic and organic fertiliser, residues, fuel, electricity, the making of inputs, and other. The split comes from the same computation. The FAOSTAT allocation above keeps each process apart, and the HESTIA rows keep their emission terms. [Farm practices](#method-practices) explains the split and the practices that use it.
@@ -363,6 +383,7 @@ The code is `pipeline/planetshift_pipeline/intensities.py`. Its tables are `pipe
 - FAO, Technical Conversion Factors for Agricultural Commodities: <https://www.fao.org/statistics/en/>.
 - IPCC (2006, refined 2019). Guidelines for National Greenhouse Gas Inventories, volume 4: <https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html>.
 - Poore, J., Nemecek, T. (2018). Reducing food's environmental impacts through producers and consumers. Science 360, 987–992: <https://doi.org/10.1126/science.aaq0216>.
+- Our World in Data, Food: greenhouse gas emissions across the supply chain (Poore and Nemecek, 2018): <https://ourworldindata.org/grapher/food-emissions-supply-chain>.
 - Saunois, M. et al. (2025). The Global Methane Budget 2000–2020. Earth System Science Data 17, 1873–1958: <https://doi.org/10.5194/essd-17-1873-2025>.
 - Tian, H. et al. (2024). Global nitrous oxide budget (1980–2020). Earth System Science Data 16, 2543–2604: <https://doi.org/10.5194/essd-16-2543-2024>.
 - FAO (2025). Greenhouse gas emissions from agrifood systems: global, regional and country trends, 2001–2023. FAOSTAT Analytical Brief 115: <https://doi.org/10.4060/cd7300en>.

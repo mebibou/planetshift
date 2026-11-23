@@ -4,7 +4,7 @@ Planetshift gives, country by country, how much farmland each scenario uses and 
 
 ## Farmland today
 
-Farming uses about 4.7 billion hectares, a third of the world's land. That is roughly 1.6 billion hectares of cropland and 3.1 billion hectares of permanent meadows and pastures. These figures are from FAOSTAT's current land-use data for 2023.
+Farming uses about 4.7 billion hectares, a third of the world's land. That is roughly 1.6 billion hectares of cropland and 3.1 billion hectares of permanent meadows and pastures. These figures are from FAOSTAT's current land-use data for 2023. Our World in Data shows the same data as 36.9% of the world's land area in 2023 ([chart](https://ourworldindata.org/grapher/share-of-land-area-used-for-agriculture)).
 
 FAO's earlier briefs gave about 4.8 and 3.2 billion hectares. They were based on earlier releases of the same data. The pipeline reads the total area of "permanent meadows and pastures", not only the cultivated part. The difference comes from FAOSTAT's revision of the series.
 
