@@ -107,6 +107,28 @@ Les rythmes s'appliquent pendant 30 ans après la libération des terres (`regro
 
 Si toutes les prairies du modèle étaient libérées, la repousse absorberait environ 8,4 milliards de tonnes de CO₂ par an aux rythmes centraux (de 1,9 à 22 milliards sur la fourchette), et davantage avec les terres cultivées pour l'alimentation animale. À titre de comparaison, Hayek et al. (2021) trouvent qu'un passage au régime EAT-Lancet permettrait à la végétation d'origine d'absorber 332 milliards de tonnes de CO₂ d'ici 2050 sur les terres qu'il libère, et un régime végétalien 547 milliards, dans la végétation ; le sol et la litière ajouteraient 135 et 225 milliards. Le chiffre végétalien fait environ 18 milliards de tonnes par an sur 30 ans dans la seule végétation : le chiffre plus bas de Planetshift est donc du même ordre de grandeur ; ses rythmes sont ceux d'une jeune forêt naturelle là où la forêt peut pousser, et nuls sur les parcours secs.
 
+### Les terres nouvellement utilisées : l'absorption à laquelle elles renoncent
+
+Un scénario peut aussi prendre des terres. Une substitution peut ajouter des cultures (remplacer du poisson par des légumineuses utilise des terres que le poisson n'utilisait pas), et un changement déplace la production vers les pays qui exportent des aliments végétaux, qui cultivent alors davantage qu'avant. Ne compter que les terres libérées créditerait ce qu'un scénario libère en ignorant ce qu'il prend : avec la repousse, l'absorption est donc comptée nette, comme un coût d'opportunité carbone (Hayek et al., 2021) :
+
+- Le changement des terres agricoles de chaque pays est d'abord compensé : les cultures qu'il gagne contre les prairies ou cultures qu'il libère. Le solde est soit libéré, soit nouvellement utilisé.
+- Les terres libérées nettes absorbent du CO₂ au rythme du pays, comme ci-dessus.
+- Les terres nouvellement utilisées nettes sont chargées de ce que le même hectare absorberait s'il était laissé à la repousse : le rythme du pays, compté comme CO₂ émis, pendant `regrowthYears` ans à partir de l'année où il est pris, avec la même rampe et la même borne du rythme. Sur 30 ans, la charge fait le rythme × 30 par hectare : environ 310 t de CO₂ au Brésil, 180 en France, 54 aux États-Unis.
+
+La charge est l'absorption perdue, pas le CO₂ du défrichement d'une forêt sur pied. `deforestation.json` donne le CO₂ du défrichement par pays et par produit, mais pas les hectares défrichés : il ne donne donc aucun chiffre par hectare ; et le défrichement lié à un produit dont la production augmente est déjà compté par le module de la déforestation, qui suit la production (voir [Déforestation](#method-deforestation)). Chaque pays du modèle a un rythme dans `land.json` ; un pays absent de la table (une version des données ou les données de test sans lui) prend la médiane des pays de la table, borne par borne, plutôt que rien. Les terres libérées et nouvellement utilisées sont additionnées sur les pays au rythme de chacun : un hectare libéré en Irlande et un hectare pris au Kazakhstan ne s'annulent pas.
+
+Ce que cela change, sur les données réelles avec FaIR et SSP2-4.5 (réchauffement évité, médiane, et 5–95 % en 2100) :
+
+| Scénario, repousse activée | Absorption nette une fois complet (Gt de CO₂ par an) | Évité en 2050 (°C) | Évité en 2100 (°C) |
+| --- | --- | --- | --- |
+| Changement complet, avant | 9,10 | 0,182 | 0,365 (0,194–0,759) |
+| Changement complet, net | 8,70 | 0,179 | 0,361 (0,193–0,743) |
+| Moitié du changement, avant → net | 4,68 → 4,49 | 0,094 → 0,093 | 0,188 → 0,186 |
+| Lait végétal pour le lait, avant → net | 1,18 → 1,13 | 0,043 → 0,042 | 0,086 → 0,085 |
+| Moitié du poisson en légumineuses, avant → net | 0,01 → −0,11 | 0,0005 → −0,0003 | 0,0014 → 0,0002 |
+
+Avec le changement complet, 12 pays cultivent au total plus de terres qu'avant, 48 Mha ensemble ; avec la substitution du poisson, 107 pays, 19 Mha. Sans la repousse, rien ne change.
+
 ## Vérifications
 
 `pipeline/tests/test_land_validation.py` compare le `land.json` construit avec FAOSTAT et la littérature :
@@ -138,7 +160,7 @@ La note de la FAO sur les statistiques des terres 2001–2023 situe les terres c
 - Les rythmes de repousse sont les moyennes par pays et la fourchette de Cook-Patton et al. pour les 30 premières années de repousse naturelle de la forêt, aériennes et souterraines, sans le carbone du sol ni le bois mort.
 - La forêt repousse sur la surface que Cook-Patton et al. cartographient comme capable de la porter, et sur une part des terres cultivées allant de rien à la totalité ; ailleurs (prairies naturelles, parcours secs), les terres libérées n'absorbent rien.
 - Un pays absent de la table de Cook-Patton et al. prend le rythme le plus bas de sa région, ou le rythme le plus bas de la table sur ses seules terres cultivées là où moins d'un dixième de ses terres est boisé.
-- La repousse est une option, désactivée par défaut ; activée, chaque hectare libéré est laissé à la repousse.
+- La repousse est une option, désactivée par défaut ; activée, chaque hectare qu'un pays libère en net est laissé à la repousse, et chaque hectare qu'il utilise en plus en net est chargé de l'absorption à laquelle il renonce, au même rythme.
 
 ## Sources
 

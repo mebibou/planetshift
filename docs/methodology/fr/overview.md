@@ -50,7 +50,7 @@ Sur la carte, la couche des variations montre le changement une fois le changeme
 - Les protéines (ou les calories) par personne restent égales dans chaque pays.
 - La part de chaque pays dans la production mondiale de chaque aliment reste celle d'aujourd'hui, sauf si l'on choisit dans les Options que chaque pays produise lui-même son propre changement.
 - Chaque levier, l'alimentation comprise, progresse linéairement de l'année en cours jusqu'à l'année choisie, puis se maintient.
-- Les terres agricoles libérées sont laissées en l'état, sauf si l'on choisit la repousse dans les Options ; les terres nouvellement utilisées ne sont pas chargées des émissions de leur défrichement.
+- Les terres agricoles libérées sont laissées en l'état, sauf si l'on choisit la repousse dans les Options ; les terres nouvellement utilisées sont alors chargées de l'absorption à laquelle elles renoncent, mais pas du CO₂ du défrichement d'une forêt sur pied au-delà de ce que les données de déforestation lient à la production.
 - Les émissions du reste du monde suivent un scénario publié (SSP2-4.5 par défaut), avec la croissance de l'électricité des centres de données depuis 2024 ajoutée, sauf si les Options en décident autrement ; les leviers d'énergie réduisent des parties du CO₂ fossile de ce scénario.
 - Le pergélisol est laissé de côté sauf s'il est activé, comme dans les scénarios publiés.
 

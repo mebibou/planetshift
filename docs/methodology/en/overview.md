@@ -50,7 +50,7 @@ On the map, the change layer shows the change once the shift is complete, in fix
 - Protein (or calories) per person is kept equal in every country.
 - Each country's share of the world's production of each food stays as it is today, unless you choose under Options that each country produces its own change.
 - Every lever, the diet included, ramps up linearly from the current year to the year chosen, then holds.
-- Freed farmland is left as it is, unless regrowth is chosen under Options; land newly used is not charged with the emissions of clearing it.
+- Freed farmland is left as it is, unless regrowth is chosen under Options; then land newly used is charged the uptake it forgoes, but not the CO₂ of clearing standing forest beyond what the deforestation data tie to production.
 - The rest of the world's emissions follow a published scenario (SSP2-4.5 by default), with the data centres' electricity growth since 2024 added unless Options say otherwise; the energy levers cut parts of that scenario's fossil CO₂.
 - Permafrost is left out unless switched on, as in the published scenarios.
 

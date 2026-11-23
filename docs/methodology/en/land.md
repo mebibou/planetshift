@@ -107,6 +107,28 @@ The rates apply for 30 years after the land is freed (`regrowthYears`), the peri
 
 If all the model's pasture were freed, regrowth would take up about 8.4 billion tonnes of CO₂ a year on the central rates (1.9 to 22 billion across the range), and more with the cropland grown for feed. For comparison, Hayek et al. (2021) find that a shift to the EAT-Lancet diet would let native vegetation take up 332 billion tonnes of CO₂ by 2050 on the land it frees, and a vegan diet 547 billion, in vegetation; soil and litter would add 135 and 225 billion. The vegan figure is about 18 billion tonnes a year over 30 years in vegetation alone, so Planetshift's lower figure is the same order of magnitude; its rates are those of young natural forest where forest can grow, and none on dry rangeland.
 
+### Land newly used: the uptake it forgoes
+
+A scenario can also take land. A swap can add cropland (fish replaced by pulses uses land the fish did not), and a shift moves production to the countries that export plant foods, which then farm more than before. Counting only the land freed would credit what a scenario frees and ignore what it takes, so with regrowth on the uptake is counted net, as a carbon opportunity cost (Hayek et al., 2021):
+
+- Each country's change in farmland is netted first: cropland it gains against pasture or cropland it frees. The net is either freed or newly used.
+- Net freed land takes up CO₂ at the country's rate, as above.
+- Net newly used land is charged what the same hectare would take up if it were left to grow back: the country's rate, as CO₂ emitted, for `regrowthYears` years from the year it is taken, with the same ramp and the same band of the rate. Over 30 years the charge adds up to the rate × 30 per hectare: about 310 t CO₂ in Brazil, 180 in France, 54 in the United States.
+
+The charge is the uptake forgone, not the CO₂ of clearing standing forest. `deforestation.json` gives the clearing CO₂ by country and item but not the hectares cleared, so it gives no figure per hectare; and the clearing tied to an item whose production rises is already counted by the deforestation module, which follows production (see [Deforestation](#method-deforestation)). Every country of the model has a rate in `land.json`; one missing from the table (a build or the fixtures without it) takes the median of the table's countries, band by band, rather than nothing. Freed and newly used land is summed over countries at each country's rate, so a hectare freed in Ireland and one taken in Kazakhstan do not cancel.
+
+What this changes, on the real data with FaIR and SSP2-4.5 (warming avoided, median, and 5–95% in 2100):
+
+| Scenario, regrowth on | Net uptake when complete (Gt CO₂ a year) | Avoided in 2050 (°C) | Avoided in 2100 (°C) |
+| --- | --- | --- | --- |
+| Full shift, before | 9.10 | 0.182 | 0.365 (0.194–0.759) |
+| Full shift, netted | 8.70 | 0.179 | 0.361 (0.193–0.743) |
+| Half shift, before → netted | 4.68 → 4.49 | 0.094 → 0.093 | 0.188 → 0.186 |
+| Dairy to plant milk, before → netted | 1.18 → 1.13 | 0.043 → 0.042 | 0.086 → 0.085 |
+| Half the fish to legumes, before → netted | 0.01 → −0.11 | 0.0005 → −0.0003 | 0.0014 → 0.0002 |
+
+Under the full shift, 12 countries farm more land in all than before, 48 Mha together; under the fish swap, 107 countries, 19 Mha. With regrowth off nothing changes.
+
 ## Checks
 
 `pipeline/tests/test_land_validation.py` compares the built `land.json` with FAOSTAT and the literature:
@@ -138,7 +160,7 @@ FAO's land statistics brief for 2001–2023 puts cropland at 1.57 billion hectar
 - Regrowth rates are Cook-Patton et al.'s country means and range for the first 30 years of natural forest regrowth, above and below ground, without soil carbon or dead wood.
 - Forest grows back on the area Cook-Patton et al. map as able to support it, and on between none and all of the cropland; elsewhere (natural grassland, dry rangeland) freed land takes up nothing.
 - A country missing from Cook-Patton et al.'s table takes the lowest rate of its region, or the table's lowest rate on its cropland only where less than a tenth of its land is forest.
-- Regrowth is an option, off by default; when on, every freed hectare is left to grow back.
+- Regrowth is an option, off by default; when on, every hectare a country frees in net is left to grow back, and every hectare it newly uses in net is charged the uptake it forgoes, at the same rate.
 
 ## Sources
 
