@@ -8,9 +8,9 @@
   color: var(--ink);
   box-shadow: 0 12px 40px rgb(0 0 0 / 25%);
   overflow: auto;
-}
-.tour::backdrop {
-  background: rgb(0 0 0 / 40%);
+  &::backdrop {
+    background: rgb(0 0 0 / 40%);
+  }
 }
 .tour-label,
 .tour-progress {
@@ -48,9 +48,9 @@
   color: var(--ink);
   font-size: 0.88rem;
   cursor: pointer;
-}
-.tour-button:hover {
-  background: var(--accent-soft);
+  &:hover {
+    background: var(--accent-soft);
+  }
 }
 .tour-next,
 .tour-next:hover {
