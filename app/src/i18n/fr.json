@@ -36,26 +36,39 @@
     "basis": {
       "label": "Maintenus égaux",
       "protein": "Protéines",
-      "kcal": "Calories"
+      "kcal": "Calories",
+      "hint": "Ce que les végétaux égalent : les protéines, ou les calories, des aliments animaux qu'ils remplacent."
     },
     "replacement": {
       "label": "Remplacés par",
       "current": "Les végétaux riches en protéines d'aujourd'hui",
       "legumes": "Surtout des légumineuses",
-      "plantMilk": "Boissons soja et avoine"
+      "plantMilk": "Boissons soja et avoine",
+      "hint": "Quels végétaux prennent leur place : le mélange actuel de végétaux riches en protéines, surtout des légumineuses, ou des boissons au soja et à l'avoine (moitié soja, moitié avoine)."
     },
     "rampEnd": "Tous les leviers en place en",
     "where": {
       "label": "Où",
       "world": "Partout",
-      "highIncome": "Pays à revenu élevé"
+      "highIncome": "Pays à revenu élevé",
+      "hint": "Partout, ou seulement dans les pays à revenu élevé, où l'on mange le plus d'aliments animaux."
     },
     "advanced": "Régler chaque aliment animal",
     "groupsHint": "Un aliment réglé ici garde sa propre part. Les autres aliments suivent le curseur principal.",
     "groupsReset": "Suivre de nouveau le curseur principal",
     "rampHint": "Chaque levier, l'alimentation comprise, monte à partir d'aujourd'hui et est entièrement en place cette année-là.",
     "horizon": "Résultats jusqu'en",
-    "info": "À propos : {name}"
+    "info": "À propos : {name}",
+    "shiftHint": "La part des aliments animaux (viande, produits laitiers, œufs, poisson) remplacée par des végétaux, atteinte entièrement l'année choisie plus haut. Elle réduit le méthane et le N₂O des animaux d'élevage et libère des terres agricoles.",
+    "groupHints": {
+      "ruminantMeat": "Les bovins, moutons et chèvres rotent du méthane et demandent le plus de terres. Le bœuf et l'agneau évitent le plus de réchauffement de tous les aliments animaux.",
+      "pigMeat": "Les porcs rotent peu de méthane. L'essentiel de ce qu'évite la viande de porc est le méthane de leurs effluents et les cultures qui les nourrissent.",
+      "poultryMeat": "Les poulets transforment bien leur alimentation en viande : la volaille évite donc peu de réchauffement, surtout celui des cultures qui la nourrissent.",
+      "dairy": "Les vaches laitières rotent du méthane comme les bovins à viande, mais un litre de lait en porte bien moins qu'un kilo de bœuf.",
+      "eggs": "Comme la volaille, les œufs évitent peu de réchauffement, surtout celui des cultures qui nourrissent les poules.",
+      "seafood": "Les poissons sauvages n'émettent presque rien à la ferme, car le carburant des bateaux ne compte qu'avec les intrants (Autres options). Les végétaux qui les remplacent peuvent donc ajouter un peu de réchauffement. Les dégâts de la pêche sur la vie marine ne sont pas comptés."
+    },
+    "horizonHint": "L'année où finissent les graphiques, et celle où se lisent le résumé et les chiffres de chaque levier."
   },
   "levers": {
     "title": "Leviers",

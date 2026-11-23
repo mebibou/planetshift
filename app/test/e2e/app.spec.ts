@@ -1405,3 +1405,15 @@ test('the Download menu opens, moves and closes from the keyboard', async ({ pag
   await page.locator('#levers-title').click();
   await expect(page.locator('.chart-card [role="menu"]')).toBeHidden();
 });
+
+test('every slider and switch of the panel has a note behind an (i)', async ({ page }) => {
+  await open(page);
+  const controls = page.locator('aside.panel .slider, aside.panel .segmented');
+  const count = await controls.count();
+  expect(count).toBeGreaterThan(20);
+  for (let i = 0; i < count; i++)
+    await expect(controls.nth(i).locator('.info'), `control ${i}`).toHaveCount(1);
+  await expect(page.locator('#group-seafood').locator('..').locator('.info-tip')).toContainText(
+    'Wild fish',
+  );
+});

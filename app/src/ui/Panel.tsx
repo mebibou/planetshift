@@ -194,6 +194,12 @@ export const SidePanel = (props: SidePanelProps) => {
           legend={t('controls.horizon')}
           options={HORIZONS.map((v) => ({ value: v, label: v }))}
           value={horizon}
+          info={
+            <Info
+              label={t('controls.info', { name: t('controls.horizon') })}
+              text={t('controls.horizonHint')}
+            />
+          }
           onChange={props.setHorizon}
         />
       </div>
