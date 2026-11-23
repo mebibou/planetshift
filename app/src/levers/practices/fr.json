@@ -29,6 +29,6 @@
   },
   "farmEnergy": {
     "title": "Énergie propre à la ferme",
-    "description": "Machines, irrigation et bâtiments sans énergie fossile."
+    "description": "Machines, irrigation et bâtiments sans énergie fossile. N'agit que dans le périmètre du berceau à la sortie de ferme."
   }
 }

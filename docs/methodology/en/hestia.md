@@ -72,11 +72,12 @@ Processed products (oils, meals, refined rice, flour, wine) are not used. Their 
 
 ## From emissions to three gases
 
-Every emission term of the glossary that starts with `co2ToAir`, `ch4ToAir` or `n2OToAir` is counted as that gas, in kg of the gas. It is not converted to CO₂-equivalent (CO₂e, the gases weighted by their warming over 100 years). Each term falls in one of four categories:
+Every emission term of the glossary that starts with `co2ToAir`, `ch4ToAir` or `n2OToAir` is counted as that gas, in kg of the gas. It is not converted to CO₂-equivalent (CO₂e, the gases weighted by their warming over 100 years). Each term falls in one of five categories:
 
 | Category | Terms | Counted in |
 | --- | --- | --- |
-| On farm | `ch4ToAir`: `EntericFermentation`, `Excreta`, `FloodedRice`, `CropResidueBurning`, `CropResidueDecomposition`, `FuelCombustion`, `AquacultureSystems`, `WasteTreatment`, `SoilFlux`, `Reservoirs`, `IndustrialProcessesNonFossil`; `n2OToAir`: `InorganicFertiliser`, `OrganicFertiliser`, `Excreta`, `CropResidueDecomposition`, `CropResidueBurning`, `FuelCombustion`, `AquacultureSystems`, `WasteTreatment`, `IndustrialProcesses` (each direct and indirect), `SoilFlux`; `co2ToAir`: `FuelCombustion`, `UreaHydrolysis`, `LimeNeutralisation`, `WasteTreatment` | both scopes |
+| On farm | `ch4ToAir`: `EntericFermentation`, `Excreta`, `FloodedRice`, `CropResidueBurning`, `CropResidueDecomposition`, `AquacultureSystems`, `WasteTreatment`, `SoilFlux`, `Reservoirs`, `IndustrialProcessesNonFossil`; `n2OToAir`: `InorganicFertiliser`, `OrganicFertiliser`, `Excreta`, `CropResidueDecomposition`, `CropResidueBurning`, `AquacultureSystems`, `WasteTreatment`, `IndustrialProcesses` (each direct and indirect), `SoilFlux`; `co2ToAir`: `UreaHydrolysis`, `LimeNeutralisation`, `WasteTreatment` | both scopes |
+| Farm energy | every `…FuelCombustion…` term: the fuel burnt on the farm, by tractors, pumps and heating | cradle to farm gate |
 | Background | `ch4ToAirInputsProductionFossil`, `ch4ToAirInputsProductionNonFossil`, `n2OToAirInputsProduction`, `co2ToAirInputsProduction`: the emissions of producing each input, one row per input | cradle to farm gate, except inputs of agricultural origin |
 | Land use | every `…StockChange…`, `…LandUseChange…` and `…ManagementChange…` term (biomass, dead organic matter, soil carbon, diminishing soil carbon N₂O), `…NaturalVegetationBurning…`, `…OrganicSoilBurning…`, `…OrganicSoilCultivation…` | neither |
 | Not counted | `co2ToAirCropResidueDecomposition` and `co2ToAirSoilFlux` (biogenic CO₂), `n2OToAirBackgroundSoilFluxDirect` (natural background flux) | neither |
@@ -89,8 +90,8 @@ Land use is left out here because land-use change has its own lever, [Deforestat
 
 ## The two scopes, and why feed is excluded
 
-- `farmGate`: on-farm emissions only.
-- `cradleToFarmGate`: on-farm emissions plus the emissions of producing the farm's inputs (fertilisers, pesticides, fuel, electricity, machinery, plastics, water, lime), **except inputs of agricultural origin**: feed, seed, live animals and other crops or animal products.
+- `farmGate`: on-farm emissions of the farm's biological processes, without the fuel burnt on the farm.
+- `cradleToFarmGate`: on-farm emissions, the fuel burnt on the farm, and the emissions of producing the farm's inputs (fertilisers, pesticides, fuel, electricity, machinery, plastics, water, lime), **except inputs of agricultural origin**: feed, seed, live animals and other crops or animal products.
 
 Feed is excluded because Planetshift counts it elsewhere. When the shift removes animals, the feed they would have eaten is removed too. Its crops' emissions then fall through the crops' own intensities. Adding the feed's background emissions to the animal product would count the same crop twice.
 

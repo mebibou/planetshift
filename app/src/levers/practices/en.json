@@ -29,6 +29,6 @@
   },
   "farmEnergy": {
     "title": "Clean farm energy",
-    "description": "Machinery, irrigation and buildings run without fossil fuel."
+    "description": "Machinery, irrigation and buildings run without fossil fuel. Acts in the cradle-to-farm-gate scope only."
   }
 }

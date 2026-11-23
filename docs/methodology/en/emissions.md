@@ -9,7 +9,7 @@ This page explains where each intensity comes from, what it covers, and how the 
 The app offers two scopes:
 
 - **Farm gate** (the default): the emissions of the farm's biological processes. These are enteric fermentation (the methane made in ruminants' stomachs as they digest), manure management, manure left on pasture and spread on fields, synthetic fertiliser, crop residues, rice paddies and the burning of residues.
-- **Cradle to farm gate**: the same, plus the farm's energy use (fuel and electricity) and the making of fertilisers and pesticides.
+- **Cradle to farm gate**: the same, plus the farm's energy use (fuel and electricity) and the making of fertilisers and pesticides. The fuel burnt on the farm counts here, whichever source the intensity comes from.
 
 Neither scope includes land-use change, drained organic soils, or anything after the farm: processing, transport, retail, cooking and waste.
 
@@ -311,9 +311,9 @@ From FAOSTAT's data alone (tier 3 everywhere, before the other tiers are merged)
 
 Farm-gate methane is within the published budgets. Enteric fermentation and manure management together give 114 Mt: 98 and 9 Mt from the animals raised for food, and 6 Mt from the animals that are not. The Global Methane Budget gives 112 (107–118) Tg a year for 2010–2019 (Saunois et al., 2025).
 
-FAO's farm-gate total for 2023 is 8.1 Gt CO₂-equivalent (FAOSTAT Analytical Brief 115). It includes drained organic soils and on-farm electricity, which Planetshift leaves out.
+FAO's farm-gate total for 2023 is 8.1 Gt CO₂-equivalent (FAOSTAT Analytical Brief 115). It includes drained organic soils, which Planetshift leaves out, and the farm's energy use, fuel and electricity, which Planetshift counts from cradle to farm gate only.
 
-Direct agricultural N₂O was 6.1 Mt in 2020 (3.9 Tg N, Tian et al., 2024). Planetshift's 8.1 Mt also holds indirect emissions, as FAOSTAT's does.
+Direct agricultural N₂O was 6.1 Mt in 2020 (3.9 Tg N, Tian et al., 2024). Planetshift's 8.0 Mt also holds indirect emissions, as FAOSTAT's does.
 
 ### Rice methane
 
