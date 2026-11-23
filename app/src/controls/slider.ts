@@ -10,6 +10,8 @@ export interface SliderSpec {
   format: (v: number) => string;
   /** Values marked under the track, with their labels. */
   marks?: { value: number; label: string }[];
+  /** An (i) beside the label, explaining the slider. */
+  info?: Node | null;
   onInput: (v: number) => void;
 }
 
@@ -22,7 +24,7 @@ const position = (value: number, min: number, max: number) =>
   `${((value - min) / (max - min)) * 100}%`;
 
 export const slider = (spec: SliderSpec): Control<number> => {
-  const { id, label, min, max, step, value, format, marks = [], onInput } = spec;
+  const { id, label, min, max, step, value, format, marks = [], info, onInput } = spec;
   const output = h('output', { for: id, class: 'slider-value' }, format(value));
   const listId = `${id}-marks`;
   const input = h('input', {
@@ -48,7 +50,12 @@ export const slider = (spec: SliderSpec): Control<number> => {
     el: h(
       'div',
       { class: 'slider' },
-      h('div', { class: 'slider-head' }, h('label', { for: id }, label), output),
+      h(
+        'div',
+        { class: 'slider-head' },
+        h('span', { class: 'slider-label' }, h('label', { for: id }, label), info ?? null),
+        output,
+      ),
       input,
       marks.length
         ? h('datalist', { id: listId }, ...marks.map((m) => h('option', { value: m.value })))

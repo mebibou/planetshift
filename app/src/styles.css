@@ -593,6 +593,11 @@ main {
     font-size: 0.92rem;
   }
 }
+.slider-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 .slider-value {
   font-variant-numeric: tabular-nums;
   font-weight: 700;
@@ -621,6 +626,9 @@ main {
   padding: 0;
   min-width: 0;
   & legend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-weight: 700;
     font-size: 0.92rem;
     padding: 0;
@@ -1713,15 +1721,12 @@ input[type='range']:disabled {
     gap: 2px;
     padding: 2px;
   }
-  & span {
+  & .segmented-options span {
     padding: 2px 8px;
     min-height: 0;
     line-height: 20px;
     font-size: 0.8rem;
   }
-}
-.timing .hint {
-  margin: 4px 0 0;
 }
 .cause-section {
   margin-top: 10px;
@@ -1803,9 +1808,63 @@ input[type='range']:disabled {
   display: flex;
   align-items: baseline;
   gap: 8px;
+  &:empty {
+    display: none;
+  }
   & .hint {
     margin: 0;
   }
+}
+
+/* An (i) button and the popover it opens */
+.info-wrap {
+  display: inline-flex;
+  vertical-align: middle;
+}
+.info {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--muted);
+  font:
+    italic 700 0.7rem/1 Georgia,
+    serif;
+  cursor: pointer;
+  /* A larger hit area than the drawn circle, for touch. */
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+  }
+  &:hover,
+  &:focus-visible {
+    color: var(--ink);
+    border-color: var(--muted);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+}
+.info-tip {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  max-width: min(300px, calc(100vw - 12px));
+  padding: 8px 10px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.4;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--ink) 14%, transparent);
 }
 
 /* Quick 0% / 100% pairs: beside a group's summary, a cause's heading and the Levers heading */

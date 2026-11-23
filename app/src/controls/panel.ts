@@ -5,6 +5,7 @@ import { formatPercent } from '../i18n/format';
 import type { Basis, Replacement, Scenario, Where } from '../model/api';
 import { DIET_GROUP } from './adoption';
 import { group, worthPill } from './group';
+import { info } from './info';
 import { quickPair } from './quick';
 import { segmented } from './segmented';
 import { slider, type Control } from './slider';
@@ -172,15 +173,11 @@ export const timingControl = (ctx: PanelContext): Control<Scenario> => {
     marks: [2030, 2035, 2040, 2050]
       .filter((y) => y > currentYear)
       .map((y) => ({ value: y, label: String(y) })),
+    info: info(t('controls.info', { name: t('controls.rampEnd') }), t('controls.rampHint')),
     onInput: (rampEnd) => setScenario((s) => ({ ...s, rampEnd })),
   });
   return {
-    el: h(
-      'div',
-      { class: 'timing', 'data-control': 'timing' },
-      ramp.el,
-      h('p', { class: 'hint' }, t('controls.rampHint')),
-    ),
+    el: h('div', { class: 'timing', 'data-control': 'timing' }, ramp.el),
     set: (s) => ramp.set(s.rampEnd),
   };
 };

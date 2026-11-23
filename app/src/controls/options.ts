@@ -4,6 +4,7 @@ import type { Options } from '../model/api';
 import { OPTIONS } from '../model/options';
 import { DEFAULT_OPTIONS } from '../model/options';
 import { group } from './group';
+import { info } from './info';
 import { segmented } from './segmented';
 import type { Control } from './slider';
 
@@ -27,7 +28,7 @@ export const optionsPanel = (
       legend: t(`${texts}.label`),
       options: values.map((v) => ({ value: v, label: t(`${texts}.${v}`) })),
       value: valueOf(options, field),
-      hint: t(`${texts}.hint`),
+      info: info(t('controls.info', { name: t(`${texts}.label`) }), t(`${texts}.hint`)),
       onChange: (v) => setOptions((o) => ({ ...o, [field]: v })),
     }),
   }));

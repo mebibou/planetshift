@@ -50,7 +50,8 @@
     "groupsHint": "Un aliment réglé ici garde sa propre part ; les autres suivent le curseur principal.",
     "groupsReset": "Suivre de nouveau le curseur principal",
     "rampHint": "Chaque levier, l'alimentation comprise, se met en place à partir d'aujourd'hui et l'est entièrement cette année-là.",
-    "horizon": "Résultats jusqu'en"
+    "horizon": "Résultats jusqu'en",
+    "info": "À propos : {name}"
   },
   "levers": {
     "title": "Leviers",

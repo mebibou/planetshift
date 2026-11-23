@@ -7,12 +7,13 @@ export interface SegmentedSpec<V extends string> {
   options: { value: V; label: string }[];
   value: V;
   onChange: (v: V) => void;
-  hint?: string;
+  /** An (i) beside the legend, explaining the choice. */
+  info?: Node | null;
 }
 
 /** A labelled group of radio buttons drawn as a switch: arrow keys move between them. */
 export const segmented = <V extends string>(spec: SegmentedSpec<V>): Control<V> => {
-  const { name, legend, options, value, onChange, hint } = spec;
+  const { name, legend, options, value, onChange, info } = spec;
   const inputs = options.map((o) =>
     h('input', {
       type: 'radio',
@@ -27,7 +28,7 @@ export const segmented = <V extends string>(spec: SegmentedSpec<V>): Control<V> 
     el: h(
       'fieldset',
       { class: 'segmented', 'data-control': name },
-      h('legend', {}, legend),
+      h('legend', {}, legend, info ?? null),
       h(
         'div',
         { class: 'segmented-options' },
@@ -35,7 +36,6 @@ export const segmented = <V extends string>(spec: SegmentedSpec<V>): Control<V> 
           h('label', { for: `${name}-${o.value}` }, inputs[i] ?? null, h('span', {}, o.label)),
         ),
       ),
-      hint ? h('p', { class: 'hint' }, hint) : null,
     ),
     set: (v) => inputs.forEach((input) => (input.checked = input.value === v)),
   };
