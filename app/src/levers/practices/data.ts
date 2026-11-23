@@ -8,7 +8,8 @@ export const EMISSION_SOURCES = [
   'syntheticFertiliser',
   'organicFertiliser',
   'residues',
-  'energy',
+  'fuel',
+  'electricity',
   'inputsManufacture',
   'other',
 ] as const;

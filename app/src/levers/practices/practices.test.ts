@@ -27,6 +27,10 @@ describe('practices', () => {
   it.each(Object.entries(GASES_CUT))('%s alone cuts its own gases only', (id, gases) =>
     expectOwnGases(id, gases),
   );
+  it('farmEnergy acts in the cradle-to-farm-gate scope only, where the fuel is counted', () => {
+    expect(lever('farmEnergy', 1, {}, { scope: 'farmGate' }).summary.avoided.co2).toBe(0);
+    expect(lever('farmEnergy').summary.avoided.co2).toBeGreaterThan(0);
+  });
   const enteric = (cut: number, groups?: Practice['groups']): PracticeCut => ({
     practice: {
       sources: ['enteric'],

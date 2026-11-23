@@ -125,10 +125,37 @@ def test_breakdown_uses_the_known_seafood_split():
     )
     out = B.build(merged, empty, no_hestia, {}, None, None, SF.breakdown_profiles())
     assert out["world"]["2761"]["cradleToFarmGate"] == {
-        "co2": {"energy": 1.0},
+        "co2": {"fuel": 1.0},
         "n2o": {"other": 1.0},
     }
-    assert out["world"]["2762"]["cradleToFarmGate"] == {"co2": {"energy": 1.0}}
+    assert out["world"]["2762"]["cradleToFarmGate"] == {"co2": {"fuel": 1.0}}
+
+
+def test_fish_farms_split_their_energy_co2_between_electricity_and_fuel():
+    factors = pd.DataFrame(
+        {
+            "system": ["capture", "aquaculture"],
+            "group": ["smallPelagic", "carp"],
+            "fuel_l_per_t": [100.0, 0.0],
+            "electricity_mj_per_t": [0.0, 3600.0],
+            "diesel_mj_per_t": [0.0, 0.0],
+            "petrol_mj_per_t": [0.0, 0.0],
+        }
+    )
+    production = pd.DataFrame(
+        {
+            "fbs_code": [2761, 2762, 2762],
+            "system": ["capture", "aquaculture", "capture"],
+            "group": ["smallPelagic", "carp", "smallPelagic"],
+            "tonnes": [10.0, 10.0, 10.0],
+        }
+    )
+    shares = SF.electricity_shares(production, factors)
+    capture = 100 * (SF.FUEL_COMBUSTION + SF.FUEL_UPSTREAM)
+    farmed = 3600 * SF.GRID
+    assert shares[2761] == 0.0
+    assert shares[2762] == pytest.approx(farmed / (farmed + capture))
+    assert SF.co2_sources(0.0) == {"fuel": 1.0}
 
 
 def test_land_gives_seafood_neither_pasture_nor_cropland():

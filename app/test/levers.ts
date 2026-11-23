@@ -28,11 +28,16 @@ export const run = (scenario: Partial<Scenario> = {}, options: Partial<Options> 
     CURRENT_YEAR,
   );
 
+/** The options a lever needs to act: farm energy cuts fuel, which only cradle to farm gate counts. */
+export const ACTS_WITH: Readonly<Partial<Record<string, Partial<Options>>>> = {
+  farmEnergy: { scope: 'cradleToFarmGate' },
+};
+
 export const lever = (
   id: string,
   adoption = 1,
   scenario: Partial<Scenario> = {},
-  options: Partial<Options> = {},
+  options: Partial<Options> = ACTS_WITH[id] ?? {},
 ) => run({ ...scenario, levers: { [id]: adoption } }, options);
 
 export const w2050 = (r: ScenarioResult) => r.summary.avoidedWarming2050.median;

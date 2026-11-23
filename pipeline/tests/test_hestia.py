@@ -234,4 +234,4 @@ def test_fuel_burnt_on_the_farm_counts_from_cradle_to_farm_gate_only():
     assert cradle["co2"] == pytest.approx(
         sum(r["value"] for r in fuel if r["term"]["@id"].startswith("co2"))
     )
-    assert {hestia.source_of(r["term"]["@id"]) for r in fuel} == {"energy"}
+    assert {hestia.source_of(r["term"]["@id"]) for r in fuel} == {"fuel"}

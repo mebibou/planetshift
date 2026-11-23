@@ -30,11 +30,11 @@ RICE = json.loads(
         ("n2OToAirCropResidueDecompositionDirect", [], "residues"),
         ("n2OToAirCropResidueBurningIndirect", [], "residues"),
         ("ch4ToAirCropResidueBurning", [], "residues"),
-        ("co2ToAirFuelCombustion", [], "energy"),
-        ("ch4ToAirFuelCombustion", [], "energy"),
-        ("n2OToAirFuelCombustionIndirect", [], "energy"),
-        ("co2ToAirInputsProduction", ["fuel"], "energy"),
-        ("ch4ToAirInputsProductionFossil", ["electricity"], "energy"),
+        ("co2ToAirFuelCombustion", [], "fuel"),
+        ("ch4ToAirFuelCombustion", [], "fuel"),
+        ("n2OToAirFuelCombustionIndirect", [], "fuel"),
+        ("co2ToAirInputsProduction", ["fuel"], "fuel"),
+        ("ch4ToAirInputsProductionFossil", ["electricity"], "electricity"),
         ("co2ToAirInputsProduction", ["inorganicFertiliser"], "inputsManufacture"),
         ("n2OToAirInputsProduction", ["pesticideAI"], "inputsManufacture"),
         ("ch4ToAirInputsProductionNonFossil", ["material"], "inputsManufacture"),
@@ -97,8 +97,8 @@ def test_rounded_shares_sum_to_one_and_drop_zeros():
 
 
 def test_shares_ignore_negative_parts():
-    assert B.shares({"energy": 3.0, "other": -1.0}) == {"energy": 1.0}
-    assert B.shares({"energy": 0.0}) is None
+    assert B.shares({"fuel": 3.0, "other": -1.0}) == {"fuel": 1.0}
+    assert B.shares({"fuel": 0.0}) is None
 
 
 def cell(iso3, code, tier, source, ch4=1.0, n2o=0.0, co2=0.0, scope="farmGate"):
@@ -211,3 +211,44 @@ def test_primaries_and_proxies_parse_the_source_text():
     ]
     assert B.proxy_of("proxy 2513: https://hestia.earth/x") == 2513
     assert B.proxy_of("median of cereals worldwide") is None
+
+
+def gn_rows(rows):
+    return pd.DataFrame(rows, columns=["area_code", "item_code", "element_code", "year", "value"])
+
+
+def test_electricity_shares_take_each_country_s_latest_year_and_the_world_s_elsewhere():
+    gn = gn_rows(
+        [
+            (1, B.ELECTRICITY, 7273, 2021, 10.0),
+            (1, B.ELECTRICITY, 7273, 2022, 30.0),
+            (1, B.TOTAL_ENERGY, 7273, 2022, 100.0),
+            (2, B.ELECTRICITY, 7273, 2022, 10.0),
+            (2, B.TOTAL_ENERGY, 7273, 2022, 100.0),
+            (2, B.TOTAL_ENERGY, 7225, 2022, 5.0),
+        ]
+    )
+    shares = B.electricity_shares(gn, {1: "AAA", 2: "BBB", 3: "CCC"})
+    assert shares[("AAA", "co2")] == pytest.approx(0.3)
+    assert shares[("BBB", "co2")] == pytest.approx(0.1)
+    assert shares[("CCC", "co2")] == pytest.approx(0.2)
+    assert shares[("BBB", "ch4")] == 0.0
+    assert shares[("AAA", "n2o")] == 0.0
+
+
+def test_split_energy_keeps_the_kg_and_leaves_other_sources():
+    frame = pd.DataFrame(
+        {
+            "iso3": ["AAA", "AAA"],
+            "fbs_code": [2511, 2511],
+            "scope": ["cradleToFarmGate"] * 2,
+            "gas": ["co2", "co2"],
+            "source": ["energy", "inputsManufacture"],
+            "kg": [100.0, 40.0],
+        }
+    )
+    out = B.split_energy(frame, {("AAA", "co2"): 0.25})
+    by_source = out.groupby("source")["kg"].sum().to_dict()
+    assert by_source == pytest.approx(
+        {"electricity": 25.0, "fuel": 75.0, "inputsManufacture": 40.0}
+    )

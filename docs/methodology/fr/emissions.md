@@ -325,7 +325,7 @@ Le modèle de HESTIA applique l'affinement de 2019 du GIEC aux régimes hydrique
 
 ## Émissions par source
 
-Chaque intensité est aussi répartie par source dans `breakdown.json` : fermentation entérique, gestion des effluents, riz, engrais de synthèse et organiques, résidus, énergie, fabrication des intrants, et autres. La répartition vient du même calcul. L'allocation de FAOSTAT ci-dessus garde chaque processus séparé, et les lignes de HESTIA gardent leurs termes d'émission. La page [Pratiques agricoles](#method-practices) explique cette répartition et les pratiques qui l'utilisent.
+Chaque intensité est aussi répartie par source dans `breakdown.json` : fermentation entérique, gestion des effluents, riz, engrais de synthèse et organiques, résidus, carburant, électricité, fabrication des intrants, et autres. La répartition vient du même calcul. L'allocation de FAOSTAT ci-dessus garde chaque processus séparé, et les lignes de HESTIA gardent leurs termes d'émission. La page [Pratiques agricoles](#method-practices) explique cette répartition et les pratiques qui l'utilisent.
 
 ## Code et tables
 

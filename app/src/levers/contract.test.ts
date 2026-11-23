@@ -2,7 +2,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { lever, run } from '../../test/levers';
+import { ACTS_WITH, lever, run } from '../../test/levers';
 import { CURRENT_YEAR } from '../../test/model/fixtures';
 import { loadRealData } from '../../test/model/realData';
 import { flatten, placeholders } from '../i18n/dict';
@@ -103,7 +103,7 @@ describe.each(LEVERS.map((l) => [l.id, l] as const))('lever %s', (id, def) => {
     expect([def.min, def.max, def.default, def.unit]).toEqual([0, 1, 0, 'share']));
 
   it('changes nothing at 0', () => {
-    const none = run({ shift: 0.3 });
+    const none = run({ shift: 0.3 }, ACTS_WITH[id]);
     const r = lever(id, 0, { shift: 0.3 });
     expect(r.summary).toEqual(none.summary);
     expect(r.countries).toEqual(none.countries);
@@ -143,7 +143,7 @@ describe.skipIf(real === null)('every module on the real data', () => {
           runScenario(
             data,
             { ...BASE_SCENARIO, levers: { [id]: a } },
-            DEFAULT_OPTIONS,
+            { ...DEFAULT_OPTIONS, ...ACTS_WITH[id] },
             CURRENT_YEAR,
           ),
         ),

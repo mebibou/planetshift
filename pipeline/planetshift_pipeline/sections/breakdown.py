@@ -25,13 +25,20 @@ def build(b: Build) -> None:
         code: [p for p, _ in extraction.get(code, [])] + proxies.get(code, [])
         for code in {*proxies, *extraction}
     }
+    shares = B.electricity_shares(b.read("GN", b.year - 4, b.year), b.iso3)
+    fishstat = b.fishstat
+    seafood = (
+        Sf.classified(Sf.window(fishstat, b.year), Sf.load_isscaap())
+        if fishstat is not None
+        else None
+    )
     data = B.build(
         b.merged,
-        B.faostat_frame(emissions, b.iso3),
+        B.split_energy(B.faostat_frame(emissions, b.iso3), shares),
         hestia,
         weights,
         produced,
         related,
-        Sf.breakdown_profiles(),
+        Sf.breakdown_profiles(seafood),
     )
     write(b.out, "breakdown.json", data)

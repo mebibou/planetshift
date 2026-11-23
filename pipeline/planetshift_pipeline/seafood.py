@@ -186,11 +186,37 @@ def fed_aquaculture(
     return fed.groupby("iso3")["tonnes"].sum() / YEARS
 
 
-def breakdown_profiles(items: tuple[int, ...] = ITEMS) -> dict[tuple, dict[str, dict]]:
+def electricity_shares(production: pd.DataFrame, factors: pd.DataFrame) -> dict[int, float]:
+    """fbs_code -> the share of its energy CO2 that is the electricity of fish farms, over the
+    world's production of each group; capture burns fuel only."""
+    rows = (
+        production.groupby(["fbs_code", "system", "group"], as_index=False)["tonnes"]
+        .sum()
+        .merge(factors, on=["system", "group"])
+    )
+    electricity = rows["tonnes"] * rows["electricity_mj_per_t"] * GRID
+    fuel = rows["tonnes"] * (
+        rows["fuel_l_per_t"] * (FUEL_COMBUSTION + FUEL_UPSTREAM)
+        + rows["diesel_mj_per_t"] * DIESEL
+        + rows["petrol_mj_per_t"] * PETROL
+    )
+    sums = pd.DataFrame({"fbs_code": rows["fbs_code"], "e": electricity, "all": electricity + fuel})
+    totals = sums.groupby("fbs_code")[["e", "all"]].sum()
+    return {int(c): float(r.e / r["all"]) for c, r in totals.iterrows() if r["all"] > 0}
+
+
+def co2_sources(electricity: float) -> dict[str, float]:
+    return {k: v for k, v in {"fuel": 1 - electricity, "electricity": electricity}.items() if v > 0}
+
+
+def breakdown_profiles(
+    production: pd.DataFrame | None = None, items: tuple[int, ...] = ITEMS
+) -> dict[tuple, dict[str, dict]]:
     """(fbs_code, scope) -> {gas: {source: share}}: CO2 is fuel and electricity, N2O the water of
-    fish farms, which no other source names."""
+    fish farms, which no other source names. Without production, CO2 is all fuel."""
+    shares = electricity_shares(production, load_factors()) if production is not None else {}
     return {
-        (code, scope): {"co2": {"energy": 1.0}, "n2o": {"other": 1.0}}
+        (code, scope): {"co2": co2_sources(shares.get(code, 0.0)), "n2o": {"other": 1.0}}
         for code in items
         for scope in SCOPES
     }
