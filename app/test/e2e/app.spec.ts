@@ -290,10 +290,10 @@ test('Methodology renders its sections with a table of contents', async ({ page 
   await expect(sections.first()).toBeVisible();
   const count = await sections.count();
   expect(count).toBeGreaterThanOrEqual(2);
-  await expect(page.locator('.toc a')).toHaveCount(count);
+  await expect(page.locator('.toc-item > a')).toHaveCount(count);
   await expect(sections.first()).toHaveAttribute('data-section', 'overview');
   if (await page.locator('.toc-toggle').isVisible()) await page.locator('.toc-toggle').click();
-  await page.locator('.toc a').last().click();
+  await page.locator('.toc-item > a').last().click();
   await expect(page).toHaveURL(/#method-/);
   await noHorizontalScroll(page);
 });
@@ -313,7 +313,7 @@ test('a link to a Methodology section opens on its heading, below the header', a
   await page.locator('.site-nav a[data-view="explore"]').click();
   await page.locator('.site-nav a[data-view="methodology"]').click();
   if (await page.locator('.toc-toggle').isVisible()) await page.locator('.toc-toggle').click();
-  await page.locator('.toc a[href="#method-options"]').click();
+  await page.locator('.toc-item > a[href="#method-options"]').click();
   await expect(page).toHaveURL(/view=methodology&data=fixtures#method-options$/);
   const options = page.locator('#method-options > :first-child');
   await expect(options).toBeInViewport();
@@ -331,7 +331,7 @@ test('on a phone the contents open from a bar, reach the last link and close on 
   await open(page);
   await page.locator('.site-nav a[data-view="methodology"]').click();
   const toggle = page.locator('.toc-toggle');
-  const last = page.locator('.toc a').last();
+  const last = page.locator('.toc-item > a').last();
   await expect(last).toBeHidden();
   await page.mouse.wheel(0, 3000);
   await expect(toggle).toBeInViewport();
@@ -1248,4 +1248,20 @@ test('an (i) button shows its text under it, and Escape or a click elsewhere clo
   await button.click();
   await page.locator('#levers-title').click();
   await expect(tip).toBeHidden();
+});
+
+test('the contents mark the section and heading being read as the page scrolls', async ({
+  page,
+}) => {
+  await page.goto(`${START}&view=methodology#method-climate`);
+  const item = page.locator('.toc-item:has(> a[href="#method-climate"])');
+  await expect(item).toHaveClass(/active/);
+  await expect(page.locator('.toc-item.active')).toHaveCount(1);
+  const head = page.locator('#method-climate h2').nth(1);
+  const id = await head.getAttribute('id');
+  expect(id).toMatch(/^method-climate-/);
+  await head.scrollIntoViewIfNeeded();
+  await page.evaluate((h) => document.getElementById(h)!.scrollIntoView(), id!);
+  await expect(page.locator(`.toc-sub a[href="#${id}"]`)).toHaveAttribute('aria-current', '');
+  await expect(page.locator('.toc [aria-current]')).toHaveCount(1);
 });
