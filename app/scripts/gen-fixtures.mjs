@@ -635,8 +635,8 @@ write('world.topo.json', {
 const split = (kind, scope) => {
   const co2 =
     scope === 'farmGate'
-      ? { energy: 0.6, other: 0.4 }
-      : { energy: 0.3, inputsManufacture: 0.5, other: 0.2 };
+      ? { syntheticFertiliser: 0.6, other: 0.4 }
+      : { fuel: 0.2, electricity: 0.1, inputsManufacture: 0.5, other: 0.2 };
   return {
     ruminant: {
       co2,
@@ -653,7 +653,7 @@ const split = (kind, scope) => {
       ch4: { rice: 0.95, residues: 0.05 },
       n2o: { syntheticFertiliser: 0.6, organicFertiliser: 0.1, residues: 0.3 },
     },
-    seafood: { co2: { energy: 1 }, n2o: { other: 1 } },
+    seafood: { co2: { fuel: 0.8, electricity: 0.2 }, n2o: { other: 1 } },
     crop: {
       co2,
       ch4: { residues: 0.6, other: 0.4 },
@@ -716,7 +716,7 @@ write('practices.json', {
   nitrificationInhibitors: practice(['syntheticFertiliser'], ['n2o'], [0.35, 0.2, 0.5], {
     World: 0.6,
   }),
-  farmEnergy: practice(['energy'], ['co2'], [0.5, 0.3, 0.7], { World: 0.8 }),
+  farmEnergy: practice(['fuel'], ['co2'], [0.5, 0.3, 0.7], { World: 0.8 }),
 });
 
 // waste after shops, edible part, kg per person a year

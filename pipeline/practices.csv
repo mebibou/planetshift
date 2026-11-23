@@ -94,11 +94,11 @@ nitrificationInhibitors,applicable,income:High income,0.60,available and partly 
 nitrificationInhibitors,applicable,income:Upper middle income,0.50,available on the main crops,
 nitrificationInhibitors,applicable,income:Lower middle income,0.30,costly next to subsidised urea,
 nitrificationInhibitors,applicable,income:Low income,0.10,hard to find and little fertiliser used,
-farmEnergy,sources,,energy,"electric pumps and heat on renewable power, efficient machines, biofuels",
-farmEnergy,gases,,co2,the CO2 of fuel and electricity,
-farmEnergy,reduction,median,0.50,"efficiency, renewable electricity for pumps, greenhouses and barns, and some cleaner fuel in tractors","FAO 2011, Energy-smart food for people and climate, https://www.fao.org/3/i2454e/i2454e.pdf"
-farmEnergy,reduction,low,0.25,efficiency and a cleaner grid only,"IPCC AR6 WGIII ch. 7, https://doi.org/10.1017/9781009157926.009"
-farmEnergy,reduction,high,0.80,"electric or biofuel machinery and fully renewable power, leaving residual fuel",FAO 2011 https://www.fao.org/3/i2454e/i2454e.pdf
+farmEnergy,sources,,fuel,"fuel burnt on the farm and its making; the electricity farms use is the grid's, which Renewable electricity cleans",
+farmEnergy,gases,,co2,the CO2 of fuel,
+farmEnergy,reduction,median,0.50,"efficient engines and buildings, pumps and heating moved to electricity, and some biofuel in tractors","FAO 2011, Energy-smart food for people and climate, https://www.fao.org/3/i2454e/i2454e.pdf"
+farmEnergy,reduction,low,0.25,efficiency only,"IPCC AR6 WGIII ch. 7, https://doi.org/10.1017/9781009157926.009"
+farmEnergy,reduction,high,0.80,"electric or biofuel machinery, leaving residual fuel",FAO 2011 https://www.fao.org/3/i2454e/i2454e.pdf
 farmEnergy,applicable,World,0.60,most on-farm energy use can switch,
 farmEnergy,applicable,income:High income,0.80,electricity grids and capital are available,
 farmEnergy,applicable,income:Upper middle income,0.70,much irrigation pumping on grids that can be cleaned,

@@ -111,7 +111,7 @@
   },
   "farmEnergy": {
     "sources": [
-      "energy"
+      "fuel"
     ],
     "gases": [
       "co2"

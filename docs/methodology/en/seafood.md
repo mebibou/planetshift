@@ -147,7 +147,7 @@ For every feed item that existed before, in every region and both methods, the f
 
 ## Breakdown and land
 
-In `breakdown.json`, seafood's CO₂ is all `energy` (fishing fuel, the farm's fuel and electricity). Its N₂O is all `other` (the water of fish farms, which no other source names). Nothing is `inputsManufacture`, as vessels, gear and pond fertiliser are left out. The farm-energy practice therefore acts on seafood in cradle to farm gate, as it does on other farms' energy.
+In `breakdown.json`, seafood's CO₂ is `fuel` (fishing fuel, the farm's diesel and petrol) and `electricity` (the farm's electricity), the farmed share split by each item's world production of the aquaculture groups. Its N₂O is all `other` (the water of fish farms, which no other source names). Nothing is `inputsManufacture`, as vessels, gear and pond fertiliser are left out. The farm-energy practice therefore acts on seafood's fuel in cradle to farm gate, as it does on other farms' fuel.
 
 Seafood has no pasture and no cropland of its own. The cropland of its feed belongs to the crops and comes through the feed shares, as for pigs and poultry. `land.py` counts cropland only for plant items and pasture only for ruminants, so seafood is in neither, and `land.json` is unchanged.
 

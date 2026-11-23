@@ -147,7 +147,7 @@ Pour chaque produit fourrager qui existait déjà, dans chaque région et avec l
 
 ## Répartition par source et terres
 
-Dans `breakdown.json`, tout le CO₂ des produits de la mer est de l'`energy` (carburant de pêche, carburant et électricité de l'élevage). Tout leur N₂O est `other` (l'eau des élevages de poissons, qu'aucune autre source ne nomme). Rien n'est `inputsManufacture`, puisque navires, engins et engrais des étangs sont laissés de côté. La pratique « Énergie propre à la ferme » agit donc sur les produits de la mer dans le périmètre du berceau à la sortie de ferme, comme sur l'énergie des autres exploitations.
+Dans `breakdown.json`, le CO₂ des produits de la mer est du `fuel` (carburant de pêche, diesel et essence de l'élevage) et de l'`electricity` (électricité de l'élevage), la part d'élevage répartie selon la production mondiale de chaque produit par groupe d'aquaculture. Tout leur N₂O est `other` (l'eau des élevages de poissons, qu'aucune autre source ne nomme). Rien n'est `inputsManufacture`, puisque navires, engins et engrais des étangs sont laissés de côté. La pratique « Énergie propre à la ferme » agit donc sur le carburant des produits de la mer dans le périmètre du berceau à la sortie de ferme, comme sur celui des autres exploitations.
 
 Les produits de la mer n'ont ni prairies ni cultures propres. Les surfaces de leurs aliments sont celles des cultures et passent par les parts fourragères, comme pour les porcs et les volailles. `land.py` ne compte les surfaces cultivées que pour les produits végétaux et les prairies que pour les ruminants : les produits de la mer ne sont dans aucun des deux, et `land.json` ne change pas.
 

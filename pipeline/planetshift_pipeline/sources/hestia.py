@@ -83,8 +83,8 @@ SOURCE_MARKERS = (
     ("CropResidue", "residues"),
 )
 FARM_ENERGY_MARKER = "FuelCombustion"
-#: Background rows of these input types are the making of the farm's energy.
-ENERGY_INPUT_TYPES = frozenset({"fuel", "electricity"})
+#: Background rows of these input types are the making of the farm's energy, by its source.
+ENERGY_INPUT_TYPES = {"electricity": "electricity", "fuel": "fuel"}
 
 
 def gas_of(term_id: str) -> str | None:
@@ -109,13 +109,20 @@ def category_of(term_id: str) -> str | None:
     )
 
 
+def energy_source(input_types: Iterable[str]) -> str:
+    """The source of making an input: the farm's electricity or fuel, else the other inputs."""
+    return next(
+        (ENERGY_INPUT_TYPES[t] for t in input_types if t in ENERGY_INPUT_TYPES), "inputsManufacture"
+    )
+
+
 def source_of(term_id: str, input_types: Iterable[str] = ()) -> str | None:
     """The emission source of a counted term, None for terms no scope counts."""
     category = category_of(term_id)
     return (
-        ("energy" if ENERGY_INPUT_TYPES.intersection(input_types) else "inputsManufacture")
+        energy_source(input_types)
         if category == "background"
-        else "energy"
+        else "fuel"
         if category == "farmEnergy"
         else next((source for marker, source in SOURCE_MARKERS if marker in term_id), "other")
         if category == "onFarm"

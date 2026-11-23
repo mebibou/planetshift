@@ -325,7 +325,7 @@ HESTIA's model applies the IPCC's 2019 Refinement to the water regimes and amend
 
 ## Emissions by source
 
-Each intensity is also split by source in `breakdown.json`: enteric fermentation, manure management, rice, synthetic and organic fertiliser, residues, energy, the making of inputs, and other. The split comes from the same computation. The FAOSTAT allocation above keeps each process apart, and the HESTIA rows keep their emission terms. [Farm practices](#method-practices) explains the split and the practices that use it.
+Each intensity is also split by source in `breakdown.json`: enteric fermentation, manure management, rice, synthetic and organic fertiliser, residues, fuel, electricity, the making of inputs, and other. The split comes from the same computation. The FAOSTAT allocation above keeps each process apart, and the HESTIA rows keep their emission terms. [Farm practices](#method-practices) explains the split and the practices that use it.
 
 ## Code and tables
 

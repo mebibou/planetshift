@@ -16,7 +16,7 @@ from collections.abc import Iterable
 
 import pandas as pd
 
-from .intensities import GASES
+from .intensities import GASES, GT_GASES
 
 SOURCES = (
     "enteric",
@@ -25,7 +25,8 @@ SOURCES = (
     "syntheticFertiliser",
     "organicFertiliser",
     "residues",
-    "energy",
+    "fuel",
+    "electricity",
     "inputsManufacture",
     "other",
 )
@@ -65,6 +66,53 @@ def faostat_frame(emissions: dict[str, pd.DataFrame], iso3: dict[int, str]) -> p
         ],
         ignore_index=True,
     )[["iso3", "fbs_code", "scope", "gas", "source", "kg"]]
+
+
+#: FAOSTAT's on-farm energy use by carrier (GN): electricity, and the total it is a share of.
+ELECTRICITY, TOTAL_ENERGY = 6807, 6813
+
+
+def electricity_shares(gn: pd.DataFrame, iso3: dict[int, str]) -> dict[tuple[str, str], float]:
+    """(iso3, gas) -> the share of the country's on-farm energy emissions of the gas that is
+    electricity, in its latest year; the countries' together where it has none. Heat counts with
+    fuel, as the farm uses it in its place."""
+    rows = gn[gn["item_code"].isin((ELECTRICITY, TOTAL_ENERGY)) & gn["element_code"].isin(GT_GASES)]
+    latest = rows.sort_values("year").drop_duplicates(
+        ["area_code", "item_code", "element_code"], keep="last"
+    )
+    kg = latest.assign(gas=latest["element_code"].map(GT_GASES)).pivot_table(
+        index=["area_code", "gas"],
+        columns="item_code",
+        values="value",
+        aggfunc="sum",
+        fill_value=0.0,
+    )
+    kg = kg[kg.index.get_level_values("area_code").isin(iso3)]
+    world = kg.groupby(level="gas").sum()
+    world_share = (world[ELECTRICITY] / world[TOTAL_ENERGY]).where(world[TOTAL_ENERGY] > 0, 0.0)
+    own = (kg[ELECTRICITY] / kg[TOTAL_ENERGY]).where(kg[TOTAL_ENERGY] > 0).dropna()
+    return {
+        (code, gas): float(own.get((area, gas), world_share.get(gas, 0.0)))
+        for area, code in iso3.items()
+        for gas in GT_GASES.values()
+    }
+
+
+def split_energy(frame: pd.DataFrame, shares: dict[tuple[str, str], float]) -> pd.DataFrame:
+    """FAOSTAT's energy rows split into electricity and fuel by each country's shares."""
+    energy = frame[frame["source"] == "energy"]
+    share = pd.Series(
+        [shares.get(key, 0.0) for key in zip(energy["iso3"], energy["gas"], strict=True)],
+        index=energy.index,
+    )
+    return pd.concat(
+        [
+            frame[frame["source"] != "energy"],
+            energy.assign(source="electricity", kg=energy["kg"] * share),
+            energy.assign(source="fuel", kg=energy["kg"] * (1 - share)),
+        ],
+        ignore_index=True,
+    )
 
 
 def hestia_world(hestia: pd.DataFrame) -> pd.DataFrame:
