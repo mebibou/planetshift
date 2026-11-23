@@ -4,6 +4,7 @@ import type { T } from '../i18n/i18n';
 import { formatNumber, formatTemperature } from '../i18n/format';
 import type { BandSeries, Enso } from '../data/types';
 import type { ScenarioResult } from '../model/api';
+import type { Range } from '../app/url';
 import { CURRENT_POLICIES, LEVELS, milestones, type Level } from '../app/milestones';
 import {
   addHover,
@@ -12,11 +13,12 @@ import {
   legendList,
   onResize,
   verticalRule,
+  type HoverLink,
   type Margin,
 } from './frame';
 import { ensoMarks, gapAt, inRange, zipBand, zipSeries } from './series';
 
-export type Range = 'full' | 'recent';
+export type { Range };
 export const RANGE_START: Record<Range, number> = { full: 1850, recent: 2000 };
 
 export interface TemperatureChart {
@@ -49,7 +51,12 @@ const anchorAt = (x: number, width: number) =>
  * 2100, and, when the data has them, natural factors alone and dots on the observed line in El
  * Niño and La Niña years. Totals only: the causes of warming have their own chart.
  */
-export const temperatureChart = (t: T, locale: string, currentYear: number): TemperatureChart => {
+export const temperatureChart = (
+  t: T,
+  locale: string,
+  currentYear: number,
+  link?: HoverLink,
+): TemperatureChart => {
   const plotEl = h('div', { class: 'chart-plot' });
   const caption = h('p', { class: 'chart-caption' });
   const milestoneCaption = h('p', { class: 'chart-caption milestone-caption' });
@@ -229,39 +236,51 @@ export const temperatureChart = (t: T, locale: string, currentYear: number): Tem
       const v = i < 0 ? null : values[i];
       return v === null || v === undefined ? '–' : formatTemperature(locale, v, 2);
     };
-    addHover(plotEl, f, x, margin, (year) => [
-      { label: t('chart.observed'), value: at(tp.years, tp.observed, year), swatch: 'var(--ink)' },
-      ...[ensoAt.get(year)].flatMap((m) =>
-        m
+    addHover(
+      plotEl,
+      f,
+      x,
+      margin,
+      (year) => [
+        {
+          label: t('chart.observed'),
+          value: at(tp.years, tp.observed, year),
+          swatch: 'var(--ink)',
+        },
+        ...[ensoAt.get(year)].flatMap((m) =>
+          m
+            ? [
+                {
+                  label: t(`chart.enso.${m.phase}`),
+                  value: t('chart.enso.oni', { value: formatTemperature(locale, m.oni, 1, true) }),
+                  swatch: `var(--enso-${m.phase})`,
+                },
+              ]
+            : [],
+        ),
+        {
+          label: t('chart.baseline'),
+          value: at(tp.years, tp.baseline.median, year),
+          swatch: 'var(--series-baseline)',
+        },
+        {
+          label: t('chart.scenario'),
+          value: at(tp.years, tp.scenario.median, year),
+          swatch: 'var(--series-scenario)',
+        },
+        ...(natural
           ? [
               {
-                label: t(`chart.enso.${m.phase}`),
-                value: t('chart.enso.oni', { value: formatTemperature(locale, m.oni, 1, true) }),
-                swatch: `var(--enso-${m.phase})`,
+                label: t('chart.natural'),
+                value: at(natural.years, natural.median, year),
+                swatch: 'var(--series-natural)',
               },
             ]
-          : [],
-      ),
-      {
-        label: t('chart.baseline'),
-        value: at(tp.years, tp.baseline.median, year),
-        swatch: 'var(--series-baseline)',
-      },
-      {
-        label: t('chart.scenario'),
-        value: at(tp.years, tp.scenario.median, year),
-        swatch: 'var(--series-scenario)',
-      },
-      ...(natural
-        ? [
-            {
-              label: t('chart.natural'),
-              value: at(natural.years, natural.median, year),
-              swatch: 'var(--series-natural)',
-            },
-          ]
-        : []),
-    ]);
+          : []),
+      ],
+      t('chart.keys'),
+      link && { link, id: 'temperature' },
+    );
   };
   onResize(plotEl, render);
   return {

@@ -23,6 +23,8 @@ export interface ViewContext {
   latestData: () => ModelData;
   /** Loads every deferred lever file, for what each lever is worth; the view runs again then. */
   loadAll: () => void;
+  /** The deferred lever files that failed to load. */
+  failedFiles: () => readonly string[];
   world: Topology;
   currentYear: number;
   state: AppState;

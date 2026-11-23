@@ -26,6 +26,9 @@ export interface Summary {
   ) => void;
 }
 
+/** Quiet time after the last change before the live sentence is rewritten, so a slider drag is read once. */
+const LIVE_DELAY_MS = 800;
+
 const stat = (label: string, value: string, detail = '', className = '') =>
   h(
     'div',
@@ -111,10 +114,19 @@ export const summary = (t: T, locale: string, currentYear: number): Summary => {
     h('h3', { class: 'breakdown-title' }, t('milestones.title')),
     parisList,
   );
+  const live = h('p', { class: 'visually-hidden', role: 'status' });
+  let announce = 0;
+  const say = (text: string) => {
+    clearTimeout(announce);
+    announce = window.setTimeout(() => {
+      if (live.textContent !== text) live.textContent = text;
+    }, LIVE_DELAY_MS);
+  };
   const el = h(
     'section',
-    { class: 'summary', 'aria-live': 'polite', 'aria-labelledby': 'summary-title' },
+    { class: 'summary', 'aria-labelledby': 'summary-title' },
     h('h2', { id: 'summary-title', class: 'visually-hidden' }, t('summary.title')),
+    live,
     body,
     paris,
     breakdown,
@@ -178,6 +190,7 @@ export const summary = (t: T, locale: string, currentYear: number): Summary => {
   };
   const update: Summary['update'] = (result, perCapita, completeYear, horizon, options) => {
     if (!result || !perCapita) {
+      say('');
       body.replaceChildren();
       breakdown.hidden = true;
       paris.hidden = true;
@@ -198,6 +211,7 @@ export const summary = (t: T, locale: string, currentYear: number): Summary => {
     const w = horizon === '2100' ? s.avoidedWarming2100 : s.avoidedWarming2050;
     const co2eUnit = massUnit(s.avoidedCo2e);
     const land = landStat(s.landBefore, s.landFreed);
+    say(t('summary.live', { year: horizon, value: formatTemperature(locale, w.median, 3) }));
     body.replaceChildren(
       stat(
         t('summary.warming', { year: horizon }),

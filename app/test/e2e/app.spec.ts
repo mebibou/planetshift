@@ -48,7 +48,8 @@ const openDiet = async (page: Page) => {
   if ((await diet.getAttribute('open')) === null) await diet.locator('> summary').click();
 };
 
-const summaryText = (page: Page) => page.locator('.summary').innerText();
+const summaryText = async (page: Page) =>
+  (await page.locator('.summary > :not([role="status"])').allInnerTexts()).join('\n');
 const chartMarkup = (page: Page) =>
   page.locator('.temperature-chart > .chart-plot svg').innerHTML();
 const visibleState = async (page: Page) =>
@@ -130,7 +131,7 @@ test('a shared URL restores the state', async ({ page, browser }) => {
   await expect(other.locator('#option-ssp-ssp126')).toBeChecked();
   await expect(other.locator('#layer-change')).toBeChecked();
   await expect(other.locator('#group-ruminantMeat')).toHaveValue('50');
-  expect(await other.locator('.summary').innerText()).toBe(summary);
+  expect(await summaryText(other)).toBe(summary);
   await other.close();
 });
 
@@ -301,6 +302,34 @@ test('the map layers and tooltip work', async ({ page }) => {
   await expect(page.locator('.map-frame .tooltip')).toContainText('Least precise source');
 });
 
+test('a tap pins the map tooltip inside the frame and a tap outside dismisses it', async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, 'touch only');
+  await open(page);
+  const tooltip = page.locator('.map-frame .tooltip');
+  for (const country of await page.locator('path.country.has-data').all()) {
+    if (!(await country.isVisible())) continue;
+    await country.tap();
+    await expect(tooltip).toBeVisible();
+    const [tip, frame] = [
+      await tooltip.boundingBox(),
+      await page.locator('.map-frame').boundingBox(),
+    ];
+    expect(
+      tip && frame && tip.x >= frame.x - 1 && tip.x + tip.width <= frame.x + frame.width + 1,
+    ).toBe(true);
+    await page.locator('.summary').tap();
+    await expect(tooltip).toBeHidden();
+  }
+  const chart = page.locator('.temperature-chart > .chart-plot');
+  await chart.locator('.hover-target').tap();
+  await expect(chart.locator('.chart-tooltip')).toBeVisible();
+  await page.locator('.summary').tap();
+  await expect(chart.locator('.chart-tooltip')).toBeHidden();
+});
+
 test('no horizontal scroll on Explore', async ({ page }) => {
   await open(page);
   await noHorizontalScroll(page);
@@ -332,7 +361,7 @@ test(
     expect(box && box.x >= 0 && box.x + box.width <= width).toBe(true);
     await noHorizontalScroll(page);
     await page.keyboard.press('Escape');
-    await expect(tour).toHaveCount(0);
+    await expect(page.locator('dialog.tour')).toHaveCount(0);
     await page.reload();
     await expect(page.locator('.summary .stat-hero .stat-value')).toBeVisible();
     await expect(page.locator('dialog.tour')).toHaveCount(0);
@@ -397,6 +426,39 @@ test('the charts are tabs, global temperature first, and reach 2100', async ({ p
   await expect(page.locator('#chart-panel-avoided')).toBeVisible();
   await expect(page.locator('#chart-panel-temperature')).toBeHidden();
   await expect(page.locator('.avoided-chart svg')).toContainText('2100');
+});
+
+test('the chart tabs and the chart values are reachable from the keyboard', async ({ page }) => {
+  await open(page, `${START}&shift=50`);
+  await page.locator('#chart-tab-temperature').focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.locator('#chart-tab-avoided')).toBeFocused();
+  await expect(page.locator('#chart-tab-avoided')).toHaveAttribute('aria-selected', 'true');
+  await expect(page).toHaveURL(/chart=avoided/);
+  await page.keyboard.press('End');
+  await expect(page.locator('#chart-tab-cause')).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.locator('#chart-tab-temperature')).toBeFocused();
+  await expect(page.locator('#chart-panel-temperature')).toBeVisible();
+  const plot = page.locator('.temperature-chart > .chart-plot');
+  const tooltip = plot.locator('.chart-tooltip');
+  await plot.focus();
+  await expect(tooltip).toBeVisible();
+  await page.keyboard.press('Home');
+  await expect(tooltip.locator('strong')).toHaveText('1850');
+  await page.keyboard.press('ArrowRight');
+  await expect(tooltip.locator('strong')).toHaveText('1851');
+  await expect(tooltip).toContainText('Observed');
+  await page.keyboard.press('Escape');
+  await expect(tooltip).toBeHidden();
+});
+
+test('the summary announces one short sentence, not the whole section', async ({ page }) => {
+  await open(page, `${START}&shift=50`);
+  await expect(page.locator('.summary')).not.toHaveAttribute('aria-live');
+  await expect(page.locator('.summary [role="status"]')).toHaveText(
+    /^Less warming in 2050: .+°C\.$/,
+  );
 });
 
 test('the land layer draws farmland and keeps its URL key', async ({ page }) => {
@@ -602,13 +664,37 @@ test('the population option moves the baseline and the projection the chart high
   await expect(page).toHaveURL(/pop=low/);
   await expect(chosen).toHaveAttribute('data-variant', 'low');
   await expect.poll(baseline).not.toBe(start);
-  await expect(people.locator('.population-note')).toBeHidden();
+  const note = people.locator('.population-note');
+  await expect(note).toHaveText(
+    /^With this projection, the warming without the levers in 2100 moves by −\d[.\d]*.°C from the medium projection's\.$/,
+  );
   await page.locator('label[for="option-ssp-ssp370"]').click();
   await expect(people.locator('.population-note')).toContainText('SSP3-7.0');
+  await expect(people.locator('.population-note')).toContainText('moves by');
   await page.locator('label[for="option-population-medium"]').click();
   await expect(page).not.toHaveURL(/pop=/);
   await expect(people.locator('.population-note')).toBeHidden();
   await noHorizontalScroll(page);
+});
+
+test('the population chart follows the temperature chart’s hover year, and back', async ({
+  page,
+}) => {
+  await open(page);
+  const temperature = page.locator('.temperature-chart > .chart-plot');
+  const people = page.locator('.population-chart .chart-plot');
+  const target = temperature.locator('.hover-target');
+  await target.hover();
+  const year = await temperature.locator('.chart-tooltip strong').innerText();
+  await expect(people.locator('.chart-tooltip strong')).toHaveText(year);
+  await expect(people.locator('.crosshair')).not.toHaveCSS('display', 'none');
+  await page.mouse.move(0, 0);
+  await expect(people.locator('.chart-tooltip')).toBeHidden();
+  const own = people.locator('.hover-target');
+  const box = await own.boundingBox();
+  await own.hover({ position: { x: (box?.width ?? 0) / 4, y: (box?.height ?? 0) / 2 } });
+  const other = await people.locator('.chart-tooltip strong').innerText();
+  await expect(temperature.locator('.chart-tooltip strong')).toHaveText(other);
 });
 
 test('a reload restores the levers from the URL', async ({ page }) => {
@@ -840,6 +926,33 @@ test('the farm practices’ breakdown is left out of the first load, loads once,
   await page.locator('#lever-riceWater').fill('30');
   await page.waitForLoadState('networkidle');
   expect(asked.filter(breakdown)).toHaveLength(1);
+});
+
+test('a deferred file that fails says so and is not asked for again', async ({ page }) => {
+  const asked: string[] = [];
+  await page.route('**/breakdown.json', (route) => {
+    asked.push(route.request().url());
+    return route.abort();
+  });
+  await open(page);
+  await page.locator('details[data-group="levers-practices"] > summary').click();
+  await page.locator('#lever-feedAdditives').fill('60');
+  await expect(page.locator('.run-error').filter({ hasText: 'breakdown.json' })).toBeVisible();
+  await page.locator('#lever-riceWater').fill('30');
+  await page.locator('#lever-feedAdditives').fill('70');
+  await page.waitForLoadState('networkidle');
+  expect(asked).toHaveLength(1);
+  errors = errors.filter((e) => !e.includes('net::ERR_FAILED'));
+});
+
+test('a language switch keeps the chart range', async ({ page }) => {
+  await open(page);
+  await page.locator('label[for="range-recent"]').click();
+  await expect(page).toHaveURL(/range=recent/);
+  await page.locator('button[data-lang="fr"]').click();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+  await expect(page.locator('#range-recent')).toBeChecked();
+  await expect(page.locator('.temperature-chart > .chart-plot .axis-x')).not.toContainText('1850');
 });
 
 const readDownload = async (page: Page, click: () => Promise<void>) => {

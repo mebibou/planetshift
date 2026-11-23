@@ -8,7 +8,7 @@ describe('url', () => {
   it('reads the interface choices, ignoring unknown values', () => {
     expect(
       parseUi(
-        '?view=methodology&layer=change&change=production&group=dairy&gas=ch4&chart=avoided&to=2100&mapview=table',
+        '?view=methodology&layer=change&change=production&group=dairy&gas=ch4&chart=avoided&to=2100&mapview=table&range=recent',
       ),
     ).toEqual({
       view: 'methodology',
@@ -19,6 +19,7 @@ describe('url', () => {
       chart: 'avoided',
       horizon: '2100',
       mapView: 'table',
+      range: 'recent',
     });
     expect(parseUi('?view=nope&gas=xx')).toEqual(DEFAULT_UI);
     expect(parseUi('?layer=land&change=land')).toMatchObject({ layer: 'land', changeOf: 'land' });

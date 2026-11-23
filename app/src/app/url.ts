@@ -19,6 +19,9 @@ export type Horizon = (typeof HORIZONS)[number];
 /** The map card's two views of the same layer. */
 export const MAP_VIEWS = ['map', 'table'] as const;
 export type MapView = (typeof MAP_VIEWS)[number];
+/** The temperature and causes charts' first year: 1850 or 2000. */
+export const RANGES = ['full', 'recent'] as const;
+export type Range = (typeof RANGES)[number];
 
 export interface UiState {
   view: View;
@@ -29,6 +32,7 @@ export interface UiState {
   chart: ChartTab;
   horizon: Horizon;
   mapView: MapView;
+  range: Range;
 }
 
 export const DEFAULT_UI: UiState = {
@@ -40,6 +44,7 @@ export const DEFAULT_UI: UiState = {
   chart: 'temperature',
   horizon: '2050',
   mapView: 'map',
+  range: 'full',
 };
 
 /** Query parameters the interface owns; everything else belongs to the model's state. */
@@ -52,6 +57,7 @@ const UI_KEYS = {
   chart: 'chart',
   horizon: 'to',
   mapView: 'mapview',
+  range: 'range',
 };
 const KEPT_KEYS = ['data'];
 const OWN_KEYS = [...Object.values(UI_KEYS), ...KEPT_KEYS];
@@ -74,6 +80,7 @@ export const parseUi = (query: string): UiState => {
     chart: oldLink ? 'cause' : oneOf(CHARTS, p.get(UI_KEYS.chart), DEFAULT_UI.chart),
     horizon: oneOf(HORIZONS, p.get(UI_KEYS.horizon), DEFAULT_UI.horizon),
     mapView: oneOf(MAP_VIEWS, p.get(UI_KEYS.mapView), DEFAULT_UI.mapView),
+    range: oneOf(RANGES, p.get(UI_KEYS.range), DEFAULT_UI.range),
   };
 };
 

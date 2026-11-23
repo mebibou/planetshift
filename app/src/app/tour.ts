@@ -45,7 +45,7 @@ export const openTour = (t: T): HTMLDialogElement => {
     type: 'button',
     class: 'tour-button tour-next',
     autofocus: true,
-    onclick: () => (step === last ? dialog.close() : go(step + 1)),
+    onclick: () => (step === last ? dismiss() : go(step + 1)),
   });
   const dialog = h(
     'dialog',
@@ -53,6 +53,7 @@ export const openTour = (t: T): HTMLDialogElement => {
       class: 'tour',
       'aria-labelledby': 'tour-label',
       'aria-describedby': 'tour-title tour-body',
+      oncancel: storeTourSeen,
       onclose: () => {
         storeTourSeen();
         dialog.remove();
@@ -65,13 +66,17 @@ export const openTour = (t: T): HTMLDialogElement => {
       { class: 'tour-actions' },
       h(
         'button',
-        { type: 'button', class: 'link-button tour-skip', onclick: () => dialog.close() },
+        { type: 'button', class: 'link-button tour-skip', onclick: () => dismiss() },
         t('tour.skip'),
       ),
       back,
       next,
     ),
   );
+  const dismiss = () => {
+    storeTourSeen();
+    dialog.close();
+  };
   const render = () => {
     const id = TOUR_STEPS[step];
     progress.textContent = t('tour.progress', { n: step + 1, total: TOUR_STEPS.length });

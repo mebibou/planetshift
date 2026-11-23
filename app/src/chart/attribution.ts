@@ -165,33 +165,40 @@ export const attributionChart = (t: T, locale: string, currentYear: number): Att
       .attr('x', x(currentYear) + 6)
       .attr('y', 12)
       .text(t('link.projection'));
-    addHover(plotEl, f, x, MARGIN, (year) => {
-      const row = rows.find((r) => r.year === year);
-      const base = baseRows.find((r) => r.year === year);
-      const obs = observed.find((p) => p.year === year);
-      const value = (c: Cause) => {
-        if (!row) return '–';
-        const now = formatTemperature(locale, row[c], 2, true);
-        return base && Math.abs(base[c] - row[c]) >= 0.0005
-          ? t('link.withoutValue', {
-              value: now,
-              without: formatTemperature(locale, base[c], 2, true),
-            })
-          : now;
-      };
-      return [
-        ...causesBySize(attribution, end).map((c) => ({
-          label: t(`link.causes.${c}`),
-          value: value(c),
-          swatch: `var(--cause-${c})`,
-        })),
-        {
-          label: t('chart.observed'),
-          value: obs ? formatTemperature(locale, obs.value, 2) : '–',
-          swatch: 'var(--ink)',
-        },
-      ];
-    });
+    addHover(
+      plotEl,
+      f,
+      x,
+      MARGIN,
+      (year) => {
+        const row = rows.find((r) => r.year === year);
+        const base = baseRows.find((r) => r.year === year);
+        const obs = observed.find((p) => p.year === year);
+        const value = (c: Cause) => {
+          if (!row) return '–';
+          const now = formatTemperature(locale, row[c], 2, true);
+          return base && Math.abs(base[c] - row[c]) >= 0.0005
+            ? t('link.withoutValue', {
+                value: now,
+                without: formatTemperature(locale, base[c], 2, true),
+              })
+            : now;
+        };
+        return [
+          ...causesBySize(attribution, end).map((c) => ({
+            label: t(`link.causes.${c}`),
+            value: value(c),
+            swatch: `var(--cause-${c})`,
+          })),
+          {
+            label: t('chart.observed'),
+            value: obs ? formatTemperature(locale, obs.value, 2) : '–',
+            swatch: 'var(--ink)',
+          },
+        ];
+      },
+      t('chart.keys'),
+    );
   };
   onResize(plotEl, render);
   return {

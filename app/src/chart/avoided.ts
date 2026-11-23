@@ -79,17 +79,24 @@ export const avoidedChart = (t: T, locale: string, currentYear: number): Avoided
           .x((p) => x(p.year))
           .y((p) => y(p.value)),
       );
-    addHover(plotEl, f, x, MARGIN, (year) => {
-      const i = tp.years.indexOf(year);
-      const v = tp.avoided.median[i];
-      return [
-        {
-          label: t('avoidedChart.line'),
-          value: v === undefined ? '–' : formatTemperature(locale, v, 3),
-          swatch: 'var(--series-scenario)',
-        },
-      ];
-    });
+    addHover(
+      plotEl,
+      f,
+      x,
+      MARGIN,
+      (year) => {
+        const i = tp.years.indexOf(year);
+        const v = tp.avoided.median[i];
+        return [
+          {
+            label: t('avoidedChart.line'),
+            value: v === undefined ? '–' : formatTemperature(locale, v, 3),
+            swatch: 'var(--series-scenario)',
+          },
+        ];
+      },
+      t('chart.keys'),
+    );
   };
   onResize(plotEl, render);
   return {

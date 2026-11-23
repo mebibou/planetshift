@@ -116,6 +116,8 @@ export interface WorthCache {
   /** The figures for these settings: those known at once, the others computed one per idle slice. */
   request: (s: Scenario, o: Options) => void;
   values: () => ReadonlyMap<WorthId, Worth>;
+  /** Cancels the runs still to come, when the view is dropped. */
+  stop: () => void;
 }
 
 export const worthCache = (deps: WorthCacheDeps): WorthCache => {
@@ -154,5 +156,6 @@ export const worthCache = (deps: WorthCacheDeps): WorthCache => {
       if (current.some((j) => !cache.has(j.key))) cancel = idle(step, quietMs);
     },
     values,
+    stop: () => cancel(),
   };
 };

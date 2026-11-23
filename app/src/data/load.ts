@@ -47,9 +47,11 @@ export interface Loaded {
   pending: readonly string[];
   /**
    * Loads the pending files the levers need and resolves with the data holding them; null when
-   * they need none.
+   * they need none, or only files that failed.
    */
   complete: (levers: Levers) => Promise<Loaded> | null;
+  /** The deferred files that failed to load: they are not asked for again. */
+  failed: () => readonly string[];
 }
 
 /** intensities.json as the model reads it: each cell's source index replaced by its URL. */
@@ -119,7 +121,8 @@ const leverData = (names: readonly string[], bodies: readonly unknown[]) =>
 
 /**
  * Loads every data file in parallel but the deferred ones, which `complete` loads when a lever
- * needs them. A deferred file that fails to load is tried again on the next `complete`.
+ * needs them. A deferred file that fails to load is not tried again, as `complete` runs before
+ * every model run.
  */
 export const loadAll = async (folder: string, fetchFn: Fetch = fetch): Promise<Loaded> => {
   const urlOf = (f: string) => `${folder}${f}.json`;
@@ -135,11 +138,12 @@ export const loadAll = async (folder: string, fetchFn: Fetch = fetch): Promise<L
   >;
 
   const inFlight = new Map<string, Promise<unknown>>();
+  const failed = new Set<string>();
   const fetchOnce = (f: string): Promise<unknown> => {
     const known = inFlight.get(f);
     if (known) return known;
     const promise = loadFile(fetchFn, urlOf(f), true).catch((e: unknown) => {
-      inFlight.delete(f);
+      failed.add(f);
       throw e;
     });
     inFlight.set(f, promise);
@@ -151,7 +155,7 @@ export const loadAll = async (folder: string, fetchFn: Fetch = fetch): Promise<L
     world: byName['world.topo'] as Topology,
     pending,
     complete: (levers) => {
-      const needed = neededFiles(pending, levers);
+      const needed = neededFiles(pending, levers).filter((f) => !failed.has(f));
       return needed.length === 0
         ? null
         : Promise.all(needed.map(fetchOnce)).then((bodies) =>
@@ -161,6 +165,7 @@ export const loadAll = async (folder: string, fetchFn: Fetch = fetch): Promise<L
             ),
           );
     },
+    failed: () => [...failed],
   });
 
   return loaded(

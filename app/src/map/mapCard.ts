@@ -20,6 +20,7 @@ import { formatMeasure, tooltipModel } from './tooltip';
 import { TIERS, worstSource } from './sources';
 import { tableRows } from './table';
 import { tableView } from './tableView';
+import { tabKeys } from '../app/tabs';
 
 export interface MapCardContext {
   t: T;
@@ -107,16 +108,12 @@ export const mapCard = (ctx: MapCardContext): MapCard => {
         'data-view': v,
         'aria-controls': `map-panel-${v}`,
         onclick: () => setUi((u) => ({ ...u, mapView: v })),
-        onkeydown: (e: Event) => {
-          const key = (e as KeyboardEvent).key;
-          const step = key === 'ArrowRight' ? 1 : key === 'ArrowLeft' ? -1 : 0;
-          if (!step) return;
-          e.preventDefault();
-          const i = (MAP_VIEWS.indexOf(v) + step + MAP_VIEWS.length) % MAP_VIEWS.length;
-          const target = MAP_VIEWS[i] ?? 'map';
-          setUi((u) => ({ ...u, mapView: target }));
-          document.getElementById(`map-tab-${target}`)?.focus();
-        },
+        onkeydown: tabKeys(
+          MAP_VIEWS,
+          v,
+          (target) => setUi((u) => ({ ...u, mapView: target })),
+          (target) => `map-tab-${target}`,
+        ),
       },
       icon(v),
       h('span', {}, t(`map.views.${v}`)),

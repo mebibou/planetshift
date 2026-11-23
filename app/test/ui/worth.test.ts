@@ -101,4 +101,20 @@ describe('worth', () => {
     expect(cache.values().size).toBe(3);
     expect(queue).toHaveLength(0);
   });
+
+  it('runs nothing more once stopped', () => {
+    const { idle, queue } = manual();
+    let runs = 0;
+    const cache = worthCache({
+      run: () => (runs++, { '2050': 0, '2100': 0 }),
+      onChange: () => undefined,
+      idle,
+      jobs: (s) => worthJobs(s).slice(0, 3),
+    });
+    cache.request(scenario, DEFAULT_OPTIONS);
+    expect(queue).toHaveLength(1);
+    cache.stop();
+    expect(queue).toHaveLength(0);
+    expect(runs).toBe(0);
+  });
 });

@@ -26,6 +26,7 @@
     "billion": "{value} milliards",
     "larger": "plus grande",
     "smaller": "plus petite",
-    "projection": "Projection {variant} de l'ONU"
+    "projection": "Projection {variant} de l'ONU",
+    "baselineShift": "Avec cette projection, le réchauffement sans les leviers en {year} varie de {value} par rapport à la projection moyenne."
   }
 }

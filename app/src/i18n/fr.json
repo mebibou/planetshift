@@ -2,8 +2,11 @@
   "load": {
     "loading": "Chargement des données…",
     "failedTitle": "Les données n'ont pas pu être chargées",
-    "failed": "Planetshift n'a pas pu lire {file}.",
-    "retry": "Vérifiez votre connexion et rechargez la page. Si l'erreur persiste, les fichiers de données manquent peut-être dans cette version."
+    "failed": "Planetshift n'a pas pu lire {file} ({reason}).",
+    "retry": "Vérifiez votre connexion et rechargez la page. Si l'erreur persiste, les fichiers de données manquent peut-être dans cette version.",
+    "failedOther": "Planetshift n'a pas pu lire les données ({reason}).",
+    "startTitle": "La page n'a pas pu démarrer",
+    "startFailed": "Les données sont chargées, mais une erreur a arrêté la page ({reason}). Rechargez la page ; si l'erreur persiste, merci de la signaler."
   },
   "header": {
     "tagline": "À quoi ressemble le changement ?",
@@ -21,7 +24,8 @@
   },
   "explore": {
     "panel": "Scénario et réglages",
-    "runError": "Le modèle n'a pas pu calculer ce scénario. Essayez un autre réglage ou rechargez la page."
+    "runError": "Le modèle n'a pas pu calculer ce scénario. Essayez un autre réglage ou rechargez la page.",
+    "fileError": "{files} n'a pas pu être chargé : les leviers qui en ont besoin restent sans effet. Rechargez la page pour réessayer."
   },
   "controls": {
     "shift": "Aliments animaux remplacés par des végétaux",
@@ -240,7 +244,8 @@
       "elNino": "Année El Niño",
       "laNina": "Année La Niña",
       "oni": "ONI {value}"
-    }
+    },
+    "keys": "Les flèches lisent les valeurs année par année ; Début et Fin vont à la première et à la dernière année."
   },
   "summary": {
     "title": "Ce que les leviers changent",
@@ -269,7 +274,8 @@
       "note": "La part de chaque groupe est la moyenne de ce qu'il ajoute dans tous les ordres où les groupes pourraient être comptés : aucun n'est compté en premier ; un groupe qui agit sur plusieurs causes est partagé entre elles. Les parts s'additionnent au total.",
       "added": "{value} ajoutés",
       "diet": "Alimentation"
-    }
+    },
+    "live": "Réchauffement évité en {year} : {value}."
   },
   "link": {
     "headline": "En {year}, le monde s'est réchauffé de {total}.",
@@ -401,7 +407,8 @@
     "cite": "Comment citer",
     "citeText": "Citez Planetshift et les sources d’origine :",
     "licence": "Licence :",
-    "and": " et "
+    "and": " et ",
+    "unavailable": "Rien à télécharger : le modèle n'a pas pu calculer ce scénario."
   },
   "tour": {
     "label": "Premiers pas",

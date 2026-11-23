@@ -1,9 +1,10 @@
 import { line, scaleLinear } from 'd3';
 import { h } from '../app/dom';
 import type { T } from '../i18n/i18n';
-import { formatNumber } from '../i18n/format';
+import { formatNumber, formatTemperature } from '../i18n/format';
 import type { Ssp } from '../data/types';
 import type { ScenarioResult } from '../model/api';
+import { valueAt } from '../app/summaryModel';
 import { VARIANTS, type WorldPopulation } from '../levers/population/model';
 import {
   addHover,
@@ -12,6 +13,7 @@ import {
   legendList,
   onResize,
   verticalRule,
+  type HoverLink,
   type Margin,
 } from './frame';
 import { inRange, zipSeries, type Point } from './series';
@@ -19,7 +21,13 @@ import { RANGE_START, type Range } from './temperature';
 
 export interface PopulationChart {
   el: HTMLElement;
-  update: (result: ScenarioResult, range: Range, end: number) => void;
+  /** `mediumBaseline`: the baseline's median at `end` under the UN's medium projection. */
+  update: (
+    result: ScenarioResult,
+    range: Range,
+    end: number,
+    mediumBaseline?: number | null,
+  ) => void;
 }
 
 /** The temperature chart's left and right margins, so the years line up. */
@@ -55,8 +63,32 @@ export const populationLines = (p: WorldPopulation, from: number, end: number): 
   return { history, variants };
 };
 
-/** The notes under the chart: how the variant pairs with the SSP, and whether it acts at all. */
-export const populationNotes = (p: WorldPopulation, t: T): string[] => [
+/**
+ * How much the projection chosen moves the baseline in a year against the medium one, °C; null
+ * with the medium projection, when the projection changes nothing, or without both values.
+ */
+export const baselineShift = (
+  p: WorldPopulation,
+  baseline: number | null,
+  medium: number | null | undefined,
+): number | null =>
+  p.variant === 'medium' ||
+  !p.applies ||
+  baseline === null ||
+  medium === null ||
+  medium === undefined
+    ? null
+    : baseline - medium;
+
+/**
+ * The notes under the chart: how the variant pairs with the SSP, whether it acts at all, and how
+ * far it moves the baseline (`shift`, already formatted).
+ */
+export const populationNotes = (
+  p: WorldPopulation,
+  t: T,
+  shift?: { value: string; year: number },
+): string[] => [
   ...(p.inconsistent
     ? [
         t('levers.population.chart.inconsistent', {
@@ -67,10 +99,16 @@ export const populationNotes = (p: WorldPopulation, t: T): string[] => [
       ]
     : []),
   ...(p.applies ? [] : [t('levers.population.chart.notApplied')]),
+  ...(shift ? [t('levers.population.chart.baselineShift', shift)] : []),
 ];
 
 /** World population on the temperature chart's years: the history, then the UN's three variants. */
-export const populationChart = (t: T, locale: string, currentYear: number): PopulationChart => {
+export const populationChart = (
+  t: T,
+  locale: string,
+  currentYear: number,
+  link?: HoverLink,
+): PopulationChart => {
   const plotEl = h('div', { class: 'chart-plot' });
   const caption = h('p', { class: 'chart-caption' }, t('levers.population.chart.caption'));
   const notes = h('p', { class: 'chart-caption population-note', role: 'note' });
@@ -86,10 +124,10 @@ export const populationChart = (t: T, locale: string, currentYear: number): Popu
     plotEl,
     h('figcaption', {}, caption, notes),
   );
-  let last: [WorldPopulation, Range, number] | null = null;
+  let last: [WorldPopulation, Range, number, number | null] | null = null;
   const render = () => {
     if (!last) return;
-    const [p, range, end] = last;
+    const [p, range, end, shift] = last;
     const from = RANGE_START[range];
     const narrow = (plotEl.clientWidth || 640) < 520;
     const f = frame(
@@ -136,42 +174,67 @@ export const populationChart = (t: T, locale: string, currentYear: number): Popu
     const valueAt = (points: Point[], year: number) => points.find((q) => q.year === year)?.value;
     const billion = (v: number) =>
       t('levers.population.chart.billion', { value: formatNumber(locale, v, 2) });
-    addHover(plotEl, f, x, MARGIN, (year) => {
-      const past = valueAt(lines.history, year);
-      return past !== undefined
-        ? [
-            {
-              label: t('levers.population.chart.history'),
-              value: billion(past),
-              swatch: 'var(--ink)',
-            },
-          ]
-        : [...lines.variants].reverse().flatMap((v) => {
-            const value = valueAt(v.points, year);
-            return value === undefined
-              ? []
-              : [
-                  {
-                    label: t('levers.population.chart.projection', {
-                      variant: t(`levers.population.chart.variants.${v.variant}`),
-                    }),
-                    value: billion(value),
-                    swatch: v.chosen ? 'var(--ink)' : 'var(--series-baseline)',
-                  },
-                ];
-          });
-    });
-    const text = populationNotes(p, t).join(' ');
+    addHover(
+      plotEl,
+      f,
+      x,
+      MARGIN,
+      (year) => {
+        const past = valueAt(lines.history, year);
+        return past !== undefined
+          ? [
+              {
+                label: t('levers.population.chart.history'),
+                value: billion(past),
+                swatch: 'var(--ink)',
+              },
+            ]
+          : [...lines.variants].reverse().flatMap((v) => {
+              const value = valueAt(v.points, year);
+              return value === undefined
+                ? []
+                : [
+                    {
+                      label: t('levers.population.chart.projection', {
+                        variant: t(`levers.population.chart.variants.${v.variant}`),
+                      }),
+                      value: billion(value),
+                      swatch: v.chosen ? 'var(--ink)' : 'var(--series-baseline)',
+                    },
+                  ];
+            });
+      },
+      t('chart.keys'),
+      link && { link, id: 'population' },
+    );
+    const text = populationNotes(
+      p,
+      t,
+      shift === null
+        ? undefined
+        : {
+            value: formatTemperature(locale, shift, Math.abs(shift) < 0.1 ? 3 : 2, true),
+            year: end,
+          },
+    ).join(' ');
     notes.textContent = text;
     notes.hidden = text === '';
   };
   onResize(plotEl, render);
   return {
     el,
-    update: (result, range, end) => {
+    update: (result, range, end, mediumBaseline) => {
       const p = result.population ?? null;
       el.hidden = p === null;
-      last = p ? [p, range, end] : null;
+      const tp = result.temperature;
+      last = p
+        ? [
+            p,
+            range,
+            end,
+            baselineShift(p, valueAt(tp.years, tp.baseline.median, end), mediumBaseline),
+          ]
+        : null;
       render();
     },
   };

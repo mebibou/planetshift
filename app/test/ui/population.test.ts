@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { populationLines, populationNotes } from '../../src/chart/population';
+import { baselineShift, populationLines, populationNotes } from '../../src/chart/population';
 import type { WorldPopulation } from '../../src/levers/population/model';
 
 const series = (from: number, to: number, f: (y: number) => number) => {
@@ -48,5 +48,16 @@ describe('population chart', () => {
     expect(populationNotes(world({ applies: false }), t)).toEqual([
       'levers.population.chart.notApplied',
     ]);
+  });
+
+  it('says how far the projection moves the baseline, only when it does', () => {
+    expect(baselineShift(world({ variant: 'high' }), 1.9, 1.8)).toBeCloseTo(0.1);
+    expect(baselineShift(world(), 1.9, 1.8)).toBeNull();
+    expect(baselineShift(world({ variant: 'low', applies: false }), 1.8, 1.8)).toBeNull();
+    expect(baselineShift(world({ variant: 'low' }), null, 1.8)).toBeNull();
+    expect(baselineShift(world({ variant: 'low' }), 1.7, undefined)).toBeNull();
+    expect(
+      populationNotes(world({ variant: 'high' }), t, { value: '+0.10 °C', year: 2100 }),
+    ).toEqual(['levers.population.chart.baselineShift{"value":"+0.10 °C","year":2100}']);
   });
 });

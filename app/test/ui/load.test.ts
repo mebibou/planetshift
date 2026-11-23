@@ -84,16 +84,17 @@ describe('data loading', () => {
     expect(next?.complete({ feedAdditives: 1 })).toBeNull();
   });
 
-  it('tries a deferred file again after it failed, and leaves it empty when missing', async () => {
-    let fail = true;
-    const loaded = await loadAll('data/', (url) =>
-      url.endsWith('breakdown.json') && fail ? Promise.reject(new TypeError('x')) : ok(bodyOf(url)),
-    );
-    await expect(loaded.complete({ feedAdditives: 1 })).rejects.toBeInstanceOf(LoadError);
-    fail = false;
-    expect((await loaded.complete({ feedAdditives: 1 }))?.data.breakdown).toEqual({
-      url: 'data/breakdown.json',
+  it('names a deferred file that failed and does not ask for it again, and leaves a missing one empty', async () => {
+    const asked: string[] = [];
+    const loaded = await loadAll('data/', (url) => {
+      asked.push(url);
+      return url.endsWith('breakdown.json') ? Promise.reject(new TypeError('x')) : ok(bodyOf(url));
     });
+    expect(loaded.failed()).toEqual([]);
+    await expect(loaded.complete({ feedAdditives: 1 })).rejects.toBeInstanceOf(LoadError);
+    expect(loaded.failed()).toEqual(['breakdown']);
+    expect(loaded.complete({ feedAdditives: 1 })).toBeNull();
+    expect(asked.filter((u) => u.endsWith('breakdown.json'))).toHaveLength(1);
     const missing = await loadAll('data/', (url) =>
       url.endsWith('breakdown.json') ? notFound() : ok(bodyOf(url)),
     );

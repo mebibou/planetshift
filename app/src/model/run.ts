@@ -1165,6 +1165,12 @@ export const runPrepared = (
   return Object.assign(result, ...world.map((w) => w.part.result ?? {})) as ScenarioResult;
 };
 
+/** Shares the run's baseline cache, so it costs nothing for options a run has seen. */
+export const baselineMedian = (data: ModelData, options: Options, currentYear: number): Series => ({
+  years: range(FIRST_YEAR, END_YEAR),
+  values: baselineTemperature(prepare(data), options, currentYear).median.temperature,
+});
+
 /**
  * Runs a scenario end to end. The scenario-independent part is prepared once per data
  * object and cached, so repeated calls on slider moves only redo the shift.
