@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState, type KeyboardEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import type { Topology } from 'topojson-specification';
 import type { AppState } from '../app/context';
-import { chartCsv, mapCsv, scenarioJson } from '../app/download';
+import { chartCsv, mapCsv, mapFileName, scenarioJson } from '../app/download';
 import { GROUP_CHOICES } from '../app/groups';
 import { tabKeys } from '../app/tabs';
 import { MAP_VIEWS, type UiState } from '../app/url';
@@ -286,11 +286,12 @@ export const MapCard = (props: MapCardProps) => {
     [countries],
   );
   const [downloading, setDownloading] = useState(false);
+  const card = useRef<HTMLElement>(null);
   const rowsOf = useRows(props);
   const { mapRef, palette } = usePaint(props, names);
   const legendTitle = legendTitleOf(t, ui);
   return (
-    <section className="card map-card" aria-labelledby="map-title">
+    <section ref={card} className="card map-card" aria-labelledby="map-title">
       <h2 id="map-title" className="visually-hidden">
         {t('map.title')}
       </h2>
@@ -314,6 +315,11 @@ export const MapCard = (props: MapCardProps) => {
         folder={props.folder}
         files={props.files}
         sources={sourcesOf(props, rowsOf, englishNames)}
+        mapImage={{
+          name: (format) => mapFileName(ui, state.scenario, format),
+          card: () => card.current,
+          title: legendTitle,
+        }}
         hidden={!downloading}
       />
       <div

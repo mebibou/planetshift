@@ -430,7 +430,14 @@
     "citeText": "Credit Planetshift and the original sources:",
     "licence": "Licence:",
     "and": " and ",
-    "unavailable": "Nothing to download: the model could not compute this scenario."
+    "unavailable": "Nothing to download: the model could not compute this scenario.",
+    "formats": {
+      "csv": "CSV, the chart's data",
+      "png": "PNG image",
+      "svg": "SVG image, for print and editing"
+    },
+    "credit": "Planetshift · planetshift.org · {date}",
+    "mapImage": "Download the map as {format}"
   },
   "tour": {
     "label": "Guided start",

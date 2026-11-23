@@ -1,11 +1,14 @@
 import { useState, type ButtonHTMLAttributes } from 'react';
+import { chartComposition, imageBlob, mapComposition } from '../app/imageCapture';
 import type { AppState } from '../app/context';
 import {
   chartCsv,
+  chartFileName,
   citation,
   DOWNLOAD_LICENCES,
   fileLicences,
   formatBytes,
+  saveBlob,
   saveFile,
   type DownloadFile,
   type Licence,
@@ -14,6 +17,7 @@ import { CHARTS, type ChartTab } from '../app/url';
 import type { Climate, Meta } from '../data/types';
 import type { T } from '../i18n/i18n';
 import type { ScenarioResult } from '../model/api';
+import { DownloadMenu } from './DownloadMenu';
 import { Icon } from './Icon';
 
 /** A button with the download icon; `name` is what a screen reader says, when it says more. */
@@ -41,14 +45,28 @@ const Status = ({ text }: { text: string }) => (
   </p>
 );
 
-/** Saves `file`, or says there is nothing to save. */
-const useSave = (t: T): [string, (file: DownloadFile | null) => void] => {
+export type ImageFormat = 'png' | 'svg';
+
+/** The credit line of an exported image: the site and the day it was saved. */
+export const creditLine = (t: T): string =>
+  t('download.credit', { date: new Date().toISOString().slice(0, 10) });
+
+/** Saves a file or a drawn image, or says in one status line that there is nothing to save. */
+const useSave = (t: T) => {
   const [status, setStatus] = useState('');
-  const save = (file: DownloadFile | null) => {
-    setStatus(file ? '' : t('download.unavailable'));
-    if (file) saveFile(file);
+  const say = (saved: boolean) => setStatus(saved ? '' : t('download.unavailable'));
+  return {
+    status,
+    save: (file: DownloadFile | null) => {
+      say(file !== null);
+      if (file) saveFile(file);
+    },
+    saveImage: (name: string, blob: Promise<Blob | null>) =>
+      blob.then((b) => {
+        say(b !== null);
+        if (b) saveBlob(name, b);
+      }),
   };
-  return [status, save];
 };
 
 export interface ChartData {
@@ -60,17 +78,35 @@ export interface ChartData {
 
 /** The chart card's button that saves the current tab's data, and the line saying when it cannot. */
 export const useChartDownload = (t: T, current: () => ChartData) => {
-  const [status, save] = useSave(t);
+  const { status, save, saveImage } = useSave(t);
+  const image = (format: ImageFormat) => () => {
+    const { state } = current();
+    const { ui, scenario, options } = state;
+    const panel = document.getElementById(`chart-panel-${ui.chart}`);
+    const texts = { title: t(`charts.tabs.${ui.chart}`), credit: creditLine(t) };
+    void saveImage(
+      chartFileName(ui.chart, scenario, options, format),
+      panel ? imageBlob(chartComposition(panel, texts), format) : Promise.resolve(null),
+    );
+  };
   const button = (
-    <DownloadButton
+    <DownloadMenu
       label={t('download.button')}
       name={t('download.chartButton')}
       className="download-chart"
-      onClick={() => {
-        const { result, state, climate, currentYear } = current();
-        const { ui, scenario, options } = state;
-        save(chartCsv({ tab: ui.chart, result, climate, scenario, options, currentYear }));
-      }}
+      items={[
+        {
+          id: 'csv',
+          label: t('download.formats.csv'),
+          onSelect: () => {
+            const { result, state, climate, currentYear } = current();
+            const { ui, scenario, options } = state;
+            save(chartCsv({ tab: ui.chart, result, climate, scenario, options, currentYear }));
+          },
+        },
+        { id: 'png', label: t('download.formats.png'), onSelect: image('png') },
+        { id: 'svg', label: t('download.formats.svg'), onSelect: image('svg') },
+      ]}
     />
   );
   return { button, status: <Status text={status} /> };
@@ -104,6 +140,8 @@ export interface DownloadPanelProps {
   folder: string;
   files: { name: string; bytes: number }[];
   sources: DownloadSources;
+  /** The map as an image: its file name in a format, and the card it is drawn in. */
+  mapImage: { name: (format: ImageFormat) => string; card: () => Element | null; title: string };
   hidden: boolean;
 }
 
@@ -134,9 +172,10 @@ export const DownloadPanel = ({
   folder,
   files,
   sources,
+  mapImage,
   hidden,
 }: DownloadPanelProps) => {
-  const [status, save] = useSave(t);
+  const { status, save, saveImage } = useSave(t);
   return (
     <div className="download-panel" id="map-downloads" hidden={hidden}>
       <h3 className="chart-subtitle">{t('download.title')}</h3>
@@ -144,11 +183,29 @@ export const DownloadPanel = ({
         <Item
           t={t}
           button={
-            <DownloadButton
-              label={t('download.map')}
-              className="download-map"
-              onClick={() => save(sources.map())}
-            />
+            <span className="download-formats">
+              <DownloadButton
+                label={t('download.map')}
+                className="download-map"
+                onClick={() => save(sources.map())}
+              />
+              {(['png', 'svg'] as const).map((format) => (
+                <DownloadButton
+                  key={format}
+                  label={format.toUpperCase()}
+                  name={t('download.mapImage', { format: format.toUpperCase() })}
+                  className={`download-map-${format}`}
+                  onClick={() => {
+                    const card = mapImage.card();
+                    const texts = { title: mapImage.title, credit: creditLine(t) };
+                    void saveImage(
+                      mapImage.name(format),
+                      card ? imageBlob(mapComposition(card, texts), format) : Promise.resolve(null),
+                    );
+                  }}
+                />
+              ))}
+            </span>
           }
           text={t('download.mapText')}
           licences={DOWNLOAD_LICENCES.map}

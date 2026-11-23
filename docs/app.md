@@ -285,7 +285,7 @@ The table pages by 20 rows, with Previous and Next and "Page 2 of 10". It says w
 
 **Downloads.** The map card's Download button opens a list:
 
-- The map's layer as CSV: every country with its ISO3 code, English name, layer, measure, gas or food, unit, values before and after, relative change, tier and source. The file is named after the layer and the scenario, such as `planetshift-map-change-emissions-co2e-shift40-2035.csv`.
+- The map's layer as CSV, PNG or SVG. The CSV holds every country with its ISO3 code, English name, layer, measure, gas or food, unit, values before and after, relative change, tier and source. The file is named after the layer and the scenario, such as `planetshift-map-change-emissions-co2e-shift40-2035.csv`.
 - Each chart tab's data as CSV, one file per tab:
   - the temperature, 1850–2100: observed, without and with the levers with their 5–95% ranges, and warming from natural factors
   - the warming avoided, from the current year to 2100
@@ -293,7 +293,9 @@ The table pages by 20 rows, with Previous and Next and "Page 2 of 10". It says w
 - The scenario as JSON: the full URL state (its address and query, the scenario, the options and the interface's choices), with the summary, the licence, how to cite and the sources from `meta.json`.
 - The source data files with their sizes (read when the site is built, `__DATA_FILES__` in `vite.config.ts`) and each file's licence.
 
-One file per tab was chosen over one wide file because the tabs have different years and quantities. The chart card has its own Download button, to the right of the horizon and years filters just above the chart. It downloads the current tab's CSV, and screen readers hear it as "Download this chart's data". A button with nothing to save, as when the model could not compute the scenario, says so beside it.
+One file per tab was chosen over one wide file because the tabs have different years and quantities. The chart card has its own Download button, to the right of the horizon and years filters just above the chart. It opens a menu (`DownloadMenu.tsx`, the menu-button pattern: the down arrow opens it on its first item, the arrows move, Escape, Tab or a click elsewhere close it) with the current tab's data as CSV, and the tab's chart as PNG or SVG. Screen readers hear the button as "Download this chart's data". A button with nothing to save, as when the model could not compute the scenario, says so beside it.
+
+**Chart and map images.** `src/app/imageCapture.ts` reads a chart panel's charts (with the population chart under the temperature, when shown) or the map off the page, in the light theme whatever the reader's: each drawing is copied with its computed styles written into it, so the file needs no stylesheet, and its HTML legend is read as legend items. `src/app/imageExport.ts`, pure and tested in `test/ui/imageExport.test.ts`, sets them in one SVG: the tab's or the layer's title, the chart's description or the map's note, each drawing under its subtitle and legend, and a credit line, *Planetshift · planetshift.org* and the date. The PNG is that SVG drawn on a canvas at twice its size. The fonts are named, not embedded: an SVG opened elsewhere uses Lato where installed, and the PNG the browser's sans-serif. Files are named as the CSV, with their own extension.
 
 Every entry names its licence with a link. The map's CSV is CC BY 4.0. The chart CSVs and the scenario derive from `climate.json`, so they are CC BY-NC-SA 4.0. The files follow `DATA-LICENCES.md`. A "How to cite" fold gives Planetshift, the page's address and the sources in `meta.json`.
 
