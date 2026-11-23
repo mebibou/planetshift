@@ -32,7 +32,7 @@ Les poissons et crevettes d'élevage mangent des aliments aquacoles faits de gra
 - Les concentrés par tonne et les parts des rations sont des valeurs arrondies dans l'esprit des résultats régionaux de GLEAM 2.0, et non une copie de ses tables, qui ne sont pas publiées sous cette forme ; ce sont un point de départ à revoir.
 - Deux niveaux de revenu représentent les nombreux systèmes de production que GLEAM distingue.
 - Les régions sans production animale (aucune pour l'instant) prennent les parts mondiales.
-- L'herbe, les résidus de culture et les tourteaux sont hors des bilans : ils ne sont donc pas répartis ici. Les surfaces des oléagineux triturés pour le tourteau, et des prairies temporaires, suivent les animaux dans [Terres](#method-land) ; les prairies permanentes suivent les ruminants.
+- L'herbe, les résidus de culture et les tourteaux sont hors des bilans : ils ne sont donc pas répartis ici. Les surfaces des oléagineux triturés pour le tourteau, et des prairies temporaires, suivent les animaux dans [Terres](#method-land), comme les émissions du tourteau ([Émissions](#method-emissions)) ; les prairies permanentes suivent les ruminants.
 
 ## Sources
 

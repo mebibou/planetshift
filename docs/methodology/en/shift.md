@@ -28,7 +28,7 @@ When a country eats none of the items in a part of the mix, that part follows th
 
 A tonne more food needs more than a tonne of supply, because some is lost between farm and shop and some grain is kept as seed. Losses and seed are held as fixed shares of each item's domestic supply, so a change in food or feed use changes supply by that change ÷ (1 − the share of losses and seed). The multiplier is capped at 3 as a guard against odd rows.
 
-Processing is held fixed, so it does not scale with the shift. An item processed into another one (soybeans crushed into oil and cake, sugar cane into sugar, milk into butter) has that derived item in the FBS with its own production and its own emission intensity. A change in demand for soybean oil therefore changes the production of soybean oil, and its emissions, not the soybeans crushed for it. Oilcakes are not FBS items; the land of the oilseeds crushed for them follows the animals that eat them (see [Land](#method-land)).
+Processing is held fixed, so it does not scale with the shift. An item processed into another one (soybeans crushed into oil and cake, sugar cane into sugar, milk into butter) has that derived item in the FBS with its own production and its own emission intensity. A change in demand for soybean oil therefore changes the production of soybean oil, and its emissions, not the soybeans crushed for it. Oilcakes are not FBS items; the land of the oilseeds crushed for them, and the part of their emissions the cake carries, follow the animals that eat them (see [Land](#method-land)).
 
 ## 5. Fewer animals, less feed
 
