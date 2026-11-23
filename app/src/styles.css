@@ -1692,12 +1692,14 @@ input[type='range']:disabled {
     margin: 2px 0 6px;
   }
 }
-.timing {
-  padding-bottom: 10px;
+.time-settings {
+  display: grid;
+  gap: 14px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--rule);
-  & .hint {
-    margin: 4px 0 0;
-  }
+}
+.timing .hint {
+  margin: 4px 0 0;
 }
 .cause-section {
   margin-top: 10px;

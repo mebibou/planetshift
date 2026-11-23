@@ -49,7 +49,8 @@
     "advanced": "Régler chaque aliment animal",
     "groupsHint": "Un aliment réglé ici garde sa propre part ; les autres suivent le curseur principal.",
     "groupsReset": "Suivre de nouveau le curseur principal",
-    "rampHint": "Chaque levier, l'alimentation comprise, se met en place à partir d'aujourd'hui et l'est entièrement cette année-là."
+    "rampHint": "Chaque levier, l'alimentation comprise, se met en place à partir d'aujourd'hui et l'est entièrement cette année-là.",
+    "horizon": "Résultats jusqu'en"
   },
   "levers": {
     "title": "Leviers",
@@ -345,7 +346,6 @@
   },
   "charts": {
     "title": "Graphiques",
-    "horizon": "Jusqu'en",
     "tabs": {
       "temperature": "Température mondiale",
       "avoided": "Réchauffement évité",
