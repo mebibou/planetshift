@@ -32,7 +32,7 @@ Farmed fish and shrimp eat aquafeed made of grain, oilseeds and fishmeal, which 
 - Concentrate feed per tonne and ration shares are rounded values in the spirit of GLEAM 2.0's regional results, not a copy of its tables, which are not published in this form; they are a starting point to review.
 - Two income levels stand for the many production systems GLEAM distinguishes.
 - Regions without animal production (none at present) take the world shares.
-- Grass, crop residues and oil cakes are outside the balance sheets, so they are not split here. The land of the oilseeds crushed for cake, and of temporary meadows, follows the animals in [Land](#method-land); permanent pasture follows the ruminants.
+- Grass, crop residues and oil cakes are outside the balance sheets, so they are not split here. The land of the oilseeds crushed for cake, and of temporary meadows, follows the animals in [Land](#method-land), and so do the cake's emissions ([Emissions](#method-emissions)); permanent pasture follows the ruminants.
 
 ## Sources
 

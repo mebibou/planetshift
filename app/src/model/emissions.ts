@@ -6,8 +6,9 @@ import {
   type Scope,
   type Tier,
 } from '../data/types';
+import { cakeAmountChange, type CakeDemand } from './land';
 import type { Prepared, PreparedCountry } from './prepare';
-import { dot, gasVector, memoPer, type ItemVector } from './util';
+import { addGas, dot, gasVector, memoPer, ZERO_GAS, type ItemVector } from './util';
 
 /** The scope an intensity falls back to when it has none in the chosen one. */
 export const OTHER_SCOPE: Record<Scope, Scope> = {
@@ -95,3 +96,55 @@ export const cutEmissions = (
       a += (tonnes[i] as number) * (k[i] as number) * (c[i] as number);
     return -a;
   });
+
+/**
+ * A country's oilcakes, kg of each gas a year each crushed oilseed's cake carries in the chosen
+ * scope (else the other), with the oilseed's code and its index among the items (−1 if none).
+ */
+export interface CountryCakes {
+  codes: readonly string[];
+  index: readonly number[];
+  kg: readonly GasVector[];
+}
+
+const cakeCache = memoPer<PreparedCountry, CountryCakes>();
+
+export const countryCakes = (pc: PreparedCountry, prepared: Prepared, scope: Scope): CountryCakes =>
+  cakeCache(pc, scope, () => {
+    const found = Object.entries(
+      prepared.data.intensities.oilcake?.[pc.country.iso3] ?? {},
+    ).flatMap(([code, byScope]) => {
+      const cell = byScope[scope] ?? byScope[OTHER_SCOPE[scope]];
+      return cell ? [{ code, kg: gasVector((g) => cell[g] ?? 0) }] : [];
+    });
+    const codes = found.map((f) => f.code);
+    return {
+      codes,
+      index: codes.map((c) => prepared.indexOf.get(c) ?? -1),
+      kg: found.map((f) => f.kg),
+    };
+  });
+
+/** kg of each gas the oilcakes carry in all. */
+export const cakeEmissions = (cakes: CountryCakes): GasVector =>
+  cakes.kg.reduce((a, v) => addGas(a, v), ZERO_GAS);
+
+/** The change in each oilcake's emissions as the demand for the cake changes, as its land does. */
+export const cakeEmissionsChange = (cakes: CountryCakes, cake: CakeDemand): GasVector[] =>
+  cakes.kg.map((kg, k) => {
+    const shares = cake.sharesOf(cakes.codes[k] as string);
+    return gasVector((g) => cakeAmountChange(kg[g], shares, cake.relative));
+  });
+
+/** kg of each gas removed from oilcakes' emissions `kg` by cutting each oilseed's intensity by `cuts`. */
+export const cutCakeEmissions = (
+  cakes: CountryCakes,
+  kg: readonly GasVector[],
+  cuts: Record<keyof GasVector, ItemVector>,
+): GasVector =>
+  gasVector((g) =>
+    kg.reduce((a, v, k) => {
+      const i = cakes.index[k] as number;
+      return i < 0 ? a : a - v[g] * (cuts[g][i] as number);
+    }, 0),
+  );

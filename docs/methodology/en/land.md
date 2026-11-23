@@ -43,7 +43,7 @@ Crushing an oilseed gives oil and a cake (meal) fed to animals. The cake is not 
 | Sesame | 1.0 | 4,720 | 414 | 92% |
 | Other oilseeds | 1.8 | 2,272 | 430 | 75% |
 
-Palm oil and olive oil keep all their land: the press cake of the oil palm's fruit and the olive's pomace are hardly fed. The cake's land changes with the production of the animal groups that eat it, weighted by the oilseed's feed shares (`feed.json`): with trade shares held, by the world's change in each group's production, as cake is traded like its oil; with each country producing its own change, by the country's own. In all, oilcakes carry 0.11 billion hectares, soybean meal most of it. Emissions are shared the same way (see [Emissions](#method-emissions)).
+Palm oil and olive oil keep all their land: the press cake of the oil palm's fruit and the olive's pomace are hardly fed. The cake's land changes with the production of the animal groups that eat it, weighted by the oilseed's feed shares (`feed.json`): with trade shares held, by the world's change in each group's production, as cake is traded like its oil; with each country producing its own change, by the country's own. In all, oilcakes carry 0.11 billion hectares, soybean meal most of it. Emissions are shared the same way, and the cake's follow the animals as its land does (see [Emissions](#method-emissions)).
 
 ## Pasture and the animals that graze it
 

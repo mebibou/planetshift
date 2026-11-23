@@ -38,7 +38,16 @@ import { shapley } from './attribution';
 import { bandRecord } from './bands';
 import { BANDS, populationAdjustmentEmissions, warmingFrom, type Band } from './climate';
 import { foodChange, perCapitaPerDay } from './diet';
-import { countryIntensities, cutEmissions, emissionsOf, worstIntensity } from './emissions';
+import {
+  cakeEmissions,
+  cakeEmissionsChange,
+  countryCakes,
+  countryIntensities,
+  cutCakeEmissions,
+  cutEmissions,
+  emissionsOf,
+  worstIntensity,
+} from './emissions';
 import { feedChange, feedSharesOf, groupProductionChange } from './feed';
 import { addLand, countryLand, landChangeOf, NO_LAND, type CakeDemand } from './land';
 import { clipChange, locateAll } from './location';
@@ -209,7 +218,10 @@ export const countryBase = (pc: PreparedCountry, prepared: Prepared, scope: Scop
     const worst = worstIntensity(pc.emitting, intensities);
     return {
       production: groupTotals(pc.production, prepared),
-      emissions: emissionsOf(pc.emitting, intensities),
+      emissions: addGas(
+        emissionsOf(pc.emitting, intensities),
+        cakeEmissions(countryCakes(pc, prepared, scope)),
+      ),
       worstTier: worst.tier,
       worstSource: worst.source,
       proteinBefore: perCapitaPerDay(pc.food, pc, prepared, 'protein'),
@@ -398,14 +410,20 @@ const countryParts = (
   options: Options,
   intensityCuts: readonly IntensityCut[],
   countryHooks: readonly CountryHook[],
-  cake: CakeDemand,
+  /** How the oilcakes follow the animals at each stage. */
+  cakes: readonly CakeDemand[],
   bands: readonly Band[],
 ): CountryParts => {
   const base = countryBase(pc, prepared, options.scope);
   const intensities = countryIntensities(pc, prepared, options.scope);
+  const oilcakes = countryCakes(pc, prepared, options.scope);
   const change = (stages[stages.length - 1] as Stage).change;
+  const cakeChanges = cakes.map((c) => cakeEmissionsChange(oilcakes, c));
+  const cakeChange = cakeChanges[cakeChanges.length - 1] as GasVector[];
   const productionChange = groupTotals(change, prepared);
-  const emitted = stages.map((s) => emissionsOf(s.change, intensities));
+  const emitted = stages.map((s, k) =>
+    (cakeChanges[k] ?? []).reduce((a, v) => addGas(a, v), emissionsOf(s.change, intensities)),
+  );
   const total = emitted[emitted.length - 1] as GasVector;
   const farm = Object.fromEntries(
     stages.map((s, k) => {
@@ -423,8 +441,14 @@ const countryParts = (
           return [
             band,
             {
-              own: cutEmissions(pc.emitting, intensities, share),
-              joint: cutEmissions(change, intensities, share),
+              own: addGas(
+                cutEmissions(pc.emitting, intensities, share),
+                cutCakeEmissions(oilcakes, oilcakes.kg, share),
+              ),
+              joint: addGas(
+                cutEmissions(change, intensities, share),
+                cutCakeEmissions(oilcakes, cakeChange, share),
+              ),
             },
           ];
         }),
@@ -432,7 +456,13 @@ const countryParts = (
     ]),
   );
   const land = countryLand(pc, prepared).base;
-  const landChange = landChangeOf(pc, change, productionChange, prepared, cake);
+  const landChange = landChangeOf(
+    pc,
+    change,
+    productionChange,
+    prepared,
+    cakes[cakes.length - 1] as CakeDemand,
+  );
   const extra = countryHooks.map(({ hook }) => hook({ pc, stages, land, landChange }));
   return {
     result: Object.assign(
@@ -735,8 +765,7 @@ const emissionsPass = (
     const hook = m.hooks.country?.(ctx);
     return hook ? [{ cause: causeOfModule(m), hook }] : [];
   });
-  const last = (steps[steps.length - 1] as Step).run;
-  const cakeOf = cakeDemandOf(prepared, options, last.change);
+  const cakeOfs = steps.map((s) => cakeDemandOf(prepared, options, s.run.change));
   // A pass of the breakdown reads the median alone and none of the countries' diets.
   const food = bands.length > 1 ? (steps[0] as Step).run.food : null;
   const parts = prepared.countries.map((pc) =>
@@ -748,7 +777,7 @@ const emissionsPass = (
       options,
       intensityCuts,
       countryHooks,
-      cakeOf(pc),
+      cakeOfs.map((cakeOf) => cakeOf(pc)),
       bands,
     ),
   );

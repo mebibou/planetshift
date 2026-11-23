@@ -96,8 +96,12 @@ export interface Intensity {
   tier: Tier;
   source: string; // a URL (HESTIA node or FAOSTAT domain)
 }
+/** oilcake[iso3][oilseedCode][scope]: kg of each gas a year the crushed oilseed's cake carries. */
+export type OilcakeEmissions = Record<string, Record<string, Partial<Record<Scope, GasVector>>>>;
+
 export interface Intensities {
   byCountry: Record<string, Record<string, Partial<Record<Scope, Intensity>>>>;
+  oilcake?: OilcakeEmissions;
 }
 /**
  * intensities.json as written: each source once in `sources`, each cell's `source` its index
@@ -109,8 +113,7 @@ export interface IntensitiesFile {
     string,
     Record<string, Partial<Record<Scope, Omit<Intensity, 'source'> & { source: number }>>>
   >;
-  /** oilcake[iso3][oilseedCode][scope]: kg of each gas a year the crushed oilseed's cake carries. */
-  oilcake?: Record<string, Record<string, Partial<Record<Scope, Record<Gas, number>>>>>;
+  oilcake?: OilcakeEmissions;
 }
 
 /**
