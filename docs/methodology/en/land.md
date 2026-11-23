@@ -120,6 +120,10 @@ Each country's pasture is shared between ruminant meat and dairy, in proportion 
 
 A country missing from Livestock Patterns (Nicaragua, at present) takes its herds' heads times the world's livestock units per head. A country with ruminants but no pasture in FAOSTAT (Egypt, small islands) has 0 ha of pasture. Worldwide, dairy takes 16% of pasture and ruminant meat 84%.
 
+## Land use on the map
+
+The map's *Land use* layer gives the farmland counted here, cropland and pasture, as a share of each country's land area (FAOSTAT's *Land area*, inland water excluded), today and once the levers are fully in place. It shows how much of a country farming takes: 80% of Saudi Arabia, mostly rangeland, 73% of India, 34% of Brazil, 6% of Canada. Cropland is counted as harvested area, so land cropped twice a year counts twice, which raises the share where double cropping is common, as in India. Eating less meat lowers it where pasture and feed crops are freed. The bins are fixed (5%, 10%, 20%, 30%, 45%, 60%), so a scenario's change shows as a change of colour; the tooltip gives the hectares of cropland and pasture.
+
 ## Regrowth: an option, off by default
 
 Farmland that is no longer farmed can, if left alone, grow back into forest or other natural vegetation. As it grows, it takes carbon dioxide out of the air. Planetshift can count this uptake (Options, "Freed farmland": "Grows back"), but leaves it off by default, for several reasons:

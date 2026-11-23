@@ -51,12 +51,13 @@ describe('tooltip', () => {
     expect(m.source).toEqual({ label: 'FAOSTAT', url: 'https://www.fao.org/faostat/' });
   });
 
-  it('shows farmland with its cropland and pasture, without an emission source', () => {
+  it('shows the share of land farmed with its hectares, without an emission source', () => {
     const m = tooltipModel(
       'France',
       countryResult({
         land: { cropland: 18e6, pasture: 9.5e6 },
         landChange: { cropland: 0.5e6, pasture: -4.5e6 },
+        landArea: 55e6,
       }),
       { ...spec, layer: 'land' },
       t,
@@ -64,10 +65,11 @@ describe('tooltip', () => {
       { tier: 3, source: 'https://www.fao.org/faostat/' },
     );
     expect(m.rows.map(([k, v]) => [k, v.replace(/\u00a0/g, ' ')])).toEqual([
-      ['Farmland', ''],
-      ['Today', '27.5 Mha'],
-      ['With the levers', '23.5 Mha'],
+      ['Share of the land farmed', ''],
+      ['Today', '50%'],
+      ['With the levers', '43%'],
       ['Change', '−14.5%'],
+      ['Farmland', '27.5 Mha → 23.5 Mha'],
       ['Cropland', '18 Mha → 18.5 Mha'],
       ['Pasture', '9.5 Mha → 5 Mha'],
     ]);

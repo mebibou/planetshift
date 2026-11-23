@@ -120,6 +120,10 @@ Les prairies de chaque pays sont réparties entre la viande de ruminants et les 
 
 Un pays absent des Livestock Patterns (le Nicaragua, actuellement) prend le nombre de têtes de ses troupeaux multiplié par les unités de bétail par tête du monde. Un pays qui a des ruminants mais pas de prairies dans FAOSTAT (l'Égypte, les petites îles) a 0 ha de prairies. Dans le monde, les produits laitiers prennent 16 % des prairies et la viande de ruminants 84 %.
 
+## L'usage des terres sur la carte
+
+La couche *Usage des terres* de la carte donne les terres agricoles comptées ici, cultures et prairies, en part de la superficie des terres de chaque pays (la *Superficie des terres* de FAOSTAT, eaux intérieures exclues), aujourd'hui et une fois les leviers pleinement en place. Elle montre la place que prend l'agriculture dans un pays : 80 % de l'Arabie saoudite, surtout des parcours, 73 % de l'Inde, 34 % du Brésil, 6 % du Canada. Les cultures sont comptées en surfaces récoltées : une terre cultivée deux fois par an compte deux fois, ce qui relève la part là où la double culture est courante, comme en Inde. Manger moins de viande la réduit là où des prairies et des cultures fourragères sont libérées. Les classes sont fixes (5 %, 10 %, 20 %, 30 %, 45 %, 60 %), pour qu'un changement de scénario se voie comme un changement de couleur ; l'infobulle donne les hectares de cultures et de prairies.
+
 ## La repousse : une option, désactivée par défaut
 
 Des terres agricoles qui ne sont plus cultivées peuvent, si on les laisse en paix, redevenir forêt ou autre végétation naturelle. En poussant, cette végétation retire du dioxyde de carbone de l'air. Planetshift peut compter cette absorption (Options, « Terres libérées » : « Végétation spontanée »), mais la laisse désactivée par défaut, pour plusieurs raisons :

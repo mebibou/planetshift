@@ -70,11 +70,13 @@ export const unitOf = (measure: Measure, spec: LayerSpec): string =>
     ? 't'
     : measure === 'land'
       ? 'ha'
-      : measure === 'deforestation'
-        ? 'ha'
-        : spec.gas === 'co2e'
-          ? 'kg CO2e (GWP100)'
-          : `kg ${spec.gas.toUpperCase()}`;
+      : measure === 'landShare'
+        ? 'share of land area'
+        : measure === 'deforestation'
+          ? 'ha'
+          : spec.gas === 'co2e'
+            ? 'kg CO2e (GWP100)'
+            : `kg ${spec.gas.toUpperCase()}`;
 
 export const MAP_HEADER = [
   'iso3',

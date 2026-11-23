@@ -12,7 +12,7 @@ Each file is written by one section of the pipeline, `pipeline/planetshift_pipel
 | `supply.json` | `Supply` | FAOSTAT Food Balance Sheets |
 | `intensities.json` | `IntensitiesFile`, read as `Intensities` | HESTIA aggregations, FAOSTAT emissions, published LCAs; seafood from FAO FishStat with Parker et al. (2018) and MacLeod et al. (2020) |
 | `feed.json` | `Feed` | feed allocation tables, FAO FishStat fed aquaculture for `seafood` |
-| `land.json` | `Land` | FAOSTAT harvested area and land use, natural regrowth rates |
+| `land.json` | `Land` | FAOSTAT harvested area and land use, each country's land area (`landArea`, optional: without it the map's land use layer is empty), natural regrowth rates |
 | `breakdown.json` | `Breakdown` (`levers/practices/data.ts`) | emissions by source (enteric, manure, rice, fertiliser…) from HESTIA terms and FAOSTAT |
 | `practices.json` | `Practices` (`levers/practices/data.ts`) | published reductions of farming practices |
 | `waste.json` | `Waste` (`levers/waste/data.ts`) | food waste after shops |

@@ -404,6 +404,8 @@ write('land.json', {
     Object.entries(regrowth).map(([iso3, [median, low, high]]) => [iso3, { median, low, high }]),
   ),
   regrowthYears: 30,
+  // FAOSTAT land area, ha
+  landArea: { FRA: 5.47e7, USA: 9.15e8, IND: 2.97e8, BRA: 8.36e8, NGA: 9.1e7 },
 });
 
 // climate

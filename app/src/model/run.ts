@@ -525,6 +525,7 @@ const countryParts = (
           : base.kcalBefore,
         land,
         landChange,
+        landArea: prepared.data.land.landArea?.[pc.country.iso3] ?? 0,
       },
       ...extra.map((e) => e.result ?? {}),
     ) as CountryResult,
