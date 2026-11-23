@@ -323,6 +323,26 @@ L'intensité de l'Inde est celle de HESTIA (niveau 1) : 16,7 kg de méthane dû 
 
 Le modèle de HESTIA applique l'affinement de 2019 du GIEC aux régimes hydriques et aux amendements de ses données sur le riz indien. FAOSTAT applique la méthode de niveau 1 du GIEC avec ses propres hypothèses sur les régimes hydriques. La différence tient à la méthode : la valeur de HESTIA est donc gardée, comme le niveau le mieux documenté. Avec l'intensité de FAOSTAT pour l'Inde, le total mondial serait d'environ 24,1 Mt.
 
+### Par kilogramme, face à Poore et Nemecek
+
+Our World in Data présente les émissions par kilogramme d'aliment de Poore et Nemecek (2018), réparties par étape de la chaîne. C'est leur étape de la ferme qui se compare aux intensités de Planetshift, qui laissent de côté l'alimentation des animaux (comptée sur les cultures), le changement d'usage des terres et tout ce qui suit la ferme. Moyennes mondiales pondérées par la production, du berceau à la sortie de la ferme, en kg d'équivalent CO₂ par kg :
+
+| Produit | Planetshift | Poore et Nemecek, étape de la ferme |
+| --- | --- | --- |
+| Bœuf | 24,7 | 21,9 (troupeau laitier) à 56,2 (troupeau allaitant) |
+| Viande ovine et caprine | 21,4 | 27,0 |
+| Viande de porc | 1,70 | 2,48 |
+| Volaille | 0,88 | 0,93 |
+| Œufs | 0,82 | 1,32 |
+| Lait | 1,19 | 1,51 |
+| Riz | 1,07 par kg de paddy, 1,6 par kg de riz blanchi | 3,55 |
+| Blé | 0,46 | 0,82 |
+| Maïs | 0,38 | 0,72 |
+| Pommes de terre | 0,13 | 0,19 |
+| Pois | 0,46 | 0,72 |
+
+Planetshift est plus bas pour chaque produit, d'un tiers à la moitié pour la plupart, et le bœuf se situe entre leurs deux troupeaux. Trois différences l'expliquent pour l'essentiel. Planetshift pondère le méthane et le N₂O avec les facteurs de l'AR6 (27 et 273), Poore et Nemecek avec ceux de l'AR5 avec rétroactions climat-carbone (34 et 298). Leurs données sont une méta-analyse d'études des années 2010 environ, celles de Planetshift viennent de la méthode de niveau 1 du GIEC de FAOSTAT et de HESTIA. Et les unités diffèrent : la viande de Planetshift est en poids de carcasse. Le riz est le plus éloigné, pour les raisons données plus haut et parce que leurs émissions des rizières viennent de mesures au champ.
+
 ## Émissions par source
 
 Chaque intensité est aussi répartie par source dans `breakdown.json` : fermentation entérique, gestion des effluents, riz, engrais de synthèse et organiques, résidus, carburant, électricité, fabrication des intrants, et autres. La répartition vient du même calcul. L'allocation de FAOSTAT ci-dessus garde chaque processus séparé, et les lignes de HESTIA gardent leurs termes d'émission. La page [Pratiques agricoles](#method-practices) explique cette répartition et les pratiques qui l'utilisent.
@@ -363,6 +383,7 @@ Le code est dans `pipeline/planetshift_pipeline/intensities.py`. Ses tables sont
 - FAO, Technical Conversion Factors for Agricultural Commodities : <https://www.fao.org/statistics/en/>.
 - GIEC (2006, affinées en 2019). Lignes directrices pour les inventaires nationaux de gaz à effet de serre, volume 4 : <https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html>.
 - Poore, J., Nemecek, T. (2018). Reducing food's environmental impacts through producers and consumers. Science 360, 987–992 : <https://doi.org/10.1126/science.aaq0216>.
+- Our World in Data, Food: greenhouse gas emissions across the supply chain (Poore et Nemecek, 2018) : <https://ourworldindata.org/grapher/food-emissions-supply-chain>.
 - Saunois, M. et al. (2025). The Global Methane Budget 2000–2020. Earth System Science Data 17, 1873–1958 : <https://doi.org/10.5194/essd-17-1873-2025>.
 - Tian, H. et al. (2024). Global nitrous oxide budget (1980–2020). Earth System Science Data 16, 2543–2604 : <https://doi.org/10.5194/essd-16-2543-2024>.
 - FAO (2025). Greenhouse gas emissions from agrifood systems: global, regional and country trends, 2001–2023. FAOSTAT Analytical Brief 115 : <https://doi.org/10.4060/cd7300en>.

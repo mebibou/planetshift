@@ -78,7 +78,7 @@ Des totaux plus larges comptent davantage :
 
 - La FAO estime la déforestation à 2,8 Gt d'équivalent CO₂ en 2023 (FAOSTAT Analytical Brief 115). L'équivalent CO₂ (CO₂e) additionne différents gaz en un seul chiffre (voir [Des émissions à la température](#method-climate)).
 - Le Global Carbon Budget 2025 situe l'ensemble des émissions nettes d'usage des terres à 5,0 ± 2,6 Gt de CO₂ par an sur 2015–2024, dont environ 7,0 de déforestation brute, sylviculture et autres causes comprises.
-- L'Évaluation des ressources forestières mondiales 2025 de la FAO fait état d'environ 10,9 millions d'hectares de forêt perdus par an sur 2015–2025.
+- L'Évaluation des ressources forestières mondiales 2025 de la FAO fait état d'environ 10,9 millions d'hectares de forêt perdus par an sur 2015–2025. Our World in Data présente la déforestation de la FAO par demi-décennie, 8,5 millions d'hectares par an autour de 2020 ([graphique](https://ourworldindata.org/grapher/annual-deforestation)). Les deux comptent toute la forêt perdue, là où Planetshift compte le défrichement que DeDuCE attribue aux aliments du modèle.
 
 ## Hypothèses
 
