@@ -177,7 +177,6 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 - **PRIMAP-hist v2.8 est sous CC BY-NC-SA 4.0** : non commerciale et partage dans les mêmes conditions. Ses totaux agricoles mondiaux sont dans le fichier publié `climate.json`, et l'attribution en est calculée.
 - **Berkeley Earth est sous CC BY-NC 4.0** : non commerciale ; sa série observée est dans le fichier publié `climate.json`.
 - **RCMIP v5.1.0 est sous CC BY-SA 4.0** : partage dans les mêmes conditions ; les émissions et les températures des scénarios en dérivent.
-- **Le CO₂ d'IEA-EDGAR est sous CC BY-NC-ND 4.0** : non commerciale et sans œuvre dérivée. Les séries du transport routier de passagers et de marchandises de `sectors.json` sont les formes des scénarios rapportées au CO₂ du transport routier d'EDGAR en 2023 (6,1 milliards de tonnes, sur les 8,24 du transport dans son rapport 2024). Ce calage sur une valeur publiée pourrait compter comme une œuvre dérivée : à régler avec le JRC, ou remplacer cette valeur par une autre source (l'AIE estime l'ensemble du transport à près de 8 milliards de tonnes en 2022).
 
 Les autres sources sont sous CC BY 4.0, dans le domaine public, sous Open Government Licence, Apache 2.0 ou MIT.
 

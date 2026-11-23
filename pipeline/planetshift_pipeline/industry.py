@@ -216,7 +216,7 @@ def build_industry(cache_dir: Path, out_dir: Path) -> None:
     doc = build(cache_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "industry.json").write_text(
-        json.dumps(doc, ensure_ascii=False, separators=(",", ":"))
+        json.dumps(doc, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
     )
     for line in summary(doc):
         log.info(line)

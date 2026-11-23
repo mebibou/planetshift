@@ -1,11 +1,9 @@
 """climate.json: AGTP curves, scenario temperatures, attribution and permafrost."""
 
-from ..inputs import Build, log, optional
+from ..inputs import Build
 
 
 def build(b: Build) -> None:
-    mod = optional("climate")
-    if mod is None or not hasattr(mod, "build_climate"):
-        log.warning("climate.build_climate missing: climate.json not built")
-        return
-    mod.build_climate(b.cache, b.out)
+    run = b.module("climate", "build_climate")
+    if run is not None:
+        run(b.cache, b.out)

@@ -2,6 +2,7 @@ import pandas as pd
 import pytest
 
 from planetshift_pipeline import intensities as I
+from planetshift_pipeline.breakdown import primaries
 
 GASES = list(I.GASES)
 
@@ -31,6 +32,25 @@ def test_nitrogen_rates_weight_area_by_class():
     area = pd.DataFrame({"area_code": [1, 1], "qcl_code": [56, 358], "ha": [10.0, 10.0]})
     w = I.nitrogen_weights(area, crops, rates).set_index("key")["weight"]
     assert w[358] / w[56] == pytest.approx((0.103 / 10) / (0.164 / 100))
+
+
+def test_area_weights_leave_out_faostat_aggregate_items():
+    crops = pd.DataFrame({"qcl_code": [15, 56], "n_class": ["wheat", "maize"]})
+    area = pd.DataFrame(
+        {"area_code": [1, 1, 1], "qcl_code": [15, 56, 1717], "ha": [30.0, 10.0, 40.0]}
+    )
+    w = I.area_weights(area, crops)
+    assert set(w["key"]) == {15, 56}
+    out = I.shared(totals((1, "co2", 100.0)), w).set_index("key")["kg"]
+    assert out[15] == pytest.approx(75.0)
+
+
+def test_world_area_counts_china_once():
+    crops = pd.DataFrame({"qcl_code": [27], "n_class": ["rice"]})
+    area = pd.DataFrame(
+        {"area_code": [41, 214, 351, 5000], "qcl_code": [27] * 4, "ha": [30.0, 1.0, 31.0, 99.0]}
+    )
+    assert I.world_area(area, crops).to_dict() == {"rice": 31.0}
 
 
 def test_fertiliser_allocation_conserves_the_total():
@@ -266,6 +286,37 @@ def test_processed_items_divide_their_primary_by_the_extraction_rate():
     assert out.loc[("FRA", 2571), "ch4"] == pytest.approx(10.0)
     assert out.loc[("FRA", 2542), "ch4"] == pytest.approx(10.0)
     assert out.loc[("FRA", 2571), "source"].startswith("processed from 2555 / 0.19")
+
+
+def test_an_oil_from_its_seed_keeps_its_value_share_and_the_cake_the_rest():
+    cands = [candidate("FRA", 2552, 3, 2.6)]
+    extraction = {2572: [(2552, 0.26)]}
+    shares = {2572: 0.8}
+    grid = pd.DataFrame([{"iso3": "FRA", "fbs_code": c, "scope": "farmGate"} for c in (2552, 2572)])
+    out = I.merge(
+        grid,
+        [pd.DataFrame(cands)],
+        {},
+        extraction,
+        {2552: "oilcrops", 2572: "oils"},
+        pd.DataFrame({"iso3": ["FRA"] * 2, "fbs_code": [2552, 2572], "production": [1.0, 1.0]}),
+        pd.DataFrame(columns=["iso3", "fbs_code", "processing"]),
+        {},
+        shares,
+    ).set_index(["iso3", "fbs_code"])
+    assert out.loc[("FRA", 2572), "ch4"] == pytest.approx(10.0 * 0.8)
+    assert "0.80 (oil's value share)" in out.loc[("FRA", 2572), "source"]
+    assert primaries(out.loc[("FRA", 2572), "source"]) == [(2552, 0.26)]
+    oilcakes = pd.DataFrame({"oil_code": [2572], "primary_code": [2552], "oil_share": [0.8]})
+    rows = pd.DataFrame(
+        {"iso3": ["FRA"], "fbs_code": [2572], "production": [13.0], "processing": [0.0]}
+    )
+    cake = I.oilcake_emissions(out.reset_index(), oilcakes, extraction, rows)
+    seed_crushed = 13.0 / 0.26
+    assert cake["ch4"].sum() == pytest.approx(seed_crushed * 2.6 * 0.2)
+    oil = out.loc[("FRA", 2572), "ch4"] * 13.0
+    assert oil + cake["ch4"].sum() == pytest.approx(seed_crushed * 2.6)
+    assert I.oilcake_json(cake)["FRA"]["2552"]["farmGate"]["ch4"] == pytest.approx(26.0)
 
 
 def test_a_processed_items_own_value_wins_over_its_primary():

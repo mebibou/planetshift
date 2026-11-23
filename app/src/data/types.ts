@@ -109,6 +109,8 @@ export interface IntensitiesFile {
     string,
     Record<string, Partial<Record<Scope, Omit<Intensity, 'source'> & { source: number }>>>
   >;
+  /** oilcake[iso3][oilseedCode][scope]: kg of each gas a year the crushed oilseed's cake carries. */
+  oilcake?: Record<string, Record<string, Partial<Record<Scope, Record<Gas, number>>>>>;
 }
 
 /**

@@ -11,6 +11,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from .countries import countries_only
+
 HERE = Path(__file__).resolve().parent.parent
 GASES = ("co2", "ch4", "n2o")
 SCOPES = ("farmGate", "cradleToFarmGate")
@@ -349,6 +351,24 @@ def gt_totals(gt: pd.DataFrame, item: int) -> pd.DataFrame:
     )
 
 
+def area_weights(area: pd.DataFrame, crops: pd.DataFrame) -> pd.DataFrame:
+    """Harvested area (ha) of each listed QCL item, so that FAOSTAT's aggregate items (1717
+    Cereals, primary...) do not count their crops' area a second time."""
+    rows = area[area["qcl_code"].isin(crops["qcl_code"])]
+    return rows.rename(columns={"qcl_code": "key", "ha": "weight"})[["area_code", "key", "weight"]]
+
+
+def world_area(area: pd.DataFrame, crops: pd.DataFrame) -> pd.Series:
+    """World harvested area by nitrogen class, over single countries only ("China" is the sum
+    of mainland China, Hong Kong, Macao and Taiwan, each listed on its own)."""
+    return (
+        countries_only(area)
+        .merge(crops[["qcl_code", "n_class"]].drop_duplicates("qcl_code"), on="qcl_code")
+        .groupby("n_class")["ha"]
+        .sum()
+    )
+
+
 def value_weights(qv: pd.DataFrame, crops: pd.DataFrame) -> pd.DataFrame:
     """Gross production value (constant 2014-2016 international $) of each listed QCL item."""
     rows = qv[(qv["element_code"] == 152) & qv["item_code"].isin(crops["qcl_code"])]
@@ -370,13 +390,7 @@ def faostat_emissions(
     `process` is the emission source (PROCESSES)."""
     area = qcl[qcl["element_code"] == 5312].rename(columns={"item_code": "qcl_code", "value": "ha"})
     area = area[["area_code", "qcl_code", "ha"]]
-    world_area = (
-        area[area["area_code"] < 5000]
-        .merge(crops[["qcl_code", "n_class"]].drop_duplicates("qcl_code"), on="qcl_code")
-        .groupby("n_class")["ha"]
-        .sum()
-    )
-    crop_n = nitrogen_weights(area, crops, nitrogen_rates(world_area))
+    crop_n = nitrogen_weights(area, crops, nitrogen_rates(world_area(area, crops)))
     qcl_production = qcl[qcl["element_code"] == 5510]
     animals = livestock(gle, qcl_production)
     grass = ruminant_weights(animals)
@@ -391,8 +405,7 @@ def faostat_emissions(
     fert_totals = fert.assign(gas="n2o", process=PROCESSES[FERTILISER_N2O], kg=fert["value"] * KT)[
         ["area_code", "gas", "process", "kg"]
     ]
-    area_weights = area.rename(columns={"qcl_code": "key", "ha": "weight"})
-    upstream_weights = {"area": area_weights, "value": value_weights(qv, crops)}
+    upstream_weights = {"area": area_weights(area, crops), "value": value_weights(qv, crops)}
     upstream = [
         nitrogen_shared(gt_totals(gt, item))
         if how == "nitrogen"
@@ -556,11 +569,13 @@ def from_primaries(
     resolved: pd.DataFrame,
     extraction: dict[int, list[tuple[int, float]]],
     processing: pd.DataFrame,
+    oil_shares: dict[int, float] | None = None,
 ) -> pd.DataFrame:
     """Tier 5 for processed items: the primary item's intensity divided by the extraction rate,
-    so that a tonne of oil carries the emissions of the seed crushed to make it. With several
-    primaries (sugar from cane and beet), they are weighted by how much of each the country
-    processes times its rate, or equally when it processes none."""
+    so that a tonne of oil carries the emissions of the seed crushed to make it, times the oil's
+    share of the crush's value when it has a cake (`oil_shares`). With several primaries (sugar
+    from cane and beet), they are weighted by how much of each the country processes times its
+    rate, or equally when it processes none."""
     links = pd.DataFrame(
         [{"fbs_code": d, "primary": k, "rate": r} for d, ks in extraction.items() for k, r in ks],
         columns=["fbs_code", "primary", "rate"],
@@ -575,7 +590,8 @@ def from_primaries(
     total = weight.groupby([rows["iso3"], rows["fbs_code"], rows["scope"]]).transform("sum")
     count = rows.groupby(["iso3", "fbs_code", "scope"])["primary"].transform("count")
     rows = rows.assign(w=np.where(total > 0, weight / total.where(total > 0, 1), 1 / count))
-    rows = rows.assign(**{g: rows[g] / rows["rate"] * rows["w"] for g in GASES})
+    value_share = rows["fbs_code"].map(oil_shares or {}).fillna(1.0)
+    rows = rows.assign(**{g: rows[g] / rows["rate"] * rows["w"] * value_share for g in GASES})
     rows = rows.assign(
         note=rows["primary"].astype(str) + " / " + rows["rate"].map(lambda r: f"{r:g}")
     )
@@ -589,8 +605,16 @@ def from_primaries(
         )
         .reset_index()
     )
+    share = out["fbs_code"].map(oil_shares or {})
+    valued = share.map(lambda v: f" × {v:.2f} (oil's value share)").where(share < 1, "")
     return out.assign(
-        tier=5, source="processed from " + out["note"] + " (extraction rate): " + out["source"]
+        tier=5,
+        source="processed from "
+        + out["note"]
+        + " (extraction rate)"
+        + valued
+        + ": "
+        + out["source"],
     )[[*keys, *GASES, "tier", "source"]]
 
 
@@ -603,11 +627,13 @@ def merge(
     production: pd.DataFrame,
     processing: pd.DataFrame,
     zero_items: dict[int, str],
+    oil_shares: dict[int, float] | None = None,
 ) -> pd.DataFrame:
     """One intensity per cell of `grid` (iso3, fbs_code, scope).
 
     Tiers 1-4 come from the candidates. For an item without, tier 5 is a proxy item's tiers 1-4
-    value, or for a processed item its primary items' final value over the extraction rate;
+    value, or for a processed item its primary items' final value over the extraction rate (an
+    oil's times its share of the crush's value, `oil_shares`, the rest going to the cake);
     then tier 6 is the group's production-weighted world median of tiers 1-4. Items in
     `zero_items` (by-products counted on the item they come from) get zeros at tier 5."""
     cols = ["iso3", "fbs_code", "scope", *GASES, "tier", "source"]
@@ -634,13 +660,65 @@ def merge(
     resolved = pd.concat([with_proxies, sixth(missing_from(base, with_proxies))], ignore_index=True)
     derived_chosen = chosen[chosen["fbs_code"].isin(extraction)][cols]
     by_primary = from_primaries(
-        missing_from(derived, derived_chosen), resolved, extraction, processing
+        missing_from(derived, derived_chosen), resolved, extraction, processing, oil_shares
     )
     derived_done = pd.concat([derived_chosen, by_primary])
     return pd.concat(
         [zeros[cols], resolved, derived_done, sixth(missing_from(derived, derived_done))],
         ignore_index=True,
     )
+
+
+def oilcake_emissions(
+    merged: pd.DataFrame,
+    oilcakes: pd.DataFrame,
+    extraction: dict[int, list[tuple[int, float]]],
+    rows: pd.DataFrame,
+) -> pd.DataFrame:
+    """kg of each gas a year the cake of a crushed oilseed carries, by country and scope: the
+    oilseed's intensity over the oil's extraction rate, times the oil made (production −
+    processing), times the cake's share of the crush's value. `oilcakes` has oil_code,
+    primary_code and oil_share; `rows` iso3, fbs_code, production and processing."""
+    rates = pd.DataFrame(
+        [
+            {"oil_code": o, "primary_code": p, "rate": r}
+            for o, ps in extraction.items()
+            for p, r in ps
+        ],
+        columns=["oil_code", "primary_code", "rate"],
+    )
+    made = rows.assign(made=(rows["production"] - rows["processing"]).clip(lower=0)).rename(
+        columns={"fbs_code": "oil_code"}
+    )[["iso3", "oil_code", "made"]]
+    seed = merged.rename(columns={"fbs_code": "primary_code"})[
+        ["iso3", "primary_code", "scope", *GASES]
+    ]
+    df = (
+        oilcakes.merge(rates, on=["oil_code", "primary_code"])
+        .merge(made, on="oil_code")
+        .merge(seed, on=["iso3", "primary_code"])
+    )
+    factor = df["made"] / df["rate"] * (1 - df["oil_share"])
+    out = (
+        df.assign(**{g: df[g] * factor for g in GASES})
+        .groupby(["iso3", "primary_code", "scope"], as_index=False)[list(GASES)]
+        .sum()
+    )
+    return out[out[list(GASES)].sum(axis=1) > 0].reset_index(drop=True)
+
+
+def oilcake_json(cake: pd.DataFrame) -> dict:
+    """oilcake[iso3][oilseedCode][scope] = kg of each gas a year."""
+    return {
+        iso3: {
+            str(int(code)): {
+                row.scope: {g: significant(getattr(row, g)) for g in GASES}
+                for row in cells.itertuples()
+            }
+            for code, cells in country.groupby("primary_code")
+        }
+        for iso3, country in cake.sort_values(["iso3", "primary_code", "scope"]).groupby("iso3")
+    }
 
 
 def significant(x: float, digits: int = 3) -> float:

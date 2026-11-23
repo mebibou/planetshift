@@ -136,7 +136,7 @@ def test_built_file_matches_the_contract_and_published_totals():
 
 @pytest.mark.network
 def test_cached_dataset_has_no_major_commodity_unmapped():
-    if not (CACHE / "extracts" / "deduce_2001_2023.pkl").exists():
+    if not (CACHE / "extracts" / D.EXTRACT).exists():
         pytest.skip("DeDuCE not in the cache")
     means = D.yearly_mean(D.read(CACHE))
     _, dropped = D.attributed(means, D.item_map())

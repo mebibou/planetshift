@@ -43,7 +43,7 @@ La trituration d'un oléagineux donne de l'huile et un tourteau donné aux anima
 | Sésame | 1,0 | 4 720 | 414 | 92 % |
 | Autres oléagineux | 1,8 | 2 272 | 430 | 75 % |
 
-L'huile de palme et l'huile d'olive gardent toutes leurs terres : le tourteau de pressage du fruit du palmier et les grignons d'olive ne sont guère donnés aux animaux. Les terres du tourteau varient avec la production des groupes animaux qui le mangent, pondérée par les parts fourragères de l'oléagineux (`feed.json`) : avec des parts du commerce fixes, selon la variation mondiale de la production de chaque groupe, puisque le tourteau s'échange comme son huile ; quand chaque pays produit son propre changement, selon celle du pays. Au total, les tourteaux portent 0,11 milliard d'hectares, surtout le tourteau de soja. Les émissions ne sont pas partagées de la même façon : l'intensité d'émission d'une huile porte toujours toute la culture (voir la page [Émissions](#method-emissions)).
+L'huile de palme et l'huile d'olive gardent toutes leurs terres : le tourteau de pressage du fruit du palmier et les grignons d'olive ne sont guère donnés aux animaux. Les terres du tourteau varient avec la production des groupes animaux qui le mangent, pondérée par les parts fourragères de l'oléagineux (`feed.json`) : avec des parts du commerce fixes, selon la variation mondiale de la production de chaque groupe, puisque le tourteau s'échange comme son huile ; quand chaque pays produit son propre changement, selon celle du pays. Au total, les tourteaux portent 0,11 milliard d'hectares, surtout le tourteau de soja. Les émissions sont partagées de la même façon (voir la page [Émissions](#method-emissions)).
 
 ## Les prairies et les animaux qui les pâturent
 

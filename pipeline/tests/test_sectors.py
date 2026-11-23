@@ -13,6 +13,35 @@ def test_scaled_to_meets_the_target_in_the_year():
     assert scaled == pytest.approx([0.5, 1, 2, 4, 8])
 
 
+def test_road_is_cedss_fossil_road_co2_split_and_carried_by_the_ssp_shape():
+    table = pd.DataFrame(
+        {
+            "sector": ["1A3b_Road", "1A3b_Road", "1A3b_Road", "1A3ai_International-aviation"],
+            "fuel": ["diesel_oil", "light_oil", "biomass", "light_oil"],
+            "kg": [3e12, 2e12, 0.4e12, 0.6e12],
+        }
+    )
+    road = sectors.road_kg(table)
+    assert road == pytest.approx(5e12)
+    variables = set(sectors.RCMIP_SHAPE.values())
+    rcmip_df = pd.DataFrame(
+        {
+            "Scenario": "ssp245",
+            "Region": "World",
+            "Variable": sorted(variables),
+            "1750": 0.0,
+            "2022": 10.0,
+            "2023": 11.0,
+            "2500": 11.0,
+        }
+    )
+    years = np.arange(2023, 2026)
+    out = sectors.transport(rcmip_df, "ssp245", years, road)
+    assert out["roadPassenger"][0] == pytest.approx(5e12 * 0.6 * 1.1)
+    assert out["roadFreight"][0] == pytest.approx(5e12 * 0.4 * 1.1)
+    assert out["aviation"][0] == pytest.approx(sectors.INVENTORY["aviation"])
+
+
 def test_ramp_is_linear_then_flat():
     years = np.arange(2024, 2040)
     values = sectors.ramp({2024: 0.0, 2030: 6.0, 2035: 16.0}, years)

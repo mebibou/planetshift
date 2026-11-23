@@ -9,15 +9,18 @@ uv sync
 uv run python -m planetshift_pipeline.build                       # every section
 uv run python -m planetshift_pipeline.build --only supply,feed    # some sections
 uv run python -m planetshift_pipeline.build --out ./out           # somewhere else
+uv run python -m planetshift_pipeline.build --allow-missing       # without unreadable sources
 ```
+
+A source that cannot be read (a module that does not import, a download or an API request that fails) stops the build. With `--allow-missing` the build goes on without it, logs what it left out, and `meta.json` lists only the sources it used; such a build is for trying things, not for committing.
 
 The sections, in the order they run: `countries`, `items`, `supply`, `feed`, `intensities`, `breakdown`, `climate`, `enso`, `sectors`, `industry`, `coemissions`, `waste`, `land`, `practices`, `deforestation`, `removals`, `population`, `map`, `meta`. Each writes one file and reads only what it needs. A full first run downloads about 350 MB of FAOSTAT, Natural Earth and World Bank files (plus what the HESTIA and climate modules fetch) and takes several minutes; later runs read from the cache.
 
-`map` needs Node.js: it runs `npx topojson-server@3.0.1` to turn Natural Earth's GeoJSON into TopoJSON. `climate` runs `planetshift_pipeline.climate.build_climate` when that module is there, and logs that it skipped it otherwise; `sectors` does the same with `planetshift_pipeline.sectors.build_sectors`. Both run FaIR's 841-member ensemble: `climate` takes about 3 minutes, `sectors` under a minute. The `intensities` section uses `planetshift_pipeline.sources.hestia` (tiers 1 and 2) and `planetshift_pipeline.sources.literature` (tier 4) when they import and run, and builds without them, with a warning, when they do not.
+`map` needs Node.js: it runs `npx topojson-server@3.0.1` to turn Natural Earth's GeoJSON into TopoJSON. `climate` runs `planetshift_pipeline.climate.build_climate`, and `sectors` runs `planetshift_pipeline.sectors.build_sectors`. Both run FaIR's 841-member ensemble: `climate` takes about 3 minutes, `sectors` under a minute. The `intensities` section uses `planetshift_pipeline.sources.hestia` (tiers 1 and 2) and `planetshift_pipeline.sources.literature` (tier 4, which reads HESTIA too); with `--allow-missing` it builds without them when they fail.
 
 ## The cache
 
-Every download goes to `pipeline/cache/` (not committed), next to a `<file>.json` sidecar with its URL and the date it was downloaded; a file already there is not downloaded again. Delete a file to fetch it anew. FAOSTAT's bulk zips are large, so the years a section reads are kept as a pickled extract in `pipeline/cache/extracts/<domain>_<first>_<last>.pkl`; delete the extracts after replacing a zip. `meta.json` lists each source with FAOSTAT's update date and the download date.
+Every download goes to `pipeline/cache/` (not committed), next to a `<file>.json` sidecar with its URL, the date it was downloaded and its SHA-256; a file already there is not downloaded again. Delete a file to fetch it anew. A FAOSTAT bulk zip's sidecar also keeps the date FAOSTAT had last updated the domain when it was downloaded (from that day's `datasets_E_<date>.json` listing), which `meta.json` gives with the download date. FAOSTAT's bulk zips are large, so the years a section reads are kept as a pickled extract in `pipeline/cache/extracts/<domain>_<first>_<last>_<updated>_<downloaded>.pkl`: a replaced zip gets new extracts. DeDuCE's extract is named after its version, and HESTIA's trimmed nodes are kept under a hash of the code that trims them.
 
 ## Modules
 
