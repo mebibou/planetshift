@@ -12,7 +12,6 @@ import {
 import { runScenario } from '../model/run';
 import { BASE_SCENARIO } from '../model/scenarios';
 import { decodeState, encodeState } from '../model/state';
-import { methodologyView, scrollToSection } from '../methodology/view';
 import type { AppState, ViewContext } from './context';
 import { h } from './dom';
 import { exploreView, type ExploreView } from './explore';
@@ -61,6 +60,8 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
     theme: effectiveTheme(readStoredTheme(), prefersDark()),
   });
   let views: { explore?: ExploreView; methodology?: HTMLElement } = {};
+  /** The Methodology page and its formulas' typesetting load the first time it is shown. */
+  let methodology: Promise<typeof import('../methodology/view')> | null = null;
   let result: ScenarioResult | null = null;
   let frame = 0;
   const main = h('main', { id: 'main', tabindex: '-1' });
@@ -95,9 +96,16 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
       main.replaceChildren(views.explore.el);
       views.explore.show(result, s);
     } else {
-      views.methodology ??= methodologyView(ctx.t, s.lang);
-      main.replaceChildren(views.methodology);
-      scrollToSection(location.hash);
+      if (!views.methodology) main.replaceChildren();
+      methodology ??= import('../methodology/view');
+      void methodology.then(({ methodologyView, scrollToSection }) => {
+        const now = store.get();
+        if (now.ui.view === 'methodology') {
+          views.methodology ??= methodologyView(translator(now.lang), now.lang);
+          main.replaceChildren(views.methodology);
+          scrollToSection(location.hash);
+        }
+      });
     }
   };
 

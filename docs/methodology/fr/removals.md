@@ -47,7 +47,7 @@ Les arbres dans les fermes (l'agroforesterie) associent des arbres aux cultures 
 
 Cardinael et al. (2018) ont synthétisé 542 observations en rythmes par système et par climat. En moyenne sur les systèmes agrosylvicoles et sylvopastoraux, les arbres et le sol absorbent environ 8,6 t de CO₂ par hectare et par an en climat tempéré et 17,5 t sous les tropiques. Ces rythmes sont ceux des parcelles étudiées, qui ont une médiane de 1 250 arbres par hectare et un âge médian de 8 à 11 ans, et qui poussent vite. Les systèmes adoptés à grande échelle ont moins d'arbres. La médiane est donc la moitié de la moyenne de la synthèse, le bas de la fourchette le quart et le haut la moyenne elle-même. Les climats secs prennent 0,7 fois le rythme des climats humides, le rapport du GIEC entre la croissance des arbres en zone tropicale sèche et en zone tropicale humide.
 
-Cinq pour cent des cultures et des prairies sont pris comme maximum réaliste. Sur environ 4,7 milliards d'hectares de terres agricoles, cela donne environ 1,3 Gt de CO₂ par an. C'est entre les potentiels rentable et technique de Roe et al. (2021) et du sixième rapport d'évaluation du GIEC. Pour l'agroforesterie, ce dernier donne 0,8 (de 0,4 à 1,1) Gt d'équivalent CO₂ par an jusqu'à 100 $ la tonne, et 4,1 (de 0,3 à 9,4) techniquement.
+Cinq pour cent des cultures et des prairies sont pris comme maximum réaliste. Sur environ 4,7 milliards d'hectares de terres agricoles, cela donne environ 1,3 Gt de CO₂ par an. C'est entre les potentiels rentable et technique de Roe et al. (2021) et du sixième rapport d'évaluation du GIEC. Pour l'agroforesterie, ce dernier donne 0,8 (de 0,4 à 1,1) Gt d'équivalent CO₂ par an jusqu'à 100 \$ la tonne, et 4,1 (de 0,3 à 9,4) techniquement.
 
 ### Biochar
 
@@ -55,11 +55,13 @@ Le biochar est de la biomasse (résidus de culture, effluents d'élevage, déche
 
 Le rythme suppose 1 t de biochar par hectare et par an, ce que la biomasse disponible peut fournir sans défricher de terres pour la produire. Chaque tonne contient 0,65 t de carbone, dont 80 % restent après cent ans. C'est la règle de comptage du GIEC de 2019 (affinement de 2019, volume 4, chapitre 2, appendice 4 : tableau 4Ap.1 pour la teneur en carbone, 0,65 pour une matière première herbacée par pyrolyse, et tableau 4Ap.2 pour la part gardée, 0,80 pour un charbon produit à 450–600 °C). Le rythme est donc :
 
-1 t × 0,65 × 0,8 × 44/12 = 1,9 t de CO₂ par hectare et par an.
+$$
+1\ \text{t} \times 0{,}65 \times 0{,}8 \times \frac{44}{12} = 1{,}9\ \text{t de CO}_2\text{ par hectare et par an}
+$$
 
 La fourchette va de 0,5 t d'un charbon mal carbonisé à 2 t d'un charbon produit à haute température. Le rythme ne dépend pas du climat.
 
-Un cinquième des cultures est le maximum que la biomasse durable de Woolf et al. (2010) peut fournir à ce rythme. À ce plafond, le biochar stocke environ 0,63 Gt de CO₂ par an. C'est sous le potentiel du biochar du sixième rapport d'évaluation du GIEC (1,1, de 0,3 à 1,8, Gt d'équivalent CO₂ par an jusqu'à 100 $ la tonne ; 2,6 techniquement) : une lecture prudente.
+Un cinquième des cultures est le maximum que la biomasse durable de Woolf et al. (2010) peut fournir à ce rythme. À ce plafond, le biochar stocke environ 0,63 Gt de CO₂ par an. C'est sous le potentiel du biochar du sixième rapport d'évaluation du GIEC (1,1, de 0,3 à 1,8, Gt d'équivalent CO₂ par an jusqu'à 100 \$ la tonne ; 2,6 techniquement) : une lecture prudente.
 
 ### Poudre de roche
 

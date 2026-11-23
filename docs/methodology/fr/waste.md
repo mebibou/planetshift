@@ -13,32 +13,48 @@ Les deux sont comptés à des endroits différents, et le levier peut agir sur c
 
 Il y a deux réductions, chacune entre 0 et 1, qui peuvent être réglées séparément :
 
-- r<sub>L</sub> pour les pertes avant les magasins ;
-- r<sub>W</sub> pour le gaspillage après eux.
+- $r_L$ pour les pertes avant les magasins ;
+- $r_W$ pour le gaspillage après eux.
 
-La référence est la cible 12.3 des ODD (les objectifs de développement durable des Nations unies) : réduire de moitié par habitant le gaspillage alimentaire au niveau de la distribution et des consommateurs d'ici 2030 (r<sub>W</sub> = 0,5), et réduire les pertes le long des chaînes de production et d'approvisionnement.
+La référence est la cible 12.3 des ODD (les objectifs de développement durable des Nations unies) : réduire de moitié par habitant le gaspillage alimentaire au niveau de la distribution et des consommateurs d'ici 2030 ($r_W = 0{,}5$), et réduire les pertes le long des chaînes de production et d'approvisionnement.
 
 Gaspiller moins ne change pas ce que les gens mangent. Cela réduit les disponibilités alimentaires dont un pays a besoin pour les mêmes repas. Réduire les pertes réduit les disponibilités nécessaires pour amener les mêmes aliments jusqu'aux magasins. La baisse des disponibilités parcourt ensuite le modèle comme un changement de régime : elle change la production là où le produit est cultivé (étape 6 du [modèle](#method-shift)). Quand moins de viande, de lait ou d'œufs sont gaspillés, elle réduit aussi l'alimentation dont les animaux ont besoin (étape 5).
 
-**Exemple.** Les disponibilités alimentaires d'un pays sont de 800 kg par personne, dont 100 kg gaspillés après les magasins (w = 0,125). Le pays divise son gaspillage par deux (r<sub>W</sub> = 0,5). Ses disponibilités alimentaires baissent de 0,5 × 0,125 = 6,25 %, à 750 kg, pour les mêmes 700 kg mangés. Supposons que les pertes du blé soient de 5 % de ses disponibilités et les semences de 3 %. Réduire aussi les pertes de moitié fait passer le multiplicateur du blé de 1 ÷ 0,92 à 1 ÷ 0,945, et économise 0,5 × 5 % ÷ 0,945 = 2,6 % de ses disponibilités.
+**Exemple.** Les disponibilités alimentaires d'un pays sont de 800 kg par personne, dont 100 kg gaspillés après les magasins ($w = 0{,}125$). Le pays divise son gaspillage par deux ($r_W = 0{,}5$). Ses disponibilités alimentaires baissent de 0,5 × 0,125 = 6,25 %, à 750 kg, pour les mêmes 700 kg mangés. Supposons que les pertes du blé soient de 5 % de ses disponibilités et les semences de 3 %. Réduire aussi les pertes de moitié fait passer le multiplicateur du blé de 1 ÷ 0,92 à 1 ÷ 0,945, et économise 0,5 × 5 % ÷ 0,945 = 2,6 % de ses disponibilités.
 
 ### Le gaspillage après les magasins : la formule
 
 Pour un pays, la part de ses disponibilités alimentaires qui est gaspillée est
 
-w = min((retail + foodService + household) ÷ (disponibilités alimentaires par personne, kg), 0,4)
+$$
+w = \min\left(\frac{\text{retail} + \text{foodService} + \text{household}}{\text{disponibilités alimentaires par personne, kg}},\ 0{,}4\right)
+$$
 
-où les disponibilités alimentaires par personne sont la somme de `food` sur ses produits dans `supply.json` × 1000 ÷ sa population l'année de référence. La même part s'applique à chaque produit : aliments mangés = `food` × (1 − w), et aliments gaspillés = `food` × w. Avec une réduction r<sub>W</sub>, on mange autant et on gaspille moins :
+où les disponibilités alimentaires par personne sont la somme de `food` sur ses produits dans `supply.json` × 1000 ÷ sa population l'année de référence. La même part s'applique à chaque produit : aliments mangés = `food` × (1 − $w$), et aliments gaspillés = `food` × $w$. Avec une réduction $r_W$, on mange autant et on gaspille moins :
 
-nouvelle alimentation = mangés + (1 − r<sub>W</sub>) × gaspillés = `food` × (1 − r<sub>W</sub> × w)
+$$
+\text{nouvelle alimentation} = \text{mangés} + (1 - r_W) \times \text{gaspillés} = \texttt{food} \times (1 - r_W\, w)
+$$
 
 Elle s'applique après le changement de régime, aux aliments dont le régime modifié a besoin. Un pays qui mange moins de viande et gaspille moins a donc besoin à la fois de moins de viande et de moins du reste. Dans les étapes du [modèle](#method-shift), elle multiplie l'usage alimentaire de chaque produit avant l'étape 4.
 
 ### Les pertes avant les magasins : la formule
 
-La part des pertes de chaque produit dans ses disponibilités intérieures est ℓ = la plus grande de la part de la FAO pour son groupe et des pertes des bilans alimentaires ÷ disponibilités intérieures. La base de données ne détaille les parts de la FAO par groupe que pour le monde : la part d'un pays pour un groupe est donc celle de sa sous-région pour l'ensemble des produits × la part mondiale du groupe ÷ la part mondiale de l'ensemble des produits. Les produits hors des quatre groupes de la FAO (oléagineux, plantes sucrières, fruits à coque, stimulants et autres) prennent la part de l'ensemble des produits. Avec une réduction r<sub>L</sub>, ℓ devient (1 − r<sub>L</sub>) × ℓ.
+La part des pertes de chaque produit dans ses disponibilités intérieures est la plus grande de la part de la FAO pour son groupe et de celle des bilans alimentaires :
 
-Les disponibilités nécessaires pour un changement d'usage sont multipliées par (1 − ℓ − part des semences) ÷ (1 − (1 − r<sub>L</sub>) × ℓ − part des semences), si bien que sans réduction le modèle ne change pas. Les disponibilités de l'année de référence baissent de r<sub>L</sub> × ℓ × disponibilités intérieures × le nouveau multiplicateur. Ce calcul compte les pertes évitées, et aussi les pertes et semences que ces disponibilités ne portent plus, puisque les deux en restent des parts. Avec un quart des disponibilités perdu et la moitié des pertes évitée, c'est 14 % de plus que les seules pertes évitées. Les pertes de la FAO au-delà de celles des bilans alimentaires sont supposées comprises dans les disponibilités que donnent les bilans, surtout dans `food` : les bilans restent tels quels.
+$$
+\ell = \max\left(\text{part de la FAO},\ \frac{\text{pertes}}{\text{disponibilités intérieures}}\right)
+$$
+
+La base de données ne détaille les parts de la FAO par groupe que pour le monde : la part d'un pays pour un groupe est donc celle de sa sous-région pour l'ensemble des produits × la part mondiale du groupe ÷ la part mondiale de l'ensemble des produits. Les produits hors des quatre groupes de la FAO (oléagineux, plantes sucrières, fruits à coque, stimulants et autres) prennent la part de l'ensemble des produits. Avec une réduction $r_L$, $\ell$ devient $(1 - r_L)\,\ell$.
+
+Avec $s$ la part des semences, les disponibilités nécessaires pour un changement d'usage sont multipliées par
+
+$$
+\frac{1 - \ell - s}{1 - (1 - r_L)\,\ell - s}
+$$
+
+si bien que sans réduction le modèle ne change pas. Les disponibilités de l'année de référence baissent de $r_L \times \ell \times$ disponibilités intérieures × le nouveau multiplicateur. Ce calcul compte les pertes évitées, et aussi les pertes et semences que ces disponibilités ne portent plus, puisque les deux en restent des parts. Avec un quart des disponibilités perdu et la moitié des pertes évitée, c'est 14 % de plus que les seules pertes évitées. Les pertes de la FAO au-delà de celles des bilans alimentaires sont supposées comprises dans les disponibilités que donnent les bilans, surtout dans `food` : les bilans restent tels quels.
 
 ## Ce que cela change
 

@@ -51,7 +51,9 @@ Poore & Nemecek report CO₂-equivalents (CO₂e). A CO₂e figure adds the gase
 
 Planetshift needs each gas apart. Each product's farm stage is split in the proportions of a gas profile, a typical mix of the gases for that kind of product. Each gas's CO₂e is then divided by its factor:
 
-kg of gas = farm CO₂e × (gas's CO₂e in the profile / profile's total CO₂e) / GWP of the gas
+$$
+\text{kg of gas} = \text{farm CO}_2\text{e} \times \frac{\text{gas's CO}_2\text{e in the profile}}{\text{profile's total CO}_2\text{e}} \div \text{GWP of the gas}
+$$
 
 Multiplied back by 34 and 298, the result returns Poore & Nemecek's value exactly.
 

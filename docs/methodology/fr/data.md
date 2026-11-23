@@ -10,7 +10,9 @@ Les quantités sont en tonnes du produit tel que FAOSTAT le définit. C'est le p
 
 La ligne de chaque produit est bouclée pour s'équilibrer exactement :
 
-production + importations − exportations = alimentation humaine + alimentation animale + pertes + transformation + semences + autres
+$$
+\text{production} + \text{importations} - \text{exportations} = \text{alimentation humaine} + \text{alimentation animale} + \text{pertes} + \text{transformation} + \text{semences} + \text{autres}
+$$
 
 Le terme `other` (autres) regroupe les autres utilisations (non alimentaires) de FAOSTAT, la consommation des touristes, les résidus et les variations de stocks. Il peut être négatif quand les stocks ont été entamés.
 

@@ -135,14 +135,14 @@ Its CO₂ and methane are in the emissions avoided. The forcings are in the warm
 
 ### How each lever is computed
 
-The code is `app/src/levers/energy/model.ts`, a lever module called by `run.ts`. In each year *y*, take each adoption *a* already ramped, and *g* the grid's intensity in the chosen scenario:
+The code is `app/src/levers/energy/model.ts`, a lever module called by `run.ts`. In each year $y$, take each adoption $a$ already ramped, and $g$ the grid's intensity in the chosen scenario:
 
-- Renewable electricity (`re`) cuts *a* × the electricity CO₂. The grid left has the intensity *g′* = *g* × (1 − *a*).
-- Electric cars (`ev`) and electric trucks (`et`) save *a* × road passenger (or freight) CO₂ × (1 − `evKwhPerKgCo2` × *g′*).
-- Less flying (`fl`) and clean aviation fuel (`saf`) cut aviation CO₂ by 1 − (1 − *a*fly)(1 − *a*fuel). Less flying also cuts aviation's non-CO₂ forcing by `aviationNonCo2` × *a*fly × aviation CO₂.
-- Clean shipping (`cs`) cuts *a* × shipping CO₂.
+- Renewable electricity (`re`) cuts $a \times$ the electricity CO₂. The grid left has the intensity $g' = g\,(1 - a)$.
+- Electric cars (`ev`) and electric trucks (`et`) save $a \times \text{road passenger (or freight) CO}_2 \times (1 - k\,g')$, with $k$ = `evKwhPerKgCo2`.
+- Less flying (`fl`) and clean aviation fuel (`saf`) cut aviation CO₂ by $1 - (1 - a_{\text{fly}})(1 - a_{\text{fuel}})$. Less flying also cuts aviation's non-CO₂ forcing by $n \times a_{\text{fly}} \times \text{aviation CO}_2$, with $n$ = `aviationNonCo2`.
+- Clean shipping (`cs`) cuts $a \times$ shipping CO₂.
 - Each sector's change in CO₂ brings its co-emissions with it (below). The electricity drawn counts in the electricity sector's change. The methane goes with the CO₂ into the emissions. The air pollution becomes a forcing and a methane of its own, counted under *air pollution*.
-- Data centres on clean power (`cdc`) depends on the *AI data centres* option. At its default, *growth added* (`dc=iea`), the extra demand's emissions go from its kWh × *g* in the baseline to its kWh × *g′* × (1 − *a*) in the scenario. With *as in the scenario* (`dc=ssp`) there is no extra demand, and the lever has nothing to act on.
+- Data centres on clean power (`cdc`) depends on the *AI data centres* option. At its default, *growth added* (`dc=iea`), the extra demand's emissions go from its kWh × $g$ in the baseline to its kWh × $g'\,(1 - a)$ in the scenario. With *as in the scenario* (`dc=ssp`) there is no extra demand, and the lever has nothing to act on.
 
 The CO₂ and methane changes are convolved with their AGTP curves. An AGTP curve gives the warming, year by year, after one kilogram of a gas is emitted (see the [temperature page](#method-climate)). The forcing changes are convolved with `forcingResponse`. All are added to the warming change.
 
@@ -238,7 +238,7 @@ The forcing per kg of each species comes from FaIR's calibration (fair-calibrate
 
 FaIR gives ammonia no cloud effect. N₂O is a greenhouse gas with its own AGTP curve.
 
-The aerosol-cloud effect is a logarithm of all the SO₂, black carbon and organic carbon in the air: scale × log(1 + Σ shape × emissions). So a kilogram matters less where the air is already dirty. The model takes the slope of this curve at the scenario's emissions of that year. A lever's cut is therefore valued at the margin of the scenario, linearly. When a quarter of the world's SO₂ is removed at once, the slope is within 6% of the exact difference (a test checks it within 10%). A lever's cut is smaller.
+The aerosol-cloud effect is a logarithm of all the SO₂, black carbon and organic carbon in the air: $\text{scale} \times \log\big(1 + \sum_i \text{shape}_i \times \text{emissions}_i\big)$. So a kilogram matters less where the air is already dirty. The model takes the slope of this curve at the scenario's emissions of that year. A lever's cut is therefore valued at the margin of the scenario, linearly. When a quarter of the world's SO₂ is removed at once, the slope is within 6% of the exact difference (a test checks it within 10%). A lever's cut is smaller.
 
 In SSP2-4.5 in 2023, the median forcing per million tonnes a year is:
 
@@ -291,7 +291,7 @@ Each factor follows FaIR's change with the scenario. In SSP2-4.5, a kilogram les
 **What this gives up.** It gives up FaIR's world total: the methane of all the world's NOx is about a third of FaIR's (see [Limitations](#method-limitations)). It is a departure from FaIR's single coefficient. A fork can set it back in two ways (see the [temperature page](#method-climate)):
 
 - to FaIR's coefficient (`fair`);
-- to FaIR's coefficient shared between sea and land in the models' ratio, with its world total kept (`hoor`). Ships are a share *w* of each year's NOx in the scenario (15% in 2023, from RCMIP). Land sources then take 1 / (1 + 2.05 *w*) of the global coefficient, and ships 3.05 times that: 0.76 and 2.32 in SSP2-4.5 in 2023.
+- to FaIR's coefficient shared between sea and land in the models' ratio, with its world total kept (`hoor`). Ships are a share $w$ of each year's NOx in the scenario (15% in 2023, from RCMIP). Land sources then take $1 / (1 + 2.05\,w)$ of the global coefficient, and ships 3.05 times that: 0.76 and 2.32 in SSP2-4.5 in 2023.
 
 **Which sources count as land.** Road, power plants, buildings, industry and oil fields count as land. There is no finer split, for want of comparable multi-model figures for sources other than transport. Aviation's own NOx is in its non-CO₂ forcing.
 

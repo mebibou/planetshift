@@ -1,6 +1,6 @@
 # Farm practices
 
-Besides changing what people eat, emissions can be cut where food is grown. This page describes the seven farm practices Planetshift lets you apply: what farmers do, what each practice cuts and by how much, and where it can be adopted. Adopted in full wherever they apply, the seven together avoid about 0.9 billion tonnes of CO₂-equivalent a year, between the IPCC's estimate at a cost of up to $100 per tonne and its estimate of what is technically possible (see *All practices together* below).
+Besides changing what people eat, emissions can be cut where food is grown. This page describes the seven farm practices Planetshift lets you apply: what farmers do, what each practice cuts and by how much, and where it can be adopted. Adopted in full wherever they apply, the seven together avoid about 0.9 billion tonnes of CO₂-equivalent a year, between the IPCC's estimate at a cost of up to \$100 per tonne and its estimate of what is technically possible (see *All practices together* below).
 
 ## How a practice is described
 
@@ -118,7 +118,7 @@ The cut a practice makes in a country is the adoption you set × the applicable 
 
 ## All practices together
 
-With every practice adopted in full, wherever it applies, the model avoids about 0.9 billion tonnes of CO₂-equivalent a year (GWP100). The IPCC's sixth assessment (Working Group III, chapter 7, Table 7.3) puts the potential of reducing agriculture's methane and nitrous oxide at 0.6 (0.3–1.3) billion tonnes a year at up to $100 per tonne of CO₂-equivalent. It puts the technical potential at 1.7 billion tonnes. Planetshift's full adoption lies between the two.
+With every practice adopted in full, wherever it applies, the model avoids about 0.9 billion tonnes of CO₂-equivalent a year (GWP100). The IPCC's sixth assessment (Working Group III, chapter 7, Table 7.3) puts the potential of reducing agriculture's methane and nitrous oxide at 0.6 (0.3–1.3) billion tonnes a year at up to \$100 per tonne of CO₂-equivalent. It puts the technical potential at 1.7 billion tonnes. Planetshift's full adoption lies between the two.
 
 ## How emissions are split by source
 

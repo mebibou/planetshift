@@ -99,10 +99,10 @@ Dans la répartition par levier du résumé, tout l'effet de ces leviers compte 
 
 ### Le calcul de chaque année
 
-Chaque année *y*, chaque adoption *a* a déjà suivi sa montée, et *g* est l'intensité du réseau dans le scénario choisi. Le réseau sur lequel puisent ces leviers est *g′* = *g* × (1 − *a*re), où *a*re est le levier « Électricité renouvelable » du volet [Énergie et transport](#method-sectors) :
+Chaque année $y$, chaque adoption $a$ a déjà suivi sa montée, et $g$ est l'intensité du réseau dans le scénario choisi. Le réseau sur lequel puisent ces leviers est $g' = g\,(1 - a_{\text{re}})$, où $a_{\text{re}}$ est le levier « Électricité renouvelable » du volet [Énergie et transport](#method-sectors) :
 
-- Chauffage propre (`ch`) économise *a* × le CO₂ des bâtiments × (1 − `heatPumpKwhPerKgCo2` × *g′*).
-- Acier et ciment propres (`ci`) économise *a* × le CO₂ de l'industrie × Σ part × réduction × (1 − `kwhPerKgCo2` × *g′*) sur l'acier et le ciment.
+- Chauffage propre (`ch`) économise $a \times \text{CO}_2\text{ des bâtiments} \times (1 - k\,g')$, avec $k$ = `heatPumpKwhPerKgCo2`.
+- Acier et ciment propres (`ci`) économise $a \times \text{CO}_2\text{ de l'industrie} \times \sum_{i} \text{part}_i \times \text{réduction}_i \times (1 - k_i\,g')$ sur $i$ dans l'acier et le ciment, avec $k_i$ = `kwhPerKgCo2`.
 
 Les variations de CO₂ sont convoluées avec la courbe d'AGTP du CO₂ (le réchauffement dû à un kilogramme de CO₂ au fil du temps). Ce qui les accompagne est traité comme pour les transports :
 

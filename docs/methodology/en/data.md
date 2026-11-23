@@ -10,7 +10,9 @@ Quantities are in tonnes of the item as FAOSTAT defines it. This is mostly the p
 
 Each item's row is closed so that it balances exactly:
 
-production + imports − exports = food + feed + losses + processing + seed + other
+$$
+\text{production} + \text{imports} - \text{exports} = \text{food} + \text{feed} + \text{losses} + \text{processing} + \text{seed} + \text{other}
+$$
 
 The `other` term gathers FAOSTAT's other (non-food) uses, tourist consumption, residuals and stock changes. It can be negative when stocks were drawn down.
 

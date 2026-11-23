@@ -1,6 +1,6 @@
 # Pratiques agricoles
 
-Au-delà de ce que l'on mange, les émissions peuvent être réduites là où les aliments sont produits. Cette page décrit les sept pratiques agricoles que Planetshift permet d'appliquer : ce que font les agriculteurs, ce que chaque pratique réduit et de combien, et où elle peut être adoptée. Adoptées en entier partout où elles s'appliquent, les sept ensemble évitent environ 0,9 milliard de tonnes d'équivalent CO₂ par an, entre l'estimation du GIEC à un coût allant jusqu'à 100 $ la tonne et son estimation de ce qui est techniquement possible (voir *Toutes les pratiques ensemble* plus bas).
+Au-delà de ce que l'on mange, les émissions peuvent être réduites là où les aliments sont produits. Cette page décrit les sept pratiques agricoles que Planetshift permet d'appliquer : ce que font les agriculteurs, ce que chaque pratique réduit et de combien, et où elle peut être adoptée. Adoptées en entier partout où elles s'appliquent, les sept ensemble évitent environ 0,9 milliard de tonnes d'équivalent CO₂ par an, entre l'estimation du GIEC à un coût allant jusqu'à 100 \$ la tonne et son estimation de ce qui est techniquement possible (voir *Toutes les pratiques ensemble* plus bas).
 
 ## Comment une pratique est décrite
 
@@ -118,7 +118,7 @@ La réduction qu'une pratique fait dans un pays est l'adoption choisie × la par
 
 ## Toutes les pratiques ensemble
 
-Avec toutes les pratiques adoptées en entier, partout où elles s'appliquent, le modèle évite environ 0,9 milliard de tonnes d'équivalent CO₂ par an (GWP100). Le sixième rapport d'évaluation du GIEC (groupe de travail III, chapitre 7, tableau 7.3) évalue le potentiel de réduction du méthane et du protoxyde d'azote agricoles à 0,6 (0,3–1,3) milliard de tonnes par an jusqu'à 100 $ la tonne d'équivalent CO₂. Il évalue le potentiel technique à 1,7 milliard de tonnes. L'adoption complète de Planetshift se situe entre les deux.
+Avec toutes les pratiques adoptées en entier, partout où elles s'appliquent, le modèle évite environ 0,9 milliard de tonnes d'équivalent CO₂ par an (GWP100). Le sixième rapport d'évaluation du GIEC (groupe de travail III, chapitre 7, tableau 7.3) évalue le potentiel de réduction du méthane et du protoxyde d'azote agricoles à 0,6 (0,3–1,3) milliard de tonnes par an jusqu'à 100 \$ la tonne d'équivalent CO₂. Il évalue le potentiel technique à 1,7 milliard de tonnes. L'adoption complète de Planetshift se situe entre les deux.
 
 ## Comment les émissions sont réparties par source
 

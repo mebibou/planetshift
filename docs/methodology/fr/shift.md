@@ -115,9 +115,11 @@ Un pays libère la baisse de ses cultures et de ses prairies prises ensemble. Un
 
 Avec la *végétation spontanée* dans les Options, les terres libérées se couvrent à nouveau de végétation naturelle. Elles absorbent du CO₂ au rythme du pays (tonnes de CO₂ par hectare et par an) pendant `regrowthYears` ans après leur libération (30 dans les données).
 
-Les terres se libèrent au rythme de la rampe. Celles libérées une année commencent à absorber du CO₂ cette année-là et s'arrêtent 30 ans plus tard. L'absorption de l'année t est :
+Les terres se libèrent au rythme de la rampe. Celles libérées une année commencent à absorber du CO₂ cette année-là et s'arrêtent 30 ans plus tard. L'absorption de l'année $t$ est, sur les pays $c$, avec $h_c$ leurs hectares libérés nets :
 
-absorption(t) = somme sur les pays des hectares libérés nets × le rythme × (rampe(t) − rampe(t − 30))
+$$
+\text{absorption}(t) = \sum_{c} h_c \times \text{rythme} \times \big(\text{rampe}(t) - \text{rampe}(t - 30)\big)
+$$
 
 Un pays qui cultive au total plus de terres qu'avant a des hectares libérés nets négatifs. Il est chargé de l'absorption à laquelle ces terres renoncent (voir [Terres](#method-land)).
 
@@ -142,7 +144,9 @@ Les émissions évitées affichées dans le résumé sont celles de l'année où
 
 Chaque gaz réchauffe le monde à sa façon au fil du temps. Le potentiel absolu de changement de température mondiale (AGTP) d'un gaz est de combien le monde est plus chaud, année après année, après l'émission d'un kilogramme de ce gaz (voir [Climat](#method-climate)). Le réchauffement dû à une variation des émissions additionne, sur les gaz et les années, la variation de chaque année × l'AGTP du gaz après les années écoulées :
 
-ΔT(t) = Σ_gaz Σ_τ≤t ΔE_gaz(τ) · AGTP_gaz(t − τ)
+$$
+\Delta T(t) = \sum_{\text{gaz}} \sum_{\tau \le t} \Delta E_{\text{gaz}}(\tau) \cdot \mathrm{AGTP}_{\text{gaz}}(t - \tau)
+$$
 
 Les courbes d'AGTP viennent d'impulsions simulées avec FaIR, un modèle climatique simple, ou de l'alternative AR6 ; voir [Options](#method-options).
 

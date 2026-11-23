@@ -135,14 +135,14 @@ Son CO₂ et son méthane sont dans les émissions évitées. Les forçages ne s
 
 ### Le calcul de chaque levier
 
-Le code est `app/src/levers/energy/model.ts`, un module de levier appelé par `run.ts`. Chaque année *y*, on prend chaque adoption *a* déjà rapportée à la montée en charge, et *g* l'intensité du réseau dans le scénario choisi :
+Le code est `app/src/levers/energy/model.ts`, un module de levier appelé par `run.ts`. Chaque année $y$, on prend chaque adoption $a$ déjà rapportée à la montée en charge, et $g$ l'intensité du réseau dans le scénario choisi :
 
-- Électricité renouvelable (`re`) retire *a* × le CO₂ de l'électricité. Le réseau restant a l'intensité *g′* = *g* × (1 − *a*).
-- Voitures électriques (`ev`) et Camions électriques (`et`) économisent *a* × le CO₂ routier des passagers (ou des marchandises) × (1 − `evKwhPerKgCo2` × *g′*).
-- Moins d'avion (`fl`) et Carburant d'aviation propre (`saf`) réduisent le CO₂ de l'aviation de 1 − (1 − *a*fly)(1 − *a*fuel). Moins d'avion réduit aussi le forçage de l'aviation hors CO₂ de `aviationNonCo2` × *a*fly × le CO₂ de l'aviation.
-- Transport maritime propre (`cs`) retire *a* × le CO₂ du transport maritime.
+- Électricité renouvelable (`re`) retire $a \times$ le CO₂ de l'électricité. Le réseau restant a l'intensité $g' = g\,(1 - a)$.
+- Voitures électriques (`ev`) et Camions électriques (`et`) économisent $a \times \text{CO}_2\text{ routier des passagers (ou des marchandises)} \times (1 - k\,g')$, avec $k$ = `evKwhPerKgCo2`.
+- Moins d'avion (`fl`) et Carburant d'aviation propre (`saf`) réduisent le CO₂ de l'aviation de $1 - (1 - a_{\text{fly}})(1 - a_{\text{fuel}})$. Moins d'avion réduit aussi le forçage de l'aviation hors CO₂ de $n \times a_{\text{fly}} \times \text{CO}_2\text{ de l'aviation}$, avec $n$ = `aviationNonCo2`.
+- Transport maritime propre (`cs`) retire $a \times$ le CO₂ du transport maritime.
 - La variation de CO₂ de chaque secteur entraîne ses co-émissions (ci-dessous). L'électricité consommée compte dans la variation du secteur électrique. Le méthane rejoint le CO₂ dans les émissions. La pollution de l'air devient un forçage et un méthane propres, comptés sous *pollution de l'air*.
-- Centres de données à l'énergie propre (`cdc`) dépend de l'option *Centres de données de l'IA*. À sa valeur par défaut, *Croissance ajoutée (AIE)* (`dc=iea`), les émissions de la demande supplémentaire passent de ses kWh × *g* dans la référence à ses kWh × *g′* × (1 − *a*) dans le scénario. Avec *Comme dans le scénario* (`dc=ssp`), il n'y a pas de demande supplémentaire, et le levier n'a rien sur quoi agir.
+- Centres de données à l'énergie propre (`cdc`) dépend de l'option *Centres de données de l'IA*. À sa valeur par défaut, *Croissance ajoutée (AIE)* (`dc=iea`), les émissions de la demande supplémentaire passent de ses kWh × $g$ dans la référence à ses kWh × $g'\,(1 - a)$ dans le scénario. Avec *Comme dans le scénario* (`dc=ssp`), il n'y a pas de demande supplémentaire, et le levier n'a rien sur quoi agir.
 
 Les variations de CO₂ et de méthane sont convoluées avec leurs courbes d'AGTP. Une courbe d'AGTP donne le réchauffement, année par année, après l'émission d'un kilogramme d'un gaz (voir la [page sur la température](#method-climate)). Les variations de forçage sont convoluées avec `forcingResponse`. Toutes s'ajoutent à la variation du réchauffement.
 
@@ -238,7 +238,7 @@ Le forçage par kg de chaque espèce vient de la calibration de FaIR (fair-calib
 
 FaIR ne donne à l'ammoniac aucun effet sur les nuages. Le N₂O est un gaz à effet de serre qui a sa propre courbe d'AGTP.
 
-L'effet aérosols-nuages est un logarithme de tout le SO₂, le carbone noir et le carbone organique de l'air : échelle × log(1 + Σ forme × émissions). Un kilogramme compte donc moins là où l'air est déjà sale. Le modèle prend la pente de cette courbe aux émissions du scénario de l'année. La baisse due à un levier est donc évaluée à la marge du scénario, linéairement. Quand on retire d'un coup un quart du SO₂ mondial, la pente est à 6 % près de la différence exacte (un test le vérifie à 10 % près). La baisse due à un levier est plus petite.
+L'effet aérosols-nuages est un logarithme de tout le SO₂, le carbone noir et le carbone organique de l'air : $\text{échelle} \times \log\big(1 + \sum_i \text{forme}_i \times \text{émissions}_i\big)$. Un kilogramme compte donc moins là où l'air est déjà sale. Le modèle prend la pente de cette courbe aux émissions du scénario de l'année. La baisse due à un levier est donc évaluée à la marge du scénario, linéairement. Quand on retire d'un coup un quart du SO₂ mondial, la pente est à 6 % près de la différence exacte (un test le vérifie à 10 % près). La baisse due à un levier est plus petite.
 
 Dans SSP2-4.5 en 2023, le forçage médian par million de tonnes par an est de :
 
@@ -291,7 +291,7 @@ Chaque facteur suit l'évolution de FaIR avec le scénario. Dans SSP2-4.5, un ki
 **Ce que l'on abandonne.** Le total mondial de FaIR est abandonné : le méthane de tous les NOx du monde vaut environ un tiers de celui de FaIR (voir [Limites](#method-limitations)). C'est un écart au coefficient unique de FaIR. Une copie de Planetshift peut revenir en arrière de deux façons (voir la [page sur la température](#method-climate)) :
 
 - au coefficient de FaIR (`fair`) ;
-- au coefficient de FaIR partagé entre mer et terre selon le rapport des modèles, son total mondial conservé (`hoor`). Les navires font une part *w* des NOx de chaque année dans le scénario (15 % en 2023, d'après RCMIP). Les sources terrestres prennent alors 1 / (1 + 2,05 *w*) du coefficient mondial, et les navires 3,05 fois cela : 0,76 et 2,32 dans SSP2-4.5 en 2023.
+- au coefficient de FaIR partagé entre mer et terre selon le rapport des modèles, son total mondial conservé (`hoor`). Les navires font une part $w$ des NOx de chaque année dans le scénario (15 % en 2023, d'après RCMIP). Les sources terrestres prennent alors $1 / (1 + 2{,}05\,w)$ du coefficient mondial, et les navires 3,05 fois cela : 0,76 et 2,32 dans SSP2-4.5 en 2023.
 
 **Quelles sources comptent comme terre.** La route, les centrales, les bâtiments, l'industrie et les champs pétroliers comptent comme terre. Il n'y a pas de découpage plus fin, faute de chiffres multimodèles comparables pour les sources autres que le transport. Les NOx propres à l'aviation sont dans son forçage hors CO₂.
 

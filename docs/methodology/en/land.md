@@ -94,7 +94,7 @@ Planetshift shares the land between the two by their value, as life-cycle studie
 
 The shares come from `pipeline/oilcakes.csv`: tonnes of cake per tonne of oil from FAO's technical conversion factors, and world prices from FAOSTAT's trade data (export value over quantity, 2021–2023).
 
-| Oil | Cake per tonne of oil | Oil, $/t | Cake, $/t | Oil's share of the land |
+| Oil | Cake per tonne of oil | Oil, \$/t | Cake, \$/t | Oil's share of the land |
 | --- | --- | --- | --- | --- |
 | Soybean | 4.4 | 1,277 | 495 | 37% |
 | Rapeseed and mustard | 1.4 | 1,413 | 354 | 74% |

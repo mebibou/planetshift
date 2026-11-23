@@ -47,7 +47,7 @@ Trees on farms (agroforestry) puts trees into fields of crops (silvoarable syste
 
 Cardinael et al. (2018) synthesised 542 observations into rates by system and climate. Averaged over silvoarable systems and silvopasture, trees and soil take up about 8.6 t of CO₂ per hectare a year in temperate climates and 17.5 t in the tropics. Those rates are for the plots studied, which have a median of 1250 trees per hectare and a median age of 8 to 11 years, and grow fast. Systems adopted on a large scale have fewer trees. The median is therefore half the synthesis' mean, the low a quarter of it, and the high the mean itself. Dry climates take 0.7 times the moist rate, the IPCC's ratio of tree growth in the dry tropics to the moist tropics.
 
-Five percent of cropland and pasture is taken as a realistic most. On about 4.7 billion hectares of farmland, it gives about 1.3 Gt of CO₂ a year. This lies between the cost-effective and the technical potentials of Roe et al. (2021) and of the IPCC's Sixth Assessment Report. For agroforestry, the latter gives 0.8 (0.4–1.1) Gt CO₂-equivalent a year at up to $100 a tonne, and 4.1 (0.3–9.4) technically.
+Five percent of cropland and pasture is taken as a realistic most. On about 4.7 billion hectares of farmland, it gives about 1.3 Gt of CO₂ a year. This lies between the cost-effective and the technical potentials of Roe et al. (2021) and of the IPCC's Sixth Assessment Report. For agroforestry, the latter gives 0.8 (0.4–1.1) Gt CO₂-equivalent a year at up to \$100 a tonne, and 4.1 (0.3–9.4) technically.
 
 ### Biochar
 
@@ -55,11 +55,13 @@ Biochar is biomass (crop residues, manure, wood waste) heated without oxygen int
 
 The rate assumes 1 t of biochar per hectare a year, which is what spare biomass can supply without clearing land for it. Each tonne holds 0.65 t of carbon, of which 80% remains after a hundred years. This is the IPCC's 2019 rule for counting it (2019 Refinement, volume 4, chapter 2, appendix 4: Table 4Ap.1 for the carbon content, 0.65 for herbaceous feedstock by pyrolysis, and Table 4Ap.2 for the share kept, 0.80 for char made at 450–600 °C). The rate is therefore:
 
-1 t × 0.65 × 0.8 × 44/12 = 1.9 t of CO₂ per hectare a year.
+$$
+1\ \text{t} \times 0.65 \times 0.8 \times \frac{44}{12} = 1.9\ \text{t of CO}_2\text{ per hectare a year}
+$$
 
 The range spans 0.5 t of poorly carbonised char to 2 t of char made at high temperature. The rate does not depend on climate.
 
-A fifth of cropland is the most that the sustainable feedstock of Woolf et al. (2010) can supply at that rate. At that cap, biochar stores about 0.63 Gt of CO₂ a year. This is below the IPCC Sixth Assessment Report's potential for biochar (1.1, 0.3–1.8, Gt CO₂-equivalent a year at up to $100 a tonne; 2.6 technically), so it is a conservative reading.
+A fifth of cropland is the most that the sustainable feedstock of Woolf et al. (2010) can supply at that rate. At that cap, biochar stores about 0.63 Gt of CO₂ a year. This is below the IPCC Sixth Assessment Report's potential for biochar (1.1, 0.3–1.8, Gt CO₂-equivalent a year at up to \$100 a tonne; 2.6 technically), so it is a conservative reading.
 
 ### Rock dust
 

@@ -40,9 +40,11 @@ Le tableau donne la médiane de FaIR, avec sa fourchette de 5 à 95 %, en °C pa
 
 ### Comment l'application utilise les courbes
 
-Les leviers modifient les émissions de chaque gaz, année après année. L'application additionne le réchauffement dû à la variation de chaque année : la variation d'un gaz une année donnée, multipliée par l'AGTP de ce gaz pour le nombre d'années écoulées depuis. En symboles, avec ΔE_gaz(τ) la variation des émissions d'un gaz l'année τ :
+Les leviers modifient les émissions de chaque gaz, année après année. L'application additionne le réchauffement dû à la variation de chaque année : la variation d'un gaz une année donnée, multipliée par l'AGTP de ce gaz pour le nombre d'années écoulées depuis. En symboles, avec $\Delta E_{\text{gaz}}(\tau)$ la variation des émissions d'un gaz l'année $\tau$ :
 
-ΔT(t) = Σ_gaz Σ_{τ ≤ t} ΔE_gaz(τ) · AGTP_gaz(t − τ)
+$$
+\Delta T(t) = \sum_{\text{gaz}} \sum_{\tau \le t} \Delta E_{\text{gaz}}(\tau) \cdot \mathrm{AGTP}_{\text{gaz}}(t - \tau)
+$$
 
 Cette somme est exacte pour un modèle dont la réponse est proportionnelle à ce qu'il reçoit. Elle est proche pour FaIR tant que la variation due aux leviers reste petite à côté des émissions mondiales (voir [Limites](#method-limitations) pour les leviers d'énergie au maximum).
 
