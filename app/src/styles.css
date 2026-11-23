@@ -1698,6 +1698,28 @@ input[type='range']:disabled {
   padding-bottom: 12px;
   border-bottom: 1px solid var(--rule);
 }
+.time-settings > .segmented {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  /* A floated legend is laid out as a flex item, not drawn in the fieldset's border. */
+  & legend {
+    float: left;
+    margin: 0;
+  }
+  & .segmented-options {
+    flex: none;
+    gap: 2px;
+    padding: 2px;
+  }
+  & span {
+    padding: 2px 8px;
+    min-height: 0;
+    line-height: 20px;
+    font-size: 0.8rem;
+  }
+}
 .timing .hint {
   margin: 4px 0 0;
 }
