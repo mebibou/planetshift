@@ -37,8 +37,10 @@ test.afterEach(() => {
   expect(errors, 'console errors').toEqual([]);
 });
 
+/** Opens a page once the app, not the pre-rendered snapshot it replaces, has drawn a result. */
 const open = async (page: Page, url = START) => {
   await page.goto(url);
+  await expect(page.locator('main[data-ready]')).toBeAttached();
   await expect(page.locator('.summary .stat-hero .stat-value')).toBeVisible();
 };
 
@@ -127,7 +129,7 @@ test('a shared URL restores the state', async ({ page, browser }) => {
   const [url, summary] = [page.url(), await summaryText(page)];
   const other = await browser.newPage();
   await other.goto(url);
-  await expect(other.locator('.summary .stat-hero .stat-value')).toBeVisible();
+  await expect(other.locator('main[data-ready]')).toBeAttached();
   await expect(other.locator('#basis-kcal')).toBeChecked();
   await expect(other.locator('#option-ssp-ssp126')).toBeChecked();
   await expect(other.locator('#layer-change')).toBeChecked();
@@ -424,7 +426,7 @@ test(
     await page.keyboard.press('Escape');
     await expect(page.locator('dialog.tour')).toHaveCount(0);
     await page.reload();
-    await expect(page.locator('.summary .stat-hero .stat-value')).toBeVisible();
+    await expect(page.locator('main[data-ready]')).toBeAttached();
     await expect(page.locator('dialog.tour')).toHaveCount(0);
 
     await open(page, `${START}&tour=1`);
@@ -769,7 +771,7 @@ test('a reload restores the levers from the URL', async ({ page }) => {
   await page.waitForLoadState('networkidle');
   const summary = await summaryText(page);
   await page.reload();
-  await expect(page.locator('.summary .stat-hero .stat-value')).toBeVisible();
+  await expect(page.locator('main[data-ready]')).toBeAttached();
   await page.locator('details[data-group="levers-practices"] > summary').click();
   await page.locator('details[data-group="levers-waste"] > summary').click();
   await page.locator('details[data-group="levers-removals"] > summary').click();
@@ -922,8 +924,8 @@ test('the temperature chart marks El Niño and La Niña years on the observed li
 }) => {
   await open(page, `${START}&shift=50`);
   const chart = page.locator('.temperature-chart');
-  expect(await chart.locator('.enso-mark.enso-elNino').count()).toBeGreaterThan(0);
-  expect(await chart.locator('.enso-mark.enso-laNina').count()).toBeGreaterThan(0);
+  await expect(chart.locator('.enso-mark.enso-elNino')).not.toHaveCount(0);
+  await expect(chart.locator('.enso-mark.enso-laNina')).not.toHaveCount(0);
   await expect(chart.locator(':scope > .chart-legend')).toContainText('El Niño and La Niña years');
   await expect(chart.locator('.milestone-caption')).toContainText('±0.2 °C');
   const mark = chart.locator('.enso-mark.enso-elNino').first();

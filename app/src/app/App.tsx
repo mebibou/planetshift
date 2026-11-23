@@ -177,7 +177,7 @@ export const App = ({ initial, loaded: first, currentYear }: AppProps) => {
         setLang={(lang: Lang) => setState((s) => ({ ...s, lang }))}
         toggleTheme={toggleTheme}
       />
-      <main id="main" tabIndex={-1} ref={main}>
+      <main id="main" tabIndex={-1} ref={main} data-ready={result === undefined ? undefined : ''}>
         {state.ui.view === 'explore' ? (
           <Explore
             key={state.lang}
