@@ -12,9 +12,9 @@
       "additionalProperties": false,
       "properties": {
         "noxMethane": {
-          "description": "The methane a kg less NOx leaves in the air. hoor: FaIR's global coefficient shared between land and sea by Hoor et al. (2009)'s ratio, its world total kept. fair: FaIR's one coefficient for every source. chemistry: land NOx's methane set to the chemistry models' (Hoor et al. 2009, about 0.3 kg of methane per kg of NO₂ from road traffic) and ships' to theirs, each following FaIR's change with the scenario.",
-          "enum": ["hoor", "fair", "chemistry"],
-          "default": "hoor",
+          "description": "The methane a kg less NOx leaves in the air. chemistry: land NOx's methane set to the chemistry models' (Hoor et al. 2009, about 0.4 kg of methane per kg of NO₂ from road traffic) and ships' to theirs, each following FaIR's change with the scenario. fair: FaIR's one coefficient for every source. hoor: FaIR's global coefficient shared between land and sea by Hoor et al. (2009)'s ratio, its world total kept.",
+          "enum": ["chemistry", "fair", "hoor"],
+          "default": "chemistry",
           "plainFair": "fair"
         },
         "aviationNonCo2": {

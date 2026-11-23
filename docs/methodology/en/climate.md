@@ -131,12 +131,12 @@ Everything on this page and on the levers' pages is FaIR's arithmetic with its c
 
 | Departure | On this website | Plain FaIR | Explained in |
 | --- | --- | --- | --- |
-| Where NOx is emitted (`noxMethane`) | FaIR's methane per kg of NOx shared between land and sea by Hoor et al. (2009), the world total kept; a fork can also take the chemistry models' own values (`chemistry`) | one coefficient for every source | [Energy and transport](#method-sectors), [Limitations](#method-limitations) |
+| Where NOx is emitted (`noxMethane`) | the chemistry models' own methane per kg of NOx on land and at sea (Hoor et al. 2009), carried by FaIR's change with the scenario; a fork can also share FaIR's coefficient between land and sea by their ratio, its world total kept (`hoor`) | one coefficient for every source | [Energy and transport](#method-sectors), [Limitations](#method-limitations) |
 | Aviation's non-CO₂ effects (`aviationNonCo2`) | Lee et al. (2021)'s forcing, contrails included, cut by less flying | aviation's own NOx, SO₂ and soot through FaIR's coefficients; FaIR has no contrails | [Energy and transport](#method-sectors) |
 | Permafrost (`permafrost`) | offered as an option, off by default | the option and its module left out | Permafrost, above |
 | The 2020 shipping sulphur rule (`shippingSulphur2020`) | its published forcing, 0.12 (0.08–0.14) W/m² from 2020, added to the baseline | the scenarios' own ships' SO₂ through FaIR's world-wide aerosol response | Why 2023 and 2024 were so warm, above |
 
-With every switch at its plain-FaIR value, less flying in full avoids 0.007 °C in 2050 and 0.045 °C in 2100 instead of 0.054 and 0.122 (SSP2-4.5), as most of its effect is the contrails' and FaIR has none; electric cars avoid 0.027 and 0.091 °C instead of 0.032 and 0.097, and in SSP3-7.0 add 0.018 °C by 2100 instead of 0.009; the seven energy levers together avoid 0.164 and 0.532 °C instead of 0.227 and 0.623. The baseline is 0.037 °C cooler in 2024 and 0.068 °C in 2100 without the shipping rule. The farm levers do not move.
+With every switch at its plain-FaIR value, less flying in full avoids 0.007 °C in 2050 and 0.045 °C in 2100 instead of 0.054 and 0.122 (SSP2-4.5), as most of its effect is the contrails' and FaIR has none; electric cars avoid 0.027 and 0.091 °C instead of 0.045 and 0.106, and in SSP3-7.0 add 0.018 °C by 2100 instead of avoiding 0.054; the seven energy levers together avoid 0.164 and 0.532 °C instead of 0.263 and 0.646. The baseline is 0.037 °C cooler in 2024 and 0.068 °C in 2100 without the shipping rule. The farm levers do not move.
 
 ## Assumptions
 

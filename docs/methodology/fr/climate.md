@@ -131,12 +131,12 @@ Tout ce qui est sur cette page et sur celles des leviers est le calcul de FaIR a
 
 | Écart | Sur ce site | FaIR tel quel | Expliqué dans |
 | --- | --- | --- | --- |
-| Où les NOx sont émis (`noxMethane`) | le méthane par kg de NOx de FaIR partagé entre terre et mer selon Hoor et al. (2009), le total mondial conservé ; une copie peut aussi prendre les valeurs des modèles de chimie (`chemistry`) | un seul coefficient pour toutes les sources | [Énergie et transports](#method-sectors), [Limites](#method-limitations) |
+| Où les NOx sont émis (`noxMethane`) | le méthane par kg de NOx des modèles de chimie eux-mêmes, sur terre et en mer (Hoor et al. 2009), porté par l'évolution de FaIR avec le scénario ; une copie peut aussi partager le coefficient de FaIR entre terre et mer selon leur rapport, son total mondial conservé (`hoor`) | un seul coefficient pour toutes les sources | [Énergie et transports](#method-sectors), [Limites](#method-limitations) |
 | Les effets de l'aviation hors CO₂ (`aviationNonCo2`) | le forçage de Lee et al. (2021), traînées comprises, réduit par moins d'avion | les NOx, le SO₂ et la suie propres à l'aviation par les coefficients de FaIR ; FaIR n'a pas de traînées | [Énergie et transports](#method-sectors) |
 | Pergélisol (`permafrost`) | proposé comme option, désactivée par défaut | l'option et son module retirés | Pergélisol, ci-dessus |
 | La règle de 2020 sur le soufre des navires (`shippingSulphur2020`) | son forçage publié, 0,12 (0,08–0,14) W/m² à partir de 2020, ajouté à la référence | le SO₂ des navires des scénarios, par la réponse mondiale des aérosols de FaIR | Pourquoi 2023 et 2024 ont été si chaudes, ci-dessus |
 
-Avec chaque interrupteur sur FaIR tel quel, moins d'avion à fond évite 0,007 °C en 2050 et 0,045 °C en 2100 au lieu de 0,054 et 0,122 (SSP2-4.5), car l'essentiel de son effet vient des traînées et FaIR n'en a pas ; les voitures électriques évitent 0,027 et 0,091 °C au lieu de 0,032 et 0,097, et dans SSP3-7.0 ajoutent 0,018 °C d'ici 2100 au lieu de 0,009 ; les sept leviers d'énergie ensemble évitent 0,164 et 0,532 °C au lieu de 0,227 et 0,623. Sans la règle sur le transport maritime, la référence est plus fraîche de 0,037 °C en 2024 et de 0,068 °C en 2100. Les leviers agricoles ne bougent pas.
+Avec chaque interrupteur sur FaIR tel quel, moins d'avion à fond évite 0,007 °C en 2050 et 0,045 °C en 2100 au lieu de 0,054 et 0,122 (SSP2-4.5), car l'essentiel de son effet vient des traînées et FaIR n'en a pas ; les voitures électriques évitent 0,027 et 0,091 °C au lieu de 0,045 et 0,106, et dans SSP3-7.0 ajoutent 0,018 °C d'ici 2100 au lieu d'en éviter 0,054 ; les sept leviers d'énergie ensemble évitent 0,164 et 0,532 °C au lieu de 0,263 et 0,646. Sans la règle sur le transport maritime, la référence est plus fraîche de 0,037 °C en 2024 et de 0,068 °C en 2100. Les leviers agricoles ne bougent pas.
 
 ## Hypothèses
 

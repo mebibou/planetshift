@@ -61,13 +61,13 @@ Réchauffement évité en °C, médiane (fourchette probable), chaque levier à 
 
 | Leviers | 2050 | 2100 |
 | --- | --- | --- |
-| Chauffage propre | 0,014 (0,000–0,039) ; CO₂ seul 0,009 | 0,068 (0,041–0,118) ; CO₂ seul 0,052 |
-| Acier et ciment propres | 0,013 (−0,007 à 0,059) ; CO₂ seul 0,025 | 0,091 (0,036–0,189) ; CO₂ seul 0,092 |
-| Électricité renouvelable seule | 0,092 (0,047–0,176) ; CO₂ seul 0,096 | 0,273 (0,180–0,406) ; CO₂ seul 0,234 |
-| Chauffage propre avec électricité renouvelable | 0,114 (0,056–0,217) ; CO₂ seul 0,113 | 0,361 (0,239–0,538) ; CO₂ seul 0,303 |
-| Acier et ciment propres avec électricité renouvelable | 0,115 (0,053–0,237) ; CO₂ seul 0,131 | 0,385 (0,237–0,601) ; CO₂ seul 0,345 |
+| Chauffage propre | 0,015 (0,001–0,040) ; CO₂ seul 0,009 | 0,069 (0,042–0,119) ; CO₂ seul 0,052 |
+| Acier et ciment propres | 0,016 (−0,005 à 0,065) ; CO₂ seul 0,025 | 0,094 (0,037–0,194) ; CO₂ seul 0,092 |
+| Électricité renouvelable seule | 0,105 (0,057–0,192) ; CO₂ seul 0,096 | 0,279 (0,184–0,416) ; CO₂ seul 0,234 |
+| Chauffage propre avec électricité renouvelable | 0,129 (0,068–0,236) ; CO₂ seul 0,113 | 0,369 (0,244–0,549) ; CO₂ seul 0,303 |
+| Acier et ciment propres avec électricité renouvelable | 0,132 (0,066–0,259) ; CO₂ seul 0,131 | 0,395 (0,244–0,617) ; CO₂ seul 0,345 |
 
-Le chauffage propre gagne aux co-émissions dès le départ : le gaz qu'il ne brûle plus avait des fuites de méthane, et brûler du gaz émet peu de SO₂. L'acier et le ciment propres perdent l'essentiel de leur effet de 2050 : le SO₂ de leurs usines refroidit, et la filière hydrogène consomme beaucoup d'électricité du réseau, dont elle ajoute le CO₂ et le méthane ; en 2100, la perte est faible, le CO₂ des fours à coke et le CO qu'émettent leurs fours, qui accompagnent désormais le charbon, en compensant l'essentiel. Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,022 °C en 2050 et 0,088 °C en 2100, et l'acier et le ciment propres 0,023 et 0,112 °C : sur un réseau propre, chacun économise plus que seul. Les effets sont petits en 2050, parce que le CO₂ évité s'accumule lentement et que le réseau actuel reprend une grande partie de ce qu'économisent les procédés gourmands en électricité.
+Le chauffage propre gagne aux co-émissions dès le départ : le gaz qu'il ne brûle plus avait des fuites de méthane, et brûler du gaz émet peu de SO₂. L'acier et le ciment propres perdent plus d'un tiers de leur effet de 2050 : le SO₂ de leurs usines refroidit, et la filière hydrogène consomme beaucoup d'électricité du réseau, dont elle ajoute le CO₂ et le méthane ; en 2100, ils gagnent un peu, le CO₂ des fours à coke et le CO qu'émettent leurs fours, qui accompagnent désormais le charbon, compensant cette perte. Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,024 °C en 2050 et 0,089 °C en 2100, et l'acier et le ciment propres 0,027 et 0,115 °C : sur un réseau propre, chacun économise plus que seul. Les effets sont petits en 2050, parce que le CO₂ évité s'accumule lentement et que le réseau actuel reprend une grande partie de ce qu'économisent les procédés gourmands en électricité.
 
 ## Autres industries
 
