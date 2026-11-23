@@ -6,7 +6,7 @@ Some of the food farms grow is never eaten. Wasting less of it means farms need 
 
 The two are counted in different places, and the lever can act on each.
 
-- **Losses** happen in the supply chain before food reaches shops: in storage, transport and processing. They are in the Food Balance Sheets already, as each item's `losses` in `supply.json` (see [Data](#method-data)). The model holds them as a fixed share of each item's domestic supply (see [How a shift becomes production changes](#method-shift), step 4). FAO puts them at 13.3% of food produced worldwide in 2023, between harvest and retail (SDG indicator 12.3.1(a), FAO's SDG data portal).
+- **Losses** happen in the supply chain before food reaches shops: on the farm after harvest, in storage, transport and processing. The Food Balance Sheets record some of them, as each item's `losses` in `supply.json` (see [Data](#method-data)), which the model holds as a fixed share of each item's domestic supply (see [How a shift becomes production changes](#method-shift), step 4). They leave out processing and come to 5.4% of production worldwide. FAO's Food Loss Percentage (SDG indicator 12.3.1(a)) counts every step from harvest up to shops: 13.3% of food produced worldwide in 2023, 8.4% for cereals and pulses, 25.4% for fruit and vegetables, 12.3% for roots and tubers and 14% for animal products. The lever cuts FAO's losses: `waste.json` gives each country its sub-region's share, by group of items.
 - **Waste** happens after food reaches shops: in retail, in food service (restaurants, canteens, hotels) and in households. The Food Balance Sheets do not separate it. It is inside each item's `food`, which is the food available to consumers, not what they eat. `waste.json` gives it per country, in kg per person per year, in three sectors.
 
 ## How the lever works
@@ -36,9 +36,9 @@ It is applied after the diet shift, to the food the shifted diet needs. A countr
 
 ### Losses before shops: the formula
 
-Each item's loss share of domestic supply is ℓ = losses ÷ domestic supply. With a reduction r<sub>L</sub>, it becomes (1 − r<sub>L</sub>) × ℓ.
+Each item's loss share of domestic supply is ℓ = the larger of FAO's share for its group and the Food Balance Sheets' losses ÷ domestic supply. The database splits FAO's shares by group for the world only, so a country's share for a group is its sub-region's share for all products × the world's share for the group ÷ the world's for all products. Items outside FAO's four groups (oil crops, sugar crops, nuts, stimulants and others) take the all-products share. With a reduction r<sub>L</sub>, ℓ becomes (1 − r<sub>L</sub>) × ℓ.
 
-The supply needed for a change in use becomes that change ÷ (1 − (1 − r<sub>L</sub>) × ℓ − seed share). The base year's supply falls by r<sub>L</sub> × losses ÷ (1 − (1 − r<sub>L</sub>) × ℓ − seed share). This counts the losses avoided, and also the losses and seed that supply no longer carries, as both stay shares of it. With a quarter of the supply lost and half the losses avoided, that is 14% more than the losses avoided alone.
+The supply needed for a change in use is multiplied by (1 − ℓ − seed share) ÷ (1 − (1 − r<sub>L</sub>) × ℓ − seed share), so that with no reduction the model is unchanged. The base year's supply falls by r<sub>L</sub> × ℓ × domestic supply × the new multiplier. This counts the losses avoided, and also the losses and seed that supply no longer carries, as both stay shares of it. With a quarter of the supply lost and half the losses avoided, that is 14% more than the losses avoided alone. FAO's losses beyond the Food Balance Sheets' are taken to sit in the supply the balances give, mostly in `food`, so the balances are left as they are.
 
 ## What it changes
 
@@ -94,7 +94,7 @@ The edible waste is also capped at 40% of a country's food supply in the Food Ba
 - The file holds the edible part only, with the shares above by sector and income group.
 - Edible waste after shops is at most 40% of a country's food supply per person.
 - The waste share is the same for every item of a country, and is applied to food use after the diet shift.
-- Losses before shops are the Food Balance Sheets' own, and a reduction lowers each item's loss share in proportion.
+- Losses before shops are FAO's Food Loss Percentage, by sub-region and group of items, or the Food Balance Sheets' where higher; a reduction lowers each item's loss share in proportion. FAO's shares weigh products by economic value, not mass, and its split by group is the world's.
 - No rebound effect.
 
 ## Sources
@@ -103,7 +103,7 @@ The edible waste is also capped at 40% of a country's food supply in the Food Ba
 - United Nations Statistics Division, SDG Global Database, indicator 12.3.1(b), series AG_FOOD_WST_PC (food waste per capita, by sector): <https://unstats.un.org/sdgs/dataportal>. Free to copy and distribute with the United Nations cited as the source; commercial redistribution needs the UN's permission.
 - Eurostat, Food waste and food waste prevention by NACE Rev. 2 activity (env_wasfw), the European figures reported to the SDG database: <https://ec.europa.eu/eurostat/web/waste/food-waste>.
 - WRAP (2023). Household Food and Drink Waste in the United Kingdom 2021/22 (edible share of household food waste): <https://wrap.ngo/resources/report/household-food-and-drink-waste-united-kingdom-202122>.
-- FAO, SDG indicator 12.3.1(a), food loss percentage: 13.3% in 2023, FAO SDG indicators data portal: <https://www.fao.org/sustainable-development-goals-data-portal/data/indicator/1231a-global-food-loss-index/en>.
+- FAO, SDG indicator 12.3.1(a), food loss percentage (series AG_FLS_PCT), by region and group of products, 2023, UN SDG Global Database: <https://unstats.un.org/sdgs/dataportal>; metadata: <https://unstats.un.org/sdgs/metadata/files/Metadata-12-03-01A.pdf>.
 - FAO (2019). The State of Food and Agriculture 2019. Moving forward on food loss and waste reduction (food loss index, SDG indicator 12.3.1(a)): <https://www.fao.org/publications/sofa>.
 - United Nations, Sustainable Development Goal target 12.3: <https://sdgs.un.org/goals/goal12>.
 - Hegwood, M., Burgess, M. G., Costigliolo, E. M., Smith, P., Bajželj, B., Saunders, H., Davis, S. J. (2023). Rebound effects could offset more than half of avoided food loss and waste. Nature Food: <https://doi.org/10.1038/s43016-023-00792-z>.

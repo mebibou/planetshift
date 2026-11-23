@@ -1,7 +1,8 @@
-"""waste.json: food wasted after shops, by country."""
+"""waste.json: food wasted after shops and lost before them, by country."""
 
 import pandas as pd
 
+from .. import food_loss as L
 from .. import waste as W
 from ..inputs import Build, log, write
 
@@ -21,4 +22,5 @@ def build(b: Build) -> None:
     rows, capped = W.capped(W.edible(rows, b.rich), food * 1000 / people)
     if capped:
         log.info("waste capped at %.0f%% of food supply: %s", W.MAX_SHARE_OF_FOOD * 100, capped)
-    write(b.out, "waste.json", W.waste_json(rows))
+    losses = L.loss_shares(L.download(b.cache), countries, b.regions)
+    write(b.out, "waste.json", {**W.waste_json(rows), "lossShares": losses})

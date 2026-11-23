@@ -43,6 +43,8 @@ export interface PreparedCountry {
   lossShares: ItemVector;
   seedShares: ItemVector;
   losses: ItemVector;
+  /** Domestic supply, tonnes: what every use adds up to. */
+  supply: ItemVector;
 }
 
 /** Everything that does not depend on the scenario or the options, computed once per dataset. */
@@ -154,6 +156,7 @@ const buildPrepared = (data: ModelData): Prepared => {
       lossShares: sharesOf(rows, (r) => r.losses),
       seedShares: sharesOf(rows, (r) => r.seed),
       losses: fieldOf(items, rows, (r) => r.losses),
+      supply: fieldOf(items, rows, domesticSupply),
     };
   });
   const baseYear = data.supply.baseYear;

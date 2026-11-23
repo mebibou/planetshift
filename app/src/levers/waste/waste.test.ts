@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { expectOwnGases, lever, production, run } from '../../../test/levers';
 import { multiplierWith } from '../../model/supplyChain';
-import { avoidedSupply, foodWithLessWaste, wasteShare } from './model';
+import {
+  avoidedSupply,
+  foodWithLessWaste,
+  lossGroupOf,
+  lossSharesWith,
+  multipliersWith,
+  wasteShare,
+} from './model';
 
 describe('food waste and losses', () => {
   it.each(['foodWaste', 'supplyLosses'])('%s alone cuts every gas', (id) =>
@@ -16,19 +23,44 @@ describe('food waste and losses', () => {
     expect(wasteShare({ retail: 900, foodService: 0, household: 0 }, food, 1000)).toBe(0.4);
     expect(wasteShare(undefined, food, 1000)).toBe(0);
     const [losses, lossShares, seedShares] = [[5], [0.05], [0.03]].map((v) => Float64Array.from(v));
-    expect(avoidedSupply(losses!, lossShares!, seedShares!, 0.5)[0]).toBeCloseTo(2.5 / 0.945);
+    const m = multipliersWith(Float64Array.from([1 / 0.92]), lossShares!, seedShares!, 0.5);
+    expect(avoidedSupply(losses!, m, 0.5)[0]).toBeCloseTo(2.5 / 0.945);
+  });
+  it('take FAO’s loss share for an item’s group where above the food balance’s', () => {
+    const groups = (['cereals', 'fruit', 'oilCrops'] as const).map(lossGroupOf);
+    expect(groups).toEqual(['cerealsPulses', 'fruitVegetables', 'all']);
+    const fao = {
+      cerealsPulses: 0.08,
+      fruitVegetables: 0.25,
+      rootsTubers: 0.12,
+      animal: 0.14,
+      all: 0.13,
+    };
+    const shares = lossSharesWith(Float64Array.from([0.1, 0.05, 0.02]), groups, fao);
+    expect(Array.from(shares)).toEqual([0.1, 0.25, 0.13]);
+    expect(lossSharesWith(Float64Array.from([0.1]), groups, undefined)[0]).toBe(0.1);
+  });
+  it('keep every multiplier with no cut, whatever the loss share', () => {
+    const base = Float64Array.from([1.2]);
+    expect(multipliersWith(base, Float64Array.from([0.25]), Float64Array.from([0.05]), 0)[0]).toBe(
+      1.2,
+    );
+    expect(
+      multipliersWith(base, Float64Array.from([0.25]), Float64Array.from([0.05]), 1)[0],
+    ).toBeLessThan(1.2);
   });
   it('save the supply that would carry the losses and seed, not only the losses', () => {
     const supply = 100;
     const [loss, seed, cut] = [0.25, 0.05, 0.5];
     const use = supply * (1 - loss - seed);
     const after = use / (1 - (1 - cut) * loss - seed);
-    const saved = avoidedSupply(
-      Float64Array.from([loss * supply]),
+    const m = multipliersWith(
+      Float64Array.from([1 / (1 - loss - seed)]),
       Float64Array.from([loss]),
       Float64Array.from([seed]),
       cut,
     );
+    const saved = avoidedSupply(Float64Array.from([loss * supply]), m, cut);
     expect(saved[0]).toBeCloseTo(supply - after, 9);
   });
   it.each(['foodWaste', 'supplyLosses'])('%s lowers production and land', (id) => {
