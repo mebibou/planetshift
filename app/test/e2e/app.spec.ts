@@ -18,8 +18,13 @@ const OPTIONS: Record<string, string[]> = {
 const FONT_HOSTS = /fonts\.(googleapis|gstatic)\.com/;
 let errors: string[] = [];
 
-test.beforeEach(async ({ page }) => {
+const TOUR = '@tour';
+
+test.beforeEach(async ({ page }, testInfo) => {
   errors = [];
+  // The guided start opens on a first visit; every test but its own starts as a returning reader.
+  if (!testInfo.tags.includes(TOUR))
+    await page.context().addInitScript(() => localStorage.setItem('planetshift.tour', 'seen'));
   // The Lato font comes from Google Fonts with display=swap: offline, the page falls back to the
   // system font, so a failed font request is not an error of the app.
   page.on('console', (m) => {
@@ -248,6 +253,61 @@ test('no horizontal scroll on Explore', async ({ page }) => {
   await open(page);
   await noHorizontalScroll(page);
 });
+
+test(
+  'the guided start opens once, steps with the keyboard and closes',
+  { tag: TOUR },
+  async ({ page }) => {
+    await open(page);
+    const tour = page.getByRole('dialog', { name: 'Guided start' });
+    await expect(tour).toBeVisible();
+    await expect(tour.locator('.tour-progress')).toHaveText('Step 1 of 3');
+    await expect(tour.getByRole('heading')).toHaveText('What the chart shows');
+    await expect(tour.getByRole('button', { name: 'Back' })).toBeHidden();
+    const next = tour.getByRole('button', { name: 'Next' });
+    await expect(next).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(tour.getByRole('heading')).toHaveText('How the levers work');
+    await tour.getByRole('button', { name: 'Back' }).click();
+    await expect(tour.getByRole('heading')).toHaveText('What the chart shows');
+    await next.click();
+    await next.click();
+    await expect(tour.locator('.tour-progress')).toHaveText('Step 3 of 3');
+    await expect(tour.getByRole('heading')).toHaveText('Where the causes are');
+    await expect(tour.getByRole('button', { name: 'Start exploring' })).toBeVisible();
+    const box = await tour.boundingBox();
+    const width = page.viewportSize()?.width ?? 0;
+    expect(box && box.x >= 0 && box.x + box.width <= width).toBe(true);
+    await noHorizontalScroll(page);
+    await page.keyboard.press('Escape');
+    await expect(tour).toHaveCount(0);
+    await page.reload();
+    await expect(page.locator('.summary .stat-hero .stat-value')).toBeVisible();
+    await expect(page.locator('dialog.tour')).toHaveCount(0);
+
+    await open(page, `${START}&tour=1`);
+    await expect(tour).toBeVisible();
+    await tour.getByRole('button', { name: 'Skip' }).click();
+    await expect(tour).toHaveCount(0);
+    await openDiet(page);
+  },
+);
+
+test(
+  'the guided start speaks French and stays closed with tour=0',
+  { tag: TOUR },
+  async ({ page }) => {
+    await open(page, `${START}&tour=0`);
+    await expect(page.locator('dialog.tour')).toHaveCount(0);
+    await page.locator('button[data-lang="fr"]').click();
+    await open(page, START);
+    const tour = page.getByRole('dialog', { name: 'Premiers pas' });
+    await expect(tour).toBeVisible();
+    await expect(tour.getByRole('heading')).toHaveText('Ce que montre le graphique');
+    await tour.getByRole('button', { name: 'Suivant' }).click();
+    await expect(tour.locator('.tour-progress')).toHaveText('Étape 2 sur 3');
+  },
+);
 
 test('moving the shift recolours the map and raises the avoided warming', async ({ page }) => {
   await open(page, `${START}&shift=10`);

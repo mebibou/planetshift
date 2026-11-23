@@ -1,6 +1,6 @@
-# Farming practices
+# Farm practices
 
-Besides changing what people eat, emissions can be cut where food is grown. Planetshift lets you apply seven farming practices, each acting on one or more sources of emissions on the farm. For each, `practices.json` holds which sources and gases it acts on, which food groups (when it is limited to some), how much it cuts the emissions it reaches on a farm that adopts it (a median with a low and a high value), and in each country the share of those emissions that could adopt it. The parameters, each with one line of reasoning and its citation, are in `pipeline/practices.csv`; the code is `pipeline/planetshift_pipeline/practices.py`.
+Besides changing what people eat, emissions can be cut where food is grown. Planetshift lets you apply seven farm practices, each acting on one or more sources of emissions on the farm. For each, `practices.json` holds which sources and gases it acts on, which food groups (when it is limited to some), how much it cuts the emissions it reaches on a farm that adopts it (a median with a low and a high value), and in each country the share of those emissions that could adopt it. The parameters, each with one line of reasoning and its citation, are in `pipeline/practices.csv`; the code is `pipeline/planetshift_pipeline/practices.py`.
 
 ## Emissions by source
 

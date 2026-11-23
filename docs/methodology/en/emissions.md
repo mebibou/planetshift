@@ -193,7 +193,7 @@ From FAOSTAT's data alone (tier 3 everywhere, before the other tiers are merged)
 
 ## Emissions by source
 
-Each intensity is also split by source (enteric fermentation, manure management, rice, synthetic and organic fertiliser, residues, energy, the making of inputs, other) in `breakdown.json`, from the same computation: the FAOSTAT allocation above keeps each process apart, and the HESTIA rows keep their emission terms. [Farming practices](#method-practices) explains the split and the practices that use it.
+Each intensity is also split by source (enteric fermentation, manure management, rice, synthetic and organic fertiliser, residues, energy, the making of inputs, other) in `breakdown.json`, from the same computation: the FAOSTAT allocation above keeps each process apart, and the HESTIA rows keep their emission terms. [Farm practices](#method-practices) explains the split and the practices that use it.
 
 ## Assumptions
 

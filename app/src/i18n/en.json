@@ -402,5 +402,27 @@
     "citeText": "Credit Planetshift and the original sources:",
     "licence": "Licence:",
     "and": " and "
+  },
+  "tour": {
+    "label": "Guided start",
+    "progress": "Step {n} of {total}",
+    "skip": "Skip",
+    "back": "Back",
+    "next": "Next",
+    "done": "Start exploring",
+    "steps": {
+      "chart": {
+        "title": "What the chart shows",
+        "text": "The chart shows global warming since 1850: the observed temperature, then two paths to 2050 or 2100, without the levers and with the levers you set. The shaded band around each path is its likely range. The Warming avoided tab shows the gap between the two."
+      },
+      "levers": {
+        "title": "How the levers work",
+        "text": "The Levers panel lists every lever under the cause of warming it acts on. Open a group and move a slider to set how much of a lever is adopted: the chart, the summary and the map change at once. The figure beside each group is the warming it would avoid alone, in full. Every setting is kept in the page address, so a link reopens it."
+      },
+      "causes": {
+        "title": "Where the causes are",
+        "text": "The Causes of warming tab, above the chart, splits the warming by cause (fossil fuels and industry, farming, land use and the others) and shows what the levers take off each. The Methodology page explains every step and its sources."
+      }
+    }
   }
 }
