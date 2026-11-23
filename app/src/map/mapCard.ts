@@ -286,14 +286,13 @@ export const mapCard = (ctx: MapCardContext): MapCard => {
       h(
         'div',
         { class: 'map-head' },
+        h('div', { class: 'card-tools' }, viewSwitch, downloadToggle),
         h('div', { class: 'map-controls' }, layer.el, changeOf.el, gas.el, group),
-        viewSwitch,
       ),
+      downloads.el,
       mapPanel,
       tablePanel,
       note,
-      h('div', { class: 'card-foot' }, downloadToggle),
-      downloads.el,
     ),
     update,
   };
