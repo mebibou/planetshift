@@ -16,16 +16,6 @@ export const deforestationOf = (pc: PreparedCountry, prepared: Prepared): ItemVe
  */
 export const MAX_RISE = 1;
 
-/** Relative change of each item's production, −1..MAX_RISE, 0 where the country has none. */
-export const relativeChange = (change: ItemVector, emitting: ItemVector): ItemVector => {
-  const out = new Float64Array(change.length);
-  for (let i = 0; i < out.length; i++) {
-    const base = emitting[i] as number;
-    out[i] = base > 0 ? clamp((change[i] as number) / base, -1, MAX_RISE) : 0;
-  }
-  return out;
-};
-
 const clearedCache = memoPer<ItemVector, Uint32Array>();
 
 /** The items with clearing, once per clearing vector: most items have none. */
@@ -43,7 +33,8 @@ const relativeAt = (change: ItemVector, emitting: ItemVector, i: number): number
 /**
  * Deforestation CO₂ before, kg a year, and its change shared out: clearing tied to an item
  * moves with the item's production, step by step (the diet shift, then less waste…); the lever
- * then stops `adoption` of what is left. The changes add up to the total. Only the items with
+ * then stops `adoption` of what is left, of the base year's clearing (`lever`) and of the
+ * steps' change in it (`leverJoint`). The changes add up to the total. Only the items with
  * clearing are visited, as this runs for every country in every pass of the breakdown.
  */
 export const clearingParts = (
@@ -51,11 +42,12 @@ export const clearingParts = (
   steps: readonly ItemVector[],
   emitting: ItemVector,
   adoption: number,
-): { before: number; steps: number[]; lever: number } => {
+): { before: number; steps: number[]; lever: number; leverJoint: number } => {
   const items = clearedItems(clearing);
   const totals = steps.map(() => 0);
   let before = 0;
   let lever = 0;
+  let leverJoint = 0;
   for (const i of items) {
     const d = clearing[i] as number;
     before += d;
@@ -65,7 +57,10 @@ export const clearingParts = (
       totals[k] = (totals[k] as number) + d * (rel - previous);
       previous = rel;
     }
-    if (adoption > 0) lever -= adoption * d * (1 + previous);
+    if (adoption > 0) {
+      lever -= adoption * d;
+      leverJoint -= adoption * d * previous;
+    }
   }
-  return { before, steps: totals, lever };
+  return { before, steps: totals, lever, leverJoint };
 };

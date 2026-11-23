@@ -80,6 +80,8 @@ export interface CountryContext {
 /** What a module adds to a country: CO₂ a year by family, and its own fields of the result. */
 export interface CountryPart {
   co2?: Readonly<Record<string, number>>;
+  /** CO₂ a year that a lever changes on the production the steps changed, by family. */
+  jointCo2?: Readonly<Record<string, number>>;
   result?: Readonly<Record<string, number>>;
 }
 

@@ -3,7 +3,7 @@ import { addLand, uptakeAsEmissions } from '../../model/land';
 import { lever } from '../define';
 import type { LeverModule } from '../types';
 import { EMPTY_REMOVALS, REMOVALS, type RemovalId } from './data';
-import { countryRemovals, removalPaths } from './model';
+import { removalPaths } from './model';
 
 const ID = 'removals';
 const KEYS: Record<RemovalId, string> = {
@@ -24,16 +24,6 @@ export const removals: LeverModule = {
   files: [{ name: 'removals', empty: EMPTY_REMOVALS }],
   available: (data, id) => data.removals[id as RemovalId] !== undefined,
   hooks: {
-    country:
-      ({ prepared, adoption }) =>
-      ({ pc, land, landChange }) => ({
-        result: {
-          removalsCo2: countryRemovals(prepared.data.removals, adoption, {
-            iso3: pc.country.iso3,
-            land: addLand(land, landChange),
-          }),
-        },
-      }),
     world: ({ prepared, adoption }, { countries, years, shareAt, completeIndex }) => {
       const paths = removalPaths(
         prepared.data.removals,

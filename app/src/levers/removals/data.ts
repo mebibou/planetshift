@@ -26,10 +26,6 @@ declare module '../../data/types' {
 }
 
 declare module '../../model/api' {
-  interface CountryResult {
-    /** CO₂ taken up by the carbon-in-farmland levers at full adoption, kg a year (median). */
-    removalsCo2: number;
-  }
   interface Summary {
     /** CO₂ taken up by the carbon-in-farmland levers in the year the shift is complete, kg a year. */
     removalsCo2: { median: number; p05: number; p95: number };

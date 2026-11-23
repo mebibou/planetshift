@@ -146,7 +146,7 @@ export const productionChanges = (
   const feed = countries.map((pc, c) =>
     feedChange(
       pc,
-      groupProductionChange(pc.production, animals.change[c] as ItemVector, prepared),
+      groupProductionChange(pc.emitting, animals.change[c] as ItemVector, prepared),
       prepared,
       options.feed,
     ),
@@ -347,10 +347,23 @@ interface CountryParts {
   result: CountryResult;
   /** Farm emissions of each production step, the same in every band. */
   farm: Readonly<Record<string, GasVector>>;
-  /** Farm emissions a module's cut in intensity removes, by band. */
-  cuts: Readonly<Record<string, Partial<Record<Band, GasVector>>>>;
+  /**
+   * Farm emissions a module's cut in intensity removes, by band: on the base year's production
+   * (`own`) and on its change (`joint`).
+   */
+  cuts: Readonly<Record<string, Partial<Record<Band, Joint<GasVector>>>>>;
   /** CO₂ a year as a constant stream, such as clearing, by the cause it counts in and family. */
   co2: ByCause<Readonly<Record<string, number>>>;
+  jointCo2: ByCause<Readonly<Record<string, number>>>;
+}
+
+/**
+ * A lever's effect on the base year and on the production change: the change ramps in as the
+ * lever does, so the second ramps in by the square of the share.
+ */
+interface Joint<T> {
+  own: T;
+  joint: T;
 }
 
 interface IntensityCut {
@@ -363,10 +376,13 @@ interface CountryHook {
   hook: (c: CountryContext) => CountryPart;
 }
 
-const addRecords = (parts: readonly CountryPart[]): Record<string, number> =>
+const addRecords = (
+  parts: readonly CountryPart[],
+  key: 'co2' | 'jointCo2',
+): Record<string, number> =>
   parts.reduce<Record<string, number>>(
     (acc, p) =>
-      Object.entries(p.co2 ?? {}).reduce(
+      Object.entries(p[key] ?? {}).reduce(
         (a, [k, v]) => ({ ...a, [k]: k in a ? (a[k] as number) + v : v }),
         acc,
       ),
@@ -398,12 +414,20 @@ const countryParts = (
       return [s.family, before ? gasVector((g) => own[g] - before[g]) : own];
     }),
   );
-  const after = intensityCuts.length > 0 ? addVectors(pc.emitting, change) : pc.emitting;
   const cuts = Object.fromEntries(
     intensityCuts.map(({ family, cut }) => [
       family,
       Object.fromEntries(
-        bands.map((band) => [band, cutEmissions(after, intensities, cut(pc, band))]),
+        bands.map((band) => {
+          const share = cut(pc, band);
+          return [
+            band,
+            {
+              own: cutEmissions(pc.emitting, intensities, share),
+              joint: cutEmissions(change, intensities, share),
+            },
+          ];
+        }),
       ),
     ]),
   );
@@ -417,7 +441,7 @@ const countryParts = (
         ...base,
         productionChange,
         emissionsChange: Object.values(cuts).reduce(
-          (a, c) => (c.median ? addGas(a, c.median) : a),
+          (a, c) => (c.median ? addGas(addGas(a, c.median.own), c.median.joint) : a),
           total,
         ),
         proteinAfter: food
@@ -434,29 +458,48 @@ const countryParts = (
     farm,
     cuts,
     co2: causeRecord((cause) =>
-      addRecords(extra.filter((_, k) => countryHooks[k]?.cause === cause)),
+      addRecords(
+        extra.filter((_, k) => countryHooks[k]?.cause === cause),
+        'co2',
+      ),
+    ),
+    jointCo2: causeRecord((cause) =>
+      addRecords(
+        extra.filter((_, k) => countryHooks[k]?.cause === cause),
+        'jointCo2',
+      ),
     ),
   };
 };
 
-const farmOf = (p: CountryParts, family: string, band: Band): GasVector =>
-  p.cuts[family]?.[band] ?? p.farm[family] ?? ZERO_GAS;
+const farmOf = (p: CountryParts, family: string, band: Band): Joint<GasVector> => {
+  const cut = p.cuts[family]?.[band];
+  return cut ?? { own: p.farm[family] ?? ZERO_GAS, joint: ZERO_GAS };
+};
+
+const isZero = (v: GasVector): boolean => GASES.every((g) => v[g] === 0);
 
 /**
  * Yearly emission changes of one family: farm emissions scale like the baseline, clearing is a
- * constant stream; both ramp in like the shift.
+ * constant stream; both ramp in like the shift, and the joint part by the square of the share.
  */
 const familyPath = (
-  farm: GasVector,
-  clearing: number,
+  farm: Joint<GasVector>,
+  clearing: Joint<number>,
   years: readonly number[],
   scale: Scale,
   shareAt: (year: number) => number,
 ): GasVector[] =>
   years.map((y) => {
     const r = shareAt(y);
-    return gasVector((g) => r * (farm[g] * scale(g, y) + (g === 'co2' ? clearing : 0)));
+    const at = (v: GasVector, c: number, g: Gas) => v[g] * scale(g, y) + (g === 'co2' ? c : 0);
+    return gasVector(
+      (g) => r * at(farm.own, clearing.own, g) + r * r * at(farm.joint, clearing.joint, g),
+    );
   });
+
+const NO_CLEARING: Joint<number> = { own: 0, joint: 0 };
+const NO_FARM: Joint<GasVector> = { own: ZERO_GAS, joint: ZERO_GAS };
 
 const sumPaths = (paths: readonly GasVector[][]): GasVector[] =>
   (paths[0] ?? []).map((_, i) => paths.reduce((a, p) => addGas(a, p[i] as GasVector), ZERO_GAS));
@@ -481,24 +524,32 @@ const sumSeries = (series: readonly number[][], years: readonly number[]): numbe
     : series.slice(1).reduce((a, s) => addSeries(a, s), series[0] as number[]);
 
 /**
- * Each family's avoided warming at each horizon with the feedback (permafrost) shared out in
- * proportion to it, so the shares still add up to the total; nothing is shared where the
- * families' total is nil.
+ * Parts of the avoided warming with the feedback (permafrost) shared out by each part's size,
+ * equally when all are nil, so they add up to the total with it. Not by their signed values:
+ * parts of opposite sign whose total nears zero would each take many times the feedback.
  */
-export const shareFeedback = (
-  familyWarming: readonly number[][],
-  feedback: readonly number[],
-): number[][] =>
-  familyWarming.map((w) =>
-    w.map((v, h) => {
-      const total = sum(familyWarming.map((f) => f[h] ?? 0));
-      return Math.abs(total) > 0 ? v + ((feedback[h] ?? 0) * v) / total : v;
-    }),
+export const shareOut = (parts: readonly number[], feedback: number): number[] => {
+  const size = sum(parts.map(Math.abs));
+  return parts.map((v) =>
+    size > 0 ? v + (feedback * Math.abs(v)) / size : v + feedback / parts.length,
   );
+};
+
+/** shareOut at each year (or horizon): `parts[k][h]`, `feedback[h]`. */
+export const shareFeedback = (
+  parts: readonly number[][],
+  feedback: readonly number[],
+): number[][] => {
+  const byYear = feedback.map((f, h) =>
+    shareOut(
+      parts.map((p) => p[h] ?? 0),
+      f,
+    ),
+  );
+  return parts.map((p, k) => p.map((v, h) => byYear[h]?.[k] ?? v));
+};
 
 interface BaselineBand {
-  /** Population baseline's farm warming, °C by year. */
-  adjustment: number[];
   /** The baseline temperature. */
   temperature: number[];
   /** What each module's baseline hook kept for its feedback. */
@@ -582,7 +633,6 @@ const baselineTemperature = (
             });
             return part
               ? {
-                  adjustment,
                   temperature: part.warming
                     ? addSeries(acc.temperature, part.warming)
                     : acc.temperature,
@@ -591,7 +641,6 @@ const baselineTemperature = (
               : acc;
           },
           {
-            adjustment,
             temperature: addSeries(seriesOn(total, total[band], tYears), adjustment),
             memo: {},
           },
@@ -613,10 +662,6 @@ export const avoidedBand = (delta: {
     p95: delta.p05.map((v, i) => Math.max(avoided(v), avoided(delta.p95[i]))),
   };
 };
-
-/** Whether a module that is not farming has a lever adopted. */
-const nonFarmOn = (adoption: (id: string) => number): boolean =>
-  MODULES.some((m) => m.farm === false && m.levers.some((l) => adoption(l.id) > 0));
 
 const HORIZON_YEARS = [2050, 2100];
 
@@ -726,15 +771,22 @@ const emissionsPass = (
           f,
           causeRecord((c) => {
             if (c === 'agriculture') {
-              const farm = sumBy(parts, (p) => farmOf(p, f, band));
-              return GASES.every((g) => farm[g] === 0)
+              const farms = parts.map((p) => farmOf(p, f, band));
+              const farm = {
+                own: sumBy(farms, (x) => x.own),
+                joint: sumBy(farms, (x) => x.joint),
+              };
+              return isZero(farm.own) && isZero(farm.joint)
                 ? zeroPath(years)
-                : familyPath(farm, 0, years, scale, shareAt);
+                : familyPath(farm, NO_CLEARING, years, scale, shareAt);
             }
-            const clearing = sum(parts.map((p) => p.co2[c][f] ?? 0));
-            return clearing === 0
+            const clearing = {
+              own: sum(parts.map((p) => p.co2[c][f] ?? 0)),
+              joint: sum(parts.map((p) => p.jointCo2[c][f] ?? 0)),
+            };
+            return clearing.own === 0 && clearing.joint === 0
               ? zeroPath(years)
-              : familyPath(ZERO_GAS, clearing, years, scale, shareAt);
+              : familyPath(NO_FARM, clearing, years, scale, shareAt);
           }),
         ];
       }),
@@ -961,9 +1013,7 @@ export const runPrepared = (
   );
   const differenceIn = bandRecord((band) => sumPaths(FAMILIES.map((f) => byFamily[band][f] ?? [])));
   const baselinePath = years.map((y) => gasVector((g) => worldBase[g] * scale(g, y)));
-  const farmOnly = nonFarmOn(ctx.adoption);
-  const farmPaths = () => sumPaths(FARM_FAMILIES.map((f) => byFamily.median[f] ?? []));
-  const farmDifference = farmOnly ? farmPaths() : differenceIn.median;
+  const farmDifference = sumPaths(FARM_FAMILIES.map((f) => byFamily.median[f] ?? []));
 
   const base = baselineTemperature(prepared, options, currentYear);
   const extraWarming = bandRecord((band) =>
@@ -1002,14 +1052,6 @@ export const runPrepared = (
   const delta = bandRecord((band) => addSeries(leversDelta[band], feedbackDelta[band]));
   const baseline = bandRecord((band) => base[band].temperature);
   const scenarioBand = bandRecord((band) => addSeries(baseline[band], delta[band]));
-  const agriculture = climate.attribution[options.ssp].agriculture;
-  const agricultureBaseline = addSeries(
-    seriesOn(agriculture, agriculture.median, tYears),
-    base.median.adjustment,
-  );
-  const farmDelta = farmOnly
-    ? warmingFrom(farmPaths(), currentYear, climate, options.climate, 'median', tYears)
-    : leversDelta.median;
 
   const avoidedAt = differenceIn.median[completeIndex];
   const avoided = avoidedAt ? gasVector((g) => 0 - avoidedAt[g]) : ZERO_GAS;
@@ -1045,14 +1087,17 @@ export const runPrepared = (
 
   const shares = familyShares(frame, full, chains);
   const feedbackAt = HORIZON_YEARS.map((y) => 0 - (feedbackDelta.median[y - FIRST_YEAR] ?? 0));
+  const players = [...shares.keys()];
+  const causes = COUNTED_CAUSES.length;
   const sharedAt = HORIZON_YEARS.map((_, h) =>
-    sum([...shares.values()].flatMap((v) => COUNTED_CAUSES.map((_, c) => v[c * 3 + h] ?? 0))),
+    shareOut(
+      players.flatMap((f) => COUNTED_CAUSES.map((_, c) => shares.get(f)?.[c * 3 + h] ?? 0)),
+      feedbackAt[h] as number,
+    ),
   );
-  /** A family's avoided warming at horizon h for a cause, with its part of the feedback. */
   const warmingOf = (family: string, c: number, h: number): number => {
-    const own = shares.get(family)?.[c * 3 + h] ?? 0;
-    const total = sharedAt[h] as number;
-    return Math.abs(total) > 0 ? own + ((feedbackAt[h] as number) * own) / total : own;
+    const k = players.indexOf(family);
+    return k < 0 ? 0 : (sharedAt[h]?.[k * causes + c] ?? 0);
   };
   const co2eOfFamily = (family: string, c: number): number => shares.get(family)?.[c * 3 + 2] ?? 0;
   const perFamily = (f: (family: string) => number): Record<string, number> =>
@@ -1080,8 +1125,6 @@ export const runPrepared = (
       observed: observedOn(climate.observed[options.temperature], tYears),
       baseline,
       scenario: scenarioBand,
-      agricultureBaseline,
-      agricultureScenario: addSeries(agricultureBaseline, farmDelta),
       avoided: avoidedBand(delta),
       avoidedByCause,
     },

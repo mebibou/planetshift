@@ -34,9 +34,12 @@ export const deforestation: LeverModule = {
             ...Object.fromEntries(stages.map((s, k) => [s.family, parts.steps[k] as number])),
             [ID]: parts.lever,
           },
+          jointCo2: { [ID]: parts.leverJoint },
           result: {
             deforestationCo2: parts.before,
-            deforestationChange: [...parts.steps, parts.lever].reduce((a, b) => a + b),
+            deforestationChange: [...parts.steps, parts.lever, parts.leverJoint].reduce(
+              (a, b) => a + b,
+            ),
           },
         };
       };

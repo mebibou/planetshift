@@ -33,7 +33,6 @@ export const recordFrom = <K extends string, V>(
 
 export const ZERO_GAS: GasVector = gasVector(() => 0);
 export const addGas = (a: GasVector, b: GasVector): GasVector => gasVector((g) => a[g] + b[g]);
-export const scaleGas = (a: GasVector, k: number): GasVector => gasVector((g) => a[g] * k);
 
 export const zeros = (n: number): ItemVector => new Float64Array(n);
 

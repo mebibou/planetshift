@@ -49,3 +49,17 @@ export const multipliersWith = (
   seedShares: ItemVector,
   cut: number,
 ): ItemVector => lossShares.map((l, i) => multiplierWith(l, seedShares[i] as number, cut));
+
+/**
+ * Supply no longer needed, tonnes, once losses are cut by `cut`: the losses avoided and, as
+ * losses and seed are shares of supply, the losses and seed that supply no longer carries.
+ */
+export const avoidedSupply = (
+  losses: ItemVector,
+  lossShares: ItemVector,
+  seedShares: ItemVector,
+  cut: number,
+): ItemVector =>
+  losses.map(
+    (l, i) => cut * l * multiplierWith(lossShares[i] as number, seedShares[i] as number, cut),
+  );

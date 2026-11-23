@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { data, expectOwnGases, run } from '../../../test/levers';
-import { sum } from '../../model/util';
 import { REMOVALS } from './data';
 import { countryUptake, landFor } from './model';
 
@@ -21,6 +20,5 @@ describe('removals', () => {
     const r = run({ levers: Object.fromEntries(REMOVALS.map((id) => [id, 1])) });
     expect(r.summary.removalsCo2.median).toBeGreaterThan(0);
     expect(r.summary.removalsCo2.p05).toBeLessThan(r.summary.removalsCo2.p95);
-    expect(sum(r.countries.map((c) => c.removalsCo2)) * 1).toBeGreaterThan(0);
   });
 });

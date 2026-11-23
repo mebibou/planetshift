@@ -47,11 +47,11 @@ new food = eaten + (1 − r<sub>W</sub>) × wasted = food × (1 − r<sub>W</sub
 
 It is applied after the diet shift, to the food the shifted diet needs, so a country that eats less meat and wastes less needs both less meat and less of the rest. In the steps of the [model](#method-shift), it multiplies each item's food use before step 4.
 
-**Losses before shops.** Each item's loss share of domestic supply, ℓ = losses ÷ domestic supply, becomes (1 − r<sub>L</sub>) × ℓ. The supply needed for a change in use becomes that change ÷ (1 − (1 − r<sub>L</sub>) × ℓ − seed share), and the base year's losses themselves fall by r<sub>L</sub> × losses, which is supply no longer needed.
+**Losses before shops.** Each item's loss share of domestic supply, ℓ = losses ÷ domestic supply, becomes (1 − r<sub>L</sub>) × ℓ. The supply needed for a change in use becomes that change ÷ (1 − (1 − r<sub>L</sub>) × ℓ − seed share), and the base year's supply falls by r<sub>L</sub> × losses ÷ (1 − (1 − r<sub>L</sub>) × ℓ − seed share): the losses avoided, and the losses and seed that supply no longer carries, as both stay shares of it. With a quarter of the supply lost and half the losses avoided, that is 14% more than the losses avoided alone.
 
 The change in food supply then travels through the model like a diet shift: it changes supply, which changes production where the item is grown (step 6), and the feed animals need (step 5) when less meat, milk or eggs are wasted.
 
-**Example.** A country whose food supply is 800 kg per person, of which 100 kg is wasted after shops (w = 0.125), halves its waste (r<sub>W</sub> = 0.5): its food supply falls by 0.5 × 0.125 = 6.25%, to 750 kg, for the same 700 kg eaten. If wheat's losses are 5% of its supply and seed 3%, halving losses as well lowers wheat's multiplier from 1 ÷ 0.92 to 1 ÷ 0.945.
+**Example.** A country whose food supply is 800 kg per person, of which 100 kg is wasted after shops (w = 0.125), halves its waste (r<sub>W</sub> = 0.5): its food supply falls by 0.5 × 0.125 = 6.25%, to 750 kg, for the same 700 kg eaten. If wheat's losses are 5% of its supply and seed 3%, halving losses as well lowers wheat's multiplier from 1 ÷ 0.92 to 1 ÷ 0.945, and saves 0.5 × 5% ÷ 0.945 = 2.6% of its supply.
 
 ## What it changes
 

@@ -51,19 +51,6 @@ const adopted = (removals: Partial<Removals>, adoptionOf: Adoption) =>
     return removal && adoption > 0 ? [{ removal, adoption }] : [];
   });
 
-/** kg of CO₂ a year one country takes up with every removal adopted in full (median). */
-export const countryRemovals = (
-  removals: Partial<Removals>,
-  adoptionOf: Adoption,
-  country: CountryLandAfter,
-  band: Band = 'median',
-): number =>
-  adopted(removals, adoptionOf).reduce(
-    (a, { removal, adoption }) =>
-      a + countryUptake(removal, adoption, country.iso3, country.land, band),
-    0,
-  );
-
 /**
  * CO₂ taken up each year by the removals, kg (positive), by band: adoption ramps in like the
  * shift, and land adopted in a year stores carbon for the removal's `years` years.

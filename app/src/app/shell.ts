@@ -31,9 +31,12 @@ import { buildQuery, modelQuery, parseUi, type View } from './url';
 const ALL_LEVERS: Levers = Object.fromEntries(LEVER_IDS.map((id) => [id, 1]));
 
 /** The model's state from the URL, or the defaults when it has none or cannot read it. */
-export const stateFromQuery = (query: string): { scenario: Scenario; options: Options } => {
+export const stateFromQuery = (
+  query: string,
+  currentYear?: number,
+): { scenario: Scenario; options: Options } => {
   try {
-    return decodeState(modelQuery(query));
+    return decodeState(modelQuery(query), currentYear);
   } catch {
     return { scenario: BASE_SCENARIO, options: DEFAULT_OPTIONS };
   }
@@ -61,7 +64,7 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
   let loaded = initial;
   const query = location.search;
   const store = createStore<AppState>({
-    ...stateFromQuery(query),
+    ...stateFromQuery(query, currentYear),
     ui: parseUi(query),
     lang,
     theme: effectiveTheme(readStoredTheme(), prefersDark()),
@@ -190,7 +193,7 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
     if (location.search === queryOf(store.get(), location.search)) return;
     store.update((s) => ({
       ...s,
-      ...stateFromQuery(location.search),
+      ...stateFromQuery(location.search, currentYear),
       ui: parseUi(location.search),
     }));
   });

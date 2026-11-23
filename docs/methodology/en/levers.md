@@ -22,8 +22,8 @@ Natural regrowth on freed farmland also takes up carbon, beside the four practic
 
 - Practices on the same source multiply rather than add: two practices that each remove 30% and 20% of enteric methane remove 1 − 0.7 × 0.8 = 44%, not 50%.
 - Less waste acts on the diet after the shift, practices on the production left after both, the deforestation lever on the clearing left after the shift and less waste. Each lever therefore does a little less when combined than alone; the breakdown below shares that overlap out evenly.
-- The levers' full effect ramps in linearly with the shift; their products (for example practices on the change the shift makes) are taken at full adoption and ramped the same way.
-- Removals act on the farmland left once the shift is complete; a shift that frees cropland leaves less for cover crops.
+- The levers' full effect ramps in linearly with the shift. Where a lever acts on the change in production (practices on the herd and crops the shift and less waste changed, the deforestation lever on the clearing they changed), that part ramps in as both do: with a share r of the way reached, the lever's r × cut acts on r × the change, so it grows as r².
+- Removals act on the farmland left once the shift is complete; a shift that frees cropland leaves less for cover crops. They ramp in linearly: mid-ramp they count land the shift has not yet freed or used.
 - Energy levers combine with each other, not with the farming levers: renewable electricity makes electric vehicles and data centres save more; less flying and clean fuel each act on the aviation CO₂ the other leaves, so both at 50% cut 75% of it.
 
 ## Reading the breakdown
@@ -38,7 +38,7 @@ A second method was considered: each group's effect alone, scaled so the parts a
 
 Measured on the real data, a run takes a median of 5 ms over the test samples (4.5 ms before), and 17 ms with every lever and every option on as the food-waste slider moves (10 ms before), within the 20 and 30 ms budgets.
 
-With permafrost on, the change in its release is shared out in proportion to each group's avoided warming, and to each cause's, so the parts still add up. The avoided emissions in CO₂e in the year the levers are complete are shared out the same way; they leave out aviation's non-CO₂ forcing and permafrost, which are not emissions of a lever.
+With permafrost on, the change in its release is shared out between the groups, and between the causes, in proportion to the size of each one's avoided warming, whatever its sign, so the parts still add up. Shared by the signed values, a part that adds warming would take a negative share; but the energy levers avoid warming under fossil fuels and add some under air pollution, and where the two nearly cancel (until about 2040) each part would take many times the whole change. By size, no part moves by more than the change itself. The avoided emissions in CO₂e in the year the levers are complete are shared out the same way; they leave out aviation's non-CO₂ forcing and permafrost, which are not emissions of a lever.
 
 ## Why some levers are uncertain
 
@@ -52,6 +52,6 @@ The ranges of the practices (a low and high reduction) and of the removals (a lo
 - An item without a split by source takes the world's, then the other scope's; without any, practices do not act on it.
 - Deforestation CO₂ is a constant stream, not scaled with population; it moves with each item's relative production change in the country (between −100% and +100%), and the lever stops its share of the rest.
 - Removals act on the land once the shift is complete and store for `years` years from each hectare's adoption; the rate is the country's, else the world's.
-- The breakdown is each group's Shapley value over the acting groups, split by cause; the permafrost change is shared out in proportion.
+- The breakdown is each group's Shapley value over the acting groups, split by cause; the permafrost change is shared out in proportion to the size of each part.
 - Energy levers cut a share of each sector's CO₂ in the scenario chosen under Options, ramping in like the shift; they do not change farm emissions, and electricity used on farms keeps its own intensity.
 - A missing lever file leaves its levers without effect, shown as not available.

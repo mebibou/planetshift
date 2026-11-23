@@ -104,14 +104,11 @@ export interface ScenarioResult {
     observed: (number | null)[];
     baseline: { median: number[]; p05: number[]; p95: number[] };
     scenario: { median: number[]; p05: number[]; p95: number[] };
-    /** Warming from farming without and with the diet shift and farming levers (no energy, no permafrost). */
-    agricultureBaseline: number[];
-    agricultureScenario: number[];
     /** Warming avoided by the scenario, °C, each year (baseline − scenario), median and 5–95%. */
     avoided: { median: number[]; p05: number[]; p95: number[] };
     /**
      * The median warming avoided each year by cause, °C: the change in each cause's emissions
-     * (and forcing) the levers make, with the permafrost change shared out in proportion. Air
+     * (and forcing) the levers make, with the permafrost change shared out by the size of each. Air
      * pollution's is negative where the energy levers' cleaner air unmasks warming. The causes
      * add up to `avoided.median`.
      */

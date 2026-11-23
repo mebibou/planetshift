@@ -201,12 +201,13 @@ export const vectorFrom = (
   byCode: Readonly<Record<string, number>>,
 ): ItemVector => Float64Array.from(prepared.items, (item) => byCode[String(item.code)] ?? 0);
 
-const GROUPS: readonly Group[] = [...ANIMAL_GROUPS, ...PLANT_GROUPS];
+/** Every food group, animal then plant: the order of the per-group vectors. */
+export const GROUPS: readonly Group[] = [...ANIMAL_GROUPS, ...PLANT_GROUPS];
 const GROUP_INDEX = new Map(GROUPS.map((g, k) => [g, k]));
 const groupIndexCache = new WeakMap<readonly Item[], Int32Array>();
 
 /** Each item's index in GROUPS, computed once per item list. */
-const groupIndicesOf = (items: readonly Item[]): Int32Array => {
+export const groupIndicesOf = (items: readonly Item[]): Int32Array => {
   const found = groupIndexCache.get(items);
   if (found) return found;
   const built = Int32Array.from(items, (item) => GROUP_INDEX.get(item.group) ?? 0);

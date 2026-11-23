@@ -9,7 +9,8 @@ import {
 import type { Prepared, PreparedCountry } from './prepare';
 import { dot, gasVector, memoPer, type ItemVector } from './util';
 
-const OTHER_SCOPE: Record<Scope, Scope> = {
+/** The scope an intensity falls back to when it has none in the chosen one. */
+export const OTHER_SCOPE: Record<Scope, Scope> = {
   farmGate: 'cradleToFarmGate',
   cradleToFarmGate: 'farmGate',
 };

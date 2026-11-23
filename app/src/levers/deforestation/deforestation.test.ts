@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { expectOwnGases, lever, run } from '../../../test/levers';
-import { clearingParts, relativeChange } from './model';
+import { expectOwnGases, jointShare, lever, rampShare, run } from '../../../test/levers';
+import { clearingParts, MAX_RISE } from './model';
 
 describe('deforestation', () => {
   it('alone cuts CO₂ only', () => expectOwnGases('deforestation', ['co2']));
@@ -13,15 +13,26 @@ describe('deforestation', () => {
     expect(parts.before).toBe(150);
     expect(parts.steps[0]).toBeCloseTo(-50);
     expect(parts.steps[1]).toBeCloseTo(-10);
-    expect(parts.lever).toBeCloseTo(-0.5 * (40 + 50));
-    expect(relativeChange(Float64Array.from([50, 1]), Float64Array.from([10, 0]))).toEqual(
-      Float64Array.from([1, 0]),
+    expect(parts.lever).toBeCloseTo(-0.5 * 150);
+    expect(parts.leverJoint).toBeCloseTo(-0.5 * -60);
+    const capped = clearingParts(
+      clearing,
+      [Float64Array.from([50, 1])],
+      Float64Array.from([10, 0]),
+      0,
     );
+    expect(capped.steps[0]).toBe(100 * MAX_RISE);
   });
   it('the lever at full adoption stops all of it', () => {
     const r = lever('deforestation');
     expect(r.summary.deforestationCo2.avoided).toBeCloseTo(r.summary.deforestationCo2.before, 0);
     r.countries.forEach((c) => expect(c.deforestationChange).toBeCloseTo(-c.deforestationCo2, 0));
+  });
+  it('stops the clearing the shift changed as both ramp in', () => {
+    const joint = jointShare('deforestation', 'co2', false);
+    const r = rampShare(2030);
+    expect(joint(2035)).not.toBe(0);
+    expect(joint(2030) / joint(2035)).toBeCloseTo(r * r, 9);
   });
   it('a shift away from beef lowers it', () => {
     const r = run({ groupShifts: { ruminantMeat: 1 } });

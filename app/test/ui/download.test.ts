@@ -126,8 +126,6 @@ const result = {
     observed: [1.2, null, null],
     baseline: band(2),
     scenario: band(1.5),
-    agricultureBaseline: [0.3, 0.3, 0.3],
-    agricultureScenario: [0.2, 0.2, 0.2],
     avoided: band(0.5),
   },
   summary: { avoidedCo2e: 7 },

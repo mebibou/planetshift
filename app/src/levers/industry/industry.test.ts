@@ -6,7 +6,7 @@ import { BASE_SCENARIO } from '../../model/scenarios';
 import { decodeState, encodeState } from '../../model/state';
 import { CURRENT_YEAR } from '../../../test/model/fixtures';
 import type { IndustrySector } from './data';
-import { heatingSaving, INDUSTRY_LEVERS, industryCo2Change, industrySaving } from './model';
+import { INDUSTRY_LEVERS, industryCo2, industryCo2BySource } from './model';
 
 const at2035 = (sector: IndustrySector) => {
   const s = data.industry.co2.ssp245[sector];
@@ -72,18 +72,25 @@ describe('industry levers', () => {
         w2100(lever(id)) + re,
       ),
     );
-    expect(heatingSaving(data.industry, 'median', 0)).toBe(1);
-    expect(heatingSaving(data.industry, 'median', 0.3)).toBeLessThan(1);
-    expect(industrySaving(data.industry, 'median', 0)).toBeCloseTo(0.289 * 0.9 + 0.287 * 0.8, 12);
     const ctx = { industry: data.industry, sectors: data.sectors, ssp: 'ssp245' as const };
-    const change = (renewableElectricity: number) =>
-      industryCo2Change({ ...ctx, band: 'median' }, 2040, {
+    const bySource = (renewableElectricity: number) =>
+      industryCo2BySource({ ...ctx, band: 'median' }, 2040, {
         cleanHeating: 1,
         cleanIndustry: 1,
         renewableElectricity,
       });
-    expect(change(1)).toBeLessThan(change(0.5));
-    expect(change(0.5)).toBeLessThan(change(0));
+    const clean = bySource(1);
+    expect(clean.electricity).toBe(0);
+    expect(clean.industry).toBeCloseTo(
+      -(0.289 * 0.9 + 0.287 * 0.8) * industryCo2(data.industry, 'ssp245', 'industry', 2040),
+      0,
+    );
+    expect(clean.buildings).toBe(-industryCo2(data.industry, 'ssp245', 'buildings', 2040));
+    const half = bySource(0.5);
+    const none = bySource(0);
+    expect(half.electricity).toBeCloseTo(none.electricity / 2, 0);
+    expect(none.electricity).toBeGreaterThan(0);
+    expect(half.buildings).toBe(none.buildings);
   });
 
   it('avoid more with more adoption', () => {
@@ -104,7 +111,6 @@ describe('industry levers', () => {
     const r = run({ levers: { cleanHeating: 1, cleanIndustry: 1 } });
     const none = run();
     expect(r.scenarioEmissions).toEqual(none.scenarioEmissions);
-    expect(r.temperature.agricultureScenario).toEqual(none.temperature.agricultureScenario);
     expect(r.temperature.baseline).toEqual(none.temperature.baseline);
   });
 

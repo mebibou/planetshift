@@ -1,6 +1,6 @@
-import { GASES, type Climate, type Gas, type GasVector } from '../data/types';
+import { GASES, type Climate, type Gas } from '../data/types';
 import type { Baseline } from './api';
-import { addGas, clamp, gasVector, scaleGas, valueAt } from './util';
+import { clamp, valueAt } from './util';
 
 /** Share of the full shift reached in a year: 0 in the current year, 1 from rampEnd on. */
 export const ramp = (year: number, currentYear: number, rampEnd: number): number =>
@@ -47,25 +47,5 @@ export const tabulate = (scale: Scale, years: readonly number[]): Scale => {
     return k >= 0 && k < years.length && years[k] === year
       ? (table[gas][k] as number)
       : scale(gas, year);
-  };
-};
-
-const scaled = (v: GasVector, scale: Scale, year: number): GasVector =>
-  gasVector((g) => v[g] * scale(g, year));
-
-/** World emissions per year without and with the shift (which ramps in, scaled like the baseline). */
-export const emissionPaths = (
-  base: GasVector,
-  fullChange: GasVector,
-  years: readonly number[],
-  scale: Scale,
-  rampAt: (year: number) => number,
-): { baseline: GasVector[]; scenario: GasVector[] } => {
-  const baseline = years.map((y) => scaled(base, scale, y));
-  return {
-    baseline,
-    scenario: years.map((y, i) =>
-      addGas(baseline[i] as GasVector, scaleGas(scaled(fullChange, scale, y), rampAt(y))),
-    ),
   };
 };
