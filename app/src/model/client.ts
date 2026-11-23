@@ -1,6 +1,6 @@
 import type { ModelData } from '../data/types';
-import type { Options, Scenario, ScenarioResult } from './api';
-import { respond, type Avoided, type Reply, type Request } from './engine';
+import type { Options, Scenario } from './api';
+import type { Avoided, Reply, Request, RunResult } from './engine';
 
 /** Where requests go and replies come from: a Worker, or the same thread. */
 export interface Port {
@@ -9,16 +9,24 @@ export interface Port {
   close: () => void;
 }
 
-/** The model on this thread, answering on a later task as a Worker would. */
+/**
+ * The model on this thread, answering on a later task as a Worker would. Its code is loaded only
+ * here, so the page's bundle holds none of it when Workers run it.
+ */
 export const inProcessPort = (): Port => {
   let data: ModelData | null = null;
   let on: (reply: Reply) => void = () => {};
+  let queue = Promise.resolve();
   return {
     post: (req) => {
-      const out = respond(data, req);
-      data = out.data;
-      const reply = out.reply;
-      if (reply) setTimeout(() => on(reply), 0);
+      queue = queue.then(() =>
+        import('./engine').then(({ respond }) => {
+          const out = respond(data, req);
+          data = out.data;
+          const reply = out.reply;
+          if (reply) setTimeout(() => on(reply), 0);
+        }),
+      );
     },
     listen: (f) => (on = f),
     close: () => (on = () => {}),
@@ -51,7 +59,7 @@ export interface ModelClient {
   setData: (data: ModelData) => void;
   /** Runs the scenario; while a run is out, only the latest request waits to follow it. */
   run: (scenario: Scenario, options: Options, year: number) => void;
-  onResult: (on: (result: ScenarioResult | null) => void) => void;
+  onResult: (on: (result: RunResult | null) => void) => void;
   /** The warming a scenario avoids, for the panel's figures. */
   avoided: (scenario: Scenario, options: Options, year: number) => Promise<Avoided | null>;
   close: () => void;
@@ -64,7 +72,7 @@ export const modelClient = (port: Port): ModelClient => {
   let next = 1;
   let running: number | null = null;
   let waiting: Job | null = null;
-  let onResult: (r: ScenarioResult | null) => void = () => {};
+  let onResult: (r: RunResult | null) => void = () => {};
   const pending = new Map<number, (a: Avoided | null) => void>();
   const send = (job: Job) => {
     running = next++;

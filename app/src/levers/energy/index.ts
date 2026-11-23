@@ -2,8 +2,9 @@ import { departuresOf } from '../../config';
 import { bandRecord } from '../../model/bands';
 import { convolve, warmingFrom } from '../../model/climate';
 import { addSeries, END_YEAR, range, zerosOn } from '../../model/util';
-import { anyAdopted, lever, option } from '../define';
+import { anyAdopted, lever } from '../define';
 import type { LeverModule } from '../types';
+import { energySpec } from './spec';
 import type { Options } from '../../model/api';
 import type { Prepared } from '../../model/prepare';
 import type { Band } from '../../model/climate';
@@ -15,7 +16,6 @@ import {
   hasCoEmissions,
   type CoYear,
 } from './coemissions';
-import { EMPTY_COEMISSIONS, EMPTY_SECTORS } from './data';
 import {
   dataCentreBaseline,
   ENERGY_LEVERS,
@@ -85,17 +85,7 @@ const dataCentreWarming = (
  * own cause. Its option adds the data centres' demand beyond the SSP to the baseline.
  */
 export const energy: LeverModule = {
-  id: ID,
-  family: 'energy',
-  farm: false,
-  cause: 'fossilIndustry',
-  levers: LEVERS,
-  options: [option(ID, 'dataCentres', 'dc', ['iea', 'ssp'])],
-  files: [
-    { name: 'sectors', empty: EMPTY_SECTORS },
-    { name: 'coemissions', empty: EMPTY_COEMISSIONS },
-  ],
-  available: (data) => Object.keys(data.sectors?.co2 ?? {}).length > 0,
+  ...energySpec,
   hooks: {
     world: ({ prepared, options, adoption, currentYear }, { years, tYears, shareAt }) => {
       const { sectors, coemissions, climate } = prepared.data;
@@ -155,6 +145,4 @@ export const energy: LeverModule = {
       };
     },
   },
-  ui: { section: 'levers' },
-  methodology: { page: 'sectors' },
 };

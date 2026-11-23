@@ -1,7 +1,7 @@
 import { ANIMAL_GROUPS } from '../data/types';
 import { withFamily, withLever } from '../controls/adoption';
 import { PANEL_MODULES } from '../levers/registry';
-import type { LeverModule } from '../levers/types';
+import type { LeverSpec } from '../levers/types';
 import type { Options, Scenario } from '../model/api';
 import { BASE_SCENARIO } from '../model/scenarios';
 import type { Horizon } from './url';
@@ -35,7 +35,7 @@ const alone = (s: Scenario): Scenario => ({
  */
 export const worthJobs = (
   s: Scenario,
-  modules: readonly LeverModule[] = PANEL_MODULES,
+  modules: readonly LeverSpec[] = PANEL_MODULES,
 ): WorthJob[] => {
   const base = alone(s);
   return [

@@ -31,3 +31,6 @@ declare module '../../data/types' {
     population: PopulationData;
   }
 }
+
+export const VARIANTS = ['medium', 'low', 'high'] as const;
+export type PopulationVariant = (typeof VARIANTS)[number];

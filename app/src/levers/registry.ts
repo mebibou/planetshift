@@ -1,26 +1,31 @@
-// The lever modules, and what the core reads from them. The only file a new module shares.
+// The lever modules as the interface reads them, with no model code, and what the core reads
+// from them. With `modules.ts`, the only files a new module shares.
 
 import { DEPARTURES } from '../config';
 import type { Cause, CountedCause, LeverCause, ModelData } from '../data/types';
 import type { Levers } from '../model/api';
-import { deforestation } from './deforestation';
-import { energy } from './energy';
-import { industry } from './industry';
-import { permafrost } from './permafrost';
-import { population } from './population';
-import { practices } from './practices';
-import { regrowth } from './regrowth';
-import { removals } from './removals';
-import { shippingSulphur } from './shippingSulphur';
-import type { DataFileDef, LeverDef, LeverModule, OptionDef } from './types';
-import { waste } from './waste';
+import { deforestationSpec as deforestation } from './deforestation/spec';
+import { energySpec as energy } from './energy/spec';
+import { industrySpec as industry } from './industry/spec';
+import { permafrostSpec as permafrost } from './permafrost/spec';
+import { populationSpec as population } from './population/spec';
+import { practicesSpec as practices } from './practices/spec';
+import { regrowthSpec as regrowth } from './regrowth/spec';
+import { removalsSpec as removals } from './removals/spec';
+import { shippingSulphurSpec as shippingSulphur } from './shippingSulphur/spec';
+import type { DataFileDef, LeverDef, LeverSpec, OptionDef } from './types';
+import { wasteSpec as waste } from './waste/spec';
+
+/** Whether the build keeps a module: one that departs from FaIR only when its departure is on. */
+export const kept = (m: { departure?: LeverSpec['departure'] }): boolean =>
+  m.departure === undefined || DEPARTURES[m.departure] === 'on';
 
 /**
- * Every module. The by-family breakdown does not depend on their order (Shapley values, see
+ * Every module, without its hooks (`modules.ts` adds them, for the model). The by-family breakdown does not depend on their order (Shapley values, see
  * `model/attribution.ts`); the families are listed and the options follow the core options in
  * this order, the world population first, beside the rest of the world's emissions.
  */
-export const MODULES: readonly LeverModule[] = [
+export const MODULES: readonly LeverSpec[] = [
   population,
   waste,
   practices,
@@ -31,7 +36,7 @@ export const MODULES: readonly LeverModule[] = [
   industry,
   shippingSulphur,
   permafrost,
-].filter((m) => m.departure === undefined || DEPARTURES[m.departure] === 'on');
+].filter(kept);
 
 /**
  * The order of the levers in the URL and of the modules' Methodology pages; the panel orders its
@@ -43,25 +48,25 @@ const PANEL_ORDER = ['practices', 'waste', 'deforestation', 'removals', 'energy'
 const SUMMARY_ORDER = ['regrowth', 'removals', 'deforestation'];
 
 /** Modules listed in `order` first, in that order, then the others in registry order. */
-const ordered = (order: readonly string[]): LeverModule[] => [
+const ordered = (order: readonly string[]): LeverSpec[] => [
   ...order.flatMap((id) => MODULES.filter((m) => m.id === id)),
   ...MODULES.filter((m) => !order.includes(m.id)),
 ];
 
 /** Modules with levers, in the order of the panel. */
-export const PANEL_MODULES: readonly LeverModule[] = ordered(PANEL_ORDER).filter(
+export const PANEL_MODULES: readonly LeverSpec[] = ordered(PANEL_ORDER).filter(
   (m) => m.levers.length > 0,
 );
 
 /** Modules with a summary figure, in the order of the strip. */
-export const SUMMARY_MODULES: readonly LeverModule[] = ordered(SUMMARY_ORDER).filter(
+export const SUMMARY_MODULES: readonly LeverSpec[] = ordered(SUMMARY_ORDER).filter(
   (m) => m.ui.stat !== undefined,
 );
 
 export type LeverId = string;
 
 /** Every lever, in the order of the panel, with the module it belongs to. */
-export const LEVERS: readonly (LeverDef & { module: LeverModule })[] = PANEL_MODULES.flatMap((m) =>
+export const LEVERS: readonly (LeverDef & { module: LeverSpec })[] = PANEL_MODULES.flatMap((m) =>
   m.levers.map((l) => ({ ...l, module: m })),
 );
 export const LEVER_IDS: readonly LeverId[] = LEVERS.map((l) => l.id);

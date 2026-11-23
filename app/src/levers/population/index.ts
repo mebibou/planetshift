@@ -1,18 +1,14 @@
 import type { Prepared } from '../../model/prepare';
 import { memoPer } from '../../model/util';
-import { option } from '../define';
 import type { LeverModule } from '../types';
-import { EMPTY_POPULATION } from './data';
+import { populationSpec } from './spec';
 import {
   hasPopulation,
-  VARIANTS,
   variantWorldPopulation,
   worldPopulation,
   type PopulationVariant,
   type WorldPopulation,
 } from './model';
-
-const ID = 'population';
 
 declare module '../../model/api' {
   interface Options {
@@ -32,10 +28,7 @@ const worldCache = memoPer<Prepared, Record<number, number>>();
  * warming avoided moves only because the farm emissions the levers act on are larger or smaller.
  */
 export const population: LeverModule = {
-  id: ID,
-  levers: [],
-  options: [option(ID, 'population', 'pop', VARIANTS)],
-  files: [{ name: 'population', empty: EMPTY_POPULATION }],
+  ...populationSpec,
   hooks: {
     population: ({ prepared, options }) => {
       const pop = prepared.data.population;
@@ -66,6 +59,4 @@ export const population: LeverModule = {
       };
     },
   },
-  ui: {},
-  methodology: { coveredBy: 'options' },
 };

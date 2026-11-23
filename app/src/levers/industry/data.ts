@@ -40,3 +40,10 @@ declare module '../../data/types' {
     industry: Industry;
   }
 }
+
+export const INDUSTRY_LEVERS = ['cleanHeating', 'cleanIndustry'] as const;
+export type IndustryLever = (typeof INDUSTRY_LEVERS)[number];
+
+/** Whether industry.json was loaded with data for the levers to act on. */
+export const hasIndustry = (industry: Partial<Industry> | undefined): industry is Industry =>
+  industry?.co2 !== undefined && Object.keys(industry.co2).length > 0;

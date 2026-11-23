@@ -308,7 +308,10 @@ export const temperatureChart = (
   currentYear: number,
   link?: HoverLink,
 ): TemperatureChart => {
-  const plotEl = h('div', { class: 'chart-plot' });
+  const plotEl = h('div', {
+    class: 'chart-plot',
+    style: '--plot-h: 360px; --plot-h-narrow: 280px',
+  });
   const caption = h('p', { class: 'chart-caption' });
   const milestoneCaption = h('p', { class: 'chart-caption milestone-caption' });
   const legend = legendList([

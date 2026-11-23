@@ -1,4 +1,3 @@
-import { h } from './dom';
 import type { T } from '../i18n/i18n';
 import {
   formatArea,
@@ -9,38 +8,14 @@ import {
   formatTemperature,
   massUnit,
 } from '../i18n/format';
-import { familyLabel, SUMMARY_MODULES } from '../levers/registry';
+import { SUMMARY_MODULES } from '../levers/registry';
 import type { Format } from '../levers/types';
 import type { Options, ScenarioResult } from '../model/api';
-import { causeGroups, gasChange, landStat, type PerCapita } from './summaryModel';
-import { milestones, type Milestone, type Milestones } from './milestones';
-
-export interface Summary {
-  el: HTMLElement;
-  update: (
-    result: ScenarioResult | null,
-    perCapita: PerCapita | null,
-    completeYear: number,
-    horizon: '2050' | '2100',
-    options: Options,
-  ) => void;
-}
+import { gasChange, landStat, type PerCapita } from './summaryModel';
+import type { Milestone, Milestones } from './milestones';
 
 /** Quiet time after the last change before the live sentence is rewritten, so a slider drag is read once. */
-const LIVE_DELAY_MS = 800;
-
-const stat = (label: string, value: string, detail = '', className = '') =>
-  h(
-    'div',
-    { class: `stat ${className}` },
-    h('dt', {}, label),
-    h(
-      'dd',
-      {},
-      h('span', { class: 'stat-value' }, value),
-      detail ? h('span', { class: 'stat-detail' }, detail) : null,
-    ),
-  );
+export const LIVE_DELAY_MS = 800;
 
 const levelText = (locale: string, level: number) =>
   formatTemperature(locale, level, Number.isInteger(level) ? 0 : 1);
@@ -98,193 +73,101 @@ export const peakLine = (ms: Milestones, t: T, locale: string): string =>
         year: ms.peak.year,
       });
 
-/** Avoided emissions by gas and as CO₂e, protein and kcal kept, avoided warming by the horizon. */
-export const summary = (t: T, locale: string, currentYear: number): Summary => {
-  const body = h('dl', { class: 'summary-stats' });
-  const note = h('p', { class: 'summary-note' });
-  const breakdownTitle = h('h3', { class: 'breakdown-title' });
-  const breakdownList = h('ul', { class: 'breakdown-list' });
-  const breakdown = h(
-    'div',
-    { class: 'lever-breakdown', hidden: true },
-    breakdownTitle,
-    breakdownList,
-    h('p', { class: 'stat-detail' }, t('summary.byFamily.note')),
-  );
-  const parisList = h('ul', { class: 'milestone-list' });
-  const paris = h(
-    'div',
-    { class: 'milestones-summary' },
-    h('h3', { class: 'breakdown-title' }, t('milestones.title')),
-    parisList,
-  );
-  const live = h('p', { class: 'visually-hidden', role: 'status' });
-  let announce = 0;
-  const say = (text: string) => {
-    clearTimeout(announce);
-    announce = window.setTimeout(() => {
-      if (live.textContent !== text) live.textContent = text;
-    }, LIVE_DELAY_MS);
-  };
-  const el = h(
-    'section',
-    { class: 'summary', 'aria-labelledby': 'summary-title' },
-    h('h2', { id: 'summary-title', class: 'visually-hidden' }, t('summary.title')),
-    live,
-    body,
-    paris,
-    breakdown,
-    note,
-  );
-  const valueText = (v: number) =>
-    v < 0
-      ? t('summary.byFamily.added', { value: formatTemperature(locale, -v, 3) })
-      : formatTemperature(locale, v, 3);
-  const bar = (width: number, added: boolean) =>
-    h(
-      'span',
-      { class: 'breakdown-track', 'aria-hidden': 'true' },
-      h('span', {
-        class: `breakdown-bar${added ? ' is-added' : ''}`,
-        style: `width: ${(width * 100).toFixed(1)}%`,
-      }),
-    );
-  const showBreakdown = (warming: Parameters<typeof causeGroups>[0], year: string) => {
-    const groups = causeGroups(warming);
-    breakdown.hidden = groups.length === 0;
-    breakdownTitle.textContent = t('summary.byFamily.title', { year });
-    breakdownList.replaceChildren(
-      ...groups.map((g) =>
-        h(
-          'li',
-          { class: `breakdown-cause cause-row-${g.cause}`, 'data-cause': g.cause },
-          h(
-            'div',
-            { class: 'breakdown-row breakdown-head' },
-            h(
-              'span',
-              { class: 'breakdown-label' },
-              h('span', { class: `key key-cause-${g.cause}`, 'aria-hidden': 'true' }),
-              t(`link.causes.${g.cause}`),
-            ),
-            h('span', { class: 'breakdown-value' }, valueText(g.value)),
-            bar(g.width, g.value < 0),
-          ),
-          h(
-            'ul',
-            { class: 'breakdown-families' },
-            ...g.rows.map((r) =>
-              h(
-                'li',
-                { class: 'breakdown-row', 'data-family': r.family },
-                h('span', { class: 'breakdown-label' }, t(familyLabel(r.family))),
-                h('span', { class: 'breakdown-value' }, valueText(r.value)),
-                bar(r.width, r.value < 0),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  };
+export interface Stat {
+  label: string;
+  value: string;
+  detail?: string;
+  className?: string;
+}
+
+/** The lines on the Paris Agreement's levels: when each is crossed, the gap closed, the peak. */
+export const parisLines = (ms: Milestones, t: T, locale: string): string[] =>
+  [
+    ...ms.levels.map((m) => crossingLine(m, ms.end, t, locale)),
+    gapLine(ms, t, locale),
+    peakLine(ms, t, locale),
+  ].filter(Boolean);
+
+const beforeAfter = (t: T, locale: string, before: number, after: number, digits: number) =>
+  t('summary.beforeAfter', {
+    before: formatNumber(locale, before, digits),
+    after: formatNumber(locale, after, digits),
+  });
+
+/**
+ * The summary's figures: the warming avoided by the horizon, the emissions avoided as CO₂e and by
+ * gas, the land freed, each module's own figure, and the protein and calories per person.
+ */
+export const summaryStats = (
+  t: T,
+  locale: string,
+  result: ScenarioResult,
+  perCapita: PerCapita,
+  completeYear: number,
+  horizon: '2050' | '2100',
+  options: Options,
+): Stat[] => {
+  const s = result.summary;
+  const w = horizon === '2100' ? s.avoidedWarming2100 : s.avoidedWarming2050;
+  const land = landStat(s.landBefore, s.landFreed);
   const format: Format = {
     t,
     mass: (kg) => formatMass(locale, kg),
     percent: (share, digits) => formatPercent(locale, share, digits),
   };
-  const clear = () => {
-    say('');
-    body.replaceChildren();
-    breakdown.hidden = true;
-    paris.hidden = true;
-  };
-  const show = (
-    result: ScenarioResult,
-    perCapita: NonNullable<Parameters<Summary['update']>[1]>,
-    completeYear: number,
-    horizon: Parameters<Summary['update']>[3],
-    options: Parameters<Summary['update']>[4],
-  ) => {
-    const ms = milestones(result.temperature, currentYear);
-    paris.hidden = false;
-    parisList.replaceChildren(
-      ...[
-        ...ms.levels.map((m) => crossingLine(m, ms.end, t, locale)),
-        gapLine(ms, t, locale),
-        peakLine(ms, t, locale),
-      ]
-        .filter(Boolean)
-        .map((line) => h('li', {}, line)),
-    );
-    const s = result.summary;
-    const w = horizon === '2100' ? s.avoidedWarming2100 : s.avoidedWarming2050;
-    const co2eUnit = massUnit(s.avoidedCo2e);
-    const land = landStat(s.landBefore, s.landFreed);
-    say(t('summary.live', { year: horizon, value: formatTemperature(locale, w.median, 3) }));
-    body.replaceChildren(
-      stat(
-        t('summary.warming', { year: horizon }),
-        formatTemperature(locale, w.median, 3),
-        t('summary.range', {
-          low: formatTemperature(locale, Math.min(w.p05, w.p95), 3),
-          high: formatTemperature(locale, Math.max(w.p05, w.p95), 3),
-        }),
-        'stat-hero',
-      ),
-      stat(
-        t('summary.co2e', { year: completeYear }),
-        `${formatMass(locale, s.avoidedCo2e, co2eUnit)}`,
-        t('summary.co2eDetail'),
-      ),
-      ...(['ch4', 'n2o', 'co2'] as const).map((gas) => {
-        const { key, value } = gasChange(gas, s.avoided[gas]);
-        return stat(t(key), formatMass(locale, value));
+  return [
+    {
+      label: t('summary.warming', { year: horizon }),
+      value: formatTemperature(locale, w.median, 3),
+      detail: t('summary.range', {
+        low: formatTemperature(locale, Math.min(w.p05, w.p95), 3),
+        high: formatTemperature(locale, Math.max(w.p05, w.p95), 3),
       }),
-      stat(
-        t(land.key),
-        formatArea(locale, land.total),
-        t('summary.landDetail', {
-          cropland: formatSignedArea(locale, land.cropland),
-          pasture: formatSignedArea(locale, land.pasture),
-          share: formatPercent(locale, land.share, 1),
-        }),
-        'stat-land',
-      ),
-      ...SUMMARY_MODULES.flatMap((m) => {
-        const own = m.ui.stat?.(result, options, completeYear, format);
-        return own ? [stat(own.label, own.value, own.detail, own.className)] : [];
+      className: 'stat-hero',
+    },
+    {
+      label: t('summary.co2e', { year: completeYear }),
+      value: formatMass(locale, s.avoidedCo2e, massUnit(s.avoidedCo2e)),
+      detail: t('summary.co2eDetail'),
+    },
+    ...(['ch4', 'n2o', 'co2'] as const).map((gas) => {
+      const { key, value } = gasChange(gas, s.avoided[gas]);
+      return { label: t(key), value: formatMass(locale, value) };
+    }),
+    {
+      label: t(land.key),
+      value: formatArea(locale, land.total),
+      detail: t('summary.landDetail', {
+        cropland: formatSignedArea(locale, land.cropland),
+        pasture: formatSignedArea(locale, land.pasture),
+        share: formatPercent(locale, land.share, 1),
       }),
-      stat(
-        t('summary.protein'),
-        t('summary.beforeAfter', {
-          before: formatNumber(locale, perCapita.proteinBefore, 1),
-          after: formatNumber(locale, perCapita.proteinAfter, 1),
-        }),
-        t('summary.gPerDay'),
-      ),
-      stat(
-        t('summary.kcal'),
-        t('summary.beforeAfter', {
-          before: formatNumber(locale, perCapita.kcalBefore, 0),
-          after: formatNumber(locale, perCapita.kcalAfter, 0),
-        }),
-        t('summary.kcalPerDay'),
-      ),
-    );
-    showBreakdown(
-      horizon === '2100' ? s.byFamilyCause.avoidedWarming2100 : s.byFamilyCause.avoidedWarming2050,
-      horizon,
-    );
-    note.textContent = [
-      t('summary.scope'),
-      s.clipped.length ? t('summary.clipped', { count: s.clipped.length }) : '',
-    ]
-      .filter(Boolean)
-      .join(' ');
-  };
-  const update: Summary['update'] = (result, perCapita, completeYear, horizon, options) => {
-    if (result && perCapita) show(result, perCapita, completeYear, horizon, options);
-    else clear();
-  };
-  return { el, update };
+      className: 'stat-land',
+    },
+    ...SUMMARY_MODULES.flatMap((m) => {
+      const own = m.ui.stat?.(result, options, completeYear, format);
+      return own ? [own] : [];
+    }),
+    {
+      label: t('summary.protein'),
+      value: beforeAfter(t, locale, perCapita.proteinBefore, perCapita.proteinAfter, 1),
+      detail: t('summary.gPerDay'),
+    },
+    {
+      label: t('summary.kcal'),
+      value: beforeAfter(t, locale, perCapita.kcalBefore, perCapita.kcalAfter, 0),
+      detail: t('summary.kcalPerDay'),
+    },
+  ];
 };
+
+/** What the summary's note says: its scope, and how many countries' changes were clipped. */
+export const summaryNote = (t: T, result: ScenarioResult): string =>
+  [
+    t('summary.scope'),
+    result.summary.clipped.length
+      ? t('summary.clipped', { count: result.summary.clipped.length })
+      : '',
+  ]
+    .filter(Boolean)
+    .join(' ');

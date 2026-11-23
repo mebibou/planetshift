@@ -2,10 +2,10 @@ import type { Country, Series, Ssp } from '../../data/types';
 import { populationIn } from '../../model/prepare';
 import { END_YEAR, range, sum, valueAt } from '../../model/util';
 import type { PopulationData } from './data';
+import { VARIANTS, type PopulationVariant } from './data';
+export { VARIANTS, type PopulationVariant };
 
 /** UN WPP 2024's variants: the medium projection, or half a child per woman fewer or more. */
-export const VARIANTS = ['medium', 'low', 'high'] as const;
-export type PopulationVariant = (typeof VARIANTS)[number];
 
 const at = (s: Series, year: number): number => valueAt(s.years, s.values, year);
 

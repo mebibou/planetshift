@@ -89,7 +89,7 @@ export interface AnimalUse {
   worldFoodBase: ItemVector;
 }
 
-const useCache = memoPer<Prepared, AnimalUse>();
+const animalUseCache = memoPer<Prepared, AnimalUse>();
 
 /**
  * For each animal item (1 for a plant), `scale`: the world's production less processing per
@@ -100,7 +100,7 @@ const useCache = memoPer<Prepared, AnimalUse>();
  * groups' change in full.
  */
 export const animalUse = (prepared: Prepared, method: FeedMethod): AnimalUse =>
-  useCache(prepared, method, () => {
+  animalUseCache(prepared, method, () => {
     const n = prepared.items.length;
     const [food, fed] = prepared.countries.reduce(
       ([f, d], pc) => {

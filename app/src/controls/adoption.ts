@@ -1,6 +1,6 @@
 import { ANIMAL_GROUPS } from '../data/types';
 import { adoptionOf, PANEL_MODULES, type LeverId } from '../levers/registry';
-import type { LeverModule } from '../levers/types';
+import type { LeverSpec } from '../levers/types';
 import type { Levers, Scenario } from '../model/api';
 
 /** A lever's adoption set, or left out of the scenario at 0 so the URL stays clean. */
@@ -13,7 +13,7 @@ export const withLever = (s: Scenario, id: LeverId, adoption: number): Scenario 
 });
 
 /** Every lever of a module set to the same adoption. */
-export const withFamily = (s: Scenario, module: LeverModule, adoption: number): Scenario =>
+export const withFamily = (s: Scenario, module: LeverSpec, adoption: number): Scenario =>
   module.levers.reduce<Scenario>((acc, l) => withLever(acc, l.id, adoption), s);
 
 /** The panel's id of the Diet group; the lever groups' ids are their modules'. */

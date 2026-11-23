@@ -18,8 +18,8 @@ import {
   FAMILIES,
   FARM_FAMILIES,
   LEVER_CAUSES,
-  MODULES,
 } from '../levers/registry';
+import { MODULES } from '../levers/modules';
 import type {
   CountryContext,
   CountryPart,

@@ -25,7 +25,10 @@ export interface AvoidedChart {
 
 /** The warming the scenario avoids each year from now to 2050, on its own scale. */
 export const avoidedChart = (t: T, locale: string, currentYear: number): AvoidedChart => {
-  const plotEl = h('div', { class: 'chart-plot' });
+  const plotEl = h('div', {
+    class: 'chart-plot',
+    style: '--plot-h: 340px; --plot-h-narrow: 260px',
+  });
   const el = h(
     'figure',
     { class: 'chart avoided-chart' },
