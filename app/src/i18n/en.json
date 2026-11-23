@@ -294,10 +294,23 @@
       "airPollution": "Air pollution (cooling)",
       "natural": "Natural factors (sun and volcanoes)"
     },
-    "gasesTitle": "Farming's emissions by gas",
-    "gasesText": "Each gas on its own scale: a tonne of each warms very differently.",
-    "gasLabel": "World farm emissions of {gas} from {from} to {year}",
-    "perYear": "{unit} a year",
+    "gas": "Gas",
+    "gasChoices": {
+      "all": "All gases",
+      "co2": "CO₂",
+      "ch4": "Methane",
+      "n2o": "N₂O"
+    },
+    "gasNames": {
+      "co2": "CO₂",
+      "ch4": "methane",
+      "n2o": "N₂O"
+    },
+    "gasTitle": "Warming from {gas} by cause since {from}",
+    "gasText": "Each band is the warming this gas causes from one cause's emissions of it. After today, each band is what is left once the levers chosen act on its cause; the dashed outlines are the bands without the levers. Air pollution, aviation's contrails and the natural factors are not greenhouse gases: they show under All gases only.",
+    "gasCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today; each cause is the warming its emissions of this gas add, and the other sources and interactions are the rest of the gas's warming.",
+    "gasOther": "Other sources and interactions",
+    "gasAttributionLabel": "Stacked chart of the warming from {gas} by cause from {from} to {year}",
     "whyTitle": "Why the gases are kept apart",
     "whyMethane": "Methane is short-lived: about half of it is gone within twelve years. Emit less of it and the warming it causes starts to fall within decades, which is why a change in what we eat shows up before 2050.",
     "whyNitrous": "Nitrous oxide lasts about a century, so less of it slows warming steadily rather than reversing it.",

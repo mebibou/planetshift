@@ -14,6 +14,7 @@ GREENHOUSE = ("fossilIndustry", "agriculture", "landUse")
 AEROSOLS = ("Sulfur", "BC", "OC", "NH3", "NOx")
 GASES = ("co2", "ch4", "n2o")
 FAIR_GAS = {"co2": "CO2 FFI", "ch4": "CH4", "n2o": "N2O"}
+GAS_SPECIES = {"co2": ("CO2 FFI", "CO2 AFOLU"), "ch4": ("CH4",), "n2o": ("N2O",)}
 KG_PER_FAIR_UNIT = {"CO2 FFI": 1e12, "CO2 AFOLU": 1e12, "CH4": 1e9, "N2O": 1e9}
 KG_PER_RCMIP_UNIT = {"Mt CH4/yr": 1e9, "kt N2O/yr": 1e6, "Mt CO2/yr": 1e9}
 
@@ -125,3 +126,24 @@ def removals(
         "landUse": {"CO2 AFOLU": emissions["CO2 AFOLU"] * KG_PER_FAIR_UNIT["CO2 AFOLU"]},
         "airPollution": {s: emissions[s] - baseline[s] for s in AEROSOLS if s in emissions},
     }
+
+
+def of_gas(removal: dict[str, np.ndarray], gas: str) -> dict[str, np.ndarray]:
+    """The part of a cause's removal that is `gas`, by FaIR specie."""
+    return {s: v for s, v in removal.items() if s in GAS_SPECIES[gas]}
+
+
+def all_of_gas(
+    emissions: dict[str, np.ndarray], baseline: dict[str, float], gas: str
+) -> dict[str, np.ndarray]:
+    """kg/yr that brings every source of `gas` back to its pre-industrial (1750) emissions."""
+    return {
+        s: (emissions[s] - baseline[s]) * KG_PER_FAIR_UNIT[s]
+        for s in GAS_SPECIES[gas]
+        if s in emissions
+    }
+
+
+def gas_causes(taken: dict[str, dict[str, np.ndarray]], gas: str) -> tuple[str, ...]:
+    """The greenhouse causes that emit `gas`."""
+    return tuple(c for c in GREENHOUSE if of_gas(taken[c], gas))

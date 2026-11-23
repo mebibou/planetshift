@@ -15,7 +15,7 @@ This page explains how much of the warming since 1850 comes from each cause, and
 
 After today, each cause's band is what is left once the levers chosen act on it. The band without the levers is drawn as a dashed outline. What caused warming is what keeps causing it, and each lever reduces one cause or more (see [Levers](#method-levers)).
 
-The tab also shows farming's emissions of each gas over the same years.
+A switch over the chart, *All gases*, *CO₂*, *Methane* and *N₂O*, shows one greenhouse gas at a time: how much of that gas's warming each cause makes, with and without the levers (see "Each gas by cause" below). Air pollution and the natural factors are not greenhouse gases, so they appear under *All gases* only.
 
 ## Attribution, not correlation
 
@@ -48,6 +48,30 @@ The 2010–2019 column is the mean of each year's median.
 Up to 2050, agriculture's share stays near 15% on SSP2-4.5, and its warming grows to 0.29 °C. On SSP1-2.6, agricultural methane falls by a third by 2050, and agriculture's warming reaches 0.27 °C. On SSP3-7.0, agricultural methane grows by 45%, but the effect has not had time to show yet: agriculture's warming reaches 0.28 °C.
 
 These figures count only warming since 1850–1900. Farming was already emitting methane and N₂O (nitrous oxide) before then. Compared with a world without it, farming had warmed the world by about 0.10 °C on average over 1850–1900. That warming is part of the baseline, not of the figures above.
+
+### Each gas by cause
+
+On SSP2-4.5, median and 5–95% range of the mean over 2015–2024, and in 2100, relative to 1850–1900:
+
+| Gas and cause | 2015–2024 | 2100 |
+| --- | --- | --- |
+| **CO₂** | 0.83 °C (0.62–1.08) | 1.79 °C (1.29–2.48) |
+| Fossil fuels and industry | 0.67 °C (0.50–0.86) | 1.69 °C (1.20–2.32) |
+| Farming (urea and liming) | 0.002 °C (0.001–0.002) | 0.006 °C (0.004–0.008) |
+| Land use | 0.13 °C (0.08–0.20) | 0.07 °C (−0.01–0.17) |
+| Other sources and interactions | 0.02 °C (0.00–0.07) | 0.03 °C (−0.03–0.12) |
+| **Methane** | 0.47 °C (0.32–0.69) | 0.57 °C (0.37–0.88) |
+| Fossil fuels and industry | 0.11 °C (0.07–0.16) | 0.12 °C (0.08–0.19) |
+| Farming | 0.14 °C (0.09–0.21) | 0.19 °C (0.12–0.31) |
+| Other sources and interactions | 0.23 °C (0.16–0.33) | 0.25 °C (0.17–0.38) |
+| **N₂O** | 0.11 °C (0.07–0.15) | 0.20 °C (0.13–0.30) |
+| Fossil fuels and industry | 0.02 °C (0.01–0.03) | 0.03 °C (0.02–0.05) |
+| Farming | 0.06 °C (0.04–0.09) | 0.12 °C (0.08–0.18) |
+| Other sources and interactions | 0.03 °C (0.02–0.04) | 0.05 °C (0.03–0.07) |
+
+Most of farming's warming is methane, and most of the rest N₂O; its CO₂ is small. Land use emits only CO₂ here, so it appears under CO₂ alone.
+
+Methane's *other sources and interactions* is large. It holds the methane from waste and the other sources no cause names, such as biomass burning, and two effects of taking all of a gas out at once. First, methane shortens its own lifetime as it falls, so taking all of it out cools more than taking each cause's part out in turn. Second, farming was already emitting methane before 1850, and that warming is part of the 1850–1900 baseline (see "Farming's share").
 
 ## Why air pollution cools
 
@@ -97,6 +121,18 @@ Taking the three greenhouse causes (fossil fuels and industry, farming, land use
 
 These interactions sit in *other human emissions*. This is why that band is larger than the minor gases alone would make it.
 
+### How each gas is computed
+
+The same runs are made gas by gas. A gas's warming is the temperature with everything less the temperature with all of that gas's emissions brought back to their pre-industrial (1750) level: CO₂ from fossil fuels, industry and land use, or all methane, or all N₂O. A cause's part of it is the temperature with everything less the temperature without that cause's emissions of the gas alone, the same emissions as above. *Other sources and interactions* is the gas's warming less the causes' parts, and its median is set so that the medians add up to the gas's.
+
+Land use's part of CO₂ is land use's own run, as land use emits nothing else here. That makes nine more runs of each scenario: farming's and fossil fuels' part of each of the three gases, and each gas taken out in full.
+
+### What the levers do to each gas
+
+After today, each cause's band in a gas is what is left once the levers have cut that cause's emissions of the gas. The change is worked out gas by gas, with the same temperature response as the rest (see [Levers](#method-levers)). With permafrost on, each cause's share of the change in its release is split between the cause's gases in proportion to the size of each.
+
+Some of what the energy levers change is not a greenhouse gas: aviation's non-CO₂ forcing (its contrails and NOx) and the air pollution of the fuel they no longer burn, including the methane NOx leaves in the air. These count under *All gases* only, in fossil fuels and in air pollution, so a cause's gases do not quite add up to its band under *All gases*.
+
 ## How the numbers compare with other studies
 
 - **Livestock, 2010.** A 2018 study found direct livestock CH₄ and N₂O caused about 19% of the modelled warming in 2010. Here all of agriculture causes about 19% of the 2010–2019 warming.
@@ -119,6 +155,7 @@ These interactions sit in *other human emissions*. This is why that band is larg
 - The levers' change in air pollution is counted with FaIR's forcing per kg and the methane NOx and VOCs leave. This is the same physics, linearised at the scenario's emissions. The levers' CO and VOCs count under air pollution all the same, as part of what burning the fuel emits. This is a small mismatch with the band.
 - The natural factors are a separate run with natural forcing alone, not a removal. *Other human emissions* is the total less every named cause and the natural factors.
 - A removal never takes a species' emissions below zero.
+- The parts of each gas come from the same emissions as the causes: a gas has no other split by source than the one the causes make.
 - The full-emission runs are also the scenario temperatures on the [temperature page](#method-climate).
 
 ## Sources

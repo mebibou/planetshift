@@ -4,40 +4,63 @@ import type { T } from '../i18n/i18n';
 import { formatTemperature } from '../i18n/format';
 import { COUNTED_CAUSES } from '../levers/registry';
 import type { ScenarioResult } from '../model/api';
-import { attributionChart } from './attribution';
-import { gasMultiples } from './gases';
-import { causesAt, causesBySize } from './series';
+import { segmented } from '../controls/segmented';
+import { attributionChart, type AvoidedByCause } from './attribution';
+import { attributionOf, CAUSE_GASES, causesAt, causesBySize, type CauseGas } from './series';
 
 export interface CauseView {
   el: HTMLElement;
   update: (
     result: ScenarioResult | null,
     climate: Climate,
-    choice: { ssp: Ssp; temperature: TemperatureSource; from: number; end: number },
+    choice: {
+      ssp: Ssp;
+      temperature: TemperatureSource;
+      from: number;
+      end: number;
+      gas: CauseGas;
+    },
   ) => void;
 }
 
+/** What the levers avoid in the causes of a gas choice. */
+export const avoidedOf = (result: ScenarioResult, gas: CauseGas): AvoidedByCause => ({
+  years: result.temperature.years,
+  byCause: gas === 'all' ? result.temperature.avoidedByCause : result.temperature.avoidedByGas[gas],
+});
+
 /**
- * The chart tab Causes of warming: what each cause has done to the temperature so far, warming
- * by cause with what the levers take off each, farm emissions by gas.
+ * The chart tab Causes of warming: what each cause has done to the temperature so far, and
+ * warming by cause, of every emission or of one greenhouse gas, with what the levers take off
+ * each.
  */
-export const causeView = (t: T, locale: string, currentYear: number): CauseView => {
+export const causeView = (
+  t: T,
+  locale: string,
+  currentYear: number,
+  onGas: (gas: CauseGas) => void,
+): CauseView => {
   const headline = h('p', { class: 'headline' });
   const partsLine = h('p', { class: 'headline-parts' });
   const scenarioLine = h('p', { class: 'headline-sub' });
   const stacked = attributionChart(t, locale, currentYear);
-  const gases = gasMultiples(t, locale, currentYear);
+  const gasSwitch = segmented<CauseGas>({
+    name: 'causegas',
+    legend: t('link.gas'),
+    options: CAUSE_GASES.map((value) => ({ value, label: t(`link.gasChoices.${value}`) })),
+    value: 'all',
+    onChange: onGas,
+  });
   const attributionTitle = h('h3', { class: 'chart-subtitle' });
+  const attributionText = h('p', { class: 'card-text' });
   const el = h(
     'div',
     { class: 'cause-view' },
     h('div', { class: 'cause-intro', 'aria-live': 'polite' }, headline, partsLine, scenarioLine),
     attributionTitle,
-    h('p', { class: 'card-text' }, t('link.attributionText')),
+    gasSwitch.el,
+    attributionText,
     stacked.el,
-    h('h3', { class: 'chart-subtitle' }, t('link.gasesTitle')),
-    h('p', { class: 'card-text' }, t('link.gasesText')),
-    gases.el,
     h(
       'details',
       { class: 'fold cause-notes' },
@@ -48,8 +71,12 @@ export const causeView = (t: T, locale: string, currentYear: number): CauseView 
       h('p', {}, t('link.whyCo2')),
     ),
   );
-  const update: CauseView['update'] = (result, climate, { ssp, temperature, from, end }) => {
+  const update: CauseView['update'] = (result, climate, { ssp, temperature, from, end, gas }) => {
     const attribution = climate.attribution[ssp];
+    const split = climate.attributionByGas !== undefined;
+    const shown: CauseGas = split ? gas : 'all';
+    gasSwitch.el.hidden = !split;
+    gasSwitch.set(shown);
     const now = causesAt(attribution, currentYear);
     const part = (label: string, value: number) =>
       t('link.part', { cause: label, value: formatTemperature(locale, value, 2, true) });
@@ -73,7 +100,11 @@ export const causeView = (t: T, locale: string, currentYear: number): CauseView 
         ? result.summary.byCause.avoidedWarming2100
         : result.summary.byCause.avoidedWarming2050
       : null;
-    attributionTitle.textContent = t('link.attributionTitle', { from });
+    attributionTitle.textContent =
+      shown === 'all'
+        ? t('link.attributionTitle', { from })
+        : t('link.gasTitle', { gas: t(`link.gasNames.${shown}`), from });
+    attributionText.textContent = t(shown === 'all' ? 'link.attributionText' : 'link.gasText');
     scenarioLine.textContent =
       avoided && byCause && Math.abs(avoided.median) >= 0.0005
         ? t('link.scenario', {
@@ -87,16 +118,14 @@ export const causeView = (t: T, locale: string, currentYear: number): CauseView 
               .join(t('link.separator')),
           })
         : '';
-    stacked.update(
-      attribution,
-      climate.observed[temperature],
+    stacked.update({
+      attribution: attributionOf(climate, ssp, shown),
+      gas: shown,
+      observed: shown === 'all' ? climate.observed[temperature] : null,
       from,
       end,
-      result
-        ? { years: result.temperature.years, byCause: result.temperature.avoidedByCause }
-        : null,
-    );
-    gases.update(climate.agricultureEmissions[ssp], from, end);
+      avoided: result ? avoidedOf(result, shown) : null,
+    });
   };
   return { el, update };
 };

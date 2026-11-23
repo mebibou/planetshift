@@ -17,6 +17,7 @@ import {
   DIET_CAUSE,
   FAMILIES,
   FARM_FAMILIES,
+  LEVER_CAUSES,
   MODULES,
 } from '../levers/registry';
 import type {
@@ -39,7 +40,14 @@ import {
 } from './api';
 import { shapley } from './attribution';
 import { bandRecord } from './bands';
-import { BANDS, populationAdjustmentEmissions, warmingFrom, type Band } from './climate';
+import {
+  BANDS,
+  populationAdjustmentEmissions,
+  sumOfGases,
+  warmingByGas,
+  warmingFrom,
+  type Band,
+} from './climate';
 import { foodChange, perCapitaPerDay } from './diet';
 import {
   cakeEmissions,
@@ -657,6 +665,25 @@ export const shareFeedback = (
   return parts.map((p, k) => p.map((v, h) => byYear[h]?.[k] ?? v));
 };
 
+/**
+ * A cause's avoided warming by gas once it has its share of the feedback: the cause's share
+ * (`shared`, its `total` and feedback) split again between its gases and the rest of the cause
+ * (forcing that is no gas) by their sizes, as `shareOut` splits it between causes.
+ */
+export const gasShares = (
+  byGas: Readonly<Record<Gas, readonly number[]>>,
+  total: readonly number[],
+  shared: readonly number[],
+): Record<Gas, number[]> => {
+  const gasTotal = sumOfGases(byGas);
+  const parts = [...GASES.map((g) => [...byGas[g]]), total.map((v, i) => v - (gasTotal[i] ?? 0))];
+  const split = shareFeedback(
+    parts,
+    shared.map((v, i) => v - (total[i] ?? 0)),
+  );
+  return Object.fromEntries(GASES.map((g, k) => [g, split[k] ?? []])) as Record<Gas, number[]>;
+};
+
 interface BaselineBand {
   /** The baseline temperature. */
   temperature: number[];
@@ -1195,16 +1222,19 @@ export const runPrepared = (
     return { median: values[0] ?? 0, p05: Math.min(...range95), p95: Math.max(...range95) };
   };
 
+  const causeGas = causeRecord((c) =>
+    warmingByGas(
+      sumPaths(FAMILIES.map((f) => full.paths.median?.[f]?.[c] ?? [])),
+      currentYear,
+      climate,
+      options.climate,
+      'median',
+      tYears,
+    ),
+  );
   const causeChange = causeRecord((c) =>
     addSeries(
-      warmingFrom(
-        sumPaths(FAMILIES.map((f) => full.paths.median?.[f]?.[c] ?? [])),
-        currentYear,
-        climate,
-        options.climate,
-        'median',
-        tYears,
-      ),
+      sumOfGases(causeGas[c]),
       sumSeries(
         world.flatMap((w) => warmingIn(w.module, w.part, c, 'median')),
         tYears,
@@ -1218,6 +1248,18 @@ export const runPrepared = (
   const avoidedByCause = causeRecord((c) =>
     (causeShares[COUNTED_CAUSES.indexOf(c)] ?? []).map((v) => 0 - v),
   );
+  const leverGas = Object.fromEntries(
+    LEVER_CAUSES.map((c) => [
+      c,
+      gasShares(causeGas[c], causeChange[c], causeShares[COUNTED_CAUSES.indexOf(c)] ?? []),
+    ]),
+  ) as Record<LeverCause, Record<Gas, number[]>>;
+  const avoidedByGas = Object.fromEntries(
+    GASES.map((g) => [
+      g,
+      Object.fromEntries(LEVER_CAUSES.map((c) => [c, leverGas[c][g].map((v) => 0 - v)])),
+    ]),
+  ) as Record<Gas, Record<LeverCause, number[]>>;
 
   const shares = familyShares(frame, full, chains);
   const feedbackAt = HORIZON_YEARS.map((y) => 0 - (feedbackDelta.median[y - FIRST_YEAR] ?? 0));
@@ -1261,6 +1303,7 @@ export const runPrepared = (
       scenario: scenarioBand,
       avoided: avoidedBand(delta),
       avoidedByCause,
+      avoidedByGas,
     },
     summary: Object.assign(
       {

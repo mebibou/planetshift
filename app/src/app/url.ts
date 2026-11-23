@@ -1,4 +1,5 @@
 import { GROUP_CHOICES } from './groups';
+import { CAUSE_GASES, type CauseGas } from '../chart/series';
 import {
   CHANGE_OF,
   GAS_CHOICES,
@@ -33,6 +34,7 @@ export interface UiState {
   horizon: Horizon;
   mapView: MapView;
   range: Range;
+  causeGas: CauseGas;
 }
 
 export const DEFAULT_UI: UiState = {
@@ -45,6 +47,7 @@ export const DEFAULT_UI: UiState = {
   horizon: '2050',
   mapView: 'map',
   range: 'full',
+  causeGas: 'all',
 };
 
 /** Query parameters the interface owns; everything else belongs to the model's state. */
@@ -58,6 +61,7 @@ const UI_KEYS = {
   horizon: 'to',
   mapView: 'mapview',
   range: 'range',
+  causeGas: 'causegas',
 };
 const KEPT_KEYS = ['data'];
 const OWN_KEYS = [...Object.values(UI_KEYS), ...KEPT_KEYS];
@@ -81,6 +85,7 @@ export const parseUi = (query: string): UiState => {
     horizon: oneOf(HORIZONS, p.get(UI_KEYS.horizon), DEFAULT_UI.horizon),
     mapView: oneOf(MAP_VIEWS, p.get(UI_KEYS.mapView), DEFAULT_UI.mapView),
     range: oneOf(RANGES, p.get(UI_KEYS.range), DEFAULT_UI.range),
+    causeGas: oneOf(CAUSE_GASES, p.get(UI_KEYS.causeGas), DEFAULT_UI.causeGas),
   };
 };
 

@@ -15,7 +15,7 @@ Cette page explique quelle part du réchauffement depuis 1850 vient de chaque ca
 
 Après aujourd'hui, la bande de chaque cause montre ce qu'il en reste une fois que les leviers choisis ont agi sur elle. La bande sans les leviers est tracée en pointillés. Ce qui a causé le réchauffement continue de le causer, et chaque levier réduit une cause ou plusieurs (voir [Leviers](#method-levers)).
 
-L'onglet montre aussi les émissions agricoles de chaque gaz sur les mêmes années.
+Un sélecteur au-dessus du graphique, *Tous les gaz*, *CO₂*, *Méthane* et *N₂O*, montre un gaz à effet de serre à la fois : quelle part du réchauffement de ce gaz vient de chaque cause, avec et sans les leviers (voir « Chaque gaz par cause » plus bas). La pollution de l'air et les facteurs naturels ne sont pas des gaz à effet de serre : ils n'apparaissent que sous *Tous les gaz*.
 
 ## Attribution, et non corrélation
 
@@ -48,6 +48,30 @@ La colonne 2010–2019 est la moyenne des médianes de chaque année.
 Jusqu'en 2050, la part de l'agriculture reste proche de 15 % sur SSP2-4.5, et son réchauffement monte à 0,29 °C. Sur SSP1-2.6, le méthane agricole baisse d'un tiers d'ici 2050, et le réchauffement dû à l'agriculture atteint 0,27 °C. Sur SSP3-7.0, le méthane agricole augmente de 45 %, mais l'effet n'a pas encore eu le temps de se voir : le réchauffement dû à l'agriculture atteint 0,28 °C.
 
 Ces chiffres ne comptent que le réchauffement depuis 1850–1900. L'agriculture émettait déjà du méthane et du N₂O (protoxyde d'azote) avant. Par rapport à un monde sans elle, elle avait réchauffé le monde d'environ 0,10 °C en moyenne sur 1850–1900. Ce réchauffement fait partie de la référence, pas des chiffres ci-dessus.
+
+### Chaque gaz par cause
+
+Sur SSP2-4.5, médiane et intervalle de 5 à 95 % de la moyenne sur 2015–2024, et en 2100, par rapport à 1850–1900 :
+
+| Gaz et cause | 2015–2024 | 2100 |
+| --- | --- | --- |
+| **CO₂** | 0,83 °C (0,62–1,08) | 1,79 °C (1,29–2,48) |
+| Combustibles fossiles et industrie | 0,67 °C (0,50–0,86) | 1,69 °C (1,20–2,32) |
+| Agriculture (urée et chaulage) | 0,002 °C (0,001–0,002) | 0,006 °C (0,004–0,008) |
+| Usage des terres | 0,13 °C (0,08–0,20) | 0,07 °C (−0,01–0,17) |
+| Autres sources et interactions | 0,02 °C (0,00–0,07) | 0,03 °C (−0,03–0,12) |
+| **Méthane** | 0,47 °C (0,32–0,69) | 0,57 °C (0,37–0,88) |
+| Combustibles fossiles et industrie | 0,11 °C (0,07–0,16) | 0,12 °C (0,08–0,19) |
+| Agriculture | 0,14 °C (0,09–0,21) | 0,19 °C (0,12–0,31) |
+| Autres sources et interactions | 0,23 °C (0,16–0,33) | 0,25 °C (0,17–0,38) |
+| **N₂O** | 0,11 °C (0,07–0,15) | 0,20 °C (0,13–0,30) |
+| Combustibles fossiles et industrie | 0,02 °C (0,01–0,03) | 0,03 °C (0,02–0,05) |
+| Agriculture | 0,06 °C (0,04–0,09) | 0,12 °C (0,08–0,18) |
+| Autres sources et interactions | 0,03 °C (0,02–0,04) | 0,05 °C (0,03–0,07) |
+
+L'essentiel du réchauffement dû à l'agriculture vient du méthane, et l'essentiel du reste du N₂O ; son CO₂ est faible. L'usage des terres n'émet ici que du CO₂ : il n'apparaît que sous CO₂.
+
+Les *autres sources et interactions* du méthane sont importantes. Elles comprennent le méthane des déchets et des autres sources qu'aucune cause ne nomme, comme la combustion de biomasse, et deux effets du retrait de tout un gaz d'un coup. D'abord, le méthane raccourcit sa propre durée de vie quand il diminue : retirer tout le méthane refroidit davantage que retirer tour à tour la part de chaque cause. Ensuite, l'agriculture émettait déjà du méthane avant 1850, et ce réchauffement fait partie de la référence 1850–1900 (voir « La part de l'agriculture »).
 
 ## Pourquoi la pollution de l'air refroidit
 
@@ -97,6 +121,18 @@ Retirer ensemble les trois causes liées aux gaz à effet de serre (combustibles
 
 Ces interactions se trouvent dans les *autres émissions humaines*. C'est pourquoi cette bande est plus large que ne le voudraient les seuls gaz mineurs.
 
+### Comment chaque gaz est calculé
+
+Les mêmes simulations sont faites gaz par gaz. Le réchauffement d'un gaz est la température avec tout, moins la température avec toutes les émissions de ce gaz ramenées à leur niveau préindustriel (1750) : le CO₂ des combustibles fossiles, de l'industrie et de l'usage des terres, ou tout le méthane, ou tout le N₂O. La part d'une cause est la température avec tout, moins la température sans les seules émissions de ce gaz par cette cause, les mêmes émissions que plus haut. Les *autres sources et interactions* sont le réchauffement du gaz moins les parts des causes, et leur médiane est fixée pour que les médianes s'additionnent à celle du gaz.
+
+La part de l'usage des terres dans le CO₂ est la simulation de l'usage des terres elle-même, car il n'émet rien d'autre ici. Cela fait neuf simulations de plus pour chaque scénario : la part de l'agriculture et des combustibles fossiles dans chacun des trois gaz, et chaque gaz retiré en entier.
+
+### Ce que les leviers font à chaque gaz
+
+Après aujourd'hui, la bande de chaque cause dans un gaz est ce qui reste une fois que les leviers ont réduit les émissions de ce gaz par cette cause. La variation est calculée gaz par gaz, avec la même réponse de la température que le reste (voir [Leviers](#method-levers)). Avec le pergélisol activé, la part de chaque cause dans la variation de ce qu'il libère est répartie entre les gaz de la cause en proportion de la taille de chacun.
+
+Une partie de ce que changent les leviers de l'énergie n'est pas un gaz à effet de serre : le forçage non-CO₂ de l'aviation (ses traînées et ses NOx) et la pollution de l'air des combustibles qu'ils ne brûlent plus, y compris le méthane que les NOx laissent dans l'air. Ils ne comptent que sous *Tous les gaz*, dans les combustibles fossiles et dans la pollution de l'air : les gaz d'une cause ne s'additionnent donc pas tout à fait à sa bande sous *Tous les gaz*.
+
 ## Comparaison avec d'autres études
 
 - **Élevage, 2010.** Une étude de 2018 a trouvé que le CH₄ et le N₂O directs de l'élevage causaient environ 19 % du réchauffement modélisé en 2010. Ici, toute l'agriculture cause environ 19 % du réchauffement de 2010–2019.
@@ -119,6 +155,7 @@ Ces interactions se trouvent dans les *autres émissions humaines*. C'est pourqu
 - La variation de la pollution de l'air due aux leviers est comptée avec le forçage par kg de FaIR et le méthane que laissent les NOx et les COV. C'est la même physique, linéarisée autour des émissions du scénario. Le monoxyde de carbone et les COV des leviers comptent malgré tout dans la pollution de l'air, comme une partie de ce qu'émet la combustion du combustible. C'est un petit décalage avec la bande.
 - Les facteurs naturels sont une simulation à part avec le seul forçage naturel, pas un retrait. Les *autres émissions humaines* sont le total moins chaque cause nommée et les facteurs naturels.
 - Un retrait ne fait jamais passer les émissions d'une espèce chimique sous zéro.
+- Les parts de chaque gaz viennent des mêmes émissions que les causes : un gaz n'a pas d'autre répartition par source que celle que font les causes.
 - Les simulations avec toutes les émissions sont aussi les températures des scénarios de la [page sur la température](#method-climate).
 
 ## Sources

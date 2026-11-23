@@ -1,6 +1,6 @@
-import type { BandSeries, Climate, Meta, Series } from '../data/types';
+import { GASES, type BandSeries, type Climate, type Meta, type Series } from '../data/types';
 import type { Options, Scenario, ScenarioResult } from '../model/api';
-import { causesIn } from '../chart/series';
+import { causesIn, type Attribution } from '../chart/series';
 import { measureOf, type LayerSpec, type Measure } from '../map/layers';
 import type { TableRow } from '../map/table';
 import type { ChartTab, UiState } from './url';
@@ -176,31 +176,36 @@ export const avoidedRows = (
   };
 };
 
-/** Warming by cause (5–95%), observed temperature and farm emissions by gas, under the chosen SSP. */
+/** The band columns of each cause of an attribution, named with `prefix`. */
+const attributionColumns = (attribution: Attribution, prefix: string) => {
+  const causes = causesIn(attribution);
+  const values = causes.map((c) => bandAt(attribution[c] as BandSeries));
+  return {
+    header: causes.flatMap((c) => bandColumns(`warming_${prefix}${c}`, 'degC')),
+    at: (year: number) => values.flatMap((v) => v(year)),
+  };
+};
+
+/**
+ * Warming by cause (5–95%) and observed temperature under the chosen SSP, then each greenhouse
+ * gas's warming by cause when the build has it.
+ */
 export const causeRows = (
   climate: Climate,
   options: Pick<Options, 'ssp' | 'temperature'>,
 ): { header: string[]; rows: Cell[][] } => {
   const attribution = climate.attribution[options.ssp];
-  const present = causesIn(attribution);
-  const causes = present.map((c) => bandAt(attribution[c] as BandSeries));
+  const byGas = climate.attributionByGas?.[options.ssp];
+  const causes = attributionColumns(attribution, '');
+  const gases = byGas ? GASES.map((g) => attributionColumns(byGas[g], `${g}_`)) : [];
   const observed = seriesAt(climate.observed[options.temperature]);
-  const emissions = climate.agricultureEmissions[options.ssp];
-  const gases = (['co2', 'ch4', 'n2o'] as const).map((g) => seriesAt(emissions[g]));
   return {
-    header: [
-      'year',
-      ...present.flatMap((c) => bandColumns(`warming_${c}`, 'degC')),
-      'observed_degC',
-      'farm_emissions_co2_kg',
-      'farm_emissions_ch4_kg',
-      'farm_emissions_n2o_kg',
-    ],
+    header: ['year', ...causes.header, 'observed_degC', ...gases.flatMap((g) => g.header)],
     rows: attribution.agriculture.years.map((year) => [
       year,
-      ...causes.flatMap((c) => c(year)),
+      ...causes.at(year),
       observed(year),
-      ...gases.map((g) => g(year)),
+      ...gases.flatMap((g) => g.at(year)),
     ]),
   };
 };

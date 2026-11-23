@@ -41,6 +41,31 @@ export const convolve = (
   });
 };
 
+/** Each gas's convolution. */
+export const warmingByGas = (
+  emissions: readonly GasVector[],
+  startYear: number,
+  climate: Climate,
+  method: ClimateMethod,
+  band: Band,
+  years: readonly number[],
+): Record<Gas, number[]> =>
+  Object.fromEntries(
+    GASES.map((gas) => [
+      gas,
+      convolve(
+        emissions.map((e) => e[gas]),
+        startYear,
+        agtpOf(climate, method, gas, band),
+        years,
+      ),
+    ]),
+  ) as Record<Gas, number[]>;
+
+/** Sum over gases of each gas's warming, from `warmingByGas`. */
+export const sumOfGases = (byGas: Readonly<Record<Gas, readonly number[]>>): number[] =>
+  byGas.co2.map((_, i) => sum(GASES.map((gas) => byGas[gas][i] as number)));
+
 /** Sum over gases of each gas's convolution. */
 export const warmingFrom = (
   emissions: readonly GasVector[],
@@ -49,17 +74,7 @@ export const warmingFrom = (
   method: ClimateMethod,
   band: Band,
   years: readonly number[],
-): number[] => {
-  const perGas = GASES.map((gas) =>
-    convolve(
-      emissions.map((e) => e[gas]),
-      startYear,
-      agtpOf(climate, method, gas, band),
-      years,
-    ),
-  );
-  return years.map((_, i) => sum(perGas.map((series) => series[i] as number)));
-};
+): number[] => sumOfGases(warmingByGas(emissions, startYear, climate, method, band, years));
 
 /**
  * Emissions the 'population' baseline adds to the SSP's own agricultural path from the base

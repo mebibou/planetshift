@@ -159,9 +159,7 @@ test('toggles the theme and keeps it', async ({ page }) => {
   await expect(page.locator('html')).toHaveAttribute('data-theme', theme ?? '');
 });
 
-test('Causes of warming shows the headline, the stacked warming chart and the gases', async ({
-  page,
-}) => {
+test('Causes of warming shows the headline and the stacked warming chart', async ({ page }) => {
   await open(page);
   await expect(page.locator('.site-nav a')).toHaveCount(2);
   await page.locator('#chart-tab-cause').click();
@@ -177,9 +175,71 @@ test('Causes of warming shows the headline, the stacked warming chart and the ga
     'Natural factors (sun and volcanoes)',
   );
   await expect(page.locator('.attribution-chart .stack-outline')).toHaveCount(0);
-  await expect(page.locator('.gas-chart')).toHaveCount(3);
+  await expect(page.locator('.gas-chart')).toHaveCount(0);
   await expect(page.locator('.headline')).toContainText('°C');
   await noHorizontalScroll(page);
+});
+
+test('the gas switch stacks one gas by cause, kept in the URL and moved by the keyboard', async ({
+  page,
+}) => {
+  await open(page, `${START}&chart=cause`);
+  const legend = page.locator('.attribution-chart .chart-legend');
+  const gasSwitch = page.locator('[data-control="causegas"]');
+  await expect(gasSwitch).toBeVisible();
+  await expect(page.locator('#causegas-all')).toBeChecked();
+  await expect(gasSwitch).toContainText('Methane');
+  await page.locator('label[for="causegas-ch4"]').click();
+  await expect(page).toHaveURL(/causegas=ch4/);
+  await expect(page.locator('.attribution-chart path.stack')).toHaveCount(3);
+  await expect(page.locator('.attribution-chart .observed-line')).toHaveCount(0);
+  await expect(legend).toContainText('Other sources and interactions');
+  await expect(legend).not.toContainText('Air pollution');
+  await expect(legend).not.toContainText('Land use');
+  await expect(page.locator('.cause-view .chart-subtitle')).toContainText('methane');
+  await noHorizontalScroll(page);
+
+  await page.locator('#causegas-ch4').focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page).toHaveURL(/causegas=n2o/);
+  await page.keyboard.press('ArrowLeft');
+  await page.keyboard.press('ArrowLeft');
+  await expect(page).toHaveURL(/causegas=co2/);
+  await expect(page.locator('.attribution-chart path.stack')).toHaveCount(4);
+  await expect(legend).toContainText('Land use');
+
+  await page.reload();
+  await expect(page.locator('#causegas-co2')).toBeChecked();
+  await expect(page.locator('.attribution-chart path.stack')).toHaveCount(4);
+});
+
+test('a lever shrinks its cause in the gas it cuts, with and without in the hover', async ({
+  page,
+}) => {
+  await open(page, `${START}&chart=cause&causegas=co2&to=2100`);
+  const band = () =>
+    page.locator('.attribution-chart path.stack[data-cause="fossilIndustry"]').getAttribute('d');
+  const before = await band();
+  const fold = page.locator('details[data-group="levers-energy"]');
+  await fold.locator('summary').click();
+  await page.locator('#lever-renewableElectricity').fill('100');
+  await expect(page).toHaveURL(/re=100/);
+  await expect.poll(band).not.toBe(before);
+  await expect(page.locator('.attribution-chart .stack-outline').first()).toBeAttached();
+  const target = page.locator('.attribution-chart .hover-target');
+  const box = await target.boundingBox();
+  await target.hover({ position: { x: (box?.width ?? 0) * 0.95, y: (box?.height ?? 0) / 2 } });
+  await expect(page.locator('.attribution-chart .chart-tooltip')).toContainText(
+    'without the levers',
+  );
+});
+
+test('a French reader gets the gas switch in French', async ({ page }) => {
+  await open(page, `${START}&chart=cause&causegas=ch4&lang=fr`);
+  await expect(page.locator('[data-control="causegas"]')).toContainText('Tous les gaz');
+  await expect(page.locator('.attribution-chart .chart-legend')).toContainText(
+    'Autres sources et interactions',
+  );
 });
 
 test('the causes chart shrinks the band of the cause a lever acts on', async ({ page }) => {

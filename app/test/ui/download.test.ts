@@ -142,7 +142,13 @@ const climate = {
       other: bandSeries(-0.2),
     },
   },
-  agricultureEmissions: { ssp245: { co2: series(1e12), ch4: series(1e11), n2o: series(1e10) } },
+  attributionByGas: {
+    ssp245: {
+      co2: { fossilIndustry: bandSeries(0.9), landUse: bandSeries(0.1), other: bandSeries(0) },
+      ch4: { agriculture: bandSeries(0.2), other: bandSeries(0.1) },
+      n2o: { agriculture: bandSeries(0.05), other: bandSeries(0.01) },
+    },
+  },
   naturalOnly: { years: [2026], median: [0.01], p05: [0], p95: [0.02] },
 } as unknown as Climate;
 const chart = (tab: 'temperature' | 'avoided' | 'cause', r: ScenarioResult | null = result) =>
@@ -173,10 +179,30 @@ describe('chart csv', () => {
     const file = chart('cause', null);
     expect(file?.name).toBe('planetshift-cause-ssp245.csv');
     const [header, first] = lines(file?.text ?? '');
-    expect(header?.split(',')).toHaveLength(1 + 12 + 1 + 3);
+    expect(header?.split(',')).toHaveLength(1 + 12 + 1 + 7 * 3);
     expect(header).toContain('warming_agriculture_p95_degC');
+    expect(header).toContain('observed_degC,warming_co2_fossilIndustry_median_degC');
+    expect(header?.endsWith('warming_n2o_other_p95_degC')).toBe(true);
     expect(first?.startsWith('2025,1,0,2,0.3,')).toBe(true);
-    expect(first?.endsWith(',1000000000000,100000000000,10000000000')).toBe(true);
+    expect(
+      first?.endsWith(
+        ',1.1,0.9,-0.1,1.9,0.1,-0.9,1.1,0,-1,1,0.2,-0.8,1.2,0.1,-0.9,1.1,0.05,-0.95,1.05,0.01,-0.99,1.01',
+      ),
+    ).toBe(true);
+  });
+
+  it('gives no gas columns for a build without the split by gas', () => {
+    const older = { ...climate, attributionByGas: undefined };
+    const file = chartCsv({
+      tab: 'cause',
+      result: null,
+      climate: older as Climate,
+      scenario,
+      options: DEFAULT_OPTIONS,
+      currentYear: 2026,
+    });
+    const [header] = lines(file?.text ?? '');
+    expect(header?.split(',')).toHaveLength(1 + 12 + 1);
   });
 
   it('has nothing to give for the model’s charts before it runs', () => {

@@ -5,7 +5,9 @@ import { DEFAULT_OPTIONS, type Options, type Scenario } from '../../src/model/ap
 import { shapley } from '../../src/model/attribution';
 import { BASE_SCENARIO } from '../../src/model/scenarios';
 import { decodeState, encodeState } from '../../src/model/state';
+import { gasShares } from '../../src/model/run';
 import { sum } from '../../src/model/util';
+import { GASES, type LeverCause } from '../../src/data/types';
 import { lever, run } from '../levers';
 
 describe('levers together', () => {
@@ -130,6 +132,42 @@ describe('the breakdown by family', () => {
       r.summary.avoidedWarming2100.median,
       9,
     );
+  });
+});
+
+describe('the avoided warming by gas', () => {
+  const r = run({ shift: 0.5, levers: LEVERS_ON }, { regrowth: 'natural', permafrost: 'on' });
+  const { avoidedByCause, avoidedByGas, years } = r.temperature;
+  const gasSum = (c: LeverCause, i: number) => sum(GASES.map((g) => avoidedByGas[g][c][i] ?? 0));
+  it("adds up, gas by gas, to the cause's own where the cause is all greenhouse gases", () => {
+    (['agriculture', 'landUse'] as const).forEach((c) =>
+      years.forEach((_, i) => expect(gasSum(c, i), c).toBeCloseTo(avoidedByCause[c][i] ?? 0, 9)),
+    );
+  });
+  it("leaves aviation's non-CO₂ forcing and air pollution out of every gas", () => {
+    const i = years.indexOf(2100);
+    expect(avoidedByGas.co2.fossilIndustry[i]).toBeGreaterThan(0);
+    expect(
+      Math.abs(gasSum('fossilIndustry', i) - (avoidedByCause.fossilIndustry[i] ?? 0)),
+    ).toBeGreaterThan(0);
+    expect(avoidedByGas.ch4.agriculture[i]).toBeGreaterThan(0);
+    expect(avoidedByGas.n2o.landUse[i]).toBe(0);
+  });
+});
+
+describe('gasShares', () => {
+  it("splits a cause's feedback between its gases and its other forcing by their sizes", () => {
+    const shares = gasShares({ co2: [3], ch4: [1], n2o: [0] }, [6], [7.2]);
+    expect(shares.co2[0]).toBeCloseTo(3.6, 12);
+    expect(shares.ch4[0]).toBeCloseTo(1.2, 12);
+    expect(shares.n2o[0]).toBe(0);
+  });
+  it('leaves each gas as it is without a feedback', () => {
+    expect(gasShares({ co2: [3, 1], ch4: [1, 2], n2o: [0, 4] }, [4, 7], [4, 7])).toEqual({
+      co2: [3, 1],
+      ch4: [1, 2],
+      n2o: [0, 4],
+    });
   });
 });
 

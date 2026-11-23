@@ -8,7 +8,7 @@ describe('url', () => {
   it('reads the interface choices, ignoring unknown values', () => {
     expect(
       parseUi(
-        '?view=methodology&layer=change&change=production&group=dairy&gas=ch4&chart=avoided&to=2100&mapview=table&range=recent',
+        '?view=methodology&layer=change&change=production&group=dairy&gas=ch4&chart=avoided&to=2100&mapview=table&range=recent&causegas=n2o',
       ),
     ).toEqual({
       view: 'methodology',
@@ -20,8 +20,9 @@ describe('url', () => {
       horizon: '2100',
       mapView: 'table',
       range: 'recent',
+      causeGas: 'n2o',
     });
-    expect(parseUi('?view=nope&gas=xx')).toEqual(DEFAULT_UI);
+    expect(parseUi('?view=nope&gas=xx&causegas=co2e')).toEqual(DEFAULT_UI);
     expect(parseUi('?layer=land&change=land')).toMatchObject({ layer: 'land', changeOf: 'land' });
   });
 
@@ -41,6 +42,9 @@ describe('url', () => {
       '?data=fixtures&view=x',
     );
     expect(q).toBe('?shift=10&view=methodology&data=fixtures');
+    expect(buildQuery('', { ...DEFAULT_UI, chart: 'cause', causeGas: 'ch4' }, '')).toBe(
+      '?chart=cause&causegas=ch4',
+    );
     expect(buildQuery('', DEFAULT_UI, '')).toBe('');
   });
 
