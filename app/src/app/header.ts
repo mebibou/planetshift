@@ -14,22 +14,28 @@ export interface HeaderActions {
 export interface Header {
   el: HTMLElement;
   set: (view: View, theme: Theme) => void;
+  /** Stops tracking the header's height, before a new header replaces it. */
+  dispose: () => void;
 }
 
 /**
  * Keeps `--header-h` at the header's height while it is sticky (wide screens), so the sticky
  * panels below it fit the rest of the window; 0 when it scrolls away with the page.
  */
-const trackHeight = (el: HTMLElement): HTMLElement => {
+const trackHeight = (el: HTMLElement): (() => void) => {
   const update = () =>
     el.isConnected &&
     document.documentElement.style.setProperty(
       '--header-h',
       getComputedStyle(el).position === 'sticky' ? `${el.offsetHeight}px` : '0px',
     );
-  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(update).observe(el);
+  const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(update) : null;
+  observer?.observe(el);
   window.addEventListener('resize', update);
-  return el;
+  return () => {
+    observer?.disconnect();
+    window.removeEventListener('resize', update);
+  };
 };
 
 export const header = (t: T, lang: Lang, actions: HeaderActions): Header => {
@@ -76,30 +82,30 @@ export const header = (t: T, lang: Lang, actions: HeaderActions): Header => {
       ),
     ),
   );
-  return {
-    el: trackHeight(
+  const el = h(
+    'header',
+    { class: 'site-header' },
+    h(
+      'div',
+      { class: 'brand' },
       h(
-        'header',
-        { class: 'site-header' },
-        h(
-          'div',
-          { class: 'brand' },
-          h(
-            'a',
-            {
-              href: '?',
-              class: 'wordmark',
-              onclick: (e: Event) => (e.preventDefault(), actions.go('explore')),
-            },
-            planetMark(),
-            'Planetshift',
-          ),
-          h('p', { class: 'tagline' }, t('header.tagline')),
-        ),
-        h('nav', { class: 'site-nav', 'aria-label': t('header.nav') }, ...links),
-        h('div', { class: 'header-tools' }, langs, theme),
+        'a',
+        {
+          href: '?',
+          class: 'wordmark',
+          onclick: (e: Event) => (e.preventDefault(), actions.go('explore')),
+        },
+        planetMark(),
+        'Planetshift',
       ),
+      h('p', { class: 'tagline' }, t('header.tagline')),
     ),
+    h('nav', { class: 'site-nav', 'aria-label': t('header.nav') }, ...links),
+    h('div', { class: 'header-tools' }, langs, theme),
+  );
+  return {
+    el,
+    dispose: trackHeight(el),
     set: (view, current) => {
       links.forEach((a) =>
         a.dataset.view === view

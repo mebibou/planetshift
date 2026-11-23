@@ -4,7 +4,7 @@ import { DEFAULT_OPTIONS, type Options } from '../../src/model/api';
 import { OPTIONS } from '../../src/model/options';
 import { BASE_SCENARIO } from '../../src/model/scenarios';
 import { prepare } from '../../src/model/prepare';
-import { runScenario } from '../../src/model/run';
+import { baselineMedian, runScenario } from '../../src/model/run';
 import { SAMPLES } from './samples';
 import { CURRENT_YEAR } from './fixtures';
 import { loadRealData } from './realData';
@@ -77,5 +77,29 @@ describe.skipIf(real === null)('performance on the real data', () => {
     const median = [...times].sort((a, b) => a - b)[2] as number;
     console.log(`real data, everything on: run median ${median.toFixed(1)} ms`);
     expect(median).toBeLessThan(30);
+  });
+
+  it('works out the baseline under the medium projection, for the population chart, in a tenth of the budget', () => {
+    const data = real as NonNullable<typeof real>;
+    prepare(data);
+    const scenario = { ...BASE_SCENARIO, shift: 0.5, levers: everything };
+    const ssps = OPTIONS.flatMap((o) => (o.field === 'ssp' ? o.values : [])) as Options['ssp'][];
+    const times = ssps.flatMap((ssp) =>
+      (['low', 'high'] as const).map((population) => {
+        const options = { ...allOptions, ssp, population };
+        const start = performance.now();
+        runScenario(data, scenario, options, CURRENT_YEAR);
+        const ran = performance.now();
+        baselineMedian(data, { ...options, population: 'medium' }, CURRENT_YEAR);
+        return [ran - start, performance.now() - ran] as const;
+      }),
+    );
+    const medianOf = (values: number[]) =>
+      [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)] as number;
+    const [run, extra] = [medianOf(times.map((t) => t[0])), medianOf(times.map((t) => t[1]))];
+    console.log(
+      `real data, after an option change: run median ${run.toFixed(1)} ms, medium baseline ${extra.toFixed(1)} ms`,
+    );
+    expect(extra).toBeLessThan(3);
   });
 });

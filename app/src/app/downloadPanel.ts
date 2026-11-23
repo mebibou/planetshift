@@ -16,7 +16,13 @@ import {
   type Licence,
 } from './download';
 
-const save = (file: DownloadFile | null) => (file ? saveFile(file) : undefined);
+/** A line under the download buttons that says when there is nothing to save. */
+const downloadStatus = (): HTMLElement => h('p', { class: 'hint download-status', role: 'status' });
+
+const saveTo = (t: T, status: HTMLElement) => (file: DownloadFile | null) => {
+  status.textContent = file ? '' : t('download.unavailable');
+  if (file) saveFile(file);
+};
 
 /** A button with the download icon. */
 export const downloadButton = (label: string, onClick: () => void, className = ''): HTMLElement =>
@@ -36,10 +42,13 @@ export const chartDownload = (
     climate: Climate;
     currentYear: number;
   },
-): HTMLElement =>
-  h(
+): HTMLElement => {
+  const status = downloadStatus();
+  const save = saveTo(t, status);
+  return h(
     'div',
     { class: 'card-foot' },
+    status,
     downloadButton(
       t('download.chartButton'),
       () => {
@@ -50,6 +59,7 @@ export const chartDownload = (
       'download-chart',
     ),
   );
+};
 
 export const formatBytes = (locale: string, bytes: number): string =>
   bytes >= 1e6
@@ -92,6 +102,8 @@ export const downloadPanel = (
   const item = (button: HTMLElement, text: string, licences: Licence[]) =>
     h('li', {}, button, h('p', { class: 'hint' }, text, ' ', licenceLinks(t, licences)));
   const cite = h('p', { class: 'citation' });
+  const status = downloadStatus();
+  const save = saveTo(t, status);
   const panel = h(
     'div',
     { class: 'download-panel', id: 'map-downloads' },
@@ -121,6 +133,7 @@ export const downloadPanel = (
         DOWNLOAD_LICENCES.scenario,
       ),
     ),
+    status,
     h('p', { class: 'hint' }, t('download.format')),
     h(
       'details',

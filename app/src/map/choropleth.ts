@@ -1,6 +1,7 @@
 import { geoEqualEarth, geoGraticule10, geoPath } from 'd3';
 import type { Topology } from 'topojson-specification';
 import { h, svg } from '../app/dom';
+import { placeTooltip } from '../app/place';
 import { countryFeatures, iso3Of } from './geo';
 import type { TooltipModel } from './tooltip';
 
@@ -64,31 +65,53 @@ export const choropleth = (world: Topology, label: string): Choropleth => {
   const el = h('div', { class: 'map-frame' }, map, tooltip);
   let current: MapPaint | null = null;
   let pinned = false;
+  let press: { id: number; x: number; y: number } | null = null;
+  const outside = (e: Event) => {
+    if (!el.contains(e.target as Node)) hide();
+  };
   const hide = () => {
     pinned = false;
     tooltip.hidden = true;
     tooltip.classList.remove('pinned');
+    document.removeEventListener('pointerdown', outside);
   };
-  const show = (e: PointerEvent) => {
-    if (pinned && e.type === 'pointermove') return;
+  const show = (e: PointerEvent, pin: boolean) => {
     const iso3 = (e.target as Element).getAttribute?.('data-iso3');
     if (!iso3 || !current) {
       hide();
       return;
     }
-    pinned = e.type === 'pointerdown';
-    tooltip.classList.toggle('pinned', pinned);
+    pinned = pin;
+    tooltip.classList.toggle('pinned', pin);
+    if (pin) document.addEventListener('pointerdown', outside);
     tooltip.replaceChildren(...tooltipContent(current.tooltipOf(iso3)));
     tooltip.hidden = false;
     const box = el.getBoundingClientRect();
-    const [x, y] = [e.clientX - box.left, e.clientY - box.top];
-    const flip = x > box.width / 2;
-    tooltip.style.left = flip ? 'auto' : `${x + 14}px`;
-    tooltip.style.right = flip ? `${box.width - x + 14}px` : 'auto';
-    tooltip.style.top = `${Math.min(y + 14, Math.max(0, box.height - 160))}px`;
+    const { left, top } = placeTooltip(
+      e.clientX - box.left,
+      e.clientY - box.top,
+      { width: tooltip.offsetWidth, height: tooltip.offsetHeight },
+      { width: box.width, height: box.height },
+      14,
+    );
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${top}px`;
   };
-  map.addEventListener('pointermove', show);
-  map.addEventListener('pointerdown', show);
+  map.addEventListener('pointermove', (e) => {
+    if (e.pointerType !== 'touch' && !pinned) show(e, false);
+  });
+  map.addEventListener('pointerdown', (e) => {
+    press = { id: e.pointerId, x: e.clientX, y: e.clientY };
+  });
+  map.addEventListener('pointerup', (e) => {
+    const still =
+      press?.id === e.pointerId && Math.hypot(e.clientX - press.x, e.clientY - press.y) < 10;
+    press = null;
+    if (still) show(e, true);
+  });
+  map.addEventListener('pointercancel', () => {
+    press = null;
+  });
   map.addEventListener('pointerleave', () => {
     if (!pinned) hide();
   });

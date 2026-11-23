@@ -1,5 +1,6 @@
 import { axisBottom, axisLeft, pointer, select, type ScaleLinear, type Selection } from 'd3';
 import { h } from '../app/dom';
+import { placeTooltip } from '../app/place';
 
 export interface Margin {
   top: number;
@@ -102,16 +103,50 @@ export interface HoverRow {
   swatch?: string; // CSS colour of the series
 }
 
-/** Crosshair and tooltip following the nearest year. */
+/** Charts on the same years that follow one another's hover year. */
+export interface HoverLink {
+  /** What chart `id` does when another one shows a year, or hides (null); replaces its last. */
+  listen: (id: string, show: (year: number | null) => void) => void;
+  share: (from: string, year: number | null) => void;
+}
+
+export const hoverLink = (): HoverLink => {
+  const shows = new Map<string, (year: number | null) => void>();
+  return {
+    listen: (id, show) => {
+      shows.set(id, show);
+    },
+    share: (from, year) => shows.forEach((show, id) => id !== from && show(year)),
+  };
+};
+
+/** Years the keys move the crosshair by. */
+const KEY_STEPS: Record<string, number> = {
+  ArrowRight: 1,
+  ArrowUp: 1,
+  ArrowLeft: -1,
+  ArrowDown: -1,
+  PageUp: 10,
+  PageDown: -10,
+};
+
+/**
+ * Crosshair and tooltip following the nearest year, shown too when a `linked` chart shows a year. A touch keeps the tooltip once the finger
+ * lifts, until a tap elsewhere; the tooltip is placed in screen pixels, as the svg scales down
+ * on narrow screens. The container takes the keyboard focus, and the arrow keys, Page Up and
+ * Down, Home and End move the crosshair; `keys` says so to screen readers.
+ */
 export const addHover = (
   container: HTMLElement,
   f: Frame,
   x: ScaleLinear<number, number>,
   margin: Margin,
   rowsAt: (year: number) => HoverRow[],
+  keys: string,
+  linked?: { link: HoverLink; id: string },
 ): void => {
   container.querySelector('.chart-tooltip')?.remove();
-  const tip = h('div', { class: 'tooltip chart-tooltip', hidden: true });
+  const tip = h('div', { class: 'tooltip chart-tooltip', 'aria-live': 'polite', hidden: true });
   container.append(tip);
   const line = f.plot
     .append('line')
@@ -120,6 +155,58 @@ export const addHover = (
     .attr('y2', f.innerHeight)
     .style('display', 'none');
   const [lo, hi] = x.domain() as [number, number];
+  const outside = (e: Event) => {
+    if (!container.contains(e.target as Node)) clear();
+  };
+  const hide = () => {
+    line.style('display', 'none');
+    tip.hidden = true;
+    document.removeEventListener('pointerdown', outside);
+  };
+  const showYear = (year: number) => {
+    container.dataset.year = String(year);
+    const cx = x(year);
+    line.attr('x1', cx).attr('x2', cx).style('display', null);
+    tip.replaceChildren(
+      h('strong', {}, String(year)),
+      h(
+        'dl',
+        {},
+        ...rowsAt(year).flatMap((r) => [
+          h(
+            'dt',
+            {},
+            r.swatch ? h('span', { class: 'swatch', style: `background: ${r.swatch}` }) : null,
+            r.label,
+          ),
+          h('dd', {}, r.value),
+        ]),
+      ),
+    );
+    tip.hidden = false;
+    const box = container.getBoundingClientRect();
+    const svgBox = f.svg.node()?.getBoundingClientRect();
+    const scale = svgBox && svgBox.width > 0 ? svgBox.width / f.width : 1;
+    const offset = svgBox ? svgBox.left - box.left : 0;
+    const { left } = placeTooltip(
+      offset + (cx + margin.left) * scale,
+      0,
+      { width: tip.offsetWidth, height: tip.offsetHeight },
+      { width: box.width, height: box.height },
+    );
+    tip.style.left = `${left}px`;
+    tip.style.top = `${margin.top * scale}px`;
+  };
+  const point = (year: number) => {
+    showYear(year);
+    linked?.link.share(linked.id, year);
+  };
+  const clear = () => {
+    hide();
+    linked?.link.share(linked.id, null);
+  };
+  const clamp = (year: number) => Math.max(lo, Math.min(hi, year));
+  linked?.link.listen(linked.id, (year) => (year === null ? hide() : showYear(clamp(year))));
   f.plot
     .append('rect')
     .attr('class', 'hover-target')
@@ -127,35 +214,30 @@ export const addHover = (
     .attr('height', f.innerHeight)
     .on('pointermove pointerdown', (event: PointerEvent) => {
       const [px] = pointer(event);
-      const year = Math.max(lo, Math.min(hi, Math.round(x.invert(px))));
-      const cx = x(year);
-      line.attr('x1', cx).attr('x2', cx).style('display', null);
-      tip.replaceChildren(
-        h('strong', {}, String(year)),
-        h(
-          'dl',
-          {},
-          ...rowsAt(year).flatMap((r) => [
-            h(
-              'dt',
-              {},
-              r.swatch ? h('span', { class: 'swatch', style: `background: ${r.swatch}` }) : null,
-              r.label,
-            ),
-            h('dd', {}, r.value),
-          ]),
-        ),
-      );
-      tip.hidden = false;
-      const flip = cx > f.innerWidth / 2;
-      tip.style.left = flip ? 'auto' : `${cx + margin.left + 12}px`;
-      tip.style.right = flip ? `${f.width - cx - margin.left + 12}px` : 'auto';
-      tip.style.top = `${margin.top}px`;
+      point(clamp(Math.round(x.invert(px))));
     })
-    .on('pointerleave', () => {
-      line.style('display', 'none');
-      tip.hidden = true;
+    .on('pointerleave', (event: PointerEvent) => {
+      if (event.pointerType === 'touch') document.addEventListener('pointerdown', outside);
+      else if (document.activeElement !== container) clear();
     });
+  const focused = () => Number(container.dataset.year ?? hi);
+  container.tabIndex = 0;
+  container.setAttribute('role', 'group');
+  container.setAttribute('aria-label', `${f.svg.attr('aria-label')}. ${keys}`);
+  container.onfocus = () => {
+    if (container.matches(':focus-visible')) point(clamp(focused()));
+  };
+  container.onblur = clear;
+  container.onkeydown = (e) => {
+    const step = KEY_STEPS[e.key];
+    const year =
+      e.key === 'Home' ? lo : e.key === 'End' ? hi : step ? clamp(focused() + step) : null;
+    if (e.key === 'Escape') clear();
+    if (year === null) return;
+    e.preventDefault();
+    point(year);
+  };
+  if (document.activeElement === container) showYear(clamp(focused()));
 };
 
 /** Re-renders when the container's width changes. */

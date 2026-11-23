@@ -2,8 +2,11 @@
   "load": {
     "loading": "Loading the data…",
     "failedTitle": "The data did not load",
-    "failed": "Planetshift could not read {file}.",
-    "retry": "Check your connection and reload the page. If it keeps failing, the data files may be missing from this build."
+    "failed": "Planetshift could not read {file} ({reason}).",
+    "retry": "Check your connection and reload the page. If it keeps failing, the data files may be missing from this build.",
+    "failedOther": "Planetshift could not read the data ({reason}).",
+    "startTitle": "The page could not start",
+    "startFailed": "The data loaded, but an error stopped the page ({reason}). Reload the page; if it keeps failing, please report it."
   },
   "header": {
     "tagline": "What does change look like?",
@@ -21,7 +24,8 @@
   },
   "explore": {
     "panel": "Scenario and controls",
-    "runError": "The model could not compute this scenario. Try another setting or reload the page."
+    "runError": "The model could not compute this scenario. Try another setting or reload the page.",
+    "fileError": "{files} could not be loaded, so the levers that need it have no effect. Reload the page to try again."
   },
   "controls": {
     "shift": "Animal foods moved to plant foods",
@@ -240,7 +244,8 @@
       "elNino": "El Niño year",
       "laNina": "La Niña year",
       "oni": "ONI {value}"
-    }
+    },
+    "keys": "Arrow keys read the values year by year; Home and End go to the first and last year."
   },
   "summary": {
     "title": "What the levers change",
@@ -269,7 +274,8 @@
       "note": "Each group's part is the mean of what it adds over every order the groups could be counted in, so no group is counted first; a group acting on several causes is split between them. The parts add up to the total.",
       "added": "{value} added",
       "diet": "Diet"
-    }
+    },
+    "live": "Less warming in {year}: {value}."
   },
   "link": {
     "headline": "By {year} the world has warmed by {total}.",
@@ -401,7 +407,8 @@
     "cite": "How to cite",
     "citeText": "Credit Planetshift and the original sources:",
     "licence": "Licence:",
-    "and": " and "
+    "and": " and ",
+    "unavailable": "Nothing to download: the model could not compute this scenario."
   },
   "tour": {
     "label": "Guided start",

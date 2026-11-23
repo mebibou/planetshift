@@ -26,6 +26,7 @@
     "billion": "{value} billion",
     "larger": "larger",
     "smaller": "smaller",
-    "projection": "UN {variant} projection"
+    "projection": "UN {variant} projection",
+    "baselineShift": "With this projection, the warming without the levers in {year} moves by {value} from the medium projection's."
   }
 }

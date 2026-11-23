@@ -72,15 +72,22 @@ export const gasMultiples = (t: T, locale: string, currentYear: number): GasMult
           .y((p) => y(p.value)),
       );
     verticalRule(f, x(currentYear), String(currentYear));
-    addHover(plotEl, f, x, MARGIN, (year) => {
-      const p = scaled.find((s) => s.year === year);
-      return [
-        {
-          label: t(`gases.${gas}`),
-          value: p ? `${formatSignificant(locale, p.value, 3)} ${unit.unit}` : '–',
-        },
-      ];
-    });
+    addHover(
+      plotEl,
+      f,
+      x,
+      MARGIN,
+      (year) => {
+        const p = scaled.find((s) => s.year === year);
+        return [
+          {
+            label: t(`gases.${gas}`),
+            value: p ? `${formatSignificant(locale, p.value, 3)} ${unit.unit}` : '–',
+          },
+        ];
+      },
+      t('chart.keys'),
+    );
   };
   const render = () => {
     if (last) {

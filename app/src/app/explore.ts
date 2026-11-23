@@ -9,10 +9,11 @@ import { quickPair } from '../controls/quick';
 import { avoidedChart } from '../chart/avoided';
 import { causeView } from '../chart/cause';
 import { populationChart } from '../chart/population';
+import { hoverLink } from '../chart/frame';
 import { RANGE_START, temperatureChart, type Range } from '../chart/temperature';
 import { mapCard } from '../map/mapCard';
 import type { Options, Scenario, ScenarioResult } from '../model/api';
-import { runScenario } from '../model/run';
+import { baselineMedian, runScenario } from '../model/run';
 import { DIET_CAUSE, LEVER_CAUSES, leverAvailable } from '../levers/registry';
 import type { LeverCause } from '../data/types';
 import { formatTemperature } from '../i18n/format';
@@ -24,11 +25,15 @@ import { worldPerCapita } from './summaryModel';
 import { worthCache, type Worth } from './worth';
 import { dataFolder } from '../data/load';
 import { chartDownload } from './downloadPanel';
+import { tabKeys } from './tabs';
 
 export interface ExploreView {
   el: HTMLElement;
+  /** Updates the controls; `show` draws. */
   sync: (state: AppState) => void;
   show: (result: ScenarioResult | null, state: AppState) => void;
+  /** Stops the work still to come, when the view is dropped. */
+  dispose: () => void;
 }
 
 export const exploreView = (ctx: ViewContext): ExploreView => {
@@ -66,23 +71,34 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
     setUi: ctx.setUi,
   });
   const strip = summary(t, locale, ctx.currentYear);
-  const chart = temperatureChart(t, locale, ctx.currentYear);
+  const link = hoverLink();
+  const chart = temperatureChart(t, locale, ctx.currentYear, link);
   const avoided = avoidedChart(t, locale, ctx.currentYear);
   const cause = causeView(t, locale, ctx.currentYear);
-  const people = populationChart(t, locale, ctx.currentYear);
+  const people = populationChart(t, locale, ctx.currentYear, link);
   chart.slot.append(people.el);
-  let range: Range = 'full';
   let last: { result: ScenarioResult | null; state: AppState } = { result: null, state };
   const endOf = (s: AppState) => Number(s.ui.horizon);
+  /** The baseline at `end` under the UN's medium projection, when another one is chosen. */
+  const mediumBaseline = (result: ScenarioResult, options: Options, end: number) => {
+    if (!result.population || result.population.variant === 'medium') return null;
+    const medium = baselineMedian(
+      ctx.latestData(),
+      { ...options, population: 'medium' },
+      ctx.currentYear,
+    );
+    return valueAt(medium.years, medium.values, end);
+  };
   const drawCharts = () => {
     const end = endOf(last.state);
+    const { range } = last.state.ui;
     const { ssp, temperature } = last.state.options;
     if (last.state.ui.chart === 'cause')
       cause.update(last.result, data.climate, { ssp, temperature, from: RANGE_START[range], end });
     if (!last.result) return;
     if (last.state.ui.chart === 'temperature') {
       chart.update(last.result, range, end, data.climate.naturalOnly, data.enso);
-      people.update(last.result, range, end);
+      people.update(last.result, range, end, mediumBaseline(last.result, last.state.options, end));
     } else if (last.state.ui.chart === 'avoided') avoided.update(last.result, end);
   };
   const rangeSwitch = segmented<Range>({
@@ -92,11 +108,8 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
       value: v,
       label: t(`chart.ranges.${v}`),
     })),
-    value: range,
-    onChange: (r) => {
-      range = r;
-      drawCharts();
-    },
+    value: state.ui.range,
+    onChange: (range) => ctx.setUi((u) => ({ ...u, range })),
   });
   const horizonSwitch = segmented<Horizon>({
     name: 'horizon',
@@ -115,6 +128,12 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
         class: 'chart-tab',
         'aria-controls': `chart-panel-${tab}`,
         onclick: () => ctx.setUi((u) => ({ ...u, chart: tab })),
+        onkeydown: tabKeys(
+          CHARTS,
+          tab,
+          (target) => ctx.setUi((u) => ({ ...u, chart: target })),
+          (target) => `chart-tab-${target}`,
+        ),
       },
       t(`charts.tabs.${tab}`),
     ),
@@ -158,9 +177,11 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
     });
     CHARTS.forEach((c) => (panels[c].hidden = c !== s.ui.chart));
     rangeSwitch.el.hidden = s.ui.chart === 'avoided';
+    rangeSwitch.set(s.ui.range);
     horizonSwitch.set(s.ui.horizon);
   };
   const error = h('p', { class: 'run-error', role: 'alert', hidden: true });
+  const fileError = h('p', { class: 'run-error', role: 'alert', hidden: true });
   const worthLegend = h('p', { class: 'hint worth-legend' });
   const groups: (PanelGroup & { el: HTMLElement })[] = [
     { id: 'diet', cause: DIET_CAUSE, worth: 'diet', el: panel.el },
@@ -317,6 +338,7 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
       panels.avoided,
       panels.cause,
       error,
+      fileError,
       chartDownload(t, () => ({ ...last, climate: data.climate, currentYear: ctx.currentYear })),
     ),
     aside,
@@ -330,13 +352,16 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
     sections.forEach(({ quick }) => quick.set(s.scenario));
     allQuick.set(s.scenario);
     options.set(s.options);
-    map.update(last.result, s);
-    showTab(s);
   };
   const show = (result: ScenarioResult | null, s: AppState) => {
     last = { result, state: s };
     error.hidden = result !== null;
     error.textContent = result ? '' : t('explore.runError');
+    const failed = ctx.failedFiles();
+    fileError.hidden = failed.length === 0;
+    fileError.textContent = failed.length
+      ? t('explore.fileError', { files: failed.map((f) => `${f}.json`).join(', ') })
+      : '';
     map.update(result, s);
     strip.update(
       result,
@@ -358,5 +383,5 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
   };
   sync(state);
   reorder(state, new Map());
-  return { el, sync, show };
+  return { el, sync, show, dispose: () => worth.stop() };
 };

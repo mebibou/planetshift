@@ -15,7 +15,7 @@ import { methodologyView, scrollToSection } from '../methodology/view';
 import type { AppState, ViewContext } from './context';
 import { h } from './dom';
 import { exploreView, type ExploreView } from './explore';
-import { header } from './header';
+import { header, type Header } from './header';
 import { createStore } from './store';
 import {
   applyTheme,
@@ -87,6 +87,7 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
     data: loaded.data,
     latestData: () => loaded.data,
     loadAll: () => completeLevers(ALL_LEVERS),
+    failedFiles: () => loaded.failed(),
     world: loaded.world,
     currentYear,
     state: s,
@@ -109,16 +110,14 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
     }
   };
 
-  let head = header(translator(lang), lang, {
-    go: () => undefined,
-    setLang: () => undefined,
-    toggleTheme: () => undefined,
-  });
+  let head: Header | null = null;
 
   const build = (s: AppState) => {
     const t = translator(s.lang);
     document.documentElement.lang = s.lang;
     document.title = `Planetshift · ${t('header.tagline')}`;
+    head?.dispose();
+    views.explore?.dispose();
     views = {};
     head = header(t, s.lang, {
       go: (view) => {
@@ -164,7 +163,7 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
         loaded = next;
         rerun();
       })
-      .catch(() => undefined);
+      .catch(() => views.explore?.show(result, store.get()));
 
   const writeUrl = (s: AppState, previous: AppState) => {
     const next = queryOf(s, location.search) || location.pathname;
@@ -178,10 +177,10 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
       storeLang(s.lang);
       build(s);
     } else if (s.ui.view !== previous.ui.view) {
-      head.set(s.ui.view, s.theme);
+      head?.set(s.ui.view, s.theme);
       showView(s);
     } else {
-      head.set(s.ui.view, s.theme);
+      head?.set(s.ui.view, s.theme);
       views.explore?.sync(s);
     }
     if (s.scenario !== previous.scenario || s.options !== previous.options) rerun();

@@ -886,7 +886,12 @@ select {
 .card-foot {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
   margin-top: 12px;
+}
+.download-status {
+  margin: 0;
 }
 .download-toggle[aria-expanded='true'] {
   background: var(--accent-soft);
@@ -1238,6 +1243,7 @@ input[type='range']:disabled {
 .chart-plot {
   position: relative;
   width: 100%;
+  touch-action: pan-y pinch-zoom;
 }
 .chart-svg {
   display: block;
