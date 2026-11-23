@@ -6,7 +6,7 @@
     "retry": "Vérifiez votre connexion et rechargez la page. Si l'erreur persiste, les fichiers de données manquent peut-être dans cette version.",
     "failedOther": "Planetshift n'a pas pu lire les données ({reason}).",
     "startTitle": "La page n'a pas pu démarrer",
-    "startFailed": "Les données sont chargées, mais une erreur a arrêté la page ({reason}). Rechargez la page ; si l'erreur persiste, merci de la signaler."
+    "startFailed": "Les données sont chargées, mais une erreur a arrêté la page ({reason}). Rechargez la page. Si l'erreur persiste, merci de la signaler."
   },
   "header": {
     "tagline": "À quoi ressemble le changement ?",
@@ -51,15 +51,15 @@
       "highIncome": "Pays à revenu élevé"
     },
     "advanced": "Régler chaque aliment animal",
-    "groupsHint": "Un aliment réglé ici garde sa propre part ; les autres suivent le curseur principal.",
+    "groupsHint": "Un aliment réglé ici garde sa propre part. Les autres aliments suivent le curseur principal.",
     "groupsReset": "Suivre de nouveau le curseur principal",
-    "rampHint": "Chaque levier, l'alimentation comprise, se met en place à partir d'aujourd'hui et l'est entièrement cette année-là.",
+    "rampHint": "Chaque levier, l'alimentation comprise, monte à partir d'aujourd'hui et est entièrement en place cette année-là.",
     "horizon": "Résultats jusqu'en",
     "info": "À propos : {name}"
   },
   "levers": {
     "title": "Leviers",
-    "intro": "Tous les moyens de limiter le réchauffement dans Planetshift, sous la cause du réchauffement sur laquelle ils agissent, la plus grande cause d'abord ; dans une cause, les groupes qui évitent le plus en entier viennent d'abord. Chaque curseur est la part adoptée, atteinte en entier l'année choisie plus haut.",
+    "intro": "Tous les moyens de limiter le réchauffement dans Planetshift, rangés sous la cause du réchauffement sur laquelle ils agissent, la plus grande cause d'abord. Dans une cause, les groupes qui évitent le plus en entier viennent d'abord. Chaque curseur est la part adoptée, atteinte en entier l'année choisie plus haut.",
     "noData": "Indisponible : les données de ce levier ne sont pas dans cette version.",
     "maxAll": "Tout adopter en entier",
     "reset": "Remettre à zéro",
@@ -80,7 +80,7 @@
     "intro": "Chaque choix ci-dessous a une valeur par défaut et une alternative. Les changer montre à quel point le résultat en dépend.",
     "scope": {
       "label": "Émissions comptées",
-      "hint": "Sur la ferme seulement, ou aussi la fabrication des engrais et l'énergie utilisée. Le poisson sauvage n'émet que le carburant des bateaux : il ne compte qu'avec les intrants.",
+      "hint": "Sur la ferme seulement, ou aussi la fabrication des engrais et l'énergie utilisée. Le poisson sauvage n'ajoute que le carburant que brûlent ses bateaux, qui ne compte qu'avec les intrants.",
       "farmGate": "Sur la ferme",
       "cradleToFarmGate": "Avec les intrants"
     },
@@ -98,7 +98,7 @@
     },
     "location": {
       "label": "Où la production change",
-      "hint": "Chaque producteur selon sa part de la production mondiale, ou chaque pays pour son propre régime.",
+      "hint": "Les producteurs gardent leur part de la production mondiale, ou chaque pays produit pour son propre régime.",
       "fixedTrade": "Parts du commerce fixes",
       "domestic": "Chaque pays pour lui-même"
     },
@@ -110,13 +110,13 @@
     },
     "climate": {
       "label": "Réponse du climat",
-      "hint": "Simulations FaIR avec une fourchette, ou les valeurs publiées du sixième rapport du GIEC.",
+      "hint": "Simulations FaIR avec une fourchette d'incertitude, ou les valeurs publiées du sixième rapport du GIEC.",
       "fair": "FaIR",
       "ar6": "Tables AR6"
     },
     "ssp": {
       "label": "Émissions du reste du monde",
-      "hint": "Le scénario des émissions que les leviers laissent telles quelles.",
+      "hint": "Le scénario des émissions que les leviers ne changent pas.",
       "ssp245": "Moyen (SSP2-4.5)",
       "ssp126": "Bas (SSP1-2.6)",
       "ssp370": "Haut (SSP3-7.0)"
@@ -187,10 +187,10 @@
     "notes": {
       "production": "Là où les aliments sont produits, pas là où ils sont consommés.",
       "emissions": "Émissions à la ferme, des cultures et des élevages. Le CO₂e pondère le méthane et le protoxyde d'azote sur 100 ans, pour comparaison seulement.",
-      "land": "Surfaces récoltées pour les aliments du modèle et prairies permanentes, en part de la superficie des terres de chaque pays : la place que prend l'agriculture. Manger moins de viande libère des prairies et les cultures qui nourrissent les animaux ; l'infobulle donne les hectares.",
-      "change": "La production de chaque pays varie comme la demande mondiale de chaque aliment : les exportateurs suivent leurs clients.",
+      "land": "Surfaces récoltées pour les aliments du modèle et prairies permanentes, en part de la superficie des terres de chaque pays. C'est la place que prend l'agriculture. Manger moins de viande libère des prairies et les cultures qui nourrissent les animaux. L'infobulle donne les hectares.",
+      "change": "La production de chaque pays varie comme la demande mondiale de chaque aliment. Les exportateurs suivent les pays qui leur achètent.",
       "quality": "Des pays voisins peuvent différer simplement parce que leurs chiffres viennent de sources différentes.",
-      "deforestation": "Forêt défrichée pour les cultures et les pâturages dans chaque pays, une fois les leviers pleinement en place ; hectares par an. L'infobulle donne le défrichement d'aujourd'hui, la variation et le CO₂ qu'il libère."
+      "deforestation": "Forêt défrichée pour les cultures et les pâturages dans chaque pays, une fois les leviers pleinement en place, en hectares par an. L'infobulle donne le défrichement d'aujourd'hui, la variation et le CO₂ qu'il libère."
     },
     "tooltip": {
       "noData": "Pas de données pour ce pays",
@@ -231,7 +231,7 @@
     "label": "Réchauffement évité chaque année jusqu'en {year} grâce aux leviers, avec sa fourchette probable",
     "unit": "°C de réchauffement en moins",
     "line": "Réchauffement évité",
-    "caption": "De combien le monde est plus frais chaque année avec les leviers que sans. L'écart grandit à mesure que les leviers se mettent en place, et le réchauffement du méthane déjà évité s'efface en quelques décennies."
+    "caption": "De combien le monde est plus frais chaque année avec les leviers que sans. L'écart grandit à mesure que les leviers se mettent en place. Le réchauffement du méthane déjà évité s'efface en quelques décennies."
   },
   "chart": {
     "title": "Température mondiale jusqu'en {year}",
@@ -255,7 +255,7 @@
       "laNina": "Année La Niña",
       "oni": "ONI {value}"
     },
-    "keys": "Les flèches lisent les valeurs année par année ; Début et Fin vont à la première et à la dernière année."
+    "keys": "Les flèches lisent les valeurs année par année. Début et Fin vont à la première et à la dernière année."
   },
   "summary": {
     "title": "Ce que les leviers changent",
@@ -277,11 +277,11 @@
     "beforeAfter": "{before} → {after}",
     "gPerDay": "grammes par jour, moyenne mondiale",
     "kcalPerDay": "kcal par jour, moyenne mondiale",
-    "scope": "Émissions agricoles (poisson sauvage seulement avec les intrants), CO₂ du défrichement tel qu'il varie, et CO₂ fossile que réduisent les leviers d'énergie ; le transport des aliments n'est pas compté.",
-    "clipped": "Dans {count} pays, une baisse a atteint la part d'une culture ou du lait qui est transformée (en huile, sucre, beurre…) et s'y est arrêtée ; cette part baisse sur l'aliment transformé.",
+    "scope": "Émissions agricoles (poisson sauvage seulement avec les intrants), CO₂ du défrichement tel qu'il varie, et CO₂ fossile que réduisent les leviers d'énergie. Le transport des aliments n'est pas compté.",
+    "clipped": "Dans {count} pays, une baisse a atteint la part d'une culture ou du lait qui est transformée (en huile, sucre, beurre…) et s'y est arrêtée. Cette part baisse sur l'aliment transformé.",
     "byFamily": {
       "title": "Réchauffement évité en {year}, par groupe de leviers",
-      "note": "La part de chaque groupe est la moyenne de ce qu'il ajoute dans tous les ordres où les groupes pourraient être comptés : aucun n'est compté en premier ; un groupe qui agit sur plusieurs causes est partagé entre elles. Les parts s'additionnent au total.",
+      "note": "La part de chaque groupe est la moyenne de ce qu'il ajoute dans tous les ordres où les groupes pourraient être comptés, pour qu'aucun ne soit compté en premier. Un groupe qui agit sur plusieurs causes est partagé entre elles. Les parts s'additionnent au total.",
       "added": "{value} ajoutés",
       "diet": "Alimentation"
     },
@@ -290,10 +290,10 @@
   "link": {
     "headline": "En {year}, le monde s'est réchauffé de {total}.",
     "scenario": "Avec les leviers choisis, le monde serait plus frais de {avoided} en {year} que sans eux ({ssp}) : {parts}.",
-    "intro": "L'essentiel du réchauffement vient des combustibles fossiles. L'agriculture y contribue autrement : surtout par le méthane des bovins et des rizières, et le protoxyde d'azote des engrais et des effluents, des gaz qui retiennent bien plus de chaleur que le CO₂ tant qu'ils durent.",
+    "intro": "L'essentiel du réchauffement vient des combustibles fossiles. L'agriculture y contribue autrement, surtout par le méthane des bovins et des rizières, et le protoxyde d'azote des engrais et des effluents. Ces gaz retiennent bien plus de chaleur que le CO₂ tant qu'ils durent.",
     "attributionTitle": "Réchauffement par cause depuis {from}",
-    "attributionText": "Chaque bande est le réchauffement dû à une cause ou, sous zéro, le refroidissement. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause ; les contours en pointillés sont les bandes sans les leviers. La ligne est la température mesurée.",
-    "attributionCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui ; chaque cause est le réchauffement qu'ajoutent ses émissions. La pollution de l'air refroidit : ses particules renvoient la lumière du soleil et éclaircissent les nuages. Les leviers de l'énergie, du chauffage et de l'industrie réduisent aussi la pollution de l'air des combustibles qu'ils ne brûlent plus : son refroidissement diminue quand ils agissent.",
+    "attributionText": "Chaque bande est le réchauffement dû à une cause ou, sous zéro, le refroidissement. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause. Les contours en pointillés sont les bandes sans les leviers. La ligne est la température mesurée.",
+    "attributionCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui. Chaque cause est le réchauffement qu'ajoutent ses émissions. La pollution de l'air refroidit : ses particules renvoient la lumière du soleil et éclaircissent les nuages. Les leviers de l'énergie, du chauffage et de l'industrie réduisent aussi la pollution de l'air des combustibles qu'ils ne brûlent plus : son refroidissement diminue quand ils agissent.",
     "attributionLabel": "Graphique empilé du réchauffement par cause de {from} à {year}, avec la température observée",
     "projection": "Projection",
     "causes": {
@@ -317,14 +317,14 @@
       "n2o": "N₂O"
     },
     "gasTitle": "Réchauffement dû au {gas} par cause depuis {from}",
-    "gasText": "Chaque bande est le réchauffement que ce gaz cause par les émissions qu'en fait une cause. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause ; les contours en pointillés sont les bandes sans les leviers. La pollution de l'air, les traînées des avions et les facteurs naturels ne sont pas des gaz à effet de serre : ils n'apparaissent que sous Tous les gaz.",
-    "gasCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui ; chaque cause est le réchauffement qu'ajoutent ses émissions de ce gaz, et les autres sources et interactions sont le reste du réchauffement dû au gaz.",
+    "gasText": "Chaque bande est le réchauffement dû aux émissions de ce gaz par une cause. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause. Les contours en pointillés sont les bandes sans les leviers. La pollution de l'air, les traînées des avions et les facteurs naturels ne sont pas des gaz à effet de serre : ils n'apparaissent que sous Tous les gaz.",
+    "gasCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui. Chaque cause est le réchauffement qu'ajoutent ses émissions de ce gaz. Les autres sources et interactions sont le reste du réchauffement dû au gaz.",
     "gasOther": "Autres sources et interactions",
     "gasAttributionLabel": "Graphique empilé du réchauffement dû au {gas} par cause de {from} à {year}",
     "whyTitle": "Pourquoi les gaz sont séparés",
     "whyMethane": "Le méthane a une courte durée de vie : la moitié disparaît en une douzaine d'années. En émettre moins fait baisser le réchauffement qu'il cause en quelques décennies ; c'est pourquoi un changement d'alimentation se voit avant 2050.",
     "whyNitrous": "Le protoxyde d'azote dure environ un siècle : en émettre moins ralentit le réchauffement sans l'inverser.",
-    "whyCo2": "Le CO₂ reste des siècles, et le réchauffement qu'il a causé aussi. Additionner les gaz en CO₂e masque ces différences ; Planetshift calcule donc la température gaz par gaz.",
+    "whyCo2": "Le CO₂ reste des siècles. Le réchauffement qu'il a causé reste aussi. Additionner les gaz en CO₂e masque ces différences ; Planetshift calcule donc la température gaz par gaz.",
     "part": "{cause} {value}",
     "separator": " ; ",
     "withoutLevers": "Sans les leviers",
@@ -391,7 +391,7 @@
       "full": "Politiques actuelles en 2100 (PNUE, Climate Action Tracker, 2026) : 2,7–2,8 °C",
       "caption": "La bande au bord de 2100 est là où mènent les politiques actuelles : 2,7–2,8 °C (rapport du PNUE sur l'écart entre les besoins et les perspectives et Climate Action Tracker, 2026)."
     },
-    "caption": "Lignes pointillées : 1,5 °C (poursuivre l'action pour limiter) et 2 °C (rester nettement en dessous) de l'Accord de Paris ; les points marquent l'année où chaque médiane les atteint. Les niveaux de réchauffement sont des moyennes sur 20 ans par rapport à 1850–1900, car une année seule s'écarte d'environ ±0,2 °C de la tendance avec El Niño et La Niña : 2024, à 1,55 °C, ne franchit pas 1,5 °C.",
+    "caption": "Lignes pointillées : 1,5 °C (poursuivre l'action pour limiter) et 2 °C (rester nettement en dessous) de l'Accord de Paris. Les points marquent l'année où chaque médiane les atteint. Les niveaux de réchauffement sont des moyennes sur 20 ans par rapport à 1850–1900, car une année seule s'écarte d'environ ±0,2 °C de la tendance avec El Niño et La Niña. Ainsi 2024, à 1,55 °C, ne franchit pas 1,5 °C.",
     "line": "{level} : {text}.",
     "never": "pas atteint avant {end}, avec ou sans les leviers",
     "reached": "atteint vers {year}",
@@ -423,7 +423,7 @@
     },
     "scenario": "Scénario et réglages en JSON",
     "scenarioText": "Tous les réglages de cette page (les mêmes que son adresse), les chiffres du résumé, la licence et la façon de citer.",
-    "format": "Les fichiers CSV sont en UTF-8 avec une marque d’ordre des octets, séparés par des virgules, avec des noms de colonnes en anglais et des nombres bruts (un point pour les décimales, sans séparateur de milliers), pour que tableurs et scripts les lisent de la même façon.",
+    "format": "Les fichiers CSV sont en UTF-8 avec une marque d’ordre des octets, séparés par des virgules. Ils ont des noms de colonnes en anglais et des nombres bruts (un point pour les décimales, sans séparateur de milliers), pour que tableurs et scripts les lisent de la même façon.",
     "files": "Fichiers de données source",
     "filesText": "Les fichiers JSON que lit la page, construits par le pipeline à partir des sources listées sur la page Méthodologie.",
     "cite": "Comment citer",
@@ -446,11 +446,11 @@
       },
       "levers": {
         "title": "Comment fonctionnent les leviers",
-        "text": "Le panneau Leviers range chaque levier sous la cause du réchauffement sur laquelle il agit. Ouvrez un groupe et déplacez un curseur pour choisir la part adoptée : le graphique, le résumé et la carte changent aussitôt. Le chiffre à côté de chaque groupe est le réchauffement qu'il éviterait seul, adopté en entier. Chaque réglage est gardé dans l'adresse de la page : un lien le rouvre."
+        "text": "Le panneau Leviers range chaque levier sous la cause du réchauffement sur laquelle il agit. Ouvrez un groupe et déplacez un curseur pour choisir la part adoptée. Le graphique, le résumé et la carte changent aussitôt. Le chiffre à côté de chaque groupe est le réchauffement qu'il éviterait seul, adopté en entier. Chaque réglage est gardé dans l'adresse de la page, donc un lien vers elle rouvre les mêmes réglages."
       },
       "causes": {
         "title": "Où sont les causes",
-        "text": "L'onglet Causes du réchauffement, au-dessus du graphique, répartit le réchauffement par cause (combustibles fossiles et industrie, agriculture, usage des terres et les autres) et montre ce que les leviers retirent de chacune. La page Méthodologie explique chaque étape et ses sources."
+        "text": "L'onglet Causes du réchauffement, au-dessus du graphique, répartit le réchauffement par cause (combustibles fossiles et industrie, agriculture, usage des terres et les autres) et montre combien les leviers retirent de chacune. La page Méthodologie explique chaque étape et ses sources."
       }
     }
   },
