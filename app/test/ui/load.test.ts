@@ -75,13 +75,14 @@ describe('data loading', () => {
     expect(loaded.complete({ feedAdditives: 0 })).toBeNull();
     expect(neededFiles(loaded.pending, { coverCrops: 1 })).toEqual([]);
     const [a, b] = [loaded.complete({ feedAdditives: 0.4 }), loaded.complete({ riceWater: 1 })];
-    const next = await a;
-    expect((await b)?.data).toEqual(next?.data);
+    const next = (await a) ?? expect.fail('not loaded');
+    const other = (await b) ?? expect.fail('not loaded');
+    expect(other.data).toEqual(next.data);
     expect(asked.filter((u) => u.endsWith('breakdown.json'))).toEqual(['data/breakdown.json']);
-    expect(next?.data.breakdown).toEqual({ url: 'data/breakdown.json' });
-    expect(next?.data.meta).toBe(loaded.data.meta);
-    expect(next?.pending).toEqual([]);
-    expect(next?.complete({ feedAdditives: 1 })).toBeNull();
+    expect(next.data.breakdown).toEqual({ url: 'data/breakdown.json' });
+    expect(next.data.meta).toBe(loaded.data.meta);
+    expect(next.pending).toEqual([]);
+    expect(next.complete({ feedAdditives: 1 })).toBeNull();
   });
 
   it('names a deferred file that failed and does not ask for it again, and leaves a missing one empty', async () => {

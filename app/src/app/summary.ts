@@ -45,28 +45,32 @@ const stat = (label: string, value: string, detail = '', className = '') =>
 const levelText = (locale: string, level: number) =>
   formatTemperature(locale, level, Number.isInteger(level) ? 0 : 1);
 
+/** The year a level is crossed, or that it is not by `end`. */
+const yearText = (t: T, year: number | null, end: number, key: 'with' | 'without'): string =>
+  year === null ? t(`milestones.${key}Never`, { end }) : t(`milestones.${key}`, { year });
+
+/** When a level is crossed: never, the same year with and without the levers, or each year. */
+const crossingText = (m: Milestone, end: number, t: T): string =>
+  m.baseline === null && m.scenario === null
+    ? t('milestones.never', { end })
+    : m.baseline === m.scenario
+      ? t('milestones.reached', { year: m.baseline ?? end })
+      : [yearText(t, m.baseline, end, 'without'), yearText(t, m.scenario, end, 'with')].join(
+          t('milestones.separator'),
+        );
+
+/** The scenario's likely range of the crossing, when it is more than its median year. */
+const rangeText = ({ early, late, scenario }: Milestone, t: T): string =>
+  early === null || (early === scenario && late === scenario)
+    ? ''
+    : late === null
+      ? t('milestones.rangeFrom', { early })
+      : t('milestones.range', { early, late });
+
 /** When a level is crossed without and with the levers, and the scenario's likely range of it. */
 export const crossingLine = (m: Milestone, end: number, t: T, locale: string): string => {
-  const { baseline: base, scenario: scen, early, late } = m;
-  const text =
-    base === null && scen === null
-      ? t('milestones.never', { end })
-      : base === scen
-        ? t('milestones.reached', { year: base ?? end })
-        : [
-            base === null
-              ? t('milestones.withoutNever', { end })
-              : t('milestones.without', { year: base }),
-            scen === null
-              ? t('milestones.withNever', { end })
-              : t('milestones.with', { year: scen }),
-          ].join(t('milestones.separator'));
-  const range =
-    early === null || (early === scen && late === scen)
-      ? ''
-      : late === null
-        ? t('milestones.rangeFrom', { early })
-        : t('milestones.range', { early, late });
+  const text = crossingText(m, end, t);
+  const range = rangeText(m, t);
   return t('milestones.line', {
     level: levelText(locale, m.level),
     text: range ? `${text} (${range})` : text,
@@ -188,14 +192,19 @@ export const summary = (t: T, locale: string, currentYear: number): Summary => {
     mass: (kg) => formatMass(locale, kg),
     percent: (share, digits) => formatPercent(locale, share, digits),
   };
-  const update: Summary['update'] = (result, perCapita, completeYear, horizon, options) => {
-    if (!result || !perCapita) {
-      say('');
-      body.replaceChildren();
-      breakdown.hidden = true;
-      paris.hidden = true;
-      return;
-    }
+  const clear = () => {
+    say('');
+    body.replaceChildren();
+    breakdown.hidden = true;
+    paris.hidden = true;
+  };
+  const show = (
+    result: ScenarioResult,
+    perCapita: NonNullable<Parameters<Summary['update']>[1]>,
+    completeYear: number,
+    horizon: Parameters<Summary['update']>[3],
+    options: Parameters<Summary['update']>[4],
+  ) => {
     const ms = milestones(result.temperature, currentYear);
     paris.hidden = false;
     parisList.replaceChildren(
@@ -272,6 +281,10 @@ export const summary = (t: T, locale: string, currentYear: number): Summary => {
     ]
       .filter(Boolean)
       .join(' ');
+  };
+  const update: Summary['update'] = (result, perCapita, completeYear, horizon, options) => {
+    if (result && perCapita) show(result, perCapita, completeYear, horizon, options);
+    else clear();
   };
   return { el, update };
 };

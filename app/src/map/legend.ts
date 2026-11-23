@@ -9,15 +9,11 @@ export const legendBins = (
   colours: string[],
   format: (v: number) => string,
 ): LegendBin[] => {
-  if (!thresholds.length) return colours.slice(0, 1).map((colour) => ({ colour, label: '' }));
   const last = thresholds.length;
-  return colours.slice(0, last + 1).map((colour, i) => ({
-    colour,
-    label:
-      i === 0
-        ? `< ${format(thresholds[0] ?? 0)}`
-        : i === last
-          ? `≥ ${format(thresholds[last - 1] ?? 0)}`
-          : `${format(thresholds[i - 1] ?? 0)} – ${format(thresholds[i] ?? 0)}`,
-  }));
+  const at = (j: number) => format(thresholds[j] ?? 0);
+  const label = (i: number) =>
+    i === 0 ? `< ${at(0)}` : i === last ? `≥ ${at(last - 1)}` : `${at(i - 1)} – ${at(i)}`;
+  return last
+    ? colours.slice(0, last + 1).map((colour, i) => ({ colour, label: label(i) }))
+    : colours.slice(0, 1).map((colour) => ({ colour, label: '' }));
 };

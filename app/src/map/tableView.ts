@@ -79,42 +79,46 @@ export const tableView = (t: T, locale: string): TableView => {
     render();
   };
   const sortBy = (column: Column) => {
-    if (!last) return;
-    state = { ...state, sort: nextSort(state.sort ?? defaultSort(last.spec), column), page: 1 };
-    render();
-    headRow.querySelector<HTMLButtonElement>(`[data-column="${column}"] button`)?.focus();
-  };
-  const cell = (row: TableRow, column: Column, spec: LayerSpec): HTMLElement => {
-    if (column === 'name') return h('th', { scope: 'row' }, row.name);
-    if (column === 'tier') {
-      const link = row.source ? sourceInText(row.source) : null;
-      return h(
-        'td',
-        { class: 'tier-cell' },
-        row.tier === null ? '–' : t(`tiers.${row.tier}`),
-        link
-          ? h(
-              'span',
-              { class: 'tier-source' },
-              link.url
-                ? h('a', { href: link.url, target: '_blank', rel: 'noopener' }, link.label)
-                : link.label,
-            )
-          : null,
-      );
+    if (last) {
+      state = { ...state, sort: nextSort(state.sort ?? defaultSort(last.spec), column), page: 1 };
+      render();
+      headRow.querySelector<HTMLButtonElement>(`[data-column="${column}"] button`)?.focus();
     }
-    const measure = formatMeasure(locale, measureOf(spec));
-    const text =
-      column === 'change'
-        ? row.change === null
-          ? '–'
-          : formatPercent(locale, row.change, 1, true)
-        : measure(row[column]);
-    return h('td', { class: 'num' }, text);
   };
-  const render = () => {
-    if (!last) return;
-    const { rows, spec, caption } = last;
+  const tierCell = (row: TableRow): HTMLElement => {
+    const link = row.source ? sourceInText(row.source) : null;
+    return h(
+      'td',
+      { class: 'tier-cell' },
+      row.tier === null ? '–' : t(`tiers.${row.tier}`),
+      link
+        ? h(
+            'span',
+            { class: 'tier-source' },
+            link.url
+              ? h('a', { href: link.url, target: '_blank', rel: 'noopener' }, link.label)
+              : link.label,
+          )
+        : null,
+    );
+  };
+  const numberCell = (row: TableRow, column: 'before' | 'after' | 'change', spec: LayerSpec) =>
+    h(
+      'td',
+      { class: 'num' },
+      column !== 'change'
+        ? formatMeasure(locale, measureOf(spec))(row[column])
+        : row.change === null
+          ? '–'
+          : formatPercent(locale, row.change, 1, true),
+    );
+  const cell = (row: TableRow, column: Column, spec: LayerSpec): HTMLElement =>
+    column === 'name'
+      ? h('th', { scope: 'row' }, row.name)
+      : column === 'tier'
+        ? tierCell(row)
+        : numberCell(row, column, spec);
+  const draw = ({ rows, spec, caption }: NonNullable<typeof last>) => {
     const sort = state.sort ?? defaultSort(spec);
     const columns = columnsOf(spec);
     captionEl.textContent = caption;
@@ -152,6 +156,9 @@ export const tableView = (t: T, locale: string): TableView => {
     prev.disabled = page.page <= 1;
     next.disabled = page.page >= page.pages;
     pager.hidden = page.pages <= 1;
+  };
+  const render = () => {
+    if (last) draw(last);
   };
   const el = h(
     'div',

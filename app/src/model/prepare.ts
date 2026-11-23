@@ -11,6 +11,7 @@ import { domesticSupply, supplyMultiplier } from './supplyChain';
 import {
   END_YEAR,
   addVectors,
+  cachedIn,
   range,
   recordFrom,
   sum,
@@ -181,13 +182,8 @@ const cache = new WeakMap<ModelData, Prepared>();
  * The scenario-independent part of the model, cached per dataset object: call it once after
  * loading (runScenario calls it too, so this only moves the cost to load time).
  */
-export const prepare = (data: ModelData): Prepared => {
-  const cached = cache.get(data);
-  if (cached) return cached;
-  const prepared = buildPrepared(data);
-  cache.set(data, prepared);
-  return prepared;
-};
+export const prepare = (data: ModelData): Prepared =>
+  cachedIn(cache, data, () => buildPrepared(data));
 
 /** An item's value in a vector, by FBS item code (0 for an unknown code). */
 export const valueOf = (prepared: Prepared, v: ItemVector, code: string | number): number => {
@@ -207,13 +203,10 @@ const GROUP_INDEX = new Map(GROUPS.map((g, k) => [g, k]));
 const groupIndexCache = new WeakMap<readonly Item[], Int32Array>();
 
 /** Each item's index in GROUPS, computed once per item list. */
-export const groupIndicesOf = (items: readonly Item[]): Int32Array => {
-  const found = groupIndexCache.get(items);
-  if (found) return found;
-  const built = Int32Array.from(items, (item) => GROUP_INDEX.get(item.group) ?? 0);
-  groupIndexCache.set(items, built);
-  return built;
-};
+export const groupIndicesOf = (items: readonly Item[]): Int32Array =>
+  cachedIn(groupIndexCache, items, () =>
+    Int32Array.from(items, (item) => GROUP_INDEX.get(item.group) ?? 0),
+  );
 
 /** Sum of a vector by item group, each group's items added in item order. */
 export const groupTotals = (v: ItemVector, prepared: Prepared): Record<Group, number> => {

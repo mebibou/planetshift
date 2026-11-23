@@ -77,14 +77,14 @@ export const choropleth = (world: Topology, label: string): Choropleth => {
   };
   const show = (e: PointerEvent, pin: boolean) => {
     const iso3 = (e.target as Element).getAttribute?.('data-iso3');
-    if (!iso3 || !current) {
-      hide();
-      return;
-    }
+    if (iso3 && current) showAt(e, pin, current.tooltipOf(iso3));
+    else hide();
+  };
+  const showAt = (e: PointerEvent, pin: boolean, model: TooltipModel) => {
     pinned = pin;
     tooltip.classList.toggle('pinned', pin);
     if (pin) document.addEventListener('pointerdown', outside);
-    tooltip.replaceChildren(...tooltipContent(current.tooltipOf(iso3)));
+    tooltip.replaceChildren(...tooltipContent(model));
     tooltip.hidden = false;
     const box = el.getBoundingClientRect();
     const { left, top } = placeTooltip(

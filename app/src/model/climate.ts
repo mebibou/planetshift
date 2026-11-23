@@ -17,6 +17,23 @@ export const agtpOf = (climate: Climate, method: ClimateMethod, gas: Gas, band: 
   return curves[band].length > 0 ? curves[band] : curves.median;
 };
 
+/** ΔT `h` years after the series starts: each earlier year's emission times its AGTP. */
+const convolveAt = (
+  emissions: readonly number[],
+  h: number,
+  agtp: readonly number[],
+  last: number,
+): number => {
+  // Emissions after t (h < 0) add nothing: stop there, adding in the same order.
+  const end = Math.min(emissions.length, h + 1);
+  let acc = 0;
+  for (let k = 0; k < end; k++) {
+    const e = emissions[k] as number;
+    if (e !== 0) acc += e * (agtp[Math.min(h - k, last)] as number);
+  }
+  return acc;
+};
+
 /**
  * Temperature response to an emission series: ΔT(t) = Σ_τ≤t E(τ)·AGTP(t−τ), with E[k] the
  * emission in startYear + k and AGTP held at its last value beyond its horizon.
@@ -28,17 +45,9 @@ export const convolve = (
   years: readonly number[],
 ): number[] => {
   const last = agtp.length - 1;
-  return years.map((t) => {
-    if (last < 0 || t < startYear) return 0;
-    // Emissions after t (h < 0) add nothing: stop there, adding in the same order.
-    const end = Math.min(emissions.length, t - startYear + 1);
-    let acc = 0;
-    for (let k = 0; k < end; k++) {
-      const e = emissions[k] as number;
-      if (e !== 0) acc += e * (agtp[Math.min(t - startYear - k, last)] as number);
-    }
-    return acc;
-  });
+  return years.map((t) =>
+    last < 0 || t < startYear ? 0 : convolveAt(emissions, t - startYear, agtp, last),
+  );
 };
 
 /** Each gas's convolution. */

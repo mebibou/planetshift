@@ -44,6 +44,12 @@ export const defaultSort = (spec: LayerSpec): Sort => ({
   direction: 'descending',
 });
 
+/** The worst tier behind a country's figures and its source, from the scope's or the result's. */
+const tierOf = (c: CountryResult, worst: TierSource | null) => ({
+  tier: worst?.tier ?? c.worstTier,
+  source: worst?.source ?? (c.worstSource || null),
+});
+
 export const tableRows = (
   countries: CountryResult[],
   spec: LayerSpec,
@@ -52,15 +58,13 @@ export const tableRows = (
 ): TableRow[] =>
   countries.map((c) => {
     const ba = beforeAfter(c, spec);
-    const worst = hasTier(spec) ? worstOf(c) : null;
     return {
       iso3: c.iso3,
       ...namesOf(c.iso3),
       before: ba.before,
       after: ba.after,
       change: relativeChange(ba),
-      tier: hasTier(spec) ? (worst?.tier ?? c.worstTier) : null,
-      source: hasTier(spec) ? (worst?.source ?? (c.worstSource || null)) : null,
+      ...(hasTier(spec) ? tierOf(c, worstOf(c)) : { tier: null, source: null }),
     };
   });
 
@@ -80,18 +84,23 @@ export const filterRows = (rows: TableRow[], query: string): TableRow[] => {
 const valueOf = (row: TableRow, column: Column): number | string | null =>
   column === 'name' ? row.name : row[column];
 
+/** Two present values in ascending order: text by the locale, numbers by size. */
+const compareValues = (va: number | string, vb: number | string, locale: string): number =>
+  typeof va === 'string' || typeof vb === 'string'
+    ? String(va).localeCompare(String(vb), locale)
+    : va - vb;
+
+/** A missing value after a present one; 0 when both are missing. */
+const missingLast = (va: unknown, vb: unknown): number => (va === vb ? 0 : va === null ? 1 : -1);
+
 /** Sorted by one column; a country without a value comes last whichever the direction. */
 export const sortRows = (rows: TableRow[], sort: Sort, locale: string): TableRow[] => {
   const sign = sort.direction === 'ascending' ? 1 : -1;
-  const byName = (a: TableRow, b: TableRow) => a.name.localeCompare(b.name, locale);
   return [...rows].sort((a, b) => {
     const [va, vb] = [valueOf(a, sort.column), valueOf(b, sort.column)];
-    if (va === null || vb === null) return va === vb ? byName(a, b) : va === null ? 1 : -1;
     const order =
-      typeof va === 'string' || typeof vb === 'string'
-        ? String(va).localeCompare(String(vb), locale)
-        : va - vb;
-    return order === 0 ? byName(a, b) : sign * order;
+      va === null || vb === null ? missingLast(va, vb) : sign * compareValues(va, vb, locale);
+    return order === 0 ? a.name.localeCompare(b.name, locale) : order;
   });
 };
 

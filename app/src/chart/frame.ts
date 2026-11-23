@@ -233,23 +233,24 @@ export const addHover = (
     const year =
       e.key === 'Home' ? lo : e.key === 'End' ? hi : step ? clamp(focused() + step) : null;
     if (e.key === 'Escape') clear();
-    if (year === null) return;
-    e.preventDefault();
-    point(year);
+    if (year !== null) {
+      e.preventDefault();
+      point(year);
+    }
   };
   if (document.activeElement === container) showYear(clamp(focused()));
 };
 
 /** Re-renders when the container's width changes. */
 export const onResize = (el: HTMLElement, render: () => void): void => {
-  if (typeof ResizeObserver === 'undefined') return;
   let width = el.clientWidth;
-  new ResizeObserver(() => {
-    if (el.clientWidth !== width) {
-      width = el.clientWidth;
-      render();
-    }
-  }).observe(el);
+  if (typeof ResizeObserver !== 'undefined')
+    new ResizeObserver(() => {
+      if (el.clientWidth !== width) {
+        width = el.clientWidth;
+        render();
+      }
+    }).observe(el);
 };
 
 export const legendList = (items: { label: string; className: string }[]): HTMLElement =>

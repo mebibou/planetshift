@@ -285,11 +285,13 @@ const intensitySources = [
   'https://www.fao.org/faostat/en/#data/GCE',
 ];
 const sourceOf = (tier) => (tier <= 2 ? 0 : Math.min(tier, 5) - 2);
+const groupFactor = { ruminantMeat: ruminantFactor, dairy: milkFactor };
+// Bananas (2615) come one tier below the country's other items.
+const tierAt = (iso3, code) => Math.min(6, tierOf[iso3] + (code === 2615 ? 1 : 0));
 const intensity = (iso3, code) => {
   const [co2, ch4, n2o] = farmGate[code];
-  const g = itemGroup[code];
-  const f = g === 'ruminantMeat' ? ruminantFactor[iso3] : g === 'dairy' ? milkFactor[iso3] : 1;
-  const tier = Math.min(6, tierOf[iso3] + (code === 2615 ? 1 : 0));
+  const f = groupFactor[itemGroup[code]]?.[iso3] ?? 1;
+  const tier = tierAt(iso3, code);
   const mk = (kg) => ({
     kgPerTonne: { co2: r(kg[0], 2), ch4: r(kg[1], 3), n2o: r(kg[2], 3) },
     tier,
@@ -772,11 +774,10 @@ write('removals.json', {
 // values of sectors.md (2023, 2050, 2100); the grid's intensity in kg CO₂ per kWh
 const SECTOR_START = 2023;
 const sectorYears = years(SECTOR_START, 2100);
+const lerp = ([y0, v0], [y1, v1], y) => v0 + ((v1 - v0) * (y - y0)) / (y1 - y0);
 const through = (points) => (y) => {
   const i = points.findIndex(([py]) => py >= y);
-  if (i <= 0) return points[Math.max(0, i)][1];
-  const [[y0, v0], [y1, v1]] = [points[i - 1], points[i]];
-  return v0 + ((v1 - v0) * (y - y0)) / (y1 - y0);
+  return i <= 0 ? points[Math.max(0, i)][1] : lerp(points[i - 1], points[i], y);
 };
 const sectorGt = {
   ssp126: {

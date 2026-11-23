@@ -4,10 +4,12 @@ import hashlib
 import json
 import logging
 import os
+from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
 from urllib.parse import unquote, urlparse
 
+import pandas as pd
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -41,12 +43,25 @@ def sidecar(path: Path) -> Path:
     return path.with_name(path.name + ".json")
 
 
+def extracted(extract: Path, build: Callable[[], pd.DataFrame]) -> pd.DataFrame:
+    """The frame kept in `extract`, built and kept there the first time it is asked for."""
+    if not extract.exists():
+        extract.parent.mkdir(parents=True, exist_ok=True)
+        build().to_pickle(extract)
+    return pd.read_pickle(extract)
+
+
 def fetched(cache_dir: Path, url: str, name: str | None = None, timeout: int = 600) -> Path:
     """The cached copy of `url`, downloading it the first time."""
     path = cache_dir / (name or file_name(url))
-    if path.exists():
-        return path
-    cache_dir.mkdir(parents=True, exist_ok=True)
+    if not path.exists():
+        download(url, path, timeout)
+    return path
+
+
+def download(url: str, path: Path, timeout: int) -> None:
+    """Downloads `url` to `path` through a partial file, and records where and when it came from."""
+    path.parent.mkdir(parents=True, exist_ok=True)
     log.info("downloading %s", url)
     partial = path.with_name(f"{path.name}.{os.getpid()}.part")
     with session().get(url, stream=True, timeout=timeout) as r:
@@ -58,7 +73,6 @@ def fetched(cache_dir: Path, url: str, name: str | None = None, timeout: int = 6
         digest = hashlib.file_digest(f, "sha256").hexdigest()
     partial.rename(path)
     record(path, url=url, downloaded=today(), sha256=digest)
-    return path
 
 
 def recorded(path: Path) -> dict:

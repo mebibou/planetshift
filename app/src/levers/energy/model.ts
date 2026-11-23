@@ -164,13 +164,27 @@ export const energyPaths = (
   years: readonly number[],
   shareAt: (year: number) => number,
   aviation: AviationNonCo2,
+): EnergyPaths =>
+  hasSectors(sectors) && ENERGY_LEVERS.some((id) => adoption(id) > 0)
+    ? actingPaths(sectors, co, adoption, ssp, dataCentres, band, years, shareAt, aviation)
+    : {
+        co2: years.map(() => 0),
+        co: years.map(() => ({ co2: {}, change: NO_CO_CHANGE })),
+        forcing: years.map(() => 0),
+      };
+
+/** The paths once some energy lever acts on the sectors' data. */
+const actingPaths = (
+  sectors: Sectors,
+  co: Partial<CoEmissions> | undefined,
+  adoption: (id: string) => number,
+  ssp: Ssp,
+  dataCentres: DataCentres,
+  band: Band,
+  years: readonly number[],
+  shareAt: (year: number) => number,
+  aviation: AviationNonCo2,
 ): EnergyPaths => {
-  if (!hasSectors(sectors) || !ENERGY_LEVERS.some((id) => adoption(id) > 0))
-    return {
-      co2: years.map(() => 0),
-      co: years.map(() => ({ co2: {}, change: NO_CO_CHANGE })),
-      forcing: years.map(() => 0),
-    };
   const ctx: YearContext = { sectors, ssp, dataCentres, band };
   const full = energyAdoption(adoption, 1);
   const adoptions = years.map((y) => energyAdoption((id) => full[id as EnergyLever], shareAt(y)));

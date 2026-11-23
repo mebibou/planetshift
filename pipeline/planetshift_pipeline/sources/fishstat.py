@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from ..cache import fetched
+from ..cache import extracted, fetched
 
 VERSION = "2025.1.0"
 URL = f"https://www.fao.org/fishery/static/Data/GlobalProduction_{VERSION}.zip"
@@ -63,9 +63,12 @@ def tidy(
 def read(cache_dir: Path, first: int, last: int) -> pd.DataFrame:
     """`tidy` rows for the years first..last, kept as an extract in the cache once read."""
     extract = Path(cache_dir) / "extracts" / f"fishstat_{VERSION}_{first}_{last}.pkl"
-    if extract.exists():
-        return pd.read_pickle(extract)
-    path = fetched(Path(cache_dir), URL)
+    return extracted(extract, lambda: from_zip(Path(cache_dir), first, last))
+
+
+def from_zip(cache_dir: Path, first: int, last: int) -> pd.DataFrame:
+    """FishStat's production quantities for first..last, with their species, areas and countries."""
+    path = fetched(cache_dir, URL)
     text = {"dtype": str, "keep_default_na": False}
     with zipfile.ZipFile(path) as z:
         quantity = pd.read_csv(
@@ -76,7 +79,4 @@ def read(cache_dir: Path, first: int, last: int) -> pd.DataFrame:
         species = pd.read_csv(z.open("CL_FI_SPECIES_GROUPS.csv"), **text)
         areas = pd.read_csv(z.open("CL_FI_WATERAREA_GROUPS.csv"), **text)
         countries = pd.read_csv(z.open("CL_FI_COUNTRY_GROUPS.csv"), **text)
-    df = tidy(quantity, species, areas, countries)
-    extract.parent.mkdir(parents=True, exist_ok=True)
-    df.to_pickle(extract)
-    return df
+    return tidy(quantity, species, areas, countries)

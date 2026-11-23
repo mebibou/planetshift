@@ -30,9 +30,10 @@ export const practices: LeverModule = {
   available: (data, id) => data.practices[id as PracticeId] !== undefined,
   hooks: {
     intensity: ({ prepared, options, adoption }) => {
-      if (!anyAdopted(adoption, LEVERS)) return null;
       const key = practicesKey(options.scope, adoption);
-      return (pc, band) => practiceCutsOf(pc, prepared, options.scope, adoption, key)[band];
+      return anyAdopted(adoption, LEVERS)
+        ? (pc, band) => practiceCutsOf(pc, prepared, options.scope, adoption, key)[band]
+        : null;
     },
   },
   ui: { section: 'levers' },

@@ -37,8 +37,8 @@ def committed(name: str):
             text=True,
         ).stdout
     except (OSError, subprocess.CalledProcessError):
-        return None
-    return json.loads(text)
+        text = None
+    return None if text is None else json.loads(text)
 
 
 def world_production() -> dict:
@@ -112,10 +112,16 @@ def test_items_and_land_are_unchanged_but_for_seafood_items():
 
 
 def without_seafood(value):
-    if isinstance(value, dict):
-        kept = {k: without_seafood(v) for k, v in value.items() if k not in SEAFOOD}
-        return {k: v for k, v in kept.items() if v != {} or not isinstance(value[k], dict)}
-    return value
+    kept = (
+        {k: without_seafood(v) for k, v in value.items() if k not in SEAFOOD}
+        if isinstance(value, dict)
+        else {}
+    )
+    return (
+        {k: v for k, v in kept.items() if v != {} or not isinstance(value[k], dict)}
+        if isinstance(value, dict)
+        else value
+    )
 
 
 @pytest.mark.parametrize("name", ["supply.json", "intensities.json", "breakdown.json"])

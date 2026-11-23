@@ -164,10 +164,13 @@ def workers() -> int:
     """FaIR batches to run at once: PLANETSHIFT_FAIR_WORKERS, else as many as memory allows (a
     batch of the full ensemble peaks near 4 GB, and FaIR is held back by memory bandwidth
     beyond two), at least one."""
-    if os.environ.get(WORKERS_VARIABLE):
-        return max(1, int(os.environ[WORKERS_VARIABLE]))
-    memory = os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES")
-    return max(1, min(2, (os.cpu_count() or 1) // 2, int(memory // BATCH_MEMORY)))
+    asked = os.environ.get(WORKERS_VARIABLE)
+    return max(1, int(asked) if asked else min(2, (os.cpu_count() or 1) // 2, memory_batches()))
+
+
+def memory_batches() -> int:
+    """How many batches of the full ensemble the machine's memory holds at once."""
+    return int(os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES") // BATCH_MEMORY)
 
 
 def _run_batches(
@@ -175,11 +178,13 @@ def _run_batches(
 ) -> list[tuple[np.ndarray, np.ndarray, np.ndarray]]:
     count = min(workers(), len(batches))
     if count <= 1:
-        return [_run_batch(setup, batch, end, feedback) for batch in batches]
-    with ProcessPoolExecutor(count) as pool:
-        return list(
-            pool.map(partial(_run_batch, setup, end=end, carbon_feedback=feedback), batches)
-        )
+        outputs = [_run_batch(setup, batch, end, feedback) for batch in batches]
+    else:
+        with ProcessPoolExecutor(count) as pool:
+            outputs = list(
+                pool.map(partial(_run_batch, setup, end=end, carbon_feedback=feedback), batches)
+            )
+    return outputs
 
 
 def run(

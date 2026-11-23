@@ -73,14 +73,15 @@ export const worthShown = (
   horizon: Horizon,
 ): WorthShown | null => {
   const own = values.get(id);
-  if (!own) return null;
   const largest = Math.max(
     0,
     ...[...values.entries()]
       .filter(([k]) => scaleOf(k) === scaleOf(id))
       .map(([, v]) => Math.abs(v[horizon])),
   );
-  return { change: -own[horizon], share: largest > 0 ? Math.abs(own[horizon]) / largest : 0 };
+  return own
+    ? { change: -own[horizon], share: largest > 0 ? Math.abs(own[horizon]) / largest : 0 }
+    : null;
 };
 
 /** Runs `task` once the page has been quiet for `delayMs` and the browser is idle; returns a cancel. */
@@ -139,10 +140,11 @@ export const worthCache = (deps: WorthCacheDeps): WorthCache => {
   };
   const step = () => {
     const next = current.find((j) => !cache.has(j.key));
-    if (!next || !options) return;
-    remember(next.key, run(next.scenario, options));
-    onChange(values());
-    if (current.some((j) => !cache.has(j.key))) cancel = idle(step, 0);
+    if (next && options) {
+      remember(next.key, run(next.scenario, options));
+      onChange(values());
+      if (current.some((j) => !cache.has(j.key))) cancel = idle(step, 0);
+    }
   };
   return {
     request: (s, o) => {

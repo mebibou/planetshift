@@ -252,9 +252,12 @@ describe('processed items', () => {
       String(item.code) === '2571' ? oil : 0,
     );
     expect(emissionsOf(oilOnly, kg).co2).toBeGreaterThan(0);
-    const soyDemand = (pc: (typeof prepared.countries)[number]) => {
+    type Country = (typeof prepared.countries)[number];
+    const soyDemand = (pc: Country) => {
       const row = pc.rows.get('2555');
-      if (!row) return 0;
+      return row ? soyDemandOf(pc, row) : 0;
+    };
+    const soyDemandOf = (pc: Country, row: NonNullable<ReturnType<Country['rows']['get']>>) => {
       const feed = feedChange(
         pc,
         groupProductionChange(pc.emitting, change[pc.country.iso3]!, prepared),

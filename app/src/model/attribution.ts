@@ -32,11 +32,12 @@ export const shapley = <P>(
       const bit = 1 << i;
       const value = new Array<number>(length).fill(0);
       worths.forEach((without, mask) => {
-        if ((mask & bit) !== 0) return;
-        const w = weight[bitCount(mask)] as number;
-        const joined = worths[mask | bit] as readonly number[];
-        for (let k = 0; k < length; k++)
-          value[k] = (value[k] as number) + w * ((joined[k] as number) - (without[k] as number));
+        if ((mask & bit) === 0) {
+          const w = weight[bitCount(mask)] as number;
+          const joined = worths[mask | bit] as readonly number[];
+          for (let k = 0; k < length; k++)
+            value[k] = (value[k] as number) + w * ((joined[k] as number) - (without[k] as number));
+        }
       });
       return [player, value];
     }),

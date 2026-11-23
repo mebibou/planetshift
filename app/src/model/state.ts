@@ -33,8 +33,7 @@ export const MAX_RAMP_END = 2050;
 const percent = (share: number): string => String(Math.round(share * 1000) / 10);
 
 const readPercent = (raw: string | null): number | undefined => {
-  if (raw === null || raw.trim() === '') return undefined;
-  const n = Number(raw);
+  const n = raw === null || raw.trim() === '' ? NaN : Number(raw);
   return Number.isFinite(n) && n >= 0 && n <= 100 ? n / 100 : undefined;
 };
 
@@ -75,6 +74,15 @@ export const encodeState = (scenario: Scenario, options: Options): string => {
 
 const earliestRampEnd = (currentYear: number): number => Math.min(currentYear + 1, MAX_RAMP_END);
 
+/** The ramp's last year from the URL, its default when invalid, never before the slider's first. */
+const rampOf = (ramp: number, currentYear: number | undefined): number =>
+  Math.max(
+    Number.isInteger(ramp) && ramp >= MIN_RAMP_END && ramp <= MAX_RAMP_END
+      ? ramp
+      : BASE_SCENARIO.rampEnd,
+    currentYear === undefined ? MIN_RAMP_END : earliestRampEnd(currentYear),
+  );
+
 /**
  * Query string (with or without '?') → scenario and options; anything invalid takes its default.
  * Given the current year, a ramp that would end before the slider's first year starts there.
@@ -100,12 +108,7 @@ export const decodeState = (
       SCENARIO_CHOICES.replacement,
       BASE_SCENARIO.replacement,
     ),
-    rampEnd: Math.max(
-      Number.isInteger(ramp) && ramp >= MIN_RAMP_END && ramp <= MAX_RAMP_END
-        ? ramp
-        : BASE_SCENARIO.rampEnd,
-      currentYear === undefined ? MIN_RAMP_END : earliestRampEnd(currentYear),
-    ),
+    rampEnd: rampOf(ramp, currentYear),
     where: pick(get(SCENARIO_KEYS.where), SCENARIO_CHOICES.where, BASE_SCENARIO.where),
     levers: Object.fromEntries(
       LEVERS.flatMap(({ id, key }) => {

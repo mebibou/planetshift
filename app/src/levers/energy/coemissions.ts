@@ -34,8 +34,15 @@ export const coChange = (
   year: number,
   co2: Readonly<Partial<Record<CoSector, number>>>,
   keepsNox: KeepsNox = [],
+): CoChange => (hasCoEmissions(co) ? coChangeOf(co, ssp, year, co2, keepsNox) : NO_CO_CHANGE);
+
+const coChangeOf = (
+  co: CoEmissions,
+  ssp: Ssp,
+  year: number,
+  co2: Readonly<Partial<Record<CoSector, number>>>,
+  keepsNox: KeepsNox,
 ): CoChange => {
-  if (!hasCoEmissions(co)) return NO_CO_CHANGE;
   const ratios = co.perKgCo2[ssp];
   const sectors = (Object.keys(co2) as CoSector[]).filter((s) => co2[s] !== 0 && ratios[s]);
   return recordFrom(CO_SPECIES, (species) => {
@@ -99,9 +106,16 @@ export const airPollutionForcing = (
   ssp: Ssp,
   band: Band,
   year: number,
+  changes: CoYear,
+): number => (hasCoEmissions(co) ? forcingOf(co, ssp, band, year, changes) : 0);
+
+const forcingOf = (
+  co: CoEmissions,
+  ssp: Ssp,
+  band: Band,
+  year: number,
   { co2, change }: CoYear,
 ): number => {
-  if (!hasCoEmissions(co)) return 0;
   const nox =
     change.nox === 0
       ? 0
@@ -136,10 +150,18 @@ export const noxMethane = (
   ssp: Ssp,
   band: Band,
   year: number,
+  changes: CoYear,
+  variant: NoxMethane,
+): number => (hasCoEmissions(co) ? noxMethaneOf(co, ssp, band, year, changes, variant) : 0);
+
+const noxMethaneOf = (
+  co: CoEmissions,
+  ssp: Ssp,
+  band: Band,
+  year: number,
   { co2, keepsNox = [] }: CoYear,
   variant: NoxMethane,
 ): number => {
-  if (!hasCoEmissions(co)) return 0;
   const perKg = co.noxCh4PerKgCo2[variant][ssp];
   return (Object.keys(co2) as CoSector[])
     .filter((s) => co2[s] !== 0 && perKg[s] && !keepsNox.includes(s))

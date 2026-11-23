@@ -93,33 +93,37 @@ def gas_of(term_id: str) -> str | None:
 
 def category_of(term_id: str) -> str | None:
     """onFarm, background, landUse or excluded; None for anything that is not CO2, CH4 or N2O."""
-    if gas_of(term_id) is None:
-        return None
-    if term_id in NOT_COUNTED:
-        return "excluded"
-    if "InputsProduction" in term_id:
-        return "background"
-    if any(marker in term_id for marker in LAND_USE_MARKERS):
-        return "landUse"
-    return "onFarm"
+    return (
+        None
+        if gas_of(term_id) is None
+        else "excluded"
+        if term_id in NOT_COUNTED
+        else "background"
+        if "InputsProduction" in term_id
+        else "landUse"
+        if any(marker in term_id for marker in LAND_USE_MARKERS)
+        else "onFarm"
+    )
 
 
 def source_of(term_id: str, input_types: Iterable[str] = ()) -> str | None:
     """The emission source of a counted term, None for terms no scope counts."""
     category = category_of(term_id)
-    if category == "background":
-        return "energy" if ENERGY_INPUT_TYPES.intersection(input_types) else "inputsManufacture"
-    if category != "onFarm":
-        return None
-    return next((source for marker, source in SOURCE_MARKERS if marker in term_id), "other")
+    return (
+        ("energy" if ENERGY_INPUT_TYPES.intersection(input_types) else "inputsManufacture")
+        if category == "background"
+        else next((source for marker, source in SOURCE_MARKERS if marker in term_id), "other")
+        if category == "onFarm"
+        else None
+    )
 
 
 def counts_in(scope: str, category: str | None, input_types: Iterable[str]) -> bool:
-    if category == "onFarm":
-        return True
-    if category == "background" and scope == "cradleToFarmGate":
-        return not AGRICULTURAL_INPUT_TYPES.intersection(input_types)
-    return False
+    return category == "onFarm" or (
+        category == "background"
+        and scope == "cradleToFarmGate"
+        and not AGRICULTURAL_INPUT_TYPES.intersection(input_types)
+    )
 
 
 def gas_totals(rows: Iterable[dict], keep: Callable[[str | None, list[str]], bool]) -> dict:
@@ -142,12 +146,16 @@ def scope_totals(rows: list[dict], scope: str) -> dict:
 
 def area_of(region_id: str) -> str | None:
     """An ISO3 code, World, or region:<id>, from a HESTIA region term id."""
-    if region_id == "region-world":
-        return "World"
-    if region_id.startswith("region-"):
-        return f"region:{region_id}"
     match = re.fullmatch(r"GADM-([A-Z]{3})", region_id)
-    return match.group(1) if match else None
+    return (
+        "World"
+        if region_id == "region-world"
+        else f"region:{region_id}"
+        if region_id.startswith("region-")
+        else match.group(1)
+        if match
+        else None
+    )
 
 
 def term_of(aggregation_id: str) -> str:
@@ -223,8 +231,11 @@ def node_rows(node: dict, terms: pd.DataFrame) -> list[dict]:
     """Rows of one aggregation: one per FBS item it is mapped to and per scope."""
     area = area_of(node.get("country", {}).get("@id") or "")
     rows = node.get("emissionsResourceUse", [])
-    if area is None or not rows:
-        return []
+    return [] if area is None or not rows else item_rows(node, terms, area, rows)
+
+
+def item_rows(node: dict, terms: pd.DataFrame, area: str, rows: list[dict]) -> list[dict]:
+    """The aggregation's intensity per tonne of each FBS item it is mapped to, by scope."""
     term = node["product"]["term"]["@id"]
     url = f"{SITE}/impactassessment/{node['@id']}"
     totals = {scope: scope_totals(rows, scope) for scope in SCOPES}
@@ -263,8 +274,11 @@ def node_source_rows(node: dict, terms: pd.DataFrame) -> list[dict]:
     """node_rows, split by gas and emission source: kg of the gas per tonne of the FBS item."""
     area = area_of(node.get("country", {}).get("@id") or "")
     rows = node.get("emissionsResourceUse", [])
-    if area is None or not rows:
-        return []
+    return [] if area is None or not rows else item_source_rows(node, terms, area, rows)
+
+
+def item_source_rows(node: dict, terms: pd.DataFrame, area: str, rows: list[dict]) -> list[dict]:
+    """The aggregation's kg of each gas by source per tonne of each FBS item, by scope."""
     term = node["product"]["term"]["@id"]
     totals = {scope: source_totals(rows, scope) for scope in SCOPES}
     return [
@@ -285,9 +299,16 @@ def node_source_rows(node: dict, terms: pd.DataFrame) -> list[dict]:
 
 def combine(rows: list[dict]) -> pd.DataFrame:
     """Keeps the best priority of each item and area, and averages the products sharing it."""
-    if not rows:
-        return pd.DataFrame(columns=COLUMNS).astype({"fbs_item_code": int})
-    frame = pd.DataFrame(rows).sort_values(["fbs_item_code", "area", "scope", "priority", "term"])
+    return (
+        best_averaged(pd.DataFrame(rows))
+        if rows
+        else pd.DataFrame(columns=COLUMNS).astype({"fbs_item_code": int})
+    )
+
+
+def best_averaged(frame: pd.DataFrame) -> pd.DataFrame:
+    """The products of the best priority of each item, area and scope, averaged."""
+    frame = frame.sort_values(["fbs_item_code", "area", "scope", "priority", "term"])
     keys = ["fbs_item_code", "area", "scope"]
     best = frame[frame.priority == frame.groupby(keys).priority.transform("min")]
     return (
@@ -337,10 +358,8 @@ def session() -> requests.Session:
 def cached(path: Path, fetch: Callable[[], Any]) -> Any:
     """The JSON at path, or fetch() written there (None, a node HESTIA does not serve, is not
     cached); a failed request raises."""
-    if path.exists():
-        return json.loads(path.read_text())
-    value = fetch()
-    if value is not None:
+    value = json.loads(path.read_text()) if path.exists() else fetch()
+    if value is not None and not path.exists():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(value))
     return value
@@ -375,11 +394,12 @@ def fetch_node(http: requests.Session, aggregation_id: str) -> dict | None:
         params={"dataState": "recalculated"},
         timeout=TIMEOUT,
     )
-    if response.status_code in (401, 403, 404):
+    refused = response.status_code in (401, 403, 404)
+    if refused:
         log.info("HESTIA aggregation %s answered %s", aggregation_id, response.status_code)
-        return None
-    response.raise_for_status()
-    return trim_node(response.json())
+    else:
+        response.raise_for_status()
+    return None if refused else trim_node(response.json())
 
 
 def release_dir(cache_dir: Path) -> Path:
@@ -391,18 +411,21 @@ def combine_sources(rows: list[dict], source_rows: list[dict]) -> pd.DataFrame:
     area and scope, with the URL `combine` gives the row: the shares of these sums are the
     shares of the averaged intensity."""
     columns = ["fbs_item_code", "area", "scope", "url", "gas", "source", "kg"]
-    if not rows or not source_rows:
-        return pd.DataFrame(columns=columns)
+    return (
+        best_sources(rows, source_rows)[columns]
+        if rows and source_rows
+        else pd.DataFrame(columns=columns)
+    )
+
+
+def best_sources(rows: list[dict], source_rows: list[dict]) -> pd.DataFrame:
+    """The source rows of the products `combine` keeps, summed, with the URL it gives."""
     keys = ["fbs_item_code", "area", "scope"]
     frame = pd.DataFrame(rows).sort_values([*keys, "priority", "term"])
     best = frame[frame.priority == frame.groupby(keys).priority.transform("min")]
     urls = best.groupby(keys, as_index=False).url.first()
     kept = pd.DataFrame(source_rows).merge(best[[*keys, "term"]], on=[*keys, "term"])
-    return (
-        kept.groupby([*keys, "gas", "source"], as_index=False)["kg"]
-        .sum()
-        .merge(urls, on=keys)[columns]
-    )
+    return kept.groupby([*keys, "gas", "source"], as_index=False)["kg"].sum().merge(urls, on=keys)
 
 
 def fetch_nodes(cache_dir: Path) -> list[dict]:

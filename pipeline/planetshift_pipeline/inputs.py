@@ -33,10 +33,11 @@ class MissingSource(RuntimeError):
 def optional(module: str):
     """A sibling module another part of the project owns, or None when it is missing or broken."""
     try:
-        return importlib.import_module(f"planetshift_pipeline.{module}")
+        found = importlib.import_module(f"planetshift_pipeline.{module}")
     except Exception as err:  # noqa: BLE001 - any failure means building without it
         log.warning("%s unavailable (%s)", module, err)
-        return None
+        found = None
+    return found
 
 
 def write(out_dir: Path, name: str, data) -> None:
@@ -138,10 +139,11 @@ class Build:
     def fishstat(self) -> pd.DataFrame | None:
         """FishStat production for the years before the base year, or None if unavailable."""
         try:
-            return fishstat.read(self.cache, self.year - 4, self.year)
+            production = fishstat.read(self.cache, self.year - 4, self.year)
         except Exception as err:  # noqa: BLE001 - seafood falls back to proxies and medians
             self.without(("sources.fishstat", "seafood"), err)
-            return None
+            production = None
+        return production
 
     @cached_property
     def production(self) -> pd.DataFrame:
@@ -166,10 +168,11 @@ class Build:
     def has_french(self, domain: str) -> bool:
         try:
             faostat.bulk_path(self.cache, domain)
-            return True
+            found = True
         except Exception as err:  # noqa: BLE001
             self.without((f"faostat-{domain.lower()}",), err)
-            return False
+            found = False
+        return found
 
     @cached_property
     def emissions_year(self) -> int:
@@ -217,22 +220,23 @@ class Build:
         """`function` of the first of `modules` on the cache, or `default` (after `without`)
         when it is missing or fails; the other modules depend on it."""
         fn = self.module(modules[0], function)
-        if fn is None:
-            return default
+        value = default
         try:
-            return fn(self.cache)
+            value = default if fn is None else fn(self.cache)
         except Exception as err:  # noqa: BLE001 - any failure is a missing source
             self.without(modules, f"{function} failed: {err}")
-            return default
+        return value
 
     def external(
         self, modules: tuple[str, ...], function: str, tier_country: int, tier_wide: int, members
     ):
         df = self.fetch(modules, function, None)
-        if df is None:
-            return None
         countries = sorted(set(self.iso3.values()))
-        return I.candidates_from(df, countries, members, tier_country, tier_wide)
+        return (
+            None
+            if df is None
+            else I.candidates_from(df, countries, members, tier_country, tier_wide)
+        )
 
     @cached_property
     def hestia_members(self) -> dict[str, list[str]]:

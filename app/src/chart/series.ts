@@ -43,16 +43,25 @@ export interface EnsoMark extends Point {
   oni: number;
 }
 
+type EnsoYear = Pick<EnsoMark, 'phase' | 'oni'>;
+
+/** El Niño and La Niña years, each with its phase and annual ONI. */
+const ensoYears = (enso: Enso): Map<number, EnsoYear> =>
+  new Map(
+    enso.years.flatMap((year, i): [number, EnsoYear][] => {
+      const [phase, oni] = [enso.phase[i], enso.oni[i]];
+      return phase !== undefined && phase !== 'neutral' && oni !== undefined
+        ? [[year, { phase, oni }]]
+        : [];
+    }),
+  );
+
 /** The observed points of El Niño and La Niña years, each with its phase and annual ONI. */
 export const ensoMarks = (enso: Enso | undefined, observed: readonly Point[]): EnsoMark[] => {
-  const byYear = new Map((enso?.years ?? []).map((y, i) => [y, i]));
+  const byYear = enso ? ensoYears(enso) : new Map<number, EnsoYear>();
   return observed.flatMap((p) => {
-    const i = byYear.get(p.year);
-    const phase = i === undefined ? undefined : enso?.phase[i];
-    const oni = i === undefined ? undefined : enso?.oni[i];
-    return phase === undefined || phase === 'neutral' || oni === undefined
-      ? []
-      : [{ ...p, phase, oni }];
+    const e = byYear.get(p.year);
+    return e ? [{ ...p, ...e }] : [];
   });
 };
 
@@ -92,13 +101,20 @@ export type CauseRow = { year: number } & Record<Cause, number>;
  * Rows of { year, fossilIndustry, agriculture, … } from the attribution medians, for d3.stack;
  * with `avoided` (°C by cause on `avoided.years`), each lever cause less what the levers avoid.
  */
-export const attributionRows = (
-  attribution: Attribution,
-  avoided?: {
-    years: readonly number[];
-    byCause: Readonly<Partial<Record<LeverCause, readonly number[]>>>;
-  },
-): CauseRow[] => {
+/** A band's median in `year`, at index `i` when its years line up with the attribution's. */
+const medianAt = (s: BandSeries, i: number, year: number): number =>
+  s.median[s.years[i] === year ? i : s.years.indexOf(year)] ?? 0;
+
+/** What the levers avoid of a cause at index `k` of their years; nothing for another cause. */
+const avoidedAt = (avoided: AvoidedSeries | undefined, c: Cause, k: number | undefined): number =>
+  avoided && k !== undefined ? (avoided.byCause[c as LeverCause]?.[k] ?? 0) : 0;
+
+interface AvoidedSeries {
+  years: readonly number[];
+  byCause: Readonly<Partial<Record<LeverCause, readonly number[]>>>;
+}
+
+export const attributionRows = (attribution: Attribution, avoided?: AvoidedSeries): CauseRow[] => {
   const causes = causesIn(attribution);
   const years = (causes[0] === undefined ? undefined : attribution[causes[0]])?.years ?? [];
   const index = new Map(avoided?.years.map((y, i) => [y, i]));
@@ -109,11 +125,7 @@ export const attributionRows = (
       ...(Object.fromEntries(
         CAUSES.map((c) => {
           const s = attribution[c];
-          if (!s || !causes.includes(c)) return [c, 0];
-          const j = s.years[i] === year ? i : s.years.indexOf(year);
-          const less =
-            avoided && k !== undefined ? (avoided.byCause[c as LeverCause]?.[k] ?? 0) : 0;
-          return [c, (s.median[j] ?? 0) - less];
+          return [c, s && causes.includes(c) ? medianAt(s, i, year) - avoidedAt(avoided, c, k) : 0];
         }),
       ) as Record<Cause, number>),
     };
@@ -144,9 +156,12 @@ export const causesAt = (
   year: number,
 ): { total: number; byCause: Record<Cause, number> } | null => {
   const row = attributionRows(attribution).find((r) => r.year === year);
-  if (!row) return null;
-  const byCause = Object.fromEntries(CAUSES.map((c) => [c, row[c]])) as Record<Cause, number>;
-  return { total: CAUSES.reduce((s, c) => s + row[c], 0), byCause };
+  return row
+    ? {
+        total: CAUSES.reduce((s, c) => s + row[c], 0),
+        byCause: Object.fromEntries(CAUSES.map((c) => [c, row[c]])) as Record<Cause, number>,
+      }
+    : null;
 };
 
 /** Pairs the gap between two series at a year, for the chart annotation. */

@@ -37,9 +37,7 @@ export const avoidedChart = (t: T, locale: string, currentYear: number): Avoided
     h('figcaption', {}, h('p', { class: 'chart-caption' }, t('avoidedChart.caption'))),
   );
   let last: [ScenarioResult, number] | null = null;
-  const render = () => {
-    if (!last) return;
-    const [result, end] = last;
+  const draw = ([result, end]: NonNullable<typeof last>) => {
     const tp = result.temperature;
     const median = inRange(zipSeries(tp.years, tp.avoided.median), currentYear, end);
     const band = inRange(zipBand(tp.years, tp.avoided.p05, tp.avoided.p95), currentYear, end);
@@ -97,6 +95,9 @@ export const avoidedChart = (t: T, locale: string, currentYear: number): Avoided
       },
       t('chart.keys'),
     );
+  };
+  const render = () => {
+    if (last) draw(last);
   };
   onResize(plotEl, render);
   return {

@@ -64,14 +64,15 @@ export const paintWorth = (
   root.querySelectorAll<HTMLElement>('[data-worth]').forEach((el) => {
     const shown = worthShown(values, el.dataset.worth ?? '', horizon);
     el.hidden = shown === null;
-    if (!shown) return;
-    const text = worthText(locale, shown.change);
-    const sentence = t('worth.title', { value: text, year: horizon });
-    el.replaceChildren(
-      h('span', { 'aria-hidden': 'true' }, text),
-      h('span', { class: 'visually-hidden' }, sentence),
-    );
-    el.classList.toggle('is-added', shown.change > 0);
-    el.style.setProperty('--share', `${(shown.share * 100).toFixed(0)}%`);
-    el.title = sentence;
+    if (shown) {
+      const text = worthText(locale, shown.change);
+      const sentence = t('worth.title', { value: text, year: horizon });
+      el.replaceChildren(
+        h('span', { 'aria-hidden': 'true' }, text),
+        h('span', { class: 'visually-hidden' }, sentence),
+      );
+      el.classList.toggle('is-added', shown.change > 0);
+      el.style.setProperty('--share', `${(shown.share * 100).toFixed(0)}%`);
+      el.title = sentence;
+    }
   });

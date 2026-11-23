@@ -37,12 +37,13 @@ def load(cache_dir: Path) -> pd.DataFrame:
 def world_kg(df: pd.DataFrame, category: str, gas: str, years: np.ndarray) -> np.ndarray:
     """kg/yr of `gas` ('co2', 'ch4', 'n2o') in `category` on `years`; categories absent are 0."""
     rows = df[(df["category (IPCC2006_PRIMAP)"] == category) & (df["entity"] == GASES[gas])]
-    if rows.empty:
-        return np.zeros(len(years))
-    if not (rows["unit"].str.contains("gigagram / yr")).all():
+    if not rows.empty and not (rows["unit"].str.contains("gigagram / yr")).all():
         raise ValueError(f"unexpected unit {rows['unit'].tolist()}")
-    values = rows[[str(y) for y in years]].iloc[0].astype(float).fillna(0.0).to_numpy()
-    return values * KG_PER_GG
+    return (
+        np.zeros(len(years))
+        if rows.empty
+        else rows[[str(y) for y in years]].iloc[0].astype(float).fillna(0.0).to_numpy() * KG_PER_GG
+    )
 
 
 def last_year(df: pd.DataFrame) -> int:

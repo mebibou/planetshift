@@ -19,13 +19,24 @@ export const baselineScale = (
   climate: Climate,
   worldPopulation: Readonly<Record<number, number>>,
   baseYear: number,
+): Scale =>
+  baseline === 'population'
+    ? populationScale(worldPopulation, baseYear)
+    : sspScale(climate, baseYear);
+
+/** Population: today's diet × population, the same ratio for every gas. */
+const populationScale = (
+  worldPopulation: Readonly<Record<number, number>>,
+  baseYear: number,
 ): Scale => {
-  if (baseline === 'population') {
-    const base = worldPopulation[baseYear] ?? 0;
-    const years = Object.keys(worldPopulation).map(Number);
-    const values = years.map((y) => worldPopulation[y] ?? 0);
-    return (_gas, year) => (base > 0 ? valueAt(years, values, year) / base : 1);
-  }
+  const base = worldPopulation[baseYear] ?? 0;
+  const years = Object.keys(worldPopulation).map(Number);
+  const values = years.map((y) => worldPopulation[y] ?? 0);
+  return (_gas, year) => (base > 0 ? valueAt(years, values, year) / base : 1);
+};
+
+/** SSP2-4.5's agricultural emissions path, gas by gas. */
+const sspScale = (climate: Climate, baseYear: number): Scale => {
   const ratios = Object.fromEntries(
     GASES.map((gas) => {
       const { years, values } = climate.agricultureEmissions.ssp245[gas];

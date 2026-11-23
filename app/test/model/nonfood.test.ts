@@ -25,7 +25,8 @@ const run = (data: ModelData, scenario: Partial<Scenario>, options: Partial<Opti
     CURRENT_YEAR,
   );
 
-const fra = (r: ReturnType<typeof run>) => r.countries.find((c) => c.iso3 === 'FRA');
+const fra = (r: ReturnType<typeof run>) =>
+  r.countries.find((c) => c.iso3 === 'FRA') ?? expect.fail('no France');
 
 describe('emissions of animals not raised for food', () => {
   it('are kept by the loader', () => {
@@ -39,8 +40,8 @@ describe('emissions of animals not raised for food', () => {
     const plain = fra(run(loadFixtures(), scenario));
     const held = fra(run(withNonFood(), scenario));
     GASES.forEach((g) => {
-      expect((held?.emissions[g] ?? 0) - (plain?.emissions[g] ?? 0)).toBeCloseTo(NON_FOOD[g], 0);
-      expect(held?.emissionsChange[g]).toBe(plain?.emissionsChange[g]);
+      expect(held.emissions[g] - plain.emissions[g]).toBeCloseTo(NON_FOOD[g], 0);
+      expect(held.emissionsChange[g]).toBe(plain.emissionsChange[g]);
     });
   });
 
@@ -74,11 +75,9 @@ describe('a full shift on the real data', () => {
     const nonFood = Object.entries(real!.intensities.nonFood ?? {});
     expect(nonFood.length).toBeGreaterThan(0);
     const r = run(real!, { shift: 1 });
-    const ind = r.countries.find((c) => c.iso3 === 'IND');
+    const ind = r.countries.find((c) => c.iso3 === 'IND') ?? expect.fail('no India');
     const held = real!.intensities.nonFood?.IND as GasVector;
     expect(held.ch4).toBeGreaterThan(1e9);
-    expect((ind?.emissions.ch4 ?? 0) + (ind?.emissionsChange.ch4 ?? 0)).toBeGreaterThanOrEqual(
-      held.ch4,
-    );
+    expect(ind.emissions.ch4 + ind.emissionsChange.ch4).toBeGreaterThanOrEqual(held.ch4);
   });
 });

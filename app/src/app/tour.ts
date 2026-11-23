@@ -1,3 +1,4 @@
+import { attempt } from './attempt';
 import type { T } from '../i18n/i18n';
 import { h } from './dom';
 import type { View } from './url';
@@ -17,13 +18,7 @@ export const parseTourFlag = (query: string): boolean | null => {
 export const shouldShowTour = (flag: boolean | null, seen: boolean, view: View): boolean =>
   flag ?? (!seen && view === 'explore');
 
-export const readTourSeen = (): boolean => {
-  try {
-    return localStorage.getItem(KEY) === SEEN;
-  } catch {
-    return false;
-  }
-};
+export const readTourSeen = (): boolean => attempt(() => localStorage.getItem(KEY) === SEEN, false);
 
 export const storeTourSeen = (): void => {
   try {

@@ -15,10 +15,13 @@ export const wasteShare = (
   foodTonnes: ItemVector,
   population: number,
 ): number => {
-  if (!waste || population <= 0) return 0;
   const supplyKg = (foodTonnes.reduce((a, t) => a + t, 0) * 1000) / population;
-  const wastedKg = waste.retail + waste.foodService + waste.household;
-  return supplyKg > 0 ? Math.min(MAX_WASTE_SHARE, Math.max(0, wastedKg / supplyKg)) : 0;
+  return waste && population > 0 && supplyKg > 0
+    ? Math.min(
+        MAX_WASTE_SHARE,
+        Math.max(0, (waste.retail + waste.foodService + waste.household) / supplyKg),
+      )
+    : 0;
 };
 
 const shareCache = memoPer<PreparedCountry, number>();

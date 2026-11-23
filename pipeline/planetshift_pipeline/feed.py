@@ -92,10 +92,12 @@ def group_production(
 def normalised(weights: pd.Series) -> dict[str, float]:
     """Shares summing to 1 after rounding (the largest absorbs the rounding), zeros dropped."""
     total = weights.sum()
-    if total <= 0:
-        return {}
-    shares = (weights / total).round(DECIMALS)
-    shares = shares[shares > 0]
+    return balanced((weights / total).round(DECIMALS)) if total > 0 else {}
+
+
+def balanced(rounded: pd.Series) -> dict[str, float]:
+    """The shares above zero, the largest taking what the others' rounding leaves."""
+    shares = rounded[rounded > 0]
     top = shares.idxmax()
     return {
         str(g): float(round(v + (1 - shares.sum() if g == top else 0), DECIMALS))
@@ -144,8 +146,23 @@ def region_shares(
     species split, and a region with no animal production to `fallback` (the world's). Seafood
     items take the fishmeal split (`fish_per_tonne`) in the species method."""
     species = normalised(species_weights(prod, per_tonne))
-    if not species and fallback:
-        return fallback
+    return (
+        fallback
+        if not species and fallback
+        else method_shares(species, prod, rich, items, intake, rations, fish_per_tonne)
+    )
+
+
+def method_shares(
+    species: dict[str, float],
+    prod: pd.DataFrame,
+    rich: pd.Series,
+    items: pd.DataFrame,
+    intake: pd.DataFrame,
+    rations: pd.DataFrame,
+    fish_per_tonne: pd.Series | None,
+) -> dict[str, dict]:
+    """Both methods for a region with animal production: {method: {itemCode: {group: share}}}."""
     fish = (
         normalised(species_weights(prod, fish_per_tonne)) if fish_per_tonne is not None else {}
     ) or species

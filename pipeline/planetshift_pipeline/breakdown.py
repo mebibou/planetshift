@@ -81,12 +81,8 @@ PROCESSED = re.compile(r"^processed from (.+) \(extraction rate\)")
 def primaries(source: str) -> list[tuple[int, float]]:
     """[(primary item, extraction rate)] from a processed cell's source text."""
     match = PROCESSED.match(source)
-    if not match:
-        return []
-    return [
-        (int(code), float(rate))
-        for code, rate in (part.split(" / ") for part in match.group(1).split(" + "))
-    ]
+    parts = match.group(1).split(" + ") if match else []
+    return [(int(code), float(rate)) for code, rate in (part.split(" / ") for part in parts)]
 
 
 def proxy_of(source: str) -> int | None:
@@ -127,13 +123,17 @@ class Resolver:
     def own(self, key: tuple) -> Profile:
         iso3, code, scope = key
         cell = self.cells[key]
-        if cell.tier in (1, 2):
-            return self.hestia.get((code, scope, cell.source), {})
-        if cell.tier == 5 and (proxy := proxy_of(cell.source)) is not None:
-            return self.resolved((iso3, proxy, scope))
-        if cell.tier == 5 and (parts := primaries(cell.source)):
-            return self.from_primaries(iso3, scope, parts)
-        return {}
+        proxy = proxy_of(cell.source) if cell.tier == 5 else None
+        parts = primaries(cell.source) if cell.tier == 5 else []
+        return (
+            self.hestia.get((code, scope, cell.source), {})
+            if cell.tier in (1, 2)
+            else self.resolved((iso3, proxy, scope))
+            if proxy is not None
+            else self.from_primaries(iso3, scope, parts)
+            if parts
+            else {}
+        )
 
     def from_primaries(self, iso3: str, scope: str, parts: list[tuple[int, float]]) -> Profile:
         """Primaries weighted by the emissions each would bring per tonne of the product."""
@@ -213,8 +213,11 @@ def rounded(s: Shares) -> Shares:
     """Shares to DIGITS decimals, zeros dropped, the largest taking the rounding so they sum
     to 1 exactly at that precision."""
     kept = {k: round(v, DIGITS) for k, v in s.items() if round(v, DIGITS) > 0}
-    if not kept:
-        return {max(s, key=s.get): 1.0}
+    return balanced(kept) if kept else {max(s, key=s.get): 1.0}
+
+
+def balanced(kept: Shares) -> Shares:
+    """The largest share takes what the others' rounding leaves, so they sum to 1."""
     top = max(kept, key=kept.get)
     rest = sum(v for k, v in kept.items() if k != top)
     return {k: (round(1 - rest, DIGITS) if k == top else v) for k, v in kept.items()}
@@ -230,19 +233,30 @@ def breakdown_json(
     """Breakdown: world[item][scope][gas][source], and byCountry the same per country, leaving
     out a country's item when it equals the world's or, given `produced` (iso3, fbs_code), when
     the country does not produce it (the app falls back on the world's)."""
+    world_json = world_entries(world)
+    by_country: dict[str, dict] = {}
+    for (iso3, code), scopes in sorted(country_cells(by_cell, produced).items()):
+        if scopes != world_json.get(code):
+            by_country.setdefault(iso3, {})[code] = scopes
+    return {"world": world_json, "byCountry": by_country}
+
+
+def world_entries(world: dict[tuple, Profile]) -> dict[str, dict]:
+    """world[item][scope] = the profile as JSON, for the profiles with any share."""
     world_json: dict[str, dict] = {}
     for (code, scope), profile in sorted(world.items()):
         if as_json(profile):
             world_json.setdefault(str(code), {})[scope] = as_json(profile)
-    by_country: dict[str, dict] = {}
+    return world_json
+
+
+def country_cells(by_cell: dict[tuple, Profile], produced: set[tuple] | None) -> dict[tuple, dict]:
+    """(iso3, item) -> {scope: profile as JSON}, for the items the country produces."""
     cells: dict[tuple, dict] = {}
     for (iso3, code, scope), profile in by_cell.items():
         if (produced is None or (iso3, code) in produced) and as_json(profile):
             cells.setdefault((iso3, str(code)), {})[scope] = as_json(profile)
-    for (iso3, code), scopes in sorted(cells.items()):
-        if scopes != world_json.get(code):
-            by_country.setdefault(iso3, {})[code] = scopes
-    return {"world": world_json, "byCountry": by_country}
+    return cells
 
 
 def build(

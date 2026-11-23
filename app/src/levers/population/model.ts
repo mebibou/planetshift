@@ -29,8 +29,16 @@ export const variantRatio = (
   iso3: string,
   variant: PopulationVariant,
   year: number,
+): number =>
+  variant === 'medium' || year <= pop.lastEstimate ? 1 : projectedRatio(pop, iso3, variant, year);
+
+/** After the last estimate: the country's own ratios when the file has them all, else the world's. */
+const projectedRatio = (
+  pop: PopulationData,
+  iso3: string,
+  variant: Exclude<PopulationVariant, 'medium'>,
+  year: number,
 ): number => {
-  if (variant === 'medium' || year <= pop.lastEstimate) return 1;
   const own = pop.byCountry[iso3]?.[variant];
   return own && own.length === pop.ratioYears.length
     ? valueAt([pop.lastEstimate, ...pop.ratioYears], [1, ...own], year)

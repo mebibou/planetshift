@@ -271,9 +271,10 @@ def rcmip_sector(df: pd.DataFrame, ssp: str, species: str, sector: str, years) -
         raise KeyError(f"RCMIP has no {species} or no sector {sector}")
     variable = f"{prefix.format(RCMIP_NAME[species])}|{sector}"
     try:
-        return rcmip.series(df, ssp, variable, years)
+        values = rcmip.series(df, ssp, variable, years)
     except KeyError:
-        return np.zeros(len(years))
+        values = np.zeros(len(years))
+    return values
 
 
 def trends(df: pd.DataFrame, ssp: str, years: np.ndarray) -> dict[str, dict[str, np.ndarray]]:

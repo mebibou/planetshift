@@ -1,3 +1,4 @@
+import { attempt } from './attempt';
 import type { Loaded } from '../data/load';
 import { localeOf, storeLang, translator, type Lang } from '../i18n/i18n';
 import { LEVER_IDS } from '../levers/registry';
@@ -34,31 +35,21 @@ const ALL_LEVERS: Levers = Object.fromEntries(LEVER_IDS.map((id) => [id, 1]));
 export const stateFromQuery = (
   query: string,
   currentYear?: number,
-): { scenario: Scenario; options: Options } => {
-  try {
-    return decodeState(modelQuery(query), currentYear);
-  } catch {
-    return { scenario: BASE_SCENARIO, options: DEFAULT_OPTIONS };
-  }
-};
+): { scenario: Scenario; options: Options } =>
+  attempt(() => decodeState(modelQuery(query), currentYear), {
+    scenario: BASE_SCENARIO,
+    options: DEFAULT_OPTIONS,
+  });
 
-const queryOf = (s: AppState, current: string): string => {
-  let model = '';
-  try {
-    model = encodeState(s.scenario, s.options);
-  } catch {
-    model = modelQuery(current);
-  }
-  return buildQuery(model, s.ui, current);
-};
+const queryOf = (s: AppState, current: string): string =>
+  buildQuery(
+    attempt(() => encodeState(s.scenario, s.options), modelQuery(current)),
+    s.ui,
+    current,
+  );
 
-const run = (loaded: Loaded, s: AppState, year: number): ScenarioResult | null => {
-  try {
-    return runScenario(loaded.data, s.scenario, s.options, year);
-  } catch {
-    return null;
-  }
-};
+const run = (loaded: Loaded, s: AppState, year: number): ScenarioResult | null =>
+  attempt(() => runScenario(loaded.data, s.scenario, s.options, year), null);
 
 export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, currentYear: number) => {
   let loaded = initial;
@@ -172,29 +163,36 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
     else history.replaceState(null, '', next + hash);
   };
 
-  store.subscribe((s, previous) => {
+  /** A new language builds everything anew; a new view shows it; else the controls follow. */
+  const redraw = (s: AppState, previous: AppState) => {
     if (s.lang !== previous.lang) {
       storeLang(s.lang);
       build(s);
-    } else if (s.ui.view !== previous.ui.view) {
-      head?.set(s.ui.view, s.theme);
-      showView(s);
     } else {
       head?.set(s.ui.view, s.theme);
-      views.explore?.sync(s);
+      if (s.ui.view !== previous.ui.view) showView(s);
+      else views.explore?.sync(s);
     }
+  };
+  /** The model runs again for the scenario and the options; an interface choice only redraws. */
+  const recompute = (s: AppState, previous: AppState) => {
     if (s.scenario !== previous.scenario || s.options !== previous.options) rerun();
     else if (s.ui !== previous.ui && s.ui.view === 'explore') views.explore?.show(result, s);
+  };
+
+  store.subscribe((s, previous) => {
+    redraw(s, previous);
+    recompute(s, previous);
     writeUrl(s, previous);
   });
 
   window.addEventListener('popstate', () => {
-    if (location.search === queryOf(store.get(), location.search)) return;
-    store.update((s) => ({
-      ...s,
-      ...stateFromQuery(location.search, currentYear),
-      ui: parseUi(location.search),
-    }));
+    if (location.search !== queryOf(store.get(), location.search))
+      store.update((s) => ({
+        ...s,
+        ...stateFromQuery(location.search, currentYear),
+        ui: parseUi(location.search),
+      }));
   });
   if (typeof matchMedia === 'function')
     matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
