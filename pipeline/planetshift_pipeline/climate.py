@@ -2,6 +2,7 @@
 warming by cause and the permafrost feedback. Run alone with
 `uv run python -m planetshift_pipeline.climate`."""
 
+import argparse
 import json
 import logging
 import time
@@ -190,10 +191,14 @@ def year_spread(pulses: dict[str, np.ndarray], gas: str) -> float:
     return max(relative_spread(pulses[pulse_key(gas, y, 1.0)], main) for y in PULSE_YEARS)
 
 
-def pulse_plan() -> list[tuple[str, int, float]]:
-    return [(gas, year, 1.0) for gas in GASES for year in PULSE_YEARS] + [
+def pulse_plan(diagnostics: bool = False) -> list[tuple[str, int, float]]:
+    """The pulse each AGTP curve is read from, and with `diagnostics` those that check it does not
+    depend on the year or the size of the pulse."""
+    main = [(gas, PULSE_YEAR, 1.0) for gas in GASES]
+    checks = [(gas, year, 1.0) for gas in GASES for year in PULSE_YEARS if year != PULSE_YEAR] + [
         (gas, PULSE_YEAR, 10.0) for gas in GASES
     ]
+    return main + (checks if diagnostics else [])
 
 
 def relative_spread(a: np.ndarray, b: np.ndarray, start: int = 1) -> float:
@@ -249,10 +254,12 @@ def attribution_runs(
     agriculture: dict[str, np.ndarray],
     fossil: dict[str, np.ndarray],
     end: int,
+    diagnostics: bool = False,
 ) -> dict[str, np.ndarray]:
-    """Temperature (year, member) with all emissions, each cause removed, the three greenhouse
-    causes removed together, agriculture and land use removed from FOOD_FUTURE_FROM on (for
-    the food-consumption study), and for each gas, all of it and each cause's part of it removed."""
+    """Temperature (year, member) with all emissions, each cause removed, and for each gas, all of
+    it and each cause's part of it removed; with `diagnostics`, also the three greenhouse causes
+    removed together and agriculture and land use removed from FOOD_FUTURE_FROM on (for the
+    food-consumption study)."""
     baseline = climate_fair.baseline_emissions(setup)
     taken = removals(emissions, agriculture, fossil, baseline)
     years = np.arange(climate_fair.START, climate_fair.START + len(emissions["CH4"]))
@@ -262,9 +269,15 @@ def attribution_runs(
     scenarios = (
         {"full": emissions}
         | {cause: without(emissions, taken[cause]) for cause in CAUSES}
-        | {"none": without(emissions, combined(taken, GREENHOUSE))}
-        | {"food": without(emissions, later)}
         | {name: without(emissions, removed) for name, removed in by_gas.items()}
+        | (
+            {
+                "none": without(emissions, combined(taken, GREENHOUSE)),
+                "food": without(emissions, later),
+            }
+            if diagnostics
+            else {}
+        )
     )
     result = climate_fair.run(setup, scenarios, end)
     runs = {name: result.temperature[:, i, :] for i, name in enumerate(result.scenarios)}
@@ -404,15 +417,18 @@ def agtp_section(pulses: dict[str, np.ndarray]) -> dict:
     return {"fair": fair, "ar6": ar6}
 
 
-def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
-    """The climate.json document and diagnostics for the log, tests and docs."""
+def build(
+    cache_dir: Path, members: int | None = None, diagnostics: bool = False
+) -> tuple[dict, dict]:
+    """The climate.json document and what the log, tests and docs read; `diagnostics` adds the
+    runs only they read."""
     setup = climate_fair.load_setup(cache_dir, members)
     rcmip_df = rcmip.load(cache_dir)
     primap_df = primap.load(cache_dir)
     fair_years = np.arange(climate_fair.START, max(PULSE_YEARS) + HORIZON + 1)
     by_ssp = {ssp: rcmip.fair_emissions(rcmip_df, ssp, setup.emitted, fair_years) for ssp in SSPS}
 
-    pulses = pulse_runs(setup, by_ssp[AGTP_SSP], pulse_plan(), HORIZON)
+    pulses = pulse_runs(setup, by_ssp[AGTP_SSP], pulse_plan(diagnostics), HORIZON)
 
     years = np.arange(climate_fair.START, SCENARIO_END + 1)
     sector = {
@@ -429,6 +445,7 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
             sector[ssp]["agriculture"],
             sector[ssp]["fossilIndustry"],
             SCENARIO_END + 1,
+            diagnostics,
         )
         for ssp in SSPS
     }
@@ -466,8 +483,14 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
         "by_cause": by_cause,
         "by_gas": by_gas,
         "pulses": pulses,
-        "additivity_gap": {ssp: additivity_gap(years, runs[ssp]) for ssp in SSPS},
-        "future_food": {ssp: future_food_warming(years, runs[ssp]) for ssp in SSPS},
+        **(
+            {
+                "additivity_gap": {ssp: additivity_gap(years, runs[ssp]) for ssp in SSPS},
+                "future_food": {ssp: future_food_warming(years, runs[ssp]) for ssp in SSPS},
+            }
+            if diagnostics
+            else {}
+        ),
         "preindustrial_offset": {
             ssp: {c: preindustrial_offset(years, runs[ssp], c) for c in CAUSES} for ssp in SSPS
         },
@@ -515,16 +538,19 @@ def summary(document: dict, diagnostics: dict) -> list[str]:
                     for name, values in parts.items()
                 )
             )
-        gap = diagnostics["additivity_gap"][ssp]
-        food = diagnostics["future_food"][ssp][years == 2100][0]
-        lines.append(
-            f"  agriculture + land use emitted from {FOOD_FUTURE_FROM}, warming in 2100: "
-            f"{np.median(food):.3f} ({np.percentile(food, 5):.3f}–{np.percentile(food, 95):.3f})"
-        )
         lines.append(f"  1850–1900 offsets {diagnostics['preindustrial_offset'][ssp]}")
-        lines.append(
-            f"  additivity gap 2024 {gap[years == 2024][0]:.3f}, 2050 {gap[years == 2050][0]:.3f}"
-        )
+        if "future_food" in diagnostics:
+            gap = diagnostics["additivity_gap"][ssp]
+            food = diagnostics["future_food"][ssp][years == 2100][0]
+            lines.append(
+                f"  agriculture + land use emitted from {FOOD_FUTURE_FROM}, warming in 2100: "
+                f"{np.median(food):.3f} "
+                f"({np.percentile(food, 5):.3f}–{np.percentile(food, 95):.3f})"
+            )
+            lines.append(
+                f"  additivity gap 2024 {gap[years == 2024][0]:.3f}, "
+                f"2050 {gap[years == 2050][0]:.3f}"
+            )
     for gas in GASES:
         main = pulses[pulse_key(gas, PULSE_YEAR, 1.0)]
         med = np.median(main, axis=-1)
@@ -532,25 +558,36 @@ def summary(document: dict, diagnostics: dict) -> list[str]:
         lines.append(
             f"AGTP {gas}: fair h20 {med[20]:.3e} h50 {med[50]:.3e} h100 {med[100]:.3e}; "
             f"ar6 h20 {ar6[20]:.3e} h50 {ar6[50]:.3e} h100 {ar6[100]:.3e}; "
-            f"peak h{int(np.argmax(med))}; "
-            f"linearity {relative_spread(pulses[pulse_key(gas, PULSE_YEAR, 10.0)], main):.4f}; "
-            f"years {year_spread(pulses, gas):.4f}"
+            f"peak h{int(np.argmax(med))}"
+            + (
+                f"; linearity {relative_spread(pulses[pulse_key(gas, PULSE_YEAR, 10.0)], main):.4f}"
+                f"; years {year_spread(pulses, gas):.4f}"
+                if pulse_key(gas, PULSE_YEAR, 10.0) in pulses
+                else ""
+            )
         )
     return lines
 
 
-def build_climate(cache_dir: Path, out_dir: Path) -> None:
+def build_climate(cache_dir: Path, out_dir: Path, diagnostics: bool = False) -> None:
     started = time.monotonic()
-    document, diagnostics = build(cache_dir)
+    document, checks = build(cache_dir, diagnostics=diagnostics)
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "climate.json").write_text(
         json.dumps(document, separators=(",", ":"), allow_nan=False)
     )
-    for line in summary(document, diagnostics):
+    for line in summary(document, checks):
         log.info(line)
     log.info("climate.json built in %.0f s", time.monotonic() - started)
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--diagnostics",
+        action="store_true",
+        help="also run what only the log reads: the additivity gap, the warming of food emitted "
+        "from 2020 and the AGTP pulses' checks",
+    )
     logging.basicConfig(level=logging.INFO, format="%(message)s")
-    build_climate(DEFAULT_CACHE, DEFAULT_OUT)
+    build_climate(DEFAULT_CACHE, DEFAULT_OUT, parser.parse_args().diagnostics)
