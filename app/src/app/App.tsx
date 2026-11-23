@@ -8,6 +8,7 @@ import { modelClient, workerPort, type ModelClient } from '../model/client';
 import type { AppState, ViewContext } from './context';
 import { Explore } from '../ui/Explore';
 import { Header } from './Header';
+import { CODE_LICENCE, DATA_LICENCES, REPOSITORY } from './links';
 import { useLatest } from '../ui/useLatest';
 import { queryOf, stateFromQuery } from './shell';
 import { applyTheme, readStoredTheme, storeTheme, toggled } from './theme';
@@ -193,7 +194,13 @@ export const App = ({ initial, loaded: first, currentYear }: AppProps) => {
         )}
       </main>
       <footer className="site-footer">
-        {t('footer.text', { year: loaded.data.meta.baseYear })}
+        <p>{t('footer.text', { year: loaded.data.meta.baseYear })}</p>
+        <p className="footer-links">
+          <span>{t('footer.copyright', { year: currentYear })}</span>
+          <a href={CODE_LICENCE}>{t('footer.code')}</a>
+          <a href={DATA_LICENCES}>{t('footer.data')}</a>
+          <a href={REPOSITORY}>{t('footer.source')}</a>
+        </p>
       </footer>
     </>
   );

@@ -1274,3 +1274,53 @@ test('the model runs in a Worker', async ({ page }) => {
   await expect.poll(() => page.workers().length).toBeGreaterThanOrEqual(1);
   await expect(page.locator('.run-error').first()).toBeHidden();
 });
+
+test('the footer links to the licences and the source, and a link’s language wins', async ({
+  page,
+}) => {
+  await open(page);
+  const links = page.locator('.footer-links a');
+  await expect(links).toHaveCount(3);
+  await expect(links.last()).toHaveAttribute('href', /github\.com\/.+\/planetshift$/);
+  await page.evaluate(() => localStorage.setItem('planetshift.lang', 'en'));
+  await open(page, `${START}&lang=fr`);
+  await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+});
+
+test('the pre-rendered pages hold their text, and the app takes over at the root URL', async ({
+  page,
+}) => {
+  for (const [path, text] of [
+    ['/', 'stat-hero'],
+    ['/methodology/', 'method-section'],
+    ['/fr/', 'lang="fr"'],
+    ['/fr/methodology/', 'method-section'],
+  ] as const) {
+    const html = await (await page.request.get(path)).text();
+    expect(html, path).toContain(text);
+    expect(html, path).toContain('name="planetshift:entry"');
+    expect(html, path).toMatch(/property="og:image" content="[^"]+share-(en|fr)\.png"/);
+  }
+  for (const lang of ['en', 'fr']) {
+    const image = await page.request.get(`/share-${lang}.png`);
+    expect(image.headers()['content-type']).toBe('image/png');
+  }
+  await page.goto('/fr/methodology/?data=fixtures');
+  await expect(page.locator('.method-section').first()).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+  const where = () => {
+    const url = new URL(page.url());
+    return `${url.pathname} ${[...url.searchParams]
+      .map((p) => p.join('='))
+      .sort()
+      .join('&')}`;
+  };
+  await expect.poll(where).toBe('/ data=fixtures&view=methodology');
+  await expect(page.locator('.site-nav a[aria-current="page"]')).toHaveAttribute(
+    'data-view',
+    'methodology',
+  );
+  await page.evaluate(() => localStorage.setItem('planetshift.lang', 'fr'));
+  await open(page);
+  await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+});

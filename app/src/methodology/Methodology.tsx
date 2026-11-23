@@ -178,7 +178,7 @@ const Toc = ({ t, sections }: { t: T; sections: readonly Section[] }) => {
         aria-controls="toc-list"
         onClick={() => setOpen(!open)}
       >
-        <span className="toc-label">{t('methodology.toc')}</span>
+        <span className="visually-hidden">{t('methodology.toc')}</span>
         <span className="toc-current">{sections[active]?.title ?? ''}</span>
       </button>
       <ol

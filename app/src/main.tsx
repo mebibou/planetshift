@@ -7,15 +7,39 @@ import { stateFromQuery } from './app/shell';
 import { applyTheme, effectiveTheme, prefersDark, readStoredTheme } from './app/theme';
 import { parseTourFlag, readTourSeen, shouldShowTour } from './app/tour';
 import { parseUi } from './app/url';
+import { parseEntry, withEntryView } from './app/entry';
 import { dataFolder, loadAll, LoadError } from './data/load';
 import { browserLang, parseLang, readStoredLang, translator } from './i18n/i18n';
 
 /** Shown on a first visit only, so loaded then, in its own file. */
 const Tour = lazy(() => import('./ui/Tour').then((m) => ({ default: m.Tour })));
 
+/**
+ * A pre-rendered page (`/methodology/`, `/fr/`…) shows a view in a language; the app takes them
+ * from it, then moves its URL back to the site's root, where it keeps its state in the query,
+ * before the data is fetched relative to it.
+ */
+const entry = parseEntry(
+  document.querySelector('meta[name="planetshift:entry"]')?.getAttribute('content'),
+);
+if (entry)
+  history.replaceState(
+    null,
+    '',
+    new URL(entry.root, location.href).pathname +
+      withEntryView(location.search, entry) +
+      location.hash,
+  );
+
 const element = document.getElementById('app');
+/** The pre-rendered page stays on screen until the app has drawn its own. */
+const prerendered = (element?.childElementCount ?? 0) > 0;
+// A link's language (a search engine's French page) comes first, then the reader's last choice.
 const lang =
-  readStoredLang() ?? parseLang(new URLSearchParams(location.search).get('lang')) ?? browserLang();
+  parseLang(new URLSearchParams(location.search).get('lang')) ??
+  entry?.lang ??
+  readStoredLang() ??
+  browserLang();
 const t = translator(lang);
 const tour = shouldShowTour(
   parseTourFlag(location.search),
@@ -38,11 +62,12 @@ const Failure = ({ title, lines }: { title: string; lines: string[] }) => (
 if (element) {
   const root = createRoot(element);
   const currentYear = new Date().getFullYear();
-  root.render(
-    <p className="loading" role="status">
-      {t('load.loading')}
-    </p>,
-  );
+  if (!prerendered)
+    root.render(
+      <p className="loading" role="status">
+        {t('load.loading')}
+      </p>,
+    );
   loadAll(dataFolder(location.search)).then(
     (loaded) => {
       try {

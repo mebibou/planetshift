@@ -20,7 +20,11 @@
     "methodology": "Méthodologie"
   },
   "footer": {
-    "text": "Régimes et production : bilans alimentaires de FAOSTAT ({year}) ; intensités d'émission : HESTIA, FAOSTAT et analyses de cycle de vie publiées ; poisson : FishStat de la FAO et études publiées ; surfaces agricoles : FAOSTAT ; déforestation : DeDuCE ; transport et électricité : scénarios SSP, Ember et AIE ; réchauffement : FaIR. Le changement d'usage des terres n'entre que par la variation du défrichement et par la repousse, en option, sur les terres libérées."
+    "text": "Régimes et production : bilans alimentaires de FAOSTAT ({year}) ; intensités d'émission : HESTIA, FAOSTAT et analyses de cycle de vie publiées ; poisson : FishStat de la FAO et études publiées ; surfaces agricoles : FAOSTAT ; déforestation : DeDuCE ; transport et électricité : scénarios SSP, Ember et AIE ; réchauffement : FaIR. Le changement d'usage des terres n'entre que par la variation du défrichement et par la repousse, en option, sur les terres libérées.",
+    "copyright": "© {year} Contributeurs de Planetshift",
+    "code": "Code sous licence Apache 2.0",
+    "data": "Données sous la licence de chaque source",
+    "source": "Code source sur GitHub"
   },
   "explore": {
     "panel": "Scénario et réglages",
@@ -449,5 +453,10 @@
         "text": "L'onglet Causes du réchauffement, au-dessus du graphique, répartit le réchauffement par cause (combustibles fossiles et industrie, agriculture, usage des terres et les autres) et montre ce que les leviers retirent de chacune. La page Méthodologie explique chaque étape et ses sources."
       }
     }
+  },
+  "share": {
+    "subtitle": "Les causes du réchauffement climatique et les leviers qui le limitent, avec le réchauffement que chacun éviterait d'ici 2050 et 2100.",
+    "alt": "Planetshift : la température mondiale depuis 1850, sans les leviers et avec tous les leviers en entier.",
+    "withAll": "Avec tous les leviers en entier"
   }
 }
