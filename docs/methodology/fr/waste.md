@@ -100,7 +100,7 @@ Le gaspillage comestible est aussi plafonné à 40 % des disponibilités aliment
 ## Sources
 
 - Programme des Nations unies pour l'environnement (2024). Food Waste Index Report 2024. Think Eat Save: Tracking Progress to Halve Global Food Waste. Nairobi : <https://wedocs.unep.org/20.500.11822/45230>. Reproduction autorisée à des fins éducatives ou non lucratives, avec mention de la source.
-- Division de statistique des Nations unies, SDG Global Database, indicateur 12.3.1(b), série AG_FOOD_WST_PC (gaspillage alimentaire par habitant, par secteur) : <https://unstats.un.org/sdgs/dataportal>. Réutilisation libre avec mention de la source.
+- Division de statistique des Nations unies, SDG Global Database, indicateur 12.3.1(b), série AG_FOOD_WST_PC (gaspillage alimentaire par habitant, par secteur) : <https://unstats.un.org/sdgs/dataportal>. Copie et diffusion libres en citant les Nations unies comme source ; une rediffusion commerciale demande l'autorisation des Nations unies.
 - Eurostat, Food waste and food waste prevention by NACE Rev. 2 activity (env_wasfw), les chiffres européens déclarés à la base de données des ODD : <https://ec.europa.eu/eurostat/web/waste/food-waste>.
 - WRAP (2023). Household Food and Drink Waste in the United Kingdom 2021/22 (part comestible du gaspillage alimentaire des foyers) : <https://wrap.ngo/resources/report/household-food-and-drink-waste-united-kingdom-202122>.
 - FAO, indicateur ODD 12.3.1(a), pourcentage de pertes alimentaires : 13,3 % en 2023, portail de données des indicateurs ODD de la FAO : <https://www.fao.org/sustainable-development-goals-data-portal/data/indicator/1231a-global-food-loss-index/en>.

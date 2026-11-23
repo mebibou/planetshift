@@ -44,8 +44,9 @@ SOURCE = (
     "UN SDG Global Database, indicator 12.3.1(b); edible parts only"
 )
 LICENCE = (
-    "UNEP: reproduction for educational or non-profit purposes with acknowledgement; "
-    "SDG Global Database: free reuse with attribution"
+    "UNEP: reproduction for educational or non-profit services with acknowledgement; UN SDG "
+    "Global Database: free copying and distribution with the United Nations cited as the source; "
+    "commercial redistribution needs the UN's permission"
 )
 SOURCES = [
     {

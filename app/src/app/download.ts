@@ -242,6 +242,7 @@ export const LICENCES: Record<string, Licence> = {
     url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
   },
   ccByIgo: { name: 'CC BY 3.0 IGO', url: 'https://creativecommons.org/licenses/by/3.0/igo/' },
+  unTerms: { name: 'UN terms of use', url: 'https://www.un.org/en/about-us/terms-of-use' },
 };
 
 const pick = (...keys: (keyof typeof LICENCES)[]): Licence[] =>
@@ -256,7 +257,9 @@ export const fileLicences = (file: string): Licence[] => {
       ? pick('ccBySa')
       : base === 'population'
         ? pick('ccByIgo', 'ccBy')
-        : pick('ccBy');
+        : base === 'waste'
+          ? pick('unTerms')
+          : pick('ccBy');
 };
 
 /** What each download is derived from: the temperatures come from climate.json. */
