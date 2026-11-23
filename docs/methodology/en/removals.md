@@ -1,8 +1,17 @@
 # Carbon stored in farmland
 
-Farming can take CO₂ out of the air as well as emit it: plants put carbon into the soil, trees store it in wood, and some materials spread on fields lock it away. `removals.json` gives four such practices as levers, with how much CO₂ a hectare takes up each year, on which land, on how much of it at most, and for how long. The values and one line of reasoning for each are in `pipeline/removals.csv`; the code that expands them to countries is `pipeline/planetshift_pipeline/removals.py`, with the climate zone of each country in `pipeline/removals_zones.csv`.
+Farming can take CO₂ out of the air as well as emit it. Plants put carbon into the soil, trees store it in wood, and some materials spread on fields lock it away. This page explains the four practices Planetshift offers as levers, how much CO₂ each takes up per hectare, and how much each could store worldwide: at the most land each can reach, about 0.37 Gt (billion tonnes) of CO₂ a year for cover crops, 1.4 Gt for trees on farms, 0.63 Gt for biochar and 0.6 Gt for rock dust.
 
-## The four practices
+## How the uptake is counted
+
+For each practice, Planetshift needs four things:
+
+- how much CO₂ a hectare takes up each year;
+- on which land the practice can be used (cropland, or cropland and pasture);
+- on how much of that land at most;
+- for how many years the uptake lasts.
+
+The uptake of a practice is its rate per hectare times the hectares where it is adopted. The lever sets the share of the most land that adopts it, from 0 to 100%. The rate is a median with a likely range, and for three practices it depends on the climate.
 
 | Practice | Land | Median (likely range), t CO₂/ha/yr | Most of the land | Years at that rate |
 | --- | --- | --- | --- | --- |
@@ -13,33 +22,93 @@ Farming can take CO₂ out of the air as well as emit it: plants put carbon into
 
 The cropland is the model's, 1.65 billion hectares: the food crops' harvested area, with the oilcakes' land and temporary meadows (see [Land](#method-land)).
 
-**Cover crops** are plants sown between two main crops, in a winter or dry-season fallow, and left on or ploughed into the field. Their roots and residues add carbon to the soil. The meta-analysis of Poeplau and Don (2015) found a mean gain of 0.32 t of carbon per hectare a year (1.17 t of CO₂), with no clear effect of climate among the field trials, which are mostly in moist climates. In dry climates water limits what a cover crop can grow; the IPCC's factor for high carbon inputs is 1.04 there against 1.11 in moist climates, so the gain is about a third of the moist one. The share of cropland is a quarter, the area Poeplau and Don's global estimate assumed has room for a cover crop. At that cap, Planetshift's cover crops store about 0.37 Gt of CO₂ a year, 0.10 Pg of carbon, close to Poeplau and Don's global estimate (0.12 ± 0.03 Pg C a year).
+The practices fall into two kinds:
 
-**Trees on farms** (agroforestry) puts trees into fields of crops (silvoarable systems, alley cropping) or into pastures (silvopasture). The trees store carbon in their wood and roots, and their litter adds to the soil. Cardinael et al. (2018) synthesised 542 observations into rates by system and climate; averaged over silvoarable systems and silvopasture, trees and soil take up about 8.6 t of CO₂ per hectare a year in temperate climates and 17.5 t in the tropics. Those are the plots studied, with a median of 1250 trees per hectare and a median age of 8 to 11 years, growing fast; systems adopted on a large scale have fewer trees, so the median is half the synthesis' mean, the low a quarter and the high the mean itself. Dry climates take 0.7 of the moist rate, the IPCC's ratio of tree growth in dry to moist tropics. Five percent of cropland and pasture is a realistic most: on about 4.7 billion hectares of farmland, it gives about 1.4 Gt of CO₂ a year, between the cost-effective and the technical potentials of Roe et al. (2021) and the IPCC's Sixth Assessment Report (agroforestry: 0.8, 0.4–1.1, Gt CO₂-equivalent a year at up to $100 a tonne; 4.1, 0.3–9.4, technically).
+- **Cover crops and trees on farms fill a store that fills up.** The soil and the trees reach a new balance after some decades, so Planetshift counts their uptake for 20 years after adoption, then none.
+- **Biochar and rock dust add carbon each year they are applied.** Their store keeps growing as long as the practice goes on, so their uptake is counted every year to 2100.
 
-**Biochar** is biomass (crop residues, manure, wood waste) heated without oxygen into a charcoal, then spread on fields. About two thirds of its mass is carbon, and most of it is so stable that 97% has a mean residence time of centuries in soil (Wang et al., 2016). The rate assumes 1 t of biochar per hectare a year, what spare biomass can supply without clearing land for it, with 0.65 t of carbon per tonne of which 80% remains after a hundred years, the IPCC's 2019 rule for counting it (2019 Refinement, volume 4, chapter 2, appendix 4: Table 4Ap.1 for the carbon content, 0.65 for herbaceous feedstock by pyrolysis, and Table 4Ap.2 for the share kept, 0.80 for char made at 450–600 °C): 1 × 0.65 × 0.8 × 44/12 = 1.9 t of CO₂. The range spans 0.5 t of poorly carbonised char to 2 t of char made at high temperature. It does not depend on climate. A fifth of cropland is the most the sustainable feedstock of Woolf et al. (2010) can supply at that rate. At that cap it stores about 0.63 Gt of CO₂ a year, below the IPCC's Sixth Assessment Report's potential for biochar (1.1, 0.3–1.8, Gt CO₂-equivalent a year at up to $100 a tonne; 2.6 technically): a conservative reading.
+The rates are uncertain, and the ranges are wide. The reasons are given below.
 
-**Rock dust** (enhanced weathering) spreads crushed silicate rock, usually basalt, on fields. As it dissolves, it turns CO₂ from soil air into bicarbonate that drains to rivers and the ocean, where it stays for many thousands of years. A four-year field trial in the US Corn Belt measured 10.5 ± 3.8 t of CO₂ per hectare from 50 t of basalt a hectare each year (Beerling et al., 2024), 2.6 t a year; less about a fifth for quarrying, grinding and transport, 2 t. Weathering is faster where it is warm and wet and slow where water does not move through the soil, so the tropics get more and dry croplands less. A fifth of cropland is the most that rock supply and haulage allow: with a typical 2 t per hectare it gives about 0.6 Gt a year, within the 0.5–2 Gt that Beerling et al. (2020) found for the main agricultural countries.
+## The four practices
+
+Rates in the literature are often given in tonnes of carbon (t C). One tonne of carbon is 44/12 = 3.67 tonnes of CO₂. A petagram of carbon (Pg C) is a billion tonnes of carbon.
+
+### Cover crops
+
+Cover crops are plants sown between two main crops, in a winter or dry-season fallow, and left on or ploughed into the field. Their roots and residues add carbon to the soil.
+
+The meta-analysis of Poeplau and Don (2015) found a mean gain of 0.32 t of carbon per hectare a year (1.17 t of CO₂). It found no clear effect of climate among the field trials, which are mostly in moist climates. In dry climates, water limits what a cover crop can grow. The IPCC's factor for high carbon inputs is 1.04 there, against 1.11 in moist climates, so the gain is about a third of the moist one.
+
+The share of cropland is a quarter. This is the area that Poeplau and Don's global estimate assumed has room for a cover crop. At that cap, Planetshift's cover crops store about 0.37 Gt of CO₂ a year, 0.10 Pg of carbon. This is close to Poeplau and Don's global estimate (0.12 ± 0.03 Pg C a year).
+
+### Trees on farms
+
+Trees on farms (agroforestry) puts trees into fields of crops (silvoarable systems, alley cropping) or into pastures (silvopasture). The trees store carbon in their wood and roots, and their litter adds to the soil.
+
+Cardinael et al. (2018) synthesised 542 observations into rates by system and climate. Averaged over silvoarable systems and silvopasture, trees and soil take up about 8.6 t of CO₂ per hectare a year in temperate climates and 17.5 t in the tropics. Those rates are for the plots studied, which have a median of 1250 trees per hectare and a median age of 8 to 11 years, and grow fast. Systems adopted on a large scale have fewer trees. The median is therefore half the synthesis' mean, the low a quarter of it, and the high the mean itself. Dry climates take 0.7 times the moist rate, the IPCC's ratio of tree growth in the dry tropics to the moist tropics.
+
+Five percent of cropland and pasture is taken as a realistic most. On about 4.7 billion hectares of farmland, it gives about 1.4 Gt of CO₂ a year. This lies between the cost-effective and the technical potentials of Roe et al. (2021) and of the IPCC's Sixth Assessment Report. For agroforestry, the latter gives 0.8 (0.4–1.1) Gt CO₂-equivalent a year at up to $100 a tonne, and 4.1 (0.3–9.4) technically.
+
+### Biochar
+
+Biochar is biomass (crop residues, manure, wood waste) heated without oxygen into a charcoal, then spread on fields. About two thirds of its mass is carbon. Most of it is very stable: 97% has a mean residence time of centuries in soil (Wang et al., 2016).
+
+The rate assumes 1 t of biochar per hectare a year, which is what spare biomass can supply without clearing land for it. Each tonne holds 0.65 t of carbon, of which 80% remains after a hundred years. This is the IPCC's 2019 rule for counting it (2019 Refinement, volume 4, chapter 2, appendix 4: Table 4Ap.1 for the carbon content, 0.65 for herbaceous feedstock by pyrolysis, and Table 4Ap.2 for the share kept, 0.80 for char made at 450–600 °C). The rate is therefore:
+
+1 t × 0.65 × 0.8 × 44/12 = 1.9 t of CO₂ per hectare a year.
+
+The range spans 0.5 t of poorly carbonised char to 2 t of char made at high temperature. The rate does not depend on climate.
+
+A fifth of cropland is the most that the sustainable feedstock of Woolf et al. (2010) can supply at that rate. At that cap, biochar stores about 0.63 Gt of CO₂ a year. This is below the IPCC Sixth Assessment Report's potential for biochar (1.1, 0.3–1.8, Gt CO₂-equivalent a year at up to $100 a tonne; 2.6 technically), so it is a conservative reading.
+
+### Rock dust
+
+Rock dust (enhanced weathering) is crushed silicate rock, usually basalt, spread on fields. As it dissolves, it turns CO₂ from the air in the soil into bicarbonate. The bicarbonate drains to rivers and the ocean, where it stays for many thousands of years.
+
+A four-year field trial in the US Corn Belt measured 10.5 ± 3.8 t of CO₂ per hectare from 50 t of basalt a hectare each year (Beerling et al., 2024). That is 2.6 t a year. Less about a fifth for quarrying, grinding and transport, it is 2 t. Weathering is faster where it is warm and wet, and slow where water does not move through the soil. The tropics therefore get a higher rate and dry croplands a lower one.
+
+A fifth of cropland is the most that rock supply and haulage allow. With a typical 2 t per hectare, it gives about 0.6 Gt a year. This is within the 0.5–2 Gt that Beerling et al. (2020) found for the main agricultural countries.
 
 ## Countries and climate
 
-Where the evidence differs by climate, the rate is given for four zones, tropical or temperate and moist or dry, and each country takes the zone of most of its cropland (`removals_zones.csv`, set by hand from the IPCC's climate zones: Brazil, Indonesia and Nigeria are tropical moist, India, Mexico and the Sahel tropical dry, the United States, China and Western Europe temperate moist, Russia, Ukraine, Canada, Australia and Spain temperate dry). A country with no zone takes the `World` value. A large country spans several zones; its one zone is a simplification.
+Where the evidence differs by climate, the rate is given for four zones: tropical or temperate, and moist or dry. Each country takes the zone of most of its cropland. The zones are in `removals_zones.csv`, set by hand from the IPCC's climate zones:
+
+- tropical moist: Brazil, Indonesia and Nigeria;
+- tropical dry: India, Mexico and the Sahel;
+- temperate moist: the United States, China and Western Europe;
+- temperate dry: Russia, Ukraine, Canada, Australia and Spain.
+
+A country with no zone takes the `World` value. A large country spans several zones, so giving it one zone is a simplification.
 
 ## How long the uptake lasts
 
-`years` is read differently for the two kinds of practice.
+The number of years at the full rate (`years`) is read differently for the two kinds of practice.
 
-**Cover crops and agroforestry fill a store that saturates.** Soil and trees reach a new equilibrium: the gain is fastest at first and slows as the stock approaches its new level. Planetshift counts it at the full rate for `years` after adoption (20, the IPCC's default time to a new soil equilibrium, and about the age at which agroforestry trees are harvested or stop gaining much), then zero. The total stored is the rate times the years. Poeplau and Don's response function keeps gaining for over a century, ever more slowly, so 20 years is the conservative reading. When adoption ramps up, each year's new hectares start their own 20 years.
+**Cover crops and agroforestry fill a store that saturates.** Soil and trees reach a new equilibrium. The gain is fastest at first and slows as the stock approaches its new level. Planetshift counts the full rate for `years` after adoption, then zero. `years` is 20: the IPCC's default time to a new soil equilibrium, and about the age at which agroforestry trees are harvested or stop gaining much. The total stored is the rate times the years. Poeplau and Don's response function keeps gaining for over a century, ever more slowly, so 20 years is the conservative reading. When adoption ramps up, each year's new hectares start their own 20 years.
 
-**Biochar and enhanced weathering accrue while applied.** Each year's char and rock add carbon that does not come back, so the stock keeps growing as long as the practice goes on. `years` is 100, meaning no saturation before 2100: the rate holds every year the practice is in place. When it stops, the uptake stops, but what was stored stays.
+**Biochar and enhanced weathering accrue while applied.** Each year's char and rock add carbon that does not come back, so the stock keeps growing as long as the practice goes on. `years` is 100, meaning no saturation before 2100: the rate holds every year the practice is in place. When the practice stops, the uptake stops, but what was stored stays.
 
 ## Permanence
 
-Carbon in soil and trees can be lost again. Ploughing up a field of cover crops, felling the trees of an agroforestry system, a drought, a fire or a warmer climate that speeds up decomposition release part of what was stored, and stopping the practice lets the soil drift back to its old level over decades. The rates here assume the practice is kept up; a model that stops the practice should give back the stock over about the same time it took to build. Biochar and weathering are far more permanent: biochar loses a few percent in its first years and very little after, and bicarbonate in the ocean stays for millennia.
+Carbon in soil and trees can be lost again. Several things release part of what was stored: ploughing up a field of cover crops, felling the trees of an agroforestry system, a drought, a fire, or a warmer climate that speeds up decomposition. Stopping the practice lets the soil drift back to its old level over decades. The rates here assume the practice is kept up. A model that stops the practice should give back the stock over about the same time it took to build.
+
+Biochar and weathering are far more permanent. Biochar loses a few percent in its first years and very little after. Bicarbonate in the ocean stays for millennia.
 
 ## Why the numbers are uncertain
 
-The ranges are wide, and for good reasons. Soil carbon is measured as a small difference between two large stocks, often only in the top 30 cm, and gains in the topsoil can be offset by losses deeper down. Field trials are where the practice works well and are short, so extrapolating them to a country and to decades is a stretch. The agroforestry rates depend on how many trees are planted and how they are managed, which no global figure can capture. Enhanced weathering has few field trials, and some find slower uptake than models predict; how much of the dissolved carbon reaches the ocean is still being measured. Biochar's benefit depends on what the biomass would otherwise have done: burning residues for biochar that would otherwise have rotted into the soil gains less than the rate says. None of these rates counts side effects on yields, on nitrous oxide from soils, or the emissions of making the rock powder and the char beyond the transport share for weathering.
+The ranges are wide, for several reasons:
+
+- Soil carbon is measured as a small difference between two large stocks, often only in the top 30 cm. Gains in the topsoil can be offset by losses deeper down.
+- Field trials are made where the practice works well, and they are short. Extrapolating them to a country and to decades is a stretch.
+- The agroforestry rates depend on how many trees are planted and how they are managed, which no global figure can capture.
+- Enhanced weathering has few field trials, and some find slower uptake than models predict. How much of the dissolved carbon reaches the ocean is still being measured.
+- Biochar's benefit depends on what the biomass would otherwise have done. Residues that would otherwise have rotted into the soil gain less than the rate says when they are made into biochar.
+
+None of these rates counts side effects on yields or on nitrous oxide from soils. None counts the emissions of making the rock powder and the char, beyond the transport share for weathering.
+
+## Data and code
+
+The values, with one line of reasoning for each, are in `pipeline/removals.csv`. The code that expands them to countries is `pipeline/planetshift_pipeline/removals.py`, with the climate zone of each country in `pipeline/removals_zones.csv`. The result is `removals.json`.
 
 ## Assumptions
 

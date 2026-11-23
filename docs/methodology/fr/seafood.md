@@ -1,10 +1,35 @@
 # Poissons et fruits de mer
 
-Les poissons et les autres animaux aquatiques forment un sixième groupe animal, `seafood`. Un changement de régime peut les remplacer par des végétaux, comme la viande, le lait et les œufs. Les poissons viennent de deux systèmes très différents, la pêche et l'aquaculture, dans des proportions qui varient selon le pays et l'espèce ; Planetshift mélange donc les deux selon la production propre de chaque pays. Le code est `pipeline/planetshift_pipeline/seafood.py` et `pipeline/planetshift_pipeline/sources/fishstat.py` ; les tables sont `pipeline/seafood_isscaap.csv` et `pipeline/seafood_factors.csv`.
+Les poissons et les autres animaux aquatiques forment le sixième groupe d'aliments animaux de Planetshift, `seafood`. Comme la viande, le lait et les œufs, un changement de régime peut les remplacer par des végétaux. Cette page explique d'où viennent leurs émissions, et pourquoi remplacer le poisson sauvage par des végétaux évite peu de réchauffement, voire en ajoute un peu.
+
+## Ce qu'émettent les poissons et fruits de mer
+
+Les poissons viennent de deux systèmes très différents : la pêche et l'aquaculture (l'élevage de poissons). Leurs parts varient selon le pays et l'espèce ; Planetshift mélange donc les deux selon la production propre de chaque pays.
+
+- **Les poissons sauvages** n'émettent presque que le carburant brûlé par leurs bateaux. Planetshift compte ce carburant comme du CO₂.
+- **Les poissons d'élevage** n'émettent pas de méthane en digérant, contrairement aux bovins. Leurs élevages dégagent du protoxyde d'azote (N₂O) par l'eau, et utilisent du carburant et de l'électricité pour le pompage, l'aération, l'éclairage et les véhicules.
+- **Les aliments** des poissons d'élevage sont comptés sur les cultures et les poissons qu'ils mangent, comme pour les porcs et les volailles (voir [Alimentation animale](#method-feed)).
+
+Planetshift compte les émissions dans l'un de deux périmètres, choisi dans les Options (voir [Émissions](#method-emissions)) :
+
+- **À la ferme** compte ce qu'émet la biologie de l'exploitation. Pour les produits de la mer, ce n'est que le N₂O des élevages.
+- **Du berceau à la sortie de ferme** ajoute l'énergie utilisée : le carburant des bateaux de pêche, et le carburant et l'électricité des élevages.
+
+Les poissons sauvages n'ont donc aucune émission à la ferme. Leur carburant n'apparaît que quand le lecteur choisit « Avec les intrants » dans les Options. La même règle garde le diesel des tracteurs hors des émissions à la ferme du blé, mais son effet est plus grand pour le poisson. L'interface le dit dans l'aide de *Émissions comptées* sous Options et dans la note du résumé sur ce qui est compté.
+
+Tous les produits de la mer ensemble émettent 66 Mt (millions de tonnes) CO₂e par an à la ferme et 236 Mt CO₂e du berceau à la sortie de ferme, pondérés par la production des bilans alimentaires. Le CO₂e (équivalent CO₂) additionne les gaz en un seul chiffre avec leurs poids à 100 ans (voir [Des émissions à la température](#method-climate)).
+
+### Dans l'application
+
+Les poissons et fruits de mer changent comme les autres aliments animaux. Le curseur principal les fait varier, et *Poissons et fruits de mer* sous « Régler chaque aliment animal » fixe leur propre part (`sea` dans l'adresse). Les protéines ou les calories qu'ils apportent sont remplacées par des végétaux, comme pour la viande.
+
+Les poissons sauvages n'émettent rien à la ferme, et modérément avec les intrants. Les remplacer par des végétaux peut donc éviter peu de réchauffement, voire en ajouter un peu : les végétaux qui les remplacent ont leurs propres émissions.
+
+Les produits de la pêche sont aussi des produits fourragers, car une partie du poisson est pêchée pour faire de la farine destinée aux animaux. Quand les animaux qu'ils nourrissent (poissons d'élevage, porcs, volailles) produisent moins, le poisson qui leur est donné baisse de la même part de son usage fourrager. Cette variation est placée comme une variation de la demande de poisson, en plus de la variation de ce que mangent les gens. Elle est faite une seule fois, sans boucle : le poisson pêché pour la farine est sauvage et ne mange lui-même aucun aliment, si bien qu'en pêcher moins ne change aucun aliment (`run.ts`, `productionChanges` ; la même étape s'applique au lait donné aux veaux). La part de l'aquaculture dans les cultures fourragères baisse avec la production de tout le groupe, pêche comprise, car l'application ne garde pas de répartition de la production du groupe par système.
 
 ## Produits
 
-Les bilans alimentaires listent huit produits d'animaux aquatiques, tous désormais dans le groupe `seafood` :
+Les bilans alimentaires (le tableau de FAOSTAT de ce que chaque pays produit, échange et mange ; voir [Données](#method-data)) listent huit produits d'animaux aquatiques. Tous sont dans le groupe `seafood` :
 
 | Produit des bilans | Ce qu'il contient | Production mondiale, 2021–2023 (Mt par an) : pêche / aquaculture |
 | --- | --- | --- |
@@ -17,25 +42,35 @@ Les bilans alimentaires listent huit produits d'animaux aquatiques, tous désorm
 | 2767 Autres mollusques | huîtres, moules, palourdes, coquilles Saint-Jacques | 2,3 / 18,9 |
 | 2769 Autres animaux aquatiques | holothuries, oursins, grenouilles, tortues | 0,4 / 1,3 |
 
-Leurs lignes d'approvisionnement, leurs kcal et leurs protéines par tonne viennent des bilans alimentaires, comme pour tout autre produit. La FAO tient les produits de la pêche en équivalent poids vif (le poisson entier tel que pêché, les mollusques avec leur coquille), qui est aussi l'unité de FishStat, de Parker et al. et de MacLeod et al. : aucune conversion n'est nécessaire. C'est pourquoi les mollusques ne portent que 0,036 t de protéines par tonne.
+Leurs lignes d'approvisionnement, leurs kcal et leurs protéines par tonne viennent des bilans alimentaires, comme pour tout autre produit. La FAO tient les produits de la pêche en équivalent poids vif : le poisson entier tel que pêché, et les mollusques avec leur coquille. C'est aussi l'unité de FishStat, de Parker et al. et de MacLeod et al. : aucune conversion n'est nécessaire. C'est pourquoi les mollusques ne portent que 0,036 t de protéines par tonne.
 
-Sont laissés de côté, chacun avec sa raison dans `groups.csv` :
+Trois sortes de produits sont laissées de côté, chacune avec sa raison dans `groups.csv` :
 
-- **Les plantes aquatiques (2775)** : les algues, environ 36 Mt par an, dont un tiers va aux gommes (agar, carraghénane, alginate) et à d'autres usages non alimentaires. Elles n'apportent presque ni énergie ni protéines à l'alimentation (0,2 g de protéines par personne et par jour), ne sont pas un aliment animal qu'un changement remplacerait, et aucune des sources utilisées ici ne donne leurs émissions, qui ne viennent que des bateaux et des cordes qui servent à les cultiver. Les mettre dans `otherPlant` leur aurait donné les émissions médianes et les surfaces cultivées de ce groupe, qu'elles n'ont pas.
+- **Les plantes aquatiques (2775)** : les algues, environ 36 Mt par an, dont un tiers va aux gommes (agar, carraghénane, alginate) et à d'autres usages non alimentaires. Elles n'apportent presque ni énergie ni protéines à l'alimentation (0,2 g de protéines par personne et par jour). Elles ne sont pas un aliment animal qu'un changement remplacerait. Aucune des sources utilisées ici ne donne leurs émissions, qui ne viennent que des bateaux et des cordes qui servent à les cultiver. Les mettre dans `otherPlant` leur aurait donné les émissions médianes et les surfaces cultivées de ce groupe, qu'elles n'ont pas.
 - **Les mammifères aquatiques (2768)** : baleines et phoques, sans approvisionnement l'année de référence.
-- **L'huile de corps et l'huile de foie de poisson (2781, 2782)** : faites de poissons transformés en farine, dont la pêche est déjà comptée dans les produits de la pêche ; ces huiles nourrissent surtout les poissons d'élevage, et leur usage alimentaire est inférieur à 0,1 Mt.
+- **L'huile de corps et l'huile de foie de poisson (2781, 2782)** : faites de poissons transformés en farine, dont la pêche est déjà comptée dans les produits de la pêche. Ces huiles nourrissent surtout les poissons d'élevage, et leur usage alimentaire est inférieur à 0,1 Mt.
 
 ## Pêche et aquaculture dans chaque pays
 
-FishStat de la FAO (production mondiale, version 2025.1.0) donne la production de chaque pays par espèce et par source : pêche, ou aquaculture en eau douce, saumâtre ou marine. Chaque espèce appartient à un groupe ISSCAAP, et `seafood_isscaap.csv` place chaque groupe dans un produit des bilans, un groupe de Parker et al. pour la pêche et un groupe de MacLeod et al. pour l'aquaculture. Pour chaque pays et chaque produit, Planetshift additionne les trois années jusqu'à l'année de référence (2021–2023) et pondère les facteurs des groupes par les tonnes de chacun. L'intensité des crustacés d'un pays, par exemple, est celle de son propre mélange de crevettes d'élevage et de crevettes, crabes et homards pêchés au chalut.
+FishStat de la FAO (production mondiale, version 2025.1.0) donne la production de chaque pays par espèce et par source : pêche, ou aquaculture en eau douce, saumâtre ou marine. Chaque espèce appartient à un groupe ISSCAAP (la classification des espèces aquatiques de la FAO). `seafood_isscaap.csv` place chaque groupe dans un produit des bilans, dans un groupe de Parker et al. pour la pêche, et dans un groupe de MacLeod et al. pour l'aquaculture.
 
-FishStat est publié sous licence CC BY 4.0 (conditions d'utilisation des bases de données statistiques de la FAO). Le pipeline le télécharge dans son cache et n'écrit dans les fichiers de l'application que des intensités dérivées et des tonnages d'aquaculture, pas les enregistrements de FishStat eux-mêmes.
+Pour chaque pays et chaque produit, Planetshift additionne les trois années jusqu'à l'année de référence (2021–2023). Il pondère ensuite les facteurs d'émission des groupes par les tonnes de chacun. Les émissions par tonne de crustacés d'un pays, par exemple, sont celles de son propre mélange de crevettes d'élevage et de crevettes, crabes et homards pêchés au chalut.
+
+FishStat est publié sous licence CC BY 4.0 (conditions d'utilisation des bases de données statistiques de la FAO). Le pipeline le télécharge dans son cache. Il n'écrit dans les fichiers de l'application que des intensités dérivées et des tonnages d'aquaculture, pas les enregistrements de FishStat eux-mêmes.
 
 ## Intensités
 
-Les domaines d'émissions de FAOSTAT ne couvrent ni la pêche ni l'aquaculture, il n'y a donc pas de niveau 3, et la version actuelle de HESTIA n'a pas d'agrégations aquatiques, il n'y a donc pas de niveaux 1 et 2. L'intensité d'un produit de la mer est fixée au niveau 4 à partir de la littérature, mélangée selon la production propre du pays comme ci-dessus. Un pays dont le bilan contient un produit que FishStat ne liste pas pour lui reçoit le premier substitut de `proxies.csv` (un autre poisson, ou un autre fruit de mer, au niveau 5), et à défaut la médiane mondiale du groupe pondérée par la production (niveau 6). L'année de référence, 1 018 des 1 504 cases des produits de la mer sont au niveau 4, 208 au niveau 5 et 278 au niveau 6 ; les cases de niveau 6 sont presque toutes des pays sans littoral qui importent tout leur poisson.
+Une intensité est l'émission due à la production d'une tonne d'un aliment. Planetshift prend chaque intensité dans la meilleure source disponible, classée en niveaux allant du niveau 1 (les données de HESTIA pour le produit dans ce pays) au niveau 6 (la médiane du groupe d'aliments sur tous les pays) ; voir [Émissions](#method-emissions).
 
-**La pêche** brûle du carburant en mer. Parker et al. (2018) donnent le carburant utilisé par tonne débarquée pour chaque groupe d'espèces en 2011 (Table 1), de 42 litres pour les petits poissons pélagiques à 1 739 litres pour les crustacés ; leurs Methods comptent 2,8 kg CO₂e par litre brûlé et 0,5 kg pour son extraction, son raffinage et sa livraison. Planetshift les utilise comme du CO₂. Parker et al. ajoutent aussi 1,1 kg CO₂e par litre pour les navires, les engins de pêche et les fuites de réfrigérant ; Planetshift laisse cela de côté, comme il laisse de côté la fabrication des tracteurs et des bâtiments agricoles, et les réfrigérants ne sont pas l'un de ses trois gaz. La pêche continentale est hors des données de Parker et al. ; elle se fait surtout avec de petits bateaux, souvent sans moteur, et reçoit l'intensité marine la plus basse, celle des petits poissons pélagiques.
+Les domaines d'émissions de FAOSTAT ne couvrent ni la pêche ni l'aquaculture : il n'y a donc pas de niveau 3. La version actuelle de HESTIA n'a pas d'agrégations aquatiques : il n'y a donc pas de niveaux 1 et 2. L'intensité d'un produit de la mer est donc fixée au niveau 4, à partir de la littérature, et mélangée selon la production propre du pays comme ci-dessus. Un pays dont le bilan contient un produit que FishStat ne liste pas pour lui reçoit le premier substitut de `proxies.csv` (un autre poisson, ou un autre fruit de mer, au niveau 5). À défaut, il reçoit la médiane mondiale du groupe pondérée par la production (niveau 6). L'année de référence, 1 018 des 1 504 cases des produits de la mer sont au niveau 4, 208 au niveau 5 et 278 au niveau 6. Les cases de niveau 6 sont presque toutes des pays sans littoral qui importent tout leur poisson.
+
+### La pêche
+
+La pêche brûle du carburant en mer. Parker et al. (2018) donnent le carburant utilisé par tonne débarquée pour chaque groupe d'espèces en 2011 (Table 1), de 42 litres pour les petits poissons pélagiques à 1 739 litres pour les crustacés. Leurs Methods comptent 2,8 kg CO₂e par litre brûlé et 0,5 kg pour son extraction, son raffinage et sa livraison. Planetshift les utilise comme du CO₂.
+
+**Un exemple chiffré.** Les petits poissons pélagiques comme la sardine demandent 42 litres de carburant par tonne débarquée. Chaque litre compte 2,8 + 0,5 = 3,3 kg de CO₂ : une tonne de sardines porte donc 42 × 3,3 = 139 kg de CO₂. Une tonne de crustacés, à 1 739 litres, en porte 5 739 kg.
+
+Parker et al. ajoutent aussi 1,1 kg CO₂e par litre pour les navires, les engins de pêche et les fuites de réfrigérant. Planetshift laisse cela de côté, comme il laisse de côté la fabrication des tracteurs et des bâtiments agricoles, et les réfrigérants ne sont pas l'un de ses trois gaz. La pêche continentale est hors des données de Parker et al. Elle se fait surtout avec de petits bateaux, souvent sans moteur, et reçoit l'intensité marine la plus basse, celle des petits poissons pélagiques.
 
 | Groupe de pêche | Litres par tonne débarquée | kg CO₂ par tonne, du berceau à la sortie de ferme |
 | --- | --- | --- |
@@ -48,7 +83,14 @@ Les domaines d'émissions de FAOSTAT ne couvrent ni la pêche ni l'aquaculture, 
 | Toutes pêcheries (poissons non identifiés, espèces d'eau douce pêchées en mer) | 489 | 1 614 |
 | Pêche continentale (hypothèse) | 42 | 139 |
 
-**L'aquaculture** n'a pas de méthane entérique. MacLeod et al. (2020) comptent, outre l'alimentation, le protoxyde d'azote dégagé par l'eau de l'élevage, 1,69 g de N₂O-N par kg de poids vif produit (2,66 kg de N₂O par tonne), et l'énergie utilisée sur l'exploitation pour le pompage, l'aération, l'éclairage et les véhicules (leur Supplementary Table D, par groupe d'espèces, en électricité, diesel et essence). Le diesel et l'essence émettent 0,074 et 0,070 kg CO₂ par MJ (leur Table E) ; l'électricité est prise à la moyenne mondiale de 480 g de CO₂ par kWh en 2023 (Ember). Les engrais des étangs, qu'ils comptent et qui sont faibles, sont laissés de côté.
+### L'aquaculture
+
+L'aquaculture n'a pas de méthane entérique (le méthane que produisent des animaux comme les bovins en digérant). Outre l'alimentation, MacLeod et al. (2020) comptent deux sources :
+
+- le protoxyde d'azote dégagé par l'eau de l'élevage : 1,69 g de N₂O-N par kg de poids vif produit, soit 2,66 kg de N₂O par tonne ;
+- l'énergie utilisée sur l'exploitation pour le pompage, l'aération, l'éclairage et les véhicules (leur Supplementary Table D, par groupe d'espèces, en électricité, diesel et essence).
+
+Le diesel et l'essence émettent 0,074 et 0,070 kg CO₂ par MJ (leur Table E). L'électricité est prise à la moyenne mondiale de 480 g de CO₂ par kWh en 2023 (Ember). Les engrais des étangs, qu'ils comptent et qui sont faibles, sont laissés de côté.
 
 | Groupe d'aquaculture | Énergie sur l'exploitation (MJ par tonne) : électricité / diesel / essence | kg CO₂ par tonne, du berceau à la sortie de ferme | kg N₂O par tonne |
 | --- | --- | --- | --- |
@@ -58,26 +100,56 @@ Les domaines d'émissions de FAOSTAT ne couvrent ni la pêche ni l'aquaculture, 
 | Salmonidés, et poissons marins | 0 / 551 / 617 | 84 | 2,66 |
 | Crevettes (tous les crustacés) | 14 068 / 4 511 / 2 | 2 210 | 2,66 |
 
-**Périmètres.** Comme pour les cultures et l'élevage, le périmètre à la ferme compte ce qu'émet la biologie de l'exploitation, et celui du berceau à la sortie de ferme y ajoute l'énergie. Le N₂O aquatique est dans les deux ; le carburant et l'électricité seulement dans le second. Les poissons sauvages n'ont donc rien à la ferme : leurs émissions sont presque entièrement du carburant, qui n'apparaît que quand le lecteur choisit « Avec les intrants » dans les Options. C'est la même règle qui garde le diesel des tracteurs hors de l'intensité à la ferme du blé, mais son effet est plus grand ici ; l'interface le dit donc, dans l'aide de *Émissions comptées* sous Options et dans la note du résumé sur ce qui est compté.
+### Périmètres
 
-Pondérées par la production mondiale de 2021–2023, les intensités sont (kg CO₂e par tonne, du berceau à la sortie de ferme, facteurs de l'AR6) : poissons d'eau douce 817 (18 % pêchés), poissons démersaux 1 666 (89 % pêchés), poissons pélagiques 807 (99 % pêchés), autres poissons marins 1 527, crustacés 3 729 (32 % pêchés), céphalopodes 2 023 (tous pêchés), autres mollusques 1 065 (11 % pêchés), autres animaux aquatiques 1 225. À la ferme, il ne reste que le N₂O de la part élevée : 597 pour les poissons d'eau douce, 646 pour les mollusques, 492 pour les crustacés, de 0 à 80 pour les produits surtout sauvages.
+Comme pour les cultures et l'élevage, le périmètre à la ferme compte ce qu'émet la biologie de l'exploitation, et celui du berceau à la sortie de ferme y ajoute l'énergie. Le N₂O aquatique est dans les deux. Le carburant et l'électricité ne sont que dans le second. C'est pourquoi les poissons sauvages n'ont rien à la ferme, comme l'explique le haut de cette page.
+
+### Les intensités par produit
+
+Pondérées par la production mondiale de 2021–2023, les intensités sont les suivantes, en kg CO₂e par tonne, du berceau à la sortie de ferme, avec les facteurs de l'AR6 (les poids à 100 ans du sixième rapport d'évaluation du GIEC) :
+
+| Produit | kg CO₂e par tonne | Part pêchée |
+| --- | --- | --- |
+| Poissons d'eau douce | 817 | 18 % |
+| Poissons démersaux | 1 666 | 89 % |
+| Poissons pélagiques | 807 | 99 % |
+| Autres poissons marins | 1 527 | |
+| Crustacés | 3 729 | 32 % |
+| Céphalopodes | 2 023 | tous |
+| Autres mollusques | 1 065 | 11 % |
+| Autres animaux aquatiques | 1 225 | |
+
+À la ferme, il ne reste que le N₂O de la part élevée : 597 pour les poissons d'eau douce, 646 pour les mollusques, 492 pour les crustacés, et de 0 à 80 pour les produits surtout sauvages.
 
 ## Alimentation animale
 
-L'alimentation de l'aquaculture suit la règle de l'élevage : l'intensité d'un poisson d'élevage exclut la culture de ses aliments, comptée sur les cultures et les poissons qu'il mange. L'usage fourrager du maïs, du soja, du blé et des autres produits fourragers dans les bilans alimentaires comprend déjà ce qui entre dans les aliments aquacoles ; `feed.json` en donne donc maintenant une part aux produits de la mer. La production des produits de la mer dans la répartition des aliments est l'aquaculture d'espèces nourries de chaque pays (FishStat, poissons et crustacés ; les bivalves et les autres filtreurs ne sont pas nourris), 75 Mt par an en 2021–2023, et non la production des bilans, en grande partie sauvage ou non nourrie.
+L'alimentation de l'aquaculture suit la règle de l'élevage. L'intensité d'un poisson d'élevage exclut la culture de ses aliments, comptée sur les cultures et les poissons qu'il mange. L'usage fourrager du maïs, du soja, du blé et des autres produits fourragers dans les bilans alimentaires comprend déjà ce qui entre dans les aliments aquacoles ; `feed.json` en donne donc maintenant une part aux produits de la mer.
 
-- **Par espèce** : les produits de la mer prennent 5,5 % des aliments concentrés du monde, les autres groupes gardant leurs proportions publiées ramenées aux 94,5 % restants (`feed_species.csv`). Les aliments aquacoles composés atteignaient 69,4 Mt en 2023 (Tacon et al., 2025), face à quelque 1,2 à 1,3 Gt d'aliments composés pour tous les animaux. La part était de 4 % jusqu'en novembre 2026, d'après environ 50 Mt d'aliments aquacoles en 2017 (Tacon, 2020), un chiffre daté par rapport à l'année de référence 2023.
-- **Rations de type GLEAM** : les poissons d'élevage mangent 1,6 t d'aliments par tonne dans les pays à revenu élevé (saumons et truites, nourris de granulés) et 0,87 t ailleurs (carpes et tilapias, en partie nourris par ce que produit l'étang), ce qui donne environ 69 Mt d'aliments aquacoles pour le monde, le total de 2023. Leur ration est de 30 % de grain, 40 % d'oléagineux, 5 % de légumineuses et 25 % de poisson, en tonnes de poids vif comme les bilans les utilisent pour le poisson (`feed_gleam_intake.csv`, `feed_gleam_rations.csv`).
+La production des produits de la mer dans la répartition des aliments est l'aquaculture d'espèces nourries de chaque pays (FishStat, poissons et crustacés) : 75 Mt par an en 2021–2023. Les bivalves et les autres filtreurs ne sont pas nourris. La production des bilans n'est pas utilisée ici, car elle est en grande partie sauvage ou non nourrie.
 
-**Le poisson donné aux animaux.** Les bilans enregistrent le poisson transformé en farine et en huile comme usage fourrager des produits de la pêche (24 Mt de poisson en 2023, dont 20 Mt de pélagiques) : les produits de la pêche sont donc aussi des produits fourragers. Leur usage fourrager va à environ 70 % à l'aquaculture, 23 % aux porcs et 7 % aux volailles : une répartition propre (`fishmeal` dans `feed_species.csv`) dans la méthode par espèce, et une classe `fish` des rations (0,25 de la ration aquacole, 0,01 de celle des porcs, 0,003 de celle des volailles) dans la méthode de type GLEAM, qui donne 74 %, 20 % et 6 %. Quand on mange moins de poisson d'élevage, on pêche moins de poisson pour le nourrir, et les émissions de cette pêche baissent avec. Les huiles de poisson elles-mêmes sont laissées de côté (voir Produits).
+Les deux méthodes de répartition des aliments (voir [Alimentation animale](#method-feed)) donnent leur part aux produits de la mer ainsi :
 
-**Ce qui a changé pour les autres groupes.** Pour chaque produit fourrager qui existait déjà, dans chaque région et avec les deux méthodes, les cinq groupes d'élevage gardent les mêmes proportions entre eux : leurs parts sont les anciennes multipliées par un moins la part des produits de la mer. `tests/test_seafood_built.py` le vérifie par rapport aux dernières données sans produits de la mer, à l'arrondi des parts près (plus grand écart 0,0003). Les parts mondiales des produits de la mer sont de 5,5 % de chaque culture dans la méthode par espèce, et dans celle de type GLEAM de 2,6 % du grain et du riz, 5,9 % des légumineuses et 9,1 % du soja.
+- **Par espèce** : les produits de la mer prennent 5,5 % des aliments concentrés du monde. Les autres groupes gardent leurs proportions publiées, ramenées aux 94,5 % restants (`feed_species.csv`). Les aliments aquacoles composés atteignaient 69,4 Mt en 2023 (Tacon et al., 2025), face à quelque 1,2 à 1,3 Gt d'aliments composés pour tous les animaux. La part était de 4 % jusqu'en novembre 2026, d'après environ 50 Mt d'aliments aquacoles en 2017 (Tacon, 2020), un chiffre daté par rapport à l'année de référence 2023.
+- **Rations de type GLEAM** : les poissons d'élevage mangent 1,6 t d'aliments par tonne dans les pays à revenu élevé (saumons et truites, nourris de granulés) et 0,87 t ailleurs (carpes et tilapias, en partie nourris par ce que produit l'étang). Cela donne environ 69 Mt d'aliments aquacoles pour le monde, le total de 2023. Leur ration est de 30 % de grain, 40 % d'oléagineux, 5 % de légumineuses et 25 % de poisson, en tonnes de poids vif comme les bilans les utilisent pour le poisson (`feed_gleam_intake.csv`, `feed_gleam_rations.csv`).
+
+### Le poisson donné aux animaux
+
+Les bilans enregistrent le poisson transformé en farine et en huile comme usage fourrager des produits de la pêche : 24 Mt de poisson en 2023, dont 20 Mt de pélagiques. Les produits de la pêche sont donc aussi des produits fourragers. Leur usage fourrager va à environ 70 % à l'aquaculture, 23 % aux porcs et 7 % aux volailles :
+
+- dans la méthode par espèce, comme une répartition propre (`fishmeal` dans `feed_species.csv`) ;
+- dans la méthode de type GLEAM, comme une classe `fish` des rations (0,25 de la ration aquacole, 0,01 de celle des porcs, 0,003 de celle des volailles), qui donne 74 %, 20 % et 6 %.
+
+Quand on mange moins de poisson d'élevage, on pêche moins de poisson pour le nourrir, et les émissions de cette pêche baissent avec. Les huiles de poisson elles-mêmes sont laissées de côté (voir Produits).
+
+### Ce qui a changé pour les autres groupes
+
+Pour chaque produit fourrager qui existait déjà, dans chaque région et avec les deux méthodes, les cinq groupes d'élevage gardent les mêmes proportions entre eux. Leurs parts sont les anciennes multipliées par un moins la part des produits de la mer. `tests/test_seafood_built.py` le vérifie par rapport aux dernières données sans produits de la mer, à l'arrondi des parts près (plus grand écart 0,0003). Les parts mondiales des produits de la mer sont de 5,5 % de chaque culture dans la méthode par espèce. Dans celle de type GLEAM, elles sont de 2,6 % du grain et du riz, 5,9 % des légumineuses et 9,1 % du soja.
 
 ## Répartition par source et terres
 
-Dans `breakdown.json`, tout le CO₂ des produits de la mer est de l'`energy` (carburant de pêche, carburant et électricité de l'élevage) et tout leur N₂O est `other` (l'eau des élevages de poissons, qu'aucune autre source ne nomme). Rien n'est `inputsManufacture`, puisque navires, engins et engrais des étangs sont laissés de côté. La pratique « Énergie propre à la ferme » agit donc sur les produits de la mer dans le périmètre du berceau à la sortie de ferme, comme sur l'énergie des autres exploitations.
+Dans `breakdown.json`, tout le CO₂ des produits de la mer est de l'`energy` (carburant de pêche, carburant et électricité de l'élevage). Tout leur N₂O est `other` (l'eau des élevages de poissons, qu'aucune autre source ne nomme). Rien n'est `inputsManufacture`, puisque navires, engins et engrais des étangs sont laissés de côté. La pratique « Énergie propre à la ferme » agit donc sur les produits de la mer dans le périmètre du berceau à la sortie de ferme, comme sur l'énergie des autres exploitations.
 
-Les produits de la mer n'ont ni prairies ni cultures propres : les surfaces de leurs aliments sont celles des cultures et passent par les parts fourragères, comme pour les porcs et les volailles. `land.py` ne compte les surfaces cultivées que pour les produits végétaux et les prairies que pour les ruminants : les produits de la mer ne sont dans aucun des deux, et `land.json` ne change pas.
+Les produits de la mer n'ont ni prairies ni cultures propres. Les surfaces de leurs aliments sont celles des cultures et passent par les parts fourragères, comme pour les porcs et les volailles. `land.py` ne compte les surfaces cultivées que pour les produits végétaux et les prairies que pour les ruminants : les produits de la mer ne sont dans aucun des deux, et `land.json` ne change pas.
 
 ## Validation
 
@@ -93,23 +165,21 @@ Les produits de la mer n'ont ni prairies ni cultures propres : les surfaces de l
 | Émissions de l'aquaculture avec l'alimentation | alimentation comptée sur les cultures et les poissons | 263 Mt CO₂e en 2017, dont 57 % pour l'alimentation (MacLeod et al.) |
 | Aliments aquacoles composés | environ 69 Mt (consommation de type GLEAM) | 69,4 Mt en 2023 (Tacon et al., 2025) ; environ 50 Mt en 2017 (Tacon, 2020) |
 
-Tous les produits de la mer ensemble, pondérés par la production des bilans, donnent 66 Mt CO₂e par an à la ferme et 236 Mt CO₂e du berceau à la sortie de ferme. Le total de la pêche est à quelques pour cent des émissions de carburant de Parker et al. parce que les captures mondiales n'ont presque pas changé depuis 2011. L'aquaculture ressort plus basse par tonne que la part hors alimentation de MacLeod et al. parce que le N₂O est pondéré avec le facteur 273 de l'AR6 au lieu de 298 et que les engrais des étangs sont laissés de côté. Les intensités de tous les autres produits, l'approvisionnement, les produits et la répartition par source de tous les autres produits, et `land.json` sont les mêmes qu'avant l'ajout des produits de la mer (`tests/test_seafood_built.py`).
-
-## Dans l'application
-
-Les poissons et fruits de mer changent comme les autres aliments animaux : le curseur principal les fait varier, et *Poissons et fruits de mer* sous « Régler chaque aliment animal » fixe leur propre part (`sea` dans l'adresse). Les protéines ou les calories qu'ils apportent sont remplacées par des végétaux, comme pour la viande. Comme les poissons sauvages émettent peu à la ferme (rien) et modérément avec les intrants, les remplacer par des végétaux peut éviter peu de réchauffement, voire en ajouter un peu : les végétaux qui les remplacent ont leurs propres émissions.
-
-Les produits de la pêche sont aussi des produits fourragers. Quand les animaux qu'ils nourrissent (poissons d'élevage, porcs, volailles) produisent moins, le poisson qui leur est donné baisse de la même part de son usage fourrager, et cette variation est placée comme une variation de la demande de poisson, en plus de la variation de ce que mangent les gens. Elle est faite une seule fois, sans boucle : le poisson pêché pour la farine est sauvage et ne mange lui-même aucun aliment, si bien qu'en pêcher moins ne change aucun aliment (`run.ts`, `productionChanges` ; la même étape s'applique au lait donné aux veaux). La part de l'aquaculture dans les cultures fourragères baisse avec la production de tout le groupe, pêche comprise, car l'application ne garde pas de répartition de la production du groupe par système.
+Tous les produits de la mer ensemble, pondérés par la production des bilans, donnent 66 Mt CO₂e par an à la ferme et 236 Mt CO₂e du berceau à la sortie de ferme. Le total de la pêche est à quelques pour cent des émissions de carburant de Parker et al., parce que les captures mondiales n'ont presque pas changé depuis 2011. L'aquaculture ressort plus basse par tonne que la part hors alimentation de MacLeod et al., pour deux raisons : le N₂O est pondéré avec le facteur 273 de l'AR6 au lieu de 298, et les engrais des étangs sont laissés de côté. Les intensités, l'approvisionnement, les produits et la répartition par source de tous les autres produits, et `land.json`, sont les mêmes qu'avant l'ajout des produits de la mer (`tests/test_seafood_built.py`).
 
 ## Manger moins de poisson permet-il à l'océan de stocker plus de carbone ?
 
-Deux mécanismes sont parfois avancés ; aucun n'est dans les chiffres de Planetshift.
+Deux mécanismes sont parfois avancés. Aucun n'est dans les chiffres de Planetshift.
 
-**Le carbone des poissons.** Un grand poisson qui meurt en mer coule, et le carbone de son corps atteint l'océan profond, où il reste des siècles ; un poisson pêché libère son carbone en quelques jours. Mariani et al. (2020) estiment que la pêche a retiré 318 Mt de thons, maquereaux, poissons à rostre et requins entre 1950 et 2014, contenant 37,5 Mt de carbone, dont 21,8 Mt auraient coulé sous les profondeurs qui le gardent, une fois la prédation prise en compte. Avec le carburant brûlé pour les pêcher, cela fait leurs 0,73 Gt de CO₂ depuis 1950 mis en avant, mais le carburant en est l'essentiel : le carbone qui n'a pas coulé représente environ 80 Mt de CO₂ en 65 ans, à peu près 1 Mt par an, moins de 1 % des émissions de carburant de la pêche mondiale. Les baleines font de même, à plus grande échelle par animal, et fertilisent la surface de leurs excréments (la « pompe à baleines ») ; les mammifères aquatiques ne sont pas mangés en quantité et sont hors du modèle.
+**Le carbone des poissons.** Un grand poisson qui meurt en mer coule, et le carbone de son corps atteint l'océan profond, où il reste des siècles. Un poisson pêché libère son carbone en quelques jours. Mariani et al. (2020) estiment que la pêche a retiré 318 Mt de thons, maquereaux, poissons à rostre et requins entre 1950 et 2014. Ces poissons contenaient 37,5 Mt de carbone, dont 21,8 Mt auraient coulé sous les profondeurs qui le gardent, une fois la prédation prise en compte. Avec le carburant brûlé pour les pêcher, cela fait leurs 0,73 Gt de CO₂ depuis 1950 mis en avant, mais le carburant en est l'essentiel. Le carbone qui n'a pas coulé représente environ 80 Mt de CO₂ en 65 ans, à peu près 1 Mt par an. C'est moins de 1 % des émissions de carburant de la pêche mondiale. Les baleines font de même, à plus grande échelle par animal, et fertilisent la surface de leurs excréments (la « pompe à baleines »). Les mammifères aquatiques ne sont pas mangés en quantité et sont hors du modèle.
 
-**Le chalutage de fond.** Les chaluts traînés sur le fond de la mer remuent ses sédiments, et une partie de leur carbone peut être oxydée en CO₂. Sala et al. (2021) estimaient de 0,6 à 1,5 Gt de CO₂ par an dissous dans l'eau, autant que tout le CO₂ des fermes du monde ; Hiddink et al. (2023) ont répondu que les taux de reminéralisation utilisés étaient bien trop élevés et que le vrai chiffre pourrait être dix fois plus petit, et la part du CO₂ dissous qui atteint l'air, et à quelle vitesse, reste débattue. Il n'existe pas de chiffre admis par tonne de poisson.
+**Le chalutage de fond.** Les chaluts traînés sur le fond de la mer remuent ses sédiments, et une partie de leur carbone peut être oxydée en CO₂. Sala et al. (2021) estimaient de 0,6 à 1,5 Gt de CO₂ par an dissous dans l'eau, autant que tout le CO₂ des fermes du monde. Hiddink et al. (2023) ont répondu que les taux de reminéralisation utilisés étaient bien trop élevés, et que le vrai chiffre pourrait être dix fois plus petit. La part du CO₂ dissous qui atteint l'air, et à quelle vitesse, reste débattue. Il n'existe pas de chiffre admis par tonne de poisson.
 
-**Pourquoi ils sont laissés de côté.** Le mécanisme du carbone des poissons est faible, et celui du chalutage de fond contesté ; les deux dépendent bien plus de l'endroit et de la façon dont un poisson est pêché que de la quantité mangée. Un facteur par tonne découle de Mariani et al. pour un levier ultérieur : 21,8 Mt de carbone pour 318 Mt de poisson, c'est environ 0,25 t de CO₂ par tonne de thon, poisson à rostre, maquereau ou requin pêché en eaux profondes, environ un sixième de plus que le carburant brûlé pour le pêcher (1,42 t de CO₂ par tonne). Il n'agirait que sur une partie des produits « Poissons pélagiques » et « Autres poissons marins », et compterait comme du carbone non stocké plutôt que comme une émission, comme la repousse sur les terres agricoles libérées. Il n'est pas mis en œuvre.
+**Pourquoi ils sont laissés de côté.** Le mécanisme du carbone des poissons est faible, et celui du chalutage de fond est contesté. Les deux dépendent bien plus de l'endroit et de la façon dont un poisson est pêché que de la quantité mangée. Un facteur par tonne découle de Mariani et al. pour un levier ultérieur : 21,8 Mt de carbone pour 318 Mt de poisson, c'est environ 0,25 t de CO₂ par tonne de thon, poisson à rostre, maquereau ou requin pêché en eaux profondes. C'est environ un sixième de plus que le carburant brûlé pour le pêcher (1,42 t de CO₂ par tonne). Il n'agirait que sur une partie des produits « Poissons pélagiques » et « Autres poissons marins ». Il compterait comme du carbone non stocké plutôt que comme une émission, comme la repousse sur les terres agricoles libérées. Il n'est pas mis en œuvre.
+
+## Données et code
+
+Le code est `pipeline/planetshift_pipeline/seafood.py` et `pipeline/planetshift_pipeline/sources/fishstat.py`. Les tables sont `pipeline/seafood_isscaap.csv` et `pipeline/seafood_factors.csv`.
 
 ## Hypothèses
 
