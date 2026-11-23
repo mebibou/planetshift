@@ -99,8 +99,8 @@ The edible waste is also capped at 40% of a country's food supply in the Food Ba
 
 ## Sources
 
-- United Nations Environment Programme (2024). Food Waste Index Report 2024. Think Eat Save: Tracking Progress to Halve Global Food Waste. Nairobi: <https://wedocs.unep.org/20.500.11822/45230>. Reproduction for educational or non-profit purposes is allowed with acknowledgement of the source.
-- United Nations Statistics Division, SDG Global Database, indicator 12.3.1(b), series AG_FOOD_WST_PC (food waste per capita, by sector): <https://unstats.un.org/sdgs/dataportal>. Free to reuse with attribution.
+- United Nations Environment Programme (2024). Food Waste Index Report 2024. Think Eat Save: Tracking Progress to Halve Global Food Waste. Nairobi: <https://wedocs.unep.org/20.500.11822/45230>. Reproduction for educational or non-profit services is allowed with acknowledgement of the source.
+- United Nations Statistics Division, SDG Global Database, indicator 12.3.1(b), series AG_FOOD_WST_PC (food waste per capita, by sector): <https://unstats.un.org/sdgs/dataportal>. Free to copy and distribute with the United Nations cited as the source; commercial redistribution needs the UN's permission.
 - Eurostat, Food waste and food waste prevention by NACE Rev. 2 activity (env_wasfw), the European figures reported to the SDG database: <https://ec.europa.eu/eurostat/web/waste/food-waste>.
 - WRAP (2023). Household Food and Drink Waste in the United Kingdom 2021/22 (edible share of household food waste): <https://wrap.ngo/resources/report/household-food-and-drink-waste-united-kingdom-202122>.
 - FAO, SDG indicator 12.3.1(a), food loss percentage: 13.3% in 2023, FAO SDG indicators data portal: <https://www.fao.org/sustainable-development-goals-data-portal/data/indicator/1231a-global-food-loss-index/en>.

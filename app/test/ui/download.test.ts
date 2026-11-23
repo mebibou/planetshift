@@ -254,5 +254,6 @@ describe('scenario json and licences', () => {
     expect(names('industry.json')).toEqual(['CC BY-SA 4.0']);
     expect(names('population.json')).toEqual(['CC BY 3.0 IGO', 'CC BY 4.0']);
     expect(names('supply.json')).toEqual(['CC BY 4.0']);
+    expect(names('waste.json')).toEqual(['UN terms of use']);
   });
 });
