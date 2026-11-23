@@ -35,33 +35,34 @@ MAJOR = [
 
 def deduce(rows):
     return pd.DataFrame(
-        rows, columns=["iso3", "year", "group", "commodity", "mt_co2", "peat_mt_co2"]
+        rows, columns=["iso3", "year", "group", "commodity", "mt_co2", "peat_mt_co2", "ha"]
     )
 
 
 def test_yearly_mean_averages_the_years_in_tonnes():
     df = deduce(
         [
-            ("BRA", 2018, "Pasture", "Cattle meat", 9.0, 0.0),
-            ("BRA", 2019, "Pasture", "Cattle meat", 1.0, 0.0),
-            ("BRA", 2020, "Pasture", "Cattle meat", 3.0, 0.5),
+            ("BRA", 2018, "Pasture", "Cattle meat", 9.0, 0.0, 900.0),
+            ("BRA", 2019, "Pasture", "Cattle meat", 1.0, 0.0, 100.0),
+            ("BRA", 2020, "Pasture", "Cattle meat", 3.0, 0.5, 300.0),
         ]
     )
     means = D.yearly_mean(df, (2019, 2020))
     assert means.loc[0, "t_co2"] == pytest.approx(2e6)
     assert means.loc[0, "peat_t_co2"] == pytest.approx(0.25e6)
+    assert means.loc[0, "ha"] == pytest.approx(200.0)
 
 
 def test_attribution_splits_shares_and_reports_what_is_left_out():
     means = pd.DataFrame(
         [
-            ("BRA", "Pasture", "Cattle meat", 100.0),
-            ("BRA", "Pasture", "Leather", 5.0),
-            ("BRA", "Fibre crops", "Seed cotton, unginned", 10.0),
-            ("BRA", "Forest plantation", "Forest plantation (Pine)", 3.0),
-            ("BRA", "Other", "Something new", 1.0),
+            ("BRA", "Pasture", "Cattle meat", 100.0, 40.0),
+            ("BRA", "Pasture", "Leather", 5.0, 2.0),
+            ("BRA", "Fibre crops", "Seed cotton, unginned", 10.0, 20.0),
+            ("BRA", "Forest plantation", "Forest plantation (Pine)", 3.0, 1.0),
+            ("BRA", "Other", "Something new", 1.0, 1.0),
         ],
-        columns=["iso3", "group", "commodity", "t_co2"],
+        columns=["iso3", "group", "commodity", "t_co2", "ha"],
     )
     items = pd.DataFrame(
         {
@@ -73,6 +74,9 @@ def test_attribution_splits_shares_and_reports_what_is_left_out():
     kept, dropped = D.attributed(means, items)
     assert dict(zip(kept["fbs_code"], kept["t_co2"], strict=True)) == pytest.approx(
         {2731: 100.0, 2559: 1.5}
+    )
+    assert dict(zip(kept["fbs_code"], kept["ha"], strict=True)) == pytest.approx(
+        {2731: 40.0, 2559: 3.0}
     )
     reasons = dropped.set_index("commodity")["reason"].to_dict()
     assert reasons == {
@@ -92,6 +96,14 @@ def test_by_country_keeps_net_emissions_of_model_countries():
     assert D.by_country(kept, {"BRA", "IDN"}) == {"BRA": {"2731": 10}}
 
 
+def test_by_country_gives_the_area_cleared_in_hectares():
+    kept = pd.DataFrame(
+        [("BRA", 2731, 10.4, 2500.6), ("BRA", 2562, -3.0, 40.0), ("IDN", 2562, 0.2, 0.4)],
+        columns=["iso3", "fbs_code", "t_co2", "ha"],
+    )
+    assert D.by_country(kept, {"BRA", "IDN"}, value="ha") == {"BRA": {"2731": 2501, "2562": 40}}
+
+
 def test_every_major_commodity_is_mapped_to_a_food_item_in_the_model():
     items = D.item_map().set_index("commodity")
     kept = set(G.kept(G.load())["fbs_code"])
@@ -108,8 +120,8 @@ def test_mapping_leaves_out_non_food_commodities():
 
 
 def test_json_shape():
-    data = D.deforestation_json({"BRA": {"2731": 1}})
-    assert set(data) == {"byCountry", "years", "source"}
+    data = D.deforestation_json({"BRA": {"2731": 1}}, {"BRA": {"2731": 3}})
+    assert set(data) == {"byCountry", "areaByCountry", "years", "source"}
     assert data["years"] == list(D.YEARS)
 
 
@@ -119,7 +131,7 @@ def test_built_file_matches_the_contract_and_published_totals():
     if not path.exists():
         pytest.skip("deforestation.json not built")
     data = json.loads(path.read_text())
-    assert set(data) == {"byCountry", "years", "source"}
+    assert set(data) == {"byCountry", "areaByCountry", "years", "source"}
     assert len(data["years"]) == 2 and data["years"][0] <= data["years"][1]
     countries = {c["iso3"] for c in json.loads((OUT / "countries.json").read_text())}
     assert set(data["byCountry"]) <= countries
@@ -131,6 +143,10 @@ def test_built_file_matches_the_contract_and_published_totals():
     brazil = sum(data["byCountry"]["BRA"].values())
     assert brazil == max(sum(v.values()) for v in data["byCountry"].values())
     assert data["byCountry"]["BRA"]["2731"] > 0.5 * brazil
+    area = sum(v for items in data["areaByCountry"].values() for v in items.values())
+    # DeDuCE attributes about 6 Mha a year of tropical forest loss to agricultural commodities
+    assert 3e6 < area < 1.2e7
+    assert set(data["areaByCountry"]) <= countries
     assert path.stat().st_size < 1_000_000
 
 

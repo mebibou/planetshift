@@ -176,7 +176,7 @@
       "land": "Farmland (cropland and pasture) with the levers",
       "change": "{what}: change once the levers are fully in place",
       "quality": "Least precise source of emission data used",
-      "deforestation": "CO₂ from forest clearing with the levers, a year"
+      "deforestation": "Forest cleared for farming with the levers, a year"
     },
     "notes": {
       "production": "Where food is grown, not where it is eaten.",
@@ -184,7 +184,7 @@
       "land": "Cropland harvested for the foods in the model, and permanent pasture shared out by beef and dairy cattle, sheep and goats.",
       "change": "Each country's output changes by the same share as world demand for each food, so exporters change with their customers.",
       "quality": "Neighbouring countries can differ only because their figures come from different sources.",
-      "deforestation": "CO₂ released by clearing forest for crops and pasture in each country, once the levers are fully in place; tonnes a year, not relative to farm emissions. The tooltip gives today's clearing and the change."
+      "deforestation": "Forest cleared for crops and pasture in each country, once the levers are fully in place; hectares a year. The tooltip gives today's clearing, the change and the CO₂ it releases."
     },
     "tooltip": {
       "noData": "No data for this country",
@@ -198,7 +198,8 @@
       "cropland": "Cropland",
       "pasture": "Pasture",
       "beforeAfter": "{before} → {after}",
-      "deforestation": "CO₂ from forest clearing, a year"
+      "deforestation": "Forest cleared for farming, a year",
+      "deforestationCo2": "CO₂ from the clearing, a year"
     },
     "noClearing": "No clearing or no data",
     "views": {

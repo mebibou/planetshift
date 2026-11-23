@@ -74,20 +74,26 @@ describe('tooltip', () => {
     expect(m.source).toBeUndefined();
   });
 
-  it('shows forest clearing in CO₂ a year, without an emission source', () => {
+  it('shows the forest cleared a year and its CO₂, without an emission source', () => {
     const m = tooltipModel(
       'Brazil',
-      countryResult({ deforestationCo2: 4.4e11, deforestationChange: -1.1e11 }),
+      countryResult({
+        deforestationCo2: 4.4e11,
+        deforestationChange: -1.1e11,
+        deforestationHa: 1.5e6,
+        deforestationHaChange: -3e5,
+      }),
       { ...spec, layer: 'deforestation' },
       t,
       'en-GB',
       { tier: 3, source: 'https://www.fao.org/faostat/' },
     );
     expect(m.rows.map(([k, v]) => [k, v.replace(/\u00a0/g, ' ')])).toEqual([
-      ['CO₂ from forest clearing, a year', ''],
-      ['Today', '440 Mt'],
-      ['With the levers', '330 Mt'],
-      ['Change', '−25%'],
+      ['Forest cleared for farming, a year', ''],
+      ['Today', '1.5 Mha'],
+      ['With the levers', '1.2 Mha'],
+      ['Change', '−20%'],
+      ['CO₂ from the clearing, a year', '440 Mt → 330 Mt'],
     ]);
     expect(m.source).toBeUndefined();
   });

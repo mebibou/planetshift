@@ -176,7 +176,7 @@
       "land": "Surfaces agricoles (cultures et prairies) avec les leviers",
       "change": "{what} : variation une fois les leviers en place",
       "quality": "Source la moins précise des données d'émission utilisées",
-      "deforestation": "CO₂ du défrichement avec les leviers, par an"
+      "deforestation": "Forêt défrichée pour l'agriculture avec les leviers, par an"
     },
     "notes": {
       "production": "Là où les aliments sont produits, pas là où ils sont consommés.",
@@ -184,7 +184,7 @@
       "land": "Surfaces récoltées pour les aliments du modèle, et prairies permanentes réparties entre bovins à viande et laitiers, ovins et caprins.",
       "change": "La production de chaque pays varie comme la demande mondiale de chaque aliment : les exportateurs suivent leurs clients.",
       "quality": "Des pays voisins peuvent différer simplement parce que leurs chiffres viennent de sources différentes.",
-      "deforestation": "CO₂ libéré par le défrichement de forêts pour les cultures et les prairies dans chaque pays, une fois les leviers en place ; en tonnes par an, pas rapporté aux émissions agricoles. L'infobulle donne le défrichement d'aujourd'hui et sa variation."
+      "deforestation": "Forêt défrichée pour les cultures et les pâturages dans chaque pays, une fois les leviers pleinement en place ; hectares par an. L'infobulle donne le défrichement d'aujourd'hui, la variation et le CO₂ qu'il libère."
     },
     "tooltip": {
       "noData": "Pas de données pour ce pays",
@@ -198,7 +198,8 @@
       "cropland": "Cultures",
       "pasture": "Prairies",
       "beforeAfter": "{before} → {after}",
-      "deforestation": "CO₂ du défrichement, par an"
+      "deforestation": "Forêt défrichée pour l'agriculture, par an",
+      "deforestationCo2": "CO₂ du défrichement, par an"
     },
     "noClearing": "Pas de défrichement ou pas de données",
     "views": {

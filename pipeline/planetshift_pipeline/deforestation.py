@@ -1,4 +1,5 @@
-"""CO₂ from deforestation attributed to agricultural commodities (DeDuCE), on FBS items."""
+"""Deforestation attributed to agricultural commodities (DeDuCE), on FBS items: its CO₂ and the
+forest area cleared."""
 
 import logging
 from pathlib import Path
@@ -30,6 +31,7 @@ YEARS = (2019, 2023)
 FORESTRY_GROUP = "Forest plantation"
 EMISSIONS = "Deforestation emissions excl. peat drainage, amortized (MtCO2)"
 PEAT = "Peatland drainage emissions (MtCO2)"
+AREA = "Deforestation attribution, unamortized (ha)"
 
 COLUMNS = {
     "ISO": "iso3",
@@ -38,6 +40,7 @@ COLUMNS = {
     "Commodity": "commodity",
     EMISSIONS: "mt_co2",
     PEAT: "peat_mt_co2",
+    AREA: "ha",
 }
 
 SOURCES = [
@@ -60,7 +63,9 @@ def read(cache_dir: Path) -> pd.DataFrame:
     """DeDuCE's attribution table, one row per producer country, year and commodity."""
     extract = cache_dir / "extracts" / EXTRACT
     if extract.exists():
-        return pd.read_pickle(extract)
+        cached = pd.read_pickle(extract)
+        if set(COLUMNS.values()) <= set(cached.columns):
+            return cached
     log.info("reading DeDuCE")
     raw = pd.read_excel(path(cache_dir), sheet_name=0)
     df = raw.rename(columns=COLUMNS)[list(COLUMNS.values())]
@@ -89,25 +94,32 @@ def item_map(
 
 
 def yearly_mean(df: pd.DataFrame, years: tuple[int, int] = YEARS) -> pd.DataFrame:
-    """Tonnes of CO₂ a year by country and commodity, averaged over `years`."""
+    """Tonnes of CO₂ and hectares cleared a year by country and commodity, averaged over
+    `years`."""
     n = years[1] - years[0] + 1
     kept = df[df["year"].between(*years)]
     means = kept.groupby(["iso3", "group", "commodity"], as_index=False)[
-        ["mt_co2", "peat_mt_co2"]
+        ["mt_co2", "peat_mt_co2", "ha"]
     ].sum()
     return means.assign(
-        t_co2=means["mt_co2"] * 1e6 / n, peat_t_co2=means["peat_mt_co2"] * 1e6 / n
+        t_co2=means["mt_co2"] * 1e6 / n,
+        peat_t_co2=means["peat_mt_co2"] * 1e6 / n,
+        ha=means["ha"] / n,
     ).drop(columns=["mt_co2", "peat_mt_co2"])
 
 
 def attributed(means: pd.DataFrame, items: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """(t CO₂ by iso3 and fbs_code, t CO₂ by commodity left out and why)."""
+    """(t CO₂ and hectares by iso3 and fbs_code, t CO₂ by commodity left out and why)."""
     crops = means[means["group"] != FORESTRY_GROUP]
     joined = crops.merge(items, on="commodity", how="left", indicator=True)
     food = joined[joined["fbs_code"].notna()]
     kept = (
-        food.assign(t_co2=food["t_co2"] * food["share"], fbs_code=food["fbs_code"].astype(int))
-        .groupby(["iso3", "fbs_code"], as_index=False)["t_co2"]
+        food.assign(
+            t_co2=food["t_co2"] * food["share"],
+            ha=food["ha"] * food["share"],
+            fbs_code=food["fbs_code"].astype(int),
+        )
+        .groupby(["iso3", "fbs_code"], as_index=False)[["t_co2", "ha"]]
         .sum()
     )
     reasons = pd.concat(
@@ -131,24 +143,27 @@ def attributed(means: pd.DataFrame, items: pd.DataFrame) -> tuple[pd.DataFrame, 
     return kept, dropped
 
 
-def by_country(kept: pd.DataFrame, countries: set[str], minimum: float = 1.0) -> dict:
-    """{iso3: {fbs_code: t CO₂ a year}}, net emissions only (a tree crop replacing forest can
-    store more than was cleared; those cells are left out), rounded to the tonne."""
-    rows = kept[kept["iso3"].isin(countries) & (kept["t_co2"] >= minimum)]
+def by_country(
+    kept: pd.DataFrame, countries: set[str], minimum: float = 1.0, value: str = "t_co2"
+) -> dict:
+    """{iso3: {fbs_code: `value` a year}}, t CO₂ or hectares, at least `minimum` (for CO₂, net
+    emissions only: a tree crop replacing forest can store more than was cleared, and those
+    cells are left out), rounded to the unit."""
+    rows = kept[kept["iso3"].isin(countries) & (kept[value] >= minimum)]
     return {
-        iso3: {
-            str(code): round(float(t)) for code, t in zip(g["fbs_code"], g["t_co2"], strict=True)
-        }
+        iso3: {str(code): round(float(t)) for code, t in zip(g["fbs_code"], g[value], strict=True)}
         for iso3, g in rows.sort_values(["iso3", "fbs_code"]).groupby("iso3")
     }
 
 
-def deforestation_json(data: dict, years: tuple[int, int] = YEARS) -> dict:
+def deforestation_json(data: dict, area: dict, years: tuple[int, int] = YEARS) -> dict:
     return {
         "byCountry": data,
+        "areaByCountry": area,
         "years": list(years),
         "source": f"DeDuCE v{VERSION.split()[0]}, Singh, Persson et al., doi:{DOI} ({LICENCE}); "
-        "amortised emissions excluding peat drainage, producer countries",
+        "amortised emissions excluding peat drainage, and forest area cleared, unamortised, "
+        "producer countries",
     }
 
 

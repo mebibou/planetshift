@@ -50,6 +50,8 @@ DeDuCE donne deux séries :
 
 Planetshift utilise la série amortie, parce que le modèle fait varier les émissions avec la production. Il fait la moyenne des années 2019 à 2023, les cinq dernières, pour qu'une année sèche ou un revirement politique ne domine pas.
 
+La carte montre plutôt la surface de forêt défrichée : l'attribution non amortie de DeDuCE, en hectares, en moyenne sur les mêmes années et répartie entre les aliments comme le CO₂. Elle totalise environ 4,2 millions d'hectares par an pour les aliments du modèle, dont 1,5 million au Brésil. Le modèle la fait varier avec la production de chaque aliment et le levier exactement comme le CO₂, et l'infobulle de la carte donne les deux.
+
 ### Le drainage des tourbières est laissé de côté
 
 DeDuCE donne aussi le CO₂ du drainage des tourbières cultivées, surtout le palmier à huile en Indonésie et en Malaisie : environ 0,23 Gt par an. Planetshift le laisse de côté. C'est une émission de terres déjà défrichées, qui continue que l'on coupe ou non davantage de forêt. Elle relève donc des terres que l'alimentation occupe plutôt que de la déforestation.

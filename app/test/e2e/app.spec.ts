@@ -958,17 +958,21 @@ test('the chart opens the page and comes before the controls in the reading orde
   else expect(panel.top).toBeLessThan(chart.bottom);
 });
 
-test('the deforestation layer shows CO₂ from clearing, with a tooltip', async ({ page }) => {
+test('the deforestation layer shows the forest cleared, with its CO₂ in the tooltip', async ({
+  page,
+}) => {
   await open(page, `${START}&shift=50`);
   await page.locator('label[for="layer-deforestation"]').click();
   await expect(page).toHaveURL(/layer=deforestation/);
-  await expect(page.locator('.legend-title')).toContainText('forest clearing');
+  await expect(page.locator('.legend-title')).toContainText('Forest cleared for farming');
   await expect(page.locator('.legend li').last()).toContainText('No clearing');
   await expect(page.locator('[data-control="gas"]')).toBeHidden();
   const brazil = page.locator('path.country[data-iso3="BRA"]');
   await brazil.click();
   const tooltip = page.locator('.map-frame .tooltip');
-  await expect(tooltip).toContainText('CO₂ from forest clearing');
+  await expect(tooltip).toContainText('Forest cleared for farming');
+  await expect(tooltip).toContainText('ha');
+  await expect(tooltip).toContainText('CO₂ from the clearing');
   await expect(tooltip).toContainText('Mt');
   await expect(tooltip).not.toContainText('Least precise source');
 });

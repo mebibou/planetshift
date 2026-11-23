@@ -10,13 +10,22 @@ export interface TooltipModel {
   source?: { label: string; url: string | null };
 }
 
-/** A layer's quantity in its unit: tonnes of product, kg of gas or CO₂, or hectares. */
+/** A layer's quantity in its unit: tonnes of product, kg of gas, or hectares. */
 export const formatMeasure =
   (locale: string, kind: BeforeAfter['kind']) =>
   (v: number): string =>
-    kind === 'land'
+    kind === 'land' || kind === 'deforestation'
       ? formatArea(locale, v)
       : formatMass(locale, kind === 'production' ? v * 1000 : v);
+
+/** The CO₂ the clearing releases, today and with the levers. */
+const clearingCo2Row = (c: CountryResult, t: T, locale: string): [string, string] => [
+  t('map.tooltip.deforestationCo2'),
+  t('map.tooltip.beforeAfter', {
+    before: formatMass(locale, c.deforestationCo2 ?? 0),
+    after: formatMass(locale, (c.deforestationCo2 ?? 0) + (c.deforestationChange ?? 0)),
+  }),
+];
 
 const landRows = (c: CountryResult, t: T, locale: string): [string, string][] =>
   (['cropland', 'pasture'] as const).map((part) => [
@@ -58,7 +67,7 @@ export const tooltipModel = (
   return ba.kind === 'land'
     ? { title: name, rows: [...rows, ...landRows(c, t, locale)] }
     : ba.kind === 'deforestation'
-      ? { title: name, rows }
+      ? { title: name, rows: [...rows, clearingCo2Row(c, t, locale)] }
       : {
           title: name,
           rows: [...rows, [t('map.tooltip.tier'), t(`tiers.${tier}`)]],
