@@ -5,6 +5,7 @@ from statistics import quantiles
 
 import pytest
 
+from planetshift_pipeline import food_loss as L
 from planetshift_pipeline import waste as W
 from planetshift_pipeline.build import OUT_DIR
 
@@ -27,12 +28,20 @@ def built(name: str):
 
 def test_every_country_has_the_three_sectors():
     waste, countries = built("waste.json"), built("countries.json")
-    assert set(waste) == {"byCountry", "source"}
+    assert set(waste) == {"byCountry", "lossShares", "source"}
     assert isinstance(waste["source"], str) and waste["source"]
     assert set(waste["byCountry"]) == {c["iso3"] for c in countries}
     for values in waste["byCountry"].values():
         assert set(values) == set(W.FIELDS)
         assert all(isinstance(v, int | float) for v in values.values())
+
+
+def test_every_country_has_a_loss_share_for_each_group():
+    waste, countries = built("waste.json"), built("countries.json")
+    assert set(waste["lossShares"]) == {c["iso3"] for c in countries}
+    for shares in waste["lossShares"].values():
+        assert set(shares) == set(L.GROUPS.values())
+        assert all(0 < v < 0.7 for v in shares.values())
 
 
 def test_values_are_plausible():
