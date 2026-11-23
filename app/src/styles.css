@@ -1607,6 +1607,12 @@ input[type='range']:disabled {
   font-size: 1.1rem;
   margin-top: 1.2em;
 }
+.prose :is(h3, h4) {
+  margin-top: 1.4em;
+}
+.prose :is(table, ul, ol, pre, blockquote) {
+  margin: 0 0 1em;
+}
 .prose table {
   border-collapse: collapse;
   display: block;
