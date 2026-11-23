@@ -61,13 +61,13 @@ Warming avoided in °C, median (likely range), each lever at 100% from 2026 to 2
 
 | Levers | 2050 | 2100 |
 | --- | --- | --- |
-| Clean heating | 0.014 (0.000–0.039); CO₂ alone 0.009 | 0.068 (0.041–0.118); CO₂ alone 0.052 |
-| Clean steel and cement | 0.013 (−0.007–0.059); CO₂ alone 0.025 | 0.091 (0.036–0.189); CO₂ alone 0.092 |
-| Renewable electricity alone | 0.092 (0.047–0.176); CO₂ alone 0.096 | 0.273 (0.180–0.406); CO₂ alone 0.234 |
-| Clean heating with renewable electricity | 0.114 (0.056–0.217); CO₂ alone 0.113 | 0.361 (0.239–0.538); CO₂ alone 0.303 |
-| Clean steel and cement with renewable electricity | 0.115 (0.053–0.237); CO₂ alone 0.131 | 0.385 (0.237–0.601); CO₂ alone 0.345 |
+| Clean heating | 0.015 (0.001–0.040); CO₂ alone 0.009 | 0.069 (0.042–0.119); CO₂ alone 0.052 |
+| Clean steel and cement | 0.016 (−0.005–0.065); CO₂ alone 0.025 | 0.094 (0.037–0.194); CO₂ alone 0.092 |
+| Renewable electricity alone | 0.105 (0.057–0.192); CO₂ alone 0.096 | 0.279 (0.184–0.416); CO₂ alone 0.234 |
+| Clean heating with renewable electricity | 0.129 (0.068–0.236); CO₂ alone 0.113 | 0.369 (0.244–0.549); CO₂ alone 0.303 |
+| Clean steel and cement with renewable electricity | 0.132 (0.066–0.259); CO₂ alone 0.131 | 0.395 (0.244–0.617); CO₂ alone 0.345 |
 
-Clean heating gains from the co-emissions from the start: the gas it no longer burns leaked methane, and burning gas emits little SO₂. Clean steel and cement lose most of their 2050 effect: their plants' SO₂ cools, and the hydrogen route draws a lot of grid power whose CO₂ and methane it adds; by 2100 the loss is small, the coke ovens' CO₂ and the CO their furnaces emit, which now go with the coal, making up for most of it. With renewable electricity in full, clean heating adds 0.022 °C in 2050 and 0.088 °C in 2100 to it, and clean steel and cement 0.023 and 0.112 °C: on a clean grid each saves more than alone. The effects are small in 2050 because the CO₂ avoided adds up slowly and today's grid takes back much of what the electricity-hungry routes save.
+Clean heating gains from the co-emissions from the start: the gas it no longer burns leaked methane, and burning gas emits little SO₂. Clean steel and cement lose over a third of their 2050 effect: their plants' SO₂ cools, and the hydrogen route draws a lot of grid power whose CO₂ and methane it adds; by 2100 they gain a little, the coke ovens' CO₂ and the CO their furnaces emit, which now go with the coal, making up for it. With renewable electricity in full, clean heating adds 0.024 °C in 2050 and 0.089 °C in 2100 to it, and clean steel and cement 0.027 and 0.115 °C: on a clean grid each saves more than alone. The effects are small in 2050 because the CO₂ avoided adds up slowly and today's grid takes back much of what the electricity-hungry routes save.
 
 ## Other industries
 
