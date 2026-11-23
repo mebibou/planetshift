@@ -104,7 +104,7 @@ La réduction qu'une pratique fait dans un pays est l'adoption choisie × la par
 
 **Ce que font les agriculteurs.** Ils consomment moins de carburant et d'électricité (pompes, moteurs et bâtiments efficaces), passent les pompes, le chauffage et les bâtiments d'élevage à l'électricité renouvelable, et font fonctionner certaines machines à l'électricité ou aux biocarburants.
 
-**Ce qu'elle réduit.** Le CO₂ du carburant et de l'électricité utilisés sur les fermes. Dans le périmètre du berceau à la sortie de ferme, elle réduit aussi la production de ce carburant et de cette électricité. La revue de la FAO sur les systèmes alimentaires économes en énergie et l'évaluation du GIEC décrivent l'efficacité énergétique et les énergies renouvelables comme les principaux leviers. Planetshift retient 50 % : 25 % pour l'efficacité et un réseau plus propre seuls, 80 % avec des machines électriques ou aux biocarburants et une électricité entièrement renouvelable.
+**Ce qu'elle réduit.** Le CO₂ du carburant brûlé sur les fermes et de la production de leur carburant et de leur électricité. Tout est dans le périmètre du berceau à la sortie de ferme : le périmètre à la ferme ne compte que les processus biologiques de la ferme, et le levier n'y a donc aucun effet. La revue de la FAO sur les systèmes alimentaires économes en énergie et l'évaluation du GIEC décrivent l'efficacité énergétique et les énergies renouvelables comme les principaux leviers. Planetshift retient 50 % : 25 % pour l'efficacité et un réseau plus propre seuls, 80 % avec des machines électriques ou aux biocarburants et une électricité entièrement renouvelable.
 
 **Où elle s'applique.**
 
@@ -112,7 +112,7 @@ La réduction qu'une pratique fait dans un pays est l'adoption choisie × la par
 - 70 % dans les pays à revenu intermédiaire de la tranche supérieure, dont une grande partie du pompage pour l'irrigation est sur des réseaux qui peuvent être décarbonés ;
 - 50 % dans ceux de la tranche inférieure et 40 % dans les pays à faible revenu, avec des pompes et des tracteurs au diesel et un accès moindre au réseau.
 
-**Limites.** Une grande partie de la réduction dépend de la décarbonation du secteur électrique, qui est hors de la ferme. Les machines lourdes sont les plus difficiles à convertir.
+**Limites.** Une grande partie de la réduction dépend de la décarbonation du secteur électrique, qui est hors de la ferme. Les machines lourdes sont les plus difficiles à convertir. L'électricité des fermes fait aussi partie du réseau que [Électricité renouvelable](#method-sectors) décarbone : avec les deux leviers, cette part est réduite deux fois. La répartition par source ne distingue pas le carburant de l'électricité d'une ferme, et ce recouvrement n'est donc pas retiré.
 
 ## Toutes les pratiques ensemble
 
@@ -139,16 +139,16 @@ Les deux périmètres sont définis sur la page [Émissions par tonne d'aliment]
 | Gaz, à la ferme | Total mondial du modèle | Principales sources |
 | --- | --- | --- |
 | Méthane | 138 Mt | 71 % fermentation entérique (98 Mt), 16 % rizières (22 Mt), 7 % gestion des effluents (9 Mt), 5 % animaux non élevés pour l'alimentation (6 Mt), 2 % résidus de culture |
-| Protoxyde d'azote | 8,1 Mt | 45 % engrais organiques, c'est-à-dire les effluents au pâturage et sur les champs (3,7 Mt), 36 % engrais de synthèse (2,9 Mt), 8 % résidus, 6 % gestion des effluents, 3 % autres, 2 % animaux non élevés pour l'alimentation |
-| CO₂ | 390 Mt | le carburant brûlé sur les fermes (244 Mt), l'urée (103 Mt) et, dans les autres, le chaulage (42 Mt) |
+| Protoxyde d'azote | 8,0 Mt | 46 % engrais organiques, c'est-à-dire les effluents au pâturage et sur les champs (3,7 Mt), 36 % engrais de synthèse (2,9 Mt), 8 % résidus, 6 % gestion des effluents, 3 % autres, 2 % animaux non élevés pour l'alimentation |
+| CO₂ | 139 Mt | l'urée (101 Mt) et, dans les autres, le chaulage (38 Mt) ; le carburant brûlé sur les fermes est compté du berceau à la sortie de ferme |
 
-Les totaux de FAOSTAT pour 2023 sont de 106, 25 et 10 Mt pour les trois premières sources de méthane. Du berceau à la sortie de ferme, le CO₂ monte à 1 741 Mt, dont 923 Mt pour l'énergie et 699 Mt pour la fabrication des intrants.
+Les totaux de FAOSTAT pour 2023 sont de 106, 25 et 10 Mt pour les trois premières sources de méthane. Du berceau à la sortie de ferme, le CO₂ monte à 1 688 Mt, dont 906 Mt pour l'énergie, le carburant brûlé sur les fermes compris, et 670 Mt pour la fabrication des intrants.
 
 ### Comment chaque niveau est réparti
 
 La répartition suit le niveau qui a fixé l'intensité. Les niveaux classent les sources d'une intensité, du plus précis (le plus bas) au moins précis (voir [Émissions par tonne d'aliment](#method-emissions)) :
 
-- **HESTIA** (niveaux 1 et 2) : chaque terme d'émission que l'intensité additionne reçoit une source d'après son identifiant : `EntericFermentation` fermentation entérique, `Excreta` effluents, `FloodedRice` rizières, `InorganicFertiliser` et `UreaHydrolysis` engrais de synthèse, `OrganicFertiliser` engrais organiques, `CropResidue…` résidus, `FuelCombustion` énergie. Les émissions d'arrière-plan de la production du carburant et de l'électricité vont à l'énergie. Celles de tous les autres intrants (engrais, pesticides, machines, plastiques) vont à la fabrication des intrants. La chaux, l'aquaculture, le traitement des déchets et le reste vont aux autres (voir [Intensités d'émission de HESTIA](#method-hestia)).
+- **HESTIA** (niveaux 1 et 2) : chaque terme d'émission que l'intensité additionne reçoit une source d'après son identifiant : `EntericFermentation` fermentation entérique, `Excreta` effluents, `FloodedRice` rizières, `InorganicFertiliser` et `UreaHydrolysis` engrais de synthèse, `OrganicFertiliser` engrais organiques, `CropResidue…` résidus, `FuelCombustion` énergie, comptée dans le périmètre du berceau à la sortie de ferme seulement. Les émissions d'arrière-plan de la production du carburant et de l'électricité vont à l'énergie. Celles de tous les autres intrants (engrais, pesticides, machines, plastiques) vont à la fabrication des intrants. La chaux, l'aquaculture, le traitement des déchets et le reste vont aux autres (voir [Intensités d'émission de HESTIA](#method-hestia)).
 - **FAOSTAT** (niveau 3) : l'allocation même qui produit l'intensité garde ses processus séparés. La fermentation entérique va à la fermentation entérique. La gestion des effluents (bâtiments et stockage) va aux effluents. Les effluents laissés au pâturage et les effluents épandus sur les sols vont aux engrais organiques, puisque les deux sont de l'azote déposé sur les sols. La culture du riz va aux rizières et les engrais de synthèse aux engrais de synthèse. Les résidus de culture et leur brûlage vont aux résidus. L'énergie utilisée sur la ferme va à l'énergie. La fabrication des engrais et des pesticides va à la fabrication des intrants.
 - **ACV publiée** (niveau 4), c'est-à-dire des analyses de cycle de vie publiées : la répartition FAOSTAT du même produit dans le pays, ou à défaut dans le monde (voir [Intensités d'émission tirées d'ACV publiées](#method-literature)).
 - **Substituts** (niveau 5) : la répartition du produit substitut dans le même pays. Un produit transformé prend la répartition de ses produits primaires, pondérée par les émissions que chacun apporte par tonne du produit.

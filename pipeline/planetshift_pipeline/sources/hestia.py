@@ -81,8 +81,8 @@ SOURCE_MARKERS = (
     ("UreaHydrolysis", "syntheticFertiliser"),
     ("OrganicFertiliser", "organicFertiliser"),
     ("CropResidue", "residues"),
-    ("FuelCombustion", "energy"),
 )
+FARM_ENERGY_MARKER = "FuelCombustion"
 #: Background rows of these input types are the making of the farm's energy.
 ENERGY_INPUT_TYPES = frozenset({"fuel", "electricity"})
 
@@ -92,7 +92,8 @@ def gas_of(term_id: str) -> str | None:
 
 
 def category_of(term_id: str) -> str | None:
-    """onFarm, background, landUse or excluded; None for anything that is not CO2, CH4 or N2O."""
+    """onFarm, farmEnergy (fuel burnt on the farm), background, landUse or excluded; None for
+    anything that is not CO2, CH4 or N2O."""
     return (
         None
         if gas_of(term_id) is None
@@ -102,6 +103,8 @@ def category_of(term_id: str) -> str | None:
         if "InputsProduction" in term_id
         else "landUse"
         if any(marker in term_id for marker in LAND_USE_MARKERS)
+        else "farmEnergy"
+        if FARM_ENERGY_MARKER in term_id
         else "onFarm"
     )
 
@@ -112,6 +115,8 @@ def source_of(term_id: str, input_types: Iterable[str] = ()) -> str | None:
     return (
         ("energy" if ENERGY_INPUT_TYPES.intersection(input_types) else "inputsManufacture")
         if category == "background"
+        else "energy"
+        if category == "farmEnergy"
         else next((source for marker, source in SOURCE_MARKERS if marker in term_id), "other")
         if category == "onFarm"
         else None
@@ -119,10 +124,13 @@ def source_of(term_id: str, input_types: Iterable[str] = ()) -> str | None:
 
 
 def counts_in(scope: str, category: str | None, input_types: Iterable[str]) -> bool:
+    """Agricultural inputs (seed, feed, animals) are left out, as their own items count them."""
     return category == "onFarm" or (
-        category == "background"
-        and scope == "cradleToFarmGate"
-        and not AGRICULTURAL_INPUT_TYPES.intersection(input_types)
+        scope == "cradleToFarmGate"
+        and (
+            category == "farmEnergy"
+            or (category == "background" and not AGRICULTURAL_INPUT_TYPES.intersection(input_types))
+        )
     )
 
 

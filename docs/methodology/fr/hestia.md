@@ -72,11 +72,12 @@ Les produits transformés (huiles, tourteaux, riz blanchi, farine, vin) ne sont 
 
 ## Des émissions aux trois gaz
 
-Chaque terme d'émission du glossaire qui commence par `co2ToAir`, `ch4ToAir` ou `n2OToAir` est compté comme ce gaz, en kg de gaz. Il n'est pas converti en équivalent CO₂ (CO₂e, les gaz pondérés par leur réchauffement sur 100 ans). Chaque terme tombe dans l'une de quatre catégories :
+Chaque terme d'émission du glossaire qui commence par `co2ToAir`, `ch4ToAir` ou `n2OToAir` est compté comme ce gaz, en kg de gaz. Il n'est pas converti en équivalent CO₂ (CO₂e, les gaz pondérés par leur réchauffement sur 100 ans). Chaque terme tombe dans l'une de cinq catégories :
 
 | Catégorie | Termes | Compté dans |
 | --- | --- | --- |
-| À la ferme | `ch4ToAir` : `EntericFermentation`, `Excreta`, `FloodedRice`, `CropResidueBurning`, `CropResidueDecomposition`, `FuelCombustion`, `AquacultureSystems`, `WasteTreatment`, `SoilFlux`, `Reservoirs`, `IndustrialProcessesNonFossil` ; `n2OToAir` : `InorganicFertiliser`, `OrganicFertiliser`, `Excreta`, `CropResidueDecomposition`, `CropResidueBurning`, `FuelCombustion`, `AquacultureSystems`, `WasteTreatment`, `IndustrialProcesses` (chacun direct et indirect), `SoilFlux` ; `co2ToAir` : `FuelCombustion`, `UreaHydrolysis`, `LimeNeutralisation`, `WasteTreatment` | les deux périmètres |
+| À la ferme | `ch4ToAir` : `EntericFermentation`, `Excreta`, `FloodedRice`, `CropResidueBurning`, `CropResidueDecomposition`, `AquacultureSystems`, `WasteTreatment`, `SoilFlux`, `Reservoirs`, `IndustrialProcessesNonFossil` ; `n2OToAir` : `InorganicFertiliser`, `OrganicFertiliser`, `Excreta`, `CropResidueDecomposition`, `CropResidueBurning`, `AquacultureSystems`, `WasteTreatment`, `IndustrialProcesses` (chacun direct et indirect), `SoilFlux` ; `co2ToAir` : `UreaHydrolysis`, `LimeNeutralisation`, `WasteTreatment` | les deux périmètres |
+| Énergie de la ferme | chaque terme `…FuelCombustion…` : le carburant brûlé sur la ferme, par les tracteurs, les pompes et le chauffage | du berceau à la sortie de ferme |
 | Arrière-plan | `ch4ToAirInputsProductionFossil`, `ch4ToAirInputsProductionNonFossil`, `n2OToAirInputsProduction`, `co2ToAirInputsProduction` : les émissions de la production de chaque intrant, une ligne par intrant | du berceau à la sortie de ferme, sauf les intrants d'origine agricole |
 | Usage des terres | chaque terme `…StockChange…`, `…LandUseChange…` et `…ManagementChange…` (biomasse, matière organique morte, carbone du sol, N₂O de la perte de carbone du sol), `…NaturalVegetationBurning…`, `…OrganicSoilBurning…`, `…OrganicSoilCultivation…` | aucun |
 | Non compté | `co2ToAirCropResidueDecomposition` et `co2ToAirSoilFlux` (CO₂ biogénique), `n2OToAirBackgroundSoilFluxDirect` (flux naturel de fond) | aucun |
@@ -89,8 +90,8 @@ L'usage des terres est laissé de côté ici parce que le changement d'usage des
 
 ## Les deux périmètres, et pourquoi l'alimentation animale est exclue
 
-- `farmGate` : les émissions à la ferme seulement.
-- `cradleToFarmGate` : les émissions à la ferme plus les émissions de la production des intrants de la ferme (engrais, pesticides, carburant, électricité, machines, plastiques, eau, chaux), **sauf les intrants d'origine agricole** : aliments pour animaux, semences, animaux vivants et autres cultures ou produits animaux.
+- `farmGate` : les émissions des processus biologiques de la ferme, sans le carburant brûlé sur la ferme.
+- `cradleToFarmGate` : les émissions à la ferme, le carburant brûlé sur la ferme et les émissions de la production des intrants de la ferme (engrais, pesticides, carburant, électricité, machines, plastiques, eau, chaux), **sauf les intrants d'origine agricole** : aliments pour animaux, semences, animaux vivants et autres cultures ou produits animaux.
 
 L'alimentation animale est exclue parce que Planetshift la compte ailleurs. Quand le changement retire des animaux, les aliments qu'ils auraient mangés sont retirés aussi. Les émissions de leurs cultures baissent alors par les intensités propres de ces cultures. Ajouter les émissions d'arrière-plan des aliments au produit animal compterait deux fois la même culture.
 

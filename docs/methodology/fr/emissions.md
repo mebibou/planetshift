@@ -9,7 +9,7 @@ Cette page explique d'où vient chaque intensité, ce qu'elle couvre et comment 
 L'application propose deux périmètres :
 
 - **À la ferme** (par défaut) : les émissions des processus biologiques de la ferme. Ce sont la fermentation entérique (le méthane produit dans l'estomac des ruminants pendant la digestion), la gestion des effluents, les effluents laissés au pâturage et épandus sur les champs, les engrais de synthèse, les résidus de culture, les rizières et le brûlage des résidus.
-- **Du berceau à la sortie de ferme** : les mêmes, plus l'énergie utilisée sur la ferme (carburant et électricité) et la fabrication des engrais et des pesticides.
+- **Du berceau à la sortie de ferme** : les mêmes, plus l'énergie utilisée sur la ferme (carburant et électricité) et la fabrication des engrais et des pesticides. Le carburant brûlé sur la ferme est compté ici, quelle que soit la source de l'intensité.
 
 Aucun des deux ne comprend le changement d'usage des terres, les sols organiques drainés, ni rien de ce qui suit la ferme : transformation, transport, distribution, cuisine et gaspillage.
 
@@ -311,9 +311,9 @@ Le test laisse de côté les émissions des tourteaux, que le modèle ajoute aux
 
 Le méthane à la ferme reste dans les bilans publiés. La fermentation entérique et la gestion des effluents donnent ensemble 114 Mt : 98 et 9 Mt pour les animaux élevés pour l'alimentation, et 6 Mt pour ceux qui ne le sont pas. Le Global Methane Budget donne 112 (107–118) Tg par an pour 2010–2019 (Saunois et al., 2025).
 
-Le total à la ferme de la FAO pour 2023 est de 8,1 Gt d'équivalent CO₂ (FAOSTAT Analytical Brief 115). Il comprend les sols organiques drainés et l'électricité de la ferme, que Planetshift laisse de côté.
+Le total à la ferme de la FAO pour 2023 est de 8,1 Gt d'équivalent CO₂ (FAOSTAT Analytical Brief 115). Il comprend les sols organiques drainés, que Planetshift laisse de côté, et l'énergie de la ferme, carburant et électricité, que Planetshift ne compte que du berceau à la sortie de ferme.
 
-Le N₂O agricole direct était de 6,1 Mt en 2020 (3,9 Tg N, Tian et al., 2024). Les 8,1 Mt de Planetshift comprennent aussi les émissions indirectes, comme le total de FAOSTAT.
+Le N₂O agricole direct était de 6,1 Mt en 2020 (3,9 Tg N, Tian et al., 2024). Les 8,0 Mt de Planetshift comprennent aussi les émissions indirectes, comme le total de FAOSTAT.
 
 ### Le méthane du riz
 

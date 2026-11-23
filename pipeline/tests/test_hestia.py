@@ -25,7 +25,8 @@ RICE = fixture("hestia-riceGrainInHuskFlooded-india-2010-2026-20260308.json")
         ("ch4ToAirFloodedRice", "ch4", "onFarm"),
         ("n2OToAirInorganicFertiliserIndirect", "n2o", "onFarm"),
         ("co2ToAirUreaHydrolysis", "co2", "onFarm"),
-        ("co2ToAirFuelCombustion", "co2", "onFarm"),
+        ("co2ToAirFuelCombustion", "co2", "farmEnergy"),
+        ("n2OToAirFuelCombustionIndirect", "n2o", "farmEnergy"),
         ("ch4ToAirInputsProductionFossil", "ch4", "background"),
         ("n2OToAirInputsProduction", "n2o", "background"),
         ("co2ToAirSoilOrganicCarbonStockChangeLandUseChange", "co2", "landUse"),
@@ -47,6 +48,8 @@ def test_classifies_emission_terms(term, gas, category):
     ("scope", "category", "inputs", "counted"),
     [
         ("farmGate", "onFarm", [], True),
+        ("farmGate", "farmEnergy", [], False),
+        ("cradleToFarmGate", "farmEnergy", [], True),
         ("farmGate", "background", ["inorganicFertiliser"], False),
         ("cradleToFarmGate", "background", ["inorganicFertiliser"], True),
         ("cradleToFarmGate", "background", ["fuel"], True),
@@ -92,7 +95,7 @@ def test_scope_totals_of_wheat_in_france():
     )
     assert seed_ch4 > 0
     everything = hestia.gas_totals(
-        WHEAT["emissionsResourceUse"], lambda c, _: c in ("onFarm", "background")
+        WHEAT["emissionsResourceUse"], lambda c, _: c in ("onFarm", "farmEnergy", "background")
     )
     assert cradle["ch4"] == pytest.approx(everything["ch4"] - seed_ch4)
 
@@ -221,3 +224,14 @@ def test_fetch_intensities_from_the_cache_is_plausible():
     assert 0.2 < median(2511, "n2o") < 3
     if (gate.fbs_item_code == 2731).any():
         assert median(2731, "ch4") > 50 * median(2511, "ch4")
+
+
+def test_fuel_burnt_on_the_farm_counts_from_cradle_to_farm_gate_only():
+    fuel = [r for r in WHEAT["emissionsResourceUse"] if "FuelCombustion" in r["term"]["@id"]]
+    assert fuel
+    assert hestia.scope_totals(fuel, "farmGate") == {gas: 0.0 for gas in hestia.GASES}
+    cradle = hestia.scope_totals(fuel, "cradleToFarmGate")
+    assert cradle["co2"] == pytest.approx(
+        sum(r["value"] for r in fuel if r["term"]["@id"].startswith("co2"))
+    )
+    assert {hestia.source_of(r["term"]["@id"]) for r in fuel} == {"energy"}

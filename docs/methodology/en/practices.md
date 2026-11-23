@@ -104,7 +104,7 @@ The cut a practice makes in a country is the adoption you set × the applicable 
 
 **What farmers do.** They use less fuel and electricity (efficient pumps, engines and buildings), move pumps, heating and barns to renewable electricity, and run some machines on electricity or biofuels.
 
-**What it cuts.** The CO₂ of fuel and electricity used on farms. In the cradle-to-farm-gate scope it also cuts the making of that fuel and electricity. FAO's review of energy-smart food systems and the IPCC's assessment describe efficiency and renewable energy as the main levers. Planetshift uses 50%: 25% for efficiency and a cleaner grid alone, 80% with electric or biofuel machinery and fully renewable power.
+**What it cuts.** The CO₂ of the fuel burnt on farms and of making their fuel and electricity. All of it is in the cradle-to-farm-gate scope: the farm gate counts the farm's biological processes only, so there the lever has no effect. FAO's review of energy-smart food systems and the IPCC's assessment describe efficiency and renewable energy as the main levers. Planetshift uses 50%: 25% for efficiency and a cleaner grid alone, 80% with electric or biofuel machinery and fully renewable power.
 
 **Where it applies.**
 
@@ -112,7 +112,7 @@ The cut a practice makes in a country is the adoption you set × the applicable 
 - 70% in upper-middle-income countries, much of whose irrigation pumping is on grids that can be cleaned;
 - 50% in lower-middle-income and 40% in low-income countries, with diesel pumps and tractors and less grid access.
 
-**Caveats.** Much of the cut depends on the power sector decarbonising, which is outside the farm. Heavy machinery is the hardest to switch.
+**Caveats.** Much of the cut depends on the power sector decarbonising, which is outside the farm. Heavy machinery is the hardest to switch. The electricity farms use is also part of the grid that [Renewable electricity](#method-sectors) cleans, so with both levers on, that part is cut twice. The breakdown does not tell a farm's fuel from its electricity, so the overlap is not removed.
 
 ## All practices together
 
@@ -139,16 +139,16 @@ The two scopes are defined on the [Emissions per tonne of food](#method-emission
 | Gas, at the farm gate | World total in the model | Main sources |
 | --- | --- | --- |
 | Methane | 138 Mt | 71% enteric fermentation (98 Mt), 16% rice (22 Mt), 7% manure management (9 Mt), 5% animals not raised for food (6 Mt), 2% crop residues |
-| Nitrous oxide | 8.1 Mt | 45% organic fertiliser, that is manure on pasture and on fields (3.7 Mt), 36% synthetic fertiliser (2.9 Mt), 8% residues, 6% manure management, 3% other, 2% animals not raised for food |
-| CO₂ | 390 Mt | the fuel burnt on farms (244 Mt), urea (103 Mt) and, in other, liming (42 Mt) |
+| Nitrous oxide | 8.0 Mt | 46% organic fertiliser, that is manure on pasture and on fields (3.7 Mt), 36% synthetic fertiliser (2.9 Mt), 8% residues, 6% manure management, 3% other, 2% animals not raised for food |
+| CO₂ | 139 Mt | urea (101 Mt) and, in other, liming (38 Mt); the fuel burnt on farms counts from cradle to farm gate |
 
-FAOSTAT's totals for 2023 are 106, 25 and 10 Mt for the first three sources of methane. From cradle to farm gate, CO₂ rises to 1,741 Mt, with energy at 923 Mt and the making of inputs at 699 Mt.
+FAOSTAT's totals for 2023 are 106, 25 and 10 Mt for the first three sources of methane. From cradle to farm gate, CO₂ rises to 1,688 Mt, with energy at 906 Mt, the fuel burnt on farms among it, and the making of inputs at 670 Mt.
 
 ### How each tier is split
 
 The split follows the tier that set the intensity. The tiers rank the sources of an intensity, the lower the more precise (see [Emissions per tonne of food](#method-emissions)):
 
-- **HESTIA** (tiers 1 and 2): each emission term the intensity sums is given a source by its id: `EntericFermentation` enteric, `Excreta` manure, `FloodedRice` rice, `InorganicFertiliser` and `UreaHydrolysis` synthetic fertiliser, `OrganicFertiliser` organic fertiliser, `CropResidue…` residues, `FuelCombustion` energy. The background emissions of producing fuel and electricity are energy. Those of every other input (fertilisers, pesticides, machinery, plastics) are the making of inputs. Lime, aquaculture, waste treatment and the rest are other (see [Emission intensities from HESTIA](#method-hestia)).
+- **HESTIA** (tiers 1 and 2): each emission term the intensity sums is given a source by its id: `EntericFermentation` enteric, `Excreta` manure, `FloodedRice` rice, `InorganicFertiliser` and `UreaHydrolysis` synthetic fertiliser, `OrganicFertiliser` organic fertiliser, `CropResidue…` residues, `FuelCombustion` energy, counted in the cradle-to-farm-gate scope only. The background emissions of producing fuel and electricity are energy. Those of every other input (fertilisers, pesticides, machinery, plastics) are the making of inputs. Lime, aquaculture, waste treatment and the rest are other (see [Emission intensities from HESTIA](#method-hestia)).
 - **FAOSTAT** (tier 3): the same allocation that makes the intensity keeps its processes apart. Enteric fermentation is enteric. Manure management (housing and storage) is manure. Manure left on pasture and manure applied to soils are organic fertiliser, since both are nitrogen deposited on soils. Rice cultivation is rice and synthetic fertilisers are synthetic fertiliser. Crop residues and their burning are residues. On-farm energy use is energy. Fertiliser and pesticide manufacturing are the making of inputs.
 - **Published LCA** (tier 4), that is life-cycle assessment studies: the FAOSTAT split of the same item in the country, or else in the world (see [Emission intensities from published LCA data](#method-literature)).
 - **Proxies** (tier 5): the split of the proxy item in the same country. A processed item takes the split of its primary items, weighted by the emissions each brings per tonne of the product.
