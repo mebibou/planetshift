@@ -99,15 +99,15 @@ A lever that only acts together with another shares that joint effect half and h
 
 | Groups acting | Warming avoided in 2100 |
 | --- | --- |
-| Diet alone | 0.140 °C |
+| Diet alone | 0.135 °C |
 | Regrowth alone | 0 (it frees no land) |
-| Diet and regrowth | 0.187 °C |
+| Diet and regrowth | 0.181 °C |
 
-The joint effect of regrowth is 0.187 − 0.140 = 0.047 °C. The Shapley value shares it half and half. Regrowth gets 0.024 °C and the diet gets 0.140 + 0.024 = 0.164 °C, which is what the summary shows.
+The joint effect of regrowth is 0.181 − 0.135 = 0.046 °C. The Shapley value shares it half and half. Regrowth gets 0.023 °C and the diet gets 0.135 + 0.023 = 0.158 °C, which is what the summary shows.
 
 ### How Planetshift computes them quickly
 
-Computed directly, the Shapley value needs one run of the model for every set of acting groups. That is 2ⁿ runs for n groups: 256 with all eight groups acting, about 2.8 s on the real data. This is far beyond the time budget of a slider move.
+Computed directly, the Shapley value needs one run of the model for every set of acting groups. That is 2ⁿ runs for n groups: 256 with all eight groups acting, which takes seconds on the real data, where a slider move has a few hundredths of a second.
 
 Planetshift uses how the groups interact instead. Farming's groups interact only through the production they change. The diet and less waste change what is produced. Practices, deforestation, regrowth and carbon in farmland act on the production those two leave, but not on each other. So the worth of any set of farming groups is read from one pass of the farm emissions per set of production groups in it: none, the diet, less waste, or both. That is at most four passes, three beyond the run itself. Each pass is kept while the sliders that do not change it move.
 
@@ -118,10 +118,6 @@ A test checks, on the fixtures and on the real data, that this gives the Shapley
 ### A method considered and not used
 
 A second method was considered: each group's effect alone, scaled so the parts add up to the total. It needs the same passes, so it is no faster. It is also less fair. A group whose effect depends on another gets nothing: regrowth alone frees no land, so it would vanish from the breakdown, and its uptake would be given to the diet and less waste. The overlap is also shared in proportion to size rather than evenly. On the real data with every group acting, the two methods differ by up to a quarter of a group's part.
-
-### Run time
-
-Measured on the real data, a run takes a median of 5 ms over the test samples (4.5 ms before). It takes 17 ms with every lever and every option on as the food-waste slider moves (10 ms before). Both are within the budgets of 20 and 30 ms.
 
 ### Permafrost and CO₂e in the breakdown
 

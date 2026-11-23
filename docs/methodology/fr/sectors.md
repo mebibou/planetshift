@@ -1,12 +1,26 @@
 # Au-delà de la ferme : transport, électricité et centres de données
 
-L'alimentation n'est qu'une partie du problème climatique ; brûler du charbon, du pétrole et du gaz pour produire de l'électricité et se déplacer en est la plus grande. Pour placer les leviers de l'alimentation et de l'agriculture à côté d'autres, Planetshift porte aussi le CO₂ fossile des véhicules routiers, de l'aviation, du transport maritime et de l'électricité, ainsi que l'électricité supplémentaire des centres de données, dans chaque scénario futur, avec ce qu'il faut pour agir sur chacun. `sectors.json` contient les données ; le code est `pipeline/planetshift_pipeline/sectors.py`, et les données de scénarios de l'AR6 sont lues par `pipeline/planetshift_pipeline/sources/ar6db.py`.
+L'alimentation n'est qu'une partie du problème climatique. Brûler du charbon, du pétrole et du gaz pour produire de l'électricité et se déplacer en est la plus grande. Pour que les leviers de l'alimentation et de l'agriculture puissent être comparés à d'autres actions, Planetshift propose sept leviers sur les véhicules routiers, l'aviation, le transport maritime, l'électricité et les centres de données. Les sept au maximum, de 2026 à 2035, évitent 0,263 °C de réchauffement en 2050 et 0,646 °C en 2100 (médiane, SSP2-4.5), une fois comptés le méthane et la pollution de l'air qui accompagnent le combustible.
 
-Ces secteurs font partie du CO₂ fossile de chaque scénario, ils ne s'y ajoutent pas : les températures des scénarios de la [page sur la température](#method-climate) les comprennent déjà. Un levier retire une part des émissions d'un secteur, et la variation est traduite en réchauffement évité avec la même courbe de réponse au CO₂ que les leviers agricoles. Le combustible qui n'est plus brûlé retire aussi le méthane qui fuit pendant sa production et la pollution de l'air qu'il produisait, de même que les leviers agricoles comptent chaque gaz qu'ils changent : voir *Le méthane et la pollution de l'air qui accompagnent le combustible* ci-dessous. Les centres de données font exception, comme expliqué plus bas : leur croissance est une demande d'électricité que les scénarios n'avaient pas prévue, elle est donc ajoutée.
+## Ce que ces leviers comptent
+
+Planetshift suit le CO₂ fossile des véhicules routiers, de l'aviation, du transport maritime et de l'électricité, ainsi que l'électricité supplémentaire des centres de données, dans chaque scénario futur. Il suit aussi ce qu'il faut pour agir sur chacun.
+
+Ces secteurs font déjà partie du CO₂ fossile de chaque scénario. Ils ne s'y ajoutent pas : les températures des scénarios de la [page sur la température](#method-climate) les comprennent déjà. Un levier retire une part des émissions d'un secteur. La variation est traduite en réchauffement évité avec la même courbe de réponse au CO₂ que les leviers agricoles.
+
+Le combustible qui n'est plus brûlé retire aussi le méthane qui fuit pendant sa production, et la pollution de l'air qu'il produisait. C'est la même chose que pour les leviers agricoles, qui comptent chaque gaz qu'ils changent. Voir *Le méthane et la pollution de l'air qui accompagnent le combustible* ci-dessous.
+
+Les centres de données font exception, comme expliqué plus bas. Leur croissance est une demande d'électricité que les scénarios n'avaient pas prévue : elle est donc ajoutée.
 
 ## Les secteurs et leur avenir
 
-Les émissions de chaque secteur partent en 2023 d'un inventaire récent, puis suivent la forme de la trajectoire d'un scénario. Les scénarios sont les trois trajectoires socio-économiques partagées (SSP) qu'utilise l'application : SSP1-2.6 (atténuation forte), SSP2-4.5 (voie médiane) et SSP3-7.0 (rivalités régionales, émissions élevées). Pour le transport, la forme vient des émissions de scénario avec lesquelles FaIR lui-même tourne (RCMIP v5.1.0, les émissions harmonisées de CMIP6) ; pour l'électricité, des résultats des mêmes modèles dans la base de scénarios de l'AR6 du GIEC.
+Les émissions de chaque secteur partent en 2023 d'un inventaire récent. Elles suivent ensuite la forme de la trajectoire d'un scénario. Les scénarios sont les trois trajectoires socio-économiques partagées (SSP) qu'utilise l'application :
+
+- SSP1-2.6 : atténuation forte ;
+- SSP2-4.5 : voie médiane ;
+- SSP3-7.0 : rivalités régionales, émissions élevées.
+
+Pour le transport, la forme vient des émissions de scénario avec lesquelles tourne FaIR lui-même (RCMIP v5.1.0, les émissions harmonisées de CMIP6). FaIR est le modèle climatique qui donne les courbes de température (voir la [page sur la température](#method-climate)). Pour l'électricité, la forme vient des résultats des mêmes modèles dans la base de scénarios de l'AR6 du GIEC.
 
 Émissions en milliards de tonnes de CO₂ par an (2023 / 2050 / 2100) :
 
@@ -19,17 +33,35 @@ Les émissions de chaque secteur partent en 2023 d'un inventaire récent, puis s
 | Électricité | 14,15 / 4,53 / 0 | 14,15 / 13,07 / 0 | 14,15 / 23,71 / 40,55 |
 | Centres de données (supplément) | 0 / 0,08 / 0 | 0 / 0,21 / 0 | 0 / 0,40 / 0,43 |
 
-**Le transport routier** a émis 5,97 milliards de tonnes de CO₂ fossile en 2022, dernière année de CEDS (son secteur routier, combustibles autres que la biomasse), environ les trois quarts du CO₂ de tous les transports ; la forme de chaque scénario porte cette valeur jusqu'en 2023, de 5,9 à 6,1 milliards de tonnes selon le SSP. Les passagers (voitures, deux- et trois-roues, bus) en représentent 60 % et les marchandises (camions et utilitaires) 40 %, d'après le suivi par l'AIE des voitures et utilitaires d'une part, des camions et bus d'autre part ; camions et bus font ensemble plus du tiers du CO₂ routier. La forme est celle du transport terrestre du scénario, qui comprend aussi le rail et la navigation intérieure, quelques pour cent du total. Dans SSP1-2.6, les émissions routières tombent presque à zéro en 2100 à mesure que les véhicules s'électrifient ; dans SSP2-4.5, elles augmentent d'un tiers jusqu'en 2050 avant de baisser ; dans SSP3-7.0, elles restent élevées tout le siècle.
+### Le transport routier
 
-**L'aviation**, vols intérieurs et internationaux réunis, a émis environ 0,95 milliard de tonnes en 2023 (AIE), retrouvant son niveau d'avant la pandémie. C'est le secteur le plus difficile à décarboner dans tous les scénarios : il reste à peu près stable dans SSP1-2.6, double presque dans SSP2-4.5 et triple dans SSP3-7.0.
+Le transport routier a émis 5,97 milliards de tonnes de CO₂ fossile en 2022, dernière année de CEDS (le Community Emissions Data System). C'est le secteur routier de CEDS, pour les combustibles autres que la biomasse. Cela représente environ les trois quarts du CO₂ de tous les transports. La forme de chaque scénario porte cette valeur jusqu'en 2023, où elle vaut de 5,9 à 6,1 milliards de tonnes selon le SSP.
 
-**Le transport maritime**, international et intérieur, a émis environ 0,85 milliard de tonnes (AIE, et la quatrième étude de l'OMI sur les gaz à effet de serre pour la répartition). Le périmètre compte : la quatrième étude de l'OMI estime le transport maritime international à 740 millions de tonnes en 2018 sur la base des trajets, et l'ensemble du transport maritime, intérieur et pêche compris, à 1 056 millions de tonnes ; 0,85 se situe entre les deux, proche de la navigation internationale et intérieure sans la pêche, dont le carburant est compté ici avec les produits de la mer. Il suit le transport maritime international des scénarios. Le levier « Transport maritime propre » en retire une part (des carburants sans carbone fossile, comme l'ammoniac ou le méthanol verts).
+Les passagers (voitures, deux- et trois-roues, bus) en représentent 60 % et les marchandises (camions et utilitaires) 40 %. Cette répartition suit le suivi par l'AIE des voitures et utilitaires d'une part, des camions et bus d'autre part. Camions et bus font ensemble plus du tiers du CO₂ routier.
 
-**La production d'électricité** a émis 14,15 milliards de tonnes de CO₂ en 2023, pour une demande d'électricité de 29 471 TWh (Ember, Global Electricity Review 2024), environ les deux cinquièmes de tout le CO₂ fossile. La revue 2025 d'Ember révise 2023 à 484 g/kWh et donne 14,6 milliards de tonnes pour 30 856 TWh en 2024, soit 473 g/kWh. La chaleur vendue par les centrales (réseaux de chaleur), environ un milliard de tonnes de plus, n'est pas comprise : les scénarios la donnent à part et aucun levier ici n'agit sur elle. Dans SSP1-2.6, les centrales au charbon et au gaz sont remplacées par l'éolien, le solaire et d'autres sources bas carbone, et les émissions baissent des deux tiers d'ici 2050. Dans SSP2-4.5, elles restent proches du niveau actuel jusqu'au milieu du siècle, puis baissent. Dans SSP3-7.0, elles font presque trois fois plus en 2100, la demande croissant sur le charbon.
+La forme est celle du transport terrestre du scénario. Elle comprend aussi le rail et la navigation intérieure, qui en font quelques pour cent. Dans SSP1-2.6, les émissions routières tombent presque à zéro en 2100, à mesure que les véhicules s'électrifient. Dans SSP2-4.5, elles augmentent d'un tiers jusqu'en 2050, puis baissent. Dans SSP3-7.0, elles restent élevées tout le siècle.
+
+### L'aviation
+
+L'aviation, vols intérieurs et internationaux réunis, a émis environ 0,95 milliard de tonnes en 2023 (AIE). Elle a ainsi retrouvé son niveau d'avant la pandémie. C'est le secteur le plus difficile à décarboner dans tous les scénarios. Il reste à peu près stable dans SSP1-2.6, double presque dans SSP2-4.5 et triple dans SSP3-7.0.
+
+### Le transport maritime
+
+Le transport maritime, international et intérieur, a émis environ 0,85 milliard de tonnes (AIE, et la quatrième étude de l'OMI sur les gaz à effet de serre pour la répartition). Le périmètre compte. La quatrième étude de l'OMI estime le transport maritime international à 740 millions de tonnes en 2018, sur la base des trajets. Elle estime l'ensemble du transport maritime, intérieur et pêche compris, à 1 056 millions de tonnes. Les 0,85 se situent entre les deux. Ils sont proches de la navigation internationale et intérieure sans la pêche, dont le carburant est compté ici avec les produits de la mer.
+
+Le transport maritime suit le transport maritime international des scénarios. Le levier « Transport maritime propre » en retire une part, avec des carburants sans carbone fossile, comme l'ammoniac ou le méthanol verts.
+
+### L'électricité
+
+La production d'électricité a émis 14,15 milliards de tonnes de CO₂ en 2023, pour une demande d'électricité de 29 471 TWh (Ember, Global Electricity Review 2024). C'est environ les deux cinquièmes de tout le CO₂ fossile. La revue 2025 d'Ember révise 2023 à 484 g/kWh. Elle donne 14,6 milliards de tonnes pour 30 856 TWh en 2024, soit 473 g/kWh.
+
+La chaleur vendue par les centrales (réseaux de chaleur) représente environ un milliard de tonnes de plus. Elle n'est pas comprise : les scénarios la donnent à part, et aucun levier ici n'agit sur elle.
+
+Dans SSP1-2.6, les centrales au charbon et au gaz sont remplacées par l'éolien, le solaire et d'autres sources bas carbone, et les émissions baissent des deux tiers d'ici 2050. Dans SSP2-4.5, elles restent proches du niveau actuel jusqu'au milieu du siècle, puis baissent. Dans SSP3-7.0, elles sont presque multipliées par trois en 2100, la demande croissant sur le charbon.
 
 ## L'intensité carbone du réseau
 
-L'intensité carbone de l'électricité, en kilogrammes de CO₂ par kWh produit, est le CO₂ de l'électricité divisé par l'électricité produite, les deux tirés du même scénario et ramenés chacun aux valeurs observées de 2023 ; la série part donc des 0,48 kg/kWh d'Ember pour 2023 (le CO₂ rapporté à la demande, comme le calcule Ember).
+L'intensité carbone de l'électricité est le CO₂ émis par kWh produit, en kilogrammes. C'est le CO₂ de l'électricité divisé par l'électricité produite. Les deux viennent du même scénario, et chacun est ramené aux valeurs observées de 2023. La série part donc des 0,48 kg/kWh d'Ember pour 2023 (le CO₂ rapporté à la demande, comme le calcule Ember).
 
 | Scénario | 2023 | 2030 | 2040 | 2050 | 2070 | 2100 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -37,44 +69,137 @@ L'intensité carbone de l'électricité, en kilogrammes de CO₂ par kWh produit
 | SSP2-4.5 | 0,48 | 0,42 | 0,32 | 0,27 | 0,16 | 0 |
 | SSP3-7.0 | 0,48 | 0,49 | 0,50 | 0,51 | 0,53 | 0,55 |
 
-Dans SSP1-2.6, et dans SSP2-4.5 tout à la fin du siècle, les scénarios brûlent de la biomasse dans des centrales et enfouissent le CO₂ (bioénergie avec captage et stockage du carbone), si bien que les émissions nettes du secteur électrique passent sous zéro. Planetshift les arrête à zéro : ces absorptions sont propres à ces centrales, un kWh de demande supplémentaire ne les apporterait pas, et une intensité négative ferait de chaque voiture électrique un puits de carbone.
+Dans SSP1-2.6, et dans SSP2-4.5 tout à la fin du siècle, les scénarios brûlent de la biomasse dans des centrales et enfouissent le CO₂. C'est la bioénergie avec captage et stockage du carbone. Elle fait passer les émissions nettes du secteur électrique sous zéro. Planetshift les arrête à zéro, pour deux raisons. Ces absorptions sont propres à ces centrales : un kWh de demande supplémentaire ne les apporterait pas. Et une intensité négative ferait de chaque voiture électrique un puits de carbone.
 
 ## Les leviers
 
-Remplacer une voiture à essence ou un camion diesel par un véhicule électrique supprime son CO₂ d'échappement, mais il consomme alors de l'électricité, dont le CO₂ dépend du réseau. `evKwhPerKgCo2` est l'électricité nécessaire par kilogramme de CO₂ d'échappement évité, et le CO₂ qu'économise un véhicule électrique est son CO₂ d'échappement × (1 − `evKwhPerKgCo2` × l'intensité du réseau). Véhicules électriques et électricité renouvelable vont donc ensemble : chacun rend l'autre plus utile. La fabrication des véhicules et de leurs batteries n'est pas comptée. Le CO₂ des carburants est le facteur 2023 du gouvernement britannique pour un carburant 100 % minéral : 2,33 kg par litre d'essence et 2,63 kg par litre de diesel.
+### Les véhicules électriques et le réseau
 
-**Voitures électriques** agit sur le CO₂ du transport routier de passagers : 1,10 kWh par kg évité (0,72–1,72). Une voiture électrique consomme environ 0,18 kWh par km à la prise (0,15–0,22, pertes de recharge comprises), et la voiture à essence qu'elle remplace brûle environ 7 litres aux 100 km (5,5–9). Sur le réseau mondial actuel, à 0,48 kg/kWh, une voiture électrique économise environ la moitié du CO₂ de la voiture à essence (1 − 1,10 × 0,48 = 0,47) ; sur un réseau propre, presque tout.
+Remplacer une voiture à essence ou un camion diesel par un véhicule électrique supprime son CO₂ d'échappement. Mais le véhicule consomme alors de l'électricité, et le CO₂ de cette électricité dépend du réseau. `evKwhPerKgCo2` est l'électricité nécessaire par kilogramme de CO₂ d'échappement évité. Le CO₂ qu'économise un véhicule électrique vaut :
 
-**Camions électriques** agit sur le CO₂ du transport routier de marchandises : 1,50 kWh par kg évité (1,06–2,03). Un camion de 40 tonnes à batterie consomme environ 1,3 kWh par km à la prise, contre 33 litres de diesel aux 100 km ; les utilitaires électriques (0,25 kWh/km contre 9 L/100 km) sont le bas de la fourchette. Sur le réseau actuel, un camion économise environ 30 % de son CO₂ (1 − 1,50 × 0,48 = 0,28) ; sur le réseau de SSP3-7.0, dont l'intensité augmente, il économise peu.
+CO₂ d'échappement × (1 − `evKwhPerKgCo2` × l'intensité du réseau)
 
-**Moins d'avion** réduit le CO₂ de l'aviation et, aussitôt, ses autres effets. Les avions réchauffent aussi le climat par les traînées de condensation et les cirrus qu'elles font naître, l'ozone que forment leurs oxydes d'azote (moins le méthane que ces oxydes détruisent), la vapeur d'eau qu'ils laissent dans la stratosphère, la suie et les sulfates. Lee et al. (2021) évaluent le forçage radiatif effectif de ces effets hors CO₂ en 2018 à 66,6 mW/m² (21–111, une fourchette de 5 à 95 %), deux fois celui de tout le CO₂ émis par l'aviation depuis 1940, pour 1 034 millions de tonnes de CO₂ de l'aviation cette année-là. `aviationNonCo2` divise l'un par l'autre : 6,44 × 10⁻¹⁴ W/m² par kilogramme par an de CO₂ de l'aviation (2,03–10,7 × 10⁻¹⁴). Contrairement au CO₂, ce forçage ne dure que tant que les vols continuent (quelques heures pour les traînées, quelques mois pour l'ozone) : il cesse l'année où les vols s'arrêtent, et il est traduit en température avec la réponse au forçage décrite plus bas. FaIR lui-même n'a pas de traînées : c'est l'un des endroits où Planetshift s'en écarte (voir la [page sur la température](#method-climate)) ; avec FaIR tel quel, moins d'avion réduit plutôt les NOx, le SO₂ et la suie propres à l'aviation comme co-émissions (plus bas), 4,1 g de NOx et 0,37 g de SO₂ par kg de CO₂ dans CEDS.
+Véhicules électriques et électricité renouvelable vont donc ensemble : chacun rend l'autre plus utile. La fabrication des véhicules et de leurs batteries n'est pas comptée (voir *Ce qu'ajoute la fabrication des équipements* plus bas).
 
-**Le carburant d'aviation propre** (fabriqué à partir de déchets, de cultures, ou de CO₂ capté et d'hydrogène) réduit le CO₂ des vols qu'il alimente, mais pas leurs traînées : les avions volent toujours et laissent toujours des traînées. Des carburants moins riches en aromatiques forment un peu moins de cristaux de glace et des traînées plus faibles, mais ce gain est incertain et n'est pas compté. Le carburant propre n'agit donc que sur la part CO₂, et moins d'avion sur les deux.
+Le CO₂ des carburants est le facteur 2023 du gouvernement britannique pour un carburant 100 % minéral : 2,33 kg par litre d'essence et 2,63 kg par litre de diesel.
 
-**L'électricité renouvelable** retire une part du CO₂ du secteur électrique, et l'intensité du réseau baisse de la même part, ce dont profitent ensuite les véhicules électriques et les centres de données.
+**Voitures électriques** agit sur le CO₂ du transport routier de passagers. Il faut 1,10 kWh par kg de CO₂ évité (0,72–1,72). Une voiture électrique consomme environ 0,18 kWh par km à la prise (0,15–0,22, pertes de recharge comprises). La voiture à essence qu'elle remplace brûle environ 7 litres aux 100 km (5,5–9). Sur le réseau mondial actuel, à 0,48 kg/kWh, une voiture électrique économise environ la moitié du CO₂ de la voiture à essence (1 − 1,10 × 0,48 = 0,47). Sur un réseau propre, elle en économise presque tout.
 
-**Les centres de données de l'IA.** Les centres de données ont consommé environ 415 TWh d'électricité en 2024, 1,5 % de l'électricité mondiale. Le rapport *Energy and AI* de l'AIE (2025) s'attend à ce que cela double, jusqu'à environ 945 TWh en 2030 dans son cas de base, surtout pour l'IA, et atteigne environ 1 200 TWh en 2035 ; son cas « Headwinds » atteint environ 700 TWh et son cas « Lift-Off » environ 1 700 TWh en 2035. Les scénarios ont été faits vers 2016, avant que cette croissance ne soit prévue, et fournissent déjà l'électricité que consommaient alors les centres de données ; leur demande était restée à peu près stable pendant les années 2010, l'efficacité suivant l'usage. `dataCentresTwh` ne compte donc comme demande supplémentaire que la croissance au-delà des 415 TWh de 2024 : 0 en 2024, 530 TWh en 2030 et 785 TWh à partir de 2035 dans le cas de base (Headwinds 155 et 285, Lift-Off 701 et 1 285), en ligne droite entre les années de l'AIE et constante après 2035, où l'AIE s'arrête. Son CO₂ est cette électricité multipliée par l'intensité du réseau de chaque scénario : il diminue à mesure que le réseau se décarbone, et le levier « Électricité renouvelable » le réduit aussi. Le levier « Centres de données à l'énergie propre » fait passer une part de cette demande supplémentaire sur une électricité propre. Les émissions de la construction des centres de données et de la fabrication de leurs puces ne sont pas comprises : les estimations publiées portent sur des sites ou des entreprises isolés, et il n'existe pas de chiffre mondial par TWh sur lequel s'appuyer.
+**Camions électriques** agit sur le CO₂ du transport routier de marchandises. Il faut 1,50 kWh par kg évité (1,06–2,03). Un camion de 40 tonnes à batterie consomme environ 1,3 kWh par km à la prise, contre 33 litres de diesel aux 100 km. Les utilitaires électriques (0,25 kWh/km contre 9 L/100 km) sont le bas de la fourchette. Sur le réseau actuel, un camion économise environ 30 % de son CO₂ (1 − 1,50 × 0,48 = 0,28). Sur le réseau de SSP3-7.0, dont l'intensité augmente, il économise peu.
+
+### Moins d'avion
+
+**Moins d'avion** réduit le CO₂ de l'aviation et, aussitôt, ses autres effets. Les avions réchauffent aussi le climat d'autres façons :
+
+- les traînées de condensation et les cirrus qu'elles font naître ;
+- l'ozone que forment leurs oxydes d'azote, moins le méthane que ces oxydes détruisent ;
+- la vapeur d'eau qu'ils laissent dans la stratosphère ;
+- la suie et les sulfates.
+
+Lee et al. (2021) évaluent le forçage radiatif effectif de ces effets hors CO₂ en 2018 à 66,6 mW/m² (21–111, une fourchette de 5 à 95 %). Le forçage radiatif est la variation de l'énergie que reçoit la Terre, en watts par mètre carré. C'est deux fois le forçage de tout le CO₂ émis par l'aviation depuis 1940. L'aviation a émis 1 034 millions de tonnes de CO₂ cette année-là. `aviationNonCo2` divise l'un par l'autre : 6,44 × 10⁻¹⁴ W/m² par kilogramme par an de CO₂ de l'aviation (2,03–10,7 × 10⁻¹⁴).
+
+Contrairement au CO₂, ce forçage ne dure que tant que les vols continuent : quelques heures pour les traînées, quelques mois pour l'ozone. Il cesse donc l'année où les vols s'arrêtent. Il est traduit en température avec la réponse au forçage décrite plus bas (voir *La réponse de la température à un forçage*).
+
+FaIR lui-même n'a pas de traînées. C'est l'un des endroits où Planetshift s'en écarte (voir la [page sur la température](#method-climate)). Avec FaIR tel quel, moins d'avion réduit plutôt les NOx, le SO₂ et la suie propres à l'aviation, comptés comme co-émissions (plus bas). CEDS donne 4,1 g de NOx et 0,37 g de SO₂ par kg de CO₂ de l'aviation.
+
+### Le carburant d'aviation propre
+
+Le **carburant d'aviation propre** est fabriqué à partir de déchets, de cultures, ou de CO₂ capté et d'hydrogène. Il réduit le CO₂ des vols qu'il alimente, mais pas leurs traînées : les avions volent toujours et laissent toujours des traînées. Des carburants moins riches en aromatiques forment un peu moins de cristaux de glace et des traînées plus faibles, mais ce gain est incertain et n'est pas compté. Le carburant propre n'agit donc que sur la part CO₂, et moins d'avion sur les deux.
+
+### L'électricité renouvelable
+
+L'**électricité renouvelable** retire une part du CO₂ du secteur électrique. L'intensité du réseau baisse de la même part. Les véhicules électriques et les centres de données profitent ensuite de ce réseau plus propre.
+
+### Les centres de données de l'IA
+
+Les centres de données ont consommé environ 415 TWh d'électricité en 2024, soit 1,5 % de l'électricité mondiale. Le rapport *Energy and AI* de l'AIE (2025) s'attend à ce que cela double, jusqu'à environ 945 TWh en 2030 dans son cas de base, surtout pour l'IA. Il prévoit environ 1 200 TWh en 2035. Son cas « Headwinds » atteint environ 700 TWh et son cas « Lift-Off » environ 1 700 TWh en 2035.
+
+Les scénarios ont été construits vers 2016, avant que cette croissance ne soit prévue. Ils fournissent déjà l'électricité que consommaient alors les centres de données. Leur demande était restée à peu près stable pendant les années 2010, les gains d'efficacité compensant la hausse de l'usage.
+
+`dataCentresTwh` ne compte donc comme demande supplémentaire que la croissance au-delà des 415 TWh de 2024. Dans le cas de base, elle vaut 0 en 2024, 530 TWh en 2030 et 785 TWh à partir de 2035. Headwinds donne 155 et 285, et Lift-Off 701 et 1 285. Entre les années de l'AIE, les valeurs suivent des droites. Elles restent constantes après 2035, où l'AIE s'arrête.
+
+Le CO₂ de cette demande est son électricité multipliée par l'intensité du réseau de chaque scénario. Il diminue à mesure que le réseau se décarbone, et le levier « Électricité renouvelable » le réduit aussi. Le levier « Centres de données à l'énergie propre » fait passer une part de cette demande supplémentaire sur une électricité propre.
+
+Les émissions de la construction des centres de données et de la fabrication de leurs puces ne sont pas comprises. Les estimations publiées portent sur des sites ou des entreprises isolés, et il n'existe pas de chiffre mondial par TWh sur lequel s'appuyer.
 
 ## Dans l'application
 
-Le volet **Énergie et transport** de la section Leviers compte sept curseurs, chacun la part adoptée, qui monte de l'année en cours jusqu'à l'année réglée par *Tous les leviers en place en*, comme pour tous les leviers (`app/src/levers/energy/model.ts`, un module de levier appelé par `run.ts`). Chaque année *y*, avec chaque adoption *a* déjà rapportée à cette montée et *g* l'intensité du réseau dans le scénario choisi :
+Le volet **Énergie et transport** de la section Leviers compte sept curseurs. Chacun donne la part adoptée. Comme pour tous les leviers, chacun monte de l'année en cours jusqu'à l'année réglée par *Tous les leviers en place en*. Le bouton *Tout adopter en entier* du volet règle les sept à 100 %.
 
-- Électricité renouvelable (`re`) retire *a* × le CO₂ de l'électricité, et le réseau restant a l'intensité *g′* = *g* × (1 − *a*).
+Dans la répartition par levier du résumé, tout cela compte comme *Énergie et transport*, à part. C'est réparti entre deux causes :
+
+- *combustibles fossiles et industrie* : le CO₂, le méthane du combustible et le forçage de l'aviation hors CO₂ ;
+- *pollution de l'air* : le refroidissement perdu et le méthane que laissent les NOx.
+
+Son CO₂ et son méthane sont dans les émissions évitées. Les forçages ne sont que dans le réchauffement. Ces leviers ne modifient ni la bande de l'agriculture du graphique Causes du réchauffement, ni les émissions agricoles.
+
+### Le calcul de chaque levier
+
+Le code est `app/src/levers/energy/model.ts`, un module de levier appelé par `run.ts`. Chaque année *y*, on prend chaque adoption *a* déjà rapportée à la montée en charge, et *g* l'intensité du réseau dans le scénario choisi :
+
+- Électricité renouvelable (`re`) retire *a* × le CO₂ de l'électricité. Le réseau restant a l'intensité *g′* = *g* × (1 − *a*).
 - Voitures électriques (`ev`) et Camions électriques (`et`) économisent *a* × le CO₂ routier des passagers (ou des marchandises) × (1 − `evKwhPerKgCo2` × *g′*).
-- Moins d'avion (`fl`) et Carburant d'aviation propre (`saf`) réduisent le CO₂ de l'aviation de 1 − (1 − *a*fly)(1 − *a*fuel) ; Moins d'avion réduit aussi le forçage de l'aviation hors CO₂ de `aviationNonCo2` × *a*fly × le CO₂ de l'aviation.
+- Moins d'avion (`fl`) et Carburant d'aviation propre (`saf`) réduisent le CO₂ de l'aviation de 1 − (1 − *a*fly)(1 − *a*fuel). Moins d'avion réduit aussi le forçage de l'aviation hors CO₂ de `aviationNonCo2` × *a*fly × le CO₂ de l'aviation.
 - Transport maritime propre (`cs`) retire *a* × le CO₂ du transport maritime.
-- La variation de CO₂ de chaque secteur, l'électricité consommée comptant dans celle du secteur électrique, entraîne ses co-émissions (ci-dessous) : son méthane rejoint le CO₂ dans les émissions, sa pollution de l'air devient un forçage et un méthane propres, comptés sous *pollution de l'air*.
-- Centres de données à l'énergie propre (`cdc`) : avec l'option *Centres de données de l'IA* à sa valeur par défaut, *Croissance ajoutée (AIE)* (`dc=iea`), les émissions de la demande supplémentaire passent de ses kWh × *g* dans la référence à ses kWh × *g′* × (1 − *a*) dans le scénario ; avec *Comme dans le scénario* (`dc=ssp`), il n'y a pas de demande supplémentaire, et le levier n'a rien sur quoi agir.
+- La variation de CO₂ de chaque secteur entraîne ses co-émissions (ci-dessous). L'électricité consommée compte dans la variation du secteur électrique. Le méthane rejoint le CO₂ dans les émissions. La pollution de l'air devient un forçage et un méthane propres, comptés sous *pollution de l'air*.
+- Centres de données à l'énergie propre (`cdc`) dépend de l'option *Centres de données de l'IA*. À sa valeur par défaut, *Croissance ajoutée (AIE)* (`dc=iea`), les émissions de la demande supplémentaire passent de ses kWh × *g* dans la référence à ses kWh × *g′* × (1 − *a*) dans le scénario. Avec *Comme dans le scénario* (`dc=ssp`), il n'y a pas de demande supplémentaire, et le levier n'a rien sur quoi agir.
 
-Les variations de CO₂ et de méthane sont convoluées avec leurs courbes d'AGTP, les variations de forçage avec `forcingResponse`, et toutes s'ajoutent à la variation du réchauffement. La référence, avec `dc=iea`, porte aussi le CO₂ supplémentaire des centres de données à partir de 2024, avec ce qui accompagne celui du secteur électrique (ci-dessous), comme le levier le comptait déjà quand il le réduit ; cela ajoute moins de 0,001 °C. La fourchette probable associe l'AGTP et la réponse au forçage à 95 % avec le bas de `evKwhPerKgCo2`, le haut de `aviationNonCo2` et le cas haut des centres de données (et le 5 % avec les extrémités opposées), si bien que le bas du réchauffement évité prend chaque fourchette à son extrémité la moins favorable. Dans la répartition par levier du résumé, tout cela compte comme *Énergie et transport*, à part, réparti entre *combustibles fossiles et industrie* (le CO₂, le méthane du combustible, le forçage de l'aviation hors CO₂) et *pollution de l'air* (le refroidissement perdu et le méthane que laissent les NOx) ; son CO₂ et son méthane sont dans les émissions évitées, et les forçages dans le réchauffement seulement. La bande de l'agriculture du graphique Causes du réchauffement et les émissions agricoles ne sont pas modifiées par ces leviers.
+Les variations de CO₂ et de méthane sont convoluées avec leurs courbes d'AGTP. Une courbe d'AGTP donne le réchauffement, année par année, après l'émission d'un kilogramme d'un gaz (voir la [page sur la température](#method-climate)). Les variations de forçage sont convoluées avec `forcingResponse`. Toutes s'ajoutent à la variation du réchauffement.
 
-La réponse est linéaire autour du scénario, ce qui tient bien pour de petites variations et moins bien quand tous les leviers sont au maximum et que l'essentiel du CO₂ d'un scénario disparaît : les chiffres sont alors une estimation au premier ordre. Le bouton *Tout adopter en entier* du volet règle les sept à 100 %.
+Avec `dc=iea`, la référence porte aussi le CO₂ supplémentaire des centres de données à partir de 2024, avec ce qui accompagne le CO₂ du secteur électrique (ci-dessous). Le levier le comptait déjà quand il le réduit. Cela ajoute moins de 0,001 °C.
+
+### La fourchette probable
+
+La fourchette probable associe l'AGTP et la réponse au forçage à 95 % avec le bas de `evKwhPerKgCo2`, le haut de `aviationNonCo2` et le cas haut des centres de données. L'extrémité à 5 % prend les extrémités opposées. Le bas du réchauffement évité prend ainsi chaque fourchette à son extrémité la moins favorable.
+
+### Une estimation linéaire
+
+La réponse est linéaire autour du scénario. Cela tient bien pour de petites variations. Cela tient moins bien quand tous les leviers sont au maximum et que l'essentiel du CO₂ d'un scénario disparaît. Les chiffres sont alors une estimation au premier ordre.
 
 ## Le méthane et la pollution de l'air qui accompagnent le combustible
 
-Brûler du charbon, du pétrole et du gaz émet plus que du CO₂. Produire le combustible émet son propre CO₂ (les raffineries, les cokeries et les champs de pétrole et de gaz brûlent du combustible, et les champs brûlent leur gaz en torchère) et fait fuir du méthane : les mines de charbon le rejettent, les champs pétroliers brûlent en torchère et rejettent leur gaz, les puits et les conduites de gaz fuient, soit au total environ un tiers du méthane humain. Le brûler émet un peu de N₂O, du dioxyde de soufre (SO₂), du carbone noir (suie), du carbone organique, de l'ammoniac (NH₃), des oxydes d'azote (NOx), du monoxyde de carbone (CO) et des composés organiques volatils (COV). Le SO₂, le carbone organique et l'ammoniac forment des particules qui renvoient la lumière du soleil et éclaircissent les nuages : ils refroidissent ; le carbone noir absorbe la lumière du soleil et assombrit la neige : il réchauffe ; les NOx forment de l'ozone, qui réchauffe, et du nitrate, qui refroidit, et ils raccourcissent la durée de vie du méthane, ce qui refroidit plus que leur ozone ne réchauffe ; le CO et les COV forment de l'ozone et, pour les COV, allongent la durée de vie du méthane : ils réchauffent. Un levier qui réduit le combustible réduit tout cela avec le CO₂. `coemissions.json` contient ce dont il a besoin ; le code est `pipeline/planetshift_pipeline/coemissions.py`, les données lues par `pipeline/planetshift_pipeline/sources/ceds.py`, et le modèle `app/src/levers/energy/coemissions.ts`, utilisé par ce module et par [Bâtiments et industrie](#method-industry).
+Brûler du charbon, du pétrole et du gaz émet plus que du CO₂, et un levier qui réduit le combustible réduit tout cela avec le CO₂. Le compter augmente le réchauffement qu'évitent les leviers d'énergie. Les sept au maximum évitent 0,263 °C en 2050 en le comptant, contre 0,205 °C pour le CO₂ seul. De tous les leviers d'énergie, de chauffage et d'industrie, seuls l'acier et le ciment propres, sur la page [Bâtiments et industrie](#method-industry), évitent moins en le comptant (0,016 °C au lieu de 0,025 en 2050).
 
-**Combien accompagne chaque kilogramme de CO₂.** Le Community Emissions Data System (CEDS, version v_2024_07_08, CC BY 4.0) donne les émissions mondiales de chaque espèce par secteur et par combustible jusqu'en 2022. Pour chaque secteur d'un levier, son rapport propre est ce que ses combustibles fossiles émettent de chaque espèce par kg de son CO₂ fossile (la biomasse, dont le CO₂ n'est pas fossile et qu'aucun levier ne remplace, étant laissée de côté) : la route pour les passagers comme pour les marchandises, l'aviation et le transport maritime internationaux et intérieurs, les centrales électriques et de chaleur pour l'électricité, les logements et les bâtiments commerciaux pour les bâtiments, et les usines de fer, d'acier, de ciment et de chaux, combustible et procédé, pour l'industrie. Le rapport d'approvisionnement est ce qu'émet la production de chaque combustible par kg de CO₂ de la combustion de ce combustible n'importe où, réparti selon le mélange de charbon, de pétrole et de gaz de chaque secteur : les secteurs fugitifs de CEDS (extraction du charbon, production et distribution de pétrole et de gaz, chargement des pétroliers), et ses autres industries de l'énergie, `1A1bc` (les raffineries, les cokeries, le combustible que brûlent les champs de pétrole et de gaz), qui ont émis 1,91 milliard de tonnes de CO₂ en 2022, avec 2,5 millions de tonnes de SO₂ et 3,4 de NOx. Les fichiers agrégés de CEDS ne répartissent pas `1A1bc` par combustible, et aucune source ouverte trouvée ne le fait ; Planetshift en donne deux tiers au pétrole (raffineries et champs de pétrole et de gaz) et un tiers au charbon (cokeries), une hypothèse : déplacer un sixième de ce secteur de l'un à l'autre change le CO₂ d'approvisionnement du pétrole d'environ 30 g et celui du charbon d'environ 25 g par kg de CO₂ brûlé. En 2022, produire un combustible émettait 153 g de CO₂ par kg de CO₂ de la combustion du pétrole, 93 g pour le charbon et 8 g pour le gaz, soit 2,85 milliards de tonnes au total, environ un dixième du CO₂ de la combustion des combustibles fossiles, et faisait fuir 3,6 g de méthane par kg pour le charbon, 4,8 g pour le pétrole et 5,1 g pour le gaz, soit 131 millions de tonnes de méthane au total (le Global Methane Tracker de l'AIE situe les combustibles fossiles à environ 120). Par kg de CO₂ de chaque secteur, rapport propre et approvisionnement ensemble :
+Ce qui accompagne le combustible :
+
+- **Produire le combustible** émet son propre CO₂. Les raffineries, les cokeries et les champs de pétrole et de gaz brûlent du combustible, et les champs brûlent leur gaz en torchère.
+- **Produire le combustible fait aussi fuir du méthane.** Les mines de charbon le rejettent, les champs pétroliers brûlent en torchère et rejettent leur gaz, et les puits et les conduites de gaz fuient. Cela fait au total environ un tiers du méthane d'origine humaine.
+- **Brûler le combustible** émet un peu de N₂O, et plusieurs polluants de l'air : du dioxyde de soufre (SO₂), du carbone noir (suie), du carbone organique, de l'ammoniac (NH₃), des oxydes d'azote (NOx), du monoxyde de carbone (CO) et des composés organiques volatils (COV).
+
+Ces polluants agissent sur le climat dans des sens différents :
+
+- Le SO₂, le carbone organique et l'ammoniac forment des particules qui renvoient la lumière du soleil et éclaircissent les nuages. Ils refroidissent donc.
+- Le carbone noir absorbe la lumière du soleil et assombrit la neige. Il réchauffe donc.
+- Les NOx forment de l'ozone, qui réchauffe, et du nitrate, qui refroidit. Ils raccourcissent aussi la durée de vie du méthane, ce qui refroidit plus que leur ozone ne réchauffe.
+- Le CO et les COV forment de l'ozone. Les COV allongent aussi la durée de vie du méthane. Les deux réchauffent donc.
+
+Les sections ci-dessous expliquent combien accompagne chaque kilogramme de CO₂, comment cela évolue dans le temps, ce que fait chaque kilogramme à la température, et les résultats.
+
+### Combien accompagne chaque kilogramme de CO₂
+
+Le Community Emissions Data System (CEDS, version v_2024_07_08, CC BY 4.0) donne les émissions mondiales de chaque espèce par secteur et par combustible, jusqu'en 2022. Chaque secteur d'un levier reçoit deux rapports : le sien et celui de son approvisionnement en combustible.
+
+**Le rapport propre du secteur** est ce que ses combustibles fossiles émettent de chaque espèce par kg de son CO₂ fossile. La biomasse est laissée de côté : son CO₂ n'est pas fossile, et aucun levier ne la remplace. Les secteurs de CEDS utilisés sont :
+
+- la route, pour les passagers comme pour les marchandises ;
+- l'aviation et le transport maritime internationaux et intérieurs ;
+- les centrales électriques et de chaleur, pour l'électricité ;
+- les logements et les bâtiments commerciaux, pour les bâtiments ;
+- les usines de fer, d'acier, de ciment et de chaux, combustible et procédé, pour l'industrie.
+
+**Le rapport d'approvisionnement** est ce qu'émet la production de chaque combustible par kg de CO₂ issu de la combustion de ce combustible, où qu'elle ait lieu. Il est réparti selon le mélange de charbon, de pétrole et de gaz de chaque secteur. Il vient de deux parties de CEDS :
+
+- ses secteurs fugitifs : extraction du charbon, production et distribution de pétrole et de gaz, et chargement des pétroliers ;
+- ses autres industries de l'énergie, `1A1bc` : les raffineries, les cokeries, et le combustible que brûlent les champs de pétrole et de gaz. Elles ont émis 1,91 milliard de tonnes de CO₂ en 2022, avec 2,5 millions de tonnes de SO₂ et 3,4 de NOx.
+
+Les fichiers agrégés de CEDS ne répartissent pas `1A1bc` par combustible, et aucune source ouverte trouvée ne le fait. Planetshift en attribue deux tiers au pétrole (raffineries et champs de pétrole et de gaz) et un tiers au charbon (cokeries). C'est une hypothèse. Déplacer un sixième de ce secteur de l'un à l'autre change le CO₂ d'approvisionnement du pétrole d'environ 30 g et celui du charbon d'environ 25 g par kg de CO₂ brûlé.
+
+En 2022, produire un combustible a émis :
+
+- 153 g de CO₂ par kg de CO₂ issu de la combustion du pétrole, 93 g pour le charbon et 8 g pour le gaz. Cela fait 2,85 milliards de tonnes au total, environ un dixième du CO₂ de la combustion des combustibles fossiles.
+- 3,6 g de méthane par kg pour le charbon, 4,8 g pour le pétrole et 5,1 g pour le gaz. Cela fait 131 millions de tonnes de méthane au total. Le Global Methane Tracker de l'AIE situe les combustibles fossiles à environ 120.
+
+Par kg de CO₂ de chaque secteur, rapport propre et approvisionnement ensemble :
 
 | Secteur | CO₂ (approvisionnement) | Méthane | N₂O | SO₂ | Carbone noir | Carbone organique | NH₃ | NOx | CO | COV |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -85,21 +210,117 @@ Brûler du charbon, du pétrole et du gaz émet plus que du CO₂. Produire le c
 | Bâtiments | 62 g | 5,6 g | 0,011 g | 1,2 g | 0,11 g | 0,13 g | 0,06 g | 1,1 g | 8,6 g | 1,0 g |
 | Acier et ciment | 36 g | 2,1 g | 0,006 g | 1,4 g | 0,04 g | 0,04 g | 0,04 g | 1,5 g | 13,4 g | 0,9 g |
 
-Les NOx, le sulfate et la suie propres à l'aviation sont déjà dans son forçage hors CO₂ (Lee et al. 2021, ci-dessus) : seul l'approvisionnement de son carburant est compté ici. L'acier et le ciment ont moins de CO₂ et de méthane d'approvisionnement par kg, car une grande partie de leur CO₂ vient de la calcination du calcaire, qui ne brûle aucun combustible ; le CO₂ de leurs cokeries, qui n'était auparavant compté avec aucun levier, accompagne désormais le charbon qu'ils brûlent.
+Les NOx, le sulfate et la suie propres à l'aviation sont déjà dans son forçage hors CO₂ (Lee et al. 2021, ci-dessus). Seul l'approvisionnement de son carburant est donc compté ici.
 
-**Comment ils évoluent.** Chaque SSP a son propre récit pour la qualité de l'air : SSP1 dépollue vite, SSP3 à peine. Chaque rapport suit le rapport de l'espèce au CO₂ de son scénario dans le secteur RCMIP correspondant (transport, aéronefs, transport maritime international, secteur de l'énergie, résidentiel et commercial, industrie ; le méthane du secteur de l'énergie rapporté à tout le CO₂ fossile pour l'approvisionnement), par rapport à 2023. Le rapport ne peut pas dépasser celui d'aujourd'hui, car les facteurs d'émission ne se dégradent pas, et il est figé une fois que le CO₂ du secteur passe sous la moitié de celui d'aujourd'hui, quand ce qui reste de ses polluants ne vient plus surtout des combustibles fossiles (biomasse, procédés, bioénergie avec captage) et que le rapport cesse de mesurer le combustible. Le CO₂ de l'approvisionnement garde son rapport de 2022 chaque année et dans chaque scénario : les scénarios ne donnent aucune mesure du CO₂ qu'émet le raffinage ou l'extraction d'un kg de combustible, en dehors de celui du secteur électrique. Les valeurs sont données tous les cinq ans à partir de 2025, reliées par des droites.
+L'acier et le ciment ont moins de CO₂ et de méthane d'approvisionnement par kg. Une grande partie de leur CO₂ vient de la calcination du calcaire, qui ne brûle aucun combustible. Le CO₂ de leurs cokeries n'était auparavant compté avec aucun levier. Il accompagne désormais le charbon qu'ils brûlent.
 
-**Ce que fait un kilogramme.** Le forçage par kg de chaque espèce vient de la calibration de FaIR (fair-calibrate 1.4.1, les 841 membres), le même modèle que les courbes de température et les causes du réchauffement : interaction aérosols-rayonnement pour chaque espèce, interaction aérosols-nuages pour le SO₂, le carbone noir et le carbone organique, carbone noir sur la neige et la glace, et ozone des NOx, du CO et des COV. FaIR ne donne à l'ammoniac aucun effet sur les nuages, et le N₂O est un gaz à effet de serre qui a sa propre courbe d'AGTP. L'effet aérosols-nuages est un logarithme de tout le SO₂, le carbone noir et le carbone organique de l'air, échelle × log(1 + Σ forme × émissions) : un kilogramme compte moins là où l'air est déjà sale. Le modèle en prend la pente aux émissions du scénario de l'année, si bien que la baisse due à un levier est évaluée à la marge du scénario, linéairement. En retirant d'un coup un quart du SO₂ mondial, la pente est à 6 % près de la différence exacte (un test le vérifie à 10 % près) ; la baisse due à un levier est plus petite. Dans SSP2-4.5 en 2023, le forçage médian est de −5,9 mW/m² par million de tonnes par an de SO₂ (de −11,1 à −1,8 selon les membres), +27 pour le carbone noir (de −123 à +65 : les membres de FaIR ne s'accordent même pas sur son signe une fois son effet sur les nuages compté), −6,9 pour le carbone organique, −0,62 pour l'ammoniac (de −0,69 à −0,56), +1,2 pour les NOx, +0,03 pour le CO (de −0,10 à +0,15) et +0,25 pour les COV (de −0,10 à +0,63). Pour chaque secteur, le SO₂, le carbone noir, le carbone organique et l'ammoniac sont additionnés membre par membre avant de prendre la fourchette de 5 à 95 %, pour que la fourchette garde la façon dont les membres compensent une espèce par une autre, de même que l'ozone du CO et des COV ; les NOx restent à part.
+### Comment les rapports évoluent dans le temps
 
-**Les NOx et le méthane.** FaIR multiplie la durée de vie du méthane par 1 + s × (E − E₁₇₅₀) pour chaque émission de NOx E, avec s = −0,0034 par million de tonnes de NO₂ : moins de NOx, c'est un méthane qui dure plus longtemps. Un kilogramme de NOx en moins ralentit donc l'élimination du méthane au-dessus de son niveau préindustriel de −s / (1 + s × (E − E₁₇₅₀)) de celle-ci, ce qui revient à émettre d'autant plus de méthane cette année-là ; l'élimination vient d'une simulation FaIR de chaque scénario. Dans SSP2-4.5, un kilogramme de NOx en moins laisse 2,0 kg de méthane dans l'air en 2023, 1,1 kg en 2100 ; dans SSP1-2.6, de 1,7 en baisse jusqu'à 0,4, dans SSP3-7.0, de 2,6 en hausse jusqu'à 4,0. Ce méthane est traduit en réchauffement avec la courbe d'AGTP du méthane, et il l'emporte sur l'ozone des NOx : dans FaIR, une tonne de NOx en moins réchauffe à peu près autant, quelques décennies plus tard, qu'une tonne de méthane en moins refroidit. Les COV agissent en sens inverse, avec s = +0,0002 par million de tonnes : un kilogramme en moins laisse 0,064 kg de méthane en moins dans l'air en 2023 dans SSP2-4.5 (0,051 en 2100 ; de 0,058 en baisse jusqu'à 0,020 dans SSP1-2.6, de 0,071 en hausse jusqu'à 0,13 dans SSP3-7.0), une seule valeur pour toutes les sources (`vocCh4PerKgCo2`). Pour la route, cela fait 3 % du méthane de ses NOx par kg de CO₂, de signe opposé. FaIR ne donne au monoxyde de carbone aucun effet sur la durée de vie du méthane. Les modèles de chimie en trouvent un, environ 0,05 kg de méthane par kg de CO (0,11 mW/m² par Tg chez ACCMIP, contre 2,2 par Mt de méthane ; Stevenson et al. 2013), et le coefficient des COV de fair-calibrate est ajusté sur des simulations AerChemMIP qui perturbent ensemble le CO et les COV : l'effet du CO manque donc peut-être à FaIR plutôt qu'il n'est compris dans celui des COV. Cela ajouterait environ un dixième à l'effet du CO₂ seul de la route et de l'acier ; c'est une question ouverte pour les auteurs de FaIR, et cet effet n'est pas ajouté ici.
+Chaque SSP a son propre récit pour la qualité de l'air : SSP1 dépollue vite, SSP3 à peine. Chaque rapport suit, par rapport à 2023, le rapport de l'espèce au CO₂ de son scénario dans le secteur RCMIP correspondant. Ces secteurs sont le transport, les aéronefs, le transport maritime international, le secteur de l'énergie, le résidentiel et commercial, et l'industrie. Pour l'approvisionnement, c'est le méthane du secteur de l'énergie rapporté à tout le CO₂ fossile.
 
-**Où les NOx sont émis.** Le coefficient de FaIR est une seule valeur pour tous les NOx du monde, mais un kilogramme détruit plus de méthane là où l'air est pur. Hoor et al. (2009, *Atmospheric Chemistry and Physics* 9, 3113, le projet QUANTIFY) ont perturbé les émissions de chaque secteur du transport dans cinq modèles de chimie : par Tg d'azote, les NOx des navires, émis dans l'air marin pur des tropiques, donnaient un forçage du méthane et de l'ozone lié au méthane de −12,0 mW/m², contre −3,0 pour ceux de la route (tableaux 1 et 8 : −52,8 mW/m² pour 4,39 Tg N, −20,6 pour 6,85 Tg N). Leurs modèles perturbaient toutes les émissions de chaque secteur : le chiffre de la route est donc net du monoxyde de carbone et des COV émis avec ses NOx, qui allongent la durée de vie du méthane. Planetshift compte désormais à part le méthane des COV (ci-dessus) : il le rend donc à chaque chiffre plutôt que de le compter deux fois. Dans CEDS, la route émettait 2,7 Tg de COV par Tg d'azote de ses NOx en 2000, l'année des modèles, ce qui, aux 0,27 mW/m² de forçage du méthane par Tg d'ACCMIP (et son ozone dans la même proportion que celui du méthane), fait 0,95 mW/m² par Tg N, un quart du chiffre net de la route, et 0,04 pour les navires. Les NOx de la route donnent alors −3,95 mW/m² par Tg N, et ceux des navires 3,05 fois plus (de 2,15 à 4,46 fois selon les modèles), au lieu de 4,0 fois avec les chiffres publiés. Le méthane du CO reste compris dans le chiffre de la route, puisque FaIR n'en a pas à compter à part. Planetshift prend les chiffres des modèles de chimie eux-mêmes plutôt que le coefficient unique de FaIR, car une étude multimodèle de chaque secteur du transport est plus réaliste qu'une seule valeur pour tous les NOx du monde : la réponse de FaIR, environ 2 kg de méthane par kg de NO₂ (SSP2-4.5, 2023), vaut plusieurs fois ce que les modèles de chimie trouvent pour le trafic routier, et avec elle les véhicules électriques semblaient ajouter du réchauffement dans SSP3-7.0 (voir *Résultats* ci-dessous). Le forçage du méthane et de l'ozone qu'il entraîne par kg de NO₂ chez Hoor et al., le méthane des COV rendu, converti en l'émission de méthane qui le donnerait à 2,9 mW/m² par million de tonnes par an (ACCMIP, Stevenson et al. 2013), vaut 0,41 kg de méthane pour le trafic routier (0,35–0,47 selon les cinq modèles) et 1,27 pour les navires (1,0–1,9), contre 1,53 pour toute source chez FaIR en 2000, l'année des modèles : 0,27 du coefficient de FaIR sur terre et 0,83 en mer. Chacun suit l'évolution de FaIR avec le scénario : dans SSP2-4.5, un kilogramme de NOx en moins laisse 0,54 kg de méthane sur terre et 1,65 en mer en 2023, 0,30 et 0,92 en 2100 ; dans SSP3-7.0, celui de la terre monte à 1,12 en 2100. Le total mondial de FaIR est ainsi abandonné : le méthane de tous les NOx du monde vaut environ un tiers de celui de FaIR (voir [Limites](#method-limitations)). C'est un écart au coefficient unique de FaIR, qu'une copie de Planetshift peut ramener à celui de FaIR (`fair`), ou au coefficient de FaIR partagé entre mer et terre selon le rapport des modèles, son total mondial conservé (`hoor`) : avec les navires à une part *w* des NOx de chaque année dans le scénario (15 % en 2023, d'après RCMIP), les sources terrestres prennent alors 1 / (1 + 2,05 *w*) du coefficient mondial et les navires 3,05 fois cela, 0,76 et 2,32 dans SSP2-4.5 en 2023 (voir la [page sur la température](#method-climate)). La route, les centrales, les bâtiments, l'industrie et les champs pétroliers comptent comme terre, sans découpage plus fin faute de chiffres multimodèles comparables pour les sources autres que le transport ; les NOx propres à l'aviation sont dans son forçage hors CO₂. `noxCh4PerKgCo2` contient le méthane de chaque secteur par kg de CO₂ retiré, soit ses NOx × le facteur de son lieu × le méthane de FaIR par kg de NOx, sa fourchette couvrant les deux fourchettes. Les navires à l'ammoniac ou au méthanol brûlent toujours un carburant et forment des NOx à partir de l'azote de l'air : le transport maritime propre garde donc ses NOx et réduit le soufre, la suie, le CO, les COV et l'approvisionnement de son carburant (l'ammoniac ne produit en brûlant ni CO ni COV ; le méthanol en produit un peu, non compté) ; les véhicules électriques, les pompes à chaleur et les renouvelables ne brûlent rien et réduisent tout.
+Deux limites s'appliquent :
 
-**Vérifié avec FaIR.** Une baisse maintenue à partir de 2025 sous SSP2-4.5 de 10 millions de tonnes de SO₂, de 1 de carbone noir ou de 10 de NOx, passée dans FaIR lui-même avec 100 membres, réchauffe (SO₂, NOx) ou refroidit (carbone noir) d'autant que ce modèle linéaire, à un sixième près en 2050 et 2100 (un quart pour le carbone noir, dont les membres sont si dispersés qu'une médiane de produits est loin du produit des médianes) ; un test fait la comparaison.
+- Le rapport ne peut pas dépasser celui d'aujourd'hui, car les facteurs d'émission ne se dégradent pas.
+- Le rapport est figé une fois que le CO₂ du secteur passe sous la moitié de celui d'aujourd'hui. Ce qui reste de ses polluants ne vient alors plus surtout des combustibles fossiles (biomasse, procédés, bioénergie avec captage), et le rapport cesse de mesurer le combustible.
 
-**Dans le modèle.** Chaque année, la variation de CO₂ fossile de chaque levier est répartie selon le secteur qui l'émet, l'électricité consommée par les véhicules électriques, les pompes à chaleur et l'industrie propre comptant comme celle du secteur électrique sur le réseau qui reste après l'électricité renouvelable. La variation de chaque secteur multipliée par ses rapports de l'année donne la variation du CO₂, du méthane et du N₂O de l'approvisionnement, qui rejoignent le CO₂ dans les émissions et sont convolués avec leurs courbes d'AGTP sous *combustibles fossiles et industrie*, et la variation de pollution de l'air, dont le forçage (le forçage des particules et de l'ozone du CO et des COV de chaque secteur par kg de CO₂, plus celui des NOx) passe par `forcingResponse` et dont le méthane des NOx et des COV, celui des NOx mis à l'échelle selon le lieu d'émission, passe par l'AGTP du méthane, les deux sous *pollution de l'air*. La bande de la pollution de l'air du graphique Causes du réchauffement ne comprend que le SO₂, le carbone noir et organique, l'ammoniac et les NOx, le CO et les COV étant dans les autres émissions humaines (voir [Causes du réchauffement climatique](#method-link)) ; le CO et les COV des leviers comptent malgré tout sous pollution de l'air, comme une partie de ce qu'émet la combustion du combustible. La fourchette probable prend l'extrémité de chaque fourchette dans le sens de sa bande : plus de refroidissement perdu et plus de méthane des NOx au bas du réchauffement évité. La répartition de Shapley et les causes s'additionnent comme avant, la pollution de l'air étant une quatrième cause sur laquelle agissent les leviers d'énergie et d'industrie ; sur le graphique Causes du réchauffement, sa bande de refroidissement se réduit après aujourd'hui quand ils agissent.
+Le CO₂ de l'approvisionnement garde son rapport de 2022 chaque année et dans chaque scénario. En dehors du secteur électrique, les scénarios ne donnent aucune mesure du CO₂ qu'émet le raffinage ou l'extraction d'un kg de combustible.
 
-**Résultats.** Réchauffement évité en °C, médiane (fourchette probable), chaque levier à 100 % de 2026 à 2035, sur les données réelles, SSP2-4.5 et les options par défaut, en comptant le CO₂ seul et avec les co-émissions :
+Les valeurs sont données tous les cinq ans à partir de 2025, reliées par des droites.
+
+### Ce que fait un kilogramme de chaque polluant
+
+Le forçage par kg de chaque espèce vient de la calibration de FaIR (fair-calibrate 1.4.1, les 841 membres). FaIR est le même modèle que celui des courbes de température et des causes du réchauffement. La calibration donne :
+
+- l'interaction aérosols-rayonnement pour chaque espèce ;
+- l'interaction aérosols-nuages pour le SO₂, le carbone noir et le carbone organique ;
+- le carbone noir sur la neige et la glace ;
+- l'ozone des NOx, du CO et des COV.
+
+FaIR ne donne à l'ammoniac aucun effet sur les nuages. Le N₂O est un gaz à effet de serre qui a sa propre courbe d'AGTP.
+
+L'effet aérosols-nuages est un logarithme de tout le SO₂, le carbone noir et le carbone organique de l'air : échelle × log(1 + Σ forme × émissions). Un kilogramme compte donc moins là où l'air est déjà sale. Le modèle prend la pente de cette courbe aux émissions du scénario de l'année. La baisse due à un levier est donc évaluée à la marge du scénario, linéairement. Quand on retire d'un coup un quart du SO₂ mondial, la pente est à 6 % près de la différence exacte (un test le vérifie à 10 % près). La baisse due à un levier est plus petite.
+
+Dans SSP2-4.5 en 2023, le forçage médian par million de tonnes par an est de :
+
+- SO₂ : −5,9 mW/m² (de −11,1 à −1,8 selon les membres) ;
+- carbone noir : +27 (de −123 à +65). Les membres de FaIR ne s'accordent même pas sur son signe une fois son effet sur les nuages compté ;
+- carbone organique : −6,9 ;
+- ammoniac : −0,62 (de −0,69 à −0,56) ;
+- NOx : +1,2 ;
+- CO : +0,03 (de −0,10 à +0,15) ;
+- COV : +0,25 (de −0,10 à +0,63).
+
+Pour chaque secteur, le SO₂, le carbone noir, le carbone organique et l'ammoniac sont additionnés membre par membre avant de prendre la fourchette de 5 à 95 %. La fourchette garde ainsi la façon dont les membres compensent une espèce par une autre. L'ozone du CO et des COV est additionné de la même façon. Les NOx restent à part.
+
+### Les NOx et le méthane
+
+Moins de NOx, c'est un méthane qui dure plus longtemps. FaIR multiplie la durée de vie du méthane par 1 + s × (E − E₁₇₅₀) pour chaque émission de NOx E, avec s = −0,0034 par million de tonnes de NO₂. Un kilogramme de NOx en moins ralentit donc l'élimination du méthane au-dessus de son niveau préindustriel de −s / (1 + s × (E − E₁₇₅₀)) de celle-ci. Cela revient à émettre d'autant plus de méthane cette année-là. L'élimination vient d'une simulation FaIR de chaque scénario.
+
+Dans FaIR, un kilogramme de NOx en moins laisse dans l'air :
+
+- SSP2-4.5 : 2,0 kg de méthane en 2023, 1,1 kg en 2100 ;
+- SSP1-2.6 : 1,7, en baisse jusqu'à 0,4 ;
+- SSP3-7.0 : 2,6, en hausse jusqu'à 4,0.
+
+Ce méthane est traduit en réchauffement avec la courbe d'AGTP du méthane. Il l'emporte sur l'ozone des NOx : dans FaIR, une tonne de NOx en moins réchauffe à peu près autant, quelques décennies plus tard, qu'une tonne de méthane en moins refroidit.
+
+Les COV agissent en sens inverse, avec s = +0,0002 par million de tonnes. Un kilogramme en moins laisse 0,064 kg de méthane en moins dans l'air en 2023 dans SSP2-4.5 (0,051 en 2100). Dans SSP1-2.6, c'est 0,058, en baisse jusqu'à 0,020. Dans SSP3-7.0, c'est 0,071, en hausse jusqu'à 0,13. Une seule valeur vaut pour toutes les sources (`vocCh4PerKgCo2`). Pour la route, cela fait 3 % du méthane de ses NOx par kg de CO₂, de signe opposé.
+
+FaIR ne donne au monoxyde de carbone aucun effet sur la durée de vie du méthane. Les modèles de chimie en trouvent un : environ 0,05 kg de méthane par kg de CO (0,11 mW/m² par Tg chez ACCMIP, contre 2,2 par Mt de méthane ; Stevenson et al. 2013). Le coefficient des COV de fair-calibrate est ajusté sur les simulations AerChemMIP, qui perturbent ensemble le CO et les COV. L'effet du CO manque donc peut-être à FaIR, plutôt qu'il n'est compris dans celui des COV. Il ajouterait environ un dixième à l'effet du CO₂ seul de la route et de l'acier. C'est une question ouverte pour les auteurs de FaIR, et cet effet n'est pas ajouté ici.
+
+### Où les NOx sont émis
+
+Le coefficient de FaIR est une seule valeur pour tous les NOx du monde. Mais un kilogramme de NOx détruit plus de méthane là où l'air est pur. Planetshift utilise donc, pour chaque lieu, les chiffres des modèles de chimie plutôt que le coefficient unique de FaIR. Sur terre, un kilogramme de NOx en moins laisse environ un quart du méthane de FaIR ; en mer, environ les quatre cinquièmes.
+
+**Les chiffres des modèles de chimie.** Hoor et al. (2009, *Atmospheric Chemistry and Physics* 9, 3113, le projet QUANTIFY) ont perturbé les émissions de chaque secteur du transport dans cinq modèles de chimie. Les navires émettent leurs NOx dans l'air marin pur des tropiques. Par Tg d'azote, les NOx des navires donnaient un forçage du méthane et de l'ozone lié au méthane de −12,0 mW/m², contre −3,0 pour ceux de la route (tableaux 1 et 8 : −52,8 mW/m² pour 4,39 Tg N, −20,6 pour 6,85 Tg N).
+
+**Le méthane des COV rendu.** Leurs modèles perturbaient toutes les émissions de chaque secteur. Le chiffre de la route est donc net du monoxyde de carbone et des COV émis avec ses NOx, qui allongent la durée de vie du méthane. Planetshift compte désormais à part le méthane des COV (ci-dessus). Il rend donc ce méthane à chaque chiffre, plutôt que de le compter deux fois :
+
+- Dans CEDS, la route émettait 2,7 Tg de COV par Tg d'azote de ses NOx en 2000, l'année des modèles.
+- Aux 0,27 mW/m² de forçage du méthane par Tg d'ACCMIP (avec son ozone dans la même proportion que celui du méthane), cela fait 0,95 mW/m² par Tg N. C'est un quart du chiffre net de la route. Pour les navires, c'est 0,04.
+- Les NOx de la route donnent alors −3,95 mW/m² par Tg N, et ceux des navires 3,05 fois plus (de 2,15 à 4,46 fois selon les modèles). Avec les chiffres publiés, ce serait 4,0 fois.
+
+Le méthane du CO reste compris dans le chiffre de la route, puisque FaIR n'en a pas à compter à part.
+
+**Pourquoi les modèles de chimie.** Une étude multimodèle de chaque secteur du transport est plus réaliste qu'une seule valeur pour tous les NOx du monde. La réponse de FaIR, environ 2 kg de méthane par kg de NO₂ (SSP2-4.5, 2023), vaut plusieurs fois ce que les modèles de chimie trouvent pour le trafic routier. Avec elle, les véhicules électriques semblaient ajouter du réchauffement dans SSP3-7.0 (voir *Résultats* ci-dessous).
+
+**Les facteurs utilisés.** Le forçage du méthane et de l'ozone lié au méthane par kg de NO₂ chez Hoor et al., le méthane des COV rendu, est converti en l'émission de méthane qui donnerait le même forçage. La conversion utilise les 2,9 mW/m² par million de tonnes par an d'ACCMIP (Stevenson et al. 2013). Le résultat est de 0,41 kg de méthane pour le trafic routier (0,35–0,47 selon les cinq modèles) et de 1,27 pour les navires (1,0–1,9). FaIR donne 1,53 pour toute source en 2000, l'année des modèles. Les facteurs valent donc 0,27 du coefficient de FaIR sur terre et 0,83 en mer.
+
+Chaque facteur suit l'évolution de FaIR avec le scénario. Dans SSP2-4.5, un kilogramme de NOx en moins laisse 0,54 kg de méthane sur terre et 1,65 en mer en 2023, et 0,30 et 0,92 en 2100. Dans SSP3-7.0, celui de la terre monte à 1,12 en 2100.
+
+**Ce que l'on abandonne.** Le total mondial de FaIR est abandonné : le méthane de tous les NOx du monde vaut environ un tiers de celui de FaIR (voir [Limites](#method-limitations)). C'est un écart au coefficient unique de FaIR. Une copie de Planetshift peut revenir en arrière de deux façons (voir la [page sur la température](#method-climate)) :
+
+- au coefficient de FaIR (`fair`) ;
+- au coefficient de FaIR partagé entre mer et terre selon le rapport des modèles, son total mondial conservé (`hoor`). Les navires font une part *w* des NOx de chaque année dans le scénario (15 % en 2023, d'après RCMIP). Les sources terrestres prennent alors 1 / (1 + 2,05 *w*) du coefficient mondial, et les navires 3,05 fois cela : 0,76 et 2,32 dans SSP2-4.5 en 2023.
+
+**Quelles sources comptent comme terre.** La route, les centrales, les bâtiments, l'industrie et les champs pétroliers comptent comme terre. Il n'y a pas de découpage plus fin, faute de chiffres multimodèles comparables pour les sources autres que le transport. Les NOx propres à l'aviation sont dans son forçage hors CO₂.
+
+`noxCh4PerKgCo2` contient le méthane de chaque secteur par kg de CO₂ retiré : ses NOx × le facteur de son lieu × le méthane de FaIR par kg de NOx. Sa fourchette couvre les deux fourchettes.
+
+**Ce que réduit chaque levier.** Les navires à l'ammoniac ou au méthanol brûlent toujours un carburant, et forment des NOx à partir de l'azote de l'air. Le transport maritime propre garde donc ses NOx. Il réduit le soufre, la suie, le CO, les COV et l'approvisionnement de son carburant. L'ammoniac ne produit en brûlant ni CO ni COV ; le méthanol en produit un peu, qui n'est pas compté. Les véhicules électriques, les pompes à chaleur et les renouvelables ne brûlent rien, et réduisent tout.
+
+### Vérifié avec FaIR
+
+Un test fait passer dans FaIR lui-même, avec 100 membres, des baisses maintenues à partir de 2025 sous SSP2-4.5 : 10 millions de tonnes de SO₂, 1 de carbone noir ou 10 de NOx. Les baisses de SO₂ et de NOx réchauffent, celle de carbone noir refroidit. Chacune change la température d'autant que ce modèle linéaire, à un sixième près en 2050 et 2100. Pour le carbone noir, c'est à un quart près : ses membres sont si dispersés qu'une médiane de produits est loin du produit des médianes.
+
+### Comment le modèle les additionne
+
+Chaque année, la variation de CO₂ fossile de chaque levier est répartie selon le secteur qui l'émet. L'électricité consommée par les véhicules électriques, les pompes à chaleur et l'industrie propre compte comme celle du secteur électrique, sur le réseau qui reste après l'électricité renouvelable. La variation de chaque secteur, multipliée par ses rapports de l'année, donne deux choses :
+
+- **La variation du CO₂, du méthane et du N₂O de l'approvisionnement.** Ils rejoignent le CO₂ dans les émissions. Ils sont convolués avec leurs courbes d'AGTP, sous *combustibles fossiles et industrie*.
+- **La variation de la pollution de l'air**, sous *pollution de l'air*. Son forçage passe par `forcingResponse` : le forçage des particules, de l'ozone du CO et de l'ozone des COV de chaque secteur par kg de CO₂, plus celui des NOx. Son méthane des NOx et des COV passe par l'AGTP du méthane. Le méthane des NOx est mis à l'échelle selon le lieu d'émission.
+
+La bande de la pollution de l'air du graphique Causes du réchauffement ne comprend que le SO₂, le carbone noir et organique, l'ammoniac et les NOx. Le CO et les COV y sont avec les autres émissions humaines (voir [Causes du réchauffement climatique](#method-link)). Le CO et les COV des leviers comptent malgré tout sous pollution de l'air, comme une partie de ce qu'émet la combustion du combustible.
+
+La fourchette probable prend l'extrémité de chaque fourchette dans le sens de sa bande : plus de refroidissement perdu et plus de méthane des NOx au bas du réchauffement évité.
+
+La répartition de Shapley et les causes s'additionnent comme avant. La pollution de l'air est une quatrième cause sur laquelle agissent les leviers d'énergie et d'industrie. Sur le graphique Causes du réchauffement, sa bande de refroidissement se réduit après aujourd'hui quand ils agissent.
+
+Les données sont dans `coemissions.json`. Le code est `pipeline/planetshift_pipeline/coemissions.py`, et les données sont lues par `pipeline/planetshift_pipeline/sources/ceds.py`. Le modèle est `app/src/levers/energy/coemissions.ts`, utilisé par ce module et par [Bâtiments et industrie](#method-industry).
+
+### Résultats
+
+Réchauffement évité en °C, médiane (fourchette probable). Chaque levier est à 100 % de 2026 à 2035, sur les données réelles, avec SSP2-4.5 et les options par défaut. Le tableau compte le CO₂ seul, puis avec les co-émissions :
 
 | Leviers | 2050, CO₂ seul | 2050, avec | 2100, CO₂ seul | 2100, avec |
 | --- | --- | --- | --- | --- |
@@ -113,7 +334,7 @@ Les NOx, le sulfate et la suie propres à l'aviation sont déjà dans son força
 | Les sept | 0,205 (0,129–0,323) | 0,263 (0,090–0,532) | 0,512 (0,316–0,811) | 0,646 (0,335–1,092) |
 | Les sept avec chauffage propre, acier et ciment propres | 0,257 (0,161–0,398) | 0,314 (0,110–0,643) | 0,692 (0,425–1,079) | 0,851 (0,453–1,426) |
 
-Avec tous les leviers d'énergie, de chauffage et d'industrie en entier, l'approvisionnement et le méthane du combustible qui ne sont plus émis et le refroidissement qui n'est plus masqué s'annulent à peu près au début, puis les gains l'emportent (médiane, °C, SSP2-4.5) :
+Avec tous les leviers d'énergie, de chauffage et d'industrie au maximum, deux effets s'annulent à peu près au début. L'approvisionnement et le méthane du combustible ne sont plus émis, ce qui est un gain. Le refroidissement que masquait la pollution est perdu. Ensuite, les gains l'emportent (médiane, °C, SSP2-4.5) :
 
 | Année | Réchauffement évité, CO₂ seul | Gain du CO₂, du méthane et du N₂O de l'approvisionnement | Perte due à la pollution de l'air | Réchauffement évité, avec |
 | --- | --- | --- | --- | --- |
@@ -122,34 +343,85 @@ Avec tous les leviers d'énergie, de chauffage et d'industrie en entier, l'appro
 | 2050 | 0,257 | +0,123 | −0,066 | 0,314 |
 | 2100 | 0,692 | +0,196 | −0,037 | 0,851 |
 
-Le CO₂ de l'approvisionnement est ce qui change le plus par rapport aux chiffres d'avant sa prise en compte : il ajoute environ un dixième au CO₂ de chaque levier sur le pétrole, définitivement (0,150 kg par kg pour la route, 0,153 pour l'aviation et le transport maritime), et 8 % à l'électricité qu'un levier réduit ou consomme. Le CO et les COV ajoutent un peu de réchauffement évité, leur ozone et le méthane des COV partant avec le combustible, contre le petit refroidissement de l'ammoniac. L'électricité renouvelable perd le refroidissement du SO₂ des centrales à charbon, qui en sont la plus grande source, mais gagne l'ozone et le méthane de leurs NOx et l'approvisionnement de leur combustible : 0,105 °C au lieu de 0,096 en 2050 et 0,279 contre 0,234 en 2100. Moins d'avion, le carburant d'aviation propre et le chauffage propre gagnent dès le départ : l'approvisionnement de leur combustible l'emporte sur le peu de SO₂ qu'ils retirent. L'acier et le ciment propres sont seuls à perdre (0,016 au lieu de 0,025 en 2050) : leurs usines émettent du SO₂ et la filière hydrogène consomme beaucoup d'électricité du réseau. Les véhicules électriques gagnent : leur suie, l'ozone de leurs NOx et l'approvisionnement de leur carburant disparaissent aussitôt, et le méthane que leurs NOx ne détruisent plus, environ un quart de celui de FaIR sur terre, s'accumule lentement sur des décennies. Les voitures électriques évitent, en 2050 et 2100, 0,033 et 0,049 °C dans SSP1-2.6 (CO₂ seul 0,016 et 0,036) et 0,045 et 0,106 dans SSP2-4.5 (0,021 et 0,072). Dans SSP3-7.0, dont le réseau reste sale et dont les NOx et le méthane sont élevés, ce méthane reprend une partie du gain, mais ils évitent encore plus que leur seul CO₂ : les voitures électriques 0,030 °C en 2050 et 0,054 °C en 2100 (CO₂ seul 0,013 et 0,041), les camions électriques 0,016 et 0,020 (0,005 et 0,014). Avec le coefficient unique de FaIR pour toutes les sources, ils ajouteraient 0,018 et 0,026 °C d'ici 2100, et 0,009 et 0,020 avec ce coefficient partagé entre terre et mer (voir [Limites](#method-limitations)).
+**Le CO₂ de l'approvisionnement** est ce qui change le plus par rapport aux chiffres d'avant sa prise en compte. Il ajoute définitivement environ un dixième au CO₂ de chaque levier sur le pétrole : 0,150 kg par kg pour la route, 0,153 pour l'aviation et le transport maritime. Il ajoute 8 % à l'électricité qu'un levier réduit ou consomme.
 
-**Comparé aux sorties publiées des combustibles fossiles.** Shindell et Smith (2019, *Nature* 573, 408–411) ont fait tourner FaIR sur les 42 trajectoires du rapport du GIEC sur 1,5 °C, qui réduisent le CO₂ fossile et le SO₂ de 75 à 85 % d'ici 2050. Ils trouvent que « les effets sur la température des baisses de CO₂, de SO₂ et de CH₄ s'équilibrent à peu près jusque vers 2040 », après quoi le refroidissement dû au CO₂ domine ; en comptant toutes les émissions liées aux combustibles fossiles, toute brève pénalité climatique n'est « pas supérieure à 0,05 °C » (0,19 °C au 95e centile), et avec le CO₂ et le SO₂ seuls de 0,02 à 0,10 °C. Planetshift concorde : ses leviers en entier, une sortie plus rapide (complète en 2035 pour les secteurs qu'ils couvrent), ne donnent de réchauffement net aucune année (+0,003 °C évité en 2030), les gains de méthane et de CO₂ égalant à peu près le refroidissement perdu vers 2030 et le dépassant ensuite ; la montée plus rapide amène l'équilibre une décennie plus tôt que dans leurs trajectoires. Shindell et Smith comptent le méthane des NOx avec le coefficient unique de FaIR ; Planetshift prend les chiffres des modèles de chimie, environ un quart de celui de FaIR sur terre et quatre cinquièmes en mer, ce qui rend les co-émissions plus favorables, surtout celles des secteurs terrestres.
+**Le CO et les COV** ajoutent un peu de réchauffement évité : leur ozone et le méthane des COV partent avec le combustible. Cela s'oppose au petit refroidissement de l'ammoniac.
+
+**L'électricité renouvelable** perd le refroidissement du SO₂ des centrales à charbon, qui en sont la plus grande source. Mais elle gagne l'ozone et le méthane de leurs NOx, et l'approvisionnement de leur combustible. Elle évite 0,105 °C au lieu de 0,096 en 2050, et 0,279 contre 0,234 en 2100.
+
+**Moins d'avion, le carburant d'aviation propre et le chauffage propre** gagnent dès le départ : l'approvisionnement de leur combustible l'emporte sur le peu de SO₂ qu'ils retirent.
+
+**L'acier et le ciment propres** sont seuls à perdre : 0,016 au lieu de 0,025 en 2050. Leurs usines émettent du SO₂, et la filière hydrogène consomme beaucoup d'électricité du réseau.
+
+**Les véhicules électriques** gagnent. Leur suie, l'ozone de leurs NOx et l'approvisionnement de leur carburant disparaissent aussitôt. Le méthane que leurs NOx ne détruisent plus, environ un quart de celui de FaIR sur terre, s'accumule lentement sur des décennies. Les voitures électriques évitent, en 2050 et 2100 :
+
+- SSP1-2.6 : 0,033 et 0,049 °C (CO₂ seul 0,016 et 0,036) ;
+- SSP2-4.5 : 0,045 et 0,106 (CO₂ seul 0,021 et 0,072).
+
+Dans SSP3-7.0, le réseau reste sale et les NOx et le méthane sont élevés. Ce méthane reprend une partie du gain, mais les véhicules électriques évitent encore plus que leur seul CO₂. Les voitures électriques évitent 0,030 °C en 2050 et 0,054 °C en 2100 (CO₂ seul 0,013 et 0,041). Les camions électriques évitent 0,016 et 0,020 (CO₂ seul 0,005 et 0,014). Avec le coefficient unique de FaIR pour toutes les sources, ils ajouteraient 0,018 et 0,026 °C d'ici 2100. Avec ce coefficient partagé entre terre et mer, ils ajouteraient 0,009 et 0,020 (voir [Limites](#method-limitations)).
+
+### Comparé aux sorties publiées des combustibles fossiles
+
+Shindell et Smith (2019, *Nature* 573, 408–411) ont fait tourner FaIR sur les 42 trajectoires du rapport du GIEC sur 1,5 °C. Celles-ci réduisent le CO₂ fossile et le SO₂ de 75 à 85 % d'ici 2050. Ils trouvent que « les effets sur la température des baisses de CO₂, de SO₂ et de CH₄ s'équilibrent à peu près jusque vers 2040 ». Ensuite, le refroidissement dû au CO₂ domine. En comptant toutes les émissions liées aux combustibles fossiles, toute brève pénalité climatique n'est « pas supérieure à 0,05 °C » (0,19 °C au 95e centile). Avec le CO₂ et le SO₂ seuls, elle est de 0,02 à 0,10 °C.
+
+Planetshift concorde. Ses leviers au maximum sont une sortie plus rapide, complète en 2035 pour les secteurs qu'ils couvrent. Ils ne donnent de réchauffement net aucune année (+0,003 °C évité en 2030). Les gains de méthane et de CO₂ égalent à peu près le refroidissement perdu vers 2030, et le dépassent ensuite. La montée plus rapide amène l'équilibre une décennie plus tôt que dans leurs trajectoires.
+
+Shindell et Smith comptent le méthane des NOx avec le coefficient unique de FaIR. Planetshift prend les chiffres des modèles de chimie, environ un quart de celui de FaIR sur terre et quatre cinquièmes en mer. Cela rend les co-émissions plus favorables, surtout celles des secteurs terrestres.
 
 ## La réponse de la température à un forçage
 
-Les leviers sur le CO₂ sont traduits en température avec la courbe du CO₂ de la [page sur la température](#method-climate). Les effets de l'aviation hors CO₂ et la pollution de l'air sont un forçage, pas une émission, et demandent donc une autre courbe : `forcingResponse`, la variation de température après 1 W/m² de forçage supplémentaire maintenu pendant un an, année par année sur 200 ans. Elle est construite comme les courbes d'AGTP : les 841 membres de l'ensemble calibré de FaIR tournent sur SSP2-4.5 tel que publié, puis de nouveau avec le forçage supplémentaire en 2035, et la différence est gardée, avec la médiane et les 5e et 95e centiles. Le forçage supplémentaire est ajouté au forçage solaire de FaIR, qui agit sur la température sans chimie ni cycle du carbone propres, en fin d'année, là où une émission faite pendant l'année agit pour la première fois ; l'indice 0 est donc la même année civile que pour les courbes d'AGTP.
+Les leviers sur le CO₂ sont traduits en température avec la courbe du CO₂ de la [page sur la température](#method-climate). Les effets de l'aviation hors CO₂ et la pollution de l'air sont un forçage, pas une émission : ils demandent donc une autre courbe. `forcingResponse` est la variation de température après 1 W/m² de forçage supplémentaire maintenu pendant un an, année par année sur 200 ans.
 
-La réponse médiane est de 0,068 °C l'année du forçage (fourchette de 5 à 95 % : 0,035–0,094), 0,107 °C l'année suivante, le pic (0,078–0,144), 0,0089 °C après 10 ans (0,0033–0,016) et 0,0016 °C après 50 ans (0,0005–0,0041) : l'essentiel du réchauffement disparaît en quelques années, à mesure que la surface de l'océan rend la chaleur, et une petite part, emportée dans l'océan profond, persiste des siècles. Additionnée sur 200 ans, la courbe donne 0,65 °C par W/m², le réchauffement d'un forçage maintenu aussi longtemps. Un forçage dix fois plus grand donne la même réponse par W/m² à 0,1 % près du pic à chaque horizon (2,2 % en rapport, là où la courbe est petite) : la réponse est proportionnelle. Pour fixer les ordres de grandeur : le forçage de l'aviation hors CO₂ de 2018, 0,067 W/m², maintenu pendant 30 ans, réchaufferait le monde d'environ 0,03 °C.
+L'essentiel du réchauffement dû à un forçage disparaît en quelques années, à mesure que la surface de l'océan rend la chaleur. Une petite part, emportée dans l'océan profond, persiste des siècles. La réponse médiane est de :
+
+- 0,068 °C l'année du forçage (fourchette de 5 à 95 % : 0,035–0,094) ;
+- 0,107 °C l'année suivante, le pic (0,078–0,144) ;
+- 0,0089 °C après 10 ans (0,0033–0,016) ;
+- 0,0016 °C après 50 ans (0,0005–0,0041).
+
+Additionnée sur 200 ans, la courbe donne 0,65 °C par W/m². C'est le réchauffement d'un forçage maintenu aussi longtemps. Pour fixer les ordres de grandeur : le forçage de l'aviation hors CO₂ de 2018, 0,067 W/m², maintenu pendant 30 ans, réchaufferait le monde d'environ 0,03 °C.
+
+### Comment la courbe est construite
+
+Elle est construite comme les courbes d'AGTP. Les 841 membres de l'ensemble calibré de FaIR tournent sur SSP2-4.5 tel que publié, puis de nouveau avec le forçage supplémentaire en 2035. La différence est gardée, avec la médiane et les 5e et 95e centiles.
+
+Le forçage supplémentaire est ajouté au forçage solaire de FaIR, qui agit sur la température sans chimie ni cycle du carbone propres. Il est ajouté en fin d'année, là où une émission faite pendant l'année agit pour la première fois. L'indice 0 est donc la même année civile que pour les courbes d'AGTP.
+
+Un forçage dix fois plus grand donne la même réponse par W/m², à 0,1 % près du pic à chaque horizon (2,2 % en rapport, là où la courbe est petite). La réponse est donc proportionnelle.
 
 ## Ce qu'ajoute la fabrication des équipements
 
-Les leviers d'énergie comptent le combustible et l'électricité qu'un secteur cesse ou commence d'utiliser, pas les émissions de la fabrication de ce qui les remplace. Fabriquer une voiture électrique émet plus que fabriquer une voiture à essence, surtout à cause de sa batterie, et la différence est remboursée au cours de ses premières années de conduite. Les analyses de cycle de vie qui la comptent trouvent tout de même un gain important : pour des voitures moyennes immatriculées en 2021, Bieker (2021) trouve des émissions sur la durée de vie d'une voiture électrique à batterie inférieures de 66 à 69 % à celles d'une voiture à essence en Europe, de 60 à 68 % aux États-Unis, de 37 à 45 % en Chine et de 19 à 34 % en Inde, l'écart suivant chaque réseau ; le *Global EV Outlook 2024* de l'AIE trouve qu'une voiture électrique à batterie vendue en 2023 émet environ moitié moins qu'une voiture à essence comparable sur sa durée de vie. Le gain du levier des voitures électriques, environ 47 % du CO₂ d'échappement sur le réseau mondial actuel, laisse de côté la fabrication de la voiture et de sa batterie et est d'autant trop grand ; la comparaison avec ces chiffres est grossière, car ils comptent aussi la production du carburant et des réseaux régionaux. Un camion électrique porte une batterie plus grosse qu'une voiture, et son gain est surestimé de la même façon. L'éolien et le solaire ont aussi des émissions de cycle de vie, dues à la fabrication des éoliennes et des panneaux, mais elles sont faibles à côté de l'électricité fossile qu'ils remplacent : les médianes du GIEC sont de 11 g CO₂e par kWh pour l'éolien terrestre et 48 pour le solaire au sol, contre 490 pour le gaz en cycle combiné et 820 pour le charbon (Schlömer et al. 2014). La construction des centres de données et la fabrication de leurs puces sont laissées de côté (ci-dessus), de même que la fabrication de nouvelles machines pour le levier de l'énergie propre à la ferme, qui ne réduit que le combustible et l'électricité que les fermes utilisent (voir [Pratiques agricoles](#method-practices)).
+Les leviers d'énergie comptent le combustible et l'électricité qu'un secteur cesse ou commence d'utiliser. Ils ne comptent pas les émissions de la fabrication de ce qui les remplace.
+
+**Les voitures électriques.** Fabriquer une voiture électrique émet plus que fabriquer une voiture à essence, surtout à cause de sa batterie. La différence est remboursée au cours de ses premières années de conduite. Les analyses de cycle de vie qui la comptent trouvent tout de même un gain important :
+
+- Pour des voitures moyennes immatriculées en 2021, Bieker (2021) trouve des émissions sur la durée de vie d'une voiture électrique à batterie inférieures de 66 à 69 % à celles d'une voiture à essence en Europe, de 60 à 68 % aux États-Unis, de 37 à 45 % en Chine et de 19 à 34 % en Inde. L'écart suit chaque réseau.
+- Le *Global EV Outlook 2024* de l'AIE trouve qu'une voiture électrique à batterie vendue en 2023 émet environ moitié moins qu'une voiture à essence comparable sur sa durée de vie.
+
+Le gain du levier des voitures électriques est d'environ 47 % du CO₂ d'échappement sur le réseau mondial actuel. Il laisse de côté la fabrication de la voiture et de sa batterie, et il est d'autant trop grand. La comparaison avec ces chiffres est grossière, car ils comptent aussi la production du carburant et des réseaux régionaux. Un camion électrique porte une batterie plus grosse qu'une voiture, et son gain est surestimé de la même façon.
+
+**L'éolien et le solaire** ont aussi des émissions de cycle de vie, dues à la fabrication des éoliennes et des panneaux. Elles sont faibles à côté de l'électricité fossile qu'ils remplacent. Les médianes du GIEC sont de 11 g CO₂e par kWh pour l'éolien terrestre et 48 pour le solaire au sol, contre 490 pour le gaz en cycle combiné et 820 pour le charbon (Schlömer et al. 2014).
+
+**Sont aussi laissées de côté :** la construction des centres de données et la fabrication de leurs puces (ci-dessus), et la fabrication de nouvelles machines pour le levier de l'énergie propre à la ferme. Ce levier ne réduit que le combustible et l'électricité que les fermes utilisent (voir [Pratiques agricoles](#method-practices)).
+
+## Données et code
+
+`sectors.json` contient les données des secteurs. Le code est `pipeline/planetshift_pipeline/sectors.py`, et les données de scénarios de l'AR6 sont lues par `pipeline/planetshift_pipeline/sources/ar6db.py`. Les co-émissions sont dans `coemissions.json` (voir *Comment le modèle les additionne* ci-dessus). Les leviers sont calculés dans `app/src/levers/energy/model.ts`.
 
 ## Hypothèses
 
 - Les émissions de chaque secteur suivent la forme de leur scénario, ramenée à un inventaire : route 5,97 milliards de tonnes de CO₂ en 2022 (CEDS), aviation 0,95, transport maritime 0,85 et électricité 14,15 en 2023.
-- Passagers et marchandises se partagent la route à 60/40 chaque année et dans chaque scénario, les deux suivant le transport terrestre du scénario (route, rail et navigation intérieure ensemble).
+- Passagers et marchandises se partagent la route à 60/40 chaque année et dans chaque scénario. Les deux suivent le transport terrestre du scénario (route, rail et navigation intérieure ensemble).
 - Le transport maritime, international et intérieur, suit le transport maritime international du scénario.
 - L'électricité ne comprend que la production ; la chaleur des centrales est laissée de côté. Son CO₂ et l'intensité du réseau s'arrêtent à zéro là où la bioénergie avec captage du carbone du scénario les rendrait négatifs.
-- Les modèles de scénarios sont ceux que CMIP6 a utilisés pour chaque trajectoire (IMAGE pour SSP1-2.6, MESSAGE-GLOBIOM pour SSP2-4.5, AIM/CGE pour SSP3-7.0) : l'électricité suit donc le même récit que les émissions sur lesquelles tourne FaIR.
-- Un véhicule électrique demande 1,10 (voiture) ou 1,50 (camion) kWh par kg de CO₂ d'échappement évité, chaque année ; les véhicules ne deviennent pas plus efficaces avec le temps, et leur fabrication n'est pas comptée.
-- Le forçage de l'aviation hors CO₂ est proportionnel à son CO₂ de la même année, au rapport de 2018 ; le carburant propre ne le change pas.
-- Les centres de données ajoutent leur électricité au-delà des 415 TWh de 2024, en suivant les cas de l'AIE jusqu'en 2035, puis constante ; leur construction n'est pas comptée.
+- Les modèles de scénarios sont ceux que CMIP6 a utilisés pour chaque trajectoire : IMAGE pour SSP1-2.6, MESSAGE-GLOBIOM pour SSP2-4.5, AIM/CGE pour SSP3-7.0. L'électricité suit donc le même récit que les émissions sur lesquelles tourne FaIR.
+- Un véhicule électrique demande 1,10 (voiture) ou 1,50 (camion) kWh par kg de CO₂ d'échappement évité, chaque année. Les véhicules ne deviennent pas plus efficaces avec le temps, et leur fabrication n'est pas comptée.
+- Le forçage de l'aviation hors CO₂ est proportionnel à son CO₂ de la même année, au rapport de 2018. Le carburant propre ne le change pas.
+- Les centres de données ajoutent leur électricité au-delà des 415 TWh de 2024, en suivant les cas de l'AIE jusqu'en 2035, puis constante. Leur construction n'est pas comptée.
 - La réponse au forçage est celle de FaIR à un forçage solaire (efficacité 1) sur SSP2-4.5 en 2035, utilisée pour chaque année et chaque scénario.
-- Ce qui accompagne chaque kg de CO₂ fossile d'un secteur est le rapport de CEDS en 2022, combustible propre et approvisionnement en combustible, qui évolue avec les facteurs d'émission du scénario, jamais au-dessus de celui d'aujourd'hui et figé une fois que le CO₂ du secteur a diminué de moitié ; passagers et marchandises partagent le rapport de la route. Le CO₂ de l'approvisionnement garde son rapport de 2022 ; le secteur `1A1bc` des industries de l'énergie est pour deux tiers du pétrole et pour un tiers du charbon.
+- Ce qui accompagne chaque kg de CO₂ fossile d'un secteur est le rapport de CEDS en 2022, combustible propre et approvisionnement en combustible. Il évolue avec les facteurs d'émission du scénario, jamais au-dessus de celui d'aujourd'hui, et il est figé une fois que le CO₂ du secteur a diminué de moitié. Passagers et marchandises partagent le rapport de la route. Le CO₂ de l'approvisionnement garde son rapport de 2022. Le secteur `1A1bc` des industries de l'énergie est pour deux tiers du pétrole et pour un tiers du charbon.
 - Les NOx, le sulfate et la suie propres à l'aviation sont dans son forçage hors CO₂ ; seul l'approvisionnement de son carburant est compté comme co-émissions. Le transport maritime propre garde ses NOx.
-- Le forçage de la pollution de l'air par kg est celui de FaIR, l'effet aérosols-nuages étant linéarisé autour des émissions du scénario de chaque année ; les NOx comptent leur ozone, leur nitrate et le méthane qu'ils ne détruisent plus, ce méthane étant celui des modèles de chimie (Hoor et al. 2009, les COV de la route rendus) : 0,27 du coefficient de FaIR sur terre et 0,83 en mer, suivant l'évolution de FaIR avec le scénario. Le CO et les COV comptent leur ozone, et les COV le méthane qu'ils laissent ; l'ammoniac son nitrate.
+- Le forçage de la pollution de l'air par kg est celui de FaIR, l'effet aérosols-nuages étant linéarisé autour des émissions du scénario de chaque année. Les NOx comptent leur ozone, leur nitrate et le méthane qu'ils ne détruisent plus. Ce méthane est celui des modèles de chimie (Hoor et al. 2009, les COV de la route rendus) : 0,27 du coefficient de FaIR sur terre et 0,83 en mer, suivant l'évolution de FaIR avec le scénario. Le CO et les COV comptent leur ozone, et les COV le méthane qu'ils laissent ; l'ammoniac compte son nitrate.
 - L'effet du CO sur le méthane, que FaIR laisse de côté, n'est pas compté (une question ouverte, ci-dessus).
 
 ## Sources

@@ -1,6 +1,6 @@
 # Land: cropland, pasture and regrowth
 
-This page answers how much farmland each scenario uses and how much it frees, country by country. Eating fewer animal foods frees mostly pasture: a full shift to plant foods frees nearly all of it, 3.0 billion hectares, while cropland falls by 0.11 billion hectares, 7%. As an option, off by default, Planetshift also counts the carbon dioxide that freed land could take up if it were left to grow back into forest.
+This page answers how much farmland each scenario uses and how much it frees, country by country. Eating fewer animal foods frees mostly pasture: a full shift to plant foods frees nearly all of it, 3.0 billion hectares, while cropland falls by 0.13 billion hectares, 8%. As an option, off by default, Planetshift also counts the carbon dioxide that freed land could take up if it were left to grow back into forest.
 
 ## Farmland today
 
@@ -33,11 +33,11 @@ When a scenario changes production, cropland changes with it, item by item, at t
 
 Pasture changes with the production of the ruminant groups. Each group's share of a country's pasture changes in proportion to the group's production. If a country produces half as much beef, the pasture given to beef halves. Pasture never falls below zero. Temporary meadows change the same way.
 
-**Example.** With a 50% shift, protein kept equal and the default options, the world frees 1.55 billion hectares of its 3.02 billion of pasture, and 62 Mha of its 1.65 billion hectares of cropland (about 4%).
+**Example.** With a 50% shift, protein kept equal and the default options, the world frees 1.51 billion hectares of its 3.02 billion of pasture, and 65 Mha of its 1.65 billion hectares of cropland (about 4%).
 
 ### Cropland under a full plant-based shift
 
-With no animal products at all and protein kept equal, the model's cropland falls by 0.11 billion hectares, 7% of its 1.65 billion. With calories kept equal it falls by 22%, and with the legume mix by 8%. Nearly all pasture (3.0 billion hectares) is freed.
+With no animal products at all and protein kept equal, the model's cropland falls by 0.13 billion hectares, 8% of its 1.65 billion. With calories kept equal it falls by 24%, and with the legume mix by 10%. Nearly all pasture (3.0 billion hectares) is freed.
 
 Poore and Nemecek (2018) find that such a diet would cut farmland by 76% (3.1 billion hectares), "including a 19% reduction in arable land use".
 
@@ -51,6 +51,7 @@ The model used to find the opposite: a rise of 0.38 billion hectares (+25%). Thr
 | Replacement by today's protein-rich plant foods only (cereals, rice, pulses, nuts, oilseeds) | +141 Mha |
 | Oilseed land shared between oil and cake by value, the cake's part freed with the animals | +36 Mha |
 | Temporary meadows counted as fodder for ruminants, and freed with them | −99 Mha (−6%) |
+| The model today, with every animal group's food production taken to zero and the animals not raised for food kept | −130 Mha (−8%) |
 
 - The replacement scaled every plant food by the same factor. Replacing meat's protein then raised fruit by 80%, vegetables by 74%, and sugar, drinks and vegetable oils in proportion, although they bring almost no protein. More soybean oil then meant more soybean fields. The default now adds protein only to the plant foods eaten for it (see [The shift](#method-shift)). Restricting it further, to foods with at least 5% protein, gave about −2% before fodder. But that threshold is arbitrary, and it drops rice (4.8%) and nuts, which are staples of plant protein in much of the world.
 - The oilcakes carried no land, so the soybean fields grown for meal could not be freed. Sharing by value is the usual practice in life-cycle studies. Sharing by mass would give the oil less land and the cake more (soybean oil 19% of the land instead of 37%), and a full shift would free a little more.
@@ -60,7 +61,7 @@ The model used to find the opposite: a rise of 0.38 billion hectares (+25%). Thr
 
 The remaining gap with Poore and Nemecek's −19% has three likely causes:
 
-- Replacing animal protein with cereal-rich staples adds calories (2,437 to about 2,545 kcal a day in the France example), so more is grown than needed. Keeping calories equal instead gives −22%, close to their figure, and their diet holds both.
+- Replacing animal protein with cereal-rich staples adds calories (2,437 to about 2,545 kcal a day in the France example), so more is grown than needed. Keeping calories equal instead gives −24%, close to their figure, and their diet holds both.
 - Silage maize, alfalfa and other fodder crops are still not counted.
 - Their arable land counts physical area, fallow included, where the model counts harvested area.
 
@@ -182,13 +183,13 @@ The table shows what netting changes, on the real data with FaIR and SSP2-4.5 (s
 
 | Scenario, regrowth on | Net uptake when complete (Gt CO₂ a year) | Avoided in 2050 (°C) | Avoided in 2100 (°C) |
 | --- | --- | --- | --- |
-| Full shift, before | 9.10 | 0.182 | 0.365 (0.194–0.759) |
-| Full shift, netted | 8.70 | 0.179 | 0.361 (0.193–0.743) |
-| Half shift, before → netted | 4.68 → 4.49 | 0.094 → 0.093 | 0.188 → 0.186 |
-| Dairy to plant milk, before → netted | 1.18 → 1.13 | 0.043 → 0.042 | 0.086 → 0.085 |
-| Half the fish to legumes, before → netted | 0.01 → −0.11 | 0.0005 → −0.0003 | 0.0014 → 0.0002 |
+| Full shift, before | 9.25 | 0.182 | 0.367 (0.194–0.765) |
+| Full shift, netted | 8.88 | 0.180 | 0.363 (0.194–0.750) |
+| Half shift, before → netted | 4.63 → 4.44 | 0.091 → 0.090 | 0.183 → 0.181 |
+| Dairy to plant milk, before → netted | 1.10 → 1.04 | 0.040 → 0.040 | 0.081 → 0.080 |
+| Half the fish to legumes, before → netted | 0.01 → −0.10 | 0.0005 → −0.0003 | 0.0015 → 0.0004 |
 
-Under the full shift, 12 countries farm more land in all than before, 48 Mha together. Under the fish swap, 107 countries do, 19 Mha together. With regrowth off nothing changes.
+Under the full shift, 12 countries farm more land in all than before, 44 Mha together. Under the fish swap, 105 countries do, 18 Mha together. With regrowth off nothing changes.
 
 ## Checks
 

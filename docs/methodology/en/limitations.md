@@ -1,51 +1,114 @@
 # Limitations
 
-Planetshift answers a narrow question with simple, stated rules. Here is what it leaves out, and how precise its numbers are.
+Planetshift answers a narrow question with simple, stated rules. This page lists what it leaves out and how precise its numbers are. The temperature ranges it shows are narrower than the real uncertainty, so read the warming avoided as an order of magnitude.
 
 ## What is left out
 
-**Fish and seafood.** Fish and seafood are in the model, but their intensities are published world values by species group (fishing fuel, fish-farm energy and N₂O), blended by each country's mix of capture and aquaculture, not national inventories; wild fish have no farm-gate emissions, since fuel counts only in cradle to farm gate. Methane from fish ponds, vessels and refrigerants, aquatic plants and the ocean's carbon pathways (fish carcasses that sink, sediments stirred by trawls) are left out. See [Fish and seafood](#method-seafood).
+**Fish and seafood.** Fish and seafood are in the model, but their intensities (emissions per tonne) are not national inventories. They are published world values by species group: fishing fuel, fish-farm energy and N₂O (nitrous oxide). They are blended by each country's mix of capture and aquaculture. Wild fish have no farm-gate emissions, since fuel counts only in cradle to farm gate. Left out are: methane from fish ponds, vessels and refrigerants, aquatic plants, and the ocean's carbon pathways (fish carcasses that sink, sediments stirred by trawls). See [Fish and seafood](#method-seafood).
 
-**Land use.** Planetshift counts the farmland a shift frees and, if chosen under Options, the CO₂ it takes up as natural vegetation grows back. With regrowth on, land a scenario newly uses is charged the uptake it forgoes, but clearing standing forest for new pasture and crops is counted only as far as the deforestation data tie it to production, and the carbon freed land could store in other ways (planted forest, restored peat) is not counted. Both can be larger than all the farm emissions together, so with regrowth off the benefit of a shift is smaller than it could be, not larger. The Causes of warming chart still shows land-use change as a cause of past warming, from published data. For scale: Eisen and Brown (2022) find that phasing out animal farming over 15 years, with the freed land's vegetation fully recovering (about 790 Gt of CO₂ taken up over 30 years), would give 3.8 instead of 4.9 W/m² of radiative forcing in 2100, "the same effect … as a 68% reduction of CO₂ emissions". Their regrowth takes up about 26 Gt of CO₂ a year, against about 8.7 Gt, net of the land newly used, in Planetshift's full shift with regrowth on, which counts only young natural forest where it can grow and none on dry rangeland; Planetshift's full shift avoids 0.27 °C (0.18–0.40) in 2100 without regrowth and 0.36 °C (0.19–0.74) with it.
+**Land use.** Planetshift counts the farmland a shift frees. If chosen under Options, it also counts the CO₂ that land takes up as natural vegetation grows back. With regrowth on, land a scenario newly uses is charged the uptake it forgoes. Two things are only partly counted or not counted:
 
-**Air pollution and fuel methane.** The energy, heating and industry levers cut the CO₂, methane and N₂O emitted producing the fuel and the air pollution burning it made, with one ratio per sector and world-wide forcing per kg (see [Energy and transport](#method-sectors)). Refineries', coke ovens' and oil and gas fields' own fuel is counted with the fuel they supply, shared between oil and coal by an assumption, as the open inventories do not split it. Where the pollution is emitted matters and is modelled only for NOx's methane, taken for land and for sea from one multi-model study of transport (Hoor et al. 2009): NOx's ozone is the same everywhere, and power plants, buildings and industry share road's place on land for want of comparable figures. A tonne of SO₂ over clean ocean air cools more than one over a polluted region: four models give −3.1 to −10.7 mW/m² per Tg a year of SO₂ depending on region and season, and find it "more efficient to perturb European or shipping aerosol emissions than East Asian emissions" (Bellouin et al. 2016); in one model China's emissions cooled the world about fourteen times more released over Western Europe than over India (Persad and Caldeira 2018), whose forcing also warmed or cooled by 0.24 to 1.3 K per W/m² depending on where it was, where the model takes 1. Power plants' SO₂ is now mostly in India, Indonesia, Türkiye and Saudi Arabia and steel's and cement's in China and India (CEDS), in polluted air, so the world-wide forcing likely overstates the cooling the levers lose there and understates it for ships; the regional estimates cover too few regions, and disagree too much, to correct it. NOx's methane remains the largest and least certain of these terms. The website takes it from the chemistry models rather than from FaIR (the `chemistry` value of the `noxMethane` departure, see the [temperature page](#method-climate)), as a multi-model chemistry study of each transport sector is more realistic than one global coefficient: FaIR's methane response to NOx, about 2 kg of methane per kg of NO₂, is several times the chemistry models' for road traffic, which find its ozone outweighing its methane (net +16 ± 13 mW/m², against −18 ± 10 for shipping; Myhre et al. 2011), and with it electric cars and trucks appeared to add warming by 2100 in SSP3-7.0. Hoor et al.'s methane and methane-ozone forcing per kg of NO₂, the VOCs' methane given back, turned into the methane emission that gives it at ACCMIP's 2.9 mW/m² per million tonnes a year (Stevenson et al. 2013), is 0.41 kg of methane for road traffic (0.35–0.47 across the five models) and 1.27 for ships, against FaIR's 1.53 for every source in 2000, the models' year; each then follows FaIR's change with the scenario. Electric cars and trucks avoid 0.054 and 0.020 °C by 2100 in SSP3-7.0 and 0.106 and 0.065 in SSP2-4.5; with FaIR's one coefficient they would add 0.018 and 0.026 °C in SSP3-7.0 (0.091 and 0.055 avoided in SSP2-4.5), and with FaIR's coefficient shared between land and sea by Hoor et al.'s ratio, 0.009 and 0.020 (0.097 and 0.059). What remains uncertain: the values come from one study, five models and one year, and are carried to other years and scenarios by FaIR's own change, which grows with the scenario's methane (road's 0.41 kg becomes 1.1 kg by 2100 in SSP3-7.0); power plants, buildings and industry take road's value; and the choice gives up FaIR's world total, which FaIR's calibration constrains with the rest of its methane budget, cutting the methane of all the world's NOx to about a third of FaIR's. A fork can keep FaIR's one coefficient (`fair`) or the land and sea split of FaIR's total (`hoor`). Carbon monoxide's own effect on methane, which FaIR leaves out, is not counted: an open question (see [Energy and transport](#method-sectors)). No lever targets air pollution on its own (filters, cleaner cookstoves). See [Causes of global warming](#method-link).
+- clearing standing forest for new pasture and crops is counted only as far as the deforestation data tie it to production;
+- the carbon freed land could store in other ways (planted forest, restored peat) is not counted.
 
-**Methane leaks that inventories miss.** Satellites and aircraft find more methane than countries report: the IEA puts energy's methane about 80% above the national inventories submitted to the UN (Global Methane Tracker 2025), and surveys of US oil and gas find losses about three times the national inventory (Sherwin et al. 2024). Planetshift's supply methane does not come from those inventories but from CEDS, whose 131 million tonnes from fossil fuels in 2022 are at or above the IEA's (above 120), and atmospheric inversions put fossil fuels at 115 Tg a year (100–124) against 120 from inventories over 2010–2019 (Saunois et al. 2025), so the levers' supply methane is likely within about a tenth. Abandoned wells and mines, about 8 million tonnes a year (IEA 2025), do not fall when today's fuel use does, and CEDS may hold part of them in its ratios.
+Both can be larger than all the farm emissions together. So with regrowth off, the benefit of a shift is smaller than it could be, not larger. The Causes of warming chart still shows land-use change as a cause of past warming, from published data.
 
-**What clean fuels leave behind.** Clean aviation fuel's effect on contrails is not counted: fuels with fewer aromatics made 50–70% fewer soot and ice particles in flight measurements (Voigt et al. 2021), and pure clean fuel 35% fewer soot particles (Märkl et al. 2024), but no estimate of the forcing for a world share of such fuel was found. Hydrogen leaking from clean steel's direct-reduction route warms (a 100-year warming potential of 11.6 ± 2.8; Sand et al. 2023), and FaIR has no hydrogen: at 1–10% leakage of the about 50 kg a tonne of steel needs, it would take back 0.3–3% of the CO₂ saved, by Planetshift's rough estimate. Ships on ammonia may slip N₂O and ammonia that offset part of their gain; no reliable world figure was found. Each would be a departure from FaIR.
+For scale, Eisen and Brown (2022) phase out animal farming over 15 years, with the freed land's vegetation fully recovering (about 790 Gt of CO₂ taken up over 30 years). They find 3.8 instead of 4.9 W/m² of radiative forcing in 2100, "the same effect … as a 68% reduction of CO₂ emissions". Their regrowth takes up about 26 Gt of CO₂ a year. Planetshift's full shift with regrowth on takes up about 8.9 Gt, net of the land newly used: it counts only young natural forest where it can grow, and none on dry rangeland. Planetshift's full shift avoids 0.27 °C (0.18–0.40) in 2100 without regrowth and 0.36 °C (0.19–0.75) with it.
 
-**Food transport, processing, packaging and retail.** Only what happens on the farm is counted by default; under Options, you can add the making of fertiliser and the energy used on the farm. What happens to food after the farm gate is out. The energy and transport levers act on the world's vehicles, flights, ships and power stations as a whole, not on food's share of them.
+**Air pollution and fuel methane.** The energy, heating and industry levers cut the CO₂, methane and N₂O emitted producing the fuel. They also cut the air pollution that burning it made. Both are counted with one ratio per sector and world-wide forcing per kg (see [Energy and transport](#method-sectors)). Forcing is the change in the energy the Earth keeps, which warms it. Three simplifications matter most:
 
-**Energy beyond a few sectors.** The energy levers cover road transport, aviation, shipping, electricity and data centres' extra demand. District heat, rail, industries other than steel and cement, and the making of vehicles, batteries, solar panels and chips are not levers; the levers change the scenario's methane and aerosols only through the fuel they cut. Electric vehicles do not get more efficient over time, aviation's non-CO₂ forcing keeps its 2018 ratio to CO₂, and the levers are adoption shares, not policies or costs.
+- Refineries', coke ovens' and oil and gas fields' own fuel is counted with the fuel they supply. It is shared between oil and coal by an assumption, as the open inventories do not split it.
+- Where the pollution is emitted matters, but it is modelled only for NOx's methane. In the model, a tonne of SO₂ (sulphur dioxide) has the same effect wherever it is emitted. In reality, it cools more over clean ocean air than over a polluted region.
+- NOx's methane remains the largest and least certain of these terms. The website takes it from chemistry models rather than from FaIR, the climate model.
 
-**Making the equipment.** The levers count the fuel and electricity used, not the emissions of making vehicles and their batteries, wind turbines and solar panels, data centres and their chips, or farm machinery. For electric cars this makes the saving too large: life-cycle studies that count the battery find electric cars' lifetime emissions about half a petrol car's worldwide (IEA 2024), and 66–69% lower in Europe but 19–34% lower in India (Bieker 2021). Wind and solar power's life-cycle emissions are a few per cent of coal's (Schlömer et al. 2014). See [Energy and transport](#method-sectors).
+The details and figures are in *Air pollution and NOx's methane in detail*, below. Carbon monoxide's own effect on methane, which FaIR leaves out, is not counted: an open question (see [Energy and transport](#method-sectors)). No lever targets air pollution on its own (filters, cleaner cookstoves). See [Causes of global warming](#method-link).
 
-**Farming levers.** Practices, waste, deforestation and carbon in farmland are shares adopted with published effects; whether a practice can be adopted in a country is a judgement, soil carbon can be lost again, and wasting less frees money spent on something else, a rebound left out. See [Levers](#method-levers).
+**Methane leaks that inventories miss.** Satellites and aircraft find more methane than countries report. The IEA puts energy's methane about 80% above the national inventories submitted to the UN (Global Methane Tracker 2025). Surveys of US oil and gas find losses about three times the national inventory (Sherwin et al. 2024). Planetshift's supply methane does not come from those inventories, but from CEDS. CEDS gives 131 million tonnes from fossil fuels in 2022, at or above the IEA's figure (above 120). Atmospheric inversions put fossil fuels at 115 Tg a year (100–124), against 120 from inventories, over 2010–2019 (Saunois et al. 2025). So the levers' supply methane is likely within about a tenth. Abandoned wells and mines emit about 8 million tonnes a year (IEA 2025). These emissions do not fall when today's fuel use does, and CEDS may hold part of them in its ratios.
 
-**Permafrost and other feedbacks.** The permafrost switch adds one Earth-system feedback, simply: each degree's release spread over 20 years, one pass, abrupt thaw left out, with a range wide by a factor of ten. Other feedbacks beyond FaIR's carbon cycle (forest dieback, methane hydrates) are not included.
+**What clean fuels leave behind.** Each of the following would be a departure from FaIR:
+
+- Clean aviation fuel's effect on contrails is not counted. Fuels with fewer aromatics made 50–70% fewer soot and ice particles in flight measurements (Voigt et al. 2021), and pure clean fuel 35% fewer soot particles (Märkl et al. 2024). No estimate of the forcing for a world share of such fuel was found.
+- Hydrogen leaking from clean steel's direct-reduction route warms: it has a 100-year warming potential of 11.6 ± 2.8 (Sand et al. 2023). FaIR has no hydrogen. A tonne of steel needs about 50 kg of hydrogen. At 1–10% leakage, it would take back 0.3–3% of the CO₂ saved, by Planetshift's rough estimate.
+- Ships on ammonia may slip N₂O and ammonia that offset part of their gain. No reliable world figure was found.
+
+**Food transport, processing, packaging and retail.** Only what happens on the farm is counted by default. Under Options, you can add the making of fertiliser and the energy used on the farm. What happens to food after the farm gate is out. The energy and transport levers act on the world's vehicles, flights, ships and power stations as a whole, not on food's share of them.
+
+**Energy beyond a few sectors.** The energy levers cover road transport, aviation, shipping, electricity and data centres' extra demand. These are not levers: district heat, rail, industries other than steel and cement, and the making of vehicles, batteries, solar panels and chips. The levers change the scenario's methane and aerosols only through the fuel they cut. Electric vehicles do not get more efficient over time. Aviation's non-CO₂ forcing keeps its 2018 ratio to CO₂. The levers are adoption shares, not policies or costs.
+
+**Making the equipment.** The levers count the fuel and electricity used. They do not count the emissions of making vehicles and their batteries, wind turbines and solar panels, data centres and their chips, or farm machinery. For electric cars, this makes the saving too large. Life-cycle studies that count the battery find electric cars' lifetime emissions about half a petrol car's worldwide (IEA 2024). They are 66–69% lower in Europe but 19–34% lower in India (Bieker 2021). Wind and solar power's life-cycle emissions are a few per cent of coal's (Schlömer et al. 2014). See [Energy and transport](#method-sectors).
+
+**Farming levers.** Practices, waste, deforestation and carbon in farmland are shares adopted, with published effects. Whether a practice can be adopted in a country is a judgement. Soil carbon can be lost again. Wasting less frees money that is spent on something else, a rebound left out. See [Levers](#method-levers).
+
+**Permafrost and other feedbacks.** The permafrost switch adds one Earth-system feedback, in a simple way. Each degree's release is spread over 20 years, in one pass, and abrupt thaw is left out. Its range is wide by a factor of ten. Other feedbacks beyond FaIR's carbon cycle (forest dieback, methane hydrates) are not included.
 
 **How trade responds.** Each country's farms change in proportion to their share of world output. In reality, a fall in beef demand would hit some exporters harder than others, and prices would shift who grows what.
 
-**Prices and incomes.** Cheaper or dearer food changes what people buy; Planetshift does not model it. A shift is a choice you set, not a forecast of what people will do.
+**Prices and incomes.** Cheaper or dearer food changes what people buy. Planetshift does not model it. A shift is a choice you set, not a forecast of what people will do.
 
-**Health.** Planetshift keeps protein or calories equal but does not check the diet against health guidelines or estimate health outcomes.
+**Health.** Planetshift keeps protein or calories equal. It does not check the diet against health guidelines or estimate health outcomes.
 
 **Non-food crops.** Cotton, tobacco, rubber and biofuel crops are out.
 
-**Below country level.** Production and emissions are by country; there are no maps of where within a country food is grown.
+**Below country level.** Production and emissions are by country. There are no maps of where within a country food is grown.
 
 ## How precise the numbers are
 
-The temperature range comes from the spread of the climate model's response to each gas (the 5th to 95th percentile of a calibrated set of runs). It does not include the uncertainty in the emissions per tonne of each food, which can be large, nor in the diets and feed shares. The real range is wider than the one shown.
+The temperature range comes from the spread of the climate model's response to each gas: the 5th to 95th percentile of a calibrated set of runs. It does not include the uncertainty in the emissions per tonne of each food, which can be large. Nor does it include the uncertainty in the diets and feed shares. The real range is wider than the one shown.
 
-The emissions per tonne come from the best source available for each food and country, from HESTIA's data for that country down to a world median for the food group. The data-quality map shows which; where it is poor, treat that country's numbers as rough.
+The emissions per tonne come from the best source available for each food and country. This ranges from HESTIA's data for that country down to a world median for the food group. The data-quality map shows which. Where it is poor, treat that country's numbers as rough.
 
-The avoided warming in 2050 is small, a few hundredths of a degree for a modest shift; the energy levers in full avoid several tenths by 2100. Read it with its range and as an order of magnitude, not to the last digit. Changes in emissions are more robust than changes in temperature, and the direction of the change is more robust than its size.
+The avoided warming in 2050 is small: a few hundredths of a degree for a modest shift. The energy levers in full avoid several tenths by 2100. Read the avoided warming with its range and as an order of magnitude, not to the last digit. Changes in emissions are more robust than changes in temperature. The direction of the change is more robust than its size.
+
+## Air pollution and NOx's methane in detail
+
+### Where the pollution is emitted
+
+Where the pollution is emitted is modelled only for NOx's methane. It is taken for land and for sea from one multi-model study of transport (Hoor et al. 2009). NOx's ozone is the same everywhere. Power plants, buildings and industry share road's place on land, for want of comparable figures.
+
+A tonne of SO₂ over clean ocean air cools more than one over a polluted region:
+
+- Four models give −3.1 to −10.7 mW/m² per Tg a year of SO₂, depending on region and season. They find it "more efficient to perturb European or shipping aerosol emissions than East Asian emissions" (Bellouin et al. 2016).
+- In one model, China's emissions cooled the world about fourteen times more when released over Western Europe than over India (Persad and Caldeira 2018). Their forcing also warmed or cooled by 0.24 to 1.3 K per W/m² depending on where it was, where the model takes 1.
+
+Power plants' SO₂ is now mostly in India, Indonesia, Türkiye and Saudi Arabia, and steel's and cement's in China and India (CEDS). These are regions with polluted air. So the world-wide forcing likely overstates the cooling the levers lose there, and understates it for ships. The regional estimates cover too few regions, and disagree too much, to correct it.
+
+### Why NOx's methane comes from the chemistry models
+
+The website takes NOx's methane from the chemistry models rather than from FaIR. This is the `chemistry` value of the `noxMethane` departure (see the [temperature page](#method-climate)). A multi-model chemistry study of each transport sector is more realistic than one global coefficient.
+
+FaIR's methane response to NOx is about 2 kg of methane per kg of NO₂. This is several times the chemistry models' response for road traffic. Those models find road traffic's ozone outweighing its methane: net +16 ± 13 mW/m², against −18 ± 10 for shipping (Myhre et al. 2011). With FaIR's response, electric cars and trucks appeared to add warming by 2100 in SSP3-7.0.
+
+### How the value is derived
+
+Hoor et al. give the forcing of methane and methane-ozone per kg of NO₂, with the VOCs' methane given back. That forcing is turned into the methane emission that gives it, at ACCMIP's 2.9 mW/m² per million tonnes a year (Stevenson et al. 2013). The result is:
+
+- 0.41 kg of methane for road traffic (0.35–0.47 across the five models);
+- 1.27 kg for ships;
+- against FaIR's 1.53 for every source in 2000, the models' year.
+
+Each then follows FaIR's change with the scenario.
+
+### What the choice changes
+
+| Electric cars and trucks, by 2100 | SSP3-7.0 | SSP2-4.5 |
+| --- | --- | --- |
+| Chemistry models (website default) | 0.054 and 0.020 °C avoided | 0.106 and 0.065 °C avoided |
+| FaIR's one coefficient | 0.018 and 0.026 °C added | 0.091 and 0.055 °C avoided |
+| FaIR's coefficient shared between land and sea by Hoor et al.'s ratio | 0.009 and 0.020 °C added | 0.097 and 0.059 °C avoided |
+
+A fork can keep FaIR's one coefficient (`fair`) or the land and sea split of FaIR's total (`hoor`).
+
+### What remains uncertain
+
+- The values come from one study, five models and one year.
+- They are carried to other years and scenarios by FaIR's own change, which grows with the scenario's methane. Road's 0.41 kg becomes 1.1 kg by 2100 in SSP3-7.0.
+- Power plants, buildings and industry take road's value.
+- The choice gives up FaIR's world total, which FaIR's calibration constrains with the rest of its methane budget. It cuts the methane of all the world's NOx to about a third of FaIR's.
 
 ## Assumptions
 
 - Leaving out land use, as the default does, is conservative: counting regrowth makes the warming avoided larger.
-- The climate response is linearised around the baseline scenario, which holds well for levers that change a small part of the world's emissions (most farming and land levers, single energy levers), and less well for the energy levers in full, which remove a large part of the scenario's CO₂: their warming avoided is a first-order estimate.
+- The climate response is linearised around the baseline scenario. This holds well for levers that change a small part of the world's emissions: most farming and land levers, and single energy levers. It holds less well for the energy levers in full, which remove a large part of the scenario's CO₂. Their warming avoided is a first-order estimate.
 
 ## Sources
 

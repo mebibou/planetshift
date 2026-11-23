@@ -59,7 +59,7 @@ When a country eats none of the items in a part of the mix, that part follows th
 
 The default mix changed in November 2026. It used to scale every plant food alike. Replacing the protein of meat then raised fruit by 80%, vegetables by 74%, and sugar, beer and vegetable oils in proportion, although they bring almost no protein. Cropland rose by a quarter under a full plant-based shift, against a fall of a fifth in Poore and Nemecek (2018).
 
-The replacement now keeps to the foods people eat for protein, and the land of oilcakes and fodder is counted (see [Land](#method-land)). Together, these turn that rise into a fall of 6% with protein kept and 22% with calories kept.
+The replacement now keeps to the foods people eat for protein, and the land of oilcakes and fodder is counted (see [Land](#method-land)). Together, these turn that rise into a fall of 8% with protein kept and 24% with calories kept.
 
 ## 4. From food to supply: losses and seed
 

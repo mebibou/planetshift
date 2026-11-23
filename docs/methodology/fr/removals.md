@@ -1,6 +1,6 @@
 # Carbone stocké dans les terres agricoles
 
-L'agriculture peut retirer du CO₂ de l'air autant qu'en émettre. Les plantes font entrer du carbone dans le sol, les arbres le stockent dans leur bois, et certains matériaux épandus sur les champs l'immobilisent. Cette page explique les quatre pratiques que Planetshift propose comme leviers, la quantité de CO₂ que chacune absorbe par hectare, et ce que chacune pourrait stocker dans le monde : sur le plus de terres que chacune peut atteindre, environ 0,37 Gt (milliard de tonnes) de CO₂ par an pour les couverts végétaux, 1,4 Gt pour les arbres dans les fermes, 0,63 Gt pour le biochar et 0,6 Gt pour la poudre de roche.
+L'agriculture peut retirer du CO₂ de l'air autant qu'en émettre. Les plantes font entrer du carbone dans le sol, les arbres le stockent dans leur bois, et certains matériaux épandus sur les champs l'immobilisent. Cette page explique les quatre pratiques que Planetshift propose comme leviers, la quantité de CO₂ que chacune absorbe par hectare, et ce que chacune pourrait stocker dans le monde : sur le plus de terres que chacune peut atteindre, environ 0,37 Gt (milliard de tonnes) de CO₂ par an pour les couverts végétaux, 1,3 Gt pour les arbres dans les fermes, 0,63 Gt pour le biochar et 0,6 Gt pour la poudre de roche.
 
 ## Comment l'absorption est comptée
 
@@ -47,7 +47,7 @@ Les arbres dans les fermes (l'agroforesterie) associent des arbres aux cultures 
 
 Cardinael et al. (2018) ont synthétisé 542 observations en rythmes par système et par climat. En moyenne sur les systèmes agrosylvicoles et sylvopastoraux, les arbres et le sol absorbent environ 8,6 t de CO₂ par hectare et par an en climat tempéré et 17,5 t sous les tropiques. Ces rythmes sont ceux des parcelles étudiées, qui ont une médiane de 1 250 arbres par hectare et un âge médian de 8 à 11 ans, et qui poussent vite. Les systèmes adoptés à grande échelle ont moins d'arbres. La médiane est donc la moitié de la moyenne de la synthèse, le bas de la fourchette le quart et le haut la moyenne elle-même. Les climats secs prennent 0,7 fois le rythme des climats humides, le rapport du GIEC entre la croissance des arbres en zone tropicale sèche et en zone tropicale humide.
 
-Cinq pour cent des cultures et des prairies sont pris comme maximum réaliste. Sur environ 4,7 milliards d'hectares de terres agricoles, cela donne environ 1,4 Gt de CO₂ par an. C'est entre les potentiels rentable et technique de Roe et al. (2021) et du sixième rapport d'évaluation du GIEC. Pour l'agroforesterie, ce dernier donne 0,8 (de 0,4 à 1,1) Gt d'équivalent CO₂ par an jusqu'à 100 $ la tonne, et 4,1 (de 0,3 à 9,4) techniquement.
+Cinq pour cent des cultures et des prairies sont pris comme maximum réaliste. Sur environ 4,7 milliards d'hectares de terres agricoles, cela donne environ 1,3 Gt de CO₂ par an. C'est entre les potentiels rentable et technique de Roe et al. (2021) et du sixième rapport d'évaluation du GIEC. Pour l'agroforesterie, ce dernier donne 0,8 (de 0,4 à 1,1) Gt d'équivalent CO₂ par an jusqu'à 100 $ la tonne, et 4,1 (de 0,3 à 9,4) techniquement.
 
 ### Biochar
 

@@ -99,15 +99,15 @@ Un levier qui n'agit qu'avec un autre partage cet effet commun à moitié avec l
 
 | Groupes actifs | Réchauffement évité en 2100 |
 | --- | --- |
-| Alimentation seule | 0,140 °C |
+| Alimentation seule | 0,135 °C |
 | Repousse seule | 0 (elle ne libère aucune terre) |
-| Alimentation et repousse | 0,187 °C |
+| Alimentation et repousse | 0,181 °C |
 
-L'effet commun de la repousse est de 0,187 − 0,140 = 0,047 °C. La valeur de Shapley le partage à moitié. La repousse obtient 0,024 °C et l'alimentation 0,140 + 0,024 = 0,164 °C, ce que montre le résumé.
+L'effet commun de la repousse est de 0,181 − 0,135 = 0,046 °C. La valeur de Shapley le partage à moitié. La repousse obtient 0,023 °C et l'alimentation 0,135 + 0,023 = 0,158 °C, ce que montre le résumé.
 
 ### Comment Planetshift les calcule vite
 
-Calculée directement, la valeur de Shapley demande une exécution du modèle pour chaque ensemble de groupes actifs. Cela fait 2ⁿ exécutions pour n groupes : 256 avec les huit groupes actifs, environ 2,8 s sur les données réelles. C'est bien au-delà du budget de temps d'un mouvement de curseur.
+Calculée directement, la valeur de Shapley demande une exécution du modèle pour chaque ensemble de groupes actifs. Cela fait 2ⁿ exécutions pour n groupes : 256 avec les huit groupes actifs, ce qui prend des secondes sur les données réelles, quand un mouvement de curseur dispose de quelques centièmes de seconde.
 
 Planetshift s'appuie plutôt sur la façon dont les groupes interagissent. Les groupes agricoles n'interagissent que par la production qu'ils changent. L'alimentation et la baisse du gaspillage changent ce qui est produit. Les pratiques, la déforestation, la repousse et le carbone dans les terres agricoles agissent sur la production que ces deux-là laissent, mais pas les uns sur les autres. La valeur de n'importe quel ensemble de groupes agricoles se lit donc à partir d'un passage des émissions agricoles par ensemble de groupes de production qu'il contient : aucun, l'alimentation, le gaspillage, ou les deux. Cela fait au plus quatre passages, trois en plus de l'exécution elle-même. Chaque passage est conservé tant que bougent les curseurs qui ne le changent pas.
 
@@ -118,10 +118,6 @@ Un test vérifie, sur les données de test et sur les données réelles, que cel
 ### Une méthode envisagée et écartée
 
 Une seconde méthode a été envisagée : l'effet de chaque groupe seul, mis à l'échelle pour que les parts s'additionnent au total. Elle demande les mêmes passages, donc n'est pas plus rapide. Elle est aussi moins équitable. Un groupe dont l'effet dépend d'un autre n'obtient rien : la repousse seule ne libère aucune terre, elle disparaîtrait donc de la répartition, et son captage serait donné à l'alimentation et au gaspillage. Le chevauchement est aussi partagé en proportion de la taille plutôt qu'à parts égales. Sur les données réelles avec tous les groupes actifs, les deux méthodes diffèrent jusqu'à un quart de la part d'un groupe.
-
-### Temps de calcul
-
-Mesurée sur les données réelles, une exécution prend en médiane 5 ms sur les échantillons de test (4,5 ms auparavant). Elle prend 17 ms avec tous les leviers et toutes les options activés pendant que bouge le curseur du gaspillage alimentaire (10 ms auparavant). Les deux sont dans les budgets de 20 et 30 ms.
 
 ### Le pergélisol et le CO₂e dans la répartition
 
