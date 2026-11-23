@@ -1044,8 +1044,17 @@ const readDownload = async (page: Page, click: () => Promise<void>) => {
   const stream = await download.createReadStream();
   const chunks: Buffer[] = [];
   for await (const chunk of stream) chunks.push(chunk as Buffer);
-  return { name: download.suggestedFilename(), text: Buffer.concat(chunks).toString('utf8') };
+  const bytes = Buffer.concat(chunks);
+  return { name: download.suggestedFilename(), text: bytes.toString('utf8'), bytes };
 };
+
+/** Picks a format from the chart card's Download menu. */
+const chartFormat = (page: Page, format: 'csv' | 'png' | 'svg') => async () => {
+  await page.locator('.chart-card .download-chart').click();
+  await page.locator(`.chart-card [role="menuitem"][data-format="${format}"]`).click();
+};
+
+const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47]);
 
 test('the map card switches to a table and back, kept in the URL', async ({ page }) => {
   await open(page, `${START}&shift=50`);
@@ -1113,7 +1122,7 @@ test('the map and the chart download their data as CSV', async ({ page }) => {
   expect(map.name).toMatch(/^planetshift-map-change-emissions-co2e-shift50-\d{4}\.csv$/);
   expect(map.text.startsWith('﻿iso3,country,layer,measure,')).toBe(true);
   expect(map.text.trimEnd().split('\r\n')).toHaveLength(6);
-  const chart = await readDownload(page, () => page.locator('.chart-card .download-chart').click());
+  const chart = await readDownload(page, chartFormat(page, 'csv'));
   expect(chart.name).toMatch(/^planetshift-temperature-shift50-\d{4}\.csv$/);
   expect(chart.text.startsWith('﻿year,observed_degC,')).toBe(true);
   const scenario = await readDownload(page, () => page.locator('.download-scenario').click());
@@ -1350,4 +1359,49 @@ test('the Methodology shows before the model’s data has loaded, without anothe
   await page.locator('.site-nav a[data-view="explore"]').click();
   await expect(page.locator('main[data-ready]')).toBeAttached();
   await expect(page.locator('.summary .stat-hero .stat-value')).toBeVisible();
+});
+
+test('each chart and the map save as SVG and PNG, with their legend and a credit', async ({
+  page,
+}) => {
+  await open(page, `${START}&shift=50`);
+  for (const tab of ['temperature', 'avoided', 'cause'] as const) {
+    await page.locator(`#chart-tab-${tab}`).click();
+    await expect(page.locator(`#chart-panel-${tab} figure.chart svg`).first()).toBeVisible();
+    const svg = await readDownload(page, chartFormat(page, 'svg'));
+    expect(svg.name).toMatch(new RegExp(`^planetshift-${tab}-.+\\.svg$`));
+    expect(svg.text).toMatch(/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg"/);
+    expect(svg.text).toContain('planetshift.org');
+    expect(svg.text).not.toContain('var(--');
+    const png = await readDownload(page, chartFormat(page, 'png'));
+    expect(png.name).toMatch(new RegExp(`^planetshift-${tab}-.+\\.png$`));
+    expect(png.bytes.subarray(0, 4).equals(PNG_SIGNATURE)).toBe(true);
+    expect(png.bytes.length).toBeGreaterThan(10_000);
+  }
+  await page.locator('.download-toggle').click();
+  const mapSvg = await readDownload(page, () => page.locator('.download-map-svg').click());
+  expect(mapSvg.name).toMatch(/^planetshift-map-.+\.svg$/);
+  expect(mapSvg.text).toContain('<path');
+  const mapPng = await readDownload(page, () => page.locator('.download-map-png').click());
+  expect(mapPng.bytes.subarray(0, 4).equals(PNG_SIGNATURE)).toBe(true);
+});
+
+test('the Download menu opens, moves and closes from the keyboard', async ({ page }) => {
+  await open(page);
+  const button = page.locator('.chart-card .download-chart');
+  await button.focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(button).toHaveAttribute('aria-expanded', 'true');
+  const items = page.locator('.chart-card [role="menuitem"]');
+  await expect(items.first()).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(items.nth(1)).toBeFocused();
+  await page.keyboard.press('End');
+  await expect(items.last()).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(button).toHaveAttribute('aria-expanded', 'false');
+  await expect(button).toBeFocused();
+  await button.click();
+  await page.locator('#levers-title').click();
+  await expect(page.locator('.chart-card [role="menu"]')).toBeHidden();
 });

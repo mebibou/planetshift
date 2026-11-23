@@ -943,6 +943,47 @@ select {
   display: grid;
   gap: 12px;
 }
+.download-menu {
+  position: relative;
+  display: inline-flex;
+}
+.download-menu-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 20;
+  min-width: 220px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--ink) 14%, transparent);
+  & button {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 6px;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.88rem;
+    text-align: left;
+    cursor: pointer;
+    &:hover,
+    &:focus-visible {
+      background: var(--surface-2);
+      outline: none;
+    }
+  }
+}
+.download-formats {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
 .download-list .hint {
   max-width: 70ch;
 }

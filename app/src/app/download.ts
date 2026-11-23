@@ -93,12 +93,16 @@ export const MAP_HEADER = [
   'source',
 ];
 
+/** The map's file name for a layer and a scenario, in a format. */
+export const mapFileName = (spec: LayerSpec, scenario: Scenario, ext: string): string =>
+  `planetshift-map-${layerSlug(spec)}-${scenarioSlug(scenario)}.${ext}`;
+
 /** The map's layer, every country: its values before and after the shift, unit, tier and source. */
 export const mapCsv = (rows: TableRow[], spec: LayerSpec, scenario: Scenario): DownloadFile => {
   const measure = measureOf(spec);
   const selection = measure === 'emissions' ? spec.gas : measure === 'production' ? spec.group : '';
   return csvFile(
-    `planetshift-map-${layerSlug(spec)}-${scenarioSlug(scenario)}.csv`,
+    mapFileName(spec, scenario, 'csv'),
     MAP_HEADER,
     rows.map((r) => [
       r.iso3,
@@ -233,9 +237,18 @@ export const chartCsv = (input: ChartInput): DownloadFile | null => {
         : tab === 'avoided'
           ? avoidedRows(result, currentYear)
           : temperatureRows(result, climate.naturalOnly);
-  const suffix = tab === 'cause' ? options.ssp : scenarioSlug(scenario);
-  return table ? csvFile(`planetshift-${tab}-${suffix}.csv`, table.header, table.rows) : null;
+  return table
+    ? csvFile(chartFileName(tab, scenario, options, 'csv'), table.header, table.rows)
+    : null;
 };
+
+/** A chart tab's file name for its settings, in a format. */
+export const chartFileName = (
+  tab: ChartTab,
+  scenario: Scenario,
+  options: Options,
+  ext: string,
+): string => `planetshift-${tab}-${tab === 'cause' ? options.ssp : scenarioSlug(scenario)}.${ext}`;
 
 export interface Licence {
   name: string;
@@ -319,9 +332,13 @@ export const scenarioJson = (input: ScenarioInput): DownloadFile => {
 };
 
 /** Saves a file through a temporary link with `download`. */
-export const saveFile = (file: DownloadFile): void => {
-  const href = URL.createObjectURL(new Blob([file.text], { type: file.type }));
-  const a = Object.assign(document.createElement('a'), { href, download: file.name });
+export const saveFile = (file: DownloadFile): void =>
+  saveBlob(file.name, new Blob([file.text], { type: file.type }));
+
+/** Saves `blob` as a file named `name`, from the browser's download. */
+export const saveBlob = (name: string, blob: Blob): void => {
+  const href = URL.createObjectURL(blob);
+  const a = Object.assign(document.createElement('a'), { href, download: name });
   document.body.append(a);
   a.click();
   a.remove();
