@@ -95,8 +95,12 @@ LIVESTOCK = {
 WORKING = (1096, 1107, 1110)
 #: Species also kept for draught: (QCL milk item, None when milking cows are GLE 960; meat item).
 DRAUGHT = {961: (None, 867), 946: (951, 947)}
-#: Mean offtake of traditional cattle systems in sub-Saharan Africa (Otte and Chilonda 2002).
-FOOD_OFFTAKE = 0.099
+#: Lowest regional mean offtake of traditional cattle in sub-Saharan Africa, southern Africa's
+#: (Otte and Chilonda 2002, chapter 5): a herd taking off less is not raised for food.
+FOOD_OFFTAKE = 0.067
+#: FAOSTAT trade (TCL) item of each DRAUGHT species' live animals, in head.
+LIVE_ANIMALS = {961: 866, 946: 946}
+IMPORTED_HEAD, EXPORTED_HEAD = 5608, 5908
 STOCKS, MILK_ANIMALS, SLAUGHTERED, PRODUCTION = 5111, 5318, 5320, 5510
 RUMINANT_ITEMS = (2731, 2732, 2735, 2848)
 MEAT_ITEMS = (2731, 2732, 2733, 2734, 2735)
@@ -254,14 +258,27 @@ def species_shares(qcl_production: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(fixed + mixed)
 
 
-def nonfood_shares(gle: pd.DataFrame, qcl: pd.DataFrame) -> pd.DataFrame:
+def nonfood_shares(
+    gle: pd.DataFrame,
+    qcl: pd.DataFrame,
+    trade: pd.DataFrame | None = None,
+    offtake: float = FOOD_OFFTAKE,
+) -> pd.DataFrame:
     """Share of each species' emissions (area_code, species, share) from animals not raised for
     food: all of WORKING; of a DRAUGHT species, the head beyond those milked and those needed to
-    slaughter what it slaughters at FOOD_OFFTAKE, over its stock (emissions taken per head)."""
+    take off, at `offtake`, what it slaughters and exports alive net of imports (FAOSTAT trade,
+    none where it has no row), over its stock (emissions taken per head)."""
 
-    def by_area(df: pd.DataFrame, item: int | None, element: int) -> pd.Series:
+    def by_area(df: pd.DataFrame | None, item: int | None, element: int) -> pd.Series:
+        if df is None:
+            return pd.Series(dtype=float)
         rows = df[(df["item_code"] == item) & (df["element_code"] == element)]
-        return rows.groupby("area_code")["value"].sum()
+        return rows.groupby("area_code")["value"].sum().astype(float)
+
+    def net_exports(species: int) -> pd.Series:
+        item = LIVE_ANIMALS[species]
+        exported = by_area(trade, item, EXPORTED_HEAD)
+        return exported.sub(by_area(trade, item, IMPORTED_HEAD), fill_value=0.0).clip(lower=0)
 
     draught = pd.concat(
         [
@@ -270,8 +287,10 @@ def nonfood_shares(gle: pd.DataFrame, qcl: pd.DataFrame) -> pd.DataFrame:
                     "stock": by_area(gle, species, STOCKS),
                     "milked": by_area(qcl, milk, MILK_ANIMALS),
                     "slaughtered": by_area(qcl, meat, SLAUGHTERED),
+                    "exported": net_exports(species),
                 }
             )
+            .rename_axis("area_code")
             .fillna(0.0)
             .query("stock > 0")
             .assign(species=species)
@@ -279,7 +298,7 @@ def nonfood_shares(gle: pd.DataFrame, qcl: pd.DataFrame) -> pd.DataFrame:
         ]
     )
     rest = (draught["stock"] - draught["milked"]).clip(lower=0)
-    kept_for_food = (draught["slaughtered"] / FOOD_OFFTAKE).clip(upper=rest)
+    kept_for_food = ((draught["slaughtered"] + draught["exported"]) / offtake).clip(upper=rest)
     working = gle.loc[gle["item_code"].isin(WORKING), ["area_code", "item_code"]].drop_duplicates()
     return pd.concat(
         [
@@ -454,14 +473,18 @@ def faostat_emissions(
     qv: pd.DataFrame,
     crops: pd.DataFrame,
     production: pd.DataFrame,
+    nonfood: pd.DataFrame | None = None,
 ) -> dict[str, pd.DataFrame]:
-    """kg by (area_code, fbs_code, gas, process), for each scope, for one year's FAOSTAT data;
-    `process` is the emission source (PROCESSES)."""
+    """kg by (area_code, fbs_code, gas, process), for each scope, for one year's FAOSTAT data,
+    less the `nonfood` shares (`nonfood_shares` without trade when None); `process` is the
+    emission source (PROCESSES)."""
     area = qcl[qcl["element_code"] == 5312].rename(columns={"item_code": "qcl_code", "value": "ha"})
     area = area[["area_code", "qcl_code", "ha"]]
     crop_n = nitrogen_weights(area, crops, nitrogen_rates(world_area(area, crops)))
     qcl_production = qcl[qcl["element_code"] == PRODUCTION]
-    animals = livestock(gle, qcl_production, nonfood_shares(gle, qcl))
+    animals = livestock(
+        gle, qcl_production, nonfood_shares(gle, qcl) if nonfood is None else nonfood
+    )
     grass = ruminant_weights(animals)
 
     def nitrogen_shared(totals: pd.DataFrame) -> pd.DataFrame:

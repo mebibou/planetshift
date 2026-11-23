@@ -26,6 +26,7 @@ FILES = {
     "GT": "Emissions_Totals_E_All_Data_(Normalized).zip",
     "RL": "Inputs_LandUse_E_All_Data_(Normalized).zip",
     "EK": "Environment_LivestockPatterns_E_All_Data_(Normalized).zip",
+    "TCL": "Trade_CropsLivestock_E_All_Data_(Normalized).zip",
     "FBS_FR": "BilansAlimentaires_F_Toutes_les_Données_(Normalisé).zip",
     "OA_FR": "Population_F_Toutes_les_Données_(Normalisé).zip",
 }
@@ -41,6 +42,7 @@ NAMES = {
     "GT": "Emissions totals",
     "RL": "Land Use",
     "EK": "Livestock Patterns",
+    "TCL": "Trade of crops and livestock products",
 }
 
 COLUMNS = {

@@ -87,15 +87,28 @@ The emissions of each item are divided by its production in the Food Balance She
 
 ## Animals not raised for food
 
-Some farm animals are not raised for food: oxen and buffalo kept to plough, horses, donkeys and mules kept for work and transport, and cattle kept for other reasons, as most of India's. Their emissions stay in each country's farm emissions, but no product carries them, and no lever changes them: a 100% shift leaves them in place. They are written by country as `nonFood` in `intensities.json`: 260 Mt CO₂e a year in the base year, 115 Mt of it in India, then Ethiopia (29), Niger (19), Mali (9) and Brazil (9).
+Some farm animals are not raised for food: oxen and buffalo kept to plough, horses, donkeys and mules kept for work and transport, and cattle kept for other reasons, as most of India's. Their emissions stay in each country's farm emissions, but no product carries them, and no lever changes them: a 100% shift leaves them in place. They are written by country as `nonFood` in `intensities.json`: 211 Mt CO₂e a year in the base year, 115 Mt of it in India, then Niger (15), Brazil (9), Mexico (8) and Ethiopia (6).
 
-The share comes from FAOSTAT's livestock data (CC BY 4.0), by species:
+The share comes from FAOSTAT's livestock and trade data (CC BY 4.0), by species. Within a species, every head emits the same: an animal not raised for food takes the species' emissions per head in its country.
 
-- **Horses, asses and mules**: all their emissions, 70 Mt CO₂e. Some horses are eaten, but the herds are kept mainly for work.
-- **Non-dairy cattle and buffalo**: a herd raised for food slaughters or sells about a tenth of its head a year or more; 9.9% is the mean offtake of traditional cattle systems in sub-Saharan Africa, those that keep their cattle longest (Otte and Chilonda, 2002). The head kept for food are the animals milked (QCL element 5318; FAOSTAT's dairy cows are a species of their own, all for food) and the animals slaughtered in the year (element 5320) over 9.9%. The rest of the stock (GLE element 5111) is not raised for food, and takes its share of the species' emissions by head. This gives 185 Mt CO₂e of cattle and 5 Mt of buffalo. India slaughters almost no cattle in FAOSTAT, so its 131 million non-dairy cattle are all in this baseline.
+- **Horses, asses and mules**: all their emissions, 70 Mt CO₂e. Some horses are eaten, but the herds are kept mainly for work. They make most of the baseline of Brazil, Mexico, Ethiopia and the United States.
+- **Non-dairy cattle and buffalo**: a herd raised for food takes off, by slaughter or sale, a share of its head every year. Otte and Chilonda (2002) reviewed the offtake of traditional cattle systems in sub-Saharan Africa, those that keep their cattle longest, defined as the proportion of animals sold or consumed in a year: a mean of 9.9% (median 9%, range 1.2–20%), 12.0% in pastoral systems and 9.3% in mixed ones, and by region 6.7% in southern Africa, 10.8% in West, 12.3% in East and 13.6% in Central Africa (chapter 5). The model takes the lowest of these means, southern Africa's 6.7%, as the threshold, so that only herds clearly below any food herd count as not raised for food. The review's appendices 6 and 7 give the offtake of each zone only as the number of studies, mean, median, minimum and maximum, not study by study, so a lower quartile cannot be computed from them. The head kept for food are the animals milked (QCL element 5318; FAOSTAT's dairy cows are a species of their own, all for food), and the animals slaughtered in the year (element 5320) plus the live animals exported net of those imported (TCL items 866 cattle and 946 buffalo, elements 5908 and 5608, in head) over 6.7%. Net exports count only where positive, and a country with no trade row counts none. The rest of the stock (GLE element 5111) is not raised for food. This gives 137 Mt CO₂e of cattle and 4 Mt of buffalo.
 - **Sheep, goats, camels, pigs and poultry** are all counted as raised for food.
 
-The rule has limits. Animals exported alive to be slaughtered elsewhere (from Niger, Mali or Somalia) and slaughter FAOSTAT does not record (Brazil's buffalo) look like animals not raised for food. Draught animals in a country that also slaughters many cattle are not seen. A working ox and a calf count the same per head. No FAOSTAT domain counts draught animals, so the rule uses only stocks, milked and slaughtered animals.
+The threshold is a sub-Saharan figure applied to every country; no comparable review was found for other regions. India is most of the baseline, and does not depend on it: FAOSTAT records no cattle slaughter in India, so its 131 million non-dairy cattle are all in the baseline at any threshold. India's 20th Livestock Census counts 192.5 million cattle in 2019, of which 74.2 million milch cows (in milk or dry), leaving 118.3 million other cattle, 47.4 million of them male (Department of Animal Husbandry and Dairying, 2019, tables 6 and 7); it does not say what they are kept for. No country source was found for the offtake of Niger's cattle. Niger's net exports in FAOSTAT (113,000 head in 2023) and Mali's (206,000) took their baselines from 18.7 and 9.1 Mt to 17.2 and 6.5 Mt at 9.9%; with the threshold at 6.7%, they are 15.0 and 2.2 Mt.
+
+The rule has limits. Live exports that FAOSTAT does not record, as trade on the hoof across the Sahel often is, and slaughter FAOSTAT does not record (Brazil's buffalo) still look like animals not raised for food. Draught animals in a country that also slaughters many cattle are not seen. A working ox and a calf count the same per head. No FAOSTAT domain counts draught animals, so the rule uses only stocks, milked and slaughtered animals, and live trade.
+
+The threshold moves the baseline, but hardly the effect of a shift: a herd counted as not raised for food leaves both the products' emissions and what the shift can avoid. Built with each threshold, at SSP2-4.5 with the default options:
+
+| Offtake threshold | Non-food baseline, Mt CO₂e | India | Niger | Ethiopia | Mali | Full shift: emissions avoided, Gt CO₂e | Full shift: warming avoided in 2100, °C |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 6.7% (southern Africa, used) | 211 | 115 | 15.0 | 6.4 | 2.2 | 5.12 | 0.271 |
+| 9% (median) | 242 | 115 | 16.8 | 23.7 | 5.6 | 5.08 | 0.268 |
+| 9.9% (mean) | 255 | 115 | 17.2 | 28.6 | 6.5 | 5.07 | 0.267 |
+| 12% (pastoral systems) | 281 | 115 | 18.1 | 37.3 | 8.1 | 5.04 | 0.266 |
+
+A half shift avoids half as much (2.51 to 2.56 Gt CO₂e, 0.133 to 0.135 °C). The likely range the app shows covers only the climate response, not this choice.
 
 ## How many cells each tier fills
 
@@ -218,7 +231,8 @@ Each intensity is also split by source (enteric fermentation, manure management,
 - Mixed herds (buffalo, sheep, goats, camels) are split by protein, with 15% protein in carcass meat.
 - Energy use is shared by the value of production, pesticide manufacture by area.
 - Offal and fats carry the same emissions per tonne as the carcass.
-- A herd of cattle or buffalo raised for food slaughters at least 9.9% of its non-milked head a year; the rest, and all horses, asses and mules, are not raised for food.
+- Of a country's non-dairy cattle and buffalo, the milked animals and the head that would take off its slaughter and net live exports at 6.7% a year are raised for food; the rest, and all horses, asses and mules, are not. 6.7% is the lowest regional mean offtake of traditional cattle in sub-Saharan Africa, applied to every country.
+- Within a species, every head in a country emits the same, whether raised for food or not.
 - Extraction rates are world values, the same in every country.
 - An intensity over 20 times the item's world median is a data mismatch, not a real value.
 - Proxies are judgement calls, listed above for review.
@@ -231,8 +245,10 @@ Each intensity is also split by source (enteric fermentation, manure management,
 - FAOSTAT, Emissions totals: <https://www.fao.org/faostat/en/#data/GT>, CC BY 4.0.
 - FAOSTAT, Crops and livestock products (areas and production): <https://www.fao.org/faostat/en/#data/QCL>, CC BY 4.0.
 - FAOSTAT, Value of Agricultural Production: <https://www.fao.org/faostat/en/#data/QV>, CC BY 4.0.
+- FAOSTAT, Trade of crops and livestock products (live cattle and buffalo, head): <https://www.fao.org/faostat/en/#data/TCL>, CC BY 4.0.
 - FAOSTAT, Food Balances (production and processing): <https://www.fao.org/faostat/en/#data/FBS>, CC BY 4.0.
-- Otte, M. J., Chilonda, P. (2002). Cattle and Small Ruminant Production Systems in sub-Saharan Africa: A Systematic Review. FAO, Rome: <https://www.fao.org/4/y4176e/y4176e00.htm>.
+- Otte, M. J., Chilonda, P. (2002). Cattle and Small Ruminant Production Systems in sub-Saharan Africa: A Systematic Review. FAO, Rome: <https://www.fao.org/4/y4176e/y4176e00.htm>; chapter 5: <https://www.fao.org/4/y4176e/y4176e08.htm>; appendices 6 and 7: <https://www.fao.org/4/y4176e/y4176e0i.htm>, <https://www.fao.org/4/y4176e/y4176e0j.htm>.
+- Department of Animal Husbandry and Dairying, Government of India (2019). 20th Livestock Census 2019: Key Results, tables 6 and 7: <https://static.pib.gov.in/WriteReadData/userfiles/key%20results.pdf>.
 - Heffer, P., Gruère, A., Roberts, T. (2017). Assessment of Fertilizer Use by Crop at the Global Level 2014–2014/15. International Fertilizer Association and International Plant Nutrition Institute: <https://www.ifastat.org/>.
 - International Dairy Federation (2015). A common carbon footprint approach for the dairy sector. Bulletin of the IDF 479/2015: <https://fil-idf.org/>.
 - FAO, Technical Conversion Factors for Agricultural Commodities: <https://www.fao.org/statistics/en/>.
