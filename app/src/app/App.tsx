@@ -78,16 +78,23 @@ const useSystemTheme = (setState: Change<AppState>) =>
 
 /** Loads the deferred files `levers` need into the latest data; `failed` counts a failure. */
 const completer =
-  (latest: RefObject<Loaded>, loaded: (next: Loaded) => void, failed: () => void) =>
+  (latest: RefObject<Loaded | null>, loaded: (next: Loaded) => void, failed: () => void) =>
   (levers: Levers) =>
-    latest.current.complete(levers)?.then(loaded).catch(failed);
+    latest.current?.complete(levers)?.then(loaded).catch(failed);
 
 /**
  * The model in its Worker, the data as loaded so far and the latest result. Deferred lever files
  * load once a lever needs them, and the model runs again with them.
  */
-const useModel = (initial: Loaded, scenario: Scenario, options: Options, currentYear: number) => {
-  const [loaded, setLoaded] = useState(initial);
+const useModel = (
+  initial: Loaded | null,
+  scenario: Scenario,
+  options: Options,
+  currentYear: number,
+) => {
+  /** The data with the deferred files loaded since, once there are any. */
+  const [completed, setLoaded] = useState<Loaded | null>(null);
+  const loaded = completed ?? initial;
   const [result, setResult] = useState<RunResult | null | undefined>(undefined);
   const [failures, setFailures] = useState(0);
   const [model] = useState<ModelClient>(() => modelClient(workerPort()));
@@ -98,18 +105,27 @@ const useModel = (initial: Loaded, scenario: Scenario, options: Options, current
     return () => model.close();
   }, [model]);
   useEffect(() => {
-    complete(scenario.levers);
-    model.setData(loaded.data);
-    model.run(scenario, options, currentYear);
+    if (loaded) {
+      complete(scenario.levers);
+      model.setData(loaded.data);
+      model.run(scenario, options, currentYear);
+    }
   }, [model, loaded, scenario, options, currentYear, complete]);
   return { loaded, latestLoaded: latest, result, failures, model, complete };
 };
 
 export interface AppProps {
   initial: AppState;
-  loaded: Loaded;
+  /** The data, null while it loads: the Methodology needs none of it and shows at once. */
+  loaded: Loaded | null;
   currentYear: number;
 }
+
+const Loading = ({ t }: { t: (key: string) => string }) => (
+  <p className="loading" role="status">
+    {t('load.loading')}
+  </p>
+);
 
 export const App = ({ initial, loaded: first, currentYear }: AppProps) => {
   const [state, setState] = useState(initial);
@@ -130,26 +146,29 @@ export const App = ({ initial, loaded: first, currentYear }: AppProps) => {
     document.documentElement.lang = state.lang;
     document.title = `Planetshift · ${t('header.tagline')}`;
   }, [state.lang, t]);
-  const ctx = useMemo<ViewContext>(
-    () => ({
-      t,
-      lang: state.lang,
-      locale: localeOf(state.lang),
-      data: loaded.data,
-      latestData: () => latestLoaded.current.data,
-      loadAll: () => complete(ALL_LEVERS),
-      failedFiles: () => latestLoaded.current.failed(),
-      world: loaded.world,
-      model,
-      currentYear,
-      state,
-      setScenario,
-      setOptions,
-      setUi,
-    }),
-    // A new language builds the view anew; the state it starts from is the one at that moment.
+  const ready = loaded !== null;
+  const ctx = useMemo<ViewContext | null>(
+    () =>
+      loaded && {
+        t,
+        lang: state.lang,
+        locale: localeOf(state.lang),
+        data: loaded.data,
+        latestData: () => latestLoaded.current?.data ?? loaded.data,
+        loadAll: () => complete(ALL_LEVERS),
+        failedFiles: () => latestLoaded.current?.failed() ?? [],
+        world: loaded.world,
+        model,
+        currentYear,
+        state,
+        setScenario,
+        setOptions,
+        setUi,
+      },
+    // A new language builds the view anew, and so does the data's arrival; the state it starts
+    // from is the one at that moment.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [t],
+    [t, ready],
   );
   const go = (view: View) => {
     setUi((u) => ({ ...u, view }));
@@ -178,7 +197,11 @@ export const App = ({ initial, loaded: first, currentYear }: AppProps) => {
         toggleTheme={toggleTheme}
       />
       <main id="main" tabIndex={-1} ref={main} data-ready={result === undefined ? undefined : ''}>
-        {state.ui.view === 'explore' ? (
+        {state.ui.view === 'methodology' ? (
+          <Suspense fallback={<Loading t={t} />}>
+            <Methodology t={t} lang={state.lang} />
+          </Suspense>
+        ) : loaded && ctx ? (
           <Explore
             key={state.lang}
             ctx={ctx}
@@ -188,13 +211,11 @@ export const App = ({ initial, loaded: first, currentYear }: AppProps) => {
             failures={failures}
           />
         ) : (
-          <Suspense fallback={null}>
-            <Methodology t={t} lang={state.lang} />
-          </Suspense>
+          <Loading t={t} />
         )}
       </main>
       <footer className="site-footer">
-        <p>{t('footer.text', { year: loaded.data.meta.baseYear })}</p>
+        {loaded && <p>{t('footer.text', { year: loaded.data.meta.baseYear })}</p>}
         <p className="footer-links">
           <span>{t('footer.copyright', { year: currentYear })}</span>
           <a href={CODE_LICENCE}>{t('footer.code')}</a>

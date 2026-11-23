@@ -1326,3 +1326,21 @@ test('the pre-rendered pages hold their text, and the app takes over at the root
   await open(page);
   await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
 });
+
+test('the Methodology shows before the model’s data has loaded, without another view’s snapshot', async ({
+  page,
+}) => {
+  let release = () => {};
+  const held = new Promise<void>((resolve) => (release = resolve));
+  await page.route('**/fixtures/supply.json', async (route) => {
+    await held;
+    await route.continue();
+  });
+  await page.goto(`${START}&view=methodology`);
+  await expect(page.locator('.method-section').first()).toBeVisible();
+  await expect(page.locator('.summary')).toHaveCount(0);
+  release();
+  await page.locator('.site-nav a[data-view="explore"]').click();
+  await expect(page.locator('main[data-ready]')).toBeAttached();
+  await expect(page.locator('.summary .stat-hero .stat-value')).toBeVisible();
+});
