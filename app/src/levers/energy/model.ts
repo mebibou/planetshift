@@ -114,13 +114,6 @@ export const energyCo2BySource = (
   };
 };
 
-const sumOf = (r: Readonly<Record<string, number>>): number =>
-  Object.values(r).reduce((total, v) => total + v, 0);
-
-/** Change in fossil CO₂ in a year, kg (negative when avoided): energyCo2BySource added up. */
-export const energyCo2Change = (ctx: YearContext, year: number, a: EnergyAdoption): number =>
-  sumOf(energyCo2BySource(ctx, year, a));
-
 /** Change in aviation's non-CO₂ forcing in a year, W/m²: it goes with the flights not flown. */
 export const nonCo2ForcingChange = (ctx: YearContext, year: number, a: EnergyAdoption): number =>
   -towards(ctx.sectors.aviationNonCo2, ctx.band, true) *
@@ -164,7 +157,7 @@ export const energyPaths = (
   const adoptions = years.map((y) => energyAdoption(adoption, shareAt(y)));
   const bySource = years.map((y, i) => energyCo2BySource(ctx, y, adoptions[i] as EnergyAdoption));
   return {
-    co2: bySource.map(sumOf),
+    co2: bySource.map((s) => Object.values(s).reduce((total, v) => total + v, 0)),
     co: years.map((y, i) => {
       const co2 = bySource[i] as Record<EnergySource, number>;
       return {

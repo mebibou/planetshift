@@ -8,7 +8,6 @@ import {
   ENERGY_LEVERS,
   energyAdoption,
   energyCo2BySource,
-  energyCo2Change,
   type EnergyLever,
 } from './model';
 import { valueAt } from '../../model/util';
@@ -63,16 +62,18 @@ describe('energy levers', () => {
     const both = w2100(run({ levers: { electricCars: 1, renewableElectricity: 1 } }));
     expect(both).toBeGreaterThan(cars + re);
     const ctx = { sectors: data.sectors, ssp: 'ssp245' as const, dataCentres: 'ssp' as const };
-    const carsOnly = energyCo2Change({ ...ctx, band: 'median' }, 2040, {
+    const carsOnly = energyCo2BySource({ ...ctx, band: 'median' }, 2040, {
       ...energyAdoption(() => 0, 1),
       electricCars: 1,
     });
-    const carsOnCleanGrid = energyCo2Change({ ...ctx, band: 'median' }, 2040, {
+    const carsOnCleanGrid = energyCo2BySource({ ...ctx, band: 'median' }, 2040, {
       ...energyAdoption(() => 0, 1),
       electricCars: 1,
       renewableElectricity: 1,
     });
-    expect(carsOnCleanGrid).toBeLessThan(carsOnly);
+    expect(carsOnly.electricity).toBeGreaterThan(0);
+    expect(carsOnCleanGrid.roadPassenger).toBe(carsOnly.roadPassenger);
+    expect(carsOnCleanGrid.electricity).toBeLessThan(0);
   });
 
   it('less flying cuts CO₂ and non-CO₂ forcing; clean fuel leaves the non-CO₂ forcing, so less', () => {
@@ -100,7 +101,6 @@ describe('energy levers', () => {
     const clean = run(r.scenario);
     const none = run();
     expect(clean.scenarioEmissions).toEqual(none.scenarioEmissions);
-    expect(clean.temperature.agricultureScenario).toEqual(none.temperature.agricultureScenario);
     expect(w2100(clean)).toBeGreaterThan(0.05);
   });
 

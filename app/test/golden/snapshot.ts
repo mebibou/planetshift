@@ -43,7 +43,6 @@ const scenarioPart = (c: CountryResult) => ({
   landChange: c.landChange,
   deforestationCo2: c.deforestationCo2,
   deforestationChange: c.deforestationChange,
-  removalsCo2: c.removalsCo2,
 });
 
 /**
@@ -77,8 +76,6 @@ export const snapshot = (r: ScenarioResult, countries: readonly string[]): unkno
         p05: series(t.avoided.p05),
         p95: series(t.avoided.p95),
       },
-      agricultureBaseline: series(t.agricultureBaseline),
-      agricultureScenario: series(t.agricultureScenario),
       observed: t.observed.filter((v) => v !== null).length,
     },
     emissions: {
@@ -92,7 +89,6 @@ export const snapshot = (r: ScenarioResult, countries: readonly string[]): unkno
       productionChange: worldSum(r.countries, (c) => total(Object.values(c.productionChange))),
       landChange: worldSum(r.countries, (c) => c.landChange.cropland + c.landChange.pasture),
       deforestationChange: worldSum(r.countries, (c) => c.deforestationChange),
-      removalsCo2: worldSum(r.countries, (c) => c.removalsCo2),
       proteinAfter: worldSum(r.countries, (c) => c.proteinAfter),
       kcalAfter: worldSum(r.countries, (c) => c.kcalAfter),
       production: worldSum(r.countries, (c) => total(Object.values(c.production))),

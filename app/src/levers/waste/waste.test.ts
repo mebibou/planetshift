@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { expectOwnGases, lever, production, run } from '../../../test/levers';
 import { multiplierWith } from '../../model/supplyChain';
-import { foodWithLessWaste, wasteShare } from './model';
+import { avoidedSupply, foodWithLessWaste, wasteShare } from './model';
 
 describe('food waste and losses', () => {
   it.each(['foodWaste', 'supplyLosses'])('%s alone cuts every gas', (id) =>
@@ -15,6 +15,21 @@ describe('food waste and losses', () => {
     expect(wasteShare({ retail: 10, foodService: 40, household: 50 }, food, 1000)).toBe(0.125);
     expect(wasteShare({ retail: 900, foodService: 0, household: 0 }, food, 1000)).toBe(0.4);
     expect(wasteShare(undefined, food, 1000)).toBe(0);
+    const [losses, lossShares, seedShares] = [[5], [0.05], [0.03]].map((v) => Float64Array.from(v));
+    expect(avoidedSupply(losses!, lossShares!, seedShares!, 0.5)[0]).toBeCloseTo(2.5 / 0.945);
+  });
+  it('save the supply that would carry the losses and seed, not only the losses', () => {
+    const supply = 100;
+    const [loss, seed, cut] = [0.25, 0.05, 0.5];
+    const use = supply * (1 - loss - seed);
+    const after = use / (1 - (1 - cut) * loss - seed);
+    const saved = avoidedSupply(
+      Float64Array.from([loss * supply]),
+      Float64Array.from([loss]),
+      Float64Array.from([seed]),
+      cut,
+    );
+    expect(saved[0]).toBeCloseTo(supply - after, 9);
   });
   it.each(['foodWaste', 'supplyLosses'])('%s lowers production and land', (id) => {
     const r = lever(id, 0.5);

@@ -43,23 +43,6 @@ export interface YearContext {
   band: Band;
 }
 
-/**
- * kg of CO₂ avoided for each kg of a sector's CO₂ at full adoption, on a grid of `grid` kg/kWh:
- * the share cut less the electricity drawn for it. Negative where that electricity emits more
- * than it saves.
- */
-export const heatingSaving = (industry: Industry, band: Band, grid: number): number =>
-  1 - towards(industry.heatPumpKwhPerKgCo2, band, false) * grid;
-
-export const industrySaving = (industry: Industry, band: Band, grid: number): number =>
-  INDUSTRY_PARTS.reduce((total, name) => {
-    const p = industry.industryParts[name];
-    return (
-      total +
-      p.share * towards(p.cut, band, true) * (1 - towards(p.kwhPerKgCo2, band, false) * grid)
-    );
-  }, 0);
-
 /** The sectors whose fossil CO₂ the heating and industry levers change. */
 export type IndustrySource = 'buildings' | 'industry' | 'electricity';
 
@@ -87,12 +70,6 @@ export const industryCo2BySource = (
         made * sum(parts.map((p) => cut(p) * towards(p.kwhPerKgCo2, band, false)))) *
       grid,
   };
-};
-
-/** Change in fossil CO₂ in a year, kg (negative when avoided): industryCo2BySource added up. */
-export const industryCo2Change = (ctx: YearContext, year: number, a: IndustryAdoption): number => {
-  const s = industryCo2BySource(ctx, year, a);
-  return s.buildings + s.industry + s.electricity;
 };
 
 export interface IndustryPaths {

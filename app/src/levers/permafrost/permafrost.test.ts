@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { run, w2100 } from '../../../test/levers';
 import type { ScenarioResult } from '../../model/api';
+import { shareFeedback, shareOut } from '../../model/run';
 import { carbonRelease, releaseAsGases } from './model';
 
 const baselineIn = (r: ScenarioResult, year: number) =>
@@ -39,6 +40,33 @@ describe('permafrost', () => {
     const s = on.summary;
     const total = Object.values(s.byFamily.avoidedWarming2100).reduce((a, b) => a + b, 0);
     expect(total).toBeCloseTo(s.avoidedWarming2100.median, 9);
+  });
+  it('shares the change out by the size of each part, bounded when the parts nearly cancel', () => {
+    const [fossil, air] = shareOut([-0.01, 0.0099], -0.0005) as [number, number];
+    expect(fossil + air).toBeCloseTo(-0.0001 - 0.0005, 15);
+    expect(fossil).toBeCloseTo(-0.01 - 0.0005 * (0.01 / 0.0199), 15);
+    expect(Math.abs(fossil + 0.01)).toBeLessThanOrEqual(0.0005);
+    expect(Math.abs(air - 0.0099)).toBeLessThanOrEqual(0.0005);
+    const close = (actual: number[], expected: number[]) =>
+      expected.forEach((v, k) => expect(actual[k]).toBeCloseTo(v, 15));
+    close(shareOut([0.01, -0.01], 0.002), [0.011, -0.009]);
+    close(shareOut([0, 0], 0.002), [0.001, 0.001]);
+    const shared = shareFeedback(
+      [
+        [0, -0.01],
+        [0, 0.01],
+      ],
+      [0, 0.002],
+    );
+    close(shared[0] as number[], [0, -0.009]);
+    close(shared[1] as number[], [0, 0.011]);
+  });
+  it('the parts by cause add up to the warming avoided with permafrost on', () => {
+    const r = run({ shift: 0.3, levers: { electricCars: 1, flyLess: 1 } }, { permafrost: 'on' });
+    const causes = Object.values(r.temperature.avoidedByCause);
+    r.temperature.avoided.median.forEach((v, i) =>
+      expect(causes.reduce((a, c) => a + (c[i] as number), 0)).toBeCloseTo(v, 12),
+    );
   });
   it('no lever, no change, with permafrost on', () =>
     expect(w2100(run({}, { permafrost: 'on' }))).toBe(0));

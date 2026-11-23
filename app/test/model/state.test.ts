@@ -64,6 +64,13 @@ describe('URL state', () => {
     expect(scenario.rampEnd).toBe(2035);
     expect(options).toEqual(DEFAULT_OPTIONS);
   });
+  it('starts a ramp no earlier than the year after the current one, as the slider does', () => {
+    expect(decodeState('ramp=2026', 2026).scenario.rampEnd).toBe(2027);
+    expect(decodeState('ramp=2025', 2026).scenario.rampEnd).toBe(2027);
+    expect(decodeState('ramp=2030', 2026).scenario.rampEnd).toBe(2030);
+    expect(decodeState('', 2040).scenario.rampEnd).toBe(2041);
+    expect(decodeState('ramp=2026').scenario.rampEnd).toBe(2026);
+  });
   it('reads the regrowth option by its key, and the default when invalid', () => {
     expect(decodeState('regrow=natural').options.regrowth).toBe('natural');
     expect(decodeState('regrow=forest').options.regrowth).toBe('none');

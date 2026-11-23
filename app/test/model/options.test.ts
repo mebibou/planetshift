@@ -67,9 +67,6 @@ describe('options', () => {
   it('the shift lowers the scenario curve below the baseline in 2050', () => {
     const r = run({});
     expect(last(r.temperature.scenario.median)).toBeLessThan(last(r.temperature.baseline.median));
-    expect(last(r.temperature.agricultureScenario)).toBeLessThan(
-      last(r.temperature.agricultureBaseline),
-    );
   });
   it('the summary counts avoided emissions when the shift is complete, CO₂e with GWP100', () => {
     const r = run({}, { rampEnd: 2030 });

@@ -1,14 +1,8 @@
-import {
-  ANIMAL_GROUPS,
-  GASES,
-  PLANT_GROUPS,
-  type Gas,
-  type Group,
-  type Scope,
-} from '../../data/types';
+import { GASES, type Gas, type Scope } from '../../data/types';
 import { bandRecord, bandValue } from '../../model/bands';
 import type { Band } from '../../model/climate';
-import type { Prepared, PreparedCountry } from '../../model/prepare';
+import { OTHER_SCOPE } from '../../model/emissions';
+import { GROUPS, groupIndicesOf, type Prepared, type PreparedCountry } from '../../model/prepare';
 import { memoLatest, memoPer, range, zeros, type ItemVector } from '../../model/util';
 import {
   EMISSION_SOURCES,
@@ -20,11 +14,6 @@ import {
 } from './data';
 
 type GasSplit = Partial<Record<Gas, Partial<Record<EmissionSource, number>>>>;
-
-const OTHER_SCOPE: Record<Scope, Scope> = {
-  farmGate: 'cradleToFarmGate',
-  cradleToFarmGate: 'farmGate',
-};
 
 /**
  * An item's split of a gas by source: the country's in the scope, else the world's, then the
@@ -45,7 +34,7 @@ export const gasSplitOf = (
 };
 
 /** One gas and source of a country's emissions, and each item's share of the gas from it. */
-interface SourceShares {
+export interface SourceShares {
   gas: Gas;
   source: EmissionSource;
   shares: ItemVector;
@@ -106,31 +95,6 @@ export const practiceCuts = (
     return practice && cut > 0 ? [{ practice, cut: Math.min(1, cut) }] : [];
   });
 
-const actsOn = (p: Practice, gas: Gas, source: EmissionSource, group: Group): boolean =>
-  p.gases.includes(gas) &&
-  p.sources.includes(source) &&
-  (p.groups === undefined || p.groups.includes(group));
-
-/**
- * Share of a source's emissions the practices remove for a food group. Practices on the same
- * source combine multiplicatively: each acts on what the others leave, 1 − Π(1 − cut).
- */
-export const combinedCut = (
-  cuts: readonly PracticeCut[],
-  gas: Gas,
-  source: EmissionSource,
-  group: Group,
-): number =>
-  1 -
-  cuts.reduce((left, c) => (actsOn(c.practice, gas, source, group) ? left * (1 - c.cut) : left), 1);
-
-const GROUPS: readonly Group[] = [...ANIMAL_GROUPS, ...PLANT_GROUPS];
-const GROUP_INDEX = new Map(GROUPS.map((g, k) => [g, k]));
-
-/** Each item's index in GROUPS, for the per-group cuts below. */
-export const groupIndices = (groups: readonly Group[]): Int32Array =>
-  Int32Array.from(groups, (g) => GROUP_INDEX.get(g) ?? 0);
-
 const maskCache = new WeakMap<Practice, Uint8Array>();
 
 /** 1 for each group of GROUPS a practice acts on (all when it names none), once per practice. */
@@ -146,9 +110,9 @@ const groupMask = (p: Practice): Uint8Array => {
 
 /**
  * The fraction of each item's intensity of each gas that the practices remove: the sum over
- * sources of the source's share of the gas times the share of it removed (combinedCut, with
- * each practice's groups read from a mask). The vectors are built in place, as this runs for
- * every country and band on each slider move.
+ * sources of the source's share of the gas times the share of it removed. Practices on the same
+ * source combine multiplicatively, each acting on what the others leave: 1 − Π(1 − cut). The
+ * vectors are built in place, as this runs for every country and band on each slider move.
  */
 export const intensityCuts = (
   split: readonly SourceShares[],
@@ -180,10 +144,6 @@ export const intensityCuts = (
   return out;
 };
 
-const groupCache = memoPer<Prepared, Int32Array>();
-const groupsOf = (prepared: Prepared): Int32Array =>
-  groupCache(prepared, 'groups', () => groupIndices(prepared.items.map((item) => item.group)));
-
 const practiceCache = memoLatest<PreparedCountry, Record<Band, Record<Gas, ItemVector>>>();
 
 /** The scope and the practices' adoptions, which the cuts are kept by. */
@@ -206,7 +166,7 @@ export const practiceCutsOf = (
       intensityCuts(
         countrySplit(pc, prepared, scope),
         practiceCuts(prepared.data.practices, adoption, pc.country.iso3, band),
-        groupsOf(prepared),
+        groupIndicesOf(prepared.items),
       ),
     ),
   );

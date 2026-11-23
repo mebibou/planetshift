@@ -22,8 +22,8 @@ La repousse naturelle sur les terres libérées capte aussi du carbone, à côt�
 
 - Les pratiques sur une même source se multiplient au lieu de s'additionner : deux pratiques qui suppriment chacune 30 % et 20 % du méthane entérique en suppriment 1 − 0,7 × 0,8 = 44 %, pas 50 %.
 - La baisse du gaspillage agit sur le régime après le changement, les pratiques sur la production qui reste après les deux, le levier de déforestation sur le défrichement qui reste après le changement et la baisse du gaspillage. Chaque levier fait donc un peu moins combiné que seul ; la répartition ci-dessous partage ce chevauchement à parts égales.
-- L'effet complet des leviers monte linéairement avec le changement de régime ; leurs produits croisés (par exemple les pratiques sur la variation due au changement) sont pris à adoption complète et montent de la même façon.
-- Le stockage agit sur les terres qui restent une fois le changement complet ; un changement qui libère des cultures en laisse moins pour les couverts végétaux.
+- L'effet complet des leviers monte linéairement avec le changement de régime. Là où un levier agit sur la variation de production (les pratiques sur le cheptel et les cultures que le changement et la baisse du gaspillage ont modifiés, le levier de déforestation sur le défrichement qu'ils ont modifié), cette part monte comme les deux : avec une part r du chemin parcourue, le r × réduction du levier agit sur r × la variation, si bien qu'elle croît comme r².
+- Le stockage agit sur les terres qui restent une fois le changement complet ; un changement qui libère des cultures en laisse moins pour les couverts végétaux. Il monte linéairement : à mi-chemin, il compte des terres que le changement n'a pas encore libérées ou occupées.
 - Les leviers d'énergie se combinent entre eux, pas avec les leviers agricoles : l'électricité renouvelable fait économiser davantage aux véhicules électriques et aux centres de données ; moins d'avion et le carburant propre agissent chacun sur le CO₂ de l'aviation que l'autre laisse, si bien que les deux à 50 % en suppriment 75 %.
 
 ## Lire la répartition
@@ -38,7 +38,7 @@ Une seconde méthode a été envisagée : l'effet de chaque groupe seul, mis à 
 
 Mesurée sur les données réelles, une exécution prend en médiane 5 ms sur les échantillons de test (4,5 ms auparavant), et 17 ms avec tous les leviers et toutes les options activés pendant que bouge le curseur du gaspillage alimentaire (10 ms auparavant), dans les budgets de 20 et 30 ms.
 
-Avec le pergélisol activé, la variation de ce qu'il libère est répartie en proportion du réchauffement évité par chaque groupe, et par chaque cause, si bien que les parts s'additionnent toujours. Les émissions évitées en CO₂e l'année où les leviers sont en place sont réparties de la même façon ; elles laissent de côté le forçage de l'aviation hors CO₂ et le pergélisol, qui ne sont pas des émissions d'un levier.
+Avec le pergélisol activé, la variation de ce qu'il libère est répartie entre les groupes, et entre les causes, en proportion de la taille du réchauffement évité par chacun, quel qu'en soit le signe, si bien que les parts s'additionnent toujours. Répartie selon les valeurs signées, une part qui ajoute du réchauffement prendrait une part négative ; mais les leviers de l'énergie évitent du réchauffement sous les combustibles fossiles et en ajoutent sous la pollution de l'air, et là où les deux se compensent presque (jusque vers 2040), chaque part prendrait plusieurs fois la variation entière. Selon la taille, aucune part ne bouge de plus que la variation elle-même. Les émissions évitées en CO₂e l'année où les leviers sont en place sont réparties de la même façon ; elles laissent de côté le forçage de l'aviation hors CO₂ et le pergélisol, qui ne sont pas des émissions d'un levier.
 
 ## Pourquoi certains leviers sont incertains
 
@@ -52,6 +52,6 @@ Les fourchettes des pratiques (une réduction basse et haute) et du stockage (un
 - Un produit sans répartition par source prend celle du monde, puis celle de l'autre périmètre ; sans aucune, les pratiques n'agissent pas sur lui.
 - Le CO₂ de la déforestation est un flux constant, non multiplié par la population ; il varie avec la variation relative de la production de chaque produit dans le pays (entre −100 % et +100 %), et le levier arrête sa part du reste.
 - Le stockage agit sur les terres une fois le changement complet et dure `years` ans à partir de l'adoption de chaque hectare ; le taux est celui du pays, sinon celui du monde.
-- La répartition est la valeur de Shapley de chaque groupe sur les groupes actifs, répartie par cause ; la variation du pergélisol est répartie en proportion.
+- La répartition est la valeur de Shapley de chaque groupe sur les groupes actifs, répartie par cause ; la variation du pergélisol est répartie en proportion de la taille de chaque part.
 - Les leviers d'énergie retirent une part du CO₂ de chaque secteur dans le scénario choisi dans les Options, en montant comme le changement de régime ; ils ne changent pas les émissions agricoles, et l'électricité utilisée dans les fermes garde sa propre intensité.
 - Un fichier de levier manquant laisse ses leviers sans effet, affichés comme indisponibles.

@@ -32,7 +32,7 @@ Processing is held fixed, so it does not scale with the shift. An item processed
 
 ## 5. Fewer animals, less feed
 
-Animals eat crops. When a country's production of an animal group falls by a fraction, every feed item's feed use falls by that fraction times the share of the item fed to that group. The shares come from `feed.json`, per region, with the world's shares for a region that has none; the *Feed shared out* option picks the table (see [Options](#method-options)). Grass and pasture are not in the FBS, so they do not appear here. Feed often falls more than food rises, so total cropland and crop output can go down under a shift.
+Animals eat crops. When a country's production of an animal group, less what it processes (the herd whose emissions and land are counted), falls by a fraction, every feed item's feed use falls by that fraction times the share of the item fed to that group. The shares come from `feed.json`, per region, with the world's shares for a region that has none; the *Feed shared out* option picks the table (see [Options](#method-options)). Grass and pasture are not in the FBS, so they do not appear here. Feed often falls more than food rises, so total cropland and crop output can go down under a shift.
 
 Animal production is placed first (step 6), and the feed change is computed where the animals are, before plant production is placed.
 
@@ -90,7 +90,7 @@ From the test fixtures (`app/public/fixtures/`, made-up but plausible numbers), 
 - The kept basis is conserved exactly per country; the other nutrient is not.
 - The default replacement is today's mix of protein-rich plant foods (cereals, rice, pulses, nuts, oilseeds with at least 10% protein); the legume mix is 60% pulses, 20% soybeans, 20% cereals, and soy and oat drinks 50% soybeans, 50% oats: starting values to review.
 - Losses and seed are fixed shares of supply; processing is fixed in tonnes; the supply multiplier is capped at 3.
-- Feed falls in proportion to each group's production in the same country; an animal group a country does not produce has no feed to lose.
+- Feed falls in proportion to each group's production less processing in the same country, as pasture and fodder do; an animal group a country does not produce has no feed to lose.
 - Milk and fish fed to animals change once, with the animals they feed; that change does not change feed again.
 - Fixed trade shares or domestic production: no change in who exports what.
 - Production cannot fall below what is processed; such cases are clipped and listed.

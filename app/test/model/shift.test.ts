@@ -4,7 +4,8 @@ import { DEFAULT_OPTIONS, type Basis, type Scenario } from '../../src/model/api'
 import { foodChange, removalShares } from '../../src/model/diet';
 import { feedChange, groupProductionChange } from '../../src/model/feed';
 import { countryIntensities, emissionsOf } from '../../src/model/emissions';
-import { prepare, valueOf } from '../../src/model/prepare';
+import { groupTotals, prepare, valueOf } from '../../src/model/prepare';
+import { countryLand } from '../../src/model/land';
 import type { ItemVector } from '../../src/model/util';
 import { REPLACEMENT_MIXES } from '../../src/model/replacement';
 import { productionChanges, runScenario } from '../../src/model/run';
@@ -36,7 +37,6 @@ describe('shift of 0', () => {
   it('keeps the scenario equal to the baseline', () => {
     expect(r.scenarioEmissions).toEqual(r.baselineEmissions);
     expect(r.temperature.scenario).toEqual(r.temperature.baseline);
-    expect(r.temperature.agricultureScenario).toEqual(r.temperature.agricultureBaseline);
     expect(r.summary.avoidedWarming2050).toEqual({ median: 0, p05: 0, p95: 0 });
     expect(r.summary.clipped).toEqual([]);
   });
@@ -152,6 +152,21 @@ describe('feed', () => {
     expect(fraMaizeFeed).toBeGreaterThan(0);
     expect(groupTotal(r, 'cereals')).toBeLessThan(0);
   });
+  it('follows each group’s production less processing, as land does', () => {
+    const processed = structuredClone(data);
+    const milk = processed.supply.byCountry['FRA']!['2848']!;
+    milk.processing = milk.production / 2;
+    const p = prepare(processed);
+    const fra = p.countries.find((c) => c.country.iso3 === 'FRA')!;
+    const { change } = productionChanges(
+      p,
+      { ...BASE_SCENARIO, groupShifts: { dairy: 1 } },
+      { ...DEFAULT_OPTIONS, location: 'domestic' },
+    );
+    const herd = (base: ItemVector) => groupProductionChange(base, change['FRA']!, p).dairy;
+    expect(herd(fra.emitting)).toBeCloseTo(2 * herd(fra.production), 9);
+    expect(countryLand(fra, p).groups.dairy).toBeCloseTo(groupTotals(fra.emitting, p).dairy, 9);
+  });
 });
 
 describe('location', () => {
@@ -240,7 +255,7 @@ describe('processed items', () => {
       if (!row) return 0;
       const feed = feedChange(
         pc,
-        groupProductionChange(pc.production, change[pc.country.iso3]!, prepared),
+        groupProductionChange(pc.emitting, change[pc.country.iso3]!, prepared),
         prepared,
         'species',
       );

@@ -1,23 +1,18 @@
 import type { Land } from '../../data/types';
+import { bandValue } from '../../model/bands';
 import type { Band } from '../../model/climate';
 import { uptakePath } from '../../model/land';
-
-/** A regrowth rate range read in the direction of each band: p05 the slower, p95 the faster. */
-export const rateFor = (rate: Land['regrowth'][string] | undefined, band: Band): number =>
-  !rate
-    ? 0
-    : band === 'median'
-      ? rate.median
-      : band === 'p05'
-        ? Math.min(rate.low, rate.high)
-        : Math.max(rate.low, rate.high);
 
 /** kg of CO₂ a year that the freed land of every country takes up once the shift is complete. */
 export const fullUptake = (
   freed: readonly { iso3: string; ha: number }[],
   land: Land,
   band: Band,
-): number => freed.reduce((acc, f) => acc + f.ha * rateFor(land.regrowth[f.iso3], band) * 1000, 0);
+): number =>
+  freed.reduce((acc, f) => {
+    const rate = land.regrowth[f.iso3];
+    return rate ? acc + f.ha * bandValue(rate, band) * 1000 : acc;
+  }, 0);
 
 /** Uptake by band, or zeros when regrowth is off. */
 export const regrowthPaths = (

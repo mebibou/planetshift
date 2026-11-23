@@ -46,3 +46,26 @@ export const expectOwnGases = (id: string, gases: readonly Gas[]) => {
       : expect(r.summary.avoided[g], g).toBeCloseTo(0, 3),
   );
 };
+
+/**
+ * What a lever changes, in a year, on the production a 50% shift changed: its change with the
+ * shift less the shift's and its own, as a share of the baseline when `perBaseline`.
+ */
+export const jointShare = (id: string, gas: Gas, perBaseline: boolean) => {
+  const shift = run({ shift: 0.5 });
+  const alone = lever(id);
+  const both = lever(id, 1, { shift: 0.5 });
+  const change = (r: ScenarioResult, i: number) =>
+    (r.scenarioEmissions[i]?.[gas] ?? 0) - (r.baselineEmissions[i]?.[gas] ?? 0);
+  return (year: number) => {
+    const i = both.years.indexOf(year);
+    return (
+      (change(both, i) - change(shift, i) - change(alone, i)) /
+      (perBaseline ? (both.baselineEmissions[i]?.[gas] ?? 1) : 1)
+    );
+  };
+};
+
+/** The share of the ramp reached in a year. */
+export const rampShare = (year: number) =>
+  (year - CURRENT_YEAR) / (BASE_SCENARIO.rampEnd - CURRENT_YEAR);

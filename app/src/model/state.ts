@@ -73,8 +73,16 @@ export const encodeState = (scenario: Scenario, options: Options): string => {
   return new URLSearchParams(entries).toString();
 };
 
-/** Query string (with or without '?') → scenario and options; anything invalid takes its default. */
-export const decodeState = (query: string): { scenario: Scenario; options: Options } => {
+const earliestRampEnd = (currentYear: number): number => Math.min(currentYear + 1, MAX_RAMP_END);
+
+/**
+ * Query string (with or without '?') → scenario and options; anything invalid takes its default.
+ * Given the current year, a ramp that would end before the slider's first year starts there.
+ */
+export const decodeState = (
+  query: string,
+  currentYear?: number,
+): { scenario: Scenario; options: Options } => {
   const params = new URLSearchParams(query.startsWith('?') ? query.slice(1) : query);
   const get = (key: string) => params.get(key);
   const ramp = Number(get('ramp'));
@@ -92,10 +100,12 @@ export const decodeState = (query: string): { scenario: Scenario; options: Optio
       SCENARIO_CHOICES.replacement,
       BASE_SCENARIO.replacement,
     ),
-    rampEnd:
+    rampEnd: Math.max(
       Number.isInteger(ramp) && ramp >= MIN_RAMP_END && ramp <= MAX_RAMP_END
         ? ramp
         : BASE_SCENARIO.rampEnd,
+      currentYear === undefined ? MIN_RAMP_END : earliestRampEnd(currentYear),
+    ),
     where: pick(get(SCENARIO_KEYS.where), SCENARIO_CHOICES.where, BASE_SCENARIO.where),
     levers: Object.fromEntries(
       LEVERS.flatMap(({ id, key }) => {

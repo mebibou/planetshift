@@ -33,7 +33,7 @@ La transformation est tenue fixe : elle ne suit pas le changement. Un produit tr
 
 ## 5. Moins d'animaux, moins d'aliments pour animaux
 
-Les animaux mangent des cultures. Quand la production d'un groupe animal baisse d'une fraction dans un pays, l'usage fourrager de chaque aliment pour animaux baisse de cette fraction multipliée par la part de cet aliment donnée à ce groupe. Les parts viennent de `feed.json`, par région, avec les parts mondiales pour une région qui n'en a pas ; l'option *Répartition des aliments du bétail* choisit la table (voir la page [Options](#method-options)). L'herbe et les pâturages ne sont pas dans les bilans, ils n'apparaissent donc pas ici. L'alimentation animale baisse souvent plus que l'alimentation humaine n'augmente : la surface cultivée totale et la production végétale peuvent donc reculer avec un changement.
+Les animaux mangent des cultures. Quand la production d'un groupe animal, moins ce qui est transformé (le cheptel dont les émissions et les terres sont comptées), baisse d'une fraction dans un pays, l'usage fourrager de chaque aliment pour animaux baisse de cette fraction multipliée par la part de cet aliment donnée à ce groupe. Les parts viennent de `feed.json`, par région, avec les parts mondiales pour une région qui n'en a pas ; l'option *Répartition des aliments du bétail* choisit la table (voir la page [Options](#method-options)). L'herbe et les pâturages ne sont pas dans les bilans, ils n'apparaissent donc pas ici. L'alimentation animale baisse souvent plus que l'alimentation humaine n'augmente : la surface cultivée totale et la production végétale peuvent donc reculer avec un changement.
 
 La production animale est placée d'abord (étape 6), et la variation de l'alimentation animale est calculée là où se trouvent les animaux, avant que la production végétale soit placée.
 
@@ -91,7 +91,7 @@ La température de référence est la température publiée du SSP choisi. Avec 
 - La base maintenue est conservée exactement dans chaque pays ; l'autre nutriment ne l'est pas.
 - Le remplacement par défaut est le mélange actuel de végétaux riches en protéines (céréales, riz, légumineuses, fruits à coque, oléagineux à au moins 10 % de protéines) ; mélange de légumineuses à 60 % de légumineuses, 20 % de soja et 20 % de céréales, et boissons soja et avoine à 50 % de soja et 50 % d'avoine : des valeurs de départ à revoir.
 - Les pertes et semences sont des parts fixes des disponibilités ; la transformation est fixe en tonnes ; le multiplicateur des disponibilités est plafonné à 3.
-- L'alimentation animale baisse en proportion de la production de chaque groupe dans le même pays ; un groupe animal qu'un pays ne produit pas n'a pas d'alimentation à perdre.
+- L'alimentation animale baisse en proportion de la production moins la transformation de chaque groupe dans le même pays, comme les prairies et le fourrage ; un groupe animal qu'un pays ne produit pas n'a pas d'alimentation à perdre.
 - Le lait et le poisson donnés aux animaux changent une fois, avec les animaux qu'ils nourrissent ; cette variation ne change pas de nouveau l'alimentation animale.
 - Parts du commerce fixes ou production nationale : pas de changement dans qui exporte quoi.
 - La production ne peut pas descendre sous ce qui est transformé ; ces cas sont écrêtés et signalés.
