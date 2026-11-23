@@ -1,45 +1,71 @@
 # Data: food balances, countries and groups
 
-Everything Planetshift knows about what each country produces, trades and eats comes from FAOSTAT's Food Balance Sheets. This page explains which year is used, which countries are in, how foods are grouped and what is left out. The code is in `pipeline/planetshift_pipeline/` (`supply.py`, `countries.py`, `groups.py`); the grouping table is `pipeline/groups.csv`.
+This page says where Planetshift's picture of the world's food comes from. Everything it knows about what each country produces, trades and eats comes from the Food Balance Sheets of FAOSTAT, the statistics service of the UN Food and Agriculture Organization (FAO). The model starts from the year **2023** and covers **188 countries**; the page explains which countries are in, how foods are grouped, what is left out, and how to download the data.
 
 ## The Food Balance Sheets
 
-A Food Balance Sheet (FBS) follows each food item through a country's year: what was produced, imported and exported, and what became of it, as food, animal feed, seed, losses, processing into another item, or other uses. Quantities are in tonnes of the item as FAOSTAT defines it, mostly the primary commodity or its equivalent (rice in milled equivalent, milk in whole-milk equivalent, meat in carcass weight). Planetshift reads the current series (2010 onwards) as published in FAOSTAT's bulk download.
+A Food Balance Sheet (FBS) follows each food item through a country's year. It records what was produced, imported and exported. It also records what became of it: food, animal feed, seed, losses, processing into another item, or other uses.
 
-Each item's row is closed so that it balances exactly: production + imports − exports = food + feed + losses + processing + seed + other. The `other` term gathers FAOSTAT's other (non-food) uses, tourist consumption, residuals and stock changes; it can be negative when stocks were drawn down.
+Quantities are in tonnes of the item as FAOSTAT defines it. This is mostly the primary commodity or its equivalent: rice in milled equivalent, milk in whole-milk equivalent, meat in carcass weight. Planetshift reads the current series (2010 onwards) as published in FAOSTAT's bulk download.
 
-Processing is what links a crop to what is made from it: soybeans crushed into oil, cane into sugar, milk into butter. The processed products (oils, sugar, sweeteners, butter, cream, wine, beer and other drinks) are items of their own, with their own production. To count each tonne once, the emissions of a primary item are counted on its production minus its processing, and the processed share is counted on the products made from it (see the emissions page).
+Each item's row is closed so that it balances exactly:
+
+production + imports − exports = food + feed + losses + processing + seed + other
+
+The `other` term gathers FAOSTAT's other (non-food) uses, tourist consumption, residuals and stock changes. It can be negative when stocks were drawn down.
+
+### Processed products
+
+Processing is what links a crop to what is made from it: soybeans crushed into oil, cane into sugar, milk into butter. The processed products (oils, sugar, sweeteners, butter, cream, wine, beer and other drinks) are items of their own, with their own production.
+
+Each tonne must be counted once. So the emissions of a primary item are counted on its production minus its processing. The processed share is counted on the products made from it (see [Emissions](#method-emissions)).
 
 ## The base year
 
 The base year is the latest year whose balances cover at least 95% as many countries as the best-covered year. With the current download it is **2023**, the latest year published.
 
-Kcal and protein per tonne of each item are FAOSTAT's world food supply of kcal and of protein for that item divided by its world food supply in tonnes, in the base year.
+Kcal and protein per tonne of each item are worked out for the base year. They are FAOSTAT's world food supply of kcal and of protein for that item, divided by its world food supply in tonnes.
 
 ## Countries
 
-FAOSTAT lists single countries and territories with area codes below 5000, and groups of countries (World, continents, regions, economic groups) from 5000 up. Planetshift keeps only single countries, and removes explicitly the areas that would count something twice:
+The model has **188 countries**. They are the single countries and territories of FAOSTAT that have a food balance, with a few areas removed so that nothing is counted twice.
+
+### Which areas are kept
+
+FAOSTAT lists single countries and territories with area codes below 5000. It lists groups of countries (World, continents, regions, economic groups) from 5000 up. Planetshift keeps only single countries. It also removes explicitly the areas that would count something twice:
 
 - "China" (code 351) is the sum of mainland China (41), Hong Kong (96), Macao (128) and Taiwan (214), which FAOSTAT also lists one by one. Planetshift keeps the four parts and drops the sum.
-- Areas that no longer exist (the USSR, Yugoslavia, Czechoslovakia, Serbia and Montenegro, Sudan before 2011, Belgium-Luxembourg, Ethiopia PDR, the Netherlands Antilles, the Pacific Islands Trust Territory) are dropped; their successors are listed.
+- Areas that no longer exist are dropped: the USSR, Yugoslavia, Czechoslovakia, Serbia and Montenegro, Sudan before 2011, Belgium-Luxembourg, Ethiopia PDR, the Netherlands Antilles, the Pacific Islands Trust Territory. Their successors are listed.
 
-Each country gets an ISO 3166 alpha-3 code from its M49 code through Natural Earth's table, with a few territories Natural Earth does not draw at 1:50m added by hand (French Guiana, Guadeloupe, Martinique, Mayotte, Réunion, Gibraltar, Bonaire, Tokelau). Its region is the M49 sub-region (for example "Western Africa"), from Natural Earth, spelled as FAOSTAT spells it; these regions are used for the feed shares and for regional averages. English and French names are FAOSTAT's. The high-income flag is the World Bank's current classification (CLASS.xlsx, fiscal year 2027). Population, from the base year to 2100, is FAOSTAT's annual population, which carries the UN World Population Prospects estimates and medium-variant projection.
+### Codes, regions, names and population
 
-Some countries have no balance for the base year in this release. Rather than leave them blank, Planetshift takes their latest balance and scales every quantity by their population growth since then, which keeps their diet per person as it was:
+- **Code.** Each country gets an ISO 3166 alpha-3 code from its M49 code, through Natural Earth's table. A few territories that Natural Earth does not draw at 1:50m are added by hand: French Guiana, Guadeloupe, Martinique, Mayotte, Réunion, Gibraltar, Bonaire, Tokelau.
+- **Region.** A country's region is its M49 sub-region (for example "Western Africa"), from Natural Earth, spelled as FAOSTAT spells it. These regions are used for the feed shares and for regional averages.
+- **Names.** English and French names are FAOSTAT's.
+- **High income.** The high-income flag is the World Bank's current classification (CLASS.xlsx, fiscal year 2027).
+- **Population.** Population, from the base year to 2100, is FAOSTAT's annual population. It carries the UN World Population Prospects (WPP) estimates and medium-variant projection.
+
+### Countries with an older balance
+
+Some countries have no balance for the base year in this release. Rather than leave them blank, Planetshift takes their latest balance. It scales every quantity by their population growth since then, which keeps their diet per person as it was:
 
 - from the current series: Cuba (2019) and the Democratic People's Republic of Korea (2018);
 - from the historic series, which ends in 2013: Japan, Sudan, Mali, Chad, Benin, Togo, the Central African Republic, Brunei Darussalam, Dominica and Bermuda. Two items changed codes between the series (rice 2805 to 2807, groundnuts 2556 to 2552) and are renamed.
 
-Countries without any balance (among them Somalia, Burundi, South Sudan, Singapore, Palestine and Eritrea, and small territories) are not in the model. With these rules the model has **188 countries**.
+Countries without any balance are not in the model. Among them are Somalia, Burundi, South Sudan, Singapore, Palestine and Eritrea, and small territories. With these rules the model has **188 countries**.
 
 ## Item groups
 
-`pipeline/groups.csv` puts each FBS item in one of the groups the app shows, and flags animal products:
+`pipeline/groups.csv` puts each FBS item in one of the groups the app shows, and flags animal products.
 
-- Plant: cereals, rice (kept apart for its paddy methane), pulses, oil crops (seeds, fruits and their oils), vegetables, fruit, roots and tubers, sugar crops (cane, beet, sugar and sweeteners), nuts, stimulants (coffee, cocoa, tea), and other plant foods (spices and alcoholic drinks).
-- Animal: ruminant meat (cattle, buffalo, sheep, goat, and "other meat": camels, llamas, horses, rabbits, game), pig meat, poultry meat, dairy (milk, butter, cream), eggs, and seafood (freshwater, demersal, pelagic and other marine fish, crustaceans, cephalopods, other molluscs and other aquatic animals, in live weight; see [Fish and seafood](#method-seafood)). Edible offal goes with ruminant meat and raw animal fats with pig meat, as the largest source of each.
+- **Plant:** cereals, rice (kept apart for its paddy methane), pulses, oil crops (seeds, fruits and their oils), vegetables, fruit, roots and tubers, sugar crops (cane, beet, sugar and sweeteners), nuts, stimulants (coffee, cocoa, tea), and other plant foods (spices and alcoholic drinks).
+- **Animal:** ruminant meat (cattle, buffalo, sheep, goat, and "other meat": camels, llamas, horses, rabbits, game), pig meat, poultry meat, dairy (milk, butter, cream), eggs, and seafood. Seafood covers freshwater, demersal, pelagic and other marine fish, crustaceans, cephalopods, other molluscs and other aquatic animals, in live weight (see [Fish and seafood](#method-seafood)).
 
-Left out of the model, and of every total it shows:
+Edible offal goes with ruminant meat, and raw animal fats with pig meat, as the largest source of each.
+
+### What is left out
+
+These items are left out of the model, and of every total it shows:
 
 - aquatic plants (seaweeds, a third of them for non-food uses, almost no protein or energy), aquatic mammals (no supply) and fish oils (made from fish already counted in the fish items);
 - honey, which has no farm emissions in FAOSTAT and almost no protein;
@@ -50,24 +76,28 @@ A test checks that every FBS item with a world production above 100 kt has a row
 ## Assumptions
 
 - The base-year balance stands for today's food system; the shift model scales it with population.
-- The model's 188 countries hold 8.02 billion people in 2023 and 10.00 billion in 2100 in FAOSTAT's population (World Population Prospects), 98–99% of WPP 2024's world totals (8.09 and 10.18 billion).
-- Countries missing from the base year keep the diet per person of their latest balance, up to ten years older, scaled by population; for the historic series the methodology differs from the current one.
-- `other` closes each item's balance, so stock changes and statistical residuals are kept rather than spread over the other uses.
+- The model's 188 countries hold 8.02 billion people in 2023 and 10.00 billion in 2100 in FAOSTAT's population (World Population Prospects). That is 98–99% of WPP 2024's world totals (8.09 and 10.18 billion).
+- Countries missing from the base year keep the diet per person of their latest balance, up to ten years older, scaled by population. For the historic series the methodology differs from the current one.
+- `other` closes each item's balance. Stock changes and statistical residuals are therefore kept rather than spread over the other uses.
 - A country's M49 sub-region is its region for regional averages.
 - Offal and animal fats belong to one animal group each, although they come from several species.
 
 ## Download the data
 
-The Explore page's map card has a Download button, and the chart card one for the chart shown.
+The Explore page's map card has a Download button. The chart card has one for the chart shown.
 
-- **The map as CSV**: every country with the layer's values today and once the shift is complete, the relative change, the unit (tonnes of product, kg of a gas or of CO₂e, hectares, kg of CO₂ from forest clearing) and, for production and emissions, the tier and source of the least precise intensity used. Licence CC BY 4.0.
-- **Each chart as CSV**, one file per tab: the global temperature from 1850 to 2100 (observed, without and with the levers with their 5–95% ranges, natural factors only), the warming avoided each year to 2100 with its range, and the warming by cause with observed temperature and farm emissions by gas. They derive from `climate.json`: licence CC BY-NC-SA 4.0.
+- **The map as CSV**: every country with the layer's values today and once the shift is complete, and the relative change. It gives the unit (tonnes of product, kg of a gas or of CO₂e, hectares, kg of CO₂ from forest clearing). For production and emissions, it also gives the tier and source of the least precise intensity used. Licence CC BY 4.0.
+- **Each chart as CSV**, one file per tab. The files hold the global temperature from 1850 to 2100 (observed, without and with the levers with their 5–95% ranges, natural factors only), the warming avoided each year to 2100 with its range, and the warming by cause with observed temperature and farm emissions by gas. They derive from `climate.json`: licence CC BY-NC-SA 4.0.
 - **The scenario as JSON**: every setting of the page, the same as its address, with the summary's figures, the licence (CC BY-NC-SA 4.0) and how to cite.
-- **The source data files**: the JSON files the page reads, each under its sources' terms. `climate.json` and `sectors.json` are CC BY-NC-SA 4.0 (non-commercial, share alike), `industry.json` CC BY-SA 4.0, `population.json` CC BY 3.0 IGO and CC BY 4.0, and the others CC BY 4.0; anything derived from `climate.json` or `sectors.json` keeps their terms.
+- **The source data files**: the JSON files the page reads, each under its sources' terms. `climate.json` and `sectors.json` are CC BY-NC-SA 4.0 (non-commercial, share alike), `industry.json` CC BY-SA 4.0, `population.json` CC BY 3.0 IGO and CC BY 4.0, and the others CC BY 4.0. Anything derived from `climate.json` or `sectors.json` keeps their terms.
 
-The CSV files are UTF-8 with a byte order mark, comma-separated, with English column names and plain numbers (a point for decimals, no thousands separator), whatever the page's language.
+The CSV files are UTF-8 with a byte order mark, and comma-separated. They have English column names and plain numbers (a point for decimals, no thousands separator), whatever the page's language.
 
-**How to cite.** Credit Planetshift, with the address of the page (which holds the scenario), and the original sources listed below and in `meta.json`, for example: "Planetshift (2026), *address of the page*. Data: FAOSTAT, HESTIA, PRIMAP-hist, FaIR, HadCRUT5, …". The download list gives the full line.
+**How to cite.** Credit Planetshift, with the address of the page (which holds the scenario), and the original sources listed below and in `meta.json`. For example: "Planetshift (2026), *address of the page*. Data: FAOSTAT, HESTIA, PRIMAP-hist, FaIR, HadCRUT5, …". The download list gives the full line.
+
+## The code
+
+The code is in `pipeline/planetshift_pipeline/` (`supply.py`, `countries.py`, `groups.py`). The grouping table is `pipeline/groups.csv`.
 
 ## Sources
 

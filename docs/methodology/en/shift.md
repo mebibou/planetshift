@@ -1,108 +1,170 @@
 # How a shift becomes production changes
 
-Planetshift's sliders change what people eat. The map shows what farms produce, and the chart shows the warming from producing it. This page follows a shift from the plate to the farm, then to emissions over time. The code is in `app/src/model/`: `diet.ts`, `replacement.ts`, `feed.ts`, `supplyChain.ts`, `location.ts`, `emissions.ts`, `land.ts`, `timePath.ts` and `run.ts`.
+This page follows a change in diet from the plate to the farm, and then to the warming it avoids. People eat less of the animal foods and get the same protein (or the same calories) from plant foods. Fewer animals then need less feed, so the output of crops can fall as well as that of livestock, and the change in what farms produce becomes a change in emissions and in temperature.
 
-Everything starts from the FAOSTAT Food Balance Sheets (FBS) of the base year. For each country and item they give production, imports, exports, and how the supply is used: food, feed, losses, processing, seed and other uses, in tonnes of primary equivalent.
+Planetshift's sliders change what people eat. The map shows what farms produce, and the chart shows the warming from producing it.
+
+## The steps in brief
+
+1. **The kept basis.** Each person keeps the same protein (by default) or the same calories.
+2. **What is removed.** Each animal group loses the share of its food supply that the sliders set.
+3. **What is added.** The protein (or calories) removed is added back as plant foods, in the chosen mix.
+4. **Losses and seed.** More food needs a little more supply, because some is lost and some grain is kept as seed.
+5. **Feed.** Fewer animals eat less feed, so the crops grown to feed them fall.
+6. **Where production changes.** The world's change in demand for each food is shared among the countries that produce it.
+7. **Emissions.** Each country's change in production is multiplied by the emissions per tonne of each product.
+8. **Land.** The change in production gives the cropland and pasture used or freed, and, as an option, the CO₂ that freed land takes up.
+9. **Over time.** The change ramps in from this year to the chosen year, on top of a baseline that, by default, follows population.
+10. **Temperature.** The yearly change in each gas is turned into a change in temperature.
+
+Everything starts from the FAOSTAT Food Balance Sheets (FBS) of the base year, the latest year with complete data (see [Data](#method-data)). For each country and item, they give production, imports and exports. They also give how the supply is used: food, feed, losses, processing, seed and other uses. Quantities are in tonnes of primary equivalent: a processed food is counted as the amount of raw crop or animal product it stands for.
+
+## Worked example
+
+This example uses the test fixtures (`app/public/fixtures/`), whose numbers are made up but plausible. It takes France, a 10% shift, protein kept, today's protein-rich plant foods as the replacement, and domestic production:
+
+1. Removed: 10% of each animal item, such as 152 kt of bovine meat and 1,724 kt of milk, and the fish.
+2. Added: the same protein shared by France's protein-rich plant foods, most of it wheat. Wheat food supply rises by 1,261 kt, maize by 115 kt, rice by 80 kt, oats by 34 kt and beans by 23 kt.
+3. Supply: wheat's losses and seed are 8% of its supply, so its supply needs 1,261 × 1.087 more tonnes.
+4. Feed: with 10% fewer animals, feed falls by 10%. Maize feed is 9.9 Mt, so maize production falls by 959 kt, although maize food rises by 115 kt. Wheat production rises by only 702 kt, as its feed use (6.0 Mt) falls.
+5. Result: protein stays at 107.8 g a day, and energy rises from 2,437 to 2,545 kcal. France's farm emissions fall by about 195 kt of CH₄ (methane), 4.8 kt of N₂O (nitrous oxide) and 0.5 Mt of CO₂ a year.
 
 ## 1. The kept basis: protein or calories
 
-A shift removes part of each animal group's food supply and adds back the same amount of protein (the default) or of energy (kcal), so each country's intake on that basis is unchanged. The other one moves: replacing meat protein with wheat protein brings more calories, and replacing it calorie for calorie brings less protein. The protein and calorie contents per tonne are the FBS's own (food supply in protein and kcal divided by food supply in tonnes).
+A shift removes part of each animal group's food supply. It adds back the same amount of protein (the default) or of energy (kcal). Each country's intake on that basis is therefore unchanged.
+
+The other one moves. Replacing meat protein with wheat protein brings more calories. Replacing it calorie for calorie brings less protein.
+
+The protein and calorie contents per tonne are the FBS's own: the food supply in protein and in kcal, divided by the food supply in tonnes.
 
 ## 2. What is removed
 
-For each animal group (ruminant meat, pig meat, poultry meat, dairy, eggs, fish and seafood) the controls give a share: the main slider, or a per-group slider that overrides it. Each animal item in the group loses that share of its food supply. With *high-income countries only*, countries outside the World Bank's high-income group keep their diet.
+The animal groups are ruminant meat, pig meat, poultry meat, dairy, eggs, and fish and seafood. For each group, the controls give a share: the main slider, or a per-group slider that overrides it. Each animal item in the group loses that share of its food supply.
+
+With *high-income countries only*, countries outside the World Bank's high-income group keep their diet.
 
 ## 3. What is added
 
-The protein (or kcal) removed is added to plant items by the chosen replacement mix:
+The protein (or kcal) removed is added to plant items in the chosen replacement mix:
 
 - **Today's protein-rich plant foods** (default): today's protein-rich plant foods, each by its share of the country's current protein (or kcal) from them. They are the foods that supply most plant protein: cereals, rice, pulses, nuts, and the oilseeds eaten for their protein (soybeans, groundnuts, sesame and others with at least 10% protein). Fruit, vegetables, roots, sugar, oils, drinks, coffee, cocoa and spices keep their current amounts.
-- **Mostly legumes**: 60% to pulses, 20% to soybeans, 20% to cereals, each part split by the country's current mix within it. These weights are a starting value to review, not taken from a study.
+- **Mostly legumes**: 60% to pulses, 20% to soybeans and 20% to cereals. Each part is split by the country's current mix within it. These weights are a starting value to review, not taken from a study.
 - **Soy and oat drinks**: half to soybeans and half to oats, the two main plant-milk bases.
 
-The default mix changed in November 2026. It used to scale every plant food alike, so that replacing the protein of meat raised fruit by 80%, vegetables by 74%, and sugar, beer and vegetable oils in proportion, although they bring almost no protein; cropland rose by a quarter under a full plant-based shift, against a fall of a fifth in Poore and Nemecek (2018). Keeping the replacement to the foods people eat for protein, and counting the land of oilcakes and fodder (see [Land](#method-land)), turns that rise into a fall of 6% with protein kept and 22% with calories kept.
+When a country eats none of the items in a part of the mix, that part follows the world's mix. When no item exists at all, the part is dropped and the others are scaled up.
 
-When a country eats none of the items in a part of the mix, that part follows the world's mix; when no item exists at all, the part is dropped and the others are scaled up.
+### Why the default mix keeps to protein-rich foods
+
+The default mix changed in November 2026. It used to scale every plant food alike. Replacing the protein of meat then raised fruit by 80%, vegetables by 74%, and sugar, beer and vegetable oils in proportion, although they bring almost no protein. Cropland rose by a quarter under a full plant-based shift, against a fall of a fifth in Poore and Nemecek (2018).
+
+The replacement now keeps to the foods people eat for protein, and the land of oilcakes and fodder is counted (see [Land](#method-land)). Together, these turn that rise into a fall of 6% with protein kept and 22% with calories kept.
 
 ## 4. From food to supply: losses and seed
 
-A tonne more food needs more than a tonne of supply, because some is lost between farm and shop and some grain is kept as seed. Losses and seed are held as fixed shares of each item's domestic supply, so a change in food or feed use changes supply by that change ÷ (1 − the share of losses and seed). The multiplier is capped at 3 as a guard against odd rows.
+A tonne more food needs more than a tonne of supply. Some is lost between farm and shop, and some grain is kept as seed. Losses and seed are held as fixed shares of each item's domestic supply. A change in food or feed use therefore changes supply by that change ÷ (1 − the share of losses and seed). This multiplier is capped at 3, as a guard against odd rows.
 
-Processing is held fixed, so it does not scale with the shift. An item processed into another one (soybeans crushed into oil and cake, sugar cane into sugar, milk into butter) has that derived item in the FBS with its own production and its own emission intensity. A change in demand for soybean oil therefore changes the production of soybean oil, and its emissions, not the soybeans crushed for it. Oilcakes are not FBS items; the land of the oilseeds crushed for them, and the part of their emissions the cake carries, follow the animals that eat them (see [Land](#method-land)).
+Processing is held fixed, so it does not scale with the shift. An item can be processed into another: soybeans crushed into oil and cake, sugar cane into sugar, milk into butter. The derived item is in the FBS, with its own production and its own emission intensity (emissions per tonne). A change in demand for soybean oil therefore changes the production of soybean oil, and its emissions, not the soybeans crushed for it.
+
+Oilcakes are not FBS items. The land of the oilseeds crushed for them, and the part of their emissions the cake carries, follow the animals that eat them (see [Land](#method-land)).
 
 ## 5. Fewer animals, less feed
 
-Animals eat crops. When a country's production of an animal group, less what it processes (the herd whose emissions and land are counted), falls by a fraction, every feed item's feed use falls by that fraction times the share of the item fed to that group. The shares come from `feed.json`, per region, with the world's shares for a region that has none; the *Feed shared out* option picks the table (see [Options](#method-options)). Grass and pasture are not in the FBS, so they do not appear here. Feed often falls more than food rises, so total cropland and crop output can go down under a shift.
+Animals eat crops. Take a country's production of an animal group, less what it processes: this is the herd whose emissions and land are counted. When it falls by a fraction, every feed item's feed use falls by that fraction × the share of the item fed to that group.
 
-Animal production is placed first (step 6), and the feed change is computed where the animals are, before plant production is placed.
+The shares come from `feed.json`, per region. A region that has none uses the world's shares. The *Feed shared out* option picks the table (see [Feed](#method-feed) and [Options](#method-options)).
 
-Some feed items are animal items: milk fed to calves and piglets, and fish reduced to meal and fed to farmed fish, pigs and poultry. Their feed use changes in the same way, and that change is placed like a change in demand, on top of the change in food. It is done once: the fish caught for meal are wild and eat no feed, so a change in them does not change feed again, and the change in milk fed to calves is small. See [Fish and seafood](#method-seafood).
+Grass and pasture are not in the FBS, so they do not appear here. Feed often falls more than food rises, so total cropland and crop output can go down under a shift.
+
+Animal production is placed first (step 6). The feed change is computed where the animals are, before plant production is placed.
+
+Some feed items are animal items: milk fed to calves and piglets, and fish reduced to meal and fed to farmed fish, pigs and poultry. Their feed use changes in the same way. That change is placed like a change in demand, on top of the change in food. It is done once: the fish caught for meal are wild and eat no feed, so a change in them does not change feed again, and the change in milk fed to calves is small. See [Fish and seafood](#method-seafood).
 
 ## 6. Where production changes
 
-- **Fixed trade shares** (default): the world change in supply of an item is shared among countries by their share of the world's production of it, counting only what is not processed into another item (production − processing). A country that grows 10% of the world's beef loses 10% of the fall in world beef demand, wherever that demand was. Shares are taken on production less processing because that is the part whose emissions the model counts; a country that imports soybeans to crush them grows few soybeans of its own and so takes little of a change in soybean demand.
-- **Domestic**: each country's production changes by its own change in supply, as if it grew everything it eats, as far as its own production allows. A cut larger than what a country grows (a country that eats more beef than it raises) falls on its suppliers: the part it cannot make itself is shared among the world's producers as under fixed trade shares.
+- **Fixed trade shares** (default): the world change in supply of an item is shared among countries by their share of the world's production of it. Only what is not processed into another item counts (production − processing). A country that grows 10% of the world's beef loses 10% of the fall in world beef demand, wherever that demand was. Shares are taken on production less processing because that is the part whose emissions the model counts. A country that imports soybeans to crush them grows few soybeans of its own, so it takes little of a change in soybean demand.
+- **Domestic**: each country's production changes by its own change in supply, as if it grew everything it eats, as far as its own production allows. A cut can be larger than what a country grows, for a country that eats more beef than it raises. That cut falls on its suppliers: the part the country cannot make itself is shared among the world's producers, as under fixed trade shares.
 
-An item no country produces stays where it is eaten. A change that would take a country's production below what it processes (production − processing below zero) is stopped there, and the country is listed as clipped. With both options this happens only when a shift removes a whole group (100%): the cut in a primary item such as milk then reaches its processed share, which is counted on the processed item (butter, cheese) and removed there.
+An item no country produces stays where it is eaten.
+
+A change could take a country's production below what it processes (production − processing below zero). It is stopped there, and the country is listed as clipped. With both options, this happens only when a shift removes a whole group (100%). The cut in a primary item such as milk then reaches its processed share, which is counted on the processed item (butter, cheese) and removed there.
 
 ## 7. Emissions
 
-A country's emissions are, for each item and gas, the intensity (kg of CO₂, CH₄ and N₂O per tonne) × (production − processing). Subtracting processing avoids counting a crop twice: the processed share is counted on the derived item. The change from a shift is the production change × the same intensity. Gases stay separate all the way to the temperature; CO₂-equivalent (GWP100) is only shown as a total.
+A country's emissions, for each item and gas, are the intensity (kg of CO₂, CH₄ and N₂O per tonne) × (production − processing). Subtracting processing avoids counting a crop twice: the processed share is counted on the derived item. The change from a shift is the production change × the same intensity.
+
+The gases stay separate all the way to the temperature. The CO₂-equivalent (CO₂e) adds them up with their 100-year warming weights (GWP100, see [Climate](#method-climate)). It is only shown as a total.
 
 ## 8. Land
 
-A country's farmland has two parts, from `land.json` (see [Land](#method-land)). Cropland is, for each item, its hectares harvested per tonne × its production less processing: the same tonnes whose emissions are counted, so the area of a processed crop is counted on the derived item when the data gives that item hectares of its own. Pasture is the country's permanent meadows and pastures, shared among the ruminant groups that graze it (ruminant meat and dairy).
+A country's farmland has two parts, from `land.json` (see [Land](#method-land)):
 
-At the full shift, cropland changes by each item's change in production × its hectares per tonne. Each ruminant group's share of the pasture changes by the same fraction as that group's production in the country: if beef production falls by 40% and beef cattle graze 80% of the pasture, pasture falls by 32%. Pasture never falls below zero. A country frees the fall in its cropland and pasture together; a country that needs more land in total frees none.
+- **Cropland**: for each item, its hectares harvested per tonne × its production less processing. These are the same tonnes whose emissions are counted. The area of a processed crop is therefore counted on the derived item, when the data gives that item hectares of its own.
+- **Pasture**: the country's permanent meadows and pastures, shared among the ruminant groups that graze it (ruminant meat and dairy).
 
-With *natural regrowth* under Options, freed land grows back to natural vegetation and takes up CO₂ at the country's rate (tonnes of CO₂ per hectare per year) for `regrowthYears` years after it is freed (30 in the data). Land is freed as the shift ramps in: the land freed in a year starts taking up CO₂ that year and stops 30 years later, so the uptake in year t is Σ over countries of net freed hectares × rate × (ramp(t) − ramp(t − 30)), where a country that farms more land in all than before has negative net freed hectares and is charged the uptake that land forgoes (see [Land](#method-land)). The uptake is taken off the scenario's CO₂ before the temperature is computed (step 10), so it shows in the temperature, in the warming avoided and in the CO₂ avoided. The median temperature uses the median rate, the 5% bound the slower end of the rate's range and the 95% bound the faster end, so a weak climate response goes with slow regrowth and the range is the widest the two allow.
+At the full shift, cropland changes by each item's change in production × its hectares per tonne. Each ruminant group's share of the pasture changes by the same fraction as that group's production in the country. For example, if beef production falls by 40% and beef cattle graze 80% of the pasture, pasture falls by 32%. Pasture never falls below zero.
 
-The summary shows the farmland freed at the full shift, split into cropland and pasture, and as a share of the world's farmland in the base year. With regrowth on, it also shows the CO₂ taken up in the year the shift is complete, a year: that is the uptake at its peak, and it is already part of the CO₂ avoided shown above it.
+A country frees the fall in its cropland and pasture together. A country that needs more land in total frees none.
+
+### Regrowth on freed land
+
+With *natural regrowth* under Options, freed land grows back to natural vegetation. It takes up CO₂ at the country's rate (tonnes of CO₂ per hectare per year) for `regrowthYears` years after it is freed (30 in the data).
+
+Land is freed as the shift ramps in. The land freed in a year starts taking up CO₂ that year and stops 30 years later. The uptake in year t is:
+
+uptake(t) = Σ over countries of net freed hectares × rate × (ramp(t) − ramp(t − 30))
+
+A country that farms more land in all than before has negative net freed hectares. It is charged the uptake that land forgoes (see [Land](#method-land)).
+
+The uptake is taken off the scenario's CO₂ before the temperature is computed (step 10). It therefore shows in the temperature, in the warming avoided and in the CO₂ avoided.
+
+The median temperature uses the median rate. The 5% bound uses the slower end of the rate's range, and the 95% bound the faster end. A weak climate response thus goes with slow regrowth, and the range is the widest the two allow.
+
+### What the summary shows
+
+The summary shows the farmland freed at the full shift, split into cropland and pasture, and as a share of the world's farmland in the base year. With regrowth on, it also shows the CO₂ taken up in the year the shift is complete, a year. That is the uptake at its peak, and it is already part of the CO₂ avoided shown above it.
 
 ## 9. Over time
 
 The model computes the change at the full shift. Over the years from now to 2100:
 
-- **Baseline**: with the default *today's diet × population*, each year's emissions are the base year's × world population that year ÷ world population in the base year. With the *SSP2 path*, they follow SSP2-4.5's agricultural emissions, gas by gas, relative to the base year.
-- **Shift**: the baseline plus ramp(t) × the full-shift change, scaled the same way as the baseline. The ramp is 0 in the current year, rises linearly to 1 in the chosen year (2035 by default), and stays at 1. With natural regrowth, the CO₂ taken up by freed land (step 8) is subtracted; it is not scaled with the baseline.
+- **Baseline**: with the default *today's diet × population*, each year's emissions are the base year's × world population that year ÷ world population in the base year. With the *SSP2 path*, they follow SSP2-4.5's agricultural emissions, gas by gas, relative to the base year. SSP2-4.5 is the middle-of-the-road future among the Shared Socioeconomic Pathways (SSPs), the published scenarios the IPCC uses (see [Climate](#method-climate)).
+- **Shift**: the baseline plus ramp(t) × the full-shift change, scaled the same way as the baseline. The ramp is 0 in the current year. It rises in a straight line to 1 in the chosen year (2035 by default), and stays at 1. With natural regrowth, the CO₂ taken up by freed land (step 8) is subtracted; it is not scaled with the baseline.
 
 The avoided emissions shown in the summary are those of the year the shift is complete.
 
 ## 10. Temperature
 
-The warming from a change in emissions is the sum, over gases and years, of each year's change × the gas's absolute global temperature change potential (AGTP) after the years since: ΔT(t) = Σ_gas Σ_τ≤t ΔE_gas(τ) · AGTP_gas(t − τ). The AGTP curves come from FaIR pulse runs (or the AR6 fallback); see [Options](#method-options).
+Each gas warms the world in its own way over time. The absolute global temperature change potential (AGTP) of a gas is how much warmer the world is, year by year, after one kilogram of it is emitted (see [Climate](#method-climate)). The warming from a change in emissions adds up, over gases and years, each year's change × the gas's AGTP after the years since:
 
-The baseline temperature is the chosen SSP's published temperature. With the *population* baseline, the warming from the difference between population-scaled agricultural emissions and the SSP's own agricultural path (from the base year on) is added, so the baseline curve matches the baseline emissions. The shift's curve is the baseline + ΔT, for the median and for the 5–95% range of the AGTP.
+ΔT(t) = Σ_gas Σ_τ≤t ΔE_gas(τ) · AGTP_gas(t − τ)
 
-## Worked example
+The AGTP curves come from pulse runs of FaIR, a simple climate model, or from the AR6 fallback; see [Options](#method-options).
 
-From the test fixtures (`app/public/fixtures/`, made-up but plausible numbers), France, a 10% shift, protein kept, today's protein-rich plant foods, domestic production:
-
-1. Removed: 10% of each animal item, such as 152 kt of bovine meat and 1,724 kt of milk, and the fish.
-2. Added: the same protein shared by France's protein-rich plant foods, most of it wheat: wheat food supply rises by 1,261 kt, maize by 115 kt, rice by 80 kt, oats by 34 kt, beans by 23 kt.
-3. Supply: wheat's losses and seed are 8% of its supply, so its supply needs 1,261 × 1.087 more tonnes.
-4. Feed: with 10% fewer animals, feed falls by 10%. Maize feed is 9.9 Mt, so maize production falls by 959 kt although maize food rises by 115 kt. Wheat production rises by only 702 kt, as its feed use (6.0 Mt) falls.
-5. Result: protein stays at 107.8 g a day, energy rises from 2,437 to 2,545 kcal, and France's farm emissions fall by about 195 kt of CH₄, 4.8 kt of N₂O and 0.5 Mt of CO₂ a year.
+The baseline temperature is the chosen SSP's published temperature. With the *population* baseline, a correction is added: the warming from the difference between population-scaled agricultural emissions and the SSP's own agricultural path, from the base year on. The baseline curve then matches the baseline emissions. The shift's curve is the baseline + ΔT, for the median and for the 5–95% range of the AGTP.
 
 ## Assumptions
 
 - Diets change by shares of each animal group's current supply; the mix within a group does not change.
 - The kept basis is conserved exactly per country; the other nutrient is not.
-- The default replacement is today's mix of protein-rich plant foods (cereals, rice, pulses, nuts, oilseeds with at least 10% protein); the legume mix is 60% pulses, 20% soybeans, 20% cereals, and soy and oat drinks 50% soybeans, 50% oats: starting values to review.
+- The default replacement is today's mix of protein-rich plant foods (cereals, rice, pulses, nuts, oilseeds with at least 10% protein). The legume mix is 60% pulses, 20% soybeans, 20% cereals, and soy and oat drinks 50% soybeans, 50% oats: starting values to review.
 - Losses and seed are fixed shares of supply; processing is fixed in tonnes; the supply multiplier is capped at 3.
-- Feed falls in proportion to each group's production less processing in the same country, as pasture and fodder do; an animal group a country does not produce has no feed to lose.
+- Feed falls in proportion to each group's production less processing in the same country, as pasture and fodder do. An animal group a country does not produce has no feed to lose.
 - Milk and fish fed to animals change once, with the animals they feed; that change does not change feed again.
 - Fixed trade shares or domestic production: no change in who exports what.
 - Production cannot fall below what is processed; such cases are clipped and listed.
 - Intensities per tonne do not change with the amount produced.
 - Hectares per tonne and the pasture's shares stay as in the base year: yields and grazing intensity do not change with the shift.
-- An oilseed's land is shared between its oil and its cake by their value; the cake's part follows the animals that eat it, and temporary meadows follow the ruminants, as pasture does.
+- An oilseed's land is shared between its oil and its cake by their value. The cake's part follows the animals that eat it, and temporary meadows follow the ruminants, as pasture does.
 - Pasture follows the ruminant production of the same country, group by group; it never falls below zero.
-- With regrowth on, land freed and land newly used are netted in each country, and net newly used land is charged the uptake it forgoes at the country's regrowth rate, not the CO₂ of clearing standing forest; with regrowth off, neither counts.
-- With regrowth on, all freed land is left to natural vegetation, takes up CO₂ at a constant rate for 30 years and then nothing; a country with no rate in the data takes the median rate of the others. The uptake is not scaled with population.
+- With regrowth on, land freed and land newly used are netted in each country. Net newly used land is charged the uptake it forgoes at the country's regrowth rate, not the CO₂ of clearing standing forest. With regrowth off, neither counts.
+- With regrowth on, all freed land is left to natural vegetation. It takes up CO₂ at a constant rate for 30 years and then nothing. A country with no rate in the data takes the median rate of the others. The uptake is not scaled with population.
 - The baseline holds today's diet; population and the SSP2 path are the only drivers of change to 2100.
 - The ramp is linear from the current year.
 - Temperature responses are linear in the change of emissions (small changes around the SSP scenario).
+
+## Where the code is
+
+The code is in `app/src/model/`: `diet.ts`, `replacement.ts`, `feed.ts`, `supplyChain.ts`, `location.ts`, `emissions.ts`, `land.ts`, `timePath.ts` and `run.ts`.
 
 ## Sources
 

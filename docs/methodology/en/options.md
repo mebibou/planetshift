@@ -1,6 +1,16 @@
 # Options
 
-Where two methods are both reasonable, Planetshift builds both and lets the reader switch under *Options*. The first is the default. Each option, diet control and lever is kept in the page's address, so a link reopens the same view; defaults are left out of it. The URL key of each is given in brackets.
+This page lists every setting under *Options*, what each one changes and which value is the default. Where two methods are both reasonable, Planetshift builds both and lets the reader switch between them; the first one listed is the default. The options change the method and the future the levers are measured against, not the levers themselves.
+
+## How settings are kept in the address
+
+Each option, diet control and lever is kept in the page's address, so a link reopens the same view. Defaults are left out of the address. The URL key of each setting is given in brackets in the tables below.
+
+A few terms used on this page:
+
+- **SSP**: one of the Shared Socioeconomic Pathways, published scenarios of how the world's emissions could develop. SSP2-4.5 is the middle one; SSP1-2.6 is low and SSP3-7.0 high.
+- **FaIR**: the simple climate model Planetshift uses to turn emissions into temperature, run with the IPCC's sixth assessment (AR6) calibration. See [Climate](#method-climate).
+- **5–95% range**: the spread of the climate model's runs, without their lowest and highest 5%.
 
 ## Method options
 
@@ -12,19 +22,37 @@ Where two methods are both reasonable, Planetshift builds both and lets the read
 | Where production changes (`loc`) | trade shares held (`fixedTrade`) | each country itself (`domestic`) | Which countries' farms change on the map. World totals of animal products are the same; feed crops differ because feed falls where animals are. A cut a country cannot make in its own production goes to its suppliers. |
 | Observed temperature (`temp`) | HadCRUT5 (`hadcrut5`) | Berkeley Earth (`berkeley`) | The observed line on the chart only; years a series does not cover are left blank. |
 | Climate response (`clim`) | FaIR (`fair`) | AR6 tables (`ar6`) | The warming per tonne of each gas. FaIR has a 5–95% range; the AR6 fallback has a single curve, so its range collapses onto the median. |
-| Freed farmland (`regrow`) | left as it is (`none`) | grows back (`natural`) | Whether farmland freed by the shift takes up CO₂ as natural vegetation grows back, for 30 years after each hectare is freed. The scenario's CO₂ falls by that uptake, so the warming and the CO₂ avoided grow; methane and nitrous oxide do not change. See [The shift](#method-shift), step 8. |
+| Freed farmland (`regrow`) | left as it is (`none`) | grows back (`natural`) | Whether farmland freed by the shift takes up CO₂ as natural vegetation grows back, for 30 years after each hectare is freed. The scenario's CO₂ falls by that uptake, so the warming and the CO₂ avoided grow; methane and nitrous oxide do not change. See [The shift](#method-shift), step 8, and [Land](#method-land). |
 | AI data centres (`dc`) | growth added, IEA (`iea`) | as in the scenario (`ssp`) | With `iea`, the electricity data centres use beyond 2024's 415 TWh, following the IEA's *Energy and AI* to 2035 and held flat after, is added to the future without any lever, at each year's grid intensity: the baseline temperature rises by a few thousandths of a degree, and the data-centre and renewable-electricity levers can cut it. With `ssp`, the scenario's electricity is used as published, and the data-centre lever has nothing to act on. See [Energy and transport](#method-sectors). |
 | Permafrost (`pf`) | left out (`off`) | thaws (`on`) | With `on`, each year's rise in temperature releases carbon from thawing permafrost over the next 20 years, as CO₂ and methane, computed on the baseline temperature (which rises) and on the temperature with the levers (whose cooling releases less, so the warming avoided grows a little). See [Climate](#method-climate). |
 | Rest of the world's emissions (`ssp`) | middle, SSP2-4.5 (`ssp245`) | low, SSP1-2.6 (`ssp126`); high, SSP3-7.0 (`ssp370`) | The total temperature curve, agriculture's share of it, and, with the population baseline, the adjustment between the two agricultural paths. |
 | World population (`pop`) | UN medium projection (`medium`) | UN low (`low`), UN high (`high`) projection | With the population baseline, the world population that scales farm emissions to 2100, in the baseline and with the levers alike: 10.2 billion people in 2100 with the medium projection, 7.0 with the low and 14.4 with the high. See *World population* below. |
 
-When an intensity is missing in the chosen scope, the other scope's is used. When it is missing in both, the item adds no emissions and the country's data quality shows the lowest tier.
+When an intensity is missing in the chosen scope, the other scope's is used. When it is missing in both, the item adds no emissions, and the country's data quality shows the lowest tier.
 
 ## World population
 
-The baseline's farm emissions grow with the number of people to feed: with the default *today's diet × population* baseline, each year's farm emissions are the base year's × world population that year ÷ world population in the base year (see [The shift](#method-shift)). *World population* picks which of the UN's projections that population follows.
+The baseline's farm emissions grow with the number of people to feed. *World population* picks which of the UN's projections that number follows. With the default baseline, a larger population raises both the baseline and what the diet shift and the farm levers avoid.
 
-**Where the numbers come from.** Each country's population is FAOSTAT's, which carries the medium projection of the UN's World Population Prospects 2024 (WPP 2024). WPP 2024 also publishes a low and a high projection, with women having on average half a child fewer or more than in the medium one; they part from the medium in 2024. For each country, the pipeline takes each projection's population over the medium one in 2025, 2030 and every ten years to 2100 (`population.json`), and the app multiplies the country's own population by that ratio, linearly between those years and 1 in 2023, the last year of estimates; a country WPP has no projection for would take the world's ratio. Summed over the 188 countries, this gives the world populations below; the chart shows WPP's own world total, which includes the few countries the model leaves out.
+With the default *today's diet × population* baseline, each year's farm emissions are the base year's × world population that year ÷ world population in the base year (see [The shift](#method-shift)).
+
+### What it changes
+
+The option changes the baseline's farm emissions from the base year on, and so its temperature. With SSP2-4.5 and the FaIR response, the baseline is 2.75 °C in 2100 with the medium projection, 2.67 °C with the low and 2.84 °C with the high. In 2050 the three are the same within 0.01 °C.
+
+The diet shift and the farm levers change emissions that are scaled the same way. So what they avoid grows or shrinks with population. A 50% shift avoids 0.140 °C in 2100 with the medium projection, 0.116 °C with the low and 0.170 °C with the high (0.061, 0.058 and 0.064 °C in 2050).
+
+The less-waste lever acts on the same scaled supply. Clearing (deforestation), carbon stored in farmland, natural regrowth and the energy levers are not scaled with population, so they do not change.
+
+With the *SSP2 path* baseline, farm emissions follow SSP2-4.5's own path, and the population chosen changes nothing. The chart then says so.
+
+### Where the numbers come from
+
+Each country's population is FAOSTAT's, which carries the medium projection of the UN's World Population Prospects 2024 (WPP 2024). WPP 2024 also publishes a low and a high projection. In those, women have on average half a child fewer or more than in the medium one. They part from the medium in 2024.
+
+For each country, the pipeline takes each projection's population over the medium one in 2025, 2030 and every ten years to 2100 (`population.json`). The app multiplies the country's own population by that ratio. Between those years the ratio is interpolated linearly, from 1 in 2023, the last year of estimates. A country WPP has no projection for would take the world's ratio.
+
+Summed over the 188 countries, this gives the world populations below. The chart shows WPP's own world total, which includes the few countries the model leaves out.
 
 | UN projection (WPP 2024, world) | 2050 | 2100 | Peak |
 | --- | --- | --- | --- |
@@ -32,13 +60,23 @@ The baseline's farm emissions grow with the number of people to feed: with the d
 | Low | 8.94 billion | 6.99 billion | 8.95 billion in 2052 |
 | High | 10.40 billion | 14.40 billion | still rising in 2100 |
 
-**What it changes.** The baseline's farm emissions from the base year on, and so its temperature: with SSP2-4.5 and the FaIR response, the baseline is 2.75 °C in 2100 with the medium projection, 2.67 °C with the low and 2.84 °C with the high, and the same within 0.01 °C in 2050. The diet shift and the farm levers change emissions that are scaled the same way, so what they avoid grows or shrinks with population: a 50% shift avoids 0.134 °C in 2100 with the medium projection, 0.110 °C with the low and 0.163 °C with the high (0.060, 0.057 and 0.062 °C in 2050). The less-waste lever acts on the same scaled supply. Clearing (deforestation), carbon stored in farmland, natural regrowth and the energy levers are not scaled with population, so they do not change. With the *SSP2 path* baseline, farm emissions follow SSP2-4.5's own path and the population chosen changes nothing; the chart then says so.
+### Why it is not a lever
 
-**Why it is not a lever.** Population is not something a government sets: how many children people have depends on choices families make, shaped by education, child survival, health care and access to voluntary family planning, and the gap between the UN's projections is half a child per woman. The option sets the future against which the levers are measured; the baseline and the scenario use the same population, so the warming avoided never counts population itself, and the breakdown by family stays the levers'. Diets per person stay as they are in every projection.
+Population is not something a government sets. How many children people have depends on choices families make, shaped by education, child survival, health care and access to voluntary family planning. The gap between the UN's projections is half a child per woman.
 
-**The rest of the world stays the scenario's.** The fossil fuels, aerosols and land use of the scenario world (`ssp`) come with the population their authors assumed (the 2017 SSP projections: about 6.9 billion in 2100 for SSP1, 9.0 for SSP2 and 12.6 for SSP3), and the option does not change them. The pairings that tell roughly one story are low with SSP1-2.6, medium with SSP2-4.5, and high with SSP3-7.0; the two that contradict each other, the low projection with SSP3-7.0 and the high one with SSP1-2.6, are allowed, and a note under the population chart says so.
+The option sets the future against which the levers are measured. The baseline and the scenario use the same population, so the warming avoided never counts population itself, and the breakdown by family stays the levers'. Diets per person stay as they are in every projection.
 
-**The population chart.** Under the temperature chart, on the same years: world population counted and estimated to 2023 (Our World in Data's long-run series, from HYDE 3.3 and Gapminder, to 1949, then WPP 2024's estimates), then the three projections, the chosen one in a dashed line and the other two faint. It has its own axis in billions, not a second axis on the temperature chart, as two scales on one plot suggest a link from where the lines cross.
+### The rest of the world stays the scenario's
+
+The fossil fuels, aerosols and land use of the scenario world (`ssp`) come with the population their authors assumed: the 2017 SSP projections, about 6.9 billion in 2100 for SSP1, 9.0 for SSP2 and 12.6 for SSP3. The option does not change them.
+
+The pairings that tell roughly one story are low with SSP1-2.6, medium with SSP2-4.5, and high with SSP3-7.0. The two that contradict each other, the low projection with SSP3-7.0 and the high one with SSP1-2.6, are allowed, and a note under the population chart says so.
+
+### The population chart
+
+The population chart sits under the temperature chart, on the same years. It shows world population counted and estimated to 2023: Our World in Data's long-run series, from HYDE 3.3 and Gapminder, to 1949, then WPP 2024's estimates. Then it shows the three projections, the chosen one in a dashed line and the other two faint.
+
+It has its own axis in billions, not a second axis on the temperature chart, because two scales on one plot suggest a link from where the lines cross.
 
 ## Diet controls
 
@@ -53,7 +91,7 @@ The baseline's farm emissions grow with the number of people to feed: with the d
 
 ## Levers
 
-Each lever's adoption is 0–100, in percent, left out of the address at 0.
+Each lever's adoption is 0–100, in percent. It is left out of the address at 0.
 
 | Family | Levers (URL key) |
 | --- | --- |
@@ -64,16 +102,20 @@ Each lever's adoption is 0–100, in percent, left out of the address at 0.
 | Energy and transport | electric cars (`ev`), electric trucks (`et`), less flying (`fl`), clean aviation fuel (`saf`), clean shipping (`cs`), renewable electricity (`re`), data centres on clean power (`cdc`) |
 | Buildings and industry | clean heating (`ch`), clean steel and cement (`ci`) |
 
-A value the page does not recognise falls back to its default. Example: `?shift=10&dai=100&basis=kcal&ev=50&ssp=ssp126` is a 10% shift with all dairy replaced, calories kept, and half of road passenger transport electric, under SSP1-2.6. The keys `target` and `swap` of earlier versions (the EAT-Lancet and swap modes of the removed ready-made scenarios) are ignored.
+A value the page does not recognise falls back to its default.
+
+**Example.** `?shift=10&dai=100&basis=kcal&ev=50&ssp=ssp126` is a 10% shift with all dairy replaced, calories kept, and half of road passenger transport electric, under SSP1-2.6.
+
+The keys `target` and `swap` of earlier versions are ignored. They were the EAT-Lancet and swap modes of the ready-made scenarios, which have been removed.
 
 ## Assumptions
 
 - Both values of every option are built and tested; the defaults follow the plan's choices and are to be reviewed before release.
 - The SSP2 baseline always follows SSP2-4.5's agricultural emissions, whatever the rest of the world's emissions chosen for the temperature.
 - The AR6 fallback has no range; the range shown with it is zero, not unknown.
-- Data centres' growth is added by default: it is already happening and the scenarios, made around 2016, did not foresee it, so the baseline is more realistic with it; switching it off reproduces the published scenario temperatures.
-- Permafrost is off by default, so the baseline matches the published scenario temperatures, most of whose models leave it out; one pass of the feedback is computed, not its feedback on itself.
-- World population follows the UN's medium projection by default, which is what each country's population already carries; the low and high projections are the UN's own, not the SSPs', so that the population can be chosen apart from the scenario world.
+- Data centres' growth is added by default. It is already happening, and the scenarios, made around 2016, did not foresee it, so the baseline is more realistic with it. Switching it off reproduces the published scenario temperatures.
+- Permafrost is off by default, so the baseline matches the published scenario temperatures, most of whose models leave it out. One pass of the feedback is computed, not its feedback on itself.
+- World population follows the UN's medium projection by default, which is what each country's population already carries. The low and high projections are the UN's own, not the SSPs', so that the population can be chosen apart from the scenario world.
 - Regrowth is off by default: whether freed land is left to grow back is a choice about land, beyond the diet, and its uptake is less certain than the farm emissions. With the AR6 fallback, the range shown with regrowth on comes from the regrowth rates alone.
 
 ## Sources

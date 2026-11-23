@@ -1,48 +1,104 @@
 # Emission intensities from published LCA data
 
-Where HESTIA has no aggregation for an item, Planetshift can fall back on a published life-cycle meta-analysis (tier 4 of the intensities): Poore & Nemecek (2018), the largest such study, which covers about 38,700 farms in 119 countries. Its values are world averages, so every row has the area `World`. The code is `pipeline/planetshift_pipeline/sources/literature.py`; the product table is `pipeline/literature_terms.csv`.
+This page answers where Planetshift finds the emissions of a food when HESTIA has no data for it. It can then use a published meta-analysis of life-cycle assessments: Poore & Nemecek (2018), the largest such study, which covers about 38,700 farms in 119 countries. The study gives one world average per food. Together with FAOSTAT, it supplies the emissions of meat, milk and eggs, which HESTIA does not cover yet.
+
+## What the study adds
+
+A life-cycle assessment (LCA) counts the emissions of a product at every stage, from making the inputs to the shop. An emission intensity is the amount of each greenhouse gas emitted to produce one tonne of a food. Planetshift takes each intensity from the best source available, in six steps called tiers (see [Emissions](#method-emissions)). Poore & Nemecek are tier 4: they are used where HESTIA (tiers 1 and 2) and FAOSTAT (tier 3) give no value.
+
+Their values are world averages, so every row has the area `World`. Planetshift uses only the emissions on the farm. It splits the study's single CO₂-equivalent figure back into the three gases, because the climate model needs each gas apart. It also converts a few of the study's units to those of today's Food Balance Sheets.
+
+The code is `pipeline/planetshift_pipeline/sources/literature.py`; the product table is `pipeline/literature_terms.csv`.
 
 ## The data
 
-Poore & Nemecek publish, in Data S2 of their supplementary materials, the GHG emissions of each product by stage of the supply chain, per kg of the product's Food Balance Sheet (FBS) unit, without consumer waste (sheet "Results - Global Totals"). The stages are land-use change, feed, farm, processing, transport, packaging and retail. Their supplementary materials define the farm stage as, for crops, "inputs production, field emissions, drying and grading", and for animals, the livestock stage: "pasture irrigation and fertilization, manure management, aquaculture emissions, enteric fermentation and energy use". Feed is a stage of its own.
+Poore & Nemecek publish the greenhouse gas (GHG) emissions of each product in Data S2 of their supplementary materials (sheet "Results - Global Totals"). The values are given by stage of the supply chain. They are per kg of the product's Food Balance Sheet (FBS) unit, and they leave out consumer waste. The stages are land-use change, feed, farm, processing, transport, packaging and retail.
 
-`literature_terms.csv` holds, for each FBS item, the Poore & Nemecek products that represent it, their farm-stage emissions (`farm_kg_co2e_per_kg`, transcribed from that sheet), their food and waste in 2009–11 (`weight_kt`, from the same sheet), a conversion to the current FBS quantity, and the gas profile to split them with. The values are a fixed 2018 publication in a spreadsheet format the pipeline does not read, so they are kept in the table rather than downloaded; every value was checked against the spreadsheet once, when transcribed.
+Their supplementary materials define the farm stage as follows:
 
-## Scopes
+- for crops, "inputs production, field emissions, drying and grading";
+- for animals, the livestock stage: "pasture irrigation and fertilization, manure management, aquaculture emissions, enteric fermentation and energy use".
 
-Only the farm stage is used. Land-use change is left out, as in the HESTIA rows; feed is left out because Planetshift counts feed through the crops it reduces; processing, transport, packaging and retail are after the farm gate.
+Feed is a stage of its own.
 
-- `cradleToFarmGate` = the farm stage, which for crops already includes the production of inputs other than feed.
-- `farmGate` = the farm stage × the share of on-farm emissions in HESTIA's cradle-to-farm-gate emissions of the same item (CO₂e, with the factors below). For crops, HESTIA's split of on-farm and input-production emissions is the only one available; Poore & Nemecek do not publish it.
-- For animal products, the livestock stage is almost entirely on-farm (enteric fermentation and manure), so both scopes take the whole farm stage. The emissions of fertilising pasture and of the energy used on the farm are kept in both.
+For each FBS item, `literature_terms.csv` holds:
+
+- the Poore & Nemecek products that represent it;
+- their farm-stage emissions (`farm_kg_co2e_per_kg`, transcribed from that sheet);
+- their food and waste in 2009–11 (`weight_kt`, from the same sheet);
+- a conversion to the current FBS quantity;
+- the gas profile used to split them.
+
+The values come from a fixed 2018 publication, in a spreadsheet format the pipeline does not read. They are therefore kept in the table rather than downloaded. Every value was checked against the spreadsheet once, when it was transcribed.
+
+## Which emissions are used
+
+Only the farm stage is used:
+
+- Land-use change is left out, as in the HESTIA rows.
+- Feed is left out, because Planetshift counts feed through the crops it reduces.
+- Processing, transport, packaging and retail happen after the farm gate (the point where the product leaves the farm), so they are left out too.
+
+Planetshift has two scopes, set under Options (see [Emissions](#method-emissions)). Farm gate counts what happens on the farm. Cradle to farm gate also counts the making of the farm's inputs, such as fertiliser. The study's farm stage is turned into the two scopes as follows:
+
+- `cradleToFarmGate` = the farm stage. For crops, the farm stage already includes the production of inputs other than feed.
+- `farmGate` = the farm stage × the share of on-farm emissions in HESTIA's cradle-to-farm-gate emissions of the same item (in CO₂e, with the factors below). For crops, HESTIA's split between on-farm and input-production emissions is the only one available; Poore & Nemecek do not publish it.
+- For animal products, the livestock stage is almost entirely on the farm (enteric fermentation and manure), so both scopes take the whole farm stage. The emissions of fertilising pasture and of the energy used on the farm are kept in both.
 
 ## Splitting CO₂e into gases
 
-Poore & Nemecek report CO₂-equivalents, with the IPCC AR5 100-year factors including climate-carbon feedbacks: 34 for CH₄ and 298 for N₂O (their table S2). Planetshift needs each gas apart. Each product's farm stage is split in the proportions of a gas profile, then each gas's CO₂e is divided by its factor:
+Poore & Nemecek report CO₂-equivalents (CO₂e). A CO₂e figure adds the gases up after weighting each one by how much it warms over 100 years compared with CO₂. The study uses the factors of the IPCC's Fifth Assessment Report (AR5) that include climate-carbon feedbacks: 34 for CH₄ and 298 for N₂O (their table S2).
+
+Planetshift needs each gas apart. Each product's farm stage is split in the proportions of a gas profile, a typical mix of the gases for that kind of product. Each gas's CO₂e is then divided by its factor:
 
 kg of gas = farm CO₂e × (gas's CO₂e in the profile / profile's total CO₂e) / GWP of the gas
 
-so the result, multiplied back by 34 and 298, returns Poore & Nemecek's value exactly.
+Multiplied back by 34 and 298, the result returns Poore & Nemecek's value exactly.
 
-- Crops: the profile is HESTIA's intensities of the same FBS item (`hestia:<code>`), from its World aggregation if there is one, otherwise the mean of its countries. Where HESTIA lacks the item, a close item's profile is named instead: palm oil takes oil palm fruit's, soybean oil soybeans', tea coffee's, plantains bananas', pineapples and dates other fruit's, grapefruit and other citrus oranges'.
-- Animal products: HESTIA has no animal aggregation yet, so the profile is FAOSTAT's on-farm emissions of the species in the world's latest year (Emissions from livestock): CH₄ from enteric fermentation and manure management, N₂O from manure management and from manure left on pasture (`faostat:<species>`). Manure applied to soils is left out of the profile, since it fertilises crops. Bovine meat from the beef herd takes non-dairy cattle's profile, from the dairy herd and milk dairy cattle's, mutton and goat sheep and goats', pig meat swine's, poultry meat broilers', eggs layers'.
+**Example.** Bovine meat has a farm-stage value of 29,040 kg CO₂e per tonne (table below). After the split it carries 703 kg of CH₄ and 17.3 kg of N₂O per tonne. Multiplied back, 703 × 34 ≈ 23,900 and 17.3 × 298 ≈ 5,160, which add up to the 29,040 kg CO₂e of the study, give or take the rounding of the table.
 
-FAOSTAT's livestock emissions have no CO₂, so the animal rows carry none: the energy and pasture-fertiliser part of the livestock stage is counted as CH₄ and N₂O in the species' proportions. It is a small share for ruminants, larger for pigs and poultry.
+The profiles come from two sources:
+
+- **Crops.** The profile is HESTIA's intensities of the same FBS item (`hestia:<code>`), from its World aggregation if there is one, otherwise the mean of its countries. Where HESTIA lacks the item, a close item's profile is named instead:
+  - palm oil takes oil palm fruit's;
+  - soybean oil takes soybeans';
+  - tea takes coffee's;
+  - plantains take bananas';
+  - pineapples and dates take other fruit's;
+  - grapefruit and other citrus take oranges'.
+- **Animal products.** HESTIA has no animal aggregation yet. The profile is therefore FAOSTAT's on-farm emissions of the species in the world's latest year (Emissions from livestock): CH₄ from enteric fermentation and manure management, and N₂O from manure management and from manure left on pasture (`faostat:<species>`). Manure applied to soils is left out of the profile, since it fertilises crops. The species are matched as follows:
+  - bovine meat from the beef herd takes non-dairy cattle's profile;
+  - bovine meat from the dairy herd, and milk, take dairy cattle's;
+  - mutton and goat take sheep and goats';
+  - pig meat takes swine's;
+  - poultry meat takes broilers';
+  - eggs take layers'.
+
+FAOSTAT's livestock emissions have no CO₂, so the animal rows carry none. The energy and pasture-fertiliser part of the livestock stage is counted as CH₄ and N₂O, in the species' proportions. That part is small for ruminants and larger for pigs and poultry.
 
 ## Units
 
-Poore & Nemecek's FBS units are those of FAOSTAT's earlier Food Balance Sheets (before 2010), which differ from the current ones in two items. `kg_product_per_kg_item` converts them:
+Poore & Nemecek's FBS units are those of FAOSTAT's earlier Food Balance Sheets (before 2010). They differ from the current ones in two items. `kg_product_per_kg_item` converts them:
 
-- Rice: their unit is milled rice; the current FBS counts paddy, of which milled rice is 66.7%, so 0.667.
-- Groundnuts: their unit is shelled groundnuts; the current FBS counts them in shell, of which kernels are 70%, so 0.7.
-- Sugar cane and sugar beet: their unit is raw sugar; per kg of cane, 0.11 kg of raw sugar, per kg of beet, 0.15. The FBS item "Sugar (Raw Equivalent)" takes the sugar values directly.
-- All other items: 1. Meat is per kg of carcass weight, milk per kg of milk, eggs per kg in shell, coffee per kg of green coffee, cocoa per kg of beans, oils per kg of oil, nuts per kg in shell. (The retail-weight figures often quoted from the study, such as 99 kg CO₂e per kg of beef, are per kg of boneless meat and include all stages.)
+- **Rice**: their unit is milled rice. The current FBS counts paddy, of which milled rice is 66.7%, so 0.667.
+- **Groundnuts**: their unit is shelled groundnuts. The current FBS counts them in shell, of which kernels are 70%, so 0.7.
+- **Sugar cane and sugar beet**: their unit is raw sugar. A kg of cane gives 0.11 kg of raw sugar, and a kg of beet 0.15. The FBS item "Sugar (Raw Equivalent)" takes the sugar values directly.
+- **All other items**: 1. Meat is per kg of carcass weight, milk per kg of milk, eggs per kg in shell, coffee per kg of green coffee, cocoa per kg of beans, oils per kg of oil, and nuts per kg in shell.
 
-When several products share an item, they are averaged with their 2009–11 food and waste as weights: bovine meat is beef herd (40.6 Mt), dairy herd (31.4 Mt) and buffalo (6.6 Mt); "Vegetables, other" is other vegetables, brassicas and root vegetables.
+The retail-weight figures often quoted from the study, such as 99 kg CO₂e per kg of beef, are a different measure. They are per kg of boneless meat and include all stages.
+
+When several products share an item, they are averaged with their 2009–11 food and waste as weights:
+
+- bovine meat is beef herd (40.6 Mt), dairy herd (31.4 Mt) and buffalo (6.6 Mt);
+- "Vegetables, other" is other vegetables, brassicas and root vegetables.
 
 ## Coverage
 
-46 FBS items get a literature row in both scopes. 19 of them have no HESTIA row at all: bovine meat, mutton and goat meat, pig meat, poultry meat, milk, eggs, the five vegetable oils and other oils (2571, 2573, 2574, 2577, 2580, 2586), sugar (raw equivalent), grapefruit, other citrus, plantains, pineapples, dates and tea. 19 more have HESTIA rows for some countries but no World aggregation, so the literature row is their only world value: rice, oats, rye, other cereals, cassava, beans, peas, other pulses, nuts, other oil crops, tomatoes, onions, other vegetables, oranges, lemons, apples, other fruit, coffee, cocoa. Barley, millet, sorghum, sweet potatoes, yams, soybeans, sunflower seed, rapeseed, sesame, palm kernels and olives get none (Poore & Nemecek report barley only as beer, and soybeans as tofu, soy milk and oil).
+46 FBS items get a literature row in both scopes.
+
+- **19 have no HESTIA row at all**: bovine meat, mutton and goat meat, pig meat, poultry meat, milk, eggs, the five vegetable oils and other oils (2571, 2573, 2574, 2577, 2580, 2586), sugar (raw equivalent), grapefruit, other citrus, plantains, pineapples, dates and tea.
+- **19 more have HESTIA rows for some countries but no World aggregation**, so the literature row is their only world value: rice, oats, rye, other cereals, cassava, beans, peas, other pulses, nuts, other oil crops, tomatoes, onions, other vegetables, oranges, lemons, apples, other fruit, coffee and cocoa.
+- **Some items get none**: barley, millet, sorghum, sweet potatoes, yams, soybeans, sunflower seed, rapeseed, sesame, palm kernels and olives. Poore & Nemecek report barley only as beer, and soybeans as tofu, soy milk and oil.
 
 Some values (farm gate, kg per tonne of the FBS item):
 
@@ -61,13 +117,16 @@ Some values (farm gate, kg per tonne of the FBS item):
 
 - Poore & Nemecek's farm stage is cradle to farm gate without feed and land-use change.
 - HESTIA's on-farm share of cradle-to-farm-gate CO₂e for an item applies to Poore & Nemecek's farm stage of the same item.
-- An item's gas profile is HESTIA's for that item (or the close item named), or FAOSTAT's on-farm livestock emissions for animal products; the profile is a world average.
+- An item's gas profile is HESTIA's for that item (or for the close item named), or FAOSTAT's on-farm livestock emissions for animal products. The profile is a world average.
 - Animal products carry no CO₂, and both scopes are equal for them.
-- GWP100 factors are AR5 with climate-carbon feedbacks, 34 for CH₄ and 298 for N₂O, for both fossil and biogenic CH₄.
-- Conversions to the current FBS quantity are those listed above; sugar extraction rates of 11% (cane) and 15% (beet) are typical values, not taken from the study.
+- The GWP100 factors (the 100-year weights that turn each gas into CO₂e) are AR5's with climate-carbon feedbacks: 34 for CH₄ and 298 for N₂O, for both fossil and biogenic CH₄.
+- Conversions to the current FBS quantity are those listed above. The sugar extraction rates of 11% (cane) and 15% (beet) are typical values, not taken from the study.
 - Products sharing an item are weighted by their 2009–11 food and waste.
 - Poore & Nemecek's estimates for the FBS items they did not survey ("Cereals & Oilcrops Misc.", "Oils Misc.", "Stimulants & Spices Misc.") are used for other cereals, other oil crops, other oils and tea.
-- No second literature source is used. Clune et al. (2017) compiles mostly the same studies, in a paywalled article whose data licence could not be confirmed; Agribalyse describes French production only. The items Poore & Nemecek miss (barley as grain, soybeans, sunflower seed, rapeseed, sesame, olives, sweet potatoes, yams, millet, sorghum) are mostly covered by HESTIA's countries, and the rest is left to the proxy and group tiers.
+- No second literature source is used:
+  - Clune et al. (2017) compiles mostly the same studies, in a paywalled article whose data licence could not be confirmed.
+  - Agribalyse describes French production only.
+  - The items Poore & Nemecek miss (barley as grain, soybeans, sunflower seed, rapeseed, sesame, olives, sweet potatoes, yams, millet, sorghum) are mostly covered by HESTIA's countries. The rest is left to the proxy and group tiers.
 
 ## Sources
 
