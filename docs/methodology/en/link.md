@@ -154,7 +154,7 @@ Some of what the energy levers change is not a greenhouse gas: aviation's non-CO
 - Air pollution is every source's sulphur dioxide, black and organic carbon, ammonia and nitrogen oxides, farming's ammonia included, brought back to 1750 levels. Carbon monoxide and volatile organic compounds stay with *other human emissions*.
 - The levers' change in air pollution is counted with FaIR's forcing per kg and the methane NOx and VOCs leave. This is the same physics, linearised at the scenario's emissions. The levers' CO and VOCs count under air pollution all the same, as part of what burning the fuel emits. This is a small mismatch with the band.
 - The natural factors are a separate run with natural forcing alone, not a removal. *Other human emissions* is the total less every named cause and the natural factors.
-- A removal never takes a species' emissions below zero.
+- A removal never takes a species' emissions below zero, but for CO₂. The scenarios' carbon removal takes net CO₂ below zero (fossil CO₂ on SSP1-2.6 from 2079), and taking a cause out leaves the removal in place: the world without farming keeps it, and the world without fossil fuels and industry keeps only farming's CO₂.
 - The parts of each gas come from the same emissions as the causes: a gas has no other split by source than the one the causes make.
 - The full-emission runs are also the scenario temperatures on the [temperature page](#method-climate).
 
