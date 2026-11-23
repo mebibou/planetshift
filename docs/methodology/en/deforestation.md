@@ -50,6 +50,8 @@ DeDuCE gives two series:
 
 Planetshift uses the amortised series, because the model scales emissions with production. It averages the years 2019 to 2023, the latest five, so that one dry year or one policy swing does not dominate.
 
+The map shows the forest area cleared instead: DeDuCE's unamortised attribution, in hectares, averaged over the same years and given to foods the same way as the CO₂. It totals about 4.2 million hectares a year on the foods in the model, 1.5 million in Brazil. The model moves it with each food's production and the lever exactly as it moves the CO₂, and the map's tooltip gives both.
+
 ### Peat drainage is left out
 
 DeDuCE also reports the CO₂ from draining peatland under crops, mostly oil palm in Indonesia and Malaysia: about 0.23 Gt a year. Planetshift leaves it out. It is an emission of land already cleared, which goes on whether or not more forest is cut. It therefore belongs with the land the food occupies rather than with deforestation.

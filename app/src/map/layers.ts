@@ -12,7 +12,7 @@ export const LAYERS = [
 export type Layer = (typeof LAYERS)[number];
 export const CHANGE_OF = ['production', 'emissions', 'land'] as const;
 export type ChangeOf = (typeof CHANGE_OF)[number];
-/** What a layer measures: a quantity the Change layer also offers, or forest clearing's CO₂. */
+/** What a layer measures: a quantity the Change layer also offers, or the forest area cleared. */
 export type Measure = ChangeOf | 'deforestation';
 export type GasChoice = Gas | 'co2e';
 export const GAS_CHOICES: GasChoice[] = ['co2e', ...GASES];
@@ -41,7 +41,7 @@ export const farmland = (l: { cropland: number; pasture: number }): number =>
 
 /**
  * What the layer measures for a country, before and after: tonnes of product, kg of gas,
- * hectares of farmland or kg of CO₂ from forest clearing.
+ * hectares of farmland or hectares of forest cleared.
  */
 export interface BeforeAfter {
   kind: Measure;
@@ -56,10 +56,10 @@ export const measureOf = (spec: Pick<LayerSpec, 'layer' | 'changeOf'>): Measure 
       ? spec.layer
       : 'production';
 
-/** The deforestation module's fields of a country: CO₂ from clearing a year, and its change. */
+/** The deforestation module's fields of a country: forest cleared a year, ha, and its change. */
 const clearing = (c: CountryResult): [number, number] => [
-  c.deforestationCo2 ?? 0,
-  c.deforestationChange ?? 0,
+  c.deforestationHa ?? 0,
+  c.deforestationHaChange ?? 0,
 ];
 
 const beforeAndChange = (c: CountryResult, spec: LayerSpec, kind: Measure): [number, number] =>

@@ -2,7 +2,7 @@ import { sum } from '../../model/util';
 import { lever } from '../define';
 import type { LeverModule } from '../types';
 import { EMPTY_DEFORESTATION } from './data';
-import { clearingParts, deforestationOf } from './model';
+import { clearedAreaOf, clearingParts, deforestationOf } from './model';
 
 const ID = 'deforestation';
 
@@ -23,12 +23,11 @@ export const deforestation: LeverModule = {
     country: ({ prepared, adoption }) => {
       const share = adoption('deforestation');
       return ({ pc, stages }) => {
-        const parts = clearingParts(
-          deforestationOf(pc, prepared),
-          stages.map((s) => s.change),
-          pc.emitting,
-          share,
-        );
+        const changes = stages.map((s) => s.change);
+        const parts = clearingParts(deforestationOf(pc, prepared), changes, pc.emitting, share);
+        const area = clearingParts(clearedAreaOf(pc, prepared), changes, pc.emitting, share);
+        const total = (p: typeof parts) =>
+          [...p.steps, p.lever, p.leverJoint].reduce((a, b) => a + b);
         return {
           co2: {
             ...Object.fromEntries(stages.map((s, k) => [s.family, parts.steps[k] as number])),
@@ -37,9 +36,9 @@ export const deforestation: LeverModule = {
           jointCo2: { [ID]: parts.leverJoint },
           result: {
             deforestationCo2: parts.before,
-            deforestationChange: [...parts.steps, parts.lever, parts.leverJoint].reduce(
-              (a, b) => a + b,
-            ),
+            deforestationChange: total(parts),
+            deforestationHa: area.before,
+            deforestationHaChange: total(area),
           },
         };
       };

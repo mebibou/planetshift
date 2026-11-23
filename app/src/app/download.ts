@@ -71,7 +71,7 @@ export const unitOf = (measure: Measure, spec: LayerSpec): string =>
     : measure === 'land'
       ? 'ha'
       : measure === 'deforestation'
-        ? 'kg CO2'
+        ? 'ha'
         : spec.gas === 'co2e'
           ? 'kg CO2e (GWP100)'
           : `kg ${spec.gas.toUpperCase()}`;

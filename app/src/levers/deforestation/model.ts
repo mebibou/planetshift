@@ -10,6 +10,13 @@ export const deforestationOf = (pc: PreparedCountry, prepared: Prepared): ItemVe
     return Float64Array.from(prepared.items, (item) => (byCode[String(item.code)] ?? 0) * 1000);
   });
 
+/** A country's forest area cleared by the item it serves, hectares a year. */
+export const clearedAreaOf = (pc: PreparedCountry, prepared: Prepared): ItemVector =>
+  cache(pc, 'clearedArea', () => {
+    const byCode = prepared.data.deforestation.areaByCountry?.[pc.country.iso3] ?? {};
+    return Float64Array.from(prepared.items, (item) => byCode[String(item.code)] ?? 0);
+  });
+
 /**
  * How far clearing tied to an item can move with its production: down to none, up to double.
  * The cap guards against a small producer whose output multiplies.

@@ -733,12 +733,17 @@ write('waste.json', {
   source: 'https://wedocs.unep.org/20.500.11822/45230',
 });
 
-// deforestation CO₂ attributed to commodities, tonnes a year
+// deforestation CO₂ attributed to commodities, tonnes a year, and the forest area cleared, ha a year
 write('deforestation.json', {
   byCountry: {
     BRA: { 2731: 3.0e8, 2555: 1.2e8, 2514: 2.0e7 },
     NGA: { 2514: 2.0e7, 2615: 5.0e6 },
     IND: { 2555: 1.0e7 },
+  },
+  areaByCountry: {
+    BRA: { 2731: 6.0e5, 2555: 2.5e5, 2514: 4.0e4 },
+    NGA: { 2514: 6.0e4, 2615: 1.5e4 },
+    IND: { 2555: 2.0e4 },
   },
   years: [2018, 2022],
   source: 'https://doi.org/10.5281/zenodo.10633818',

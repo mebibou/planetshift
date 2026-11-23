@@ -39,4 +39,19 @@ describe('deforestation', () => {
     expect(r.summary.deforestationCo2.avoided).toBeGreaterThan(0);
     expect(r.summary.byFamily.avoidedWarming2050.deforestation).toBe(0);
   });
+  it('moves the forest area cleared as it moves the CO₂', () => {
+    const brazil = (s: Parameters<typeof run>[0]) =>
+      run(s).countries.find((c) => c.iso3 === 'BRA') ?? expect.fail('no Brazil');
+    const today = brazil({});
+    expect(today.deforestationHa).toBe(8.9e5);
+    expect(today.deforestationHaChange).toBe(0);
+    const beef = brazil({ groupShifts: { ruminantMeat: 1 } });
+    expect(beef.deforestationHaChange).toBeLessThan(0);
+    expect(beef.deforestationHaChange / beef.deforestationHa).toBeCloseTo(
+      beef.deforestationChange / beef.deforestationCo2,
+      1,
+    );
+    const stopped = lever('deforestation').countries.find((c) => c.iso3 === 'BRA');
+    expect(stopped?.deforestationHaChange).toBeCloseTo(-8.9e5, 0);
+  });
 });

@@ -103,7 +103,7 @@ describe('map csv', () => {
     expect(unitOf('emissions', spec({ gas: 'n2o' }))).toBe('kg N2O');
     expect(unitOf('production', spec())).toBe('t');
     expect(unitOf('land', spec())).toBe('ha');
-    expect(unitOf('deforestation', spec())).toBe('kg CO2');
+    expect(unitOf('deforestation', spec())).toBe('ha');
   });
 
   it('names the scenario by its shift, year, foods and levers', () => {

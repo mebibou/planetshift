@@ -85,8 +85,8 @@ describe('layers', () => {
     ]);
   });
 
-  it('measures forest clearing in absolute CO₂, before and after', () => {
-    const c = countryResult({ deforestationCo2: 5e9, deforestationChange: -2e9 });
+  it('measures forest clearing in hectares, before and after', () => {
+    const c = countryResult({ deforestationHa: 5e9, deforestationHaChange: -2e9 });
     expect(measureOf(spec({ layer: 'deforestation' }))).toBe('deforestation');
     expect(beforeAfter(c, spec({ layer: 'deforestation' }))).toEqual({
       kind: 'deforestation',
