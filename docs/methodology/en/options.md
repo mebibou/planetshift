@@ -38,9 +38,9 @@ With the default *today's diet × population* baseline, each year's farm emissio
 
 ### What it changes
 
-The option changes the baseline's farm emissions from the base year on, and so its temperature. With SSP2-4.5 and the FaIR response, the baseline is 2.75 °C in 2100 with the medium projection, 2.67 °C with the low and 2.84 °C with the high. In 2050 the three are the same within 0.01 °C.
+The option changes the baseline's farm emissions from the base year on, and so its temperature. With SSP2-4.5 and the FaIR response, the baseline is 2.81 °C in 2100 with the medium projection, 2.74 °C with the low and 2.91 °C with the high. In 2050 the low and the high projections are within 0.01 °C of the medium one.
 
-The diet shift and the farm levers change emissions that are scaled the same way. So what they avoid grows or shrinks with population. A 50% shift avoids 0.140 °C in 2100 with the medium projection, 0.116 °C with the low and 0.170 °C with the high (0.061, 0.058 and 0.064 °C in 2050).
+The diet shift and the farm levers change emissions that are scaled the same way. So what they avoid grows or shrinks with population. A 50% shift avoids 0.135 °C in 2100 with the medium projection, 0.112 °C with the low and 0.164 °C with the high (0.058, 0.056 and 0.061 °C in 2050).
 
 The less-waste lever acts on the same scaled supply. Clearing (deforestation), carbon stored in farmland, natural regrowth and the energy levers are not scaled with population, so they do not change.
 

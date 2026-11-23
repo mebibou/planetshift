@@ -138,11 +138,11 @@ Les deux périmètres sont définis sur la page [Émissions par tonne d'aliment]
 
 | Gaz, à la ferme | Total mondial du modèle | Principales sources |
 | --- | --- | --- |
-| Méthane | 137 Mt | 75 % fermentation entérique (102 Mt), 16 % rizières (22 Mt), 7 % gestion des effluents (10 Mt), 2 % résidus de culture |
-| Protoxyde d'azote | 7,7 Mt | 49 % engrais organiques, c'est-à-dire les effluents au pâturage et sur les champs (3,7 Mt), 37 % engrais de synthèse (2,9 Mt), 8 % résidus, 6 % gestion des effluents |
-| CO₂ | 370 Mt | le carburant brûlé sur les fermes (232 Mt), l'urée (100 Mt) et, dans les autres, le chaulage (38 Mt) |
+| Méthane | 138 Mt | 71 % fermentation entérique (98 Mt), 16 % rizières (22 Mt), 7 % gestion des effluents (9 Mt), 5 % animaux non élevés pour l'alimentation (6 Mt), 2 % résidus de culture |
+| Protoxyde d'azote | 8,1 Mt | 45 % engrais organiques, c'est-à-dire les effluents au pâturage et sur les champs (3,7 Mt), 36 % engrais de synthèse (2,9 Mt), 8 % résidus, 6 % gestion des effluents, 3 % autres, 2 % animaux non élevés pour l'alimentation |
+| CO₂ | 390 Mt | le carburant brûlé sur les fermes (244 Mt), l'urée (103 Mt) et, dans les autres, le chaulage (42 Mt) |
 
-Les totaux de FAOSTAT pour 2023 sont de 106, 25 et 10 Mt pour les trois premières sources de méthane. Du berceau à la sortie de ferme, le CO₂ monte à 1 505 Mt, dont 746 Mt pour l'énergie et 648 Mt pour la fabrication des intrants.
+Les totaux de FAOSTAT pour 2023 sont de 106, 25 et 10 Mt pour les trois premières sources de méthane. Du berceau à la sortie de ferme, le CO₂ monte à 1 741 Mt, dont 923 Mt pour l'énergie et 699 Mt pour la fabrication des intrants.
 
 ### Comment chaque niveau est réparti
 

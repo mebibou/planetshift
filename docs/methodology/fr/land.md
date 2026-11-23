@@ -1,6 +1,6 @@
 # Terres : cultures, prairies et repousse
 
-Cette page indique combien de terres agricoles chaque scénario utilise et combien il en libère, pays par pays. Manger moins d'aliments d'origine animale libère surtout des prairies : un changement complet vers le végétal en libère presque toutes, 3,0 milliards d'hectares, tandis que les terres cultivées baissent de 0,11 milliard d'hectares, soit 7 %. En option, désactivée par défaut, Planetshift compte aussi le dioxyde de carbone que les terres libérées pourraient absorber si on les laissait redevenir forêt.
+Cette page indique combien de terres agricoles chaque scénario utilise et combien il en libère, pays par pays. Manger moins d'aliments d'origine animale libère surtout des prairies : un changement complet vers le végétal en libère presque toutes, 3,0 milliards d'hectares, tandis que les terres cultivées baissent de 0,13 milliard d'hectares, soit 8 %. En option, désactivée par défaut, Planetshift compte aussi le dioxyde de carbone que les terres libérées pourraient absorber si on les laissait redevenir forêt.
 
 ## Les terres agricoles aujourd'hui
 
@@ -33,11 +33,11 @@ Quand un scénario change la production, les terres cultivées changent avec ell
 
 Les prairies changent avec la production des groupes de ruminants. La part des prairies d'un pays attribuée à chaque groupe varie en proportion de la production du groupe. Si un pays produit moitié moins de bœuf, les prairies attribuées au bœuf sont divisées par deux. Les prairies ne descendent jamais sous zéro. Les prairies temporaires changent de la même façon.
 
-**Exemple.** Avec un changement de 50 %, à protéines égales et avec les options par défaut, le monde libère 1,55 milliard d'hectares de ses 3,02 milliards de prairies, et 62 Mha de ses 1,65 milliard d'hectares de terres cultivées (environ 4 %).
+**Exemple.** Avec un changement de 50 %, à protéines égales et avec les options par défaut, le monde libère 1,51 milliard d'hectares de ses 3,02 milliards de prairies, et 65 Mha de ses 1,65 milliard d'hectares de terres cultivées (environ 4 %).
 
 ### Les terres cultivées avec un changement complet vers le végétal
 
-Sans aucun produit animal et à protéines égales, les terres cultivées du modèle baissent de 0,11 milliard d'hectares, 7 % de ses 1,65 milliard. À calories égales, elles baissent de 22 %, et avec le mélange riche en légumineuses de 8 %. Presque toutes les prairies (3,0 milliards d'hectares) sont libérées.
+Sans aucun produit animal et à protéines égales, les terres cultivées du modèle baissent de 0,13 milliard d'hectares, 8 % de ses 1,65 milliard. À calories égales, elles baissent de 24 %, et avec le mélange riche en légumineuses de 10 %. Presque toutes les prairies (3,0 milliards d'hectares) sont libérées.
 
 Poore et Nemecek (2018) trouvent qu'un tel régime réduirait les terres agricoles de 76 % (3,1 milliards d'hectares), « dont une réduction de 19 % des terres arables ».
 
@@ -51,6 +51,7 @@ Le modèle trouvait auparavant l'inverse : une hausse de 0,38 milliard d'hectare
 | Remplacement par les seuls végétaux riches en protéines d'aujourd'hui (céréales, riz, légumineuses, fruits à coque, oléagineux) | +141 Mha |
 | Terres des oléagineux partagées entre huile et tourteau selon leur valeur, la part du tourteau libérée avec les animaux | +36 Mha |
 | Prairies temporaires comptées comme fourrage des ruminants, et libérées avec eux | −99 Mha (−6 %) |
+| Le modèle actuel, où la production alimentaire de chaque groupe animal tombe à zéro et où les animaux non élevés pour l'alimentation restent | −130 Mha (−8 %) |
 
 - Le remplacement augmentait tous les aliments végétaux du même facteur. Remplacer les protéines de la viande faisait alors monter les fruits de 80 %, les légumes de 74 %, et le sucre, les boissons et les huiles végétales en proportion, alors qu'ils n'apportent presque pas de protéines. Plus d'huile de soja voulait alors dire plus de champs de soja. Le remplacement par défaut n'ajoute désormais des protéines qu'aux aliments végétaux qu'on mange pour elles (voir [Le changement](#method-shift)). Le restreindre davantage, aux aliments ayant au moins 5 % de protéines, donnait environ −2 % avant le fourrage. Mais ce seuil est arbitraire, et il écarte le riz (4,8 %) et les fruits à coque, piliers des protéines végétales dans une grande partie du monde.
 - Les tourteaux ne portaient aucune terre : les champs de soja cultivés pour le tourteau ne pouvaient donc pas être libérés. Le partage selon la valeur est la pratique habituelle des analyses de cycle de vie. Un partage selon la masse donnerait moins de terres à l'huile et plus au tourteau (l'huile de soja 19 % des terres au lieu de 37 %), et un changement complet en libérerait un peu plus.
@@ -60,7 +61,7 @@ Le modèle trouvait auparavant l'inverse : une hausse de 0,38 milliard d'hectare
 
 L'écart restant avec les −19 % de Poore et Nemecek a trois causes probables :
 
-- Remplacer les protéines animales par des aliments de base riches en céréales ajoute des calories (de 2 437 à environ 2 545 kcal par jour dans l'exemple de la France) : on cultive donc plus que nécessaire. Garder plutôt les calories égales donne −22 %, proche de leur chiffre, et leur régime respecte les deux.
+- Remplacer les protéines animales par des aliments de base riches en céréales ajoute des calories (de 2 437 à environ 2 545 kcal par jour dans l'exemple de la France) : on cultive donc plus que nécessaire. Garder plutôt les calories égales donne −24 %, proche de leur chiffre, et leur régime respecte les deux.
 - Le maïs ensilage, la luzerne et les autres cultures fourragères ne sont toujours pas comptés.
 - Leurs terres arables comptent la surface physique, jachères comprises, là où le modèle compte la surface récoltée.
 
@@ -182,13 +183,13 @@ Le tableau montre ce que change la compensation, sur les données réelles avec 
 
 | Scénario, repousse activée | Absorption nette une fois complet (Gt de CO₂ par an) | Évité en 2050 (°C) | Évité en 2100 (°C) |
 | --- | --- | --- | --- |
-| Changement complet, avant | 9,10 | 0,182 | 0,365 (0,194–0,759) |
-| Changement complet, net | 8,70 | 0,179 | 0,361 (0,193–0,743) |
-| Moitié du changement, avant → net | 4,68 → 4,49 | 0,094 → 0,093 | 0,188 → 0,186 |
-| Lait végétal pour le lait, avant → net | 1,18 → 1,13 | 0,043 → 0,042 | 0,086 → 0,085 |
-| Moitié du poisson en légumineuses, avant → net | 0,01 → −0,11 | 0,0005 → −0,0003 | 0,0014 → 0,0002 |
+| Changement complet, avant | 9,25 | 0,182 | 0,367 (0,194–0,765) |
+| Changement complet, net | 8,88 | 0,180 | 0,363 (0,194–0,750) |
+| Moitié du changement, avant → net | 4,63 → 4,44 | 0,091 → 0,090 | 0,183 → 0,181 |
+| Lait végétal pour le lait, avant → net | 1,10 → 1,04 | 0,040 → 0,040 | 0,081 → 0,080 |
+| Moitié du poisson en légumineuses, avant → net | 0,01 → −0,10 | 0,0005 → −0,0003 | 0,0015 → 0,0004 |
 
-Avec le changement complet, 12 pays cultivent au total plus de terres qu'avant, 48 Mha ensemble. Avec la substitution du poisson, 107 pays, 19 Mha ensemble. Sans la repousse, rien ne change.
+Avec le changement complet, 12 pays cultivent au total plus de terres qu'avant, 44 Mha ensemble. Avec la substitution du poisson, 105 pays, 18 Mha ensemble. Sans la repousse, rien ne change.
 
 ## Vérifications
 

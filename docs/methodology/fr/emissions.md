@@ -1,30 +1,126 @@
 # Émissions par tonne d'aliment
 
-Pour traduire un changement de production en changement d'émissions, Planetshift a besoin, pour chaque pays et chaque produit alimentaire, des kilogrammes de dioxyde de carbone (CO₂), de méthane (CH₄) et de protoxyde d'azote (N₂O) émis par tonne produite. Ce sont les intensités d'émission de `intensities.json`. Les gaz restent séparés jusqu'au modèle climatique. Cette page explique d'où vient chaque intensité, ce qu'elle couvre et comment les manques sont comblés. Le code est `pipeline/planetshift_pipeline/intensities.py` ; ses tables sont `pipeline/qcl_items.csv` et `pipeline/proxies.csv`.
+Pour traduire un changement de production en changement d'émissions, Planetshift doit savoir ce qu'émet chaque aliment. Pour chaque pays et chaque produit alimentaire, il connaît les kilogrammes de dioxyde de carbone (CO₂), de méthane (CH₄) et de protoxyde d'azote (N₂O) émis par tonne produite : c'est l'intensité d'émission du produit. Les estimations de FAOSTAT donnent les deux tiers des émissions agricoles mondiales du modèle, HESTIA un cinquième, et les moyennes publiées et les valeurs de substitution le reste. Additionnées sur le monde, elles sont proches des totaux de FAOSTAT : 138,1 Mt de méthane par an, contre 141,8 Mt.
 
-## Deux périmètres
+Cette page explique d'où vient chaque intensité, ce qu'elle couvre et comment les manques sont comblés. Les gaz restent séparés jusqu'au modèle climatique.
 
-- **À la ferme** (par défaut) : les émissions des processus biologiques de la ferme : fermentation entérique dans l'estomac des ruminants, gestion des effluents, effluents laissés au pâturage et épandus sur les champs, engrais de synthèse, résidus de culture, rizières et brûlage des résidus.
+## Ce qui est compté
+
+L'application propose deux périmètres :
+
+- **À la ferme** (par défaut) : les émissions des processus biologiques de la ferme. Ce sont la fermentation entérique (le méthane produit dans l'estomac des ruminants pendant la digestion), la gestion des effluents, les effluents laissés au pâturage et épandus sur les champs, les engrais de synthèse, les résidus de culture, les rizières et le brûlage des résidus.
 - **Du berceau à la sortie de ferme** : les mêmes, plus l'énergie utilisée sur la ferme (carburant et électricité) et la fabrication des engrais et des pesticides.
 
-Aucun des deux ne comprend le changement d'usage des terres, les sols organiques drainés, ni rien de ce qui suit la ferme (transformation, transport, distribution, cuisine, gaspillage).
+Aucun des deux ne comprend le changement d'usage des terres, les sols organiques drainés, ni rien de ce qui suit la ferme : transformation, transport, distribution, cuisine et gaspillage.
 
-## Pourquoi les intensités animales excluent l'alimentation animale
+## Pourquoi les produits animaux excluent leur alimentation
 
-Le modèle retire l'alimentation des animaux qui ne sont plus élevés par les cultures : moins d'animaux, c'est moins de maïs, de soja et d'orge cultivés (voir la page sur l'alimentation animale), et chaque culture porte ses propres émissions. Si l'intensité d'un produit animal comprenait aussi les émissions de la culture de ses aliments, ces émissions seraient comptées deux fois, une fois sur l'animal et une fois sur les cultures. L'intensité d'un animal ne couvre donc que ce qui se passe dans l'élevage : méthane entérique, effluents, et engrais épandus sur les prairies (l'herbe n'est pas une culture des bilans alimentaires). Les émissions de FAOSTAT sont déjà réparties ainsi ; les pages HESTIA et données ACV publiées expliquent comment leurs valeurs excluent l'alimentation animale. Les poissons d'élevage suivent la même règle : leur intensité est celle de l'eau et de l'énergie de l'élevage, et leurs aliments sont comptés sur les cultures et les poissons dont ils sont faits.
+Quand moins d'animaux sont élevés, le modèle retire leur alimentation par les cultures : on cultive moins de maïs, de soja et d'orge (voir [Alimentation animale](#method-feed)), et chaque culture porte ses propres émissions. Si l'intensité d'un produit animal comprenait aussi les émissions de la culture de ses aliments, ces émissions seraient comptées deux fois, une fois sur l'animal et une fois sur les cultures.
 
-## Poissons et fruits de mer
+L'intensité d'un animal ne couvre donc que ce qui se passe dans l'élevage : le méthane entérique, les effluents, et les engrais épandus sur les prairies. L'herbe n'est pas une culture des bilans alimentaires : ses engrais restent donc sur les animaux.
 
-Les émissions de FAOSTAT ne couvrent ni la pêche ni l'aquaculture, et HESTIA n'a pas d'agrégations aquatiques : les produits de la mer sont donc fixés au niveau 4, d'après Parker et al. (2018) pour le carburant de la pêche et MacLeod et al. (2020) pour le N₂O de l'eau et l'énergie de l'aquaculture, mélangés selon la pêche et l'aquaculture de chaque groupe d'espèces dans chaque pays d'après FishStat de la FAO ; puis un substitut (niveau 5) ou la médiane du groupe (niveau 6). Le carburant et l'électricité ne comptent que du berceau à la sortie de ferme, comme pour les fermes : les poissons sauvages n'ont donc pas d'émissions à la ferme. La page [Poissons et fruits de mer](#method-seafood) donne la méthode, les facteurs et les vérifications.
+Les émissions de FAOSTAT sont déjà réparties ainsi. Les pages [HESTIA](#method-hestia) et [données ACV publiées](#method-literature) expliquent comment leurs valeurs excluent l'alimentation animale. Les poissons d'élevage suivent la même règle : leur intensité est celle de l'eau et de l'énergie de l'élevage, et leurs aliments sont comptés sur les cultures et les poissons dont ils sont faits.
 
-## Compter une seule fois les produits transformés
+## D'où vient chaque valeur
 
-Une tonne de soja triturée en huile apparaît deux fois dans les bilans alimentaires : comme production de soja, et comme production d'huile. La règle est la suivante :
+Chaque valeur est tirée de la meilleure source disponible. Pour chaque pays, produit et périmètre, Planetshift prend la première valeur qu'il trouve dans l'ordre suivant, par niveaux, et enregistre le niveau dont elle vient :
+
+1. **HESTIA, pays** : l'évaluation d'impact agrégée de HESTIA pour le produit dans ce pays (voir [HESTIA](#method-hestia)).
+2. **HESTIA, région ou monde** : la plus petite région HESTIA contenant le pays, puis le monde.
+3. **FAOSTAT, pays** : les émissions de FAOSTAT pour le pays, divisées par sa production (voir *Niveau 3* plus bas).
+4. **ACV publiée** : les moyennes mondiales de Poore et Nemecek (2018), une étude d'analyse du cycle de vie (ACV) (voir [Données ACV publiées](#method-literature)).
+5. **Substitut** : une valeur de remplacement. Pour un produit transformé, c'est la valeur de son produit primaire divisée par le taux d'extraction (voir *Les produits transformés* plus bas). Sinon, c'est la valeur de niveau 1 à 4 d'un produit similaire dans le même pays, d'après la liste de la partie *Substituts* plus bas. Un substitut n'emprunte jamais un autre substitut ni une médiane.
+6. **Médiane du groupe** : la médiane, pondérée par la production, sur tous les pays, des valeurs de niveau 1 à 4 des produits du groupe.
+
+Chaque pays du modèle a une valeur pour chaque produit et pour les deux périmètres, y compris pour les produits qu'il ne produit pas. Le modèle peut ainsi déplacer la production vers n'importe quel pays.
+
+### Combien de cases chaque niveau remplit
+
+Le tableau compte les cases pays × produit du périmètre à la ferme que remplit chaque niveau, par groupe, pour les 188 pays et 90 produits. Le périmètre du berceau à la sortie de ferme est proche.
+
+Seuls les poissons et fruits de mer ont besoin du niveau 6 : 278 de leurs 1 504 cases. Ce sont presque toutes des pays sans littoral qui importent tout leur poisson, et dont le bilan contient un produit que FishStat ne leur attribue pas (voir [Poissons et fruits de mer](#method-seafood)). Pour tous les autres produits, les moyennes mondiales publiées du niveau 4 couvrent ce qui n'a pas de substitut.
+
+| Groupe | 1 | 2 | 3 | 4 | 5 | 6 |
+| --- | --- | --- | --- | --- | --- | --- |
+| céréales | 44 | 347 | 439 | 354 | 320 | 0 |
+| produits laitiers | 0 | 0 | 169 | 19 | 376 | 0 |
+| œufs | 0 | 0 | 172 | 16 | 0 | 0 |
+| fruits | 31 | 363 | 727 | 947 | 0 | 0 |
+| fruits à coque | 3 | 0 | 100 | 85 | 0 | 0 |
+| oléagineux | 39 | 722 | 388 | 1225 | 1950 | 0 |
+| autres végétaux | 0 | 0 | 155 | 0 | 1349 | 0 |
+| viande porcine | 0 | 0 | 286 | 45 | 45 | 0 |
+| volaille | 0 | 0 | 168 | 20 | 0 | 0 |
+| légumineuses | 16 | 0 | 294 | 254 | 0 | 0 |
+| riz | 11 | 0 | 95 | 82 | 0 | 0 |
+| racines et tubercules | 8 | 182 | 282 | 110 | 358 | 0 |
+| viande de ruminants | 0 | 0 | 542 | 67 | 143 | 0 |
+| poissons et fruits de mer | 0 | 0 | 0 | 1018 | 208 | 278 |
+| café, cacao et thé | 8 | 0 | 120 | 436 | 0 | 0 |
+| plantes sucrières | 12 | 364 | 0 | 188 | 376 | 0 |
+| légumes | 12 | 0 | 451 | 101 | 0 | 0 |
+| Total | 184 | 1978 | 4388 | 4967 | 5125 | 278 |
+
+Pondérés par les émissions plutôt que par les cases, FAOSTAT (niveau 3) donne les deux tiers des émissions mondiales à la ferme du modèle, HESTIA (niveaux 1 et 2) un cinquième, et les moyennes publiées et les substituts le reste. Les niveaux 4 et 5 remplissent surtout des produits qu'un pays ne produit pas, et des produits transformés.
+
+## Niveau 3 : les émissions de FAOSTAT par produit
+
+FAOSTAT estime les émissions agricoles de chaque pays avec les méthodes de niveau 1 du GIEC, ses méthodes par défaut les plus simples. FAOSTAT liste aussi, pour les mêmes lignes, les inventaires nationaux déclarés par les pays à la CCNUCC. Planetshift lit les estimations propres de FAOSTAT (source « FAO TIER 1 »), pour l'année d'émissions la plus proche de l'année de référence (2023).
+
+FAOSTAT donne la plupart des émissions par culture ou par espèce animale. Planetshift les répartit entre les produits alimentaires comme suit.
+
+### Cultures
+
+Le domaine *Emissions from Crops* (GCE) donne le méthane des rizières, le N₂O des résidus de culture, et le CH₄ et le N₂O du brûlage des résidus, par culture pour les principales cultures. Chacun va au produit des bilans correspondant par `qcl_items.csv`.
+
+### Engrais de synthèse
+
+Le N₂O des engrais azotés de synthèse est un total national dans FAOSTAT. Planetshift le répartit entre les cultures en proportion de la surface récoltée de chaque culture × une dose d'azote par hectare pour sa classe de cultures. Un hectare de maïs ou de légumes reçoit donc plus qu'un hectare de légumineuses.
+
+La dose vient de l'enquête de l'International Fertilizer Association sur l'usage des engrais par culture (Heffer et al., 2017). C'est la part de la classe dans l'azote utilisé dans le monde (blé 18 %, maïs 16 %, riz 16 %, légumes 10 %, fruits 7 %, etc.), divisée par la surface récoltée mondiale de la classe.
+
+La même enquête trouve 3,6 % de l'azote épandus sur les prairies. Cette part va aux produits des ruminants (bœuf, mouton, autres viandes, lait) en proportion de leur méthane, dans les pays qui ont à la fois des cultures et des ruminants.
+
+Les parts conservent le total de chaque pays. La partie qui tombe sur des cultures non alimentaires est laissée hors du modèle : les fibres, le tabac, le caoutchouc, et 85 % du coton-graine (sa fibre).
+
+### Élevage
+
+Le domaine *Emissions from Livestock* (GLE) donne, par espèce, le CH₄ de la fermentation entérique et de la gestion des effluents, et le N₂O de la gestion des effluents, des effluents au pâturage et des effluents épandus. Il va aux produits comme suit :
+
+- **Vaches laitières** : 85 % au lait et 15 % au bœuf, celui des vaches de réforme et des veaux en surplus. Cette allocation physique est proche de la valeur mondiale par défaut de la Fédération internationale de laiterie.
+- **Autres bovins** : le bœuf, moins les animaux qui ne sont pas élevés pour l'alimentation (voir plus bas).
+- **Buffles, moutons, chèvres et chameaux** : répartis entre lait et viande selon les protéines que produit le cheptel de chaque pays (production FAOSTAT × teneur en protéines). Là où aucun lait n'est enregistré, tout va à la viande. Pour les buffles, les animaux qui ne sont pas élevés pour l'alimentation sont d'abord retirés.
+- Les **porcs** vont à la viande porcine, les **poulets de chair, canards et dindes** à la volaille, les **poules pondeuses** aux œufs, et les **lamas** aux autres viandes.
+- **Chevaux, ânes et mulets** sont surtout gardés pour le travail. Leurs émissions ne sont sur aucun produit (voir plus bas).
+
+**Les abats et les graisses animales** partagent les émissions de la viande de chaque pays avec la carcasse, au prorata de la masse. Si les abats et les graisses pèsent un dixième de la viande, ils prennent un dixième de ses émissions. Chaque tonne de carcasse, d'abats ou de graisse porte alors les mêmes émissions.
+
+### Du berceau à la sortie de ferme
+
+Ce périmètre ajoute trois sources de FAOSTAT :
+
+- l'énergie utilisée sur la ferme, répartie entre tous les produits selon leur valeur brute de production ;
+- la fabrication des engrais, répartie comme l'azote de synthèse ;
+- la fabrication des pesticides, répartie selon la surface récoltée.
+
+### Des émissions aux intensités
+
+Les émissions de chaque produit sont divisées par sa production dans les bilans alimentaires : par tonne de riz usiné, d'équivalent lait entier ou de carcasse.
+
+Certaines intensités dépassent 20 fois la médiane mondiale du produit pondérée par la production (en équivalent CO₂). Une telle valeur signale un décalage entre les émissions de FAOSTAT et la production du bilan, le plus souvent une culture à grande surface et à faible production enregistrée. Elle n'est pas utilisée, et la case passe au niveau suivant. Cela concerne 93 valeurs sur environ 5 600, surtout le manioc, les ignames, les bananes plantain, le cacao et les « autres viandes ».
+
+## Les produits transformés comptés une seule fois
+
+Une tonne de soja triturée en huile apparaît deux fois dans les bilans alimentaires : comme production de soja, et comme production d'huile. Pour ne compter ses émissions qu'une fois, Planetshift applique cette règle :
 
 - les émissions d'un produit primaire sont son intensité × (production − transformation) ;
-- un produit transformé (huiles végétales, sucre, édulcorants, beurre, crème, vin, bière et autres boissons) porte sa propre intensité, par tonne de sa propre production.
+- un produit transformé porte sa propre intensité, par tonne de sa propre production. Les produits transformés sont les huiles végétales, le sucre, les édulcorants, le beurre, la crème, le vin, la bière et les autres boissons.
 
-Quand un produit transformé n'a pas d'intensité propre (niveaux 1 à 4 ci-dessous), il prend l'intensité de son produit primaire divisée par le taux d'extraction, c'est-à-dire les tonnes de produit tirées d'une tonne de produit primaire. Une tonne d'huile de soja, tirée de 1 / 0,19 ≈ 5,3 t de soja, porte alors les émissions de ces 5,3 t. Pour le sucre, tiré de la canne et de la betterave, les deux sont pondérées par la quantité de chacune que le pays transforme. Les taux sont dans `proxies.csv` ; la plupart sont le rapport entre la production mondiale 2023 du produit et le produit primaire transformé, de sorte que la part transformée de chaque culture soit comptée sur ses produits une fois, entièrement :
+### Les produits transformés sans valeur propre
+
+Certains produits transformés n'ont pas d'intensité des niveaux 1 à 4. Ils prennent l'intensité de leur produit primaire divisée par le taux d'extraction, c'est-à-dire les tonnes de produit tirées d'une tonne de produit primaire. Une tonne d'huile de soja est tirée de 1 / 0,19 ≈ 5,3 t de soja : elle porte donc les émissions de ces 5,3 t. Le sucre est tiré de la canne et de la betterave, et les deux sont pondérées par la quantité de chacune que le pays transforme.
+
+Les taux sont dans `proxies.csv`. La plupart sont le rapport entre la production mondiale 2023 du produit et le produit primaire transformé. La part transformée de chaque culture est alors comptée une fois, entièrement, sur ses produits.
 
 | Produit transformé | Produit primaire et taux (t par t) | Base |
 | --- | --- | --- |
@@ -49,57 +145,64 @@ Quand un produit transformé n'a pas d'intensité propre (niveaux 1 à 4 ci-dess
 | 2740 Beurre, ghee | 2848 lait : 0,056 | bilan mondial 2023, 85 % du lait transformé |
 | 2743 Crème | 2848 lait : 0,09 | bilan mondial 2023, 15 % du lait transformé |
 
-Dans les bilans alimentaires actuels, le produit 2562 (« Palmistes ») contient tout le fruit du palmier à huile, dont on presse l'huile de palme et l'huile de palmiste ; les émissions du palmier à huile sont comptées sur lui.
+Dans les bilans alimentaires actuels, le produit 2562 (« Palmistes ») contient tout le fruit du palmier à huile, dont on presse l'huile de palme et l'huile de palmiste. Les émissions du palmier à huile sont comptées sur lui.
 
-Une huile obtenue ainsi à partir de sa graine partage les émissions de la trituration avec le tourteau selon leur valeur, comme ses terres (voir [Terres](#method-land), `pipeline/oilcakes.csv`) : elle garde la part de l'huile dans la valeur (huile d'arachide 80 %, de coton 66 %, de palmiste 87 %, de coprah 93 %, de sésame 92 %), et le reste, celui du tourteau, est écrit par pays et par oléagineux dans `oilcake` de `intensities.json`, en kg de chaque gaz par an l'année de base. Les huiles de soja, de tournesol, de colza et des autres oléagineux prennent les valeurs de Poore et Nemecek (palier 4), qui partagent déjà la culture avec le tourteau selon leur valeur ; la part du tourteau de leur graine est aussi écrite dans `oilcake`. Le modèle ajoute les émissions des tourteaux à celles des fermes de chaque pays et les fait varier comme les terres du tourteau : avec la production des groupes animaux qui le mangent, si bien qu'un régime avec moins d'animaux les supprime. Une pratique agricole les réduit comme elle réduit l'intensité de l'oléagineux lui-même.
+### Les huiles et leur tourteau
 
-Deux coproduits de la meunerie, l'huile de son de riz et l'huile de germe de maïs, sont tirés de grain déjà compté en alimentation humaine, et non d'une transformation ; leur intensité est nulle. Les abats comestibles et les graisses animales crues ne sont pas non plus transformés à partir de la viande dans les bilans : ils partagent avec la carcasse les émissions des animaux de boucherie, au prorata de la masse (ci-dessous).
+Triturer une graine oléagineuse donne de l'huile et du tourteau (la farine donnée aux animaux). Une huile dont l'intensité est obtenue ainsi partage les émissions de la trituration avec le tourteau selon leur valeur, comme ses terres (voir [Terres](#method-land), `pipeline/oilcakes.csv`). L'huile garde sa part de la valeur : huile d'arachide 80 %, de coton 66 %, de palmiste 87 %, de coprah 93 %, de sésame 92 %.
 
-## Niveaux
+Le reste est la part du tourteau. Elle est écrite par pays et par oléagineux dans `oilcake` de `intensities.json`, en kg de chaque gaz par an l'année de référence. Les huiles de soja, de tournesol, de colza et des autres oléagineux prennent les valeurs de Poore et Nemecek (niveau 4), qui partagent déjà la culture avec le tourteau selon leur valeur. La part de leur tourteau est aussi écrite dans `oilcake`.
 
-Chaque combinaison pays × produit × périmètre prend la première valeur disponible dans cet ordre, et enregistre le niveau dont elle vient :
+Le modèle ajoute les émissions des tourteaux aux émissions agricoles de chaque pays. Il les fait varier comme les terres du tourteau : avec la production des groupes animaux qui le mangent. Un régime avec moins d'animaux les supprime donc. Une pratique agricole les réduit comme elle réduit l'intensité de l'oléagineux lui-même.
 
-1. **HESTIA, pays** : l'évaluation d'impact agrégée de HESTIA pour le produit dans ce pays (voir la page HESTIA).
-2. **HESTIA, région ou monde** : la plus petite région HESTIA contenant le pays, puis le monde.
-3. **FAOSTAT, pays** : les émissions FAOSTAT du pays divisées par sa production (ci-dessous).
-4. **ACV publiée** : moyennes mondiales de Poore et Nemecek (2018) (voir la page sur les données ACV publiées).
-5. **Substitut** : pour un produit transformé, son produit primaire divisé par le taux d'extraction (ci-dessus) ; sinon la valeur de niveau 1 à 4 d'un produit similaire dans le même pays, d'après la liste ci-dessous. Un substitut n'emprunte jamais un autre substitut ni une médiane.
-6. **Médiane du groupe** : la médiane, pondérée par la production, sur tous les pays, des valeurs de niveau 1 à 4 des produits du groupe.
+### Les coproduits sans émissions propres
 
-Chaque pays du modèle a une valeur pour chaque produit et les deux périmètres, y compris les produits qu'il ne produit pas, pour que le modèle puisse déplacer la production vers n'importe quel pays.
+Deux coproduits de la meunerie, l'huile de son de riz et l'huile de germe de maïs, sont tirés de grain déjà compté en alimentation humaine, et non d'une transformation. Leur intensité est nulle.
 
-## Niveau 3 : les émissions de FAOSTAT par produit
+Les abats comestibles et les graisses animales crues ne sont pas non plus transformés à partir de la viande dans les bilans. Ils partagent avec la carcasse les émissions des animaux de boucherie, au prorata de la masse (voir *Élevage* plus haut).
 
-FAOSTAT estime les émissions agricoles de chaque pays avec les méthodes de niveau 1 du GIEC. Planetshift lit ses propres estimations (source « FAO TIER 1 »), et non les inventaires nationaux à la CCNUCC que FAOSTAT liste aussi pour les mêmes lignes, pour l'année d'émissions la plus proche de l'année de référence (2023).
+## Poissons et fruits de mer
 
-- **Cultures** (*Emissions from Crops*, GCE) : le méthane des rizières, le N₂O des résidus de culture, et le CH₄ et le N₂O du brûlage des résidus, donnés par culture pour les principales cultures, vont au produit des bilans correspondant par `qcl_items.csv`.
-- **Le N₂O des engrais azotés de synthèse** est un total national dans FAOSTAT. Il est réparti entre les cultures en proportion de la surface récoltée de chaque culture × une dose d'azote par hectare pour sa classe de cultures. La dose est la part de la classe dans l'azote utilisé dans le monde selon l'enquête de l'International Fertilizer Association sur l'usage des engrais par culture (Heffer et al., 2017 : blé 18 %, maïs 16 %, riz 16 %, légumes 10 %, fruits 7 %, etc.), divisée par la surface récoltée mondiale de la classe : un hectare de maïs ou de légumes reçoit donc plus qu'un hectare de légumineuses. Les 3,6 % de l'azote que la même enquête trouve épandus sur les prairies vont aux produits des ruminants (bœuf, mouton, autres viandes, lait) en proportion de leur méthane, dans les pays qui ont à la fois des cultures et des ruminants. Les parts conservent le total de chaque pays ; la partie qui tombe sur des cultures non alimentaires (fibres, tabac, caoutchouc, et 85 % du coton-graine, sa fibre) est laissée hors du modèle.
-- **Élevage** (*Emissions from Livestock*, GLE) : le CH₄ de la fermentation entérique et de la gestion des effluents, le N₂O de la gestion des effluents, des effluents au pâturage et des effluents épandus, par espèce :
-  - vaches laitières : 85 % au lait et 15 % au bœuf, celui des vaches de réforme et des veaux en surplus, une allocation physique proche de la valeur mondiale par défaut de la Fédération internationale de laiterie ;
-  - autres bovins : bœuf, moins les animaux qui ne sont pas élevés pour l'alimentation (plus bas) ;
-  - buffles, moutons, chèvres et chameaux : répartis entre lait et viande selon les protéines que produit le cheptel de chaque pays (production FAOSTAT × teneur en protéines), entièrement à la viande là où aucun lait n'est enregistré ; pour les buffles, moins les animaux qui ne sont pas élevés pour l'alimentation ;
-  - porcs à la viande porcine, poulets de chair, canards et dindes à la volaille, poules pondeuses aux œufs, lamas aux autres viandes ;
-  - chevaux, ânes et mulets sont surtout gardés pour le travail : leurs émissions ne sont sur aucun produit (plus bas).
-- **Les abats et les graisses animales** partagent les émissions de la viande de chaque pays avec la carcasse, au prorata de la masse : si les abats et les graisses pèsent un dixième de la viande, ils prennent un dixième de ses émissions, et chaque tonne de carcasse, d'abats ou de graisse porte les mêmes émissions.
-- **Du berceau à la sortie de ferme** ajoute l'énergie utilisée sur la ferme selon FAOSTAT (répartie entre tous les produits selon leur valeur brute de production), la fabrication des engrais (répartie comme l'azote de synthèse) et la fabrication des pesticides (répartie selon la surface récoltée).
+Les émissions de FAOSTAT ne couvrent ni la pêche ni l'aquaculture, et HESTIA n'a pas d'agrégations aquatiques. Les produits de la mer sont donc fixés au niveau 4 d'après deux études : Parker et al. (2018) pour le carburant de la pêche, et MacLeod et al. (2020) pour le N₂O de l'eau et l'énergie de l'aquaculture. Les deux sont combinées selon la pêche et l'aquaculture de chaque groupe d'espèces dans chaque pays, d'après FishStat de la FAO. À défaut, un produit prend un substitut (niveau 5) ou la médiane du groupe (niveau 6).
 
-Les émissions de chaque produit sont divisées par sa production dans les bilans alimentaires : par tonne de riz usiné, d'équivalent lait entier, de carcasse. Une intensité plus de 20 fois supérieure à la médiane mondiale du produit pondérée par la production (en équivalent CO₂) signale un décalage entre les émissions de FAOSTAT et la production du bilan, le plus souvent une culture à grande surface et à faible production enregistrée, et n'est pas utilisée (93 valeurs sur environ 5 600, surtout manioc, ignames, bananes plantain, cacao et « autres viandes ») ; la case passe au niveau suivant.
+Le carburant et l'électricité ne comptent que dans le périmètre du berceau à la sortie de ferme, comme pour les fermes. Les poissons sauvages n'ont donc pas d'émissions à la ferme. La page [Poissons et fruits de mer](#method-seafood) donne la méthode, les facteurs et les vérifications.
 
 ## Les animaux qui ne sont pas élevés pour l'alimentation
 
-Certains animaux de ferme ne sont pas élevés pour l'alimentation : les bœufs et les buffles gardés pour labourer, les chevaux, les ânes et les mulets gardés pour le travail et le transport, et les bovins gardés pour d'autres raisons, comme la plupart de ceux de l'Inde. Leurs émissions restent dans les émissions agricoles de chaque pays, mais aucun produit ne les porte, et aucun levier ne les change : un changement de 100 % les laisse en place. Elles sont écrites par pays dans `nonFood` de `intensities.json` : 211 Mt CO₂e par an l'année de référence, dont 115 Mt en Inde, puis le Niger (15), le Brésil (9), le Mexique (8) et l'Éthiopie (6).
+Certains animaux de ferme ne sont pas élevés pour l'alimentation : les bœufs et les buffles gardés pour labourer, les chevaux, les ânes et les mulets gardés pour le travail et le transport, et les bovins gardés pour d'autres raisons, comme la plupart de ceux de l'Inde. Leurs émissions restent dans les émissions agricoles de chaque pays, mais aucun produit ne les porte et aucun levier ne les change. Un changement de 100 % les laisse en place.
+
+Elles sont écrites par pays dans `nonFood` de `intensities.json`. Elles s'élèvent à 211 Mt CO₂e par an l'année de référence, dont 115 Mt en Inde, puis le Niger (15), le Brésil (9), le Mexique (8) et l'Éthiopie (6).
+
+### Comment on les repère
 
 La part vient des données d'élevage et de commerce de FAOSTAT (CC BY 4.0), par espèce. Au sein d'une espèce, chaque tête émet autant : un animal qui n'est pas élevé pour l'alimentation prend les émissions par tête de l'espèce dans son pays.
 
 - **Chevaux, ânes et mulets** : toutes leurs émissions, 70 Mt CO₂e. Certains chevaux sont mangés, mais les troupeaux sont surtout gardés pour le travail. Ils font l'essentiel de la base du Brésil, du Mexique, de l'Éthiopie et des États-Unis.
-- **Bovins non laitiers et buffles** : un troupeau élevé pour l'alimentation exploite chaque année, par abattage ou par vente, une part de ses têtes. Otte et Chilonda (2002) ont passé en revue le taux d'exploitation des élevages bovins traditionnels d'Afrique subsaharienne, ceux qui gardent leurs bovins le plus longtemps, défini comme la proportion d'animaux vendus ou consommés dans l'année : une moyenne de 9,9 % (médiane 9 %, de 1,2 à 20 %), 12,0 % dans les systèmes pastoraux et 9,3 % dans les systèmes mixtes, et par région 6,7 % en Afrique australe, 10,8 % en Afrique de l'Ouest, 12,3 % en Afrique de l'Est et 13,6 % en Afrique centrale (chapitre 5). Le modèle prend la plus basse de ces moyennes, les 6,7 % de l'Afrique australe, comme seuil, pour que seuls les troupeaux nettement en dessous de tout troupeau élevé pour l'alimentation comptent comme non élevés pour l'alimentation. Les annexes 6 et 7 de la revue ne donnent le taux d'exploitation de chaque zone que par le nombre d'études, la moyenne, la médiane, le minimum et le maximum, et non étude par étude, si bien qu'on ne peut pas en tirer un premier quartile. Les têtes gardées pour l'alimentation sont les animaux traits (élément 5318 de QCL ; les vaches laitières de FAOSTAT forment une espèce à part, toute pour l'alimentation), et les animaux abattus dans l'année (élément 5320) plus les animaux vivants exportés, nets de ceux importés (produits 866 bovins et 946 buffles de TCL, éléments 5908 et 5608, en têtes), divisés par 6,7 %. Les exportations nettes ne comptent que si elles sont positives, et un pays sans ligne de commerce n'en compte aucune. Le reste du cheptel (élément 5111 de GLE) n'est pas élevé pour l'alimentation. Cela donne 137 Mt CO₂e de bovins et 4 Mt de buffles.
+- **Bovins non laitiers et buffles** : un troupeau élevé pour l'alimentation sort chaque année une part de ses têtes, par abattage ou par vente. Cette part s'appelle le taux d'exploitation. Les animaux gardés pour l'alimentation sont comptés comme ci-dessous, et le reste n'est pas élevé pour l'alimentation. Cela donne 137 Mt CO₂e de bovins et 4 Mt de buffles.
 - **Ovins, caprins, chameaux, porcs et volailles** sont tous comptés comme élevés pour l'alimentation.
 
-Le seuil est un chiffre d'Afrique subsaharienne appliqué à tous les pays ; aucune revue comparable n'a été trouvée pour les autres régions. L'Inde fait l'essentiel de la base, et n'en dépend pas : FAOSTAT n'enregistre aucun abattage de bovins en Inde, si bien que ses 131 millions de bovins non laitiers sont tous dans la base, quel que soit le seuil. Le 20e recensement du cheptel de l'Inde compte 192,5 millions de bovins en 2019, dont 74,2 millions de vaches laitières (en lactation ou taries), soit 118,3 millions d'autres bovins, dont 47,4 millions de mâles (Department of Animal Husbandry and Dairying, 2019, tableaux 6 et 7) ; il ne dit pas à quoi ils servent. Aucune source nationale n'a été trouvée sur le taux d'exploitation des bovins du Niger. Les exportations nettes du Niger dans FAOSTAT (113 000 têtes en 2023) et du Mali (206 000) font passer leur base de 18,7 et 9,1 Mt à 17,2 et 6,5 Mt à 9,9 % ; avec le seuil à 6,7 %, elle est de 15,0 et 2,2 Mt.
+Pour les bovins non laitiers et les buffles, les têtes gardées pour l'alimentation sont :
 
-La règle a des limites. Les exportations d'animaux vivants que FAOSTAT n'enregistre pas, comme l'est souvent le commerce sur pied à travers le Sahel, et les abattages que FAOSTAT n'enregistre pas (les buffles du Brésil) ressemblent encore à des animaux qui ne sont pas élevés pour l'alimentation. Les animaux de trait d'un pays qui abat aussi beaucoup de bovins ne sont pas vus. Un bœuf de travail et un veau comptent pareil par tête. Aucun domaine de FAOSTAT ne compte les animaux de trait, si bien que la règle n'utilise que les cheptels, les animaux traits et abattus, et le commerce d'animaux vivants.
+- les animaux traits (élément 5318 de QCL). Les vaches laitières de FAOSTAT forment une espèce à part, toute gardée pour l'alimentation ;
+- les animaux abattus dans l'année (élément 5320) plus les animaux vivants exportés, nets de ceux importés (produits 866 bovins et 946 buffles de TCL, éléments 5908 et 5608, en têtes), divisés par 6,7 %.
 
-Le seuil change la base, mais à peine l'effet d'un changement : un troupeau compté comme non élevé pour l'alimentation sort à la fois des émissions des produits et de ce que le changement peut éviter. Construit avec chaque seuil, sur SSP2-4.5 avec les options par défaut :
+Les exportations nettes ne comptent que si elles sont positives, et un pays sans ligne de commerce n'en compte aucune. Le reste du cheptel (élément 5111 de GLE) n'est pas élevé pour l'alimentation.
+
+### Pourquoi le seuil est de 6,7 %
+
+Otte et Chilonda (2002) ont passé en revue le taux d'exploitation des élevages bovins traditionnels d'Afrique subsaharienne, ceux qui gardent leurs bovins le plus longtemps. Ils le définissent comme la proportion d'animaux vendus ou consommés dans l'année. Ils trouvent une moyenne de 9,9 % (médiane 9 %, de 1,2 à 20 %), 12,0 % dans les systèmes pastoraux et 9,3 % dans les systèmes mixtes (chapitre 5). Par région, la moyenne est de 6,7 % en Afrique australe, 10,8 % en Afrique de l'Ouest, 12,3 % en Afrique de l'Est et 13,6 % en Afrique centrale.
+
+Le modèle prend la plus basse de ces moyennes, les 6,7 % de l'Afrique australe, comme seuil. Seuls les troupeaux nettement en dessous de tout troupeau élevé pour l'alimentation comptent alors comme non élevés pour l'alimentation. Les annexes 6 et 7 de la revue ne donnent le taux d'exploitation de chaque zone que par le nombre d'études, la moyenne, la médiane, le minimum et le maximum, et non étude par étude. On ne peut donc pas en tirer un premier quartile.
+
+Le seuil est un chiffre d'Afrique subsaharienne appliqué à tous les pays. Aucune revue comparable n'a été trouvée pour les autres régions.
+
+L'Inde fait l'essentiel de la base, et ne dépend pas du seuil. FAOSTAT n'enregistre aucun abattage de bovins en Inde : ses 131 millions de bovins non laitiers sont donc tous dans la base, quel que soit le seuil. Le 20e recensement du cheptel de l'Inde compte 192,5 millions de bovins en 2019, dont 74,2 millions de vaches laitières (en lactation ou taries). Il reste 118,3 millions d'autres bovins, dont 47,4 millions de mâles (Department of Animal Husbandry and Dairying, 2019, tableaux 6 et 7). Le recensement ne dit pas à quoi ils servent.
+
+Aucune source nationale n'a été trouvée sur le taux d'exploitation des bovins du Niger. FAOSTAT enregistre des exportations nettes de 113 000 têtes pour le Niger en 2023, et de 206 000 pour le Mali. À 9,9 %, ces exportations faisaient passer leur base de 18,7 et 9,1 Mt à 17,2 et 6,5 Mt. Avec le seuil à 6,7 %, elle est de 15,0 et 2,2 Mt.
+
+### Ce que change le seuil
+
+Le seuil change la base, mais à peine l'effet d'un changement de régime. Un troupeau compté comme non élevé pour l'alimentation sort à la fois des émissions des produits et de ce que le changement peut éviter. Construit avec chaque seuil, sur SSP2-4.5 avec les options par défaut :
 
 | Seuil de taux d'exploitation | Base hors alimentation, Mt CO₂e | Inde | Niger | Éthiopie | Mali | Changement complet : émissions évitées, Gt CO₂e | Changement complet : réchauffement évité en 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -110,34 +213,18 @@ Le seuil change la base, mais à peine l'effet d'un changement : un troupeau com
 
 Un demi-changement évite la moitié (de 2,51 à 2,56 Gt CO₂e, de 0,133 à 0,135 °C). La fourchette probable que montre l'application ne couvre que la réponse du climat, pas ce choix.
 
-## Combien de cases chaque niveau remplit
+### Les limites de la règle
 
-Périmètre à la ferme, cases pays × produit, par groupe, pour les 188 pays et 90 produits (le périmètre du berceau à la sortie de ferme est proche). Seuls les poissons et fruits de mer ont besoin du niveau 6 : 278 de leurs 1 504 cases, presque toutes des pays sans littoral qui importent tout leur poisson et dont le bilan contient un produit que FishStat ne leur attribue pas (voir [Poissons et fruits de mer](#method-seafood)). Pour tous les autres produits, les moyennes mondiales publiées du niveau 4 couvrent ce qui n'a pas de substitut.
+- Les exportations d'animaux vivants que FAOSTAT n'enregistre pas ressemblent encore à des animaux qui ne sont pas élevés pour l'alimentation. Le commerce sur pied à travers le Sahel n'est souvent pas enregistré.
+- Les abattages que FAOSTAT n'enregistre pas (les buffles du Brésil) ont le même effet.
+- Les animaux de trait d'un pays qui abat aussi beaucoup de bovins ne sont pas vus.
+- Un bœuf de travail et un veau comptent pareil par tête.
 
-| Groupe | 1 | 2 | 3 | 4 | 5 | 6 |
-| --- | --- | --- | --- | --- | --- | --- |
-| céréales | 44 | 347 | 439 | 354 | 320 | 0 |
-| produits laitiers | 0 | 0 | 169 | 19 | 376 | 0 |
-| œufs | 0 | 0 | 172 | 16 | 0 | 0 |
-| fruits | 31 | 363 | 727 | 947 | 0 | 0 |
-| fruits à coque | 3 | 0 | 100 | 85 | 0 | 0 |
-| oléagineux | 39 | 722 | 388 | 1225 | 1950 | 0 |
-| autres végétaux | 0 | 0 | 155 | 0 | 1349 | 0 |
-| viande porcine | 0 | 0 | 288 | 45 | 43 | 0 |
-| volaille | 0 | 0 | 168 | 20 | 0 | 0 |
-| légumineuses | 16 | 0 | 294 | 254 | 0 | 0 |
-| riz | 11 | 0 | 95 | 82 | 0 | 0 |
-| racines et tubercules | 8 | 182 | 282 | 110 | 358 | 0 |
-| viande de ruminants | 0 | 0 | 543 | 67 | 142 | 0 |
-| poissons et fruits de mer | 0 | 0 | 0 | 1018 | 208 | 278 |
-| café, cacao et thé | 8 | 0 | 120 | 436 | 0 | 0 |
-| plantes sucrières | 12 | 364 | 0 | 188 | 376 | 0 |
-| légumes | 12 | 0 | 451 | 101 | 0 | 0 |
-| Total | 184 | 1978 | 4391 | 4967 | 5122 | 278 |
-
-Pondérés par les émissions plutôt que par les cases, FAOSTAT (niveau 3) donne les deux tiers des émissions mondiales à la ferme du modèle, HESTIA (niveaux 1 et 2) un cinquième, et les moyennes publiées et les substituts le reste. Les niveaux 4 et 5 remplissent surtout des produits qu'un pays ne produit pas, et des produits transformés.
+Aucun domaine de FAOSTAT ne compte les animaux de trait. La règle n'utilise donc que les cheptels, les animaux traits et abattus, et le commerce d'animaux vivants.
 
 ## Substituts
+
+Un substitut est la valeur d'un produit similaire dans le même pays, utilisée quand un produit n'a pas de valeur propre des niveaux 1 à 4. Chaque produit essaie ses substituts dans l'ordre :
 
 | Produit | Substituts, dans l'ordre | Pourquoi |
 | --- | --- | --- |
@@ -198,45 +285,67 @@ Pondérés par les émissions plutôt que par les cases, FAOSTAT (niveau 3) donn
 | 2737 Graisses animales | 2733 viande porcine, 2731 bovine | la viande correspondante (surtout graisse de porc) |
 | 2744 Œufs | 2734 volaille | les mêmes oiseaux et les mêmes aliments |
 
-Le lait n'a pas de substitut : aucun autre produit n'est un équivalent honnête à la tonne, si bien qu'un pays sans valeur prend la médiane des produits laitiers.
+Le lait n'a pas de substitut : aucun autre produit n'est un équivalent honnête à la tonne. Un pays sans valeur pour le lait prend la médiane des produits laitiers.
 
 ## Vérifications par rapport aux totaux de FAOSTAT
 
-`pipeline/tests/test_validation.py` recalcule les émissions mondiales à partir des fichiers produits, intensité × (production − transformation) sommée sur chaque pays et chaque produit, plus les animaux qui ne sont pas élevés pour l'alimentation, et les compare aux totaux mondiaux de FAOSTAT pour les mêmes processus en 2023 :
+Un test recalcule les émissions mondiales à partir des fichiers produits, et les compare aux totaux mondiaux de FAOSTAT pour les mêmes processus en 2023. Le méthane est à quelques pour cent près ; le N₂O est plus élevé, et c'est le CO₂ qui diffère le plus, pour les raisons données plus bas.
 
-| | Planetshift | FAOSTAT | Tolérance |
-| --- | --- | --- | --- |
-| À la ferme, CH₄ (Mt) | 138,1 | 141,8 | 10 % |
-| À la ferme, N₂O (Mt) | 8,01 | 7,26 | 20 % |
-| Du berceau à la sortie de ferme, CH₄ (Mt) | 140,6 | 142,3 | 10 % |
-| Du berceau à la sortie de ferme, N₂O (Mt) | 8,14 | 7,56 | 20 % |
-| Du berceau à la sortie de ferme, CO₂ (Mt) | 1 688 | 1 348 | 50 % |
+| | Planetshift, test | FAOSTAT | Tolérance | Planetshift avec les tourteaux, comme les compte l'appli |
+| --- | --- | --- | --- | --- |
+| À la ferme, CH₄ (Mt) | 138,1 | 141,8 | 10 % | 138,4 |
+| À la ferme, N₂O (Mt) | 8,01 | 7,26 | 20 % | 8,12 |
+| Du berceau à la sortie de ferme, CH₄ (Mt) | 140,6 | 142,3 | 10 % | 141,1 |
+| Du berceau à la sortie de ferme, N₂O (Mt) | 8,14 | 7,56 | 20 % | 8,26 |
+| Du berceau à la sortie de ferme, CO₂ (Mt) | 1 688 | 1 348 | 50 % | 1 741 |
 
-Le méthane à la ferme reste dans les bilans publiés : la fermentation entérique et les effluents donnent ensemble 112 Mt (102 + 10), les 112 (107–118) Tg par an du Global Methane Budget pour 2010–2019 (Saunois et al., 2025), et le total à la ferme de la FAO pour 2023 est de 8,1 Gt d'équivalent CO₂ avec les sols organiques drainés et l'électricité de la ferme, que Planetshift laisse de côté (FAOSTAT Analytical Brief 115). Le N₂O agricole direct était de 6,1 Mt en 2020 (3,9 Tg N, Tian et al., 2024) ; les 8,0 Mt de Planetshift comprennent aussi les émissions indirectes, comme le total de FAOSTAT.
+### Le calcul de la vérification
 
-**Le méthane du riz** est de 22,6 Mt dans le modèle, contre 24,9 Mt dans FAOSTAT pour 2023 et 32 (25–37) Tg dans le Global Methane Budget. L'essentiel de l'écart vient de l'Inde. Son intensité est celle de HESTIA (niveau 1) : 16,7 kg de méthane dû à l'inondation par tonne de paddy, 17,1 kg avec le reste, contre 24,6 kg pour FAOSTAT (5,08 Mt pour 206,7 Mt de paddy). Les deux sont par tonne de paddy, l'unité du riz des bilans : ce n'est donc pas une erreur de conversion ; par hectare, HESTIA donne environ 72 kg de méthane et FAOSTAT environ 106. Le modèle de HESTIA applique l'affinement de 2019 du GIEC aux régimes hydriques et aux amendements de ses données sur le riz indien, FAOSTAT la méthode de niveau 1 du GIEC avec ses propres hypothèses sur les régimes hydriques ; la différence tient à la méthode, et la valeur de HESTIA est gardée comme le niveau le mieux documenté. Avec l'intensité de FAOSTAT pour l'Inde, le total mondial serait d'environ 24,1 Mt.
+`pipeline/tests/test_validation.py` somme intensité × (production − transformation) sur chaque pays et chaque produit, et ajoute les animaux qui ne sont pas élevés pour l'alimentation.
 
-À partir des seules données de FAOSTAT (niveau 3 partout, avant la fusion des autres niveaux), la répartition retrouve 99 % du méthane à la ferme de FAOSTAT et 97 % de son N₂O, avec les animaux qui ne sont pas élevés pour l'alimentation ; ce qui manque, ce sont les cultures non alimentaires et les pays hors du modèle. Le mélange des niveaux déplace les totaux de quelques pour cent dans un sens ou dans l'autre, car HESTIA et les ACV publiées utilisent d'autres méthodes ; c'est le CO₂ qui diffère le plus, parce que les périmètres de HESTIA comptent du CO₂ (urée, chaux, machines) que FAOSTAT classe ailleurs.
+Le test laisse de côté les émissions des tourteaux, que le modèle ajoute aux émissions agricoles de chaque pays (`oilcake` dans `intensities.json`, voir *Les huiles et leur tourteau* plus haut) : 0,14 Mt de méthane, 0,10 Mt de N₂O et 20 Mt de CO₂ par an à la ferme, et 0,29 Mt, 0,11 Mt et 54 Mt du berceau à la sortie de ferme. La dernière colonne du tableau les ajoute. Elle donne les émissions mondiales de l'année de référence dans un calcul du modèle sans levier. Sans les tourteaux, ces totaux sont à moins de 0,2 % de ceux du test.
+
+À partir des seules données de FAOSTAT (niveau 3 partout, avant la fusion des autres niveaux), la répartition retrouve 99 % du méthane à la ferme de FAOSTAT et 97 % de son N₂O, avec les animaux qui ne sont pas élevés pour l'alimentation. Ce qui manque, ce sont les cultures non alimentaires et les pays hors du modèle. Le mélange des niveaux déplace les totaux de quelques pour cent dans un sens ou dans l'autre, car HESTIA et les ACV publiées utilisent d'autres méthodes. C'est le CO₂ qui diffère le plus, parce que les périmètres de HESTIA comptent du CO₂ (urée, chaux, machines) que FAOSTAT classe ailleurs.
+
+### Par rapport aux bilans publiés
+
+Le méthane à la ferme reste dans les bilans publiés. La fermentation entérique et la gestion des effluents donnent ensemble 114 Mt : 98 et 9 Mt pour les animaux élevés pour l'alimentation, et 6 Mt pour ceux qui ne le sont pas. Le Global Methane Budget donne 112 (107–118) Tg par an pour 2010–2019 (Saunois et al., 2025).
+
+Le total à la ferme de la FAO pour 2023 est de 8,1 Gt d'équivalent CO₂ (FAOSTAT Analytical Brief 115). Il comprend les sols organiques drainés et l'électricité de la ferme, que Planetshift laisse de côté.
+
+Le N₂O agricole direct était de 6,1 Mt en 2020 (3,9 Tg N, Tian et al., 2024). Les 8,1 Mt de Planetshift comprennent aussi les émissions indirectes, comme le total de FAOSTAT.
+
+### Le méthane du riz
+
+Le méthane du riz est de 22,6 Mt dans le modèle, contre 24,9 Mt dans FAOSTAT pour 2023 et 32 (25–37) Tg dans le Global Methane Budget. L'essentiel de l'écart vient de l'Inde.
+
+L'intensité de l'Inde est celle de HESTIA (niveau 1) : 16,7 kg de méthane dû à l'inondation par tonne de paddy, et 17,1 kg avec le reste. Celle de FAOSTAT est de 24,6 kg (5,08 Mt pour 206,7 Mt de paddy). Les deux sont par tonne de paddy, l'unité du riz des bilans : l'écart n'est donc pas une erreur de conversion. Par hectare, HESTIA donne environ 72 kg de méthane et FAOSTAT environ 106.
+
+Le modèle de HESTIA applique l'affinement de 2019 du GIEC aux régimes hydriques et aux amendements de ses données sur le riz indien. FAOSTAT applique la méthode de niveau 1 du GIEC avec ses propres hypothèses sur les régimes hydriques. La différence tient à la méthode : la valeur de HESTIA est donc gardée, comme le niveau le mieux documenté. Avec l'intensité de FAOSTAT pour l'Inde, le total mondial serait d'environ 24,1 Mt.
 
 ## Émissions par source
 
-Chaque intensité est aussi répartie par source (fermentation entérique, gestion des effluents, riz, engrais de synthèse et organiques, résidus, énergie, fabrication des intrants, autres) dans `breakdown.json`, à partir du même calcul : l'allocation de FAOSTAT ci-dessus garde chaque processus séparé, et les lignes de HESTIA gardent leurs termes d'émission. La page [Pratiques agricoles](#method-practices) explique cette répartition et les pratiques qui l'utilisent.
+Chaque intensité est aussi répartie par source dans `breakdown.json` : fermentation entérique, gestion des effluents, riz, engrais de synthèse et organiques, résidus, énergie, fabrication des intrants, et autres. La répartition vient du même calcul. L'allocation de FAOSTAT ci-dessus garde chaque processus séparé, et les lignes de HESTIA gardent leurs termes d'émission. La page [Pratiques agricoles](#method-practices) explique cette répartition et les pratiques qui l'utilisent.
+
+## Code et tables
+
+Le code est dans `pipeline/planetshift_pipeline/intensities.py`. Ses tables sont `pipeline/qcl_items.csv` et `pipeline/proxies.csv`. Les intensités sont dans `intensities.json`.
 
 ## Hypothèses
 
 - Les estimations de niveau 1 de FAOSTAT valent pour chaque pays, plutôt que les inventaires propres aux pays.
-- L'azote de synthèse est réparti selon la surface × une dose mondiale par classe de cultures ; les doses réelles varient d'un pays à l'autre.
+- L'azote de synthèse est réparti selon la surface × une dose mondiale par classe de cultures. Les doses réelles varient d'un pays à l'autre.
 - 3,6 % de l'azote de synthèse de chaque pays va aux prairies, comme dans la moyenne mondiale.
 - 85 % des émissions d'un troupeau laitier vont au lait partout.
 - Les cheptels mixtes (buffles, moutons, chèvres, chameaux) sont répartis selon les protéines, avec 15 % de protéines dans la viande en carcasse.
 - L'énergie est répartie selon la valeur de la production, la fabrication des pesticides selon la surface.
 - Les abats et les graisses portent les mêmes émissions par tonne que la carcasse.
-- Des bovins non laitiers et des buffles d'un pays, les animaux traits et les têtes qu'il faut pour fournir ses abattages et ses exportations nettes d'animaux vivants à 6,7 % par an sont élevés pour l'alimentation ; le reste, et tous les chevaux, ânes et mulets, ne le sont pas. 6,7 % est le plus bas des taux d'exploitation moyens régionaux des bovins traditionnels d'Afrique subsaharienne, appliqué à tous les pays.
+- Parmi les bovins non laitiers et les buffles d'un pays, deux groupes sont élevés pour l'alimentation : les animaux traits, et les têtes qu'il faut pour fournir ses abattages et ses exportations nettes d'animaux vivants à 6,7 % par an. Le reste, et tous les chevaux, ânes et mulets, ne le sont pas. 6,7 % est le plus bas des taux d'exploitation moyens régionaux des bovins traditionnels d'Afrique subsaharienne, appliqué à tous les pays.
 - Au sein d'une espèce, chaque tête d'un pays émet autant, qu'elle soit élevée pour l'alimentation ou non.
 - Les taux d'extraction sont des valeurs mondiales, les mêmes dans chaque pays.
 - Une intensité plus de 20 fois supérieure à la médiane mondiale du produit est un décalage de données, pas une valeur réelle.
 - Les substituts sont des choix de jugement, listés ci-dessus pour être revus.
-- Les intensités des produits de la mer sont des valeurs de la littérature mélangées selon la production de chaque pays ; voir [Poissons et fruits de mer](#method-seafood) pour leurs propres hypothèses.
+- Les intensités des produits de la mer sont des valeurs de la littérature combinées selon la production de chaque pays. Voir [Poissons et fruits de mer](#method-seafood) pour leurs propres hypothèses.
 
 ## Sources
 

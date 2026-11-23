@@ -138,11 +138,11 @@ The two scopes are defined on the [Emissions per tonne of food](#method-emission
 
 | Gas, at the farm gate | World total in the model | Main sources |
 | --- | --- | --- |
-| Methane | 137 Mt | 75% enteric fermentation (102 Mt), 16% rice (22 Mt), 7% manure management (10 Mt), 2% crop residues |
-| Nitrous oxide | 7.7 Mt | 49% organic fertiliser, that is manure on pasture and on fields (3.7 Mt), 37% synthetic fertiliser (2.9 Mt), 8% residues, 6% manure management |
-| CO₂ | 370 Mt | the fuel burnt on farms (232 Mt), urea (100 Mt) and, in other, liming (38 Mt) |
+| Methane | 138 Mt | 71% enteric fermentation (98 Mt), 16% rice (22 Mt), 7% manure management (9 Mt), 5% animals not raised for food (6 Mt), 2% crop residues |
+| Nitrous oxide | 8.1 Mt | 45% organic fertiliser, that is manure on pasture and on fields (3.7 Mt), 36% synthetic fertiliser (2.9 Mt), 8% residues, 6% manure management, 3% other, 2% animals not raised for food |
+| CO₂ | 390 Mt | the fuel burnt on farms (244 Mt), urea (103 Mt) and, in other, liming (42 Mt) |
 
-FAOSTAT's totals for 2023 are 106, 25 and 10 Mt for the first three sources of methane. From cradle to farm gate, CO₂ rises to 1,505 Mt, with energy at 746 Mt and the making of inputs at 648 Mt.
+FAOSTAT's totals for 2023 are 106, 25 and 10 Mt for the first three sources of methane. From cradle to farm gate, CO₂ rises to 1,741 Mt, with energy at 923 Mt and the making of inputs at 699 Mt.
 
 ### How each tier is split
 

@@ -1,6 +1,6 @@
 # Carbon stored in farmland
 
-Farming can take CO₂ out of the air as well as emit it. Plants put carbon into the soil, trees store it in wood, and some materials spread on fields lock it away. This page explains the four practices Planetshift offers as levers, how much CO₂ each takes up per hectare, and how much each could store worldwide: at the most land each can reach, about 0.37 Gt (billion tonnes) of CO₂ a year for cover crops, 1.4 Gt for trees on farms, 0.63 Gt for biochar and 0.6 Gt for rock dust.
+Farming can take CO₂ out of the air as well as emit it. Plants put carbon into the soil, trees store it in wood, and some materials spread on fields lock it away. This page explains the four practices Planetshift offers as levers, how much CO₂ each takes up per hectare, and how much each could store worldwide: at the most land each can reach, about 0.37 Gt (billion tonnes) of CO₂ a year for cover crops, 1.3 Gt for trees on farms, 0.63 Gt for biochar and 0.6 Gt for rock dust.
 
 ## How the uptake is counted
 
@@ -47,7 +47,7 @@ Trees on farms (agroforestry) puts trees into fields of crops (silvoarable syste
 
 Cardinael et al. (2018) synthesised 542 observations into rates by system and climate. Averaged over silvoarable systems and silvopasture, trees and soil take up about 8.6 t of CO₂ per hectare a year in temperate climates and 17.5 t in the tropics. Those rates are for the plots studied, which have a median of 1250 trees per hectare and a median age of 8 to 11 years, and grow fast. Systems adopted on a large scale have fewer trees. The median is therefore half the synthesis' mean, the low a quarter of it, and the high the mean itself. Dry climates take 0.7 times the moist rate, the IPCC's ratio of tree growth in the dry tropics to the moist tropics.
 
-Five percent of cropland and pasture is taken as a realistic most. On about 4.7 billion hectares of farmland, it gives about 1.4 Gt of CO₂ a year. This lies between the cost-effective and the technical potentials of Roe et al. (2021) and of the IPCC's Sixth Assessment Report. For agroforestry, the latter gives 0.8 (0.4–1.1) Gt CO₂-equivalent a year at up to $100 a tonne, and 4.1 (0.3–9.4) technically.
+Five percent of cropland and pasture is taken as a realistic most. On about 4.7 billion hectares of farmland, it gives about 1.3 Gt of CO₂ a year. This lies between the cost-effective and the technical potentials of Roe et al. (2021) and of the IPCC's Sixth Assessment Report. For agroforestry, the latter gives 0.8 (0.4–1.1) Gt CO₂-equivalent a year at up to $100 a tonne, and 4.1 (0.3–9.4) technically.
 
 ### Biochar
 
