@@ -1,4 +1,14 @@
-import type { Cause, Climate, Enso, EnsoPhase, LeverCause, Ssp } from '../data/types';
+import {
+  GASES,
+  type BandSeries,
+  type Cause,
+  type Climate,
+  type Enso,
+  type EnsoPhase,
+  type Gas,
+  type LeverCause,
+  type Ssp,
+} from '../data/types';
 
 export interface Point {
   year: number;
@@ -59,7 +69,18 @@ export const CAUSES: readonly Cause[] = [
   'airPollution',
 ];
 
-export type Attribution = Climate['attribution'][Ssp];
+/** The warming by cause of every emission, or of one gas, which has fewer causes. */
+export type Attribution = Partial<Record<Cause, BandSeries>>;
+
+/** What the causes chart shows: every cause of warming, or one greenhouse gas's by cause. */
+export const CAUSE_GASES = ['all', ...GASES] as const;
+export type CauseGas = (typeof CAUSE_GASES)[number];
+
+/** The attribution of a gas choice; all gases' when the build has no split by gas. */
+export const attributionOf = (climate: Climate, ssp: Ssp, gas: CauseGas): Attribution =>
+  gas === 'all'
+    ? climate.attribution[ssp]
+    : (climate.attributionByGas?.[ssp][gas as Gas] ?? climate.attribution[ssp]);
 
 /** The causes a build has: one made before air pollution and the natural factors were split has neither. */
 export const causesIn = (attribution: Attribution): Cause[] =>
@@ -73,10 +94,13 @@ export type CauseRow = { year: number } & Record<Cause, number>;
  */
 export const attributionRows = (
   attribution: Attribution,
-  avoided?: { years: readonly number[]; byCause: Readonly<Record<LeverCause, readonly number[]>> },
+  avoided?: {
+    years: readonly number[];
+    byCause: Readonly<Partial<Record<LeverCause, readonly number[]>>>;
+  },
 ): CauseRow[] => {
   const causes = causesIn(attribution);
-  const years = attribution.fossilIndustry.years;
+  const years = (causes[0] === undefined ? undefined : attribution[causes[0]])?.years ?? [];
   const index = new Map(avoided?.years.map((y, i) => [y, i]));
   return years.map((year, i) => {
     const k = index.get(year);
@@ -88,9 +112,7 @@ export const attributionRows = (
           if (!s || !causes.includes(c)) return [c, 0];
           const j = s.years[i] === year ? i : s.years.indexOf(year);
           const less =
-            avoided && k !== undefined && c in avoided.byCause
-              ? (avoided.byCause[c as LeverCause][k] ?? 0)
-              : 0;
+            avoided && k !== undefined ? (avoided.byCause[c as LeverCause]?.[k] ?? 0) : 0;
           return [c, (s.median[j] ?? 0) - less];
         }),
       ) as Record<Cause, number>),

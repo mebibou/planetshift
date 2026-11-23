@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import type { BandSeries } from '../../src/data/types';
+import type { BandSeries, Climate } from '../../src/data/types';
 import {
+  attributionOf,
   attributionRows,
   causesAt,
   causesBySize,
@@ -89,6 +90,27 @@ describe('series', () => {
     expect(now?.total).toBeCloseTo(1.0);
     expect(now?.byCause.airPollution).toBeCloseTo(-0.5);
     expect(causesAt(attribution, 1990)).toBeNull();
+  });
+
+  it('stacks one gas without the causes that do not emit it, and its levers on those that do', () => {
+    const methane: Attribution = { agriculture: band([0.2, 0.25]), other: band([0.1, 0.1]) };
+    expect(causesIn(methane)).toEqual(['agriculture', 'other']);
+    const rows = attributionRows(methane, { years: [2001], byCause: { agriculture: [0.05] } });
+    expect(rows[1]).toMatchObject({ year: 2001, agriculture: 0.2, other: 0.1, fossilIndustry: 0 });
+    expect(causesAt(methane, 2000)?.total).toBeCloseTo(0.3);
+  });
+
+  it("reads a gas's attribution, or every cause's for all gases and for a build without the split", () => {
+    const climate = {
+      attribution: { ssp245: attribution },
+      attributionByGas: {
+        ssp245: { co2: { landUse: band([1, 1]) }, ch4: older, n2o: older },
+      },
+    } as unknown as Climate;
+    expect(attributionOf(climate, 'ssp245', 'co2')).toEqual({ landUse: band([1, 1]) });
+    expect(attributionOf(climate, 'ssp245', 'all')).toBe(attribution);
+    const before = { ...climate, attributionByGas: undefined };
+    expect(attributionOf(before as Climate, 'ssp245', 'ch4')).toBe(attribution);
   });
 
   it('measures the gap between two series in a year', () => {

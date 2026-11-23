@@ -197,6 +197,9 @@ export type CountedCause = LeverCause | 'airPollution';
 export type Cause =
   'fossilIndustry' | 'agriculture' | 'landUse' | 'airPollution' | 'natural' | 'other';
 
+/** A part of one gas's warming: a greenhouse cause that emits it, or its other sources. */
+export type GasCause = LeverCause | 'other';
+
 /**
  * Permafrost carbon released as the world warms (AR6): kg of carbon per °C of warming above
  * 1850–1900, released over the century, with a range; the share released as CH₄, and the
@@ -227,6 +230,11 @@ export interface Climate {
     Ssp,
     Partial<Record<Cause, BandSeries>> & Record<LeverCause | 'other', BandSeries>
   >;
+  /**
+   * Each greenhouse gas's warming by the causes that emit it, like `attribution`; `other` is the
+   * gas's other sources and the causes' interactions. A build without it hides the gas switch.
+   */
+  attributionByGas?: Record<Ssp, Record<Gas, Partial<Record<GasCause, BandSeries>>>>;
   /**
    * Temperature vs 1850–1900 with natural forcing only (solar and volcanic, every human
    * emission held at its 1750 level), from FaIR, 1850–2100. Optional until the pipeline builds it.

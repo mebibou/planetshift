@@ -74,7 +74,9 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
   const link = hoverLink();
   const chart = temperatureChart(t, locale, ctx.currentYear, link);
   const avoided = avoidedChart(t, locale, ctx.currentYear);
-  const cause = causeView(t, locale, ctx.currentYear);
+  const cause = causeView(t, locale, ctx.currentYear, (causeGas) =>
+    ctx.setUi((u) => ({ ...u, causeGas })),
+  );
   const people = populationChart(t, locale, ctx.currentYear, link);
   chart.slot.append(people.el);
   let last: { result: ScenarioResult | null; state: AppState } = { result: null, state };
@@ -94,7 +96,13 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
     const { range } = last.state.ui;
     const { ssp, temperature } = last.state.options;
     if (last.state.ui.chart === 'cause')
-      cause.update(last.result, data.climate, { ssp, temperature, from: RANGE_START[range], end });
+      cause.update(last.result, data.climate, {
+        ssp,
+        temperature,
+        from: RANGE_START[range],
+        end,
+        gas: last.state.ui.causeGas,
+      });
     if (!last.result) return;
     if (last.state.ui.chart === 'temperature') {
       chart.update(last.result, range, end, data.climate.naturalOnly, data.enso);

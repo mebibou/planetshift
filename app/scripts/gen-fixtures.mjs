@@ -473,6 +473,12 @@ const causeShare = {
   airPollution: -0.45,
   other: 0.33,
 };
+// Each greenhouse gas's warming by the causes that emit it, a share of the projected warming.
+const gasShare = {
+  co2: { fossilIndustry: 0.66, agriculture: 0.01, landUse: 0.12, other: 0.02 },
+  ch4: { fossilIndustry: 0.08, agriculture: 0.17, other: 0.07 },
+  n2o: { fossilIndustry: 0.01, agriculture: 0.06, other: 0.01 },
+};
 // Natural forcing alone: a flat line near zero, with a dip after each large eruption.
 const natural = (y) =>
   0.02 * Math.sin((2 * Math.PI * (y - 1850)) / 11) -
@@ -528,6 +534,27 @@ write('climate.json', {
         ]),
         ['natural', bandSeries(natural, 1850, 2100, () => 0.04)],
       ]),
+    ]),
+  ),
+  attributionByGas: Object.fromEntries(
+    ssps.map((s) => [
+      s,
+      Object.fromEntries(
+        Object.entries(gasShare).map(([gas, shares]) => [
+          gas,
+          Object.fromEntries(
+            Object.entries(shares).map(([cause, k]) => [
+              cause,
+              bandSeries(
+                (y) => k * projected(s, y),
+                1850,
+                2100,
+                (y) => k * spreadT(y),
+              ),
+            ]),
+          ),
+        ]),
+      ),
     ]),
   ),
   naturalOnly: bandSeries(natural, 1850, 2100, () => 0.04),

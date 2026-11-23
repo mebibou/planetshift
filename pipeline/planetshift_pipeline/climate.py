@@ -11,7 +11,17 @@ import numpy as np
 
 from . import climate_ar6, climate_fair
 from .cache import DEFAULT_CACHE
-from .climate_scenarios import CAUSES, GASES, GREENHOUSE, cause_emissions, removals, without
+from .climate_scenarios import (
+    CAUSES,
+    GASES,
+    GREENHOUSE,
+    all_of_gas,
+    cause_emissions,
+    gas_causes,
+    of_gas,
+    removals,
+    without,
+)
 from .sources import primap, rcmip, temperature
 
 SOURCES = [
@@ -203,6 +213,36 @@ def combined(
     }
 
 
+def gas_key(cause: str, gas: str) -> str:
+    return f"{cause}:{gas}"
+
+
+ALL_SOURCES = "all"
+
+
+def gas_removals(
+    taken: dict[str, dict[str, np.ndarray]],
+    emissions: dict[str, np.ndarray],
+    baseline: dict[str, float],
+) -> tuple[dict[str, dict[str, np.ndarray]], dict[str, str]]:
+    """What to take out for each gas: every source of it, and each greenhouse cause's part of it.
+    A cause that emits that gas alone is its own run already, given as an alias."""
+    alone = {
+        gas_key(c, g): c
+        for g in GASES
+        for c in gas_causes(taken, g)
+        if of_gas(taken[c], g).keys() == taken[c].keys()
+    }
+    parts = {
+        gas_key(c, g): of_gas(taken[c], g)
+        for g in GASES
+        for c in gas_causes(taken, g)
+        if gas_key(c, g) not in alone
+    }
+    totals = {gas_key(ALL_SOURCES, g): all_of_gas(emissions, baseline, g) for g in GASES}
+    return parts | totals, alone
+
+
 def attribution_runs(
     setup: climate_fair.Setup,
     emissions: dict[str, np.ndarray],
@@ -211,20 +251,24 @@ def attribution_runs(
     end: int,
 ) -> dict[str, np.ndarray]:
     """Temperature (year, member) with all emissions, each cause removed, the three greenhouse
-    causes removed together, and agriculture and land use removed from FOOD_FUTURE_FROM on (for
-    the food-consumption study)."""
-    taken = removals(emissions, agriculture, fossil, climate_fair.baseline_emissions(setup))
+    causes removed together, agriculture and land use removed from FOOD_FUTURE_FROM on (for
+    the food-consumption study), and for each gas, all of it and each cause's part of it removed."""
+    baseline = climate_fair.baseline_emissions(setup)
+    taken = removals(emissions, agriculture, fossil, baseline)
     years = np.arange(climate_fair.START, climate_fair.START + len(emissions["CH4"]))
     land = combined(taken, ("agriculture", "landUse"))
     later = {k: v * (years >= FOOD_FUTURE_FROM) for k, v in land.items()}
+    by_gas, alone = gas_removals(taken, emissions, baseline)
     scenarios = (
         {"full": emissions}
         | {cause: without(emissions, taken[cause]) for cause in CAUSES}
         | {"none": without(emissions, combined(taken, GREENHOUSE))}
         | {"food": without(emissions, later)}
+        | {name: without(emissions, removed) for name, removed in by_gas.items()}
     )
     result = climate_fair.run(setup, scenarios, end)
-    return {name: result.temperature[:, i, :] for i, name in enumerate(result.scenarios)}
+    runs = {name: result.temperature[:, i, :] for i, name in enumerate(result.scenarios)}
+    return runs | {name: runs[cause] for name, cause in alone.items()}
 
 
 def contributions(
@@ -237,6 +281,25 @@ def contributions(
     causes = {c: anomaly(years, runs["full"] - runs[c]) for c in CAUSES}
     other = total - sum(causes.values()) - natural
     return {"total": total, **causes, "natural": natural, "other": other}
+
+
+def gas_contributions(
+    years: np.ndarray, runs: dict[str, np.ndarray]
+) -> dict[str, dict[str, np.ndarray]]:
+    """Per gas and member, °C vs 1850–1900: the gas's total (full − every source of it), each
+    greenhouse cause's part (full − that cause's part of the gas), and other: the gas's other
+    sources and the causes' non-additivity."""
+
+    def one(gas: str) -> dict[str, np.ndarray]:
+        total = anomaly(years, runs["full"] - runs[gas_key(ALL_SOURCES, gas)])
+        causes = {
+            c: anomaly(years, runs["full"] - runs[gas_key(c, gas)])
+            for c in GREENHOUSE
+            if gas_key(c, gas) in runs
+        }
+        return {"total": total, **causes, "other": total - sum(causes.values())}
+
+    return {gas: one(gas) for gas in GASES}
 
 
 def additivity_gap(years: np.ndarray, runs: dict[str, np.ndarray]) -> np.ndarray:
@@ -257,9 +320,10 @@ def preindustrial_offset(years: np.ndarray, runs: dict[str, np.ndarray], cause: 
     return float(np.median((runs["full"] - runs[cause])[window].mean(axis=0)))
 
 
-def attribution_bands(by_cause: dict[str, np.ndarray]) -> dict[str, dict[str, np.ndarray]]:
+def attribution_bands(
+    by_cause: dict[str, np.ndarray], named: tuple[str, ...] = (*CAUSES, "natural")
+) -> dict[str, dict[str, np.ndarray]]:
     """Bands per cause, with 'other''s median set so the medians add up to the total's."""
-    named = (*CAUSES, "natural")
     bands = {c: band(by_cause[c]) for c in (*named, "other")}
     total_median = np.median(by_cause["total"], axis=-1)
     other_median = total_median - sum(bands[c]["median"] for c in named)
@@ -304,6 +368,21 @@ def natural_only(setup: climate_fair.Setup, years: np.ndarray) -> np.ndarray:
 
 
 # Assembly
+
+
+def attribution_document(
+    years: np.ndarray,
+    keep: np.ndarray,
+    parts: dict[str, np.ndarray],
+    named: tuple[str, ...] | None = None,
+) -> dict[str, dict]:
+    """Each named part's band series on the kept years, and other's, whose median makes them add
+    up to the total's; `named` defaults to every part but the total and other."""
+    names = named or tuple(k for k in parts if k not in ("total", "other"))
+    return {
+        name: band_series(years[keep], {k: v[keep] for k, v in values.items()})
+        for name, values in attribution_bands(parts, names).items()
+    }
 
 
 def observed(cache_dir: Path) -> dict:
@@ -355,6 +434,7 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
     }
     natural = natural_only(setup, years)
     by_cause = {ssp: contributions(years, runs[ssp], natural) for ssp in SSPS}
+    by_gas = {ssp: gas_contributions(years, runs[ssp]) for ssp in SSPS}
 
     shown = years >= FIRST_YEAR
     to_end = shown & (years <= ATTRIBUTION_END)
@@ -370,16 +450,12 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
             for ssp in SSPS
         },
         "attribution": {
-            ssp: {
-                cause: band_series(
-                    years[to_end],
-                    {k: v[to_end] for k, v in values.items()},
-                )
-                for cause, values in attribution_bands(
-                    {k: v for k, v in by_cause[ssp].items()}
-                ).items()
-            }
+            ssp: attribution_document(years, to_end, by_cause[ssp], (*CAUSES, "natural"))
             for ssp in SSPS
+        },
+        "attributionByGas": {
+            ssp: {gas: attribution_document(years, to_end, parts) for gas, parts in gases.items()}
+            for ssp, gases in by_gas.items()
         },
         "naturalOnly": band_series(years[shown], band(natural[shown])),
         "permafrost": permafrost(),
@@ -388,6 +464,7 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
     diagnostics = {
         "years": years,
         "by_cause": by_cause,
+        "by_gas": by_gas,
         "pulses": pulses,
         "additivity_gap": {ssp: additivity_gap(years, runs[ssp]) for ssp in SSPS},
         "future_food": {ssp: future_food_warming(years, runs[ssp]) for ssp in SSPS},
@@ -405,11 +482,13 @@ def summary(document: dict, diagnostics: dict) -> list[str]:
     years = diagnostics["years"]
     pulses = diagnostics["pulses"]
 
-    def at(ssp: str, cause: str, first: int, last: int) -> str:
-        window = (years >= first) & (years <= last)
-        values = diagnostics["by_cause"][ssp][cause][window].mean(axis=0)
-        p05, p50, p95 = np.percentile(values, PERCENTILES)
+    def window(values: np.ndarray, first: int, last: int) -> str:
+        mean = values[(years >= first) & (years <= last)].mean(axis=0)
+        p05, p50, p95 = np.percentile(mean, PERCENTILES)
         return f"{p50:.3f} ({p05:.3f}–{p95:.3f})"
+
+    def at(ssp: str, cause: str, first: int, last: int) -> str:
+        return window(diagnostics["by_cause"][ssp][cause], first, last)
 
     natural = diagnostics["natural"][(years >= 2010) & (years <= 2019)].mean(axis=0)
     lines = [
@@ -426,6 +505,15 @@ def summary(document: dict, diagnostics: dict) -> list[str]:
             lines.append(
                 f"  {cause}: 2015–2024 {at(ssp, cause, 2015, 2024)}, "
                 f"2050 {at(ssp, cause, 2050, 2050)}, 2100 {at(ssp, cause, 2100, 2100)}"
+            )
+        for gas, parts in diagnostics["by_gas"][ssp].items():
+            lines.append(
+                f"  {gas}: "
+                + ", ".join(
+                    f"{name} 2015–2024 {window(values, 2015, 2024)} "
+                    f"2100 {window(values, 2100, 2100)}"
+                    for name, values in parts.items()
+                )
             )
         gap = diagnostics["additivity_gap"][ssp]
         food = diagnostics["future_food"][ssp][years == 2100][0]

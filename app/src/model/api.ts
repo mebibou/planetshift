@@ -6,9 +6,11 @@ import type {
   AnimalGroup,
   ClimateMethod,
   FeedMethod,
+  Gas,
   GasVector,
   Group,
   CountedCause,
+  LeverCause,
   Scope,
   Ssp,
   TemperatureSource,
@@ -116,6 +118,11 @@ export interface ScenarioResult {
      * add up to `avoided.median`.
      */
     avoidedByCause: Record<CountedCause, number[]>;
+    /**
+     * The same by gas. Air pollution and aviation's non-CO₂ forcing are no gas, so a cause's
+     * gases can fall short of its `avoidedByCause`.
+     */
+    avoidedByGas: Record<Gas, Record<LeverCause, number[]>>;
   };
   summary: Summary;
 }

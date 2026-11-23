@@ -20,7 +20,6 @@
   --series-observed: var(--ink);
   --series-baseline: #7a817d;
   --series-scenario: #2a78d6;
-  --series-agriculture: #1baf7a;
   --cause-fossilIndustry: #2a78d6;
   --cause-agriculture: #1baf7a;
   --cause-landUse: #eb6834;
@@ -106,7 +105,6 @@
     --danger: #ff8a80;
     --series-baseline: #9aa19d;
     --series-scenario: #3987e5;
-    --series-agriculture: #199e70;
     --cause-fossilIndustry: #3987e5;
     --cause-agriculture: #199e70;
     --cause-landUse: #d95926;
@@ -182,7 +180,6 @@
   --danger: #ff8a80;
   --series-baseline: #9aa19d;
   --series-scenario: #3987e5;
-  --series-agriculture: #199e70;
   --cause-fossilIndustry: #3987e5;
   --cause-agriculture: #199e70;
   --cause-landUse: #d95926;
@@ -1425,25 +1422,14 @@ input[type='range']:disabled {
   stroke-width: 1;
   opacity: 0.5;
 }
-.gas-multiples {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-}
-.gas-chart h3 {
-  margin-bottom: 4px;
-}
-.gas-area {
-  fill: color-mix(in srgb, var(--series-agriculture) 22%, transparent);
-}
-.gas-line {
-  stroke: var(--series-agriculture);
-}
-
 /* Causes of warming */
 .cause-view {
   display: grid;
   gap: 8px;
+}
+.cause-view .segmented {
+  justify-self: start;
+  max-width: 100%;
 }
 .cause-intro {
   margin-bottom: 8px;

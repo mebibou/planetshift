@@ -41,6 +41,7 @@ def test_document_matches_the_contract(built):
         "scenarioTemperature",
         "agricultureEmissions",
         "attribution",
+        "attributionByGas",
         "naturalOnly",
         "permafrost",
         "shippingSulphur2020",
@@ -57,6 +58,12 @@ def test_document_matches_the_contract(built):
         for part in document["attribution"][ssp].values():
             assert part["years"][-1] == 2100
             assert len(part["median"]) == len(part["years"])
+        by_gas = document["attributionByGas"][ssp]
+        assert set(by_gas["co2"]) == {"fossilIndustry", "agriculture", "landUse", "other"}
+        assert (
+            set(by_gas["ch4"]) == set(by_gas["n2o"]) == {"fossilIndustry", "agriculture", "other"}
+        )
+        assert by_gas["co2"]["landUse"] == document["attribution"][ssp]["landUse"]
     assert len(json.dumps(document, separators=(",", ":"))) < 1_000_000
 
 

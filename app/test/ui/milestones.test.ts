@@ -23,6 +23,11 @@ const temperature = (
   },
   avoided: { median: [], p05: [], p95: [] },
   avoidedByCause: { fossilIndustry: [], agriculture: [], landUse: [], airPollution: [] },
+  avoidedByGas: {
+    co2: { fossilIndustry: [], agriculture: [], landUse: [] },
+    ch4: { fossilIndustry: [], agriculture: [], landUse: [] },
+    n2o: { fossilIndustry: [], agriculture: [], landUse: [] },
+  },
 });
 
 describe('milestones', () => {

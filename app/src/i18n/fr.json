@@ -294,10 +294,23 @@
       "airPollution": "Pollution de l'air (refroidit)",
       "natural": "Facteurs naturels (soleil et volcans)"
     },
-    "gasesTitle": "Émissions agricoles par gaz",
-    "gasesText": "Chaque gaz sur sa propre échelle : une tonne de chacun réchauffe de façon très différente.",
-    "gasLabel": "Émissions agricoles mondiales de {gas} de {from} à {year}",
-    "perYear": "{unit} par an",
+    "gas": "Gaz",
+    "gasChoices": {
+      "all": "Tous les gaz",
+      "co2": "CO₂",
+      "ch4": "Méthane",
+      "n2o": "N₂O"
+    },
+    "gasNames": {
+      "co2": "CO₂",
+      "ch4": "méthane",
+      "n2o": "N₂O"
+    },
+    "gasTitle": "Réchauffement dû au {gas} par cause depuis {from}",
+    "gasText": "Chaque bande est le réchauffement que ce gaz cause par les émissions qu'en fait une cause. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause ; les contours en pointillés sont les bandes sans les leviers. La pollution de l'air, les traînées des avions et les facteurs naturels ne sont pas des gaz à effet de serre : ils n'apparaissent que sous Tous les gaz.",
+    "gasCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui ; chaque cause est le réchauffement qu'ajoutent ses émissions de ce gaz, et les autres sources et interactions sont le reste du réchauffement dû au gaz.",
+    "gasOther": "Autres sources et interactions",
+    "gasAttributionLabel": "Graphique empilé du réchauffement dû au {gas} par cause de {from} à {year}",
     "whyTitle": "Pourquoi les gaz sont séparés",
     "whyMethane": "Le méthane a une courte durée de vie : la moitié disparaît en une douzaine d'années. En émettre moins fait baisser le réchauffement qu'il cause en quelques décennies ; c'est pourquoi un changement d'alimentation se voit avant 2050.",
     "whyNitrous": "Le protoxyde d'azote dure environ un siècle : en émettre moins ralentit le réchauffement sans l'inverser.",

@@ -95,6 +95,58 @@ def test_contributions_add_up_to_the_total_for_every_member():
     assert medians == pytest.approx(np.median(parts["total"], axis=-1))
 
 
+def gas_taken() -> tuple[dict, dict]:
+    emissions = {
+        "CO2 FFI": np.array([30.0]),
+        "CO2 AFOLU": np.array([4.0]),
+        "CH4": np.array([300.0]),
+        "N2O": np.array([8.0]),
+        "Sulfur": np.array([100.0]),
+    }
+    agriculture = {"co2": np.array([1e11]), "ch4": np.array([1e11]), "n2o": np.array([2e9])}
+    fossil = {"co2": np.array([0.0]), "ch4": np.array([1e11]), "n2o": np.array([1e9])}
+    baseline = {"CO2 FFI": 0.0, "CO2 AFOLU": 0.0, "CH4": 20.0, "N2O": 1.0, "Sulfur": 2.0}
+    return climate_scenarios.removals(emissions, agriculture, fossil, baseline), emissions
+
+
+def test_gas_removals_split_each_cause_by_gas_and_alias_a_cause_of_one_gas():
+    taken, emissions = gas_taken()
+    baseline = {"CO2 FFI": 0.0, "CO2 AFOLU": 0.0, "CH4": 20.0, "N2O": 1.0}
+    parts, alone = climate.gas_removals(taken, emissions, baseline)
+    assert alone == {"landUse:co2": "landUse"}
+    assert set(parts) == {
+        *(f"{c}:{g}" for c in ("fossilIndustry", "agriculture") for g in ("co2", "ch4", "n2o")),
+        "all:co2",
+        "all:ch4",
+        "all:n2o",
+    }
+    assert set(parts["agriculture:ch4"]) == {"CH4"}
+    assert parts["all:co2"]["CO2 AFOLU"] == pytest.approx([4e12])
+    less = climate_scenarios.without(emissions, parts["all:ch4"])
+    assert less["CH4"] == pytest.approx([20.0])
+
+
+def test_gas_contributions_add_up_to_each_gas_total_for_every_member():
+    years = np.arange(1850, 1905)
+    rng = np.random.default_rng(1)
+    names = [
+        "full",
+        *(f"{c}:{g}" for c in ("fossilIndustry", "agriculture") for g in climate.GASES),
+    ]
+    names += ["landUse:co2", "all:co2", "all:ch4", "all:n2o"]
+    runs = {k: rng.normal(size=(len(years), 5)) for k in names}
+    by_gas = climate.gas_contributions(years, runs)
+    assert set(by_gas["co2"]) == {"total", "fossilIndustry", "agriculture", "landUse", "other"}
+    assert set(by_gas["ch4"]) == {"total", "fossilIndustry", "agriculture", "other"}
+    for parts in by_gas.values():
+        summed = sum(v for k, v in parts.items() if k != "total")
+        assert summed == pytest.approx(parts["total"])
+    document = climate.attribution_document(years, years >= 1850, by_gas["n2o"])
+    assert set(document) == {"fossilIndustry", "agriculture", "other"}
+    medians = sum(np.array(part["median"]) for part in document.values())
+    assert medians == pytest.approx(np.median(by_gas["n2o"]["total"], axis=-1), rel=1e-3, abs=1e-3)
+
+
 def test_air_pollution_brings_aerosols_back_to_their_preindustrial_level():
     emissions = {
         "CO2 FFI": np.array([30.0]),

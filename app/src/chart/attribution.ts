@@ -19,6 +19,7 @@ import {
   inRange,
   zipSeries,
   type Attribution,
+  type CauseGas,
   type CauseRow,
 } from './series';
 
@@ -27,18 +28,22 @@ const MARGIN: Margin = { top: 24, right: 16, bottom: 28, left: 48 };
 /** What the levers avoid by cause each year (`years` are the temperature years). */
 export interface AvoidedByCause {
   years: readonly number[];
-  byCause: Readonly<Record<LeverCause, readonly number[]>>;
+  byCause: Readonly<Partial<Record<LeverCause, readonly number[]>>>;
+}
+
+/** What the chart draws: every cause with the temperature measured, or one gas's causes alone. */
+export interface AttributionView {
+  attribution: Attribution;
+  gas: CauseGas;
+  observed: Series | null;
+  from: number;
+  end: number;
+  avoided: AvoidedByCause | null;
 }
 
 export interface AttributionChart {
   el: HTMLElement;
-  update: (
-    attribution: Attribution,
-    observed: Series,
-    from: number,
-    end: number,
-    avoided: AvoidedByCause | null,
-  ) => void;
+  update: (view: AttributionView) => void;
 }
 
 /** Whether the levers move any cause by a visible amount. */
@@ -54,27 +59,25 @@ const actsOn = (avoided: AvoidedByCause | null): boolean =>
 export const attributionChart = (t: T, locale: string, currentYear: number): AttributionChart => {
   const plotEl = h('div', { class: 'chart-plot' });
   const legendEl = h('div', { class: 'legend-slot' });
-  const el = h(
-    'figure',
-    { class: 'chart attribution-chart' },
-    legendEl,
-    plotEl,
-    h('figcaption', {}, t('link.attributionCaption')),
-  );
-  let last: [Attribution, Series, number, number, AvoidedByCause | null] | null = null;
+  const caption = h('figcaption', {}, t('link.attributionCaption'));
+  const el = h('figure', { class: 'chart attribution-chart' }, legendEl, plotEl, caption);
+  let last: AttributionView | null = null;
   const render = () => {
     if (!last) return;
-    const [attribution, observedSeries, from, end, avoided] = last;
+    const { attribution, gas, observed: observedSeries, from, end, avoided } = last;
+    const labelOf = (c: Cause) =>
+      gas !== 'all' && c === 'other' ? t('link.gasOther') : t(`link.causes.${c}`);
+    caption.textContent = t(gas === 'all' ? 'link.attributionCaption' : 'link.gasCaption');
     const causes = causesIn(attribution);
     const levers = actsOn(avoided);
     legendEl.replaceChildren(
       legendList([
         ...causesBySize(attribution, end).map((c) => ({
-          label: t(`link.causes.${c}`),
+          label: labelOf(c),
           className: `key-cause-${c}`,
         })),
         ...(levers ? [{ label: t('link.withoutLevers'), className: 'key-outline' }] : []),
-        { label: t('chart.observed'), className: 'key-observed' },
+        ...(observedSeries ? [{ label: t('chart.observed'), className: 'key-observed' }] : []),
       ]),
     );
     const baseRows = inRange(attributionRows(attribution), from, end);
@@ -87,13 +90,17 @@ export const attributionChart = (t: T, locale: string, currentYear: number): Att
       );
     const layers = stackOf(rows);
     const baseLayers = stackOf(baseRows);
-    const observed = inRange(zipSeries(observedSeries.years, observedSeries.values), from, end);
+    const observed = observedSeries
+      ? inRange(zipSeries(observedSeries.years, observedSeries.values), from, end)
+      : [];
     const narrow = (plotEl.clientWidth || 640) < 520;
     const f = frame(
       plotEl,
       narrow ? 280 : 360,
       MARGIN,
-      t('link.attributionLabel', { from, year: end }),
+      gas === 'all'
+        ? t('link.attributionLabel', { from, year: end })
+        : t('link.gasAttributionLabel', { gas: t(`link.gasNames.${gas}`), from, year: end }),
     );
     const years = rows.map((r) => r.year);
     const x = scaleLinear()
@@ -148,16 +155,17 @@ export const attributionChart = (t: T, locale: string, currentYear: number): Att
       .attr('x2', f.innerWidth)
       .attr('y1', y(0))
       .attr('y2', y(0));
-    f.plot
-      .append('path')
-      .datum(observed)
-      .attr('class', 'line observed-line')
-      .attr(
-        'd',
-        line<{ year: number; value: number }>()
-          .x((p) => x(p.year))
-          .y((p) => y(p.value)),
-      );
+    if (observedSeries)
+      f.plot
+        .append('path')
+        .datum(observed)
+        .attr('class', 'line observed-line')
+        .attr(
+          'd',
+          line<{ year: number; value: number }>()
+            .x((p) => x(p.year))
+            .y((p) => y(p.value)),
+        );
     verticalRule(f, x(currentYear), String(currentYear));
     f.plot
       .append('text')
@@ -186,15 +194,19 @@ export const attributionChart = (t: T, locale: string, currentYear: number): Att
         };
         return [
           ...causesBySize(attribution, end).map((c) => ({
-            label: t(`link.causes.${c}`),
+            label: labelOf(c),
             value: value(c),
             swatch: `var(--cause-${c})`,
           })),
-          {
-            label: t('chart.observed'),
-            value: obs ? formatTemperature(locale, obs.value, 2) : '–',
-            swatch: 'var(--ink)',
-          },
+          ...(observedSeries
+            ? [
+                {
+                  label: t('chart.observed'),
+                  value: obs ? formatTemperature(locale, obs.value, 2) : '–',
+                  swatch: 'var(--ink)',
+                },
+              ]
+            : []),
         ];
       },
       t('chart.keys'),
@@ -203,8 +215,8 @@ export const attributionChart = (t: T, locale: string, currentYear: number): Att
   onResize(plotEl, render);
   return {
     el,
-    update: (attribution, observed, from, end, avoided) => {
-      last = [attribution, observed, from, end, avoided];
+    update: (view) => {
+      last = view;
       render();
     },
   };
