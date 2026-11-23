@@ -99,9 +99,13 @@ export interface Intensity {
 /** oilcake[iso3][oilseedCode][scope]: kg of each gas a year the crushed oilseed's cake carries. */
 export type OilcakeEmissions = Record<string, Record<string, Partial<Record<Scope, GasVector>>>>;
 
+/** nonFood[iso3]: kg of each gas a year from the animals raised but not farmed for food. */
+export type NonFoodEmissions = Record<string, GasVector>;
+
 export interface Intensities {
   byCountry: Record<string, Record<string, Partial<Record<Scope, Intensity>>>>;
   oilcake?: OilcakeEmissions;
+  nonFood?: NonFoodEmissions;
 }
 /**
  * intensities.json as written: each source once in `sources`, each cell's `source` its index
@@ -114,6 +118,7 @@ export interface IntensitiesFile {
     Record<string, Partial<Record<Scope, Omit<Intensity, 'source'> & { source: number }>>>
   >;
   oilcake?: OilcakeEmissions;
+  nonFood?: NonFoodEmissions;
 }
 
 /**

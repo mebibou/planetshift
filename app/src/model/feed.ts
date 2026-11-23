@@ -79,3 +79,46 @@ export const feedChange = (
   }
   return out;
 };
+
+/** How the world uses each animal item: see `animalUse`. */
+export interface AnimalUse {
+  scale: ItemVector;
+  worldFoodBase: ItemVector;
+}
+
+const useCache = memoPer<Prepared, AnimalUse>();
+
+/**
+ * For each animal item (1 for a plant), `scale`: the world's production less processing per
+ * tonne of its world supply for food and for the feed that follows the animals, as an animal
+ * item's other uses (tallow, industrial milk) and the gap between the world's imports and
+ * exports come from animals raised for food and go with them; `worldFoodBase`: the world's
+ * production less processing that serves food, against which a change in food alone gives the
+ * groups' change in full.
+ */
+export const animalUse = (prepared: Prepared, method: FeedMethod): AnimalUse =>
+  useCache(prepared, method, () => {
+    const n = prepared.items.length;
+    const [food, fed] = prepared.countries.reduce(
+      ([f, d], pc) => {
+        const followed = feedByGroup(pc, prepared, method);
+        const m = pc.multipliers;
+        return [
+          f.map((a, i) => a + (pc.food[i] as number) * (m[i] as number)),
+          d.map(
+            (a, i) => a + followed.reduce((t, v) => t + (v[i] as number), 0) * (m[i] as number),
+          ),
+        ];
+      },
+      [new Float64Array(n), new Float64Array(n)],
+    );
+    const used = food.map((f, i) => f + (fed[i] as number));
+    const animal = (i: number) => prepared.items[i]?.animal === true && (used[i] as number) > 0;
+    const world = prepared.worldEmitting;
+    return {
+      scale: used.map((u, i) => (animal(i) ? (world[i] as number) / u : 1)),
+      worldFoodBase: used.map((u, i) =>
+        animal(i) ? ((world[i] as number) * (food[i] as number)) / u : (world[i] as number),
+      ),
+    };
+  });

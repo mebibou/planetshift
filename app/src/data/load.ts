@@ -57,6 +57,7 @@ export interface Loaded {
 /** intensities.json as the model reads it: each cell's source index replaced by its URL. */
 export const decodeIntensities = (file: IntensitiesFile): Intensities => ({
   ...(file.oilcake ? { oilcake: file.oilcake } : {}),
+  ...(file.nonFood ? { nonFood: file.nonFood } : {}),
   byCountry: Object.fromEntries(
     Object.entries(file.byCountry).map(([iso3, items]) => [
       iso3,

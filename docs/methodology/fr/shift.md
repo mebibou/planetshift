@@ -26,8 +26,8 @@ Cet exemple utilise les données de test (`app/public/fixtures/`), des chiffres 
 1. Retiré : 10 % de chaque produit animal, par exemple 152 kt de viande bovine et 1 724 kt de lait, ainsi que le poisson.
 2. Ajouté : les mêmes protéines réparties selon les végétaux riches en protéines de la France, surtout du blé. Les disponibilités alimentaires de blé augmentent de 1 261 kt, celles de maïs de 115 kt, de riz de 80 kt, d'avoine de 34 kt et de haricots de 23 kt.
 3. Disponibilités : les pertes et semences du blé font 8 % de ses disponibilités, qui doivent donc augmenter de 1 261 × 1,087 tonnes.
-4. Alimentation animale : avec 10 % d'animaux en moins, l'alimentation animale baisse de 10 %. Le maïs fourrager représente 9,9 Mt, si bien que la production de maïs baisse de 959 kt, alors que le maïs alimentaire augmente de 115 kt. La production de blé n'augmente que de 702 kt, car son usage fourrager (6,0 Mt) baisse.
-5. Résultat : les protéines restent à 107,8 g par jour, et l'énergie passe de 2 437 à 2 545 kcal. Les émissions agricoles de la France baissent d'environ 195 kt de CH₄ (méthane), 4,8 kt de N₂O (protoxyde d'azote) et 0,5 Mt de CO₂ par an.
+4. Alimentation animale : la production animale de la France baisse d'un peu plus de 10 %, car chaque produit animal baisse de la part retirée de son usage mondial (étape 5), et l'alimentation animale baisse avec elle. Le maïs fourrager représente 9,9 Mt, si bien que la production de maïs baisse de 1 106 kt, alors que le maïs alimentaire augmente de 115 kt. La production de blé n'augmente que de 606 kt, car son usage fourrager (6,0 Mt) baisse.
+5. Résultat : les protéines restent à 107,8 g par jour, et l'énergie passe de 2 437 à 2 545 kcal. Les émissions agricoles de la France baissent d'environ 224 kt de CH₄ (méthane), 5,6 kt de N₂O (protoxyde d'azote) et 0,6 Mt de CO₂ par an.
 
 ## 1. La base maintenue : protéines ou calories
 
@@ -40,6 +40,8 @@ Les teneurs en protéines et en calories par tonne sont celles des bilans eux-m�
 ## 2. Ce qui est retiré
 
 Les groupes animaux sont la viande de ruminants, la viande porcine, la volaille, les produits laitiers, les œufs, et les poissons et fruits de mer. Pour chaque groupe, les réglages donnent une part : celle du curseur principal, ou celle d'un curseur par groupe qui la remplace. Chaque produit animal du groupe perd cette part de ses disponibilités alimentaires.
+
+Un changement de 100 % signifie qu'aucun animal n'est plus élevé pour l'alimentation : la production de chaque groupe animal tombe à zéro. Les animaux qui ne sont pas élevés pour l'alimentation (bœufs et buffles de trait, chevaux et ânes, la plupart des bovins de l'Inde) restent, et leurs émissions aussi (voir [Émissions par tonne d'aliment](#method-emissions)).
 
 Avec *pays à revenu élevé seulement*, les pays hors du groupe à revenu élevé de la Banque mondiale gardent leur alimentation.
 
@@ -77,7 +79,9 @@ L'herbe et les pâturages ne sont pas dans les bilans, ils n'apparaissent donc p
 
 La production animale est placée d'abord (étape 6). La variation de l'alimentation animale est calculée là où se trouvent les animaux, avant que la production végétale soit placée.
 
-Certains produits fourragers sont des produits animaux : le lait donné aux veaux et aux porcelets, et le poisson transformé en farine et donné aux poissons d'élevage, aux porcs et aux volailles. Leur usage fourrager varie de la même façon. Cette variation est placée comme une variation de la demande, en plus de la variation de l'alimentation humaine. Elle est faite une seule fois : le poisson pêché pour la farine est sauvage et ne mange aucun aliment, si bien qu'une variation de sa production ne change pas de nouveau l'alimentation animale, et la variation du lait donné aux veaux est faible. Voir [Poissons et fruits de mer](#method-seafood).
+Certains produits fourragers sont des produits animaux : le lait donné aux veaux et aux porcelets, et le poisson transformé en farine et donné aux poissons d'élevage, aux porcs et aux volailles. Leur usage fourrager varie avec la variation mondiale des groupes qu'ils nourrissent, tirée de la variation de l'alimentation humaine. Cette variation est placée comme une variation de la demande, en plus de la variation de l'alimentation humaine. Elle est faite une seule fois : le poisson pêché pour la farine est sauvage et ne mange aucun aliment, si bien qu'une variation de sa production ne change pas de nouveau l'alimentation animale, et la variation du lait donné aux veaux est faible. Voir [Poissons et fruits de mer](#method-seafood). L'alimentation animale tirée des cultures suit ensuite la variation de la production animale de chaque pays, lait et poisson donnés aux animaux compris.
+
+Un produit animal a aussi des usages qui ne sont ni l'alimentation humaine ni l'alimentation animale : le suif et le saindoux pour le savon et le carburant, le lait pour l'industrie, et l'écart entre les importations et les exportations enregistrées dans le monde. Ils viennent d'animaux élevés pour l'alimentation et s'en vont avec eux. La production de chaque produit animal varie donc de la même fraction que son usage mondial en alimentation humaine et animale : une variation de cet usage est multipliée par la production mondiale du produit moins la transformation, rapportée à cet usage. Les graisses animales brutes, dont la moitié des disponibilités va à ces usages, baissent de moitié avec un changement de 50 %, et non d'un quart.
 
 ## 6. Où la production change
 
@@ -86,7 +90,9 @@ Certains produits fourragers sont des produits animaux : le lait donné aux veau
 
 Un produit qu'aucun pays ne produit reste là où il est consommé.
 
-Un changement pourrait faire passer la production d'un pays sous ce qu'il transforme (production − transformation inférieure à zéro). Il est arrêté là, et le pays est signalé comme écrêté. Avec les deux options, cela n'arrive que lorsqu'un changement retire un groupe entier (100 %). La baisse d'un produit primaire comme le lait atteint alors sa part transformée, qui est comptée sur le produit transformé (beurre, fromage) et retirée là.
+Un changement pourrait faire passer la production d'un pays sous ce qu'il transforme (production − transformation inférieure à zéro). Il est arrêté là, et le pays est signalé comme écrêté. Un changement de régime seul ne le fait plus, même à 100 %, car la production animale baisse de la part retirée de son usage.
+
+La production affichée par groupe est la production moins ce qui est transformé en un autre produit : les tonnes dont les émissions sont comptées. Le lait transformé en beurre ou en crème est compté sur le beurre et la crème, si bien qu'il n'est pas compté deux fois, et un changement de 100 % amène le groupe des produits laitiers à zéro.
 
 ## 7. Émissions
 
@@ -152,6 +158,7 @@ La température de référence est la température publiée du SSP choisi. Avec 
 - Le lait et le poisson donnés aux animaux changent une fois, avec les animaux qu'ils nourrissent ; cette variation ne change pas de nouveau l'alimentation animale.
 - Parts du commerce fixes ou production nationale : pas de changement dans qui exporte quoi.
 - La production ne peut pas descendre sous ce qui est transformé ; ces cas sont écrêtés et signalés.
+- Les usages d'un produit animal autres que l'alimentation humaine et animale, et l'écart du commerce mondial, suivent sa production.
 - Les intensités par tonne ne changent pas avec la quantité produite.
 - Les hectares par tonne et les parts des prairies restent ceux de l'année de base : ni les rendements ni le chargement des prairies ne changent avec le changement de régime.
 - Les terres d'un oléagineux sont partagées entre son huile et son tourteau selon leur valeur. La part du tourteau suit les animaux qui le mangent, et les prairies temporaires suivent les ruminants, comme les prairies permanentes.

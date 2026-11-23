@@ -95,7 +95,8 @@ test('the shift slider moves the scenario line below the baseline', async ({ pag
 });
 
 test('every option switch works both ways', async ({ page }) => {
-  await open(page, `${START}&shift=20`);
+  // The feed split only matters when the animal groups change by different shares.
+  await open(page, `${START}&shift=20&rum=60`);
   await page.locator('details[data-group="options"] > summary').click();
   for (const [key, values] of Object.entries(OPTIONS)) {
     const [first, ...alternatives] = values;

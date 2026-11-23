@@ -76,14 +76,26 @@ FAOSTAT estimates agricultural emissions for every country with the IPCC Tier 1 
 - **Synthetic fertiliser N₂O** is a country total in FAOSTAT. It is shared between crops in proportion to each crop's harvested area × a nitrogen rate per hectare for its crop class. The rate is the class's share of world nitrogen use from the International Fertilizer Association's survey of fertiliser use by crop (Heffer et al., 2017: wheat 18%, maize 16%, rice 16%, vegetables 10%, fruit 7%, and so on) divided by the class's world harvested area, so a hectare of maize or vegetables takes more than a hectare of pulses. The 3.6% of nitrogen that the same survey finds spread on grassland goes to ruminant products (beef, mutton, other meat, milk) in proportion to their methane, in countries that have both crops and ruminants. The shares conserve each country's total; the part that falls on non-food crops (fibres, tobacco, rubber, and 85% of seed cotton, its lint) is left out of the model.
 - **Livestock** (*Emissions from Livestock*, GLE): enteric fermentation and manure management CH₄, manure management, manure on pasture and manure applied N₂O, by species:
   - dairy cattle: 85% to milk and 15% to beef, the beef of culled cows and surplus calves, a physical allocation close to the International Dairy Federation's global default;
-  - other cattle: beef;
-  - buffalo, sheep, goats and camels: split between milk and meat by the protein each country's herd produces (FAOSTAT production × protein content), all to meat where no milk is recorded;
+  - other cattle: beef, less the animals not raised for food (below);
+  - buffalo, sheep, goats and camels: split between milk and meat by the protein each country's herd produces (FAOSTAT production × protein content), all to meat where no milk is recorded; for buffalo, less the animals not raised for food;
   - pigs to pig meat, broilers, ducks and turkeys to poultry meat, laying hens to eggs, llamas to other meat;
-  - horses, asses and mules are left out: they are kept mainly for work.
+  - horses, asses and mules are kept mainly for work: their emissions are not on any product (below).
 - **Offal and animal fats** share each country's meat emissions with the carcass by mass: if offal and fats weigh a tenth of the meat, they take a tenth of its emissions, and each tonne of carcass, offal or fat carries the same.
 - **Cradle to farm gate** adds FAOSTAT's on-farm energy use (shared between all products by their gross production value), fertiliser manufacturing (shared like synthetic nitrogen) and pesticide manufacturing (shared by harvested area).
 
 The emissions of each item are divided by its production in the Food Balance Sheets: per tonne of milled rice, of whole-milk equivalent, of carcass. An intensity more than 20 times the item's production-weighted world median (in CO₂-equivalent) points to a mismatch between FAOSTAT's emissions and the balance's production, usually a crop with a large area and a small recorded output, and is not used (93 of about 5,600 values, mostly cassava, yams, plantains, cocoa and "other meat"); the cell falls to the next tier.
+
+## Animals not raised for food
+
+Some farm animals are not raised for food: oxen and buffalo kept to plough, horses, donkeys and mules kept for work and transport, and cattle kept for other reasons, as most of India's. Their emissions stay in each country's farm emissions, but no product carries them, and no lever changes them: a 100% shift leaves them in place. They are written by country as `nonFood` in `intensities.json`: 260 Mt CO₂e a year in the base year, 115 Mt of it in India, then Ethiopia (29), Niger (19), Mali (9) and Brazil (9).
+
+The share comes from FAOSTAT's livestock data (CC BY 4.0), by species:
+
+- **Horses, asses and mules**: all their emissions, 70 Mt CO₂e. Some horses are eaten, but the herds are kept mainly for work.
+- **Non-dairy cattle and buffalo**: a herd raised for food slaughters or sells about a tenth of its head a year or more; 9.9% is the mean offtake of traditional cattle systems in sub-Saharan Africa, those that keep their cattle longest (Otte and Chilonda, 2002). The head kept for food are the animals milked (QCL element 5318; FAOSTAT's dairy cows are a species of their own, all for food) and the animals slaughtered in the year (element 5320) over 9.9%. The rest of the stock (GLE element 5111) is not raised for food, and takes its share of the species' emissions by head. This gives 185 Mt CO₂e of cattle and 5 Mt of buffalo. India slaughters almost no cattle in FAOSTAT, so its 131 million non-dairy cattle are all in this baseline.
+- **Sheep, goats, camels, pigs and poultry** are all counted as raised for food.
+
+The rule has limits. Animals exported alive to be slaughtered elsewhere (from Niger, Mali or Somalia) and slaughter FAOSTAT does not record (Brazil's buffalo) look like animals not raised for food. Draught animals in a country that also slaughters many cattle are not seen. A working ox and a calf count the same per head. No FAOSTAT domain counts draught animals, so the rule uses only stocks, milked and slaughtered animals.
 
 ## How many cells each tier fills
 
@@ -98,17 +110,17 @@ Farm-gate scope, country × item cells, by group, for the 188 countries and 90 i
 | nuts | 3 | 0 | 100 | 85 | 0 | 0 |
 | oilCrops | 39 | 722 | 388 | 1225 | 1950 | 0 |
 | otherPlant | 0 | 0 | 155 | 0 | 1349 | 0 |
-| pigMeat | 0 | 0 | 285 | 45 | 46 | 0 |
+| pigMeat | 0 | 0 | 288 | 45 | 43 | 0 |
 | poultryMeat | 0 | 0 | 168 | 20 | 0 | 0 |
 | pulses | 16 | 0 | 294 | 254 | 0 | 0 |
 | rice | 11 | 0 | 95 | 82 | 0 | 0 |
-| rootsTubers | 8 | 182 | 283 | 109 | 358 | 0 |
-| ruminantMeat | 0 | 0 | 540 | 68 | 144 | 0 |
+| rootsTubers | 8 | 182 | 282 | 110 | 358 | 0 |
+| ruminantMeat | 0 | 0 | 543 | 67 | 142 | 0 |
 | seafood | 0 | 0 | 0 | 1018 | 208 | 278 |
-| stimulants | 8 | 0 | 121 | 435 | 0 | 0 |
+| stimulants | 8 | 0 | 120 | 436 | 0 | 0 |
 | sugarCrops | 12 | 364 | 0 | 188 | 376 | 0 |
 | vegetables | 12 | 0 | 451 | 101 | 0 | 0 |
-| All | 184 | 1978 | 4387 | 4966 | 5127 | 278 |
+| All | 184 | 1978 | 4391 | 4967 | 5122 | 278 |
 
 Weighted by emissions rather than cells, FAOSTAT (tier 3) gives two thirds of the world's farm-gate emissions in the model, HESTIA (tiers 1 and 2) a fifth, and published averages and proxies the rest. Tiers 4 and 5 fill mostly items a country does not produce, and processed products.
 
@@ -177,21 +189,21 @@ Milk has no proxy: no other item is a fair stand-in per tonne, so a country with
 
 ## Checks against FAOSTAT's totals
 
-`pipeline/tests/test_validation.py` recomputes world emissions from the built files, intensity × (production − processing) summed over every country and item, and compares them with FAOSTAT's world totals for the same processes in 2023:
+`pipeline/tests/test_validation.py` recomputes world emissions from the built files, intensity × (production − processing) summed over every country and item, plus the animals not raised for food, and compares them with FAOSTAT's world totals for the same processes in 2023:
 
 | | Planetshift | FAOSTAT | Tolerance |
 | --- | --- | --- | --- |
-| Farm gate, CH₄ (Mt) | 136.6 | 141.8 | 10% |
-| Farm gate, N₂O (Mt) | 7.69 | 7.26 | 20% |
-| Cradle to farm gate, CH₄ (Mt) | 139.1 | 142.3 | 10% |
-| Cradle to farm gate, N₂O (Mt) | 7.82 | 7.56 | 20% |
-| Cradle to farm gate, CO₂ (Mt) | 1,505 | 1,348 | 50% |
+| Farm gate, CH₄ (Mt) | 138.1 | 141.8 | 10% |
+| Farm gate, N₂O (Mt) | 8.01 | 7.26 | 20% |
+| Cradle to farm gate, CH₄ (Mt) | 140.6 | 142.3 | 10% |
+| Cradle to farm gate, N₂O (Mt) | 8.14 | 7.56 | 20% |
+| Cradle to farm gate, CO₂ (Mt) | 1,688 | 1,348 | 50% |
 
-Farm-gate methane is within the published budgets: enteric fermentation and manure together give 112 Mt (102 + 10), the Global Methane Budget's 112 (107–118) Tg a year for 2010–2019 (Saunois et al., 2025), and FAO's farm-gate total for 2023 is 8.1 Gt CO₂-equivalent with drained organic soils and on-farm electricity, which Planetshift leaves out (FAOSTAT Analytical Brief 115). Direct agricultural N₂O was 6.1 Mt in 2020 (3.9 Tg N, Tian et al., 2024); Planetshift's 7.7 Mt also holds indirect emissions, as FAOSTAT's does.
+Farm-gate methane is within the published budgets: enteric fermentation and manure together give 112 Mt (102 + 10), the Global Methane Budget's 112 (107–118) Tg a year for 2010–2019 (Saunois et al., 2025), and FAO's farm-gate total for 2023 is 8.1 Gt CO₂-equivalent with drained organic soils and on-farm electricity, which Planetshift leaves out (FAOSTAT Analytical Brief 115). Direct agricultural N₂O was 6.1 Mt in 2020 (3.9 Tg N, Tian et al., 2024); Planetshift's 8.0 Mt also holds indirect emissions, as FAOSTAT's does.
 
 **Rice methane** is 22.6 Mt in the model, against 24.9 Mt in FAOSTAT for 2023 and 32 (25–37) Tg in the Global Methane Budget. Most of the gap is India. Its intensity is HESTIA's (tier 1): 16.7 kg of methane from flooding per tonne of paddy, 17.1 kg with the rest, against FAOSTAT's 24.6 kg (5.08 Mt over 206.7 Mt of paddy). Both are per tonne of paddy, the unit of the balance's rice, so it is not a conversion error; per hectare, HESTIA gives about 72 kg of methane and FAOSTAT about 106. HESTIA's model applies the IPCC's 2019 Refinement to the water regimes and amendments of its Indian rice data, FAOSTAT the IPCC's Tier 1 method with its own assumptions on water regimes; the difference is one of method, so the HESTIA value is kept as the better-documented tier. With FAOSTAT's intensity for India the world total would be about 24.1 Mt.
 
-From FAOSTAT's data alone (tier 3 everywhere, before the other tiers are merged), the allocation recovers 98% of FAOSTAT's farm-gate methane and 96% of its N₂O; what is missing is work animals, non-food crops and countries outside the model. The mixed tiers move the totals a few percent either way, as HESTIA and published LCA studies use other methods; CO₂ differs most because HESTIA's scopes count some CO₂ (urea, lime, machinery) that FAOSTAT files elsewhere.
+From FAOSTAT's data alone (tier 3 everywhere, before the other tiers are merged), the allocation recovers 99% of FAOSTAT's farm-gate methane and 97% of its N₂O, with the animals not raised for food; what is missing is non-food crops and countries outside the model. The mixed tiers move the totals a few percent either way, as HESTIA and published LCA studies use other methods; CO₂ differs most because HESTIA's scopes count some CO₂ (urea, lime, machinery) that FAOSTAT files elsewhere.
 
 ## Emissions by source
 
@@ -206,6 +218,7 @@ Each intensity is also split by source (enteric fermentation, manure management,
 - Mixed herds (buffalo, sheep, goats, camels) are split by protein, with 15% protein in carcass meat.
 - Energy use is shared by the value of production, pesticide manufacture by area.
 - Offal and fats carry the same emissions per tonne as the carcass.
+- A herd of cattle or buffalo raised for food slaughters at least 9.9% of its non-milked head a year; the rest, and all horses, asses and mules, are not raised for food.
 - Extraction rates are world values, the same in every country.
 - An intensity over 20 times the item's world median is a data mismatch, not a real value.
 - Proxies are judgement calls, listed above for review.
@@ -219,6 +232,7 @@ Each intensity is also split by source (enteric fermentation, manure management,
 - FAOSTAT, Crops and livestock products (areas and production): <https://www.fao.org/faostat/en/#data/QCL>, CC BY 4.0.
 - FAOSTAT, Value of Agricultural Production: <https://www.fao.org/faostat/en/#data/QV>, CC BY 4.0.
 - FAOSTAT, Food Balances (production and processing): <https://www.fao.org/faostat/en/#data/FBS>, CC BY 4.0.
+- Otte, M. J., Chilonda, P. (2002). Cattle and Small Ruminant Production Systems in sub-Saharan Africa: A Systematic Review. FAO, Rome: <https://www.fao.org/4/y4176e/y4176e00.htm>.
 - Heffer, P., Gruère, A., Roberts, T. (2017). Assessment of Fertilizer Use by Crop at the Global Level 2014–2014/15. International Fertilizer Association and International Plant Nutrition Institute: <https://www.ifastat.org/>.
 - International Dairy Federation (2015). A common carbon footprint approach for the dairy sector. Bulletin of the IDF 479/2015: <https://fil-idf.org/>.
 - FAO, Technical Conversion Factors for Agricultural Commodities: <https://www.fao.org/statistics/en/>.

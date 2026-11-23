@@ -238,6 +238,14 @@ class Build:
         return self.fetch(HESTIA_DEPENDENTS, "region_members", {})
 
     @cached_property
+    def nonfood(self) -> pd.DataFrame:
+        """kg a year by area_code, gas and process of the animals not raised for food."""
+        y = self.emissions_year
+        gle = self.read("GLE", y, y)
+        kg = I.nonfood_emissions(gle, I.nonfood_shares(gle, self.read("QCL", y, y)))
+        return kg[kg["area_code"].isin(self.iso3)]
+
+    @cached_property
     def faostat_tier3(self) -> tuple[pd.DataFrame, dict[str, pd.DataFrame]]:
         return self.faostat_candidates()
 
