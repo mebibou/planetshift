@@ -181,7 +181,7 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 - **Les facteurs naturels sont la simulation de FaIR avec le seul forçage naturel**, par rapport à sa moyenne de 1850–1900, si bien que les éruptions volcaniques apparaissent comme naturelles. Voir [Causes du réchauffement climatique](#method-link).
 - **Les *autres émissions humaines* sont le total moins chaque cause nommée et les facteurs naturels.** Leur médiane est fixée pour que les médianes fassent le total. Les interactions entre les causes s'y trouvent (0,03 °C aujourd'hui entre les trois causes liées aux gaz à effet de serre, davantage avec la pollution de l'air). Voir [Causes du réchauffement climatique](#method-link).
 - **Le réchauffement dû à l'agriculture avant 1850–1900 (environ 0,10 °C) fait partie de la référence**, et non de la part de l'agriculture. Voir [Causes du réchauffement climatique](#method-link).
-- **Un retrait ne fait jamais passer les émissions d'une espèce chimique sous zéro.** Voir [Causes du réchauffement climatique](#method-link).
+- **Un retrait ne fait jamais passer les émissions d'une espèce chimique sous zéro, sauf le CO₂ net, que le retrait de carbone des scénarios fait passer sous zéro.** Voir [Causes du réchauffement climatique](#method-link).
 
 ## À revoir avant une publication
 

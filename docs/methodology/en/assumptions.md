@@ -181,7 +181,7 @@ The URL keys of the options, the diet controls and the levers are listed under [
 - **The natural factors are FaIR's run with natural forcing alone**, relative to its 1850–1900 mean, so volcanic eruptions show as natural. See [Causes of global warming](#method-link).
 - ***Other human emissions* is the total less every named cause and the natural factors.** Its median is set so that the medians add up to the total. The interactions between causes sit in it (0.03 °C today among the three greenhouse causes, more with air pollution). See [Causes of global warming](#method-link).
 - **Warming from farming before 1850–1900 (about 0.10 °C) is part of the baseline**, not of agriculture's share. See [Causes of global warming](#method-link).
-- **A removal never takes a species' emissions below zero.** See [Causes of global warming](#method-link).
+- **A removal never takes a species' emissions below zero, but for net CO₂, which the scenarios' carbon removal takes below zero.** See [Causes of global warming](#method-link).
 
 ## To review before public release
 

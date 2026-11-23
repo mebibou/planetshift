@@ -73,6 +73,19 @@ def test_without_converts_kg_and_never_goes_negative():
     assert less["N2O"] is emissions["N2O"]
 
 
+def test_taking_farming_out_keeps_the_carbon_removal_of_net_negative_fossil_co2():
+    emissions = {"CO2 FFI": np.array([-5.0]), "CO2 AFOLU": np.array([0.0])}
+    agriculture = {"co2": np.array([2e11]), "ch4": np.array([0.0]), "n2o": np.array([0.0])}
+    fossil = {"co2": np.array([0.0]), "ch4": np.array([0.0]), "n2o": np.array([0.0])}
+    taken = climate_scenarios.removals(emissions, agriculture, fossil, {})
+    assert climate_scenarios.without(emissions, taken["agriculture"])["CO2 FFI"] == pytest.approx(
+        [-5.2]
+    )
+    assert climate_scenarios.without(emissions, taken["fossilIndustry"])[
+        "CO2 FFI"
+    ] == pytest.approx([0.2])
+
+
 def test_removals_never_take_agricultural_co2_twice():
     emissions = {"CO2 FFI": np.array([30.0]), "CO2 AFOLU": np.array([4.0])}
     agriculture = {"co2": np.array([1e11]), "ch4": np.array([1e11]), "n2o": np.array([1e9])}

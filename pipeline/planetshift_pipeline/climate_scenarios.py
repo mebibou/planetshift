@@ -90,14 +90,21 @@ def cause_emissions(
     return {gas: one(gas) for gas in GASES}
 
 
+# Net CO₂, which the scenarios take below zero with carbon removal: a removal keeps it there.
+NET_SPECIES = ("CO2 FFI", "CO2 AFOLU")
+
+
 def without(
     emissions: dict[str, np.ndarray], removed: dict[str, np.ndarray]
 ) -> dict[str, np.ndarray]:
-    """FaIR emissions less `removed` (kg/yr by FaIR specie), never below zero."""
+    """FaIR emissions less `removed` (kg/yr by FaIR specie), never below zero but net CO₂."""
+
+    def less(specie: str, values: np.ndarray) -> np.ndarray:
+        left = values - removed[specie] / KG_PER_FAIR_UNIT.get(specie, 1)
+        return left if specie in NET_SPECIES else np.maximum(left, 0)
+
     return {
-        specie: np.maximum(values - removed.get(specie, 0) / KG_PER_FAIR_UNIT.get(specie, 1), 0)
-        if specie in removed
-        else values
+        specie: less(specie, values) if specie in removed else values
         for specie, values in emissions.items()
     }
 
@@ -119,7 +126,7 @@ def removals(
     return {
         "agriculture": {FAIR_GAS[g]: agriculture[g] for g in GASES},
         "fossilIndustry": {
-            "CO2 FFI": np.maximum(ffi_kg - agriculture["co2"], 0),
+            "CO2 FFI": ffi_kg - agriculture["co2"],
             "CH4": fossil["ch4"],
             "N2O": fossil["n2o"],
         },

@@ -154,7 +154,7 @@ Une partie de ce que changent les leviers de l'énergie n'est pas un gaz à effe
 - La pollution de l'air comprend le dioxyde de soufre, le carbone noir et organique, l'ammoniac et les oxydes d'azote de toutes les sources, ammoniac agricole compris, ramenés à leurs niveaux de 1750. Le monoxyde de carbone et les composés organiques volatils restent dans les *autres émissions humaines*.
 - La variation de la pollution de l'air due aux leviers est comptée avec le forçage par kg de FaIR et le méthane que laissent les NOx et les COV. C'est la même physique, linéarisée autour des émissions du scénario. Le monoxyde de carbone et les COV des leviers comptent malgré tout dans la pollution de l'air, comme une partie de ce qu'émet la combustion du combustible. C'est un petit décalage avec la bande.
 - Les facteurs naturels sont une simulation à part avec le seul forçage naturel, pas un retrait. Les *autres émissions humaines* sont le total moins chaque cause nommée et les facteurs naturels.
-- Un retrait ne fait jamais passer les émissions d'une espèce chimique sous zéro.
+- Un retrait ne fait jamais passer les émissions d'une espèce chimique sous zéro, sauf pour le CO₂. Le retrait de carbone des scénarios fait passer le CO₂ net sous zéro (le CO₂ fossile sur SSP1-2.6 à partir de 2079), et retirer une cause laisse ce retrait en place : le monde sans agriculture le garde, et le monde sans combustibles fossiles ni industrie ne garde que le CO₂ de l'agriculture.
 - Les parts de chaque gaz viennent des mêmes émissions que les causes : un gaz n'a pas d'autre répartition par source que celle que font les causes.
 - Les simulations avec toutes les émissions sont aussi les températures des scénarios de la [page sur la température](#method-climate).
 
