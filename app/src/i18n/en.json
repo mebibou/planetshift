@@ -20,7 +20,11 @@
     "methodology": "Methodology"
   },
   "footer": {
-    "text": "Diets and production from FAOSTAT Food Balance Sheets ({year}); emission intensities from HESTIA, FAOSTAT and published life-cycle studies; fish from FAO FishStat and published studies; farmland from FAOSTAT; deforestation from DeDuCE; transport and electricity from the SSP scenarios, Ember and the IEA; warming from FaIR. Land-use change only as the change in forest clearing and as optional regrowth on freed land."
+    "text": "Diets and production from FAOSTAT Food Balance Sheets ({year}); emission intensities from HESTIA, FAOSTAT and published life-cycle studies; fish from FAO FishStat and published studies; farmland from FAOSTAT; deforestation from DeDuCE; transport and electricity from the SSP scenarios, Ember and the IEA; warming from FaIR. Land-use change only as the change in forest clearing and as optional regrowth on freed land.",
+    "copyright": "© {year} Planetshift contributors",
+    "code": "Code under the Apache License 2.0",
+    "data": "Data under each source's licence",
+    "source": "Source on GitHub"
   },
   "explore": {
     "panel": "Scenario and controls",
@@ -449,5 +453,10 @@
         "text": "The Causes of warming tab, above the chart, splits the warming by cause (fossil fuels and industry, farming, land use and the others) and shows what the levers take off each. The Methodology page explains every step and its sources."
       }
     }
+  },
+  "share": {
+    "subtitle": "The causes of global warming and the levers that limit it, with the warming each would avoid by 2050 and 2100.",
+    "alt": "Planetshift: global temperature since 1850, without the levers and with every lever in full.",
+    "withAll": "With every lever in full"
   }
 }

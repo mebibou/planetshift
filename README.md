@@ -2,6 +2,8 @@
 
 *What does change look like?* Planetshift shows the causes of global warming and the levers that limit it — energy and transport, buildings and industry, farming and diets, forests and farmland — with the warming each would avoid by 2050 or 2100, on equal terms. A chart splits the warming since 1850 by cause and shows how each cause changes with the levers, a map shows where food is produced and what it emits, and the Methodology page explains every step and assumption.
 
+It is online at [planetshift.org](https://planetshift.org/).
+
 ## Layout
 
 - `pipeline/`: Python. Downloads FAOSTAT, HESTIA aggregations, PRIMAP-hist, temperature series and scenario data, runs FaIR, and writes the JSON the app reads into `app/public/data/`. See `pipeline/README.md`.

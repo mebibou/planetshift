@@ -518,6 +518,17 @@ main {
   padding: 16px var(--gutter) 32px;
   color: var(--muted);
   font-size: 0.85rem;
+  & p {
+    max-width: 110ch;
+  }
+}
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  & a {
+    color: inherit;
+  }
 }
 
 @media (min-width: 861px) {
@@ -1717,13 +1728,7 @@ input[type='range']:disabled {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font-weight: 400;
-    color: var(--accent);
-    &:not(:empty)::before {
-      content: '·';
-      margin-right: 8px;
-      color: var(--muted);
-    }
+    color: var(--ink);
   }
   .toc-toggle:focus-visible {
     outline: 2px solid var(--focus);

@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
+    "prerender": "node scripts/prerender.mjs dist",
     "precompress": "node scripts/precompress.mjs dist",
     "lint": "eslint . && prettier --check . && tsc --noEmit",
     "format": "prettier --write .",

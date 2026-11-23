@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://planetshift.org/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://planetshift.org/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://planetshift.org/fr/" />
+  </url>
+  <url>
+    <loc>https://planetshift.org/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://planetshift.org/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://planetshift.org/fr/" />
+  </url>
+  <url>
+    <loc>https://planetshift.org/methodology/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://planetshift.org/methodology/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://planetshift.org/fr/methodology/" />
+  </url>
+  <url>
+    <loc>https://planetshift.org/fr/methodology/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://planetshift.org/methodology/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://planetshift.org/fr/methodology/" />
+  </url>
+</urlset>
