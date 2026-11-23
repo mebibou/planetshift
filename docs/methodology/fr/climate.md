@@ -1,6 +1,6 @@
 # Des émissions à la température
 
-Planetshift traduit une variation des émissions en variation de la température mondiale. Il suit séparément le dioxyde de carbone, le méthane et le protoxyde d'azote avec FaIR, un modèle climatique simple utilisé par le GIEC, au lieu de les additionner en « équivalent CO₂ ». Selon la médiane de FaIR pour le scénario intermédiaire, avant tout levier, le monde est 1,90 °C au-dessus de 1850–1900 en 2050 et 2,63 °C en 2100. L'effet des leviers se mesure par rapport à une telle référence.
+Planetshift traduit une variation des émissions en variation de la température mondiale. Il suit séparément le dioxyde de carbone, le méthane et le protoxyde d'azote avec FaIR, un modèle climatique simple utilisé par le GIEC, au lieu de les additionner en « équivalent CO₂ ». Selon la médiane de FaIR pour le scénario intermédiaire, avant tout levier, le monde est 1,90 °C au-dessus de 1850–1900 en 2050 et 2,63 °C en 2100. L'application mesure l'effet des leviers par rapport à une référence de ce type.
 
 Cette page explique aussi la bande d'incertitude, la courbe des facteurs naturels seuls, pourquoi 2023 et 2024 ont été si chaudes, l'option du pergélisol et les quelques endroits où Planetshift s'écarte de FaIR.
 
@@ -10,7 +10,7 @@ L'agriculture émet trois gaz à effet de serre : le dioxyde de carbone (CO₂),
 
 - **Le CO₂** s'accumule. Une grande partie de chaque tonne reste dans l'air pendant des siècles : le réchauffement qu'il cause ne s'estompe presque pas.
 - **Le méthane** a une courte durée de vie. Pendant ses vingt premières années, chaque tonne réchauffe environ 80 fois plus qu'une tonne de CO₂. Mais elle a en grande partie disparu en quelques décennies. Des émissions de méthane stables maintiennent la température à un niveau à peu près constant. Des émissions en baisse la laissent redescendre en quelques décennies.
-- **Le N₂O** est entre les deux : il dure environ un siècle.
+- **Le N₂O** est entre les deux. Il dure environ un siècle.
 
 Le raccourci habituel additionne les gaz en « équivalent CO₂ », avec le potentiel de réchauffement global à 100 ans (GWP100). Il multiplie ensuite le total par le réchauffement par tonne de CO₂ (le TCRE, la réponse transitoire du climat aux émissions cumulées). Cela revient à traiter une tonne de méthane comme si elle restait dans l'air comme le CO₂. Ce raccourci, par conséquent :
 
@@ -28,7 +28,7 @@ Les courbes viennent de FaIR, un modèle climatique simple utilisé dans le sixi
 
 ### Ce que montrent les courbes
 
-Le tableau donne la médiane de FaIR, avec sa fourchette de 5 à 95 %, en °C par kg. À côté figurent les valeurs de l'AR6 pour les mêmes horizons : celles de son tableau 7.SM.7 pour 50 et 100 ans et, pour 20 ans, que le tableau ne donne pas, celles des expressions de l'AR6 calculées ici.
+Le tableau donne la médiane de FaIR, avec sa fourchette de 5 à 95 %, en °C par kg. À côté figurent les valeurs de l'AR6 pour les mêmes horizons. Celles à 50 et 100 ans viennent de son tableau 7.SM.7. Ce tableau ne donne pas de valeur à 20 ans : celles à 20 ans sont donc calculées ici avec les expressions de l'AR6.
 
 | Gaz | FaIR, 20 ans | FaIR, 100 ans | AR6, 20 / 50 / 100 ans | Forme (FaIR) |
 | --- | --- | --- | --- | --- |
@@ -46,7 +46,7 @@ $$
 \Delta T(t) = \sum_{\text{gaz}} \sum_{\tau \le t} \Delta E_{\text{gaz}}(\tau) \cdot \mathrm{AGTP}_{\text{gaz}}(t - \tau)
 $$
 
-Cette somme est exacte pour un modèle dont la réponse est proportionnelle à ce qu'il reçoit. Elle est proche pour FaIR tant que la variation due aux leviers reste petite à côté des émissions mondiales (voir [Limites](#method-limitations) pour les leviers d'énergie au maximum).
+Cette somme est exacte pour un modèle dont la réponse est proportionnelle à ce qu'il reçoit. Elle est proche pour FaIR tant que la variation due aux leviers reste petite par rapport aux émissions mondiales (voir [Limites](#method-limitations) pour les leviers d'énergie au maximum).
 
 Chaque valeur d'AGTP est la variation de la température moyenne d'une année civile due à une année d'émission répartie uniformément sur cette année. AGTP(0) est donc l'effet dans l'année même.
 
@@ -63,14 +63,14 @@ Les impulsions sont de 1 milliard de tonnes de CO₂, 1 million de tonnes de mé
 La construction fait ces vérifications :
 
 - **Proportionnalité** : une impulsion dix fois plus grande donne un AGTP à 0,2 % près de celui de la petite, pour chaque gaz.
-- **Stabilité dans le temps** : des impulsions en 2025, 2035 et 2045 donnent des courbes à 4 % (CO₂), 7 % (CH₄) et 2 % (N₂O) près les unes des autres. La courbe de 2035 est gardée, au milieu des années que couvre le changement d'alimentation de l'application.
+- **Stabilité dans le temps** : des impulsions en 2025, 2035 et 2045 donnent des courbes à 4 % (CO₂), 7 % (CH₄) et 2 % (N₂O) près les unes des autres. La courbe de 2035 est gardée, parce que 2035 est au milieu des années que couvre le changement d'alimentation de l'application.
 - **Le méthane est biogénique.** Le méthane fossile ajoute du CO₂ en se décomposant. Celui des bovins, des effluents et du riz non, car les plantes ont prélevé son carbone dans l'air quelques mois plus tôt. FaIR ne transforme pas le méthane en CO₂, ce qu'un test confirme : quand l'effet du réchauffement sur l'absorption du carbone est désactivé, une impulsion de méthane laisse la concentration de CO₂ exactement inchangée. Quand cet effet est activé, comme dans les courbes, le réchauffement dû à une impulsion de méthane ralentit l'absorption du CO₂ déjà présent dans l'air. C'est une véritable rétroaction climat-carbone, que l'AR6 inclut aussi dans ses métriques.
 - **Les effets indirects du méthane sont activés** : l'ozone et la vapeur d'eau stratosphérique supplémentaires que produit le méthane, et la variation de sa durée de vie avec sa propre concentration, la température et les autres gaz.
 - Les impulsions de CO₂ sont du CO₂ fossile (le « CO₂ FFI » de FaIR), et non du CO₂ d'usage des terres, qui dans FaIR modifie aussi l'albédo de surface.
 
 ### L'alternative AR6
 
-Dans les *Options*, on peut remplacer les courbes par les expressions analytiques du chapitre 7 de l'AR6, tirées de son matériel supplémentaire, section 7.SM.5. Elles combinent :
+Dans *Autres options*, on peut remplacer les courbes par les expressions analytiques du chapitre 7 de l'AR6, tirées de son matériel supplémentaire, section 7.SM.5. Elles combinent :
 
 - une réponse impulsionnelle fixe du CO₂ ;
 - une réponse climatique à deux échelles de temps ;
@@ -96,13 +96,13 @@ Sur 2010–2019, cela donne +0,06 °C (de −0,04 à +0,17). L'AR6 du GIEC (rés
 
 La courbe plonge après les grandes éruptions, comme celle du Krakatoa en 1883, et reste proche de zéro après 2050. Sa fourchette comprend la variabilité interne de l'ensemble : c'est pourquoi une année isolée peut s'écarter de plus d'un dixième de degré.
 
-Elle s'appelle « facteurs naturels seuls » et non « un monde sans humains ». La couverture des terres et tout ce qui précède 1750 restent tels quels, et l'homme avait déjà légèrement réchauffé la référence de 1850–1900. Le forçage solaire et volcanique futur est une valeur provisoire : une grande éruption refroidirait le monde de quelques dixièmes de degré pendant un à trois ans, et personne ne peut la prévoir.
+Elle s'appelle « facteurs naturels seuls » et non « un monde sans humains ». La couverture des terres et tout ce qui précède 1750 restent tels quels, et l'homme avait déjà légèrement réchauffé la référence de 1850–1900. Le forçage solaire et volcanique futur est une valeur provisoire. Une grande éruption refroidirait le monde de quelques dixièmes de degré pendant un à trois ans, et personne ne peut la prévoir.
 
 ### Comment la courbe est calculée
 
 `climate.json` contient cette courbe sous `naturalOnly`. Elle utilise le même ensemble et le même forçage naturel que toutes les autres simulations, de 1850 à 2100, par rapport à 1850–1900, en médiane et fourchette de 5 à 95 %. Chaque gaz émis est fixé aux émissions préindustrielles de la calibration, qui laissent sa concentration à sa valeur de 1750, et les émissions de CO₂ sont mises à zéro.
 
-Le forçage est la variation de l'énergie que la Terre retient, qui la réchauffe. Le forçage naturel est celui de fair-calibrate v1.4.1 : le fichier que l'exemple de FaIR publie à côté de la calibration, la moyenne de chaque année étant stockée à la fin de l'année.
+Le forçage est la variation de l'énergie que la Terre retient, qui la réchauffe. Le forçage naturel vient de fair-calibrate v1.4.1. C'est le fichier que l'exemple de FaIR publie à côté de la calibration, la moyenne de chaque année étant stockée à la fin de l'année.
 
 - **Les volcans.** Le forçage volcanique est la série des Indicators of Global Climate Change 2022. Elle donne l'épaisseur optique des aérosols stratosphériques jusqu'à fin 2022, avec le sulfate et la vapeur d'eau de l'éruption du Hunga Tonga en 2022. Elle est maintenue à sa valeur de 2022 pour 2023, puis ramenée linéairement à sa moyenne de long terme, zéro, d'ici 2032.
 - **Le soleil.** Le forçage solaire est le jeu de données solaires de CMIP6 (SOLARIS-HEPPA 3.2) : observé jusqu'en 2014, puis sa projection. Dans la projection, le cycle solaire 25 culmine en 2024 à +0,09 W/m². C'est ce que Forster et al. (2025) ont trouvé à partir des observations pour 2024 : +0,09 W/m², contre −0,02 W/m² au minimum de 2019. Le cycle observé a culminé en octobre 2024, avec un nombre de taches solaires lissé de 161, contre 116 pour le cycle 24. Le forçage a donc été laissé tel quel (voir « Pourquoi 2023 et 2024 ont été si chaudes » plus bas).
@@ -143,7 +143,7 @@ Les courbes observées sont l'analyse HadCRUT5 du Met Office (série annuelle mo
 
 HadCRUT5 place 2023 à 1,48 °C et 2024 à 1,55 °C au-dessus de 1850–1900 (Berkeley Earth : 1,54 et 1,62 °C). La médiane de FaIR sur SSP2-4.5 donne 1,29 et 1,30 °C, avec des fourchettes de 5 à 95 % de 1,03–1,51 et 1,05–1,55 °C. Les deux années se situent 0,19 et 0,25 °C au-dessus de la médiane, en haut de sa fourchette.
 
-Plusieurs facteurs expliquent ensemble cet écart. FaIR en contient certains et pas d'autres. Avec l'effet du transport maritime, El Niño et les changements des nuages, les années observées sont là où la littérature les attend. Aucun facteur ne rend compte à lui seul de tout 2023.
+Plusieurs facteurs expliquent ensemble cet écart. FaIR en inclut certains et pas d'autres. Une fois ajoutés l'effet du transport maritime, El Niño et les changements des nuages, les températures observées des deux années sont celles qu'attend la littérature. Aucun facteur ne rend compte à lui seul de tout 2023.
 
 ### La tendance : dans le modèle
 
@@ -153,7 +153,7 @@ Les gaz à effet de serre, avant tout le CO₂ fossile, et le lent recul de la p
 
 El Niño et La Niña sont des oscillations du Pacifique tropical. Elles déplacent la température mondiale d'une année donnée d'un ou deux dixièmes de degré, quelques mois après le pic dans le Pacifique. La médiane de FaIR les lisse.
 
-2023 a commencé en La Niña, après trois hivers de La Niña, et s'est terminée en El Niño fort. 2024 est une année El Niño. Raghuraman et al. (2024) ont mesuré une hausse de 0,29 ± 0,04 °C de 2022 à 2023. Dans 64 modèles climatiques sans aucun changement de forçage, ils ont trouvé qu'un saut de plus de 0,25 °C se produit 1,6 % des années, et 10,3 % quand une longue La Niña laisse place à El Niño. Ils concluent que le pic lui-même n'a pas besoin de cause humaine, alors que le réchauffement sur lequel il s'appuie est humain. Forster et al. (2025) donnent jusqu'à 0,25 °C pour une telle bascule l'année de la transition.
+2023 a commencé en La Niña, après trois hivers de La Niña, et s'est terminée en El Niño fort. 2024 est une année El Niño. Raghuraman et al. (2024) ont mesuré une hausse de 0,29 ± 0,04 °C de 2022 à 2023. Dans 64 modèles climatiques sans aucun changement de forçage, ils ont trouvé qu'un saut de plus de 0,25 °C se produit 1,6 % des années, et 10,3 % quand une longue La Niña laisse place à El Niño. Ils concluent que le pic lui-même n'a pas besoin de cause humaine, alors que le réchauffement de fond est humain. Forster et al. (2025) donnent jusqu'à 0,25 °C pour une telle bascule l'année de la transition.
 
 Le graphique de température marque les années El Niño et La Niña sur la courbe observée (voir « Les années El Niño et La Niña » plus bas).
 
@@ -173,11 +173,11 @@ Le forçage volcanique utilisé ici baisse de 0,10 W/m² en 2022 et y reste en 2
 
 ### La limite de 2020 sur le soufre du carburant des navires : absente des scénarios
 
-Au 1er janvier 2020, l'Organisation maritime internationale a abaissé la teneur en soufre autorisée dans le carburant des navires de 3,5 % à 0,5 %. Le dioxyde de soufre du transport maritime est passé de 10,4 Mt en 2019 à 2,0 Mt en 2020, soit −81 % (CEDS, dans Forster et al. 2025). Le soufre des navires rend les nuages plus brillants, ce qui refroidit ; en émettre moins réchauffe.
+Au 1er janvier 2020, l'Organisation maritime internationale a abaissé la teneur en soufre autorisée dans le carburant des navires de 3,5 % à 0,5 %. Le dioxyde de soufre du transport maritime est passé de 10,4 Mt en 2019 à 2,0 Mt en 2020, soit −81 % (CEDS, dans Forster et al. 2025). Le soufre des navires rend les nuages plus brillants, ce qui refroidit. En émettre moins réchauffe.
 
 Les scénarios n'ont pas cette marche. RCMIP donne au transport maritime international de SSP2-4.5 une valeur tous les cinq ans : 9,2 Mt en 2015, 4,2 Mt en 2020 et 2,5 Mt en 2030. La baisse est donc étalée à partir de 2015 (5,2 Mt en 2019, 3,7 Mt en 2023). SSP1-2.6 a 4,5 Mt en 2020, et SSP3-7.0 9,2 Mt, sans aucune baisse.
 
-FaIR seul voit à peine la règle. Avec le transport maritime maintenu à 9,2 Mt jusqu'en 2019 puis réduit de 80 % à partir de 2020, il ne réchauffe 2023–2025 que de 0,002 à 0,003 °C (0,001–0,005) de plus. Il y a deux raisons :
+À lui seul, FaIR réagit à peine à la règle. Avec le transport maritime maintenu à 9,2 Mt jusqu'en 2019 puis réduit de 80 % à partir de 2020, FaIR ne réchauffe 2023–2025 que de 0,002 à 0,003 °C (0,001–0,005) de plus. Il y a deux raisons :
 
 - FaIR contient déjà la moitié de la baisse.
 - Sa réponse aux aérosols dépend du dioxyde de soufre mondial total, environ 80 Mt, sans tenir compte du lieu d'émission. Or, par tonne, le soufre des navires éclaircit bien plus les nuages au-dessus de l'air pur de l'océan.
@@ -193,18 +193,18 @@ Forster et al. (2025) les passent en revue à 0,08–0,14 W/m², soit environ 0,
 
 ### Une planète plus sombre : hors de la médiane
 
-Goessling, Rackow et Jung (2025) trouvent que le réchauffement humain et le début d'El Niño laissent environ 0,2 °C de la température de 2023 inexpliqués. Un albédo planétaire au plus bas comble l'écart : la Terre a renvoyé moins de lumière solaire, surtout parce qu'il y avait moins de nuages bas aux moyennes latitudes nord et sous les tropiques. Ils laissent ouverte la question de savoir s'il s'agit de variabilité interne, d'un air plus propre (celui des navires compris) ou d'une rétroaction des nuages bas qui apparaît avec le réchauffement. Schmidt (2024), dans un commentaire de Nature, a fait le même constat : environ 0,2 °C de 2023 restait inexpliqué par les facteurs connus, qui même ensemble n'en rendaient pas compte.
+Goessling, Rackow et Jung (2025) trouvent que le réchauffement humain et le début d'El Niño laissent environ 0,2 °C de la température de 2023 inexpliqués. Un albédo planétaire au plus bas explique cet écart. La Terre a renvoyé moins de lumière solaire, surtout parce qu'il y avait moins de nuages bas aux moyennes latitudes nord et sous les tropiques. Ils laissent ouverte la question de savoir s'il s'agit de variabilité interne, d'un air plus propre (celui des navires compris) ou d'une rétroaction des nuages bas qui apparaît avec le réchauffement. Schmidt (2024), dans un commentaire de Nature, a fait le même constat : environ 0,2 °C de 2023 restait inexpliqué par les facteurs connus, qui même ensemble n'en rendaient pas compte.
 
-FaIR n'a pas de nuages propres. Leur rétroaction est comprise dans la sensibilité climatique de chaque membre, et un changement des nuages dû à la variabilité interne n'est pas dans sa médiane.
+FaIR n'a pas de nuages propres. La rétroaction des nuages est comprise dans la sensibilité climatique de chaque membre, et un changement des nuages dû à la variabilité interne n'est pas dans sa médiane.
 
 ### La règle sur le transport maritime, ajoutée hors de FaIR
 
-Retrouver le forçage publié demande d'ajouter un terme de forçage hors de l'ensemble calibré de FaIR, dont l'intensité des aérosols a été contrainte sur le réchauffement observé sans lui. Planetshift le fait, comme un écart à FaIR qu'une copie peut désactiver (`shippingSulphur2020`, voir « Où Planetshift s'écarte de FaIR » plus bas).
+Retrouver le forçage publié demande d'ajouter un terme de forçage hors de l'ensemble calibré de FaIR, dont l'intensité des aérosols a été contrainte sur le réchauffement observé sans lui. Planetshift ajoute ce terme comme un écart à FaIR. Une copie peut le désactiver (`shippingSulphur2020`, voir « Où Planetshift s'écarte de FaIR » plus bas).
 
 Ce qu'il ajoute, et son effet :
 
 - **Le forçage.** À partir de 2020, il ajoute un forçage radiatif effectif de 0,12 W/m². C'est l'estimation de Gettelman et al. (2024), celle faite avec FaIR. Sa fourchette probable est de 0,08–0,14 W/m², celle que donnent Forster et al. (2025) dans leur revue des estimations ci-dessus. Les 0,2 W/m² de Yuan et al., au-dessus des océans seulement, et les 0,5 de Hansen et al. restent en dehors.
-- **Dans le temps.** Chaque année, le forçage suit le CO₂ du transport maritime international du scénario par rapport à 2020, car le soufre qui n'est plus émis suit le carburant brûlé.
+- **Dans le temps.** Chaque année, le forçage suit le CO₂ du transport maritime international du scénario par rapport à 2020, car le soufre qui n'est plus émis est proportionnel au carburant brûlé.
 - **En température.** Il est traduit en température avec la réponse de FaIR à une année de forçage (voir [Énergie et transports](#method-sectors)). Le bas de la fourchette est associé à la réponse à 5 % et le haut à celle à 95 %. Le résultat est ajouté à la température de référence, donc à celle du scénario.
 - **L'effet.** Sur SSP2-4.5, il réchauffe 2023 de 0,034 °C (0,014–0,056), 2024 de 0,037 °C (0,015–0,062) et 2030 de 0,047 °C (0,018–0,083). C'est proche des 0,03 et 0,04 °C de Forster et al. pour 2023 et 2024, et des 0,046 °C de Jordan et Henry sur 2020–2029. En 2050 et en 2100, il ajoute 0,054 et 0,067 °C sur SSP2-4.5, 0,043 et 0,030 sur SSP1-2.6, dont les navires brûlent moins de carburant, et 0,058 et 0,052 sur SSP3-7.0.
 - **Ce qu'il ne change pas.** Il laisse inchangé le réchauffement évité par les leviers. Les simulations de FaIR elles-mêmes restent telles quelles : les températures des scénarios du tableau ci-dessus, les courbes d'AGTP et les causes du réchauffement ne l'incluent pas.
@@ -247,11 +247,11 @@ Le PgCeq n'est pas le carbone du méthane. C'est le carbone de CO₂ qui aurait 
 - dont 1,6 % libérés sous forme de méthane (`ch4Share`, 0,28 ÷ 18,3) ;
 - `releaseYears`, 20 : la durée sur laquelle est étalé ce que libère un degré.
 
-Une version antérieure prenait les 2,8 pour le carbone du méthane. Le méthane était alors dix fois trop grand (13,5 % du carbone). Le réchauffement dû au pergélisol dans la référence en 2050 était aussi d'environ 0,10 °C au lieu d'environ 0,02 °C sur SSP2-4.5. Le méthane représente désormais moins de 2 % du carbone, mais encore environ deux cinquièmes du réchauffement de la rétroaction en 2050 (0,009 sur 0,024 °C), parce que chaque kilogramme réchauffe beaucoup plus dans ses premières décennies.
+Les 2,8 ne sont pas le carbone du méthane. Lus ainsi, le méthane serait dix fois trop grand (13,5 % du carbone), et le réchauffement dû au pergélisol dans la référence en 2050 serait d'environ 0,10 °C au lieu d'environ 0,02 °C sur SSP2-4.5. Le méthane représente moins de 2 % du carbone, mais encore environ deux cinquièmes du réchauffement de la rétroaction en 2050 (0,009 sur 0,024 °C), parce que chaque kilogramme réchauffe beaucoup plus dans ses premières décennies.
 
 ### Comment le modèle l'utilise
 
-La rétroaction est l'option *Pergélisol* des Options, désactivée par défaut (`pf=on` dans l'adresse). Quand elle est activée, le modèle (`app/src/levers/permafrost/`, un module de levier appelé par `run.ts`) la calcule deux fois : une fois sur la température de référence du scénario, et une fois sur la température avec les leviers.
+La rétroaction est l'option *Pergélisol* de *Autres options*, désactivée par défaut (`pf=on` dans l'adresse). Quand elle est activée, le modèle (`app/src/levers/permafrost/`, un module de levier appelé par `run.ts`) la calcule deux fois : une fois sur la température de référence du scénario, et une fois sur la température avec les leviers.
 
 1. Chaque année, la hausse de température depuis l'année précédente engage `kgCPerDegree` × cette hausse de carbone. Ce carbone est libéré uniformément sur les `releaseYears` années suivantes. La somme sur le passé donne ce qui est libéré chaque année. Une baisse de température ne restitue rien, car le carbone dégelé ne regèle pas. Seul ce qui est libéré à partir de l'année en cours est compté, mais cela comprend ce qu'engage le réchauffement des 20 années précédentes. Ce qui a été libéré avant aujourd'hui figure dans les observations sur lesquelles FaIR est contraint.
 2. De ce qui est libéré chaque année, la part `ch4Share` est du méthane (kg C × 16/12 kg CH₄) et le reste du CO₂ (kg C × 44/12 kg CO₂).
@@ -300,15 +300,15 @@ Sans la règle sur le transport maritime, la référence est plus fraîche de 0,
 
 ## Hypothèses
 
-- Les courbes d'AGTP viennent d'impulsions sur SSP2-4.5 en 2035 et servent pour tous les scénarios et toutes les années ; les courbes de 2025 et 2045 sont à 7 % près.
+- Les courbes d'AGTP viennent d'impulsions sur SSP2-4.5 en 2035 et servent pour tous les scénarios et toutes les années. Les courbes de 2025 et 2045 sont à 7 % près.
 - L'ensemble calibré est utilisé tel que publié, avec ses 841 membres, y compris sa variabilité interne stochastique (avec une graine fixe : identique dans les simulations appariées, elle s'annule dans les différences).
 - Le méthane agricole est traité comme biogénique : pas de CO₂ issu de son oxydation.
 - Le CO₂ agricole (urée et chaulage) est traité comme du CO₂ fossile dans FaIR.
 - La réponse est traitée comme proportionnelle à la variation des émissions, ce que confirme le test de l'impulsion dix fois plus grande.
-- Les émissions d'une année sont réparties uniformément sur l'année ; la température d'une année civile est la moyenne des valeurs de FaIR à ses deux extrémités.
-- Les séries observées sont ramenées à leur propre moyenne de 1850–1900 ; l'année en cours de HadCRUT5 est laissée de côté tant qu'elle n'est pas complète.
-- Le forçage naturel et les émissions d'aérosols des scénarios sont utilisés tels que publiés ; la règle de 2020 sur le transport maritime ajoute 0,12 (0,08–0,14) W/m² à partir de 2020 hors de l'ensemble de FaIR, en suivant le carburant des navires de chaque scénario, à la référence comme au scénario (voir « Pourquoi 2023 et 2024 ont été si chaudes »).
-- Le pergélisol libère 18,3 (3,2–41,7) PgC par °C de réchauffement, dont 1,6 % sous forme de méthane, ce que libère chaque degré étant étalé sur 20 ans, sans rien restituer quand la température baisse ; la rétroaction est désactivée sauf si l'option est activée.
+- Les émissions d'une année sont réparties uniformément sur l'année. La température d'une année civile est la moyenne des valeurs de FaIR à ses deux extrémités.
+- Les séries observées sont ramenées à leur propre moyenne de 1850–1900. L'année en cours de HadCRUT5 est laissée de côté tant qu'elle n'est pas complète.
+- Le forçage naturel et les émissions d'aérosols des scénarios sont utilisés tels que publiés. La règle de 2020 sur le transport maritime ajoute 0,12 (0,08–0,14) W/m² à partir de 2020 hors de l'ensemble de FaIR, en suivant le carburant des navires de chaque scénario, à la référence comme au scénario (voir « Pourquoi 2023 et 2024 ont été si chaudes »).
+- Le pergélisol libère 18,3 (3,2–41,7) PgC par °C de réchauffement, dont 1,6 % sous forme de méthane, ce que libère chaque degré étant étalé sur 20 ans, sans rien restituer quand la température baisse. La rétroaction est désactivée sauf si l'option est activée.
 
 ## Sources
 

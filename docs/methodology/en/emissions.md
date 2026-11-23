@@ -1,8 +1,8 @@
 # Emissions per tonne of food
 
-To turn a change in production into a change in emissions, Planetshift needs to know how much each food emits. For every country and every food item, it holds the kilograms of carbon dioxide (CO₂), methane (CH₄) and nitrous oxide (N₂O) emitted per tonne produced: the item's emission intensity. FAOSTAT's estimates give two thirds of the world's farm emissions in the model, HESTIA a fifth, and published averages and stand-in values the rest. Added up over the world, they come close to FAOSTAT's totals: 138.1 Mt of methane a year against 141.8 Mt.
+To turn a change in production into a change in emissions, Planetshift needs to know how much each food emits. For every country and every food item, it holds the kilograms of carbon dioxide (CO₂), methane (CH₄) and nitrous oxide (N₂O) emitted per tonne produced: the item's emission intensity. FAOSTAT's estimates give two thirds of the world's farm emissions in the model. HESTIA gives a fifth, and published averages and stand-in values give the rest. Added up over the world, they come close to FAOSTAT's totals: 138.1 Mt of methane a year against 141.8 Mt.
 
-This page explains where each intensity comes from, what it covers, and how the gaps are filled. The gases stay separate all the way to the climate model.
+The three gases are kept separate all the way to the climate model.
 
 ## What is counted
 
@@ -29,7 +29,7 @@ Each value is drawn from the best source available. For each country, item and s
 2. **HESTIA, region or world**: the smallest HESTIA region containing the country, then the world.
 3. **FAOSTAT, country**: FAOSTAT's emissions for the country divided by its production (see *Tier 3* below).
 4. **Published LCA**: world averages from Poore and Nemecek (2018), a life-cycle assessment (LCA) study (see [Published LCA data](#method-literature)).
-5. **Proxy**: a stand-in value. For a processed item, it is its primary item's value over the extraction rate (see *Processed products* below). Otherwise, it is a similar item's tier 1–4 value in the same country, from the list in *Proxies* below. A proxy never borrows another proxy or a median.
+5. **Proxy**: a stand-in value. For a processed item, it is its primary item's value over the extraction rate (see *Processed products* below). Otherwise, it is a similar item's tier 1–4 value in the same country, from the list in *Proxies* below. A proxy is never taken from another proxy or from a median.
 6. **Group median**: the production-weighted median, over all countries, of the tier 1–4 values of the group's items.
 
 Every country in the model has a value for every item and both scopes, including items it does not produce. The model can then move production to any country.
@@ -38,7 +38,7 @@ Every country in the model has a value for every item and both scopes, including
 
 The table counts the farm-gate country × item cells that each tier fills, by group, for the 188 countries and 90 items. The cradle-to-farm-gate scope is close.
 
-Only seafood needs tier 6: 278 of its 1,504 cells. Almost all are landlocked countries that import all their fish, whose balance lists an item that FishStat does not give them (see [Fish and seafood](#method-seafood)). For every other item, the published world averages of tier 4 cover what has no proxy.
+Only seafood needs tier 6: 278 of its 1,504 cells. Almost all are landlocked countries that import all their fish. Their balance lists an item that FishStat does not give them (see [Fish and seafood](#method-seafood)). For every other item, the published world averages of tier 4 cover what has no proxy.
 
 | Group | 1 | 2 | 3 | 4 | 5 | 6 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -81,7 +81,7 @@ The rate comes from the International Fertilizer Association's survey of fertili
 
 The same survey finds 3.6% of nitrogen spread on grassland. That share goes to ruminant products (beef, mutton, other meat, milk) in proportion to their methane, in countries that have both crops and ruminants.
 
-The shares keep each country's total. The part that falls on non-food crops is left out of the model: fibres, tobacco, rubber, and 85% of seed cotton (its lint).
+The shares add up to each country's total. The part that falls on non-food crops is left out of the model: fibres, tobacco, rubber, and 85% of seed cotton (its lint).
 
 ### Livestock
 
@@ -149,11 +149,11 @@ In the current Food Balance Sheets, item 2562 ("Palm kernels") holds the whole o
 
 ### Oils and their cake
 
-Crushing an oilseed gives oil and cake (the meal fed to animals). An oil whose intensity is derived this way shares the crush's emissions with the cake by value, as its land is shared (see [Land](#method-land), `pipeline/oilcakes.csv`). The oil keeps the oil's share of the value: groundnut oil 80%, cottonseed oil 66%, palm kernel oil 87%, coconut oil 93%, sesame oil 92%.
+Crushing an oilseed gives oil and cake (the meal fed to animals). An oil whose intensity is derived this way shares the crush's emissions with the cake by value, as its land is shared (see [Land](#method-land), `pipeline/oilcakes.csv`). The oil keeps its share of the value: groundnut oil 80%, cottonseed oil 66%, palm kernel oil 87%, coconut oil 93%, sesame oil 92%.
 
 The rest is the cake's share. It is written by country and oilseed as `oilcake` in `intensities.json`, in kg of each gas a year in the base year. Soybean, sunflower, rapeseed and other oilseed oils take Poore and Nemecek's values (tier 4), which already share the crop with the meal by value. Their cake's part is written in `oilcake` too.
 
-The model adds the cakes' emissions to each country's farm emissions. It changes them as it changes the cake's land: with the production of the animal groups that eat the cake. A diet with fewer animals therefore removes them. A farm practice cuts them as it cuts the oilseed's own intensity.
+The model adds the cakes' emissions to each country's farm emissions. The model changes the cakes' emissions as it changes the cake's land: with the production of the animal groups that eat the cake. A diet with fewer animals therefore removes them. A farm practice cuts them as it cuts the oilseed's own intensity.
 
 ### By-products with no emissions of their own
 
@@ -163,7 +163,7 @@ Edible offal and raw animal fats are not processed from meat in the balance shee
 
 ## Fish and seafood
 
-FAOSTAT's emissions do not cover fisheries or aquaculture, and HESTIA has no aquatic aggregations. The seafood items are therefore set at tier 4 from two studies: Parker et al. (2018) for the fuel of wild capture, and MacLeod et al. (2020) for the water N₂O and the energy of aquaculture. The two are blended by each country's capture and aquaculture of each species group in FAO FishStat. Failing that, an item takes a proxy (tier 5) or the group's median (tier 6).
+FAOSTAT's emissions do not cover fisheries or aquaculture, and HESTIA has no aquatic aggregations. The seafood items are therefore set at tier 4 from two studies: Parker et al. (2018) for the fuel of wild capture, and MacLeod et al. (2020) for the water N₂O and the energy of aquaculture. The two are blended by each country's capture and aquaculture of each species group in FAO FishStat. Where the blend is not possible, an item takes a proxy (tier 5) or the group's median (tier 6).
 
 Fuel and electricity count in the cradle-to-farm-gate scope only, as for farms. Wild fish therefore have no farm-gate emissions. [Fish and seafood](#method-seafood) gives the method, the factors and the checks.
 
@@ -178,7 +178,7 @@ They are written by country as `nonFood` in `intensities.json`. They add up to 2
 The share comes from FAOSTAT's livestock and trade data (CC BY 4.0), by species. Within a species, every head emits the same: an animal not raised for food takes the species' emissions per head in its country.
 
 - **Horses, asses and mules**: all their emissions, 70 Mt CO₂e. Some horses are eaten, but the herds are kept mainly for work. They make most of the baseline of Brazil, Mexico, Ethiopia and the United States.
-- **Non-dairy cattle and buffalo**: a herd raised for food takes off a share of its head every year, by slaughter or sale. This share is called the offtake. The animals kept for food are counted as follows, and the rest are not raised for food. This gives 137 Mt CO₂e of cattle and 4 Mt of buffalo.
+- **Non-dairy cattle and buffalo**: a herd raised for food loses a share of its head every year, by slaughter or sale. This share is called the offtake. The animals kept for food are counted as follows, and the rest are not raised for food. This gives 137 Mt CO₂e of cattle and 4 Mt of buffalo.
 - **Sheep, goats, camels, pigs and poultry** are all counted as raised for food.
 
 For non-dairy cattle and buffalo, the head kept for food are:
@@ -198,11 +198,11 @@ The threshold is a sub-Saharan figure applied to every country. No comparable re
 
 India is most of the baseline, and does not depend on the threshold. FAOSTAT records no cattle slaughter in India, so its 131 million non-dairy cattle are all in the baseline at any threshold. India's 20th Livestock Census counts 192.5 million cattle in 2019, of which 74.2 million milch cows (in milk or dry). That leaves 118.3 million other cattle, 47.4 million of them male (Department of Animal Husbandry and Dairying, 2019, tables 6 and 7). The census does not say what they are kept for.
 
-No country source was found for the offtake of Niger's cattle. FAOSTAT records net exports of 113,000 head for Niger in 2023, and 206,000 for Mali. At 9.9%, these exports took their baselines from 18.7 and 9.1 Mt to 17.2 and 6.5 Mt. With the threshold at 6.7%, they are 15.0 and 2.2 Mt.
+No country source was found for the offtake of Niger's cattle. FAOSTAT records net exports of 113,000 head for Niger in 2023, and 206,000 for Mali. At 9.9%, these exports lowered their baselines from 18.7 and 9.1 Mt to 17.2 and 6.5 Mt. With the threshold at 6.7%, they are 15.0 and 2.2 Mt.
 
 ### What the threshold changes
 
-The threshold moves the baseline, but it hardly moves the effect of a shift. A herd counted as not raised for food leaves both the products' emissions and what the shift can avoid. Built with each threshold, at SSP2-4.5 with the default options:
+The threshold moves the baseline, but it hardly moves the effect of a shift. A herd counted as not raised for food is left out of both the products' emissions and what a shift can avoid. The table gives the results of a build with each threshold, at SSP2-4.5 with the default options:
 
 | Offtake threshold | Non-food baseline, Mt CO₂e | India | Niger | Ethiopia | Mali | Full shift: emissions avoided, Gt CO₂e | Full shift: warming avoided in 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -215,9 +215,9 @@ A half shift avoids half as much (2.51 to 2.56 Gt CO₂e, 0.133 to 0.135 °C). T
 
 ### Limits of the rule
 
-- Live exports that FAOSTAT does not record still look like animals not raised for food. Trade on the hoof across the Sahel often goes unrecorded.
+- Live exports that FAOSTAT does not record still look like animals not raised for food. Live animal trade across the Sahel often goes unrecorded.
 - Slaughter that FAOSTAT does not record (Brazil's buffalo) has the same effect.
-- Draught animals in a country that also slaughters many cattle are not seen.
+- The rule does not detect draught animals in a country that also slaughters many cattle.
 - A working ox and a calf count the same per head.
 
 No FAOSTAT domain counts draught animals. The rule therefore uses only stocks, milked and slaughtered animals, and live trade.
@@ -289,7 +289,7 @@ Milk has no proxy: no other item is a fair stand-in per tonne. A country without
 
 ## Checks against FAOSTAT's totals
 
-A test recomputes world emissions from the built files and compares them with FAOSTAT's world totals for the same processes in 2023. Methane comes within a few percent; N₂O is higher, and CO₂ differs most, for reasons given below.
+A test recomputes world emissions from the built files and compares them with FAOSTAT's world totals for the same processes in 2023. Methane comes within a few percent. N₂O is higher, and CO₂ differs most, for reasons given below.
 
 | | Planetshift, test | FAOSTAT | Tolerance | Planetshift with the oilcakes, as the app counts |
 | --- | --- | --- | --- | --- |
@@ -305,7 +305,7 @@ A test recomputes world emissions from the built files and compares them with FA
 
 The test leaves out the oilcakes' emissions, which the model adds to each country's farm emissions (`oilcake` in `intensities.json`, see *Oils and their cake* above): 0.14 Mt of methane, 0.10 Mt of N₂O and 20 Mt of CO₂ a year at the farm gate, and 0.29 Mt, 0.11 Mt and 54 Mt from cradle to farm gate. The last column of the table adds them. It gives the world's emissions in the base year in a run of the model with no lever. Without the oilcakes, these totals are within 0.2% of the test's.
 
-From FAOSTAT's data alone (tier 3 everywhere, before the other tiers are merged), the allocation recovers 99% of FAOSTAT's farm-gate methane and 97% of its N₂O, with the animals not raised for food. What is missing is non-food crops and countries outside the model. The mixed tiers move the totals a few percent either way, as HESTIA and published LCA studies use other methods. CO₂ differs most because HESTIA's scopes count some CO₂ (urea, lime, machinery) that FAOSTAT files elsewhere.
+From FAOSTAT's data alone (tier 3 everywhere, before the other tiers are merged), the allocation recovers 99% of FAOSTAT's farm-gate methane and 97% of its N₂O, with the animals not raised for food. What is missing is non-food crops and countries outside the model. The mixed tiers move the totals a few percent either way, because HESTIA and published LCA studies use other methods. CO₂ differs most because HESTIA's scopes count some CO₂ (urea, lime, machinery) that FAOSTAT files elsewhere.
 
 ### Against published budgets
 
@@ -319,7 +319,7 @@ Direct agricultural N₂O was 6.1 Mt in 2020 (3.9 Tg N, Tian et al., 2024). Plan
 
 Rice methane is 22.6 Mt in the model, against 24.9 Mt in FAOSTAT for 2023 and 32 (25–37) Tg in the Global Methane Budget. Most of the gap is India.
 
-India's intensity is HESTIA's (tier 1): 16.7 kg of methane from flooding per tonne of paddy, and 17.1 kg with the rest. FAOSTAT's is 24.6 kg (5.08 Mt over 206.7 Mt of paddy). Both are per tonne of paddy, the unit of the balance's rice, so the gap is not a conversion error. Per hectare, HESTIA gives about 72 kg of methane and FAOSTAT about 106.
+India's intensity is HESTIA's (tier 1): 16.7 kg of methane from flooding per tonne of paddy, and 17.1 kg with the rest. FAOSTAT's is 24.6 kg (5.08 Mt over 206.7 Mt of paddy). Both are per tonne of paddy, the unit the balance uses for rice, so the gap is not a conversion error. Per hectare, HESTIA gives about 72 kg of methane and FAOSTAT about 106.
 
 HESTIA's model applies the IPCC's 2019 Refinement to the water regimes and amendments of its Indian rice data. FAOSTAT applies the IPCC's Tier 1 method with its own assumptions on water regimes. The difference is one of method, so the HESTIA value is kept as the better-documented tier. With FAOSTAT's intensity for India, the world total would be about 24.1 Mt.
 
@@ -340,7 +340,7 @@ The code is `pipeline/planetshift_pipeline/intensities.py`. Its tables are `pipe
 - Mixed herds (buffalo, sheep, goats, camels) are split by protein, with 15% protein in carcass meat.
 - Energy use is shared by the value of production, pesticide manufacture by area.
 - Offal and fats carry the same emissions per tonne as the carcass.
-- Of a country's non-dairy cattle and buffalo, two groups are raised for food: the milked animals, and the head that would take off its slaughter and net live exports at 6.7% a year. The rest, and all horses, asses and mules, are not. 6.7% is the lowest regional mean offtake of traditional cattle in sub-Saharan Africa, applied to every country.
+- Of a country's non-dairy cattle and buffalo, two groups are raised for food: the milked animals, and the head that, at an offtake of 6.7% a year, would supply its slaughter and net live exports. The rest, and all horses, asses and mules, are not. 6.7% is the lowest regional mean offtake of traditional cattle in sub-Saharan Africa, applied to every country.
 - Within a species, every head in a country emits the same, whether raised for food or not.
 - Extraction rates are world values, the same in every country.
 - An intensity over 20 times the item's world median is a data mismatch, not a real value.

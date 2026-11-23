@@ -1,6 +1,6 @@
 # Carbone stocké dans les terres agricoles
 
-L'agriculture peut retirer du CO₂ de l'air autant qu'en émettre. Les plantes font entrer du carbone dans le sol, les arbres le stockent dans leur bois, et certains matériaux épandus sur les champs l'immobilisent. Cette page explique les quatre pratiques que Planetshift propose comme leviers, la quantité de CO₂ que chacune absorbe par hectare, et ce que chacune pourrait stocker dans le monde : sur le plus de terres que chacune peut atteindre, environ 0,37 Gt (milliard de tonnes) de CO₂ par an pour les couverts végétaux, 1,3 Gt pour les arbres dans les fermes, 0,63 Gt pour le biochar et 0,6 Gt pour la poudre de roche.
+L'agriculture peut retirer du CO₂ de l'air autant qu'en émettre. Les plantes font entrer du carbone dans le sol, les arbres le stockent dans leur bois, et certains matériaux épandus sur les champs le stockent. Cette page explique les quatre pratiques que Planetshift propose comme leviers, la quantité de CO₂ que chacune absorbe par hectare, et ce que chacune pourrait stocker dans le monde. Avec chaque pratique sur le plus de terres qu'elle peut atteindre, cela fait environ 0,37 Gt (milliard de tonnes) de CO₂ par an pour les couverts végétaux, 1,3 Gt pour les arbres dans les fermes, 0,63 Gt pour le biochar et 0,6 Gt pour la poudre de roche.
 
 ## Comment l'absorption est comptée
 
@@ -11,7 +11,7 @@ Pour chaque pratique, Planetshift a besoin de quatre choses :
 - la part de ces terres au plus ;
 - le nombre d'années pendant lesquelles l'absorption dure.
 
-L'absorption d'une pratique est son rythme par hectare multiplié par les hectares où elle est adoptée. Le levier fixe la part de cette surface maximale qui l'adopte, de 0 à 100 %. Le rythme est une médiane avec une fourchette probable, et pour trois pratiques il dépend du climat.
+L'absorption d'une pratique est son rythme par hectare multiplié par les hectares où elle est adoptée. Le levier fixe la part de cette surface maximale qui adopte la pratique, de 0 à 100 %. Le rythme est une médiane avec une fourchette probable. Pour trois pratiques, il dépend du climat.
 
 | Pratique | Terres | Médiane (fourchette probable), t CO₂/ha/an | Part des terres au plus | Années à ce rythme |
 | --- | --- | --- | --- | --- |
@@ -20,11 +20,11 @@ L'absorption d'une pratique est son rythme par hectare multiplié par les hectar
 | Biochar | cultures | 1,9 (0,6–4,9) partout | 20 % | 100 (pas de saturation) |
 | Poudre de roche (altération forcée des roches) | cultures | 3,0 (1,0–5,0) tropical humide, 2,0 (0,5–3,5) tempéré humide, 1,0 tropical sec, 0,8 tempéré sec | 20 % | 100 (pas de saturation) |
 
-Les cultures sont celles du modèle, 1,65 milliard d'hectares : la surface récoltée des cultures alimentaires, avec les terres des tourteaux et les prairies temporaires (voir [Terres](#method-land)).
+Les cultures du modèle couvrent 1,65 milliard d'hectares : la surface récoltée des cultures alimentaires, avec les terres des tourteaux et les prairies temporaires (voir [Terres](#method-land)).
 
 Les pratiques sont de deux sortes :
 
-- **Les couverts végétaux et les arbres dans les fermes remplissent un stock qui finit par être plein.** Le sol et les arbres atteignent un nouvel équilibre au bout de quelques décennies ; Planetshift compte donc leur absorption pendant 20 ans après l'adoption, puis plus du tout.
+- **Les couverts végétaux et les arbres dans les fermes remplissent un stock qui sature.** Le sol et les arbres atteignent un nouvel équilibre au bout de quelques décennies. Planetshift compte donc leur absorption pendant 20 ans après l'adoption, puis plus du tout.
 - **Le biochar et la poudre de roche ajoutent du carbone chaque année où ils sont appliqués.** Leur stock continue de croître tant que la pratique se poursuit ; leur absorption est donc comptée chaque année jusqu'en 2100.
 
 Les rythmes sont incertains, et les fourchettes sont larges. Les raisons sont données plus bas.
@@ -39,15 +39,15 @@ Les couverts végétaux sont des plantes semées entre deux cultures principales
 
 La méta-analyse de Poeplau et Don (2015) a trouvé un gain moyen de 0,32 t de carbone par hectare et par an (1,17 t de CO₂). Elle n'a pas trouvé d'effet clair du climat parmi les essais au champ, qui sont surtout en climat humide. En climat sec, l'eau limite ce qu'un couvert peut produire. Le facteur du GIEC pour des apports de carbone élevés y est de 1,04, contre 1,11 en climat humide : le gain fait donc environ le tiers de celui du climat humide.
 
-La part des cultures est d'un quart. C'est la surface que l'estimation mondiale de Poeplau et Don suppose disponible pour un couvert. À ce plafond, les couverts végétaux de Planetshift stockent environ 0,37 Gt de CO₂ par an, 0,10 Pg de carbone. C'est proche de l'estimation mondiale de Poeplau et Don (0,12 ± 0,03 Pg C par an).
+Les couverts végétaux atteignent au plus un quart des cultures, la surface que l'estimation mondiale de Poeplau et Don suppose disponible pour un couvert. À ce plafond, les couverts végétaux de Planetshift stockent environ 0,37 Gt de CO₂ par an, 0,10 Pg de carbone. C'est proche de l'estimation mondiale de Poeplau et Don (0,12 ± 0,03 Pg C par an).
 
 ### Arbres dans les fermes
 
 Les arbres dans les fermes (l'agroforesterie) associent des arbres aux cultures (systèmes agrosylvicoles, cultures en allées) ou aux prairies (sylvopastoralisme). Les arbres stockent du carbone dans leur bois et leurs racines, et leur litière enrichit le sol.
 
-Cardinael et al. (2018) ont synthétisé 542 observations en rythmes par système et par climat. En moyenne sur les systèmes agrosylvicoles et sylvopastoraux, les arbres et le sol absorbent environ 8,6 t de CO₂ par hectare et par an en climat tempéré et 17,5 t sous les tropiques. Ces rythmes sont ceux des parcelles étudiées, qui ont une médiane de 1 250 arbres par hectare et un âge médian de 8 à 11 ans, et qui poussent vite. Les systèmes adoptés à grande échelle ont moins d'arbres. La médiane est donc la moitié de la moyenne de la synthèse, le bas de la fourchette le quart et le haut la moyenne elle-même. Les climats secs prennent 0,7 fois le rythme des climats humides, le rapport du GIEC entre la croissance des arbres en zone tropicale sèche et en zone tropicale humide.
+Cardinael et al. (2018) ont synthétisé 542 observations en rythmes par système et par climat. En moyenne sur les systèmes agrosylvicoles et sylvopastoraux, les arbres et le sol absorbent environ 8,6 t de CO₂ par hectare et par an en climat tempéré et 17,5 t sous les tropiques. Ces rythmes sont ceux des parcelles étudiées, qui ont une médiane de 1 250 arbres par hectare et un âge médian de 8 à 11 ans, et qui poussent vite. Les systèmes adoptés à grande échelle ont moins d'arbres. La médiane est donc la moitié de la moyenne de la synthèse. Le bas de la fourchette en est le quart, et le haut est la moyenne elle-même. En climat sec, le rythme est 0,7 fois celui du climat humide, le rapport du GIEC entre la croissance des arbres en zone tropicale sèche et en zone tropicale humide.
 
-Cinq pour cent des cultures et des prairies sont pris comme maximum réaliste. Sur environ 4,7 milliards d'hectares de terres agricoles, cela donne environ 1,3 Gt de CO₂ par an. C'est entre les potentiels rentable et technique de Roe et al. (2021) et du sixième rapport d'évaluation du GIEC. Pour l'agroforesterie, ce dernier donne 0,8 (de 0,4 à 1,1) Gt d'équivalent CO₂ par an jusqu'à 100 \$ la tonne, et 4,1 (de 0,3 à 9,4) techniquement.
+Planetshift prend 5 % des cultures et des prairies comme maximum réaliste. Sur environ 4,7 milliards d'hectares de terres agricoles, cela donne environ 1,3 Gt de CO₂ par an. C'est entre les potentiels rentable et technique de Roe et al. (2021) et du sixième rapport d'évaluation du GIEC. Pour l'agroforesterie, le rapport du GIEC donne 0,8 (de 0,4 à 1,1) Gt d'équivalent CO₂ par an jusqu'à 100 \$ la tonne, et 4,1 (de 0,3 à 9,4) techniquement.
 
 ### Biochar
 
@@ -61,15 +61,15 @@ $$
 
 La fourchette va de 0,5 t d'un charbon mal carbonisé à 2 t d'un charbon produit à haute température. Le rythme ne dépend pas du climat.
 
-Un cinquième des cultures est le maximum que la biomasse durable de Woolf et al. (2010) peut fournir à ce rythme. À ce plafond, le biochar stocke environ 0,63 Gt de CO₂ par an. C'est sous le potentiel du biochar du sixième rapport d'évaluation du GIEC (1,1, de 0,3 à 1,8, Gt d'équivalent CO₂ par an jusqu'à 100 \$ la tonne ; 2,6 techniquement) : une lecture prudente.
+À ce rythme, la biomasse durable de Woolf et al. (2010) peut fournir au plus un cinquième des cultures. À ce plafond, le biochar stocke environ 0,63 Gt de CO₂ par an. C'est sous le potentiel du biochar du sixième rapport d'évaluation du GIEC (1,1, de 0,3 à 1,8, Gt d'équivalent CO₂ par an jusqu'à 100 \$ la tonne ; 2,6 techniquement) : une lecture prudente.
 
 ### Poudre de roche
 
 La poudre de roche (l'altération forcée des roches) est de la roche silicatée broyée, en général du basalte, épandue sur les champs. En se dissolvant, elle transforme le CO₂ de l'air du sol en bicarbonate. Le bicarbonate s'écoule vers les rivières et l'océan, où il reste pendant plusieurs milliers d'années.
 
-Un essai au champ de quatre ans dans la Corn Belt américaine a mesuré 10,5 ± 3,8 t de CO₂ par hectare pour 50 t de basalte par hectare et par an (Beerling et al., 2024). Cela fait 2,6 t par an. Moins environ un cinquième pour l'extraction, le broyage et le transport, cela fait 2 t. L'altération est plus rapide là où il fait chaud et humide, et lente là où l'eau ne circule pas dans le sol. Les tropiques ont donc un rythme plus élevé et les cultures en climat sec un rythme plus bas.
+Un essai au champ de quatre ans dans la Corn Belt américaine a mesuré 10,5 ± 3,8 t de CO₂ par hectare pour 50 t de basalte par hectare et par an (Beerling et al., 2024). Cela fait 2,6 t par an. Une fois retiré environ un cinquième pour l'extraction, le broyage et le transport, il reste 2 t. L'altération est plus rapide là où il fait chaud et humide, et lente là où l'eau ne circule pas dans le sol. Les tropiques ont donc un rythme plus élevé et les cultures en climat sec un rythme plus bas.
 
-Un cinquième des cultures est le maximum que permettent l'approvisionnement en roche et son transport. Avec 2 t par hectare, une valeur typique, cela donne environ 0,6 Gt par an. C'est dans les 0,5 à 2 Gt que Beerling et al. (2020) ont trouvées pour les principaux pays agricoles.
+L'approvisionnement en roche et son transport limitent la poudre de roche à un cinquième des cultures au plus. Avec 2 t par hectare, une valeur typique, cela donne environ 0,6 Gt par an. C'est dans les 0,5 à 2 Gt que Beerling et al. (2020) ont trouvées pour les principaux pays agricoles.
 
 ## Pays et climat
 
@@ -86,13 +86,13 @@ Un pays sans zone prend la valeur `World`. Un grand pays s'étend sur plusieurs 
 
 Le nombre d'années au rythme plein (`years`) se lit différemment pour les deux sortes de pratiques.
 
-**Les couverts végétaux et les arbres dans les fermes remplissent un stock qui sature.** Le sol et les arbres atteignent un nouvel équilibre. Le gain est le plus rapide au début et ralentit à mesure que le stock approche de son nouveau niveau. Planetshift compte le rythme plein pendant `years` ans après l'adoption, puis zéro. `years` vaut 20 : la durée par défaut du GIEC pour atteindre un nouvel équilibre du sol, et à peu près l'âge auquel les arbres plantés dans les fermes sont récoltés ou ne gagnent plus beaucoup. Le total stocké est le rythme multiplié par les années. La fonction de réponse de Poeplau et Don continue de gagner pendant plus d'un siècle, de plus en plus lentement : 20 ans est donc la lecture prudente. Quand l'adoption monte progressivement, les nouveaux hectares de chaque année commencent leurs propres 20 ans.
+**Les couverts végétaux et les arbres dans les fermes remplissent un stock qui sature.** Le sol et les arbres atteignent un nouvel équilibre. Le gain est le plus rapide au début et ralentit à mesure que le stock approche de son nouveau niveau. Planetshift compte le rythme plein pendant `years` ans après l'adoption, puis zéro. `years` vaut 20. C'est la durée par défaut du GIEC pour atteindre un nouvel équilibre du sol, et à peu près l'âge auquel les arbres plantés dans les fermes sont récoltés ou ne gagnent plus beaucoup. Le total stocké est le rythme multiplié par les années. La fonction de réponse de Poeplau et Don continue de gagner pendant plus d'un siècle, de plus en plus lentement : 20 ans est donc la lecture prudente. Quand l'adoption monte progressivement, les nouveaux hectares de chaque année commencent leurs propres 20 ans.
 
 **Le biochar et la poudre de roche s'accumulent tant qu'ils sont appliqués.** Le charbon et la roche de chaque année ajoutent du carbone qui ne revient pas : le stock continue donc de croître tant que la pratique se poursuit. `years` vaut 100, ce qui signifie pas de saturation avant 2100 : le rythme vaut chaque année où la pratique est en place. Quand la pratique s'arrête, l'absorption s'arrête, mais ce qui a été stocké reste.
 
 ## Permanence
 
-Le carbone du sol et des arbres peut être perdu à nouveau. Plusieurs choses libèrent une partie de ce qui a été stocké : retourner un champ de couverts végétaux, abattre les arbres d'un système agroforestier, une sécheresse, un incendie, ou un climat plus chaud qui accélère la décomposition. Arrêter la pratique laisse le sol revenir à son ancien niveau en quelques décennies. Les rythmes donnés ici supposent que la pratique est maintenue. Un modèle qui arrête la pratique devrait rendre le stock en à peu près le temps qu'il a fallu pour le constituer.
+Le carbone du sol et des arbres peut être perdu à nouveau. Plusieurs choses libèrent une partie de ce qui a été stocké : retourner un champ de couverts végétaux, abattre les arbres d'un système agroforestier, une sécheresse, un incendie, ou un climat plus chaud qui accélère la décomposition. Arrêter la pratique laisse le sol revenir à son ancien niveau en quelques décennies. Les rythmes donnés ici supposent que la pratique est maintenue. Un modèle qui arrête la pratique devrait libérer le carbone stocké en à peu près le temps qu'il a fallu pour le constituer.
 
 Le biochar et la poudre de roche sont bien plus permanents. Le biochar perd quelques pour cent les premières années et très peu ensuite. Le bicarbonate reste des millénaires dans l'océan.
 
@@ -101,12 +101,12 @@ Le biochar et la poudre de roche sont bien plus permanents. Le biochar perd quel
 Les fourchettes sont larges, pour plusieurs raisons :
 
 - Le carbone du sol se mesure comme une petite différence entre deux grands stocks, souvent seulement dans les 30 premiers cm. Des gains en surface peuvent être compensés par des pertes plus en profondeur.
-- Les essais au champ ont lieu là où la pratique fonctionne bien, et ils sont courts. Les extrapoler à un pays et à des décennies est hasardeux.
+- Les essais au champ ont lieu là où la pratique fonctionne bien, et ils sont courts. Les extrapoler à tout un pays et sur des décennies ajoute une forte incertitude.
 - Les rythmes des arbres dans les fermes dépendent du nombre d'arbres plantés et de leur conduite, ce qu'aucun chiffre mondial ne peut saisir.
 - La poudre de roche a peu d'essais au champ, et certains trouvent une absorption plus lente que ce que prévoient les modèles. La part du carbone dissous qui atteint l'océan est encore en cours de mesure.
-- Le bénéfice du biochar dépend de ce que la biomasse serait devenue autrement. Des résidus qui auraient sinon pourri dans le sol gagnent moins que ne le dit le rythme quand on en fait du biochar.
+- Le bénéfice du biochar dépend de ce que la biomasse serait devenue autrement. Quand on fait du biochar avec des résidus qui auraient sinon pourri dans le sol, le gain est plus faible que ne le dit le rythme.
 
-Aucun de ces rythmes ne compte les effets secondaires sur les rendements ou sur le protoxyde d'azote des sols. Aucun ne compte les émissions de fabrication de la poudre de roche et du charbon, au-delà de la part du transport pour la poudre de roche.
+Ces rythmes ne comptent pas les effets secondaires sur les rendements ou sur le protoxyde d'azote des sols. Ils laissent aussi de côté les émissions de fabrication de la poudre de roche et du charbon, au-delà de la part du transport pour la poudre de roche.
 
 ## Données et code
 
@@ -120,7 +120,7 @@ Les valeurs, avec une ligne de justification pour chacune, sont dans `pipeline/r
 - Biochar : 1 t/ha/an, 0,65 t C/t, 80 % gardés après un siècle ; au plus un cinquième des cultures ; pas de saturation.
 - Poudre de roche : 2 t CO₂/ha/an net dans les cultures tempérées humides, d'après un essai au champ à 50 t de basalte/ha/an, plus sous les tropiques, moins dans les cultures en climat sec ; au plus un cinquième des cultures ; pas de saturation.
 - Chaque pays prend une seule zone climatique, celle de la plus grande partie de ses cultures.
-- Les pratiques sont comptées indépendamment ; leurs absorptions sur le même hectare s'additionnent, même si un couvert végétal et du biochar sur un même champ peuvent ne pas s'additionner entièrement.
+- Les pratiques sont comptées indépendamment. Leurs absorptions sur le même hectare s'additionnent, même si un couvert végétal et du biochar sur un même champ peuvent ne pas s'additionner entièrement.
 
 ## Sources
 

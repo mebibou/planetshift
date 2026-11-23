@@ -1,8 +1,8 @@
 # Alimentation animale : quels animaux mangent quelles cultures
 
-Quand on mange moins de produits animaux, on élève moins d'animaux, et les cultures qui servaient à les nourrir ne sont plus nécessaires. Pour savoir quelles cultures baissent, Planetshift doit savoir quels animaux les mangent. Par défaut, les aliments concentrés du monde (le grain, les oléagineux, les légumineuses, les racines et les autres cultures données aux animaux, par opposition à l'herbe, au foin et aux résidus de culture) sont répartis entre les groupes animaux comme le trouvent les enquêtes publiées sur l'alimentation par espèce, et la part de chaque région suit ce qu'elle produit.
+Quand on mange moins de produits animaux, on élève moins d'animaux, et les cultures qui servaient à les nourrir ne sont plus nécessaires. Pour savoir quelles cultures ne sont plus nécessaires, Planetshift doit savoir quels animaux les mangent. Par défaut, les aliments concentrés du monde (le grain, les oléagineux, les légumineuses, les racines et les autres cultures données aux animaux, par opposition à l'herbe, au foin et aux résidus de culture) sont répartis entre les groupes animaux dans les proportions que donnent les enquêtes publiées sur l'alimentation par espèce. La part de chaque région suit ce qu'elle produit.
 
-Les bilans alimentaires disent quelle quantité de chaque produit sert à l'alimentation animale dans chaque pays, mais pas pour quels animaux. Planetshift répartit l'usage fourrager de chaque produit entre les six groupes animaux, par région, de deux façons. Le lecteur peut passer de l'une à l'autre dans les Options.
+Les bilans alimentaires disent quelle quantité de chaque produit sert à l'alimentation animale dans chaque pays, mais pas pour quels animaux. Planetshift répartit l'usage fourrager de chaque produit entre les six groupes animaux, par région, de deux façons. On peut passer de l'une à l'autre dans *Autres options*.
 
 ## Ce qui est réparti
 
@@ -16,7 +16,7 @@ Tous les produits qui servent quelque part dans le monde à l'alimentation anima
 
 L'herbe, le foin, les résidus de culture et les tourteaux ne sont pas des produits des bilans alimentaires, ils ne sont donc pas dans la répartition. L'herbe et les résidus sont l'essentiel de ce que mangent les ruminants.
 
-Les parts sont écrites pour le monde et pour chaque sous-région M49, le regroupement des pays en régions de l'ONU, comme « Afrique de l'Ouest » (comme dans la table des pays, voir [Données](#method-data)). Pour chaque méthode, région et produit, les parts font 1 au total sur les groupes animaux.
+Les parts sont écrites pour le monde et pour chaque sous-région M49. Les sous-régions M49 sont le regroupement des pays en régions de l'ONU, comme « Afrique de l'Ouest », que reprend la table des pays (voir [Données](#method-data)). Pour chaque méthode, région et produit, les parts font 1 au total sur les groupes animaux.
 
 ## Méthode 1, par espèce (par défaut)
 
@@ -52,26 +52,26 @@ Pour chaque région, la demande d'une classe d'aliments par un groupe est la som
 
 production × concentrés par tonne × part de la classe dans la ration
 
-Le niveau de revenu du pays décide de la valeur des concentrés par tonne. Un produit va ensuite aux groupes en proportion de la demande pour sa classe. Les produits dont aucune ration ne contient la classe (fruits à coque, épices, viande, par exemple) suivent la répartition par espèce.
+La valeur des concentrés par tonne dépend du niveau de revenu du pays. Un produit va ensuite aux groupes en proportion de la demande pour sa classe. Les produits d'une classe qu'aucune ration ne contient (fruits à coque, épices et viande, par exemple) suivent la répartition par espèce.
 
-Ces valeurs donnent des totaux mondiaux d'environ 1,2 milliard de tonnes d'aliments concentrés. C'est le même ordre de grandeur que la production mondiale d'aliments composés, et leur répartition entre espèces est proche de celle de la méthode 1.
+Ces valeurs donnent des totaux mondiaux d'environ 1,2 milliard de tonnes d'aliments concentrés. C'est le même ordre de grandeur que la production mondiale d'aliments composés. Leur répartition entre espèces est proche de celle de la méthode 1.
 
 ## Poissons et fruits de mer
 
-Les poissons et crevettes d'élevage mangent des aliments aquacoles faits de grain, d'oléagineux et de farine de poisson. L'usage fourrager des bilans les comprend déjà. Dans la répartition, la production des produits de la mer est l'aquaculture d'espèces nourries de chaque pays d'après FishStat de la FAO, et non leur production dans les bilans, en grande partie sauvage ou non nourrie.
+Les poissons et crevettes d'élevage mangent des aliments aquacoles faits de grain, d'oléagineux et de farine de poisson. L'usage fourrager des bilans les comprend déjà. Pour les produits de la mer, la répartition prend l'aquaculture d'espèces nourries de chaque pays, d'après FishStat de la FAO. Elle ne prend pas leur production dans les bilans, qui est en grande partie sauvage ou non nourrie.
 
 - Dans la méthode 1, les produits de la mer prennent 5,5 % des aliments concentrés du monde. Les cinq autres groupes gardent leurs proportions dans les 94,5 % restants : 11 % devient 10,4 % pour la viande de ruminants, et ainsi de suite.
 - Dans la méthode 2, les poissons d'élevage ont besoin de 1,6 t d'aliments par tonne dans les pays à revenu élevé et de 0,87 t ailleurs. La ration est à 30 % de grain, 40 % d'oléagineux, 5 % de légumineuses et 25 % de poisson.
 
-Le poisson donné aux animaux va à environ 70 % à l'aquaculture, 23 % aux porcs et 7 % aux volailles. Pour tous les autres produits fourragers, les cinq groupes d'élevage gardent entre eux les mêmes parts qu'avant l'ajout des produits de la mer. La page [Poissons et fruits de mer](#method-seafood) donne les sources.
+Du poisson donné aux animaux, environ 70 % va à l'aquaculture, 23 % aux porcs et 7 % aux volailles. Pour tous les autres produits fourragers, les cinq groupes d'élevage gardent entre eux les mêmes parts qu'avant l'ajout des produits de la mer. La page [Poissons et fruits de mer](#method-seafood) donne les sources.
 
 ## Hypothèses
 
 - La répartition est la même pour chaque produit dans la méthode 1, sauf les produits de la pêche, qui ont leur propre répartition. Le maïs et le soja se partagent donc entre les espèces de la même façon.
-- Les concentrés par tonne et les parts des rations sont des valeurs arrondies dans l'esprit des résultats régionaux de GLEAM 2.0. Ce ne sont pas une copie de ses tables, qui ne sont pas publiées sous cette forme. Ce sont un point de départ à revoir.
+- Les concentrés par tonne et les parts des rations sont des valeurs arrondies calquées sur les résultats régionaux de GLEAM 2.0. Ce ne sont pas une copie de ses tables, qui ne sont pas publiées sous cette forme. C'est un point de départ, à revoir.
 - Deux niveaux de revenu représentent les nombreux systèmes de production que GLEAM distingue.
 - Les régions sans production animale (aucune pour l'instant) prennent les parts mondiales.
-- L'herbe, les résidus de culture et les tourteaux sont hors des bilans : ils ne sont donc pas répartis ici. Les surfaces des oléagineux triturés pour le tourteau, et des prairies temporaires, suivent les animaux dans [Terres](#method-land), comme les émissions du tourteau ([Émissions](#method-emissions)) ; les prairies permanentes suivent les ruminants.
+- L'herbe, les résidus de culture et les tourteaux sont hors des bilans : ils ne sont donc pas répartis ici. Les surfaces des oléagineux triturés pour le tourteau, et des prairies temporaires, suivent les animaux dans [Terres](#method-land). Les émissions du tourteau les suivent aussi ([Émissions](#method-emissions)). Les prairies permanentes suivent les ruminants.
 
 ## Où se trouve le code
 

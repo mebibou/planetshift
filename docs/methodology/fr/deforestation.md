@@ -1,33 +1,33 @@
 # Déforestation
 
-Défricher la forêt pour faire place à des pâturages et à des cultures libère le carbone contenu dans les arbres, leurs racines et le sol en dessous. Pour les aliments du modèle, cela représente environ 2 Gt (milliards de tonnes) de CO₂ par an, dont la moitié est liée à la viande bovine. Cette page explique d'où vient ce chiffre, sur quels aliments et quels pays il porte, et comment le changement de régime et le levier de la déforestation le réduisent.
+Défricher la forêt pour faire place à des pâturages et à des cultures libère le carbone contenu dans les arbres, leurs racines et le sol en dessous. Pour les aliments du modèle, cela représente environ 2 Gt (milliards de tonnes) de CO₂ par an, dont la moitié est liée à la viande bovine. On voit ci-dessous d'où vient ce chiffre, sur quels aliments et quels pays il porte, et comment le changement de régime et le levier de la déforestation le réduisent.
 
 ## Ce qu'émet le défrichement
 
-La déforestation est la plus grande source de CO₂ du système alimentaire après les combustibles fossiles. Elle représentait environ 2 Gt de CO₂ par an au début des années 2020. Les émissions agricoles de chaque aliment dans `intensities.json` (voir [Émissions](#method-emissions)) la laissent de côté ; Planetshift la compte donc à part. Elle est donnée par pays producteur et par produit des bilans alimentaires (le tableau de FAOSTAT de ce que chaque pays produit, échange et mange ; voir [Données](#method-data)). Le modèle peut alors la compter et agir sur elle comme un levier.
+La déforestation est la plus grande source de CO₂ du système alimentaire après les combustibles fossiles. Elle représentait environ 2 Gt de CO₂ par an au début des années 2020. Les émissions agricoles de chaque aliment dans `intensities.json` (voir [Émissions](#method-emissions)) ne comprennent pas la déforestation, et Planetshift la compte donc à part. Son CO₂ est donné par pays producteur et par produit des bilans alimentaires, le tableau de FAOSTAT de ce que chaque pays produit, échange et mange (voir [Données](#method-data)). Le modèle peut alors la compter et la réduire par un levier.
 
 Sur 2019–2023, les produits alimentaires du modèle portent 1,99 Gt de CO₂ par an.
 
 - **Par aliment** : la viande bovine en porte la moitié, 1,04 Gt. Viennent ensuite le manioc (0,14), le maïs (0,11), le riz (0,11), le soja (0,07) et le palmier à huile (0,06).
 - **Par pays** : le Brésil arrive en tête, avec 0,75 Gt, dont 94 % dus aux pâturages. Viennent ensuite la République démocratique du Congo (0,24 Gt, dus aux défrichements des petits exploitants pour le manioc, le riz, le maïs et d'autres cultures vivrières), la Bolivie (0,10), la Colombie (0,09), l'Indonésie (0,09), le Pérou (0,06), l'Inde (0,06), le Mexique (0,04), la Côte d'Ivoire (0,04) et le Nigeria (0,04).
 
-Les émissions sont comptées dans le pays de production, là où la forêt est défrichée. Un changement de régime en Europe agit pourtant sur la déforestation du Brésil, par le commerce. Dans le modèle, les fermes de chaque pays changent en proportion de leur part de la production mondiale. Une baisse de la demande mondiale de bœuf ou de soja est donc reportée sur les pays qui défrichent la forêt pour les produire.
+Les émissions sont comptées dans le pays de production, là où la forêt est défrichée. Un changement de régime en Europe agit pourtant sur la déforestation du Brésil, par le commerce. Dans le modèle, les fermes de chaque pays changent en proportion de leur part de la production mondiale. Une baisse de la demande mondiale de bœuf ou de soja fait donc baisser la production des pays qui défrichent la forêt pour les produire.
 
 ## Comment le modèle la réduit
 
 Les données donnent la référence : les tonnes de CO₂ émises chaque année par le défrichement, pour chaque pays et chaque produit, à la production actuelle. Le modèle utilise cette référence de deux façons à la fois.
 
-**La déforestation suit la production.** Le CO₂ d'un produit dans un pays varie en proportion de la variation de sa production. La déforestation est ainsi traitée comme entraînée par la production du produit de base. Un régime avec moitié moins de bœuf divise alors par deux la déforestation due aux pâturages, et un régime avec plus de soja augmente les défrichements dus au soja. C'est la lecture qui sous-tend les empreintes de déforestation fondées sur la consommation.
+**La déforestation suit la production.** Le CO₂ d'un produit dans un pays varie en proportion de la variation de sa production. La déforestation est ainsi traitée comme entraînée par la production du produit de base. Un régime avec moitié moins de bœuf divise alors par deux la déforestation due aux pâturages, et un régime avec plus de soja augmente les défrichements dus au soja. Les empreintes de déforestation fondées sur la consommation reposent sur la même hypothèse.
 
-Cette lecture est généreuse envers les changements de régime d'un côté. Ce qui entraîne le défrichement est la croissance de la production plutôt que son niveau, et le prix des terres, les routes et l'application de la loi comptent autant que la demande. Elle est prudente de l'autre : si la demande de bœuf baisse, le front peut cesser complètement d'avancer, et pas seulement ralentir en proportion.
+D'un côté, cette hypothèse favorise les changements de régime. Ce qui entraîne le défrichement est la croissance de la production plutôt que son niveau, et le prix des terres, les routes et l'application de la loi comptent autant que la demande. De l'autre, elle sous-estime leur effet. Si la demande de bœuf baisse, le front de déforestation peut cesser complètement d'avancer, et pas seulement ralentir en proportion.
 
-**La déforestation est réduite directement.** Le levier de la déforestation fixe la part de la déforestation arrêtée, quel que soit le régime. Il représente les chaînes d'approvisionnement zéro déforestation et la protection des forêts. Le CO₂ évité est cette part du total, par produit ou pour tous les produits. Avec à la fois un changement de régime et ce levier, le levier s'applique à ce qui reste après le changement. Les deux effets se multiplient ; ils ne s'additionnent pas.
+**La déforestation est réduite directement.** Le levier de la déforestation fixe la part de la déforestation arrêtée, quel que soit le régime. Il représente les chaînes d'approvisionnement zéro déforestation et la protection des forêts. Le CO₂ évité est cette part du total, par produit ou pour tous les produits. Avec à la fois un changement de régime et ce levier, le levier s'applique à ce qui reste après le changement. Les deux effets se multiplient au lieu de s'additionner.
 
-**Un exemple chiffré.** La viande bovine porte 1,04 Gt de CO₂ par an. Si la production mondiale de bœuf était divisée par deux, et que le bœuf de chaque pays baissait de la même part, sa déforestation tomberait à 0,52 Gt. Avec le levier à 50 %, la moitié de ce qui reste est arrêtée, et il reste 0,26 Gt. Le levier évite alors 0,26 Gt, et non la moitié des 1,04 Gt de départ.
+**Un exemple chiffré.** La viande bovine porte 1,04 Gt de CO₂ par an. Si la production mondiale de bœuf était divisée par deux, et que le bœuf de chaque pays baissait de la même part, la déforestation due au bœuf tomberait à 0,52 Gt. Avec le levier à 50 %, la moitié de ce qui reste est arrêtée, et il reste 0,26 Gt. Le levier évite alors 0,26 Gt, et non la moitié des 1,04 Gt de départ.
 
 ### Comment le CO₂ évité entre dans la température
 
-Dans les deux cas, le CO₂ évité est une émission de CO₂ qui n'a pas lieu, année après année. Il entre dans le modèle climatique comme tout autre CO₂. Le carbone libéré par le défrichement est du CO₂ d'usage des terres, que le modèle climatique traite comme du CO₂ fossile (voir [Des émissions à la température](#method-climate)). La différence entre les deux est le changement d'albédo de surface (la part de la lumière du soleil que le sol renvoie), qui est petite à côté de l'incertitude sur les émissions.
+Dans les deux cas, le CO₂ évité est une émission de CO₂ qui n'a pas lieu, année après année. Il entre dans le modèle climatique comme tout autre CO₂. Le carbone libéré par le défrichement est du CO₂ d'usage des terres, que le modèle climatique traite comme du CO₂ fossile (voir [Des émissions à la température](#method-climate)). La différence entre les deux est le changement d'albédo de surface (la part de la lumière du soleil que le sol renvoie). Ce changement est petit par rapport à l'incertitude sur les émissions.
 
 La repousse de la forêt sur les terres agricoles libérées par un changement de régime est un effet distinct, compté sur la page [Terres](#method-land). Elle ne doit pas s'ajouter à la déforestation évitée sur le même hectare.
 
@@ -37,9 +37,9 @@ Les données sont dans `deforestation.json`. Le code est `pipeline/planetshift_p
 
 ### DeDuCE
 
-La source est DeDuCE (Deforestation Driven Carbon Emissions), version 2.1, de Singh, Persson, Croft, Kastner et West, publiée sur Zenodo sous licence CC BY 4.0. DeDuCE croise deux sortes de données. Des cartes satellitaires montrent où la forêt a été perdue et ce qui l'a remplacée. Les statistiques de FAOSTAT donnent les surfaces de cultures, de pâturages et de plantations. À partir de ces données, DeDuCE attribue la déforestation de chaque pays de 2001 à 2023 à l'extension des pâturages, de quelque 180 cultures et des plantations forestières.
+La source est DeDuCE (Deforestation Driven Carbon Emissions), version 2.1, de Singh, Persson, Croft, Kastner et West, publiée sur Zenodo sous licence CC BY 4.0. DeDuCE croise deux sortes de données. Des cartes satellitaires montrent où la forêt a été perdue et ce qui l'a remplacée. Les statistiques de FAOSTAT donnent les surfaces de cultures, de pâturages et de plantations. À partir de ces données, DeDuCE attribue la déforestation de chaque pays de 2001 à 2023 à l'extension des pâturages, d'environ 180 cultures et des plantations forestières.
 
-Là où les cartes montrent ce qui pousse sur la terre défrichée, la terre est attribuée directement à cette culture. Ailleurs, un bilan des terres l'attribue aux cultures et aux pâturages qui se sont étendus dans le pays cette année-là (au Brésil, dans chaque municipalité). Les émissions sont la perte nette de carbone de la biomasse aérienne, de la biomasse souterraine et du sol, moins le carbone que contient l'usage des terres qui remplace la forêt.
+Là où les cartes montrent ce qui pousse sur la terre défrichée, la terre est attribuée directement à cette culture. Ailleurs, un bilan des terres l'attribue aux cultures et aux pâturages qui se sont étendus dans le pays cette année-là. Au Brésil, ce bilan est fait pour chaque municipalité. Les émissions sont la perte nette de carbone de la biomasse aérienne, de la biomasse souterraine et du sol, moins le carbone que contient l'usage des terres qui remplace la forêt.
 
 ### Quelle série et quelles années
 
@@ -48,9 +48,9 @@ DeDuCE donne deux séries :
 - La série **non amortie** met toutes les émissions d'un hectare l'année de son défrichement.
 - La série **amortie** les répartit sur les cinq années qui suivent le défrichement. Elle mesure la déforestation « incorporée » dans la récolte de chaque année.
 
-Planetshift utilise la série amortie, parce que le modèle fait varier les émissions avec la production. Il fait la moyenne des années 2019 à 2023, les cinq dernières, pour qu'une année sèche ou un revirement politique ne domine pas.
+Planetshift utilise la série amortie, parce que le modèle fait varier les émissions avec la production. Il fait la moyenne des années 2019 à 2023, les cinq dernières, pour qu'une année sèche ou un changement de politique ne domine pas.
 
-La carte montre plutôt la surface de forêt défrichée : l'attribution non amortie de DeDuCE, en hectares, en moyenne sur les mêmes années et répartie entre les aliments comme le CO₂. Elle totalise environ 4,2 millions d'hectares par an pour les aliments du modèle, dont 1,5 million au Brésil. Le modèle la fait varier avec la production de chaque aliment et le levier exactement comme le CO₂, et l'infobulle de la carte donne les deux.
+La carte montre plutôt la surface de forêt défrichée : l'attribution non amortie de DeDuCE, en hectares, en moyenne sur les mêmes années et répartie entre les aliments comme le CO₂. Elle totalise environ 4,2 millions d'hectares par an pour les aliments du modèle, dont 1,5 million au Brésil. Le modèle la fait varier avec la production de chaque aliment et avec le levier, de la même façon que le CO₂. L'infobulle de la carte donne les deux.
 
 ### Le drainage des tourbières est laissé de côté
 
@@ -60,7 +60,7 @@ DeDuCE donne aussi le CO₂ du drainage des tourbières cultivées, surtout le p
 
 Les produits de base de DeDuCE sont les produits de la production de FAOSTAT. La plupart sont donc mis en correspondance avec la même table que les émissions agricoles (`qcl_items.csv`) : le soja au soja (2555), les fruits du palmier à huile aux fruits du palmier à huile des bilans alimentaires (2562, que le modèle transforme en huile de palme et en huile de palmiste), les fèves de cacao au 2633, le café au 2630, le maïs au 2514, le manioc au 2532, et ainsi de suite. `deforestation_items.csv` ajoute les noms que DeDuCE écrit autrement et les produits de base qui ne sont pas des cultures :
 
-- **Les pâturages** sont attribués par DeDuCE à la viande bovine et au cuir. La viande bovine va à la viande de bovins (2731). Rien ne va au lait : DeDuCE n'attribue aucun pâturage aux produits laitiers, et les bovins des fronts de déforestation de l'Amazonie, du Cerrado et du Chaco sont des troupeaux à viande. Le cuir, un coproduit non alimentaire, est laissé de côté (environ 55 Mt de CO₂ par an).
+- **Les pâturages** sont attribués par DeDuCE à la viande bovine et au cuir. La viande bovine va à la viande de bovins (2731). Rien ne va au lait. DeDuCE n'attribue aucun pâturage aux produits laitiers, et les bovins des fronts de déforestation de l'Amazonie, du Cerrado et du Chaco sont des troupeaux à viande. Le cuir, un coproduit non alimentaire, est laissé de côté (environ 55 Mt de CO₂ par an).
 - **Le coton graine** garde la répartition des émissions agricoles : 15 % vont à la graine de coton (2559). Les 85 % que représente la fibre sont laissés de côté (environ 11 Mt).
 - **Le caoutchouc, le tabac, le jute et les autres fibres** ne sont pas des aliments et sont laissés de côté. Le caoutchouc est net négatif dans DeDuCE (−13 Mt), parce que la plantation peut contenir plus de carbone que la forêt dégradée qu'elle a remplacée.
 - **Les plantations forestières** (pâte à papier, bois d'œuvre) sont laissées de côté (environ 9 Mt).
@@ -84,7 +84,7 @@ Des totaux plus larges comptent davantage :
 
 - Les émissions de chaque année sont celles, amorties, de DeDuCE, moyennées sur 2019–2023 : les émissions du défrichement réparties sur les cinq années de récolte qui le suivent.
 - Le drainage des tourbières n'est pas de la déforestation et est laissé de côté.
-- La déforestation due aux pâturages va entièrement à la viande bovine ; le cuir, les produits laitiers et les autres animaux qui pâturent n'en prennent aucune.
+- La déforestation due aux pâturages va entièrement à la viande bovine. Le cuir, les produits laitiers et les autres animaux qui pâturent n'en reçoivent aucune part.
 - Les produits de base non alimentaires (cuir, caoutchouc, fibres, tabac, la part de fibre du coton) et les plantations forestières sont laissés de côté.
 - Les cases nettes négatives (une culture arborée qui contient plus de carbone que la forêt qu'elle a remplacée) sont abandonnées, et non comptées comme des absorptions.
 - Les émissions sont comptées là où la forêt est défrichée, et non là où l'aliment est mangé.

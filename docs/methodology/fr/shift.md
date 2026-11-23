@@ -1,6 +1,6 @@
 # Comment un changement de régime devient un changement de production
 
-Cette page suit un changement de régime de l'assiette à la ferme, puis jusqu'au réchauffement évité. On mange moins de produits animaux et on reçoit les mêmes protéines (ou les mêmes calories) de produits végétaux. Moins d'animaux demandent alors moins d'aliments, si bien que la production végétale peut baisser comme la production animale, et le changement de ce que produisent les fermes devient un changement des émissions et de la température.
+Un changement de régime change ce qu'on mange, puis ce que produisent les fermes, puis le réchauffement dû à l'agriculture. On mange moins de produits animaux et on reçoit les mêmes protéines (ou les mêmes calories) de produits végétaux. Moins d'animaux demandent alors moins d'aliments, si bien que la production végétale peut baisser comme la production animale. Le changement de ce que produisent les fermes devient un changement des émissions et de la température.
 
 Les curseurs de Planetshift changent ce que l'on mange. La carte montre ce que les fermes produisent, et le graphique le réchauffement dû à cette production.
 
@@ -10,7 +10,7 @@ Les curseurs de Planetshift changent ce que l'on mange. La carte montre ce que l
 2. **Ce qui est retiré.** Chaque groupe animal perd la part de ses disponibilités alimentaires que fixent les curseurs.
 3. **Ce qui est ajouté.** Les protéines (ou les calories) retirées reviennent sous forme de produits végétaux, selon le mélange choisi.
 4. **Pertes et semences.** Plus d'aliments demandent un peu plus de disponibilités, car une partie se perd et une partie du grain est gardée comme semence.
-5. **Alimentation animale.** Moins d'animaux mangent moins, et les cultures qui les nourrissaient baissent.
+5. **Alimentation animale.** Moins d'animaux mangent moins, et la production des cultures fourragères baisse.
 6. **Où la production change.** La variation de la demande mondiale de chaque produit est répartie entre les pays qui le produisent.
 7. **Émissions.** La variation de production de chaque pays est multipliée par les émissions par tonne de chaque produit.
 8. **Terres.** La variation de production donne les cultures et les prairies utilisées ou libérées et, en option, le CO₂ que les terres libérées absorbent.
@@ -25,15 +25,15 @@ Cet exemple utilise les données de test (`app/public/fixtures/`), des chiffres 
 
 1. Retiré : 10 % de chaque produit animal, par exemple 152 kt de viande bovine et 1 724 kt de lait, ainsi que le poisson.
 2. Ajouté : les mêmes protéines réparties selon les végétaux riches en protéines de la France, surtout du blé. Les disponibilités alimentaires de blé augmentent de 1 261 kt, celles de maïs de 115 kt, de riz de 80 kt, d'avoine de 34 kt et de haricots de 23 kt.
-3. Disponibilités : les pertes et semences du blé font 8 % de ses disponibilités, qui doivent donc augmenter de 1 261 × 1,087 tonnes.
-4. Alimentation animale : la production animale de la France baisse d'un peu plus de 10 %, car chaque produit animal baisse de la part retirée de son usage mondial (étape 5), et l'alimentation animale baisse avec elle. Le maïs fourrager représente 9,9 Mt, si bien que la production de maïs baisse de 1 106 kt, alors que le maïs alimentaire augmente de 115 kt. La production de blé n'augmente que de 606 kt, car son usage fourrager (6,0 Mt) baisse.
+3. Disponibilités : les pertes et semences du blé font 8 % de ses disponibilités, qui augmentent donc de 1 261 × 1,087 tonnes.
+4. Alimentation animale : la production animale de la France baisse d'un peu plus de 10 %. Chaque produit animal baisse de la part retirée de son usage mondial (étape 5), et l'alimentation animale baisse avec elle. Le maïs fourrager représente 9,9 Mt, si bien que la production de maïs baisse de 1 106 kt, alors que le maïs alimentaire augmente de 115 kt. La production de blé n'augmente que de 606 kt, car son usage fourrager (6,0 Mt) baisse.
 5. Résultat : les protéines restent à 107,8 g par jour, et l'énergie passe de 2 437 à 2 545 kcal. Les émissions agricoles de la France baissent d'environ 224 kt de CH₄ (méthane), 5,6 kt de N₂O (protoxyde d'azote) et 0,6 Mt de CO₂ par an.
 
 ## 1. La base maintenue : protéines ou calories
 
 Un changement retire une partie des disponibilités alimentaires de chaque groupe animal. Il rajoute la même quantité de protéines (par défaut) ou d'énergie (kcal). L'apport de chaque pays sur cette base ne change donc pas.
 
-L'autre varie. Remplacer des protéines de viande par des protéines de blé apporte plus de calories. Remplacer calorie pour calorie apporte moins de protéines.
+L'autre nutriment varie. Remplacer des protéines de viande par des protéines de blé apporte plus de calories. Remplacer calorie pour calorie apporte moins de protéines.
 
 Les teneurs en protéines et en calories par tonne sont celles des bilans eux-mêmes : les disponibilités alimentaires en protéines et en kcal, divisées par les disponibilités alimentaires en tonnes.
 
@@ -49,7 +49,7 @@ Avec *pays à revenu élevé seulement*, les pays hors du groupe à revenu élev
 
 Les protéines (ou les kcal) retirées sont ajoutées à des produits végétaux selon le mélange de remplacement choisi :
 
-- **Les végétaux riches en protéines d'aujourd'hui** (par défaut) : les végétaux riches en protéines que le pays mange aujourd'hui, chacun selon sa part des protéines (ou kcal) qu'ils lui apportent actuellement. Ce sont les aliments qui fournissent l'essentiel des protéines végétales : céréales, riz, légumineuses, fruits à coque et oléagineux mangés pour leurs protéines (soja, arachide, sésame et autres à au moins 10 % de protéines). Les fruits, les légumes, les racines, le sucre, les huiles, les boissons, le café, le cacao et les épices gardent leurs quantités actuelles.
+- **Les végétaux riches en protéines d'aujourd'hui** (par défaut) : chacun de ces aliments reçoit une part des protéines (ou kcal) ajoutées égale à sa part des protéines (ou kcal) qu'ils apportent actuellement au pays. Ce sont les aliments qui fournissent l'essentiel des protéines végétales : céréales, riz, légumineuses, fruits à coque et oléagineux mangés pour leurs protéines (soja, arachide, sésame et autres à au moins 10 % de protéines). Les fruits, les légumes, les racines, le sucre, les huiles, les boissons, le café, le cacao et les épices gardent leurs quantités actuelles.
 - **Surtout des légumineuses** : 60 % aux légumineuses, 20 % au soja et 20 % aux céréales. Chaque part est répartie selon le mélange actuel du pays en son sein. Ces poids sont une valeur de départ à revoir, pas le résultat d'une étude.
 - **Boissons soja et avoine** : moitié au soja, moitié à l'avoine, les deux principales bases des boissons végétales.
 
@@ -57,13 +57,13 @@ Quand un pays ne mange aucun des produits d'une part du mélange, cette part sui
 
 ### Pourquoi le mélange par défaut se limite aux aliments riches en protéines
 
-Le mélange par défaut a changé en novembre 2026. Il augmentait auparavant tous les aliments végétaux de la même façon. Remplacer les protéines de la viande faisait alors monter les fruits de 80 %, les légumes de 74 %, et le sucre, la bière et les huiles végétales en proportion, alors qu'ils n'apportent presque pas de protéines. Les terres cultivées augmentaient d'un quart avec un changement complet vers le végétal, contre une baisse d'un cinquième chez Poore et Nemecek (2018).
+Un mélange qui augmenterait tous les aliments végétaux de la même façon ferait monter les fruits de 80 %, les légumes de 74 %, et le sucre, la bière et les huiles végétales en proportion pour remplacer les protéines de la viande, alors qu'ils n'apportent presque pas de protéines. Les terres cultivées augmenteraient d'un quart avec un changement complet vers le végétal, contre une baisse d'un cinquième chez Poore et Nemecek (2018).
 
-Le remplacement se limite désormais aux aliments qu'on mange pour leurs protéines, et les terres des tourteaux et du fourrage sont comptées (voir [Terres](#method-land)). Ensemble, ces deux choix transforment cette hausse en une baisse de 8 % à protéines égales et de 24 % à calories égales.
+Le remplacement se limite donc aux aliments qu'on mange pour leurs protéines, et les terres des tourteaux et du fourrage sont comptées (voir [Terres](#method-land)). Ensemble, ces deux choix transforment cette hausse en une baisse de 8 % à protéines égales et de 24 % à calories égales.
 
 ## 4. Des aliments aux disponibilités : pertes et semences
 
-Une tonne d'aliments en plus demande plus d'une tonne de disponibilités. Une partie se perd entre la ferme et le magasin, et une partie du grain est gardée comme semence. Les pertes et les semences sont tenues pour des parts fixes des disponibilités intérieures de chaque produit. Un changement d'usage alimentaire ou fourrager change donc les disponibilités de ce changement ÷ (1 − la part des pertes et semences). Ce multiplicateur est plafonné à 3, par précaution contre les lignes aberrantes.
+Une tonne d'aliments en plus demande plus d'une tonne de disponibilités. Une partie se perd entre la ferme et le magasin, et une partie du grain est gardée comme semence. Les pertes et les semences sont tenues pour des parts fixes des disponibilités intérieures de chaque produit. Un changement d'usage alimentaire ou fourrager change donc les disponibilités de ce changement ÷ (1 − la part des pertes et semences). Ce multiplicateur est plafonné à 3, pour limiter l'effet des lignes aberrantes des données.
 
 La transformation est tenue fixe : elle ne suit pas le changement. Un produit peut être transformé en un autre : le soja trituré en huile et en tourteau, la canne à sucre en sucre, le lait en beurre. Le produit dérivé figure dans les bilans, avec sa propre production et sa propre intensité d'émission (émissions par tonne). Un changement de la demande d'huile de soja change donc la production d'huile de soja, et ses émissions, et non le soja trituré pour la produire.
 
@@ -71,7 +71,7 @@ Les tourteaux ne sont pas des produits des bilans. Les terres des oléagineux tr
 
 ## 5. Moins d'animaux, moins d'aliments pour animaux
 
-Les animaux mangent des cultures. Prenons la production d'un groupe animal dans un pays, moins ce qui est transformé : c'est le cheptel dont les émissions et les terres sont comptées. Quand elle baisse d'une fraction, l'usage fourrager de chaque aliment pour animaux baisse de cette fraction × la part de cet aliment donnée à ce groupe.
+Les animaux mangent des cultures. Pour chaque groupe animal, les émissions et les terres sont comptées sur la production du pays moins ce qui est transformé. Quand celle-ci baisse d'une fraction, l'usage fourrager de chaque aliment pour animaux baisse de cette fraction × la part de cet aliment donnée à ce groupe.
 
 Les parts viennent de `feed.json`, par région. Une région qui n'en a pas prend les parts mondiales. L'option *Répartition des aliments du bétail* choisit la table (voir [Alimentation animale](#method-feed) et [Options](#method-options)).
 
@@ -79,9 +79,9 @@ L'herbe et les pâturages ne sont pas dans les bilans, ils n'apparaissent donc p
 
 La production animale est placée d'abord (étape 6). La variation de l'alimentation animale est calculée là où se trouvent les animaux, avant que la production végétale soit placée.
 
-Certains produits fourragers sont des produits animaux : le lait donné aux veaux et aux porcelets, et le poisson transformé en farine et donné aux poissons d'élevage, aux porcs et aux volailles. Leur usage fourrager varie avec la variation mondiale des groupes qu'ils nourrissent, tirée de la variation de l'alimentation humaine. Cette variation est placée comme une variation de la demande, en plus de la variation de l'alimentation humaine. Elle est faite une seule fois : le poisson pêché pour la farine est sauvage et ne mange aucun aliment, si bien qu'une variation de sa production ne change pas de nouveau l'alimentation animale, et la variation du lait donné aux veaux est faible. Voir [Poissons et fruits de mer](#method-seafood). L'alimentation animale tirée des cultures suit ensuite la variation de la production animale de chaque pays, lait et poisson donnés aux animaux compris.
+Certains produits fourragers sont des produits animaux : le lait donné aux veaux et aux porcelets, et le poisson transformé en farine et donné aux poissons d'élevage, aux porcs et aux volailles. Leur usage fourrager suit la variation mondiale des groupes qu'ils nourrissent, qui vient de la variation de l'alimentation humaine. Cette variation est traitée comme une variation de la demande, en plus de la variation de l'alimentation humaine. Elle est faite une seule fois. Le poisson pêché pour la farine est sauvage et ne mange aucun aliment, si bien qu'une variation de sa production ne change pas de nouveau l'alimentation animale. La variation du lait donné aux veaux est faible. Voir [Poissons et fruits de mer](#method-seafood). L'alimentation animale tirée des cultures suit ensuite la variation de la production animale de chaque pays, lait et poisson donnés aux animaux compris.
 
-Un produit animal a aussi des usages qui ne sont ni l'alimentation humaine ni l'alimentation animale : le suif et le saindoux pour le savon et le carburant, le lait pour l'industrie, et l'écart entre les importations et les exportations enregistrées dans le monde. Ils viennent d'animaux élevés pour l'alimentation et s'en vont avec eux. La production de chaque produit animal varie donc de la même fraction que son usage mondial en alimentation humaine et animale : une variation de cet usage est multipliée par la production mondiale du produit moins la transformation, rapportée à cet usage. Les graisses animales brutes, dont la moitié des disponibilités va à ces usages, baissent de moitié avec un changement de 50 %, et non d'un quart.
+Un produit animal a aussi des usages qui ne sont ni l'alimentation humaine ni l'alimentation animale : le suif et le saindoux pour le savon et le carburant, le lait pour l'industrie, et l'écart entre les importations et les exportations enregistrées dans le monde. Ils viennent d'animaux élevés pour l'alimentation, et varient donc avec eux. La production de chaque produit animal varie de la même fraction que son usage mondial en alimentation humaine et animale. Une variation de cet usage est multipliée par la production mondiale du produit moins la transformation, divisée par cet usage. Les graisses animales brutes, dont la moitié des disponibilités va à ces usages, baissent de moitié avec un changement de 50 %, et non d'un quart.
 
 ## 6. Où la production change
 
@@ -90,7 +90,7 @@ Un produit animal a aussi des usages qui ne sont ni l'alimentation humaine ni l'
 
 Un produit qu'aucun pays ne produit reste là où il est consommé.
 
-Un changement pourrait faire passer la production d'un pays sous ce qu'il transforme (production − transformation inférieure à zéro). Il est arrêté là, et le pays est signalé comme écrêté. Un changement de régime seul ne le fait plus, même à 100 %, car la production animale baisse de la part retirée de son usage.
+Un changement pourrait faire passer la production d'un pays sous ce qu'il transforme (production − transformation inférieure à zéro). La variation s'arrête là, et le pays est signalé comme écrêté. Un changement de régime seul ne le fait pas, même à 100 %, car la production animale baisse de la part retirée de son usage.
 
 La production affichée par groupe est la production moins ce qui est transformé en un autre produit : les tonnes dont les émissions sont comptées. Le lait transformé en beurre ou en crème est compté sur le beurre et la crème, si bien qu'il n'est pas compté deux fois, et un changement de 100 % amène le groupe des produits laitiers à zéro.
 
@@ -98,7 +98,7 @@ La production affichée par groupe est la production moins ce qui est transform�
 
 Les émissions d'un pays, pour chaque produit et chaque gaz, sont l'intensité (kg de CO₂, de CH₄ et de N₂O par tonne) × (production − transformation). Soustraire la transformation évite de compter une culture deux fois : la part transformée est comptée sur le produit dérivé. La variation due à un changement est la variation de production × la même intensité.
 
-Les gaz restent séparés jusqu'à la température. L'équivalent CO₂ (CO₂e) les additionne avec leurs poids de réchauffement sur 100 ans (GWP100, voir [Climat](#method-climate)). Il n'est affiché que comme total.
+Les gaz restent séparés jusqu'au calcul de la température. L'équivalent CO₂ (CO₂e) les additionne avec leurs poids de réchauffement sur 100 ans (GWP100, voir [Climat](#method-climate)). Il n'est affiché que comme total.
 
 ## 8. Les terres
 
@@ -109,11 +109,11 @@ Les terres agricoles d'un pays ont deux parts, tirées de `land.json` (voir [Ter
 
 Au changement complet, les cultures varient de la variation de production de chaque produit × ses hectares par tonne. La part des prairies de chaque groupe de ruminants varie de la même fraction que la production de ce groupe dans le pays. Par exemple, si la production de bœuf baisse de 40 % et que les bovins à viande pâturent 80 % des prairies, les prairies baissent de 32 %. Les prairies ne descendent jamais sous zéro.
 
-Un pays libère la baisse de ses cultures et de ses prairies prises ensemble. Un pays à qui il faut plus de terres au total n'en libère aucune.
+Les terres qu'un pays libère sont la baisse de ses cultures et de ses prairies, additionnées. Un pays à qui il faut plus de terres au total n'en libère aucune.
 
 ### La repousse sur les terres libérées
 
-Avec la *végétation spontanée* dans les Options, les terres libérées se couvrent à nouveau de végétation naturelle. Elles absorbent du CO₂ au rythme du pays (tonnes de CO₂ par hectare et par an) pendant `regrowthYears` ans après leur libération (30 dans les données).
+Avec la *végétation spontanée* dans *Autres options*, les terres libérées se couvrent à nouveau de végétation naturelle. Elles absorbent du CO₂ au rythme du pays (tonnes de CO₂ par hectare et par an) pendant `regrowthYears` ans après leur libération (30 dans les données).
 
 Les terres se libèrent au rythme de la rampe. Celles libérées une année commencent à absorber du CO₂ cette année-là et s'arrêtent 30 ans plus tard. L'absorption de l'année $t$ est, sur les pays $c$, avec $h_c$ leurs hectares libérés nets :
 
@@ -121,56 +121,56 @@ $$
 \text{absorption}(t) = \sum_{c} h_c \times \text{rythme} \times \big(\text{rampe}(t) - \text{rampe}(t - 30)\big)
 $$
 
-Un pays qui cultive au total plus de terres qu'avant a des hectares libérés nets négatifs. Il est chargé de l'absorption à laquelle ces terres renoncent (voir [Terres](#method-land)).
+Un pays qui cultive au total plus de terres qu'avant a des hectares libérés nets négatifs. L'absorption à laquelle ces terres renoncent est comptée contre lui (voir [Terres](#method-land)).
 
 Cette absorption est retirée du CO₂ du scénario avant le calcul de la température (étape 10). Elle se voit donc dans la température, dans le réchauffement évité et dans le CO₂ évité.
 
-La température médiane utilise le rythme médian. La borne de 5 % utilise le bas de la fourchette du rythme, et la borne de 95 % le haut. Une réponse faible du climat va ainsi avec une repousse lente, et la fourchette est la plus large que les deux permettent.
+La température médiane utilise le rythme médian. La borne de 5 % utilise le bas de la fourchette du rythme, et la borne de 95 % le haut. Une réponse faible du climat est donc associée à une repousse lente, ce qui rend la fourchette aussi large que les deux le permettent.
 
 ### Ce que montre le résumé
 
-Le résumé montre les terres agricoles libérées au changement complet, réparties entre cultures et prairies, et en part des terres agricoles du monde l'année de base. Avec la repousse, il montre aussi le CO₂ absorbé l'année où le changement est complet, par an. C'est l'absorption à son maximum, et elle fait déjà partie du CO₂ évité affiché au-dessus.
+Le résumé montre les terres agricoles libérées au changement complet, réparties entre cultures et prairies, et en part des terres agricoles du monde l'année de base. Avec la repousse, il montre aussi le CO₂ absorbé en une seule année, celle où le changement est complet. C'est l'absorption à son maximum, et elle fait déjà partie du CO₂ évité affiché au-dessus.
 
 ## 9. Au fil du temps
 
 Le modèle calcule la variation au changement complet. Sur les années d'aujourd'hui à 2100 :
 
 - **Référence** : avec le choix par défaut, *le régime actuel × la population*, les émissions de chaque année sont celles de l'année de référence × la population mondiale de l'année ÷ la population mondiale de l'année de référence. Avec la *trajectoire SSP2*, elles suivent les émissions agricoles de SSP2-4.5, gaz par gaz, rapportées à l'année de référence. SSP2-4.5 est l'avenir intermédiaire parmi les trajectoires socio-économiques partagées (SSP), les scénarios publiés qu'utilise le GIEC (voir [Climat](#method-climate)).
-- **Changement** : la référence plus rampe(t) × la variation au changement complet, mise à l'échelle comme la référence. La rampe vaut 0 l'année en cours. Elle monte en ligne droite jusqu'à 1 l'année choisie (2035 par défaut), et reste à 1. Avec la végétation spontanée, le CO₂ absorbé par les terres libérées (étape 8) est retranché ; il n'est pas mis à l'échelle comme la référence.
+- **Changement** : la référence plus rampe(t) × la variation au changement complet, mise à l'échelle comme la référence. La rampe vaut 0 l'année en cours. Elle monte en ligne droite jusqu'à 1 l'année choisie (2035 par défaut), et reste à 1. Avec la végétation spontanée, le CO₂ absorbé par les terres libérées (étape 8) est retranché. Il n'est pas mis à l'échelle comme la référence.
 
 Les émissions évitées affichées dans le résumé sont celles de l'année où le changement est atteint.
 
 ## 10. Température
 
-Chaque gaz réchauffe le monde à sa façon au fil du temps. Le potentiel absolu de changement de température mondiale (AGTP) d'un gaz est de combien le monde est plus chaud, année après année, après l'émission d'un kilogramme de ce gaz (voir [Climat](#method-climate)). Le réchauffement dû à une variation des émissions additionne, sur les gaz et les années, la variation de chaque année × l'AGTP du gaz après les années écoulées :
+Chaque gaz réchauffe le monde à sa façon au fil du temps. Le potentiel absolu de changement de température mondiale (AGTP) d'un gaz est de combien le monde est plus chaud, année après année, après l'émission d'un kilogramme de ce gaz (voir [Climat](#method-climate)). Le réchauffement dû à une variation des émissions s'additionne sur les gaz et les années. La variation de chaque année est multipliée par l'AGTP du gaz pour le nombre d'années écoulées depuis :
 
 $$
 \Delta T(t) = \sum_{\text{gaz}} \sum_{\tau \le t} \Delta E_{\text{gaz}}(\tau) \cdot \mathrm{AGTP}_{\text{gaz}}(t - \tau)
 $$
 
-Les courbes d'AGTP viennent d'impulsions simulées avec FaIR, un modèle climatique simple, ou de l'alternative AR6 ; voir [Options](#method-options).
+Les courbes d'AGTP viennent d'impulsions simulées avec FaIR, un modèle climatique simple, ou de l'alternative AR6 (voir [Options](#method-options)).
 
 La température de référence est la température publiée du SSP choisi. Avec la référence *population*, on y ajoute une correction : le réchauffement dû à l'écart entre les émissions agricoles mises à l'échelle de la population et la trajectoire agricole propre au SSP, à partir de l'année de référence. La courbe de référence correspond alors aux émissions de référence. La courbe du changement est la référence + ΔT, pour la médiane et pour la fourchette de 5 à 95 % de l'AGTP.
 
 ## Hypothèses
 
 - Les régimes changent par parts des disponibilités actuelles de chaque groupe animal ; le mélange au sein d'un groupe ne change pas.
-- La base maintenue est conservée exactement dans chaque pays ; l'autre nutriment ne l'est pas.
+- La base maintenue est conservée exactement dans chaque pays. L'autre nutriment ne l'est pas.
 - Le remplacement par défaut est le mélange actuel de végétaux riches en protéines (céréales, riz, légumineuses, fruits à coque, oléagineux à au moins 10 % de protéines). Le mélange de légumineuses est à 60 % de légumineuses, 20 % de soja et 20 % de céréales, et les boissons soja et avoine à 50 % de soja et 50 % d'avoine : des valeurs de départ à revoir.
-- Les pertes et semences sont des parts fixes des disponibilités ; la transformation est fixe en tonnes ; le multiplicateur des disponibilités est plafonné à 3.
+- Les pertes et semences sont des parts fixes des disponibilités. La transformation est fixe en tonnes. Le multiplicateur des disponibilités est plafonné à 3.
 - L'alimentation animale baisse en proportion de la production moins la transformation de chaque groupe dans le même pays, comme les prairies et le fourrage. Un groupe animal qu'un pays ne produit pas n'a pas d'alimentation à perdre.
-- Le lait et le poisson donnés aux animaux changent une fois, avec les animaux qu'ils nourrissent ; cette variation ne change pas de nouveau l'alimentation animale.
+- Le lait et le poisson donnés aux animaux changent une fois, avec les animaux qu'ils nourrissent. Cette variation ne change pas de nouveau l'alimentation animale.
 - Parts du commerce fixes ou production nationale : pas de changement dans qui exporte quoi.
-- La production ne peut pas descendre sous ce qui est transformé ; ces cas sont écrêtés et signalés.
+- La production ne peut pas descendre sous ce qui est transformé. Ces cas sont écrêtés et signalés.
 - Les usages d'un produit animal autres que l'alimentation humaine et animale, et l'écart du commerce mondial, suivent sa production.
 - Les intensités par tonne ne changent pas avec la quantité produite.
 - Les hectares par tonne et les parts des prairies restent ceux de l'année de base : ni les rendements ni le chargement des prairies ne changent avec le changement de régime.
 - Les terres d'un oléagineux sont partagées entre son huile et son tourteau selon leur valeur. La part du tourteau suit les animaux qui le mangent, et les prairies temporaires suivent les ruminants, comme les prairies permanentes.
-- Les prairies suivent la production des ruminants du même pays, groupe par groupe ; elles ne descendent jamais sous zéro.
+- Les prairies suivent la production des ruminants du même pays, groupe par groupe. Elles ne descendent jamais sous zéro.
 - Avec la repousse, les terres libérées et nouvellement utilisées sont compensées dans chaque pays. Les terres nouvellement utilisées nettes sont chargées de l'absorption à laquelle elles renoncent au rythme de repousse du pays, pas du CO₂ du défrichement d'une forêt sur pied. Sans la repousse, ni les unes ni les autres ne comptent.
 - Avec la repousse, toutes les terres libérées sont laissées à la végétation naturelle. Elles absorbent du CO₂ à un rythme constant pendant 30 ans, puis plus rien. Un pays sans rythme dans les données prend le rythme médian des autres. L'absorption n'est pas mise à l'échelle de la population.
-- La référence garde le régime actuel ; la population et la trajectoire SSP2 sont les seuls moteurs de changement jusqu'en 2100.
-- La rampe est linéaire à partir de l'année en cours.
+- La référence garde le régime actuel. La population et la trajectoire SSP2 sont les seuls moteurs de changement jusqu'en 2100.
+- La rampe monte en ligne droite à partir de l'année en cours.
 - La réponse de la température est linéaire par rapport à la variation des émissions (de petites variations autour du scénario SSP).
 
 ## Où se trouve le code

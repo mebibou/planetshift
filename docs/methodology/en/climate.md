@@ -1,6 +1,6 @@
 # From emissions to temperature
 
-Planetshift turns a change in emissions into a change in global temperature. It follows carbon dioxide, methane and nitrous oxide separately, through FaIR, a simple climate model used by the IPCC, instead of adding them up as "CO₂-equivalent". In FaIR's median for the middle-of-the-road scenario, before any lever acts, the world is 1.90 °C above 1850–1900 in 2050 and 2.63 °C in 2100. The levers' effect is measured against such a baseline.
+Planetshift turns a change in emissions into a change in global temperature. It follows carbon dioxide, methane and nitrous oxide separately, through FaIR, a simple climate model used by the IPCC, instead of adding them up as "CO₂-equivalent". In FaIR's median for the middle-of-the-road scenario, before any lever acts, the world is 1.90 °C above 1850–1900 in 2050 and 2.63 °C in 2100. The app measures the levers' effect against a baseline like this one.
 
 This page also explains the uncertainty band, the line for natural factors only, why 2023 and 2024 were so warm, the permafrost option, and the few places where Planetshift departs from FaIR.
 
@@ -10,7 +10,7 @@ Farming emits three greenhouse gases: carbon dioxide (CO₂), methane (CH₄) an
 
 - **CO₂** builds up. A large part of each tonne stays in the air for centuries, so the warming it causes barely fades.
 - **Methane** is short-lived. Over its first twenty years, each tonne warms about 80 times as much as a tonne of CO₂. But it is mostly gone within a few decades. Steady methane emissions hold the temperature up at a roughly constant level. Falling emissions let it come down again within decades.
-- **N₂O** sits in between: it lasts about a century.
+- **N₂O** is in between. It lasts about a century.
 
 The common shortcut adds the gases up as "CO₂-equivalent", using the 100-year global warming potential (GWP100). It then multiplies the total by the warming per tonne of CO₂ (the TCRE, the transient climate response to cumulative emissions). That treats a tonne of methane as if it stayed in the air like CO₂. The shortcut therefore:
 
@@ -28,7 +28,7 @@ The curves come from FaIR, a simple climate model used in the IPCC's Sixth Asses
 
 ### What the curves show
 
-The table gives FaIR's median, with its 5–95% range, in °C per kg. Beside it are AR6's values for the same horizons: from its Table 7.SM.7 for 50 and 100 years, and, for 20 years, which the table does not give, from AR6's expressions computed here.
+The table gives FaIR's median, with its 5–95% range, in °C per kg. Beside it are AR6's values for the same horizons. The 50- and 100-year values come from AR6's Table 7.SM.7. That table has no 20-year value, so the 20-year values are computed here from AR6's expressions.
 
 | Gas | FaIR, 20 years | FaIR, 100 years | AR6, 20 / 50 / 100 years | Shape (FaIR) |
 | --- | --- | --- | --- | --- |
@@ -46,7 +46,7 @@ $$
 \Delta T(t) = \sum_{\text{gas}} \sum_{\tau \le t} \Delta E_{\text{gas}}(\tau) \cdot \mathrm{AGTP}_{\text{gas}}(t - \tau)
 $$
 
-This sum is exact for a model whose response is proportional to its input. It is close for FaIR as long as the levers' change is small next to the world's emissions (see [Limitations](#method-limitations) for the energy levers in full).
+This sum is exact for a model whose response is proportional to its input. It is close for FaIR as long as the levers' change is small compared with the world's emissions (see [Limitations](#method-limitations) for the energy levers in full).
 
 Each AGTP value is the change in a calendar year's mean temperature from a year's worth of emission spread evenly over that year. AGTP(0) is therefore the same-year effect.
 
@@ -63,14 +63,14 @@ The pulses are 1 billion tonnes of CO₂, 1 million tonnes of methane and 0.1 mi
 The build runs these checks:
 
 - **Proportional**: a pulse ten times larger gives an AGTP within 0.2% of the small one, for every gas.
-- **Stable in time**: pulses in 2025, 2035 and 2045 give curves within 4% (CO₂), 7% (CH₄) and 2% (N₂O) of each other. The 2035 curve is kept, as the middle of the years the app's diet shift covers.
+- **Stable in time**: pulses in 2025, 2035 and 2045 give curves within 4% (CO₂), 7% (CH₄) and 2% (N₂O) of each other. The 2035 curve is kept, because 2035 is in the middle of the years the app's diet shift covers.
 - **Methane is biogenic.** Fossil methane adds CO₂ when it breaks down. Methane from cattle, manure and rice does not, because plants took its carbon from the air a few months before. FaIR does not turn methane into CO₂, which a test confirms: with the effect of warming on carbon uptake switched off, a methane pulse leaves the CO₂ concentration exactly unchanged. With that effect on, as in the curves, the warming from a methane pulse slows the uptake of CO₂ already in the air. This is a real climate-carbon feedback, and AR6 includes it in its metrics too.
 - **Methane's indirect effects are on**: the extra ozone and stratospheric water vapour that methane makes, and the way methane's lifetime changes with its own concentration, temperature and other gases.
 - CO₂ pulses are fossil CO₂ (FaIR's "CO₂ FFI"), not land-use CO₂, which in FaIR also changes surface albedo.
 
 ### The AR6 alternative
 
-Under *Options*, the curves can be switched to the analytic expressions of IPCC AR6 Chapter 7, in its supplementary material, section 7.SM.5. They combine:
+Under *Other options*, you can switch the curves to the analytic expressions of IPCC AR6 Chapter 7, in its supplementary material, section 7.SM.5. They combine:
 
 - a fixed CO₂ impulse response;
 - a two-timescale climate response;
@@ -80,7 +80,7 @@ Under *Options*, the curves can be switched to the analytic expressions of IPCC 
 
 Every constant is the one AR6's own code used for its Table 7.SM.7. The pipeline reproduces that table's AGTP at 50 and 100 years within 0.2% for all three gases. AR6 gives a single curve, so its median and its 5th and 95th percentiles are the same. Its curves for an instantaneous pulse are averaged the same way as FaIR's: an emission spread over year 0, and the mean over each calendar year.
 
-The two agree in size. At 20 years, FaIR's median is 0.75 times AR6's for CO₂, 1.3 times for methane and 1.1 times for N₂O. They part more at long horizons: FaIR's methane curve at 50 and 100 years is about twice AR6's. That tail does not come from FaIR's carbon cycle, because it stays with the climate-carbon feedback switched off. It comes from the slower part of FaIR's climate response, which is larger in the calibrated ensemble than in AR6's two-timescale fit. For a diet shift up to 2050, the first few decades matter most, and there the two are close.
+The two give curves of similar size. At 20 years, FaIR's median is 0.75 times AR6's for CO₂, 1.3 times for methane and 1.1 times for N₂O. They differ more at long horizons: FaIR's methane curve at 50 and 100 years is about twice AR6's. That tail does not come from FaIR's carbon cycle, because it stays with the climate-carbon feedback switched off. It comes from the slower part of FaIR's climate response, which is larger in the calibrated ensemble than in AR6's two-timescale fit. For a diet shift up to 2050, the first few decades matter most, and there the two are close.
 
 ## The uncertainty band
 
@@ -96,13 +96,13 @@ Over 2010–2019 it gives +0.06 °C (−0.04 to +0.17). IPCC AR6 (WG1 SPM A.1.3,
 
 The line dips after large eruptions, such as Krakatoa in 1883, and stays near zero after 2050. Its range includes the ensemble's internal variability, which is why a single year can stray by more than a tenth of a degree.
 
-It is labelled "natural factors only", not "a world without humans". Land cover and everything before 1750 are left as they are, and people had already warmed the 1850–1900 baseline slightly. The future solar and volcanic forcing is a placeholder: a large eruption would cool the world by a few tenths of a degree for a year or three, and no one can forecast one.
+It is labelled "natural factors only", not "a world without humans". Land cover and everything before 1750 are left as they are, and people had already warmed the 1850–1900 baseline slightly. The future solar and volcanic forcing is a placeholder. A large eruption would cool the world by a few tenths of a degree for one to three years, and no one can forecast one.
 
 ### How the line is computed
 
 `climate.json` carries the line as `naturalOnly`. It uses the same ensemble and the same natural forcing as every other run, from 1850 to 2100, relative to 1850–1900, as a median and a 5–95% range. Each emitted gas is set to the calibration's pre-industrial emissions, which leave its concentration at its 1750 value, and CO₂ emissions are set to zero.
 
-Forcing is the change in the energy the Earth keeps, which warms it. The natural forcing is fair-calibrate v1.4.1's: the file FaIR's example publishes beside the calibration, with each year's mean stored at the end of the year.
+Forcing is the change in the energy the Earth keeps, which warms it. The natural forcing comes from fair-calibrate v1.4.1. It is the file that FaIR's example publishes beside the calibration, with each year's mean stored at the end of the year.
 
 - **Volcanoes.** The volcanic forcing is the Indicators of Global Climate Change 2022 series. It gives the stratospheric aerosol optical depth to the end of 2022, with the Hunga Tonga eruption's sulphate and water vapour in 2022. It is held at its 2022 value for 2023, then brought linearly to its long-term mean, zero, by 2032.
 - **The sun.** The solar forcing is the CMIP6 solar dataset (SOLARIS-HEPPA 3.2): observed to 2014, then its projection. In the projection, solar cycle 25 peaks in 2024 at +0.09 W/m². This is what Forster et al. (2025) found from observations for 2024: +0.09 W/m², against −0.02 W/m² at the 2019 minimum. The observed cycle peaked in October 2024, with a smoothed sunspot number of 161, against 116 for cycle 24. The forcing was therefore left as it is (see "Why 2023 and 2024 were so warm" below).
@@ -143,7 +143,7 @@ The observed lines are the Met Office HadCRUT5 analysis (global annual series, c
 
 HadCRUT5 puts 2023 at 1.48 °C and 2024 at 1.55 °C above 1850–1900 (Berkeley Earth: 1.54 and 1.62 °C). FaIR's SSP2-4.5 median gives 1.29 and 1.30 °C, with 5–95% ranges of 1.03–1.51 and 1.05–1.55 °C. The two years sit 0.19 and 0.25 °C above the median, at the top of its range.
 
-Several factors together explain the gap. FaIR holds some of them and not others. With the shipping effect, El Niño and the cloud changes, the observed years are where the literature expects them. No single factor accounts for all of 2023.
+Several factors together explain the gap. FaIR includes some of them and not others. With the shipping effect, El Niño and the cloud changes added, the observed temperatures of the two years are what the literature expects. No single factor accounts for all of 2023.
 
 ### The trend: in the model
 
@@ -153,7 +153,7 @@ The greenhouse gases, above all fossil CO₂, and the slow decline of air pollut
 
 El Niño and La Niña are swings of the tropical Pacific. They move a single year's global temperature by about a tenth or two of a degree, a few months after the Pacific peaks. FaIR's median averages them out.
 
-2023 began in La Niña, after three La Niña winters, and ended in a strong El Niño. 2024 is an El Niño year. Raghuraman et al. (2024) measured a rise of 0.29 ± 0.04 °C from 2022 to 2023. In 64 climate models run without any change in forcing, they found that a jump of more than 0.25 °C happens in 1.6% of years, and in 10.3% when a long La Niña turns into El Niño. They conclude that the spike itself needs no human cause, while the warming it rides on is human. Forster et al. (2025) give up to 0.25 °C for such a switch in the year of transition.
+2023 began in La Niña, after three La Niña winters, and ended in a strong El Niño. 2024 is an El Niño year. Raghuraman et al. (2024) measured a rise of 0.29 ± 0.04 °C from 2022 to 2023. In 64 climate models run without any change in forcing, they found that a jump of more than 0.25 °C happens in 1.6% of years, and in 10.3% when a long La Niña turns into El Niño. They conclude that the spike itself needs no human cause, while the underlying warming is human. Forster et al. (2025) give up to 0.25 °C for such a switch in the year of transition.
 
 The temperature chart marks El Niño and La Niña years on the observed line (see "El Niño and La Niña years" below).
 
@@ -173,11 +173,11 @@ The volcanic forcing here falls by 0.10 W/m² in 2022 and stays there in 2023. I
 
 ### The 2020 limit on sulphur in ships' fuel: missing from the scenarios
 
-From 1 January 2020, the International Maritime Organization cut the sulphur allowed in ships' fuel from 3.5% to 0.5%. Shipping's sulphur dioxide fell from 10.4 Mt in 2019 to 2.0 Mt in 2020, by 81% (CEDS, in Forster et al. 2025). Sulphur from ships makes clouds brighter, which cools; less of it warms.
+From 1 January 2020, the International Maritime Organization cut the sulphur allowed in ships' fuel from 3.5% to 0.5%. Shipping's sulphur dioxide fell from 10.4 Mt in 2019 to 2.0 Mt in 2020, by 81% (CEDS, in Forster et al. 2025). Sulphur from ships makes clouds brighter, which cools. Less of it warms.
 
 The scenarios do not have this step. RCMIP gives SSP2-4.5's international shipping one value every five years: 9.2 Mt in 2015, 4.2 Mt in 2020 and 2.5 Mt in 2030. The cut is therefore spread from 2015 on (5.2 Mt in 2019, 3.7 Mt in 2023). SSP1-2.6 has 4.5 Mt in 2020, and SSP3-7.0 has 9.2 Mt, with no cut at all.
 
-FaIR on its own barely sees the rule. Run with shipping held at 9.2 Mt to 2019 and cut by 80% from 2020, it warms 2023–2025 by only 0.002–0.003 °C (0.001–0.005) more. There are two reasons:
+On its own, FaIR barely responds to the rule. With shipping held at 9.2 Mt to 2019 and cut by 80% from 2020, FaIR warms 2023–2025 by only 0.002–0.003 °C (0.001–0.005) more. There are two reasons:
 
 - FaIR already has half the cut.
 - Its aerosol response depends on the world's total sulphur dioxide, about 80 Mt, with no account of where it is emitted. Ships' sulphur brightens clouds over clean ocean air far more per tonne.
@@ -193,18 +193,18 @@ Forster et al. (2025) review them at 0.08–0.14 W/m², about 0.03 °C in 2023 a
 
 ### The darker planet: not in the median
 
-Goessling, Rackow and Jung (2025) find that human warming and the onset of El Niño fall about 0.2 °C short of 2023's temperature. A record-low planetary albedo bridges the gap: the Earth reflected less sunlight, mostly because there were fewer low clouds in the northern mid-latitudes and the tropics. They leave open whether this is internal variability, cleaner air (ships' among it) or a low-cloud feedback emerging with warming. Schmidt (2024), in a Nature comment, made the same point: about 0.2 °C of 2023 was unexplained by the known factors, which even together did not account for it.
+Goessling, Rackow and Jung (2025) find that human warming and the onset of El Niño fall about 0.2 °C short of 2023's temperature. A record-low planetary albedo closes that gap. The Earth reflected less sunlight, mostly because there were fewer low clouds in the northern mid-latitudes and the tropics. They leave open whether this is internal variability, cleaner air (ships' among it) or a low-cloud feedback emerging with warming. Schmidt (2024), in a Nature comment, made the same point: about 0.2 °C of 2023 was unexplained by the known factors, which even together did not account for it.
 
-FaIR has no clouds of its own. Their feedback is inside each member's climate sensitivity, and a cloud change from internal variability is not in its median.
+FaIR has no clouds of its own. The cloud feedback is part of each member's climate sensitivity, and a cloud change from internal variability is not in its median.
 
 ### The shipping rule, added outside FaIR
 
-Matching the published forcing means adding a forcing term outside FaIR's calibrated ensemble, whose aerosol strength was constrained on the observed warming without it. Planetshift does so, as a departure from FaIR that a fork can turn off (`shippingSulphur2020`, see "Where Planetshift departs from FaIR" below).
+Matching the published forcing means adding a forcing term outside FaIR's calibrated ensemble, whose aerosol strength was constrained on the observed warming without it. Planetshift adds this term as a departure from FaIR. A fork can turn it off (`shippingSulphur2020`, see "Where Planetshift departs from FaIR" below).
 
 What it adds, and its effect:
 
 - **The forcing.** From 2020 it adds an effective radiative forcing of 0.12 W/m². This is Gettelman et al.'s (2024) estimate, the one made with FaIR. Its likely range is 0.08–0.14 W/m², the range Forster et al. (2025) give in their review of the estimates above. Yuan et al.'s 0.2 W/m², over the oceans only, and Hansen et al.'s 0.5 are left outside it.
-- **Over time.** Each year the forcing follows the scenario's international shipping CO₂ relative to 2020, as the sulphur no longer emitted follows the fuel burnt.
+- **Over time.** Each year the forcing follows the scenario's international shipping CO₂ relative to 2020, because the sulphur no longer emitted is in proportion to the fuel burnt.
 - **Into temperature.** It is turned into temperature with FaIR's response to a year of forcing (see [Energy and transport](#method-sectors)). The low end is paired with the 5% response and the high end with the 95%. The result is added to the baseline temperature, and so to the scenario's.
 - **The effect.** On SSP2-4.5 it warms 2023 by 0.034 °C (0.014–0.056), 2024 by 0.037 °C (0.015–0.062) and 2030 by 0.047 °C (0.018–0.083). This is close to Forster et al.'s 0.03 and 0.04 °C for 2023 and 2024, and to Jordan and Henry's 0.046 °C over 2020–2029. By 2050 and 2100 it adds 0.054 and 0.067 °C on SSP2-4.5, 0.043 and 0.030 on SSP1-2.6, whose ships burn less fuel, and 0.058 and 0.052 on SSP3-7.0.
 - **What it leaves unchanged.** It leaves the warming the levers avoid unchanged. FaIR's own runs are left as they are: the scenario temperatures in the table above, the AGTP curves and the causes of warming do not include it.
@@ -247,11 +247,11 @@ PgCeq is not methane's carbon. It is the CO₂ carbon that would have the same e
 - 1.6% of it released as methane (`ch4Share`, 0.28 ÷ 18.3);
 - `releaseYears`, 20: the time over which a degree's release is spread.
 
-An earlier version took the 2.8 as methane's carbon. That made the methane ten times too large (13.5% of the carbon). It also made the baseline's permafrost warming in 2050 about 0.10 °C instead of about 0.02 °C on SSP2-4.5. Methane is now under 2% of the carbon, but still about two fifths of the feedback's warming in 2050 (0.009 of 0.024 °C), because each kilogram warms so much more in its first decades.
+The 2.8 is not methane's carbon. Read that way, the methane would be ten times too large (13.5% of the carbon), and the baseline's permafrost warming in 2050 would be about 0.10 °C instead of about 0.02 °C on SSP2-4.5. Methane is under 2% of the carbon, but still about two fifths of the feedback's warming in 2050 (0.009 of 0.024 °C), because each kilogram warms so much more in its first decades.
 
 ### How the model uses it
 
-The feedback is the *Permafrost* switch under Options, off by default (`pf=on` in the address). When it is on, the model (`app/src/levers/permafrost/`, a lever module called by `run.ts`) runs it twice: once on the scenario's baseline temperature, and once on the temperature with the levers applied.
+The feedback is the *Permafrost* switch under *Other options*, off by default (`pf=on` in the address). When it is on, the model (`app/src/levers/permafrost/`, a lever module called by `run.ts`) runs it twice: once on the scenario's baseline temperature, and once on the temperature with the levers applied.
 
 1. Each year, the rise in temperature since the year before commits `kgCPerDegree` × that rise of carbon. This carbon is released evenly over the next `releaseYears` years. Summing over the past gives each year's release. A fall in temperature commits nothing back, because thawed carbon does not refreeze. Only the release from the current year on is counted, but it includes what the warming of the 20 years before commits. The release before today is in the observed record FaIR is constrained on.
 2. Of each year's release, `ch4Share` is methane (kg C × 16/12 kg CH₄) and the rest is CO₂ (kg C × 44/12 kg CO₂).
@@ -300,15 +300,15 @@ Without the shipping rule, the baseline is 0.037 °C cooler in 2024 and 0.067 °
 
 ## Assumptions
 
-- AGTP curves come from pulses on SSP2-4.5 in 2035 and are used under every scenario and for every year; the curves from 2025 and 2045 are within 7%.
+- AGTP curves come from pulses on SSP2-4.5 in 2035 and are used under every scenario and for every year. The curves from 2025 and 2045 are within 7%.
 - The calibrated ensemble is used as published, all 841 members, including its stochastic internal variability (seeded, so identical in paired runs and cancelling in differences).
 - Agricultural methane is treated as biogenic: no CO₂ from its oxidation.
 - CO₂ from farming (urea and liming) is treated as fossil CO₂ in FaIR.
 - The response is treated as proportional to the emission change, which the ten-times pulse test supports.
-- A year's emissions are spread evenly over the year; a calendar year's temperature is the mean of FaIR's values at its two ends.
-- Observed series are re-baselined to their own 1850–1900 mean; HadCRUT5's current year is left out until it is complete.
-- The natural forcing and the scenarios' aerosol emissions are used as published; the 2020 shipping rule adds 0.12 (0.08–0.14) W/m² from 2020 outside FaIR's ensemble, following each scenario's shipping fuel, to the baseline and the scenario alike (see "Why 2023 and 2024 were so warm").
-- Permafrost releases 18.3 (3.2–41.7) PgC per °C of warming, 1.6% of it as methane, each degree's release spread over 20 years, and nothing back when the temperature falls; the feedback is off unless the switch is on.
+- A year's emissions are spread evenly over the year. A calendar year's temperature is the mean of FaIR's values at its two ends.
+- Observed series are re-baselined to their own 1850–1900 mean. HadCRUT5's current year is left out until it is complete.
+- The natural forcing and the scenarios' aerosol emissions are used as published. The 2020 shipping rule adds 0.12 (0.08–0.14) W/m² from 2020 outside FaIR's ensemble, following each scenario's shipping fuel, to the baseline and the scenario alike (see "Why 2023 and 2024 were so warm").
+- Permafrost releases 18.3 (3.2–41.7) PgC per °C of warming, 1.6% of it as methane, each degree's release spread over 20 years, and nothing back when the temperature falls. The feedback is off unless the switch is on.
 
 ## Sources
 

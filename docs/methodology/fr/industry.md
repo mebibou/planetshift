@@ -4,11 +4,11 @@
 
 ## Comment ces émissions sont comptées
 
-Comme celles des secteurs de l'[énergie et des transports](#method-sectors), ces émissions font partie du CO₂ fossile de chaque scénario. Elles ne s'y ajoutent pas : les températures des scénarios les comprennent déjà.
+Comme celles des secteurs de l'[énergie et des transports](#method-sectors), ces émissions font partie du CO₂ fossile de chaque scénario. Elles ne s'y ajoutent pas, car les températures des scénarios les comprennent déjà.
 
 Un levier en retire une part. Il consomme alors de l'électricité, dont le CO₂ est retranché de l'économie réalisée. La variation est convertie en réchauffement évité avec la même courbe de réponse au CO₂ que pour tous les autres leviers.
 
-Le combustible qui n'est plus brûlé retire aussi le méthane qui fuit pendant sa production, ainsi que sa pollution de l'air. L'électricité consommée apporte le méthane et la pollution de l'air du réseau. Le calcul est le même que pour les transports (voir *Le méthane et la pollution de l'air qui accompagnent le combustible* sur la page [Énergie et transport](#method-sectors)).
+Brûler moins de combustible évite aussi le méthane qui fuit pendant sa production, ainsi que sa pollution de l'air. L'électricité consommée ajoute le méthane et la pollution de l'air du réseau. Le calcul est le même que pour les transports (voir *Le méthane et la pollution de l'air qui accompagnent le combustible* sur la page [Énergie et transport](#method-sectors)).
 
 `industry.json` contient les données. Le code est dans `pipeline/planetshift_pipeline/industry.py`, et le module du levier dans `app/src/levers/industry/`.
 
@@ -39,7 +39,7 @@ Le reste de l'industrie, environ 42 %, n'a pas de levier : la chimie, l'aluminiu
 
 Ce levier remplace les chaudières par des pompes à chaleur, et les cuisinières au gaz par des plaques à induction. Il supprime le CO₂ du combustible, mais consomme de l'électricité. Le CO₂ de cette électricité dépend du réseau, comme pour un véhicule électrique.
 
-Sur le réseau mondial actuel, à 0,48 kg de CO₂ par kWh, une pompe à chaleur économise environ 29 % du CO₂ d'une chaudière au gaz (1 − 1,49 × 0,48). C'est proche du constat de l'AIE : une pompe à chaleur économise « au moins 20 %, même avec une électricité produite au gaz ». Sur un réseau propre, elle économise tout ce CO₂.
+Sur le réseau mondial actuel, qui émet 0,48 kg de CO₂ par kWh, une pompe à chaleur économise environ 29 % du CO₂ d'une chaudière au gaz (1 − 1,49 × 0,48). C'est proche du constat de l'AIE : une pompe à chaleur économise « au moins 20 %, même avec une électricité produite au gaz ». Sur un réseau propre, elle économise tout ce CO₂.
 
 ### L'électricité que consomme une pompe à chaleur
 
@@ -55,7 +55,7 @@ Le CO₂ qu'économise le chauffage propre est le CO₂ des bâtiments × (1 −
 
 Un seul levier couvre les deux : la part de leur production faite de façon propre. À adoption complète sur un réseau propre, il retire 49 % du CO₂ de l'industrie : 26 % pour l'acier et 23 % pour le ciment. Sur le réseau actuel, il en retire environ 27 %.
 
-Les procédés propres consomment de l'électricité, et de l'hydrogène produit avec l'électricité d'un réseau qui brûle encore du charbon économise peu. Au haut de la fourchette d'électricité, sur le réseau de SSP3-7.0, la part de l'acier peut ajouter du CO₂. La fourchette probable le montre.
+Les procédés propres consomment de l'électricité. De l'hydrogène produit avec l'électricité d'un réseau qui brûle encore du charbon économise peu. Au haut de la fourchette d'électricité, sur le réseau de SSP3-7.0, la part de l'acier peut ajouter du CO₂. La fourchette probable le montre.
 
 ### Acier
 
@@ -67,13 +67,13 @@ Les procédés propres consomment de l'électricité, et de l'hydrogène produit
 
 Ces chiffres viennent de l'*Iron and Steel Technology Roadmap* de l'AIE (2020) et du rapport *Making Net-Zero Steel Possible* de la Mission Possible Partnership (2022).
 
-La réduction directe à l'hydrogène demande environ 3,5 MWh d'électricité par tonne d'acier, surtout pour produire l'hydrogène (Vogl et al. 2018). Un haut fourneau émet environ 2 t de CO₂ direct par tonne : la filière hydrogène consomme donc 1,9 kWh par kg évité. La ferraille au four électrique demande environ 0,6 MWh par tonne, soit 0,3 kWh/kg. La médiane, 1,5 kWh/kg, correspond à trois quarts d'hydrogène et un quart de ferraille en plus. La fourchette va de 0,3 (tout en ferraille) à 2,2 (une électrolyse moins efficace).
+La réduction directe à l'hydrogène demande environ 3,5 MWh d'électricité par tonne d'acier, surtout pour produire l'hydrogène (Vogl et al. 2018). Un haut fourneau émet environ 2 t de CO₂ direct par tonne : la filière hydrogène consomme donc 1,9 kWh par kg évité. La ferraille au four électrique demande environ 0,6 MWh par tonne, soit 0,3 kWh/kg. La médiane, 1,5 kWh/kg, tire trois quarts de la baisse de l'hydrogène et un quart d'un plus grand usage de ferraille. La fourchette va de 0,3 (tout en ferraille) à 2,2 (une électrolyse moins efficace).
 
 ### Ciment
 
 À adoption complète, le CO₂ direct du ciment baisse de 80 % (60–95 %). La baisse vient des substituts du clinker comme l'argile calcinée et le calcaire (LC3), d'autres combustibles, et du captage du carbone pour le CO₂ de procédé qu'aucun changement de combustible ne supprime (GCCA, *Concrete Future*, 2021 ; GIEC AR6 GT3, chapitre 11).
 
-Le captage et la compression consomment environ 0,1 à 0,3 MWh par tonne de CO₂ évité (CEMCAP 2019). Le levier retient 0,25 kWh/kg en médiane, et de 0,1 à 1,0 là où les fours sont aussi chauffés à l'électricité.
+Le captage et la compression consomment environ 0,1 à 0,3 MWh par tonne de CO₂ évité (CEMCAP 2019). Le levier retient 0,25 kWh/kg en médiane, et de 0,1 à 1,0 kWh/kg là où les fours sont aussi chauffés à l'électricité.
 
 ### La formule
 
@@ -86,10 +86,10 @@ Aucun des deux leviers ne compte le CO₂ de la fabrication des pompes à chaleu
 Brûler des combustibles fossiles émet aussi du méthane et des polluants de l'air. CEDS donne ce qui accompagnait chaque kilogramme de CO₂ en 2022 :
 
 - **Combustibles fossiles des bâtiments** : 5,6 g de méthane, surtout des fuites pendant la production du gaz qu'ils brûlent, 1,1 g de SO₂, 0,10 g de carbone noir, 0,12 g de carbone organique et 1,0 g de NOx. Le bois et la bouse brûlés pour cuisiner produisent une grande part de la suie des bâtiments. Ils sont laissés de côté, car aucun levier ne les remplace.
-- **Usines d'acier et de ciment** : 2,1 g de méthane, 1,4 g de SO₂ et 1,4 g de NOx. Le méthane est plus bas que dans les autres secteurs, parce que leur CO₂ de procédé, issu du calcaire, ne brûle aucun combustible.
+- **Usines d'acier et de ciment** : 2,1 g de méthane, 1,4 g de SO₂ et 1,4 g de NOx. Le méthane est plus bas que dans les autres secteurs, parce que leur CO₂ de procédé vient du calcaire, pas d'un combustible brûlé.
 - **Électricité** : 4,1 g de méthane, 2,3 g de SO₂ et 1,5 g de NOx par kg de CO₂ du réseau. Ces valeurs baissent à mesure que l'électricité renouvelable rend le réseau plus propre.
 
-Chaque levier réduit les co-émissions de son secteur avec le CO₂ qu'il retire, et l'électricité qu'il consomme apporte celles du secteur électrique. La méthode, le forçage par kg et leur évolution dans le temps sont sur la page [Énergie et transport](#method-sectors).
+Chaque levier réduit les co-émissions de son secteur au même rythme que le CO₂ qu'il retire. L'électricité qu'il consomme ajoute les co-émissions du secteur électrique. La méthode, le forçage par kg et leur évolution dans le temps sont sur la page [Énergie et transport](#method-sectors).
 
 ## Dans l'application
 
@@ -113,7 +113,7 @@ La fourchette probable associe l'AGTP à 95 % au haut de chaque réduction et au
 
 ## Résultats
 
-Le tableau donne le réchauffement évité en °C : la médiane, puis la fourchette probable entre parenthèses. Chaque levier est à 100 % de 2026 à 2035, sur les données réelles et SSP2-4.5 avec les options par défaut. Les chiffres comptent le CO₂ de l'approvisionnement, le méthane, le N₂O et la pollution de l'air qui accompagnent le combustible. Le chiffre du CO₂ seul est indiqué ensuite.
+Le tableau donne le réchauffement évité en °C : la médiane, puis la fourchette probable entre parenthèses. Chaque levier est à 100 % de 2026 à 2035, sur les données réelles et SSP2-4.5 avec les options par défaut. Les chiffres comptent le CO₂ de l'approvisionnement, le méthane, le N₂O et la pollution de l'air qui accompagnent le combustible. Chaque case donne ensuite le chiffre du CO₂ seul.
 
 | Leviers | 2050 | 2100 |
 | --- | --- | --- |
@@ -123,19 +123,19 @@ Le tableau donne le réchauffement évité en °C : la médiane, puis la fourche
 | Chauffage propre avec électricité renouvelable | 0,129 (0,068–0,236) ; CO₂ seul 0,113 | 0,369 (0,244–0,549) ; CO₂ seul 0,303 |
 | Acier et ciment propres avec électricité renouvelable | 0,132 (0,066–0,259) ; CO₂ seul 0,131 | 0,395 (0,244–0,617) ; CO₂ seul 0,345 |
 
-Le chauffage propre gagne aux co-émissions dès le départ. Le gaz qu'il ne brûle plus fuyait du méthane, et brûler du gaz émet peu de SO₂.
+Le chauffage propre gagne aux co-émissions dès le départ. Le gaz qu'il ne brûle plus aurait laissé fuir du méthane, et brûler du gaz émet peu de SO₂.
 
-L'acier et le ciment propres perdent plus d'un tiers de leur effet de 2050 aux co-émissions. Le SO₂ de leurs usines refroidit le climat, et le supprimer réchauffe. La filière hydrogène consomme aussi beaucoup d'électricité du réseau, dont elle ajoute le CO₂ et le méthane. En 2100, ils gagnent un peu : le CO₂ des fours à coke et le CO qu'émettent les fours accompagnent désormais le charbon, et compensent cette perte.
+L'acier et le ciment propres perdent plus d'un tiers de leur effet de 2050 aux co-émissions. Le SO₂ de leurs usines refroidit le climat, donc le supprimer réchauffe. La filière hydrogène consomme aussi beaucoup d'électricité du réseau, dont elle ajoute le CO₂ et le méthane. En 2100, ils gagnent un peu. Le CO₂ des fours à coke et le CO qu'émettent les fours sont comptés avec le charbon qui n'est plus brûlé, et ils compensent cette perte.
 
-Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,024 °C en 2050 et 0,089 °C en 2100. L'acier et le ciment propres y ajoutent 0,027 et 0,115 °C. Sur un réseau propre, chacun économise plus que seul.
+Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,024 °C en 2050 et 0,089 °C en 2100. L'acier et le ciment propres y ajoutent 0,027 et 0,115 °C. Sur un réseau propre, chaque levier économise plus que lorsqu'il agit seul.
 
-Les effets sont petits en 2050, pour deux raisons. Le CO₂ évité s'accumule lentement. Et le réseau actuel reprend une grande partie de ce qu'économisent les procédés gourmands en électricité.
+Les effets sont petits en 2050, pour deux raisons. Le CO₂ évité s'accumule lentement. Et sur le réseau actuel, l'électricité que consomment les procédés propres annule une grande partie de ce qu'ils économisent.
 
 ## Autres industries
 
 Certaines industries n'ont pas de levier. Soit les scénarios ne leur donnent pas de trajectoire, soit il n'existe pas de chiffre clair, soit leurs émissions sont surtout de l'électricité, que le levier « Électricité renouvelable » couvre déjà :
 
-- **La chimie** : environ 1,3 milliard de tonnes de CO₂ direct (AIE). Une grande partie de son carbone fossile finit dans les produits plutôt que dans l'air, ce qu'une simple part représenterait mal.
+- **La chimie** : environ 1,3 milliard de tonnes de CO₂ direct (AIE). Une grande partie de son carbone fossile finit dans les produits plutôt que dans l'air. Une simple part du CO₂ de l'industrie représenterait mal ce fait.
 - **L'aluminium** : environ 1,1 milliard de tonnes de CO₂e électricité comprise, et environ 0,27 milliard directement (AIE, International Aluminium Institute). L'essentiel est l'électricité des fonderies.
 - **Les plastiques** : 1,8 milliard de tonnes de CO₂e sur leur cycle de vie en 2019 (OCDE, *Global Plastics Outlook*, 2022), réparties entre la chimie, l'électricité et les déchets.
 - **Le textile et l'habillement** : entre environ 0,9 et 4 milliards de tonnes de CO₂e selon le périmètre (Apparel Impact Institute 2025 ; McKinsey et Global Fashion Agenda 2020 ; Quantis 2018). L'essentiel est l'électricité et la chaleur des filatures et des usines d'Asie.
@@ -147,7 +147,7 @@ Certaines industries n'ont pas de levier. Soit les scénarios ne leur donnent pa
 - Une pompe à chaleur demande 1,49 kWh par kg de CO₂ de chaudière évité, chaque année. Pompes à chaleur et chaudières ne deviennent pas plus efficaces avec le temps.
 - L'acier et le ciment propres réduisent de 90 % et 80 % leur CO₂ direct à adoption complète. Ils consomment 1,5 et 0,25 kWh d'électricité par kg évité, sur le réseau qui reste après l'électricité renouvelable.
 - La fabrication des équipements n'est pas comptée.
-- Ce qui accompagne le combustible des bâtiments et des usines d'acier et de ciment (le CO₂ de sa production, le méthane, le N₂O et la pollution de l'air) suit les rapports de CEDS en 2022 par kg de leur CO₂ fossile, CO₂ de procédé compris pour l'industrie. Ces rapports évoluent avec les facteurs d'émission du scénario. L'électricité consommée apporte ceux du réseau (voir [Énergie et transport](#method-sectors)).
+- Ce qui accompagne le combustible des bâtiments et des usines d'acier et de ciment (le CO₂ de sa production, le méthane, le N₂O et la pollution de l'air) suit les rapports de CEDS en 2022 par kg de leur CO₂ fossile, CO₂ de procédé compris pour l'industrie. Ces rapports évoluent avec les facteurs d'émission du scénario. L'électricité consommée ajoute les co-émissions du réseau (voir [Énergie et transport](#method-sectors)).
 
 ## Sources
 

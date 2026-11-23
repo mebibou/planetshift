@@ -1,18 +1,18 @@
 # Emission intensities from published LCA data
 
-This page answers where Planetshift finds the emissions of a food when HESTIA has no data for it. It can then use a published meta-analysis of life-cycle assessments: Poore & Nemecek (2018), the largest such study, which covers about 38,700 farms in 119 countries. The study gives one world average per food. Together with FAOSTAT, it supplies the emissions of meat, milk and eggs, which HESTIA does not cover yet.
+When HESTIA has no data for a food, Planetshift can take its emissions from a published meta-analysis of life-cycle assessments: Poore & Nemecek (2018), the largest such study, which covers about 38,700 farms in 119 countries. The study gives one world average per food. Together with FAOSTAT, it supplies the emissions of meat, milk and eggs, which HESTIA does not cover yet.
 
 ## What the study adds
 
-A life-cycle assessment (LCA) counts the emissions of a product at every stage, from making the inputs to the shop. An emission intensity is the amount of each greenhouse gas emitted to produce one tonne of a food. Planetshift takes each intensity from the best source available, in six steps called tiers (see [Emissions](#method-emissions)). Poore & Nemecek are tier 4: they are used where HESTIA (tiers 1 and 2) and FAOSTAT (tier 3) give no value.
+A life-cycle assessment (LCA) counts the emissions of a product at every stage, from making the inputs to the shop. An emission intensity is the amount of each greenhouse gas emitted to produce one tonne of a food. Planetshift takes each intensity from the best source available, in six steps called tiers (see [Emissions](#method-emissions)). Poore & Nemecek are tier 4. They are used where HESTIA (tiers 1 and 2) and FAOSTAT (tier 3) give no value.
 
-Their values are world averages, so every row has the area `World`. Planetshift uses only the emissions on the farm. It splits the study's single CO₂-equivalent figure back into the three gases, because the climate model needs each gas apart. It also converts a few of the study's units to those of today's Food Balance Sheets.
+Their values are world averages, so every row has the area `World`. Planetshift uses only the emissions on the farm. It splits the study's single CO₂-equivalent figure back into the three gases, because the climate model needs each gas separately. It also converts a few of the study's units to those of today's Food Balance Sheets.
 
-The code is `pipeline/planetshift_pipeline/sources/literature.py`; the product table is `pipeline/literature_terms.csv`.
+The code is `pipeline/planetshift_pipeline/sources/literature.py`. The product table is `pipeline/literature_terms.csv`.
 
 ## The data
 
-Poore & Nemecek publish the greenhouse gas (GHG) emissions of each product in Data S2 of their supplementary materials (sheet "Results - Global Totals"). The values are given by stage of the supply chain. They are per kg of the product's Food Balance Sheet (FBS) unit, and they leave out consumer waste. The stages are land-use change, feed, farm, processing, transport, packaging and retail.
+Poore & Nemecek publish the greenhouse gas (GHG) emissions of each product in Data S2 of their supplementary materials (sheet "Results - Global Totals"). The values are given by stage of the supply chain. They are per kg of the product's Food Balance Sheet (FBS) unit. They leave out consumer waste. The stages are land-use change, feed, farm, processing, transport, packaging and retail.
 
 Their supplementary materials define the farm stage as follows:
 
@@ -39,48 +39,48 @@ Only the farm stage is used:
 - Feed is left out, because Planetshift counts feed through the crops it reduces.
 - Processing, transport, packaging and retail happen after the farm gate (the point where the product leaves the farm), so they are left out too.
 
-Planetshift has two scopes, set under Options (see [Emissions](#method-emissions)). Farm gate counts what happens on the farm. Cradle to farm gate also counts the making of the farm's inputs, such as fertiliser. The study's farm stage is turned into the two scopes as follows:
+Planetshift has two scopes, set under *Other options* (see [Emissions](#method-emissions)). Farm gate counts what happens on the farm. Cradle to farm gate also counts the making of the farm's inputs, such as fertiliser. The study's farm stage is turned into the two scopes as follows:
 
 - `cradleToFarmGate` = the farm stage. For crops, the farm stage already includes the production of inputs other than feed.
-- `farmGate` = the farm stage × the share of on-farm emissions in HESTIA's cradle-to-farm-gate emissions of the same item (in CO₂e, with the factors below). For crops, HESTIA's split between on-farm and input-production emissions is the only one available; Poore & Nemecek do not publish it.
+- `farmGate` = the farm stage × the share of on-farm emissions in HESTIA's cradle-to-farm-gate emissions of the same item (in CO₂e, with the factors below). For crops, HESTIA's split between on-farm and input-production emissions is the only one available. Poore & Nemecek do not publish it.
 - For animal products, the livestock stage is almost entirely on the farm (enteric fermentation and manure), so both scopes take the whole farm stage. The emissions of fertilising pasture and of the energy used on the farm are kept in both.
 
 ## Splitting CO₂e into gases
 
 Poore & Nemecek report CO₂-equivalents (CO₂e). A CO₂e figure adds the gases up after weighting each one by how much it warms over 100 years compared with CO₂. The study uses the factors of the IPCC's Fifth Assessment Report (AR5) that include climate-carbon feedbacks: 34 for CH₄ and 298 for N₂O (their table S2).
 
-Planetshift needs each gas apart. Each product's farm stage is split in the proportions of a gas profile, a typical mix of the gases for that kind of product. Each gas's CO₂e is then divided by its factor:
+Planetshift needs each gas separately. Each product's farm stage is split in the proportions of a gas profile, a typical mix of the gases for that kind of product. Each gas's CO₂e is then divided by its factor:
 
 $$
 \text{kg of gas} = \text{farm CO}_2\text{e} \times \frac{\text{gas's CO}_2\text{e in the profile}}{\text{profile's total CO}_2\text{e}} \div \text{GWP of the gas}
 $$
 
-Multiplied back by 34 and 298, the result returns Poore & Nemecek's value exactly.
+Multiplying each gas back by 34 and 298 gives Poore & Nemecek's value exactly.
 
-**Example.** Bovine meat has a farm-stage value of 29,040 kg CO₂e per tonne (table below). After the split it carries 703 kg of CH₄ and 17.3 kg of N₂O per tonne. Multiplied back, 703 × 34 ≈ 23,900 and 17.3 × 298 ≈ 5,160, which add up to the 29,040 kg CO₂e of the study, give or take the rounding of the table.
+**Example.** Bovine meat has a farm-stage value of 29,040 kg CO₂e per tonne (table below). After the split it carries 703 kg of CH₄ and 17.3 kg of N₂O per tonne. Multiplied back, 703 × 34 ≈ 23,900 and 17.3 × 298 ≈ 5,160. Together they make the study's 29,040 kg CO₂e, apart from the rounding of the table.
 
 The profiles come from two sources:
 
-- **Crops.** The profile is HESTIA's intensities of the same FBS item (`hestia:<code>`), from its World aggregation if there is one, otherwise the mean of its countries. Where HESTIA lacks the item, a close item's profile is named instead:
-  - palm oil takes oil palm fruit's;
-  - soybean oil takes soybeans';
-  - tea takes coffee's;
-  - plantains take bananas';
-  - pineapples and dates take other fruit's;
-  - grapefruit and other citrus take oranges'.
+- **Crops.** The profile is HESTIA's intensities of the same FBS item (`hestia:<code>`), from its World aggregation if there is one, otherwise the mean of its countries. Where HESTIA does not have the item, the profile of a close item is used instead:
+  - palm oil takes the profile of oil palm fruit;
+  - soybean oil takes that of soybeans;
+  - tea takes that of coffee;
+  - plantains take that of bananas;
+  - pineapples and dates take that of other fruit;
+  - grapefruit and other citrus take that of oranges.
 - **Animal products.** HESTIA has no animal aggregation yet. The profile is therefore FAOSTAT's on-farm emissions of the species in the world's latest year (Emissions from livestock): CH₄ from enteric fermentation and manure management, and N₂O from manure management and from manure left on pasture (`faostat:<species>`). Manure applied to soils is left out of the profile, since it fertilises crops. The species are matched as follows:
   - bovine meat from the beef herd takes non-dairy cattle's profile;
-  - bovine meat from the dairy herd, and milk, take dairy cattle's;
-  - mutton and goat take sheep and goats';
-  - pig meat takes swine's;
-  - poultry meat takes broilers';
-  - eggs take layers'.
+  - bovine meat from the dairy herd, and milk, take that of dairy cattle;
+  - mutton and goat take that of sheep and goats;
+  - pig meat takes that of swine;
+  - poultry meat takes that of broilers;
+  - eggs take that of layers.
 
 FAOSTAT's livestock emissions have no CO₂, so the animal rows carry none. The energy and pasture-fertiliser part of the livestock stage is counted as CH₄ and N₂O, in the species' proportions. That part is small for ruminants and larger for pigs and poultry.
 
 ## Units
 
-Poore & Nemecek's FBS units are those of FAOSTAT's earlier Food Balance Sheets (before 2010). They differ from the current ones in two items. `kg_product_per_kg_item` converts them:
+Poore & Nemecek's FBS units are those of FAOSTAT's earlier Food Balance Sheets (before 2010). They differ from the current ones for two items, rice and groundnuts. `kg_product_per_kg_item` converts these units and the others below:
 
 - **Rice**: their unit is milled rice. The current FBS counts paddy, of which milled rice is 66.7%, so 0.667.
 - **Groundnuts**: their unit is shelled groundnuts. The current FBS counts them in shell, of which kernels are 70%, so 0.7.
@@ -102,7 +102,7 @@ When several products share an item, they are averaged with their 2009–11 food
 - **19 more have HESTIA rows for some countries but no World aggregation**, so the literature row is their only world value: rice, oats, rye, other cereals, cassava, beans, peas, other pulses, nuts, other oil crops, tomatoes, onions, other vegetables, oranges, lemons, apples, other fruit, coffee and cocoa.
 - **Some items get none**: barley, millet, sorghum, sweet potatoes, yams, soybeans, sunflower seed, rapeseed, sesame, palm kernels and olives. Poore & Nemecek report barley only as beer, and soybeans as tofu, soy milk and oil.
 
-Some values (farm gate, kg per tonne of the FBS item):
+Farm-gate values for some items, in kg per tonne of the FBS item:
 
 | Item | CO₂ | CH₄ | N₂O | CO₂e (AR5) |
 | --- | --- | --- | --- | --- |
@@ -128,7 +128,7 @@ Some values (farm gate, kg per tonne of the FBS item):
 - No second literature source is used:
   - Clune et al. (2017) compiles mostly the same studies, in a paywalled article whose data licence could not be confirmed.
   - Agribalyse describes French production only.
-  - The items Poore & Nemecek miss (barley as grain, soybeans, sunflower seed, rapeseed, sesame, olives, sweet potatoes, yams, millet, sorghum) are mostly covered by HESTIA's countries. The rest is left to the proxy and group tiers.
+  - The items Poore & Nemecek miss (barley as grain, soybeans, sunflower seed, rapeseed, sesame, olives, sweet potatoes, yams, millet, sorghum) are mostly covered by HESTIA's countries. The others fall back to the proxy and group tiers.
 
 ## Sources
 

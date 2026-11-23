@@ -1,12 +1,12 @@
 # Levers
 
-This page explains what a lever is, how the levers are grouped, and how they add up when several act at once. Each lever is a share of a change adopted, from 0 to 100%, reached in full by the year set at the top of the panel. Levers overlap, so together they avoid a little less warming than the sum of what each avoids alone; the summary shares that overlap out evenly between them.
+Each lever is the share of a change that is adopted, from 0 to 100%, reached in full by the year set at the top of the panel. Levers overlap, so together they avoid a little less warming than the sum of what each avoids alone. The summary shares that overlap out evenly between them.
 
 ## What a lever is
 
 Every way Planetshift offers to limit warming is a lever, and none is preferred over another. The levers cover energy and transport, buildings and industry, what people eat, farm practices, less food wasted, an end to clearing forest, and carbon stored in farmland.
 
-Each lever is a slider from 0 to 100%: the share of it adopted. The diet's main slider is the share of animal foods moved to plant foods. Every lever ramps in from today and is reached in full in the year set at the top of the panel, *All levers fully in place by*.
+Each lever is a slider from 0 to 100%, which sets the share adopted. The diet's main slider is the share of animal foods moved to plant foods. Every lever ramps up from today and is fully in place in the year set at the top of the panel, *All levers fully in place by*.
 
 ## How the panel groups them
 
@@ -16,9 +16,9 @@ The **Levers** section of Explore groups the levers under the cause of warming e
 - farming: diet, farm practices, food waste;
 - land use: deforestation, carbon in farmland.
 
-The causes are ordered by the warming each causes by the chart's horizon under the chosen scenario, so fossil fuels come first. Within a cause, the groups are ordered by the warming each would avoid alone and in full, which is the figure shown beside it. That order is worked out again when an option, the horizon or the data change. It is never worked out while a slider moves, so a group does not jump under the pointer.
+The causes are ordered by how much warming each one causes by the chart's horizon, under the chosen scenario, so fossil fuels come first. Within a cause, the groups are ordered by the warming each would avoid alone and in full, which is the figure shown beside it. That order is worked out again when you change an option or the horizon, or when the data change. It is never worked out while you move a slider, so the groups stay in place while you drag.
 
-Each group is a fold, closed at first. It has a button that adopts all its levers in full and one that resets them.
+Each group is a fold, closed when the page opens. It has one button that sets all its levers to 100% and one that resets them.
 
 ### A group can act on more than one cause
 
@@ -30,7 +30,7 @@ The avoided warming of such a group is split by cause according to the gas and i
 - the CO₂ of forest clearing, regrowth and carbon stored in farmland count in land use;
 - fossil CO₂ and aviation's non-CO₂ forcing count in fossil fuels and industry. Forcing is the change in the energy the Earth keeps, which warms it (see [From emissions to temperature](#method-climate)).
 
-The Causes of warming chart takes each cause's part off its band after today. The summary lists the parts under the same causes, with the same names and colours.
+After today, the Causes of warming chart takes each cause's part off that cause's band. The summary lists the parts under the same causes, with the same names and colours.
 
 ## The lever groups
 
@@ -42,31 +42,31 @@ The Causes of warming chart takes each cause's part off its band after today. Th
 - nitrogen efficiency and inhibitors act on the nitrous oxide of fertilisers;
 - clean energy acts on the CO₂ of fuel.
 
-For a country, item and gas, the share of the emissions removed is a sum over sources: the source's share of the gas (`breakdown.json`) times the share removed from that source. A practice removes adoption × applicable share in the country × reduction. A practice limited to some food groups acts on those only: feed additives reach cattle only. Practices cut the emissions of the production with the shift. Their effect is therefore the practice on today's production, plus its effect on what the shift changes.
+For a country, item and gas, the share of the emissions removed is a sum over sources: the source's share of the gas (`breakdown.json`) times the share removed from that source. A practice removes adoption × the applicable share in the country × the reduction. A practice limited to some food groups acts on those groups only. Feed additives, for example, act on cattle only. Practices cut the emissions of production after the shift. Their effect is therefore their cut on today's production, plus their cut on the production the shift changes.
 
 **Food waste** (see [Food loss and waste](#method-waste)). There are two levers:
 
 - waste after shops lowers the food supply a country needs by the lever × its waste share, after the diet shift;
 - losses before shops lower each item's loss share of supply.
 
-Less supply needs less production, so less land and fewer emissions. The change goes through the same supply chain as the shift, feed included. What people eat does not change, so the protein and calories shown are those of the diet.
+Less supply needs less production, which uses less land and emits less. The change goes through the same supply chain as the shift, feed included. What people eat does not change, so the protein and calories shown are those of the diet.
 
-**Deforestation** (see [Deforestation](#method-deforestation)). Clearing forest for farming releases about 2 Gt of CO₂ a year (`deforestation.json`, by country and item). The model holds it as a constant yearly stream and counts only its change. The clearing tied to an item moves with the item's production in the country where the forest is cleared. A shift away from beef therefore lowers pasture clearing in Brazil, through trade, even with the lever at 0. This change is capped between none and double today's clearing. The lever then stops its share of what is left. Both are CO₂ changes, entered in the climate response like any other.
+**Deforestation** (see [Deforestation](#method-deforestation)). Clearing forest for farming releases about 2 Gt of CO₂ a year (`deforestation.json`, by country and item). The model keeps this yearly amount constant and counts only its change. The clearing tied to an item moves with the item's production in the country where the forest is cleared. A shift away from beef therefore lowers pasture clearing in Brazil, through trade, even with the lever at 0. This change is capped between none and double today's clearing. The lever then prevents its share of the clearing that is left. Both are changes in CO₂, and they go into the climate response like any other.
 
-**Carbon in farmland** (see [Carbon stored in farmland](#method-removals)). Cover crops, trees on farms, biochar and rock dust store CO₂. The amount stored is adoption × the most of the land the practice can reach (`maxShare`) × the hectares of cropland, pasture or both once the shift is complete × the country's rate. It runs for `years` years from when each hectare adopts the practice. Cover crops and trees saturate after 20 years; biochar and rock dust keep storing to 2100.
+**Carbon in farmland** (see [Carbon stored in farmland](#method-removals)). Cover crops, trees on farms, biochar and rock dust store CO₂. The amount stored is adoption × the largest share of the land the practice can reach (`maxShare`) × the hectares of cropland, pasture or both once the shift is complete × the country's rate. Each hectare stores carbon for `years` years from the year the practice starts on it. Cover crops and trees saturate after 20 years. Biochar and rock dust keep storing carbon until 2100.
 
-**Energy and transport** (see [Energy and transport](#method-sectors)). Seven levers act on the fossil CO₂ of the scenario chosen under Options:
+**Energy and transport** (see [Energy and transport](#method-sectors)). Seven levers act on the fossil CO₂ of the scenario chosen under *Other options*:
 
 - electric cars and electric trucks: their tailpipe CO₂, less the electricity they draw on the grid;
 - less flying: aviation's CO₂ and its non-CO₂ forcing;
 - clean aviation fuel: aviation's CO₂ only;
 - clean shipping;
 - renewable electricity: the electricity sector's CO₂, and with it the grid's intensity that electric vehicles and data centres draw on;
-- data centres on clean power: the extra demand of AI data centres, when Options count it.
+- data centres on clean power: the extra demand of AI data centres, when it is counted under *Other options*.
 
-Their CO₂ change is turned into temperature with the CO₂ curve. The change in aviation's non-CO₂ forcing is turned into temperature with the temperature response to forcing. The fuel they cut takes with it the methane leaked producing it and the air pollution burning it made. They therefore act on air pollution too. Air pollution cools the planet and masks part of the warming, so less of it means less cooling masked. This is a cost in the first decades, which the methane saved about offsets.
+Their CO₂ change is turned into temperature with the CO₂ curve. The change in aviation's non-CO₂ forcing is turned into temperature with the temperature response to forcing. Cutting the fuel also cuts the methane leaked while producing it and the air pollution from burning it. So these levers act on air pollution too. Air pollution cools the planet and masks part of the warming, so less of it masks less warming. This adds warming in the first decades, and the methane saved about offsets it.
 
-**Regrowth is an option, not a lever group.** Natural regrowth on freed farmland also takes up carbon, beside the four practices of carbon in farmland. It is set under Options (*Freed farmland*), not as a lever group (see [Land](#method-land)). It acts on the land that the shift and less waste free. Avoided clearing is CO₂ that is not emitted from forest that stays standing; it is not land. The two therefore never count the same hectare.
+**Regrowth is an option, not a lever group.** Natural regrowth on freed farmland also takes up carbon, in addition to the four practices of carbon in farmland. It is set under *Other options* (*Freed farmland*), not as a lever group (see [Land](#method-land)). It acts on the land that the shift and less waste free. Avoided clearing is CO₂ not emitted by forest that stays standing. It frees no land. The two therefore never count the same hectare.
 
 ## How levers combine
 
@@ -107,9 +107,9 @@ The joint effect of regrowth is 0.181 − 0.135 = 0.046 °C. The Shapley value s
 
 ### How Planetshift computes them quickly
 
-Computed directly, the Shapley value needs one run of the model for every set of acting groups. That is 2ⁿ runs for n groups: 256 with all eight groups acting, which takes seconds on the real data, where a slider move has a few hundredths of a second.
+Computed directly, the Shapley value needs one run of the model for every set of acting groups. That is 2ⁿ runs for n groups: 256 with all eight groups acting. On the real data that takes seconds, and a slider move has only a few hundredths of a second.
 
-Planetshift uses how the groups interact instead. Farming's groups interact only through the production they change. The diet and less waste change what is produced. Practices, deforestation, regrowth and carbon in farmland act on the production those two leave, but not on each other. So the worth of any set of farming groups is read from one pass of the farm emissions per set of production groups in it: none, the diet, less waste, or both. That is at most four passes, three beyond the run itself. Each pass is kept while the sliders that do not change it move.
+Instead, Planetshift makes use of how the groups interact. Farming's groups interact only through the production they change. The diet and less waste change what is produced. Practices, deforestation, regrowth and carbon in farmland act on the production those two leave, but not on each other. So the worth of any set of farming groups is read from one pass of the farm emissions for the production groups in that set: none, the diet, less waste, or both. That is at most four passes, three more than the run itself. Each pass is kept and reused while you move sliders that do not change it.
 
 The groups outside farming (energy and transport, buildings and industry) interact with each other through the grid that renewable electricity leaves. They do not interact with farming. Their worth is their own emissions, recomputed with the other group's levers off.
 
@@ -117,7 +117,7 @@ A test checks, on the fixtures and on the real data, that this gives the Shapley
 
 ### A method considered and not used
 
-A second method was considered: each group's effect alone, scaled so the parts add up to the total. It needs the same passes, so it is no faster. It is also less fair. A group whose effect depends on another gets nothing: regrowth alone frees no land, so it would vanish from the breakdown, and its uptake would be given to the diet and less waste. The overlap is also shared in proportion to size rather than evenly. On the real data with every group acting, the two methods differ by up to a quarter of a group's part.
+A second method was considered: each group's effect alone, scaled so the parts add up to the total. It needs the same passes, so it is no faster. It is also less fair. A group whose effect depends on another would get nothing: regrowth alone frees no land, so it would vanish from the breakdown, and its uptake would be given to the diet and less waste. The overlap is also shared in proportion to size rather than evenly. On the real data with every group acting, the two methods differ by up to a quarter of a group's part.
 
 ### Permafrost and CO₂e in the breakdown
 
@@ -142,11 +142,11 @@ Some uncertainty is not in the range:
 ## Assumptions
 
 - Every lever, the diet included, ramps in linearly from the current year to the year *All levers fully in place by*, and holds after.
-- Farm-practice reductions apply to the emissions of the production with the shift and the other levers; the baseline keeps today's practices.
-- A practice's reduction on the same source combines multiplicatively with the others'; its range is read low for the low end of the warming avoided.
-- An item without a split by source takes the world's, then the other scope's; without any, practices do not act on it.
-- Deforestation CO₂ is a constant stream, not scaled with population; it moves with each item's relative production change in the country (between −100% and +100%), and the lever stops its share of the rest.
-- Removals act on the land once the shift is complete and store for `years` years from each hectare's adoption; the rate is the country's, else the world's.
-- The breakdown is each group's Shapley value over the acting groups, split by cause; the permafrost change is shared out in proportion to the size of each part.
-- Energy levers cut a share of each sector's CO₂ in the scenario chosen under Options, ramping in like the shift; they do not change farm emissions, and electricity used on farms keeps its own intensity.
+- Farm-practice reductions apply to the emissions of production after the shift and the other levers. The baseline keeps today's practices.
+- A practice's reduction on the same source combines multiplicatively with the others'. The low end of the warming avoided takes the low end of its range.
+- An item without a split by source takes the world's split, or else the other scope's. Without either, practices do not act on it.
+- Deforestation CO₂ is a constant stream, not scaled with population. It moves with each item's relative production change in the country (between −100% and +100%), and the lever prevents its share of what is left.
+- Removals act on the land once the shift is complete and store for `years` years from each hectare's adoption. The rate is the country's, or else the world's.
+- The breakdown is each group's Shapley value over the acting groups, split by cause. The permafrost change is shared out in proportion to the size of each part.
+- Energy levers cut a share of each sector's CO₂ in the scenario chosen under *Other options*, ramping in like the shift. They do not change farm emissions, and electricity used on farms keeps its own intensity.
 - A missing lever file leaves its levers without effect, shown as not available.

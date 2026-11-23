@@ -1,16 +1,16 @@
 # Beyond the farm: transport, electricity and data centres
 
-Food is one part of the climate problem. Burning coal, oil and gas for power and transport is the larger part. So that diet and farming levers can be set beside other actions, Planetshift has seven levers on road vehicles, aviation, shipping, electricity and data centres. With all seven in full from 2026 to 2035, they avoid 0.263 °C of warming in 2050 and 0.646 °C in 2100 (median, SSP2-4.5), once the methane and air pollution that come with the fuel are counted.
+Food is one part of the climate problem. Burning coal, oil and gas for power and transport is the larger part. So that diet and farming levers can be compared with other actions, Planetshift has seven levers on road vehicles, aviation, shipping, electricity and data centres. With all seven in full from 2026 to 2035, they avoid 0.263 °C of warming in 2050 and 0.646 °C in 2100 (median, SSP2-4.5), once the methane and air pollution that come with the fuel are counted.
 
 ## What these levers count
 
-Planetshift carries the fossil CO₂ of road vehicles, aviation, shipping and electricity, and the extra electricity of data centres, under each future scenario. It also carries what it takes to act on each.
+Planetshift tracks the fossil CO₂ of road vehicles, aviation, shipping and electricity, and the extra electricity of data centres, under each future scenario. It also tracks what it takes to act on each.
 
-These sectors are already part of each scenario's fossil CO₂. They are not added to it: the scenario temperatures on the [temperature page](#method-climate) already include them. A lever takes a share of a sector's emissions away. The change is turned into warming avoided with the same CO₂ response curve as the farm levers.
+These sectors are already part of each scenario's fossil CO₂. They are not added to it, because the scenario temperatures on the [temperature page](#method-climate) already include them. A lever takes a share of a sector's emissions away. The change is turned into warming avoided with the same CO₂ response curve as the farm levers.
 
-The fuel no longer burnt also takes away the methane leaked while producing it, and the air pollution it made. This is the same as for the farm levers, which count every gas they change. See *Methane and air pollution that come with the fuel* below.
+Burning less fuel also cuts the methane leaked while producing that fuel, and the air pollution from burning it. This is the same as for the farm levers, which count every gas they change. See *Methane and air pollution that come with the fuel* below.
 
-Data centres are the exception, described below. Their growth is electricity demand the scenarios did not foresee, so it is added.
+Data centres are the exception, described below. Their growth is electricity demand that the scenarios did not foresee, so Planetshift adds it.
 
 ## The sectors and their futures
 
@@ -39,7 +39,7 @@ Road transport emitted 5.97 billion tonnes of fossil CO₂ in 2022, the last yea
 
 Passengers (cars, two- and three-wheelers, buses) take 60% and freight (trucks and vans) 40%. This split follows the IEA's tracking of cars and vans and of trucks and buses. Trucks and buses together are over a third of road CO₂.
 
-The shape is the scenario's surface transport. It also holds rail and domestic boats, which are a few percent of it. Under SSP1-2.6, road emissions fall to almost nothing by 2100 as vehicles electrify. Under SSP2-4.5 they grow by a third to 2050, then fall. Under SSP3-7.0 they stay high all century.
+The shape is the scenario's surface transport. It also includes rail and domestic boats, which are a few percent of it. Under SSP1-2.6, road emissions fall to almost nothing by 2100 as vehicles electrify. Under SSP2-4.5 they grow by a third to 2050, then fall. Under SSP3-7.0 they stay high all century.
 
 ### Aviation
 
@@ -47,9 +47,9 @@ Aviation, domestic and international flights together, emitted about 0.95 billio
 
 ### Shipping
 
-Shipping, international and domestic, emitted about 0.85 billion tonnes (IEA, and the IMO's Fourth GHG Study for its split). The basis matters. The Fourth IMO GHG Study puts international shipping at 740 million tonnes in 2018 on a voyage basis. It puts all shipping, domestic and fishing included, at 1,056 million tonnes. The 0.85 lies between the two. It is close to international and domestic navigation without fishing, whose fuel is counted with seafood here.
+Shipping, international and domestic, emitted about 0.85 billion tonnes (IEA, and the IMO's Fourth GHG Study for its split). The figure depends on which ships are counted. The Fourth IMO GHG Study puts international shipping at 740 million tonnes in 2018 on a voyage basis. It puts all shipping, domestic and fishing included, at 1,056 million tonnes. The 0.85 lies between the two. It is close to international and domestic navigation without fishing. Fishing's fuel is counted with seafood here.
 
-Shipping follows the scenarios' international shipping. The clean-shipping lever takes a share of it away, with fuels that have no fossil carbon, such as green ammonia or methanol.
+Shipping follows the scenarios' international shipping. The clean-shipping lever removes a share of it by switching to fuels that have no fossil carbon, such as green ammonia or methanol.
 
 ### Electricity
 
@@ -57,7 +57,7 @@ Electricity generation emitted 14.15 billion tonnes of CO₂ in 2023, for 29,471
 
 Heat sold by power stations (district heating) is about another billion tonnes. It is not included: the scenarios report it separately, and no lever here acts on it.
 
-Under SSP1-2.6, coal and gas plants are replaced by wind, solar and other low-carbon sources, and emissions fall by two thirds by 2050. Under SSP2-4.5 they stay near today's level until mid-century, then fall. Under SSP3-7.0 they almost triple by 2100, as demand grows on coal.
+Under SSP1-2.6, coal and gas plants are replaced by wind, solar and other low-carbon sources, and emissions fall by two thirds by 2050. Under SSP2-4.5 they stay near today's level until mid-century, then fall. Under SSP3-7.0 they almost triple by 2100, as growing demand is met with coal.
 
 ## The grid's carbon intensity
 
@@ -79,7 +79,7 @@ Replacing a petrol car or a diesel truck with an electric one removes its tailpi
 
 tailpipe CO₂ × (1 − `evKwhPerKgCo2` × the grid's intensity)
 
-So electric vehicles and renewable electricity work together: each makes the other worth more. Making the vehicles and their batteries is not counted (see *What making the equipment adds* below).
+So electric vehicles and renewable electricity work together, and each makes the other worth more. Making the vehicles and their batteries is not counted (see *What making the equipment adds* below).
 
 The fuels' CO₂ is the UK government's 2023 factor for 100% mineral fuel: 2.33 kg per litre of petrol and 2.63 kg per litre of diesel.
 
@@ -89,7 +89,7 @@ The fuels' CO₂ is the UK government's 2023 factor for 100% mineral fuel: 2.33 
 
 ### Less flying
 
-Less flying cuts aviation's CO₂ and, at once, its other effects. Aircraft also warm the climate in other ways:
+Less flying cuts aviation's CO₂, and it cuts its other effects straight away. Aircraft also warm the climate in other ways:
 
 - the contrails and the cirrus clouds they seed;
 - the ozone their nitrogen oxides make, less the methane those oxides destroy;
@@ -98,7 +98,7 @@ Less flying cuts aviation's CO₂ and, at once, its other effects. Aircraft also
 
 Lee et al. (2021) assess the effective radiative forcing of these non-CO₂ effects in 2018 at 66.6 mW/m² (21–111, a 5–95% range). Radiative forcing is the extra energy the Earth receives, in watts per square metre. This is twice the forcing of all the CO₂ aviation had emitted since 1940. Aviation emitted 1,034 million tonnes of CO₂ that year. `aviationNonCo2` divides the two: 6.44 × 10⁻¹⁴ W/m² for each kilogram a year of aviation CO₂ (2.03–10.7 × 10⁻¹⁴).
 
-Unlike the CO₂, this forcing lasts only while the flying does: contrails last hours, and the ozone months. So it ends the year the flights stop. It is turned into temperature with the forcing response described below (see *The temperature response to forcing*).
+Unlike the CO₂, this forcing lasts only as long as the flights continue. Contrails last hours and the ozone lasts months. So the forcing ends in the year the flights stop. It is turned into temperature with the forcing response described below (see *The temperature response to forcing*).
 
 FaIR itself has no contrails. This is one of the places where Planetshift departs from it (see the [temperature page](#method-climate)). With plain FaIR, less flying instead cuts aviation's own NOx, SO₂ and soot as co-emissions (below). CEDS gives 4.1 g of NOx and 0.37 g of SO₂ per kg of aviation CO₂.
 
@@ -116,20 +116,20 @@ Data centres used about 415 TWh of electricity in 2024, 1.5% of the world's. The
 
 The scenarios were made around 2016, before that growth was foreseen. They already supply the electricity data centres used then. Data-centre demand had stayed roughly flat through the 2010s, as efficiency kept up with use.
 
-So `dataCentresTwh` counts only the growth beyond 2024's 415 TWh as extra demand. In the base case this is 0 in 2024, 530 TWh in 2030 and 785 TWh from 2035. Headwinds gives 155 and 285, and Lift-Off 701 and 1,285. Values between the IEA's years are on straight lines. They are held flat after 2035, where the IEA stops.
+So `dataCentresTwh` counts only the growth beyond 2024's 415 TWh as extra demand. In the base case this is 0 in 2024, 530 TWh in 2030 and 785 TWh from 2035. Headwinds gives 155 TWh in 2030 and 285 TWh from 2035, and Lift-Off 701 and 1,285 TWh. Values between the IEA's years are on straight lines. They are held flat after 2035, where the IEA stops.
 
 The CO₂ of this demand is its electricity times each scenario's grid intensity. It shrinks as the grid gets cleaner, and the renewable-electricity lever cuts it too. The data-centre lever moves a share of this extra demand onto clean power.
 
-The emissions of building the data centres and making their chips are not included. Published estimates are for single sites or companies, and there is no world figure per TWh to build on.
+The emissions of building the data centres and making their chips are not included. Published estimates are for single sites or companies, and there is no world figure per TWh to use.
 
 ## In the app
 
 The **Energy and transport** fold of the Levers section has seven sliders. Each is the share adopted. Like every lever, each ramps in from the current year to the year set by *All levers fully in place by*. The fold's *Adopt all in full* sets all seven at 100%.
 
-In the summary's breakdown by lever, all of it counts as *Energy and transport*, on its own. It is split between two causes:
+In the summary's breakdown by lever, these levers count as one group of their own, *Energy and transport*. Their effect is split between two causes:
 
 - *fossil fuels and industry*: the CO₂, the fuel's methane, and aviation's non-CO₂ forcing;
-- *air pollution*: the cooling lost, and the methane NOx leaves.
+- *air pollution*: the cooling lost, and the methane left in the air when NOx is cut.
 
 Its CO₂ and methane are in the emissions avoided. The forcings are in the warming only. These levers do not change the farming band of the Causes of warming chart, or the farm emissions.
 
@@ -141,24 +141,24 @@ The code is `app/src/levers/energy/model.ts`, a lever module called by `run.ts`.
 - Electric cars (`ev`) and electric trucks (`et`) save $a \times \text{road passenger (or freight) CO}_2 \times (1 - k\,g')$, with $k$ = `evKwhPerKgCo2`.
 - Less flying (`fl`) and clean aviation fuel (`saf`) cut aviation CO₂ by $1 - (1 - a_{\text{fly}})(1 - a_{\text{fuel}})$. Less flying also cuts aviation's non-CO₂ forcing by $n \times a_{\text{fly}} \times \text{aviation CO}_2$, with $n$ = `aviationNonCo2`.
 - Clean shipping (`cs`) cuts $a \times$ shipping CO₂.
-- Each sector's change in CO₂ brings its co-emissions with it (below). The electricity drawn counts in the electricity sector's change. The methane goes with the CO₂ into the emissions. The air pollution becomes a forcing and a methane of its own, counted under *air pollution*.
+- Each sector's change in CO₂ brings its co-emissions with it (below). The electricity drawn counts in the electricity sector's change. The methane goes with the CO₂ into the emissions. The change in air pollution gives a forcing and a methane change of its own, both counted under *air pollution*.
 - Data centres on clean power (`cdc`) depends on the *AI data centres* option. At its default, *growth added* (`dc=iea`), the extra demand's emissions go from its kWh × $g$ in the baseline to its kWh × $g'\,(1 - a)$ in the scenario. With *as in the scenario* (`dc=ssp`) there is no extra demand, and the lever has nothing to act on.
 
 The CO₂ and methane changes are convolved with their AGTP curves. An AGTP curve gives the warming, year by year, after one kilogram of a gas is emitted (see the [temperature page](#method-climate)). The forcing changes are convolved with `forcingResponse`. All are added to the warming change.
 
-With `dc=iea`, the baseline also carries the data centres' extra CO₂ from 2024, with what comes with the electricity sector's CO₂ (below). The lever already counted this when it cuts it. It adds under 0.001 °C.
+With `dc=iea`, the baseline also carries the data centres' extra CO₂ from 2024, with what comes with the electricity sector's CO₂ (below). The lever already counts this when it cuts it. It adds under 0.001 °C.
 
 ### The likely range
 
-The likely range pairs the 95% AGTP and forcing response with the low end of `evKwhPerKgCo2`, the high end of `aviationNonCo2` and the high data-centre case. The 5% end uses the opposite ends. So the low end of the warming avoided takes every range at its least favourable.
+The likely range pairs the 95% AGTP and forcing response with the low end of `evKwhPerKgCo2`, the high end of `aviationNonCo2` and the high data-centre case. The 5% end uses the opposite ends. So the low end of the warming avoided uses the least favourable end of every range.
 
 ### A linear estimate
 
-The response is linear around the scenario. This holds well for small changes. It holds less well when every lever is in full and most of a scenario's CO₂ goes. The figures are then a first-order estimate.
+The response is linear around the scenario. This holds well for small changes. It holds less well when every lever is in full and most of a scenario's CO₂ is removed. The figures are then a first-order estimate.
 
 ## Methane and air pollution that come with the fuel
 
-Burning coal, oil and gas emits more than CO₂, and a lever that cuts fuel cuts all of it with the CO₂. Counting it raises the warming the energy levers avoid. All seven in full avoid 0.263 °C in 2050 with it, against 0.205 °C counting CO₂ only. Of all the energy, heating and industry levers, only clean steel and cement, on the [Buildings and industry](#method-industry) page, avoid less with it (0.016 °C instead of 0.025 in 2050).
+Burning coal, oil and gas emits more than CO₂. A lever that cuts fuel cuts all of these emissions along with the CO₂. Counting it raises the warming the energy levers avoid. All seven in full avoid 0.263 °C in 2050 with it, against 0.205 °C counting CO₂ only. Of all the energy, heating and industry levers, only clean steel and cement, on the [Buildings and industry](#method-industry) page, avoid less when it is counted (0.016 °C instead of 0.025 in 2050).
 
 What comes with the fuel:
 
@@ -212,11 +212,11 @@ Per kg of each sector's CO₂, own and supply together:
 
 Aviation's own NOx, sulphate and soot are already in its non-CO₂ forcing (Lee et al. 2021, above). So only its fuel's supply is counted here.
 
-Steel and cement have less supply CO₂ and methane per kg. Much of their CO₂ comes from calcining limestone, which burns no fuel. Their coke ovens' CO₂ was not counted with any lever before. It now comes with the coal they burn.
+Steel and cement have less supply CO₂ and methane per kg. Much of their CO₂ comes from calcining limestone, which burns no fuel. Their coke ovens' CO₂ comes with the coal they burn.
 
 ### How the ratios change over time
 
-Each SSP has its own story for air quality: SSP1 cleans up fast, SSP3 hardly at all. Each ratio follows its scenario's ratio of the species to CO₂, relative to 2023, in the matching RCMIP sector. These sectors are transportation, aircraft, international shipping, the energy sector, residential and commercial, and industry. For supply, the ratio is the energy sector's methane against all fossil CO₂.
+Each SSP has its own path for air quality. SSP1 cuts air pollution fast, and SSP3 hardly at all. Each ratio follows its scenario's ratio of the species to CO₂, relative to 2023, in the matching RCMIP sector. These sectors are transportation, aircraft, international shipping, the energy sector, residential and commercial, and industry. For supply, the ratio is the energy sector's methane against all fossil CO₂.
 
 Two limits apply:
 
@@ -229,7 +229,7 @@ Values are every five years from 2025, with straight lines between them.
 
 ### What a kilogram of each pollutant does
 
-The forcing per kg of each species comes from FaIR's calibration (fair-calibrate 1.4.1, the 841 members). FaIR is the same model as the temperature curves and the causes of warming. The calibration gives:
+The forcing per kg of each species comes from FaIR's calibration (fair-calibrate 1.4.1, the 841 members). FaIR is the same model that gives the temperature curves and the causes of warming. The calibration gives:
 
 - aerosol-radiation interaction for each species;
 - aerosol-cloud interaction for SO₂, black carbon and organic carbon;
@@ -254,7 +254,7 @@ For each sector, the SO₂, black and organic carbon and ammonia are added up me
 
 ### NOx and methane
 
-Less NOx means longer-lived methane. FaIR scales methane's lifetime by 1 + s × (E − E₁₇₅₀) for each NOx emission E, with s = −0.0034 per million tonnes of NO₂. A kilogram less NOx therefore slows the removal of the methane above its pre-industrial level by −s / (1 + s × (E − E₁₇₅₀)) of itself. This acts as that much more methane emitted that year. The removal comes from a FaIR run of each scenario.
+Less NOx means longer-lived methane. FaIR scales methane's lifetime by 1 + s × (E − E₁₇₅₀) for each NOx emission E, with s = −0.0034 per million tonnes of NO₂. A kilogram less NOx therefore slows the removal of the methane above its pre-industrial level by −s / (1 + s × (E − E₁₇₅₀)) of itself. This has the same effect as emitting that much more methane that year. The removal comes from a FaIR run of each scenario.
 
 In FaIR, a kilogram less NOx leaves this much methane in the air:
 
@@ -270,19 +270,19 @@ FaIR gives carbon monoxide no effect on methane's lifetime. The chemistry models
 
 ### Where the NOx is emitted
 
-FaIR's coefficient is one value for all the world's NOx. But a kilogram of NOx destroys more methane where the air is clean. Planetshift therefore uses figures from chemistry models for each place, rather than FaIR's single coefficient. On land, a kilogram less NOx leaves about a quarter of FaIR's methane; at sea, about four fifths.
+FaIR's coefficient is one value for all the world's NOx. But a kilogram of NOx destroys more methane where the air is clean. Planetshift therefore uses figures from chemistry models for each place, rather than FaIR's single coefficient. On land, a kilogram less NOx leaves about a quarter of FaIR's methane. At sea, it leaves about four fifths.
 
 **The chemistry models' figures.** Hoor et al. (2009, *Atmospheric Chemistry and Physics* 9, 3113, the QUANTIFY project) perturbed each transport sector's emissions in five chemistry models. Ships emit their NOx in the clean marine air of the tropics. Per Tg of nitrogen, ships' NOx gave a methane and methane-ozone forcing of −12.0 mW/m², against −3.0 for road's (Tables 1 and 8: −52.8 mW/m² from 4.39 Tg N, −20.6 from 6.85 Tg N).
 
-**The VOCs given back.** The models perturbed all of each sector's emissions. So road's figure is net of the carbon monoxide and VOCs emitted with its NOx, which lengthen methane's lifetime. Planetshift now counts the VOCs' methane apart (above). It gives that methane back to each figure, rather than count it twice:
+**The VOCs given back.** The models perturbed all of each sector's emissions. So road's figure is net of the carbon monoxide and VOCs emitted with its NOx, which lengthen methane's lifetime. Planetshift counts the VOCs' methane separately (above). It gives that methane back to each figure, rather than count it twice:
 
 - In CEDS, road emitted 2.7 Tg of VOCs per Tg of NOx's nitrogen in 2000, the models' year.
 - At ACCMIP's 0.27 mW/m² of methane forcing per Tg (with its ozone in the same proportion as methane's), this is 0.95 mW/m² per Tg N. That is a quarter of road's net figure. For ships it is 0.04.
 - Road's NOx then gives −3.95 mW/m² per Tg N, and ships' 3.05 times as much (2.15 to 4.46 times across the models). With the published figures it would be 4.0 times.
 
-CO's methane is left netted in road's figure, as FaIR has none to count apart.
+CO's methane stays netted in road's figure, because FaIR has no CO methane to count separately.
 
-**Why the chemistry models.** A multi-model study of each transport sector is more realistic than one value for all the world's NOx. FaIR's response, about 2 kg of methane per kg of NO₂ (SSP2-4.5, 2023), is several times what the chemistry models find for road traffic. With it, electric vehicles appeared to add warming in SSP3-7.0 (see *Results* below).
+**Why the chemistry models.** A multi-model study of each transport sector is more realistic than one value for all the world's NOx. FaIR's response, about 2 kg of methane per kg of NO₂ (SSP2-4.5, 2023), is several times what the chemistry models find for road traffic. With FaIR's response, electric vehicles appeared to add warming in SSP3-7.0 (see *Results* below).
 
 **The factors used.** Hoor et al.'s methane and methane-ozone forcing per kg of NO₂, with the VOCs' methane given back, is turned into the methane emission that gives the same forcing. This uses ACCMIP's 2.9 mW/m² per million tonnes a year (Stevenson et al. 2013). The result is 0.41 kg of methane for road traffic (0.35–0.47 across the five models) and 1.27 for ships (1.0–1.9). FaIR gives 1.53 for every source in 2000, the models' year. So the factors are 0.27 of FaIR's coefficient on land and 0.83 at sea.
 
@@ -297,7 +297,7 @@ Each factor follows FaIR's change with the scenario. In SSP2-4.5, a kilogram les
 
 `noxCh4PerKgCo2` holds each sector's methane per kg of CO₂ cut: its NOx × its place's factor × FaIR's methane per kg of NOx. Its range spans both ranges.
 
-**What each lever cuts.** Ships on ammonia or methanol still burn fuel, and make NOx from the air's nitrogen. So clean shipping keeps its NOx. It cuts its fuel's sulphur, soot, CO, VOCs and supply. Ammonia burns to no CO or VOCs; methanol burns to a little, which is not counted. Electric vehicles, heat pumps and renewables burn nothing, and cut it all.
+**What each lever cuts.** Ships on ammonia or methanol still burn fuel, and make NOx from the air's nitrogen. So clean shipping keeps its NOx. It cuts its fuel's sulphur, soot, CO, VOCs and supply. Burning ammonia makes no CO or VOCs. Burning methanol makes a little, which is not counted. Electric vehicles, heat pumps and renewables burn no fuel, so they cut all of these emissions.
 
 ### Checked against FaIR
 
@@ -305,12 +305,12 @@ A test runs cuts held from 2025 under SSP2-4.5 through FaIR itself with 100 memb
 
 ### How the model adds them up
 
-In each year, every lever's change in fossil CO₂ is split by the sector that emits it. The electricity drawn by electric vehicles, heat pumps and clean industry counts as the electricity sector's, on the grid left after renewable electricity. Each sector's change, times its ratios of that year, gives two things:
+In each year, every lever's change in fossil CO₂ is split by the sector that emits it. The electricity drawn by electric vehicles, heat pumps and clean industry counts as the electricity sector's, on the grid that remains after renewable electricity. Each sector's change, times its ratios of that year, gives two things:
 
 - **The change in the supply's CO₂, methane and N₂O.** These join the CO₂ in the emissions. They are convolved with their AGTP curves, under *fossil fuels and industry*.
 - **The change in air pollution**, under *air pollution*. Its forcing goes through `forcingResponse`: each sector's particle, CO ozone and VOC ozone forcing per kg of CO₂, plus NOx's. Its NOx and VOC methane goes through methane's AGTP. NOx's methane is scaled for where it is emitted.
 
-The Causes of warming chart's air-pollution band holds SO₂, black and organic carbon, ammonia and NOx alone. CO and VOCs are there with the other human emissions (see [Causes of global warming](#method-link)). The levers' CO and VOCs count under air pollution all the same, as part of what burning the fuel emits.
+The Causes of warming chart's air-pollution band holds SO₂, black and organic carbon, ammonia and NOx alone. CO and VOCs are there with the other human emissions (see [Causes of global warming](#method-link)). The levers' CO and VOCs still count under air pollution, as part of what burning the fuel emits.
 
 The likely range takes each range's end in the direction of its band: more cooling lost and more NOx methane at the low end of the warming avoided.
 
@@ -334,7 +334,7 @@ Warming avoided in °C, median (likely range). Each lever is at 100% from 2026 t
 | All seven | 0.205 (0.129–0.323) | 0.263 (0.090–0.532) | 0.512 (0.316–0.811) | 0.646 (0.335–1.092) |
 | All seven with clean heating, steel and cement | 0.257 (0.161–0.398) | 0.314 (0.110–0.643) | 0.692 (0.425–1.079) | 0.851 (0.453–1.426) |
 
-With every energy, heating and industry lever in full, two effects roughly cancel at first. The fuel's supply and methane are no longer emitted, which is a gain. The cooling the pollution masked is lost. Then the gains win (median, °C, SSP2-4.5):
+With every energy, heating and industry lever in full, two effects roughly cancel at first. The fuel's supply and methane are no longer emitted, which is a gain. The cooling the pollution masked is lost. After that, the gains are larger (median, °C, SSP2-4.5):
 
 | Year | Warming avoided, CO₂ only | Supply CO₂, methane and N₂O gain | Air pollution loss | Warming avoided, with |
 | --- | --- | --- | --- | --- |
@@ -343,17 +343,17 @@ With every energy, heating and industry lever in full, two effects roughly cance
 | 2050 | 0.257 | +0.123 | −0.066 | 0.314 |
 | 2100 | 0.692 | +0.196 | −0.037 | 0.851 |
 
-**The supply's CO₂** makes the largest change from the figures before it was counted. It adds about a tenth to every oil lever's CO₂ for good: 0.150 kg per kg for road, 0.153 for aviation and shipping. It adds 8% to the electricity a lever cuts or draws.
+**The supply's CO₂** makes the largest difference. It adds about a tenth to every oil lever's CO₂, in every year: 0.150 kg per kg for road, 0.153 for aviation and shipping. It adds 8% to the electricity a lever cuts or draws.
 
-**CO and VOCs** add a little warming avoided: their ozone and the VOCs' methane go with the fuel. This is against the ammonia's small cooling.
+**CO and VOCs** add a little warming avoided: their ozone and the VOCs' methane go with the fuel. Ammonia's small cooling works against this.
 
-**Renewable electricity** loses the cooling of coal power's SO₂, the largest source of it. But it gains its NOx's ozone and methane, and its fuel's supply. It avoids 0.105 °C instead of 0.096 in 2050, and 0.279 against 0.234 in 2100.
+**Renewable electricity** loses the cooling of coal power's SO₂, the largest source of SO₂. But it gains its NOx's ozone and methane, and its fuel's supply. It avoids 0.105 °C instead of 0.096 in 2050, and 0.279 against 0.234 in 2100.
 
 **Less flying, clean aviation fuel and clean heating** gain from the start: their fuel's supply outweighs the little SO₂ they cut.
 
 **Clean steel and cement** alone lose: 0.016 instead of 0.025 in 2050. Their plants emit SO₂, and the hydrogen route draws a lot of grid power.
 
-**Electric vehicles** gain. Their soot, their NOx's ozone and their fuel's supply go at once. The methane their NOx no longer destroys, about a quarter of FaIR's on land, builds up slowly over decades. Electric cars avoid, in 2050 and 2100:
+**Electric vehicles** gain. Their soot, their NOx's ozone and their fuel's supply stop straight away. The methane their NOx no longer destroys, about a quarter of FaIR's on land, builds up slowly over decades. Electric cars avoid, in 2050 and 2100:
 
 - SSP1-2.6: 0.033 and 0.049 °C (CO₂ alone 0.016 and 0.036);
 - SSP2-4.5: 0.045 and 0.106 (CO₂ alone 0.021 and 0.072).
@@ -364,15 +364,15 @@ In SSP3-7.0, the grid stays dirty and NOx and methane are high. That methane tak
 
 Shindell and Smith (2019, *Nature* 573, 408–411) ran FaIR on the 42 pathways of the IPCC's 1.5 °C report. These cut fossil CO₂ and SO₂ by 75–85% by 2050. They find that "the temperature effects of CO₂, SO₂ and CH₄ reductions roughly balance one another through about 2040". After that, the CO₂ cooling dominates. With all fossil-related emissions counted, any brief climate penalty is "no more than 0.05 °C" (0.19 °C at the 95th percentile). With CO₂ and SO₂ alone it is 0.02–0.10 °C.
 
-Planetshift agrees. Its levers in full are a faster phase-out, complete by 2035 for the sectors they cover. They give no net warming in any year (+0.003 °C avoided in 2030). The methane and CO₂ gains are about equal to the cooling lost around 2030, and ahead of it after. The faster ramp brings the balance a decade earlier than in their pathways.
+Planetshift agrees. Its levers in full are a faster phase-out, complete by 2035 for the sectors they cover. They give no net warming in any year (+0.003 °C avoided in 2030). Around 2030, the methane and CO₂ gains are about equal to the cooling lost. After that, they are larger. The faster ramp brings the balance a decade earlier than in their pathways.
 
-Shindell and Smith count NOx's methane through FaIR's single coefficient. Planetshift takes the chemistry models' figures, about a quarter of FaIR's on land and four fifths at sea. This makes the co-emissions more favourable, the land sectors' most.
+Shindell and Smith count NOx's methane through FaIR's single coefficient. Planetshift takes the chemistry models' figures, about a quarter of FaIR's on land and four fifths at sea. This makes the co-emissions more favourable, most of all for the land sectors.
 
 ## The temperature response to forcing
 
 The levers on CO₂ are turned into temperature with the CO₂ curve of the [temperature page](#method-climate). Aviation's non-CO₂ effects and air pollution are a forcing, not an emission, so they need a different curve. `forcingResponse` is the temperature change after 1 W/m² of extra forcing held for one year, year by year for 200 years.
 
-Most of the warming from a forcing goes within a few years, as the ocean's surface gives the heat up. A small part, taken into the deep ocean, lingers for centuries. The median response is:
+Most of the warming from a forcing goes within a few years, as the ocean's surface releases the heat. A small part, taken into the deep ocean, lingers for centuries. The median response is:
 
 - 0.068 °C in the year of the forcing (5–95% range 0.035–0.094);
 - 0.107 °C the year after, the peak (0.078–0.144);
@@ -385,7 +385,7 @@ Added up over 200 years, the curve gives 0.65 °C per W/m². This is the warming
 
 It is made the same way as the AGTP curves. All 841 members of FaIR's calibrated ensemble are run on SSP2-4.5 as published, and again with the extra forcing in 2035. The difference is kept, with the median and the 5th and 95th percentiles.
 
-The extra forcing is added to FaIR's solar forcing, which acts on temperature with no chemistry or carbon cycle of its own. It is added at the end of the year, where an emission made during the year first acts. So index 0 is the same calendar year as for the AGTP curves.
+The extra forcing is added to FaIR's solar forcing, which acts on temperature with no chemistry or carbon cycle of its own. It is added at the end of the year, which is when an emission made during the year first acts. So index 0 is the same calendar year as for the AGTP curves.
 
 A forcing ten times larger gives the same response per W/m², to within 0.1% of the peak at every horizon (2.2% as a ratio, where the curve is small). So the response is proportional.
 
@@ -395,7 +395,7 @@ The energy levers count the fuel and electricity a sector stops or starts using.
 
 **Electric cars.** Making an electric car emits more than making a petrol car, mostly for its battery. The difference is paid back over its first years of driving. Life-cycle studies that count it still find a large saving:
 
-- For medium-size cars registered in 2021, Bieker (2021) finds a battery electric car's lifetime emissions 66–69% below a petrol car's in Europe, 60–68% in the United States, 37–45% in China and 19–34% in India. The gap follows each grid.
+- For medium-size cars registered in 2021, Bieker (2021) finds a battery electric car's lifetime emissions 66–69% below a petrol car's in Europe, 60–68% in the United States, 37–45% in China and 19–34% in India. The gap depends on each region's grid.
 - The IEA's *Global EV Outlook 2024* finds that a battery electric car sold in 2023 emits about half as much as a comparable petrol car over its life.
 
 The electric car lever's saving is about 47% of tailpipe CO₂ on today's world grid. It leaves out the making of the car and its battery, and is to that extent too large. The comparison with these figures is rough, as they also count the production of the fuel and regional grids. A battery truck carries a larger battery than a car, and its saving is overstated in the same way.
@@ -413,15 +413,15 @@ The electric car lever's saving is about 47% of tailpipe CO₂ on today's world 
 - Each sector's emissions are its scenario's shape scaled to an inventory: road 5.97 billion tonnes of CO₂ in 2022 (CEDS), aviation 0.95, shipping 0.85 and electricity 14.15 in 2023.
 - Road passengers and freight split 60/40 in every year and scenario. Both follow the scenario's surface transport (road, rail and domestic boats together).
 - Shipping, international and domestic, follows the scenario's international shipping.
-- Electricity is generation only; heat from power stations is left out. Its CO₂ and the grid's intensity stop at zero where the scenario's bioenergy with carbon capture would make them negative.
+- Electricity is generation only. Heat from power stations is left out. Its CO₂ and the grid's intensity stop at zero where the scenario's bioenergy with carbon capture would make them negative.
 - The scenario models are those CMIP6 used for each pathway: IMAGE for SSP1-2.6, MESSAGE-GLOBIOM for SSP2-4.5, AIM/CGE for SSP3-7.0. So electricity follows the same story as the emissions FaIR runs on.
 - An electric vehicle needs 1.10 (car) or 1.50 (truck) kWh per kg of tailpipe CO₂ avoided, in every year. Vehicles do not get more efficient over time, and making them is not counted.
 - Aviation's non-CO₂ forcing is proportional to its CO₂ in the same year, at the 2018 ratio. Clean fuel does not change it.
 - Data centres add their electricity beyond 2024's 415 TWh, following the IEA's cases to 2035 and held flat after. Building them is not counted.
-- The response to forcing is FaIR's to solar forcing (efficacy 1) on SSP2-4.5 in 2035, used for every year and scenario.
+- The response to forcing is FaIR's response to solar forcing (efficacy 1) on SSP2-4.5 in 2035, used for every year and scenario.
 - What comes with each kg of a sector's fossil CO₂ is CEDS's 2022 ratio, own fuel and fuel supply. It changes with the scenario's emission factors, never above today's, and is held once the sector's CO₂ halves. Road passengers and freight share road's ratio. The supply's CO₂ keeps its 2022 ratio. The energy industries' `1A1bc` is two thirds oil and one third coal.
-- Aviation's own NOx, sulphate and soot are in its non-CO₂ forcing; only its fuel's supply is counted as co-emissions. Clean shipping keeps its NOx.
-- Air pollution's forcing per kg is FaIR's, with the aerosol-cloud effect linearised at the scenario's emissions of each year. NOx counts its ozone, its nitrate and the methane it no longer destroys. That methane is the chemistry models' (Hoor et al. 2009, road's VOCs given back): 0.27 of FaIR's coefficient on land and 0.83 at sea, following FaIR's change with the scenario. CO and VOCs count their ozone, and VOCs the methane they leave; ammonia counts its nitrate.
+- Aviation's own NOx, sulphate and soot are in its non-CO₂ forcing. Only its fuel's supply is counted as co-emissions. Clean shipping keeps its NOx.
+- Air pollution's forcing per kg is FaIR's, with the aerosol-cloud effect linearised at the scenario's emissions of each year. NOx counts its ozone, its nitrate and the methane it no longer destroys. That methane is the chemistry models' (Hoor et al. 2009, road's VOCs given back): 0.27 of FaIR's coefficient on land and 0.83 at sea, following FaIR's change with the scenario. CO and VOCs count their ozone, and VOCs the methane they leave. Ammonia counts its nitrate.
 - CO's effect on methane, which FaIR leaves out, is not counted (an open question, above).
 
 ## Sources
