@@ -136,6 +136,18 @@ const KEY_STEPS: Record<string, number> = {
  * on narrow screens. The container takes the keyboard focus, and the arrow keys, Page Up and
  * Down, Home and End move the crosshair; `keys` says so to screen readers.
  */
+/** The year a key moves the keyboard's reading to, or null for a key that does not move it. */
+const yearForKey = (
+  key: string,
+  lo: number,
+  hi: number,
+  at: number,
+  clamp: (year: number) => number,
+): number | null => {
+  const step = KEY_STEPS[key];
+  return key === 'Home' ? lo : key === 'End' ? hi : step ? clamp(at + step) : null;
+};
+
 export const addHover = (
   container: HTMLElement,
   f: Frame,
@@ -225,20 +237,26 @@ export const addHover = (
   container.setAttribute('role', 'group');
   container.setAttribute('aria-label', `${f.svg.attr('aria-label')}. ${keys}`);
   container.onfocus = () => {
+    delete container.dataset.dismissed;
     if (container.matches(':focus-visible')) point(clamp(focused()));
   };
   container.onblur = clear;
   container.onkeydown = (e) => {
-    const step = KEY_STEPS[e.key];
-    const year =
-      e.key === 'Home' ? lo : e.key === 'End' ? hi : step ? clamp(focused() + step) : null;
-    if (e.key === 'Escape') clear();
+    const year = yearForKey(e.key, lo, hi, focused(), clamp);
+    if (e.key === 'Escape') dismiss();
     if (year !== null) {
       e.preventDefault();
+      delete container.dataset.dismissed;
       point(year);
     }
   };
-  if (document.activeElement === container) showYear(clamp(focused()));
+  // Escape hides the tooltip until the reader moves again, even through a redraw.
+  const dismiss = () => {
+    container.dataset.dismissed = '';
+    clear();
+  };
+  if (document.activeElement === container && !('dismissed' in container.dataset))
+    showYear(clamp(focused()));
 };
 
 /** Re-renders when the container's width changes. */
