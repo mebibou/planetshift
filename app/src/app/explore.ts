@@ -1,4 +1,3 @@
-import { attempt } from './attempt';
 import { h } from './dom';
 import type { AppState, ViewContext } from './context';
 import { optionsPanel } from '../controls/options';
@@ -14,7 +13,7 @@ import { hoverLink } from '../chart/frame';
 import { RANGE_START, temperatureChart, type Range } from '../chart/temperature';
 import { mapCard } from '../map/mapCard';
 import type { Options, Scenario, ScenarioResult } from '../model/api';
-import { baselineMedian, runScenario } from '../model/run';
+import { baselineMedian } from '../model/run';
 import { DIET_CAUSE, LEVER_CAUSES, leverAvailable } from '../levers/registry';
 import type { LeverCause } from '../data/types';
 import { formatTemperature } from '../i18n/format';
@@ -32,7 +31,8 @@ export interface ExploreView {
   el: HTMLElement;
   /** Updates the controls; `show` draws. */
   sync: (state: AppState) => void;
-  show: (result: ScenarioResult | null, state: AppState) => void;
+  /** `result` is undefined until the first run is back, null when a run failed. */
+  show: (result: ScenarioResult | null | undefined, state: AppState) => void;
   /** Stops the work still to come, when the view is dropped. */
   dispose: () => void;
 }
@@ -80,7 +80,10 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
   );
   const people = populationChart(t, locale, ctx.currentYear, link);
   chart.slot.append(people.el);
-  let last: { result: ScenarioResult | null; state: AppState } = { result: null, state };
+  let last: { result: ScenarioResult | null | undefined; state: AppState } = {
+    result: undefined,
+    state,
+  };
   const endOf = (s: AppState) => Number(s.ui.horizon);
   /** The baseline at `end` under the UN's medium projection, when another one is chosen. */
   const mediumBaseline = (result: ScenarioResult, options: Options, end: number) =>
@@ -98,7 +101,7 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
     const { range } = last.state.ui;
     const { ssp, temperature } = last.state.options;
     if (last.state.ui.chart === 'cause')
-      cause.update(last.result, data.climate, {
+      cause.update(last.result ?? null, data.climate, {
         ssp,
         temperature,
         from: RANGE_START[range],
@@ -133,6 +136,7 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
   });
   const download = chartDownload(t, () => ({
     ...last,
+    result: last.result ?? null,
     climate: data.climate,
     currentYear: ctx.currentYear,
   }));
@@ -323,23 +327,17 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
     reorder(last.state, values);
   };
   /** What each lever is worth, on the data as loaded: a new cache once a deferred file arrives. */
-  const worthOn = (current: typeof data) =>
+  const worthOn = () =>
     worthCache({
       run: (scenario: Scenario, options: Options) => {
         ctx.loadAll();
-        return attempt(() => {
-          const r = runScenario(current, scenario, options, ctx.currentYear);
-          return {
-            '2050': r.summary.avoidedWarming2050.median,
-            '2100': r.summary.avoidedWarming2100.median,
-          };
-        }, null);
+        return ctx.model.avoided(scenario, options, ctx.currentYear);
       },
       onChange: paint,
     });
   let worthData = ctx.latestData();
   let dataVersion = 0;
-  let worth = worthOn(worthData);
+  let worth = worthOn();
   const el = h(
     'div',
     { class: 'explore' },
@@ -367,18 +365,19 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
     allQuick.set(s.scenario);
     options.set(s.options);
   };
-  const show = (result: ScenarioResult | null, s: AppState) => {
+  const show = (result: ScenarioResult | null | undefined, s: AppState) => {
     last = { result, state: s };
     error.hidden = result !== null;
+    const shown = result ?? null;
     error.textContent = result ? '' : t('explore.runError');
     const failed = ctx.failedFiles();
     fileError.hidden = failed.length === 0;
     fileError.textContent = failed.length
       ? t('explore.fileError', { files: failed.map((f) => `${f}.json`).join(', ') })
       : '';
-    map.update(result, s);
+    map.update(shown, s);
     strip.update(
-      result,
+      shown,
       result ? worldPerCapita(result.countries, data.countries, data.meta.baseYear) : null,
       s.scenario.rampEnd,
       s.ui.horizon,
@@ -390,7 +389,7 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
     if (ctx.latestData() !== worthData) {
       worthData = ctx.latestData();
       dataVersion += 1;
-      worth = worthOn(worthData);
+      worth = worthOn();
     }
     worth.request(s.scenario, s.options);
     paint(worth.values());

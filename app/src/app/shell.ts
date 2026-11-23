@@ -9,7 +9,7 @@ import {
   type Scenario,
   type ScenarioResult,
 } from '../model/api';
-import { runScenario } from '../model/run';
+import { modelClient, workerPort } from '../model/client';
 import { BASE_SCENARIO } from '../model/scenarios';
 import { decodeState, encodeState } from '../model/state';
 import type { AppState, ViewContext } from './context';
@@ -47,9 +47,6 @@ const queryOf = (s: AppState, current: string): string =>
     current,
   );
 
-const run = (loaded: Loaded, s: AppState, year: number): ScenarioResult | null =>
-  attempt(() => runScenario(loaded.data, s.scenario, s.options, year), null);
-
 export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, currentYear: number) => {
   let loaded = initial;
   const query = location.search;
@@ -62,7 +59,13 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
   let views: { explore?: ExploreView; methodology?: HTMLElement } = {};
   /** The Methodology page and its formulas' typesetting load the first time it is shown. */
   let methodology: Promise<typeof import('../methodology/view')> | null = null;
-  let result: ScenarioResult | null = null;
+  /** Undefined until the first run is back; null when a run failed. */
+  let result: ScenarioResult | null | undefined = undefined;
+  const model = modelClient(workerPort());
+  model.onResult((r) => {
+    result = r;
+    if (store.get().ui.view === 'explore') views.explore?.show(result, store.get());
+  });
   let frame = 0;
   const main = h('main', { id: 'main', tabindex: '-1' });
 
@@ -81,6 +84,7 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
     loadAll: () => completeLevers(ALL_LEVERS),
     failedFiles: () => loaded.failed(),
     world: loaded.world,
+    model,
     currentYear,
     state: s,
     setScenario,
@@ -148,8 +152,8 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
     frame = requestAnimationFrame(() => {
       const s = store.get();
       completeData(s);
-      result = run(loaded, s, currentYear);
-      views.explore?.show(result, s);
+      model.setData(loaded.data);
+      model.run(s.scenario, s.options, currentYear);
     });
   };
 
@@ -209,7 +213,8 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
 
   applyTheme(readStoredTheme());
   completeData(store.get());
-  result = run(loaded, store.get(), currentYear);
+  model.setData(loaded.data);
+  model.run(store.get().scenario, store.get().options, currentYear);
   build(store.get());
   views.explore?.sync(store.get());
   history.replaceState(
