@@ -104,7 +104,15 @@ export const causeGroups = (
   const acting = FAMILIES.filter((f) =>
     COUNTED_CAUSES.some((c) => Math.abs(warming[f]?.[c] ?? 0) > epsilon),
   );
-  if (acting.length <= 1) return [];
+  return acting.length > 1 ? groupsOf(warming, acting, shown) : [];
+};
+
+/** The causes the acting families move, each with its families, on one scale. */
+const groupsOf = (
+  warming: Record<Family, Record<CountedCause, number>>,
+  acting: readonly Family[],
+  shown: number,
+): CauseGroup[] => {
   const of = (f: Family, c: CountedCause) => warming[f]?.[c] ?? 0;
   const totals = COUNTED_CAUSES.map((cause) => ({
     cause,

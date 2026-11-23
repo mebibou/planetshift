@@ -18,6 +18,18 @@ export const farmlandTotal = (l: Farmland): number => l.cropland + l.pasture;
 
 type GroupTonnes = Partial<Record<AnimalGroup, number>>;
 
+/** The relative change of the grazing, each ruminant group's share by its change in production. */
+const grazedChange = (
+  pasture: Land['pasture'][string],
+  before: GroupTonnes,
+  change: GroupTonnes,
+): number =>
+  ANIMAL_GROUPS.reduce((acc, g) => {
+    const share = pasture.shares[g] ?? 0;
+    const base = before[g] ?? 0;
+    return share > 0 && base > 0 ? acc + (share * (change[g] ?? 0)) / base : acc;
+  }, 0);
+
 /**
  * Change in pasture: each ruminant group's share of the pasture changes by that group's
  * relative change in production; the pasture never falls below zero.
@@ -26,15 +38,10 @@ export const pastureChange = (
   pasture: Land['pasture'][string] | undefined,
   before: GroupTonnes,
   change: GroupTonnes,
-): number => {
-  if (!pasture || pasture.ha <= 0) return 0;
-  const relative = ANIMAL_GROUPS.reduce((acc, g) => {
-    const share = pasture.shares[g] ?? 0;
-    const base = before[g] ?? 0;
-    return share > 0 && base > 0 ? acc + (share * (change[g] ?? 0)) / base : acc;
-  }, 0);
-  return Math.max(-pasture.ha, pasture.ha * relative);
-};
+): number =>
+  pasture && pasture.ha > 0
+    ? Math.max(-pasture.ha, pasture.ha * grazedChange(pasture, before, change))
+    : 0;
 
 /** An oilseed's feed shares in all, and weighted by each group's relative change. */
 export interface CakeWeights {
@@ -87,6 +94,12 @@ interface CountryLand {
 
 const landCache = memoPer<PreparedCountry, CountryLand>();
 
+/** Cropland in the base year: the crops' land, the oilcakes' share of the crush and the fodder. */
+const baseCropland = (land: Land, iso3: string, haPerTonne: ItemVector, pc: PreparedCountry) =>
+  dot(haPerTonne, pc.emitting) + sumValues(land.oilcakeHa?.[iso3]) + (land.fodderHa?.[iso3] ?? 0);
+
+const basePasture = (land: Land, iso3: string): number => land.pasture[iso3]?.ha ?? 0;
+
 /** A country's hectares per tonne by item, its farmland in the base year, its animal production. */
 export const countryLand = (pc: PreparedCountry, prepared: Prepared): CountryLand =>
   landCache(pc, 'land', () => {
@@ -97,11 +110,8 @@ export const countryLand = (pc: PreparedCountry, prepared: Prepared): CountryLan
     return {
       haPerTonne,
       base: {
-        cropland:
-          dot(haPerTonne, pc.emitting) +
-          sumValues(land.oilcakeHa?.[iso3]) +
-          (land.fodderHa?.[iso3] ?? 0),
-        pasture: land.pasture[pc.country.iso3]?.ha ?? 0,
+        cropland: baseCropland(land, iso3, haPerTonne, pc),
+        pasture: basePasture(land, iso3),
       },
       groups: groupTotals(pc.emitting, prepared),
     };

@@ -7,7 +7,7 @@ from urllib.parse import quote
 
 import pandas as pd
 
-from .cache import downloaded_on, fetched
+from .cache import downloaded_on, extracted, fetched
 
 log = logging.getLogger(__name__)
 
@@ -62,16 +62,17 @@ def path(cache_dir: Path) -> Path:
 def read(cache_dir: Path) -> pd.DataFrame:
     """DeDuCE's attribution table, one row per producer country, year and commodity."""
     extract = cache_dir / "extracts" / EXTRACT
-    if extract.exists():
-        cached = pd.read_pickle(extract)
-        if set(COLUMNS.values()) <= set(cached.columns):
-            return cached
+    stale = extract.exists() and not set(COLUMNS.values()) <= set(pd.read_pickle(extract).columns)
+    if stale:
+        extract.unlink()
+    return extracted(extract, lambda: from_spreadsheet(cache_dir))
+
+
+def from_spreadsheet(cache_dir: Path) -> pd.DataFrame:
+    """DeDuCE's spreadsheet with the columns the pipeline reads, renamed."""
     log.info("reading DeDuCE")
     raw = pd.read_excel(path(cache_dir), sheet_name=0)
-    df = raw.rename(columns=COLUMNS)[list(COLUMNS.values())]
-    extract.parent.mkdir(parents=True, exist_ok=True)
-    df.to_pickle(extract)
-    return df
+    return raw.rename(columns=COLUMNS)[list(COLUMNS.values())]
 
 
 def item_map(

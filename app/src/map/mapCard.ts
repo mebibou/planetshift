@@ -13,7 +13,16 @@ import type { ScenarioResult } from '../model/api';
 import { segmented } from '../controls/segmented';
 import { choropleth } from './choropleth';
 import { LAYER_COLOURS, scaleKind } from './colours';
-import { CHANGE_OF, GAS_CHOICES, LAYERS, layerValues, measureOf, type LayerSpec } from './layers';
+import {
+  CHANGE_OF,
+  GAS_CHOICES,
+  LAYERS,
+  layerValues,
+  measureOf,
+  type Layer,
+  type LayerSpec,
+  type Measure,
+} from './layers';
 import { legendBins } from './legend';
 import { colourScale, LAND_SHARE_THRESHOLDS, pickColours, thresholdsFor } from './scales';
 import { formatMeasure, tooltipModel } from './tooltip';
@@ -50,6 +59,60 @@ const valueFormatter = (spec: LayerSpec, t: T, locale: string) => (v: number) =>
     : spec.layer === 'quality'
       ? t(`tiers.${Math.round(v)}`)
       : formatMeasure(locale, measureOf(spec))(v);
+
+/** The layer's colour scale: its kind, thresholds and colours, from the values it shows. */
+const paletteOf = (layer: Layer, values: ReadonlyMap<string, number | null>) => {
+  const kind = scaleKind(layer);
+  const numbers = [...values.values()].filter((v): v is number => v !== null);
+  const thresholds = layer === 'land' ? LAND_SHARE_THRESHOLDS : thresholdsFor(kind, numbers, 7);
+  const colours =
+    kind === 'sequential'
+      ? pickColours(LAYER_COLOURS[layer], thresholds.length + 1)
+      : LAYER_COLOURS[layer];
+  return { kind, thresholds, colours, scale: colourScale(thresholds, colours) };
+};
+
+/** What each measure shows, for the legend's title. */
+const MEASURE_TITLES: Record<Measure, (t: T, ui: UiState) => string> = {
+  production: (t, ui) => t('map.legend.production', { group: t(`groups.${ui.group}`) }),
+  emissions: (t, ui) => t('map.legend.emissions', { gas: t(`gases.${ui.gas}`) }),
+  deforestation: (t) => t('map.legend.deforestation'),
+  landShare: (t) => t('map.legend.landShare'),
+  land: (t) => t('map.legend.land'),
+};
+
+const legendTitleOf = (t: T, ui: UiState): string => {
+  const what = MEASURE_TITLES[measureOf(ui)](t, ui);
+  return ui.layer === 'change'
+    ? t('map.legend.change', { what })
+    : ui.layer === 'quality'
+      ? t('map.legend.quality')
+      : what;
+};
+
+/** The legend's entries: one per bin, then no data. */
+const legendItemsOf = (
+  t: T,
+  ui: UiState,
+  palette: ReturnType<typeof paletteOf>,
+  format: (v: number) => string,
+): HTMLElement[] => {
+  const bins =
+    palette.kind === 'quality'
+      ? TIERS.map((tier, i) => ({ colour: palette.colours[i] ?? '', label: t(`tiers.${tier}`) }))
+      : legendBins(palette.thresholds, palette.colours, format);
+  return [
+    ...bins.map((b) =>
+      h('li', {}, h('span', { class: 'swatch', style: `background: ${b.colour}` }), b.label),
+    ),
+    h(
+      'li',
+      {},
+      h('span', { class: 'swatch nodata' }),
+      t(ui.layer === 'deforestation' ? 'map.noClearing' : 'map.noData'),
+    ),
+  ];
+};
 
 export const mapCard = (ctx: MapCardContext): MapCard => {
   const { t, locale, lang, world, countries, intensities, setUi } = ctx;
@@ -222,22 +285,14 @@ export const mapCard = (ctx: MapCardContext): MapCard => {
     gas.el.hidden = measure !== 'emissions';
     group.hidden = measure !== 'production';
     const spec: LayerSpec = ui;
-    const byIso = new Map((result?.countries ?? []).map((c) => [c.iso3, c]));
-    const values = layerValues(result?.countries ?? [], spec);
-    const kind = scaleKind(ui.layer);
-    const numbers = [...values.values()].filter((v): v is number => v !== null);
-    const thresholds =
-      ui.layer === 'land' ? LAND_SHARE_THRESHOLDS : thresholdsFor(kind, numbers, 7);
-    const colours =
-      kind === 'sequential'
-        ? pickColours(LAYER_COLOURS[ui.layer], thresholds.length + 1)
-        : LAYER_COLOURS[ui.layer];
-    const scale = colourScale(thresholds, colours);
-    const format = valueFormatter(spec, t, locale);
+    const shown = result?.countries ?? [];
+    const byIso = new Map(shown.map((c) => [c.iso3, c]));
+    const values = layerValues(shown, spec);
+    const palette = paletteOf(ui.layer, values);
     map.paint({
       fillOf: (iso3) => {
         const v = values.get(iso3);
-        return v === null || v === undefined ? null : scale(v);
+        return v === null || v === undefined ? null : palette.scale(v);
       },
       tooltipOf: (iso3) =>
         tooltipModel(
@@ -249,37 +304,8 @@ export const mapCard = (ctx: MapCardContext): MapCard => {
           worstSource(intensities, iso3, scope),
         ),
     });
-    const what =
-      measure === 'production'
-        ? t('map.legend.production', { group: t(`groups.${ui.group}`) })
-        : measure === 'emissions'
-          ? t('map.legend.emissions', { gas: t(`gases.${ui.gas}`) })
-          : measure === 'deforestation'
-            ? t('map.legend.deforestation')
-            : measure === 'landShare'
-              ? t('map.legend.landShare')
-              : t('map.legend.land');
-    legendTitle.textContent =
-      ui.layer === 'change'
-        ? t('map.legend.change', { what })
-        : ui.layer === 'quality'
-          ? t('map.legend.quality')
-          : what;
-    const bins =
-      kind === 'quality'
-        ? TIERS.map((tier, i) => ({ colour: colours[i] ?? '', label: t(`tiers.${tier}`) }))
-        : legendBins(thresholds, colours, format);
-    legend.replaceChildren(
-      ...bins.map((b) =>
-        h('li', {}, h('span', { class: 'swatch', style: `background: ${b.colour}` }), b.label),
-      ),
-      h(
-        'li',
-        {},
-        h('span', { class: 'swatch nodata' }),
-        t(ui.layer === 'deforestation' ? 'map.noClearing' : 'map.noData'),
-      ),
-    );
+    legendTitle.textContent = legendTitleOf(t, ui);
+    legend.replaceChildren(...legendItemsOf(t, ui, palette, valueFormatter(spec, t, locale)));
     note.textContent = t(`map.notes.${ui.layer}`);
     if (ui.mapView === 'table')
       table.update(rowsOf(result, state, names), ui, legendTitle.textContent);

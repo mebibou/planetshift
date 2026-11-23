@@ -501,72 +501,85 @@ def build(
     return document, diagnostics
 
 
+def window(years: np.ndarray, values: np.ndarray, first: int, last: int) -> str:
+    """The median and 5–95% range of the members' mean over `first`..`last`."""
+    mean = values[(years >= first) & (years <= last)].mean(axis=0)
+    p05, p50, p95 = np.percentile(mean, PERCENTILES)
+    return f"{p50:.3f} ({p05:.3f}–{p95:.3f})"
+
+
+def horizons(years: np.ndarray, values: np.ndarray, label: str = "") -> str:
+    """A part's warming over 2015–2024, in 2050 and in 2100."""
+    return (
+        f"2015–2024{label} {window(years, values, 2015, 2024)}, "
+        f"2050 {window(years, values, 2050, 2050)}, 2100 {window(years, values, 2100, 2100)}"
+    )
+
+
+def diagnostic_lines(diagnostics: dict, ssp: str) -> list[str]:
+    """What only a `--diagnostics` build logs: food emitted from 2020 and the additivity gap."""
+    years = diagnostics["years"]
+    gap = diagnostics["additivity_gap"][ssp]
+    food = diagnostics["future_food"][ssp][years == 2100][0]
+    return [
+        f"  agriculture + land use emitted from {FOOD_FUTURE_FROM}, warming in 2100: "
+        f"{np.median(food):.3f} ({np.percentile(food, 5):.3f}–{np.percentile(food, 95):.3f})",
+        f"  additivity gap 2024 {gap[years == 2024][0]:.3f}, 2050 {gap[years == 2050][0]:.3f}",
+    ]
+
+
+def ssp_lines(diagnostics: dict, ssp: str) -> list[str]:
+    """An SSP's total, each cause, each gas by cause, and the diagnostics when they were run."""
+    years = diagnostics["years"]
+    by_cause = diagnostics["by_cause"][ssp]
+    return [
+        f"{ssp}: {horizons(years, by_cause['total'], ' total')}",
+        *(
+            f"  {cause}: {horizons(years, by_cause[cause])}"
+            for cause in (*CAUSES, "natural", "other")
+        ),
+        *(
+            f"  {gas}: "
+            + ", ".join(
+                f"{name} 2015–2024 {window(years, values, 2015, 2024)} "
+                f"2100 {window(years, values, 2100, 2100)}"
+                for name, values in parts.items()
+            )
+            for gas, parts in diagnostics["by_gas"][ssp].items()
+        ),
+        f"  1850–1900 offsets {diagnostics['preindustrial_offset'][ssp]}",
+        *(diagnostic_lines(diagnostics, ssp) if "future_food" in diagnostics else []),
+    ]
+
+
+def agtp_line(document: dict, pulses: dict, gas: str) -> str:
+    """A gas's AGTP from FaIR against AR6's, and the pulse checks when they were run."""
+    main = pulses[pulse_key(gas, PULSE_YEAR, 1.0)]
+    med = np.median(main, axis=-1)
+    ar6 = document["agtp"]["ar6"][gas]["median"]
+    large = pulses.get(pulse_key(gas, PULSE_YEAR, 10.0))
+    checks = (
+        f"; linearity {relative_spread(large, main):.4f}; years {year_spread(pulses, gas):.4f}"
+        if large is not None
+        else ""
+    )
+    return (
+        f"AGTP {gas}: fair h20 {med[20]:.3e} h50 {med[50]:.3e} h100 {med[100]:.3e}; "
+        f"ar6 h20 {ar6[20]:.3e} h50 {ar6[50]:.3e} h100 {ar6[100]:.3e}; "
+        f"peak h{int(np.argmax(med))}{checks}"
+    )
+
+
 def summary(document: dict, diagnostics: dict) -> list[str]:
     years = diagnostics["years"]
-    pulses = diagnostics["pulses"]
-
-    def window(values: np.ndarray, first: int, last: int) -> str:
-        mean = values[(years >= first) & (years <= last)].mean(axis=0)
-        p05, p50, p95 = np.percentile(mean, PERCENTILES)
-        return f"{p50:.3f} ({p05:.3f}–{p95:.3f})"
-
-    def at(ssp: str, cause: str, first: int, last: int) -> str:
-        return window(diagnostics["by_cause"][ssp][cause], first, last)
-
     natural = diagnostics["natural"][(years >= 2010) & (years <= 2019)].mean(axis=0)
-    lines = [
+    return [
         f"members: {diagnostics['members']}",
         f"natural factors only, 2010–2019: {np.median(natural):.3f} "
         f"({np.percentile(natural, 5):.3f}–{np.percentile(natural, 95):.3f})",
+        *(line for ssp in SSPS for line in ssp_lines(diagnostics, ssp)),
+        *(agtp_line(document, diagnostics["pulses"], gas) for gas in GASES),
     ]
-    for ssp in SSPS:
-        lines.append(
-            f"{ssp}: 2015–2024 total {at(ssp, 'total', 2015, 2024)}, "
-            f"2050 {at(ssp, 'total', 2050, 2050)}, 2100 {at(ssp, 'total', 2100, 2100)}"
-        )
-        for cause in (*CAUSES, "natural", "other"):
-            lines.append(
-                f"  {cause}: 2015–2024 {at(ssp, cause, 2015, 2024)}, "
-                f"2050 {at(ssp, cause, 2050, 2050)}, 2100 {at(ssp, cause, 2100, 2100)}"
-            )
-        for gas, parts in diagnostics["by_gas"][ssp].items():
-            lines.append(
-                f"  {gas}: "
-                + ", ".join(
-                    f"{name} 2015–2024 {window(values, 2015, 2024)} "
-                    f"2100 {window(values, 2100, 2100)}"
-                    for name, values in parts.items()
-                )
-            )
-        lines.append(f"  1850–1900 offsets {diagnostics['preindustrial_offset'][ssp]}")
-        if "future_food" in diagnostics:
-            gap = diagnostics["additivity_gap"][ssp]
-            food = diagnostics["future_food"][ssp][years == 2100][0]
-            lines.append(
-                f"  agriculture + land use emitted from {FOOD_FUTURE_FROM}, warming in 2100: "
-                f"{np.median(food):.3f} "
-                f"({np.percentile(food, 5):.3f}–{np.percentile(food, 95):.3f})"
-            )
-            lines.append(
-                f"  additivity gap 2024 {gap[years == 2024][0]:.3f}, "
-                f"2050 {gap[years == 2050][0]:.3f}"
-            )
-    for gas in GASES:
-        main = pulses[pulse_key(gas, PULSE_YEAR, 1.0)]
-        med = np.median(main, axis=-1)
-        ar6 = document["agtp"]["ar6"][gas]["median"]
-        lines.append(
-            f"AGTP {gas}: fair h20 {med[20]:.3e} h50 {med[50]:.3e} h100 {med[100]:.3e}; "
-            f"ar6 h20 {ar6[20]:.3e} h50 {ar6[50]:.3e} h100 {ar6[100]:.3e}; "
-            f"peak h{int(np.argmax(med))}"
-            + (
-                f"; linearity {relative_spread(pulses[pulse_key(gas, PULSE_YEAR, 10.0)], main):.4f}"
-                f"; years {year_spread(pulses, gas):.4f}"
-                if pulse_key(gas, PULSE_YEAR, 10.0) in pulses
-                else ""
-            )
-        )
-    return lines
 
 
 def build_climate(cache_dir: Path, out_dir: Path, diagnostics: bool = False) -> None:

@@ -28,12 +28,12 @@ const ENCODINGS = [
 
 const compress = (file) => {
   const bytes = readFileSync(file);
-  return ENCODINGS.flatMap(([suffix, encode]) => {
-    const encoded = encode(bytes);
-    if (encoded.length >= bytes.length) return [];
-    writeFileSync(file + suffix, encoded);
-    return [{ file: file + suffix, bytes: encoded.length }];
-  });
+  return ENCODINGS.map(([suffix, encode]) => ({ out: file + suffix, encoded: encode(bytes) }))
+    .filter(({ encoded }) => encoded.length < bytes.length)
+    .map(({ out, encoded }) => {
+      writeFileSync(out, encoded);
+      return { file: out, bytes: encoded.length };
+    });
 };
 
 const folder = process.argv[2] ?? 'dist';

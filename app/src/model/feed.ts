@@ -6,7 +6,7 @@ import {
   type Group,
 } from '../data/types';
 import { groupTotals, type Prepared, type PreparedCountry } from './prepare';
-import { memoPer, recordFrom, type ItemVector } from './util';
+import { cachedIn, memoPer, recordFrom, type ItemVector } from './util';
 
 const totalsCache = new WeakMap<ItemVector, Record<Group, number>>();
 
@@ -14,13 +14,8 @@ const totalsCache = new WeakMap<ItemVector, Record<Group, number>>();
  * Group totals of a base vector, kept per vector: a base (a country's production, the world's)
  * is never written to once built, and is the same on every run.
  */
-const baseTotals = (v: ItemVector, prepared: Prepared): Record<Group, number> => {
-  const found = totalsCache.get(v);
-  if (found) return found;
-  const totals = groupTotals(v, prepared);
-  totalsCache.set(v, totals);
-  return totals;
-};
+const baseTotals = (v: ItemVector, prepared: Prepared): Record<Group, number> =>
+  cachedIn(totalsCache, v, () => groupTotals(v, prepared));
 
 /** Relative change of each animal group's production in a country (−1..), 0 where it has none. */
 export const groupProductionChange = (

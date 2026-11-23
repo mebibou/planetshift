@@ -28,16 +28,22 @@ const KNOWN: [RegExp, string][] = [
   [/(^|\.)science\.org$/, 'Poore & Nemecek (2018)'],
 ];
 
+/** The source as an address a browser can open, or null. */
+const webUrl = (source: string): URL | null => {
+  const url = URL.canParse(source) ? new URL(source) : null;
+  return url && (url.protocol === 'https:' || url.protocol === 'http:') ? url : null;
+};
+
+/** A known publisher's name for the address, else its host without www. */
+const shortName = (url: URL): string => {
+  const host = url.hostname.replace(/^www\./, '');
+  return KNOWN.find(([re]) => re.test(host))?.[1] ?? host;
+};
+
 /** A short name for a source URL, and the URL when it is one a browser can open. */
 export const sourceLink = (source: string): { label: string; url: string | null } => {
-  try {
-    const url = new URL(source);
-    if (url.protocol !== 'https:' && url.protocol !== 'http:') return { label: source, url: null };
-    const host = url.hostname.replace(/^www\./, '');
-    return { label: KNOWN.find(([re]) => re.test(host))?.[1] ?? host, url: url.href };
-  } catch {
-    return { label: source, url: null };
-  }
+  const url = webUrl(source);
+  return url ? { label: shortName(url), url: url.href } : { label: source, url: null };
 };
 
 /** A source as the table shows it: a short link when it holds an address, its text otherwise. */

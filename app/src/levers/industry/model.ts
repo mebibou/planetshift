@@ -89,14 +89,20 @@ export const industryPaths = (
   band: Band,
   years: readonly number[],
   shareAt: (year: number) => number,
+): IndustryPaths =>
+  hasIndustry(industry) && hasSectors(sectors) && INDUSTRY_LEVERS.some((id) => adoption(id) > 0)
+    ? actingPaths({ industry, sectors, ssp, band }, co, adoption, years, shareAt)
+    : { co2: years.map(() => 0), co: years.map(() => ({ co2: {}, change: NO_CO_CHANGE })) };
+
+/** The paths once some industry lever acts on the data. */
+const actingPaths = (
+  ctx: YearContext,
+  co: Partial<CoEmissions> | undefined,
+  adoption: (id: string) => number,
+  years: readonly number[],
+  shareAt: (year: number) => number,
 ): IndustryPaths => {
-  if (
-    !hasIndustry(industry) ||
-    !hasSectors(sectors) ||
-    !INDUSTRY_LEVERS.some((id) => adoption(id) > 0)
-  )
-    return { co2: years.map(() => 0), co: years.map(() => ({ co2: {}, change: NO_CO_CHANGE })) };
-  const ctx: YearContext = { industry, sectors, ssp, band };
+  const { ssp } = ctx;
   const bySource = years.map((y) =>
     industryCo2BySource(ctx, y, {
       cleanHeating: adoption('cleanHeating') * shareAt(y),

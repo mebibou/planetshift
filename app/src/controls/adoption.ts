@@ -40,8 +40,16 @@ export const groupsLevel = (s: Scenario, ids: readonly string[]): Level =>
  * takes the value and the foods set apart join it, so "100%" moves every animal food.
  */
 export const withGroupsAt = (s: Scenario, ids: readonly string[], adoption: 0 | 1): Scenario =>
-  ids.reduce<Scenario>((acc, id) => {
-    if (id === DIET_GROUP) return { ...acc, shift: adoption, groupShifts: {} };
-    const module = PANEL_MODULES.find((m) => m.id === id);
-    return module ? withFamily(acc, module, adoption) : acc;
-  }, s);
+  ids.reduce<Scenario>(
+    (acc, id) =>
+      id === DIET_GROUP
+        ? { ...acc, shift: adoption, groupShifts: {} }
+        : withModule(acc, id, adoption),
+    s,
+  );
+
+/** A panel module's levers all at 0 or in full; a group that is no module changes nothing. */
+const withModule = (s: Scenario, id: string, adoption: 0 | 1): Scenario => {
+  const module = PANEL_MODULES.find((m) => m.id === id);
+  return module ? withFamily(s, module, adoption) : s;
+};

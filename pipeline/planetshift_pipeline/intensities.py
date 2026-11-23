@@ -118,9 +118,8 @@ def load_crops(path: Path = HERE / "qcl_items.csv") -> pd.DataFrame:
 
 def parse_pairs(text) -> list[tuple[int, float]]:
     """ "2536:0.11;2537:0.16" -> [(2536, 0.11), (2537, 0.16)]."""
-    if not isinstance(text, str) or not text.strip():
-        return []
-    return [(int(c), float(r)) for c, r in (pair.split(":") for pair in text.split(";"))]
+    pairs = text.split(";") if isinstance(text, str) and text.strip() else []
+    return [(int(c), float(r)) for c, r in (pair.split(":") for pair in pairs)]
 
 
 def load_proxies(path: Path = HERE / "proxies.csv") -> tuple[dict, dict]:
@@ -270,9 +269,11 @@ def nonfood_shares(
     none where it has no row), over its stock (emissions taken per head)."""
 
     def by_area(df: pd.DataFrame | None, item: int | None, element: int) -> pd.Series:
-        if df is None:
-            return pd.Series(dtype=float)
-        rows = df[(df["item_code"] == item) & (df["element_code"] == element)]
+        rows = (
+            pd.DataFrame(columns=["item_code", "element_code", "area_code", "value"])
+            if df is None
+            else df[(df["item_code"] == item) & (df["element_code"] == element)]
+        )
         return rows.groupby("area_code")["value"].sum().astype(float)
 
     def net_exports(species: int) -> pd.Series:
@@ -551,9 +552,11 @@ def co2e(df: pd.DataFrame) -> pd.Series:
 def weighted_median(values: pd.Series, weights: pd.Series) -> float:
     order = np.argsort(values.to_numpy())
     v, w = values.to_numpy()[order], weights.to_numpy()[order]
-    if w.sum() <= 0:
-        return float(np.median(v)) if len(v) else 0.0
-    return float(v[np.searchsorted(np.cumsum(w), w.sum() / 2)])
+    return float(
+        v[np.searchsorted(np.cumsum(w), w.sum() / 2)]
+        if w.sum() > 0
+        else (np.median(v) if len(v) else 0.0)
+    )
 
 
 def without_outliers(intensity: pd.DataFrame, production: pd.DataFrame) -> pd.DataFrame:
@@ -580,8 +583,22 @@ def candidates_from(
     """External intensities (columns fbs_item_code, area, scope, co2, ch4, n2o, url) as
     candidates per country: the country's own at `tier_country`, then its smallest region,
     then the world, at `tier_wide` (rank orders them within a tier)."""
-    if df is None or df.empty:
-        return pd.DataFrame(columns=["iso3", "fbs_code", "scope", *GASES, "tier", "rank", "source"])
+    cols = ["iso3", "fbs_code", "scope", *GASES, "tier", "rank", "source"]
+    return (
+        pd.DataFrame(columns=cols)
+        if df is None or df.empty
+        else ranked(df, countries, members, tier_country, tier_wide)[cols]
+    )
+
+
+def ranked(
+    df: pd.DataFrame,
+    countries: list[str],
+    members: dict[str, list[str]],
+    tier_country: int,
+    tier_wide: int,
+) -> pd.DataFrame:
+    """Each country's own intensities, then its regions', then the world's, ranked."""
     df = df.rename(columns={"fbs_item_code": "fbs_code", "url": "source"})
     own = df[df["area"].isin(countries)].assign(iso3=lambda d: d["area"], tier=tier_country, rank=0)
     regional = [
@@ -594,8 +611,7 @@ def candidates_from(
     worldwide = world.merge(pd.DataFrame({"iso3": countries}), how="cross").assign(
         tier=tier_wide, rank=10_000
     )
-    cols = ["iso3", "fbs_code", "scope", *GASES, "tier", "rank", "source"]
-    return pd.concat([own, *regional, worldwide], ignore_index=True)[cols]
+    return pd.concat([own, *regional, worldwide], ignore_index=True)
 
 
 def best(candidates: pd.DataFrame) -> pd.DataFrame:

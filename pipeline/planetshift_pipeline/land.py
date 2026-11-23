@@ -328,10 +328,9 @@ def pasture_json(ha: pd.Series, shares: pd.DataFrame, iso3: dict[int, str]) -> d
     pasture; shares are empty where the country has no ruminants."""
 
     def shares_of(area: int) -> dict[str, float]:
-        if area not in shares.index or shares.loc[area].isna().all():
-            return {}
-        dairy = round(float(shares.loc[area, "dairy"]), 3)
-        return {"ruminantMeat": round(1 - dairy, 3), "dairy": dairy}
+        known = area in shares.index and not shares.loc[area].isna().all()
+        dairy = round(float(shares.loc[area, "dairy"]), 3) if known else 0.0
+        return {"ruminantMeat": round(1 - dairy, 3), "dairy": dairy} if known else {}
 
     return {
         code: {"ha": I.significant(float(ha.get(area, 0.0))), "shares": shares_of(area)}
@@ -389,10 +388,17 @@ def forest_fractions(forest_ha: float | None, pasture: float, cropland: float) -
     the area Cook-Patton et al. map for regrowth (outside cropland, by construction); high: that
     area and all cropland; mid: halfway. With no mapped area known, from 0 to 1."""
     farm = pasture + cropland
-    if forest_ha is None:
-        return 0.0, 0.5, 1.0
-    if farm <= 0:
-        return 1.0, 1.0, 1.0
+    return (
+        (0.0, 0.5, 1.0)
+        if forest_ha is None
+        else (1.0, 1.0, 1.0)
+        if farm <= 0
+        else mapped_fractions(forest_ha, cropland, farm)
+    )
+
+
+def mapped_fractions(forest_ha: float, cropland: float, farm: float) -> tuple:
+    """From the mapped area alone to the mapped area and all cropland, as shares of the farm."""
     low = min(1.0, forest_ha / farm)
     high = min(1.0, (forest_ha + cropland) / farm)
     return low, (low + high) / 2, high
@@ -422,15 +428,17 @@ def regrowth_filled(
     lowest = ranked.iloc[0][cols].to_dict()
 
     def base(iso3: str) -> tuple[dict, float | None, str]:
-        if iso3 in own.index:
-            return own.loc[iso3, cols].to_dict(), float(own.loc[iso3, "forest_ha"]), "country"
-        if forest_share.get(iso3, 1.0) < DRYLAND_FOREST_SHARE:
-            return lowest, 0.0, "dry"
         region = regions.get(iso3)
         return (
-            (regional.loc[region].to_dict() if region in regional.index else lowest),
-            None,
-            "region",
+            (own.loc[iso3, cols].to_dict(), float(own.loc[iso3, "forest_ha"]), "country")
+            if iso3 in own.index
+            else (lowest, 0.0, "dry")
+            if forest_share.get(iso3, 1.0) < DRYLAND_FOREST_SHARE
+            else (
+                regional.loc[region].to_dict() if region in regional.index else lowest,
+                None,
+                "region",
+            )
         )
 
     def row(iso3: str) -> dict:

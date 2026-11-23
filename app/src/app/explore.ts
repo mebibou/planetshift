@@ -1,3 +1,4 @@
+import { attempt } from './attempt';
 import { h } from './dom';
 import type { AppState, ViewContext } from './context';
 import { optionsPanel } from '../controls/options';
@@ -82,8 +83,9 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
   let last: { result: ScenarioResult | null; state: AppState } = { result: null, state };
   const endOf = (s: AppState) => Number(s.ui.horizon);
   /** The baseline at `end` under the UN's medium projection, when another one is chosen. */
-  const mediumBaseline = (result: ScenarioResult, options: Options, end: number) => {
-    if (!result.population || result.population.variant === 'medium') return null;
+  const mediumBaseline = (result: ScenarioResult, options: Options, end: number) =>
+    result.population && result.population.variant !== 'medium' ? mediumAt(options, end) : null;
+  const mediumAt = (options: Options, end: number) => {
     const medium = baselineMedian(
       ctx.latestData(),
       { ...options, population: 'medium' },
@@ -103,11 +105,14 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
         end,
         gas: last.state.ui.causeGas,
       });
-    if (!last.result) return;
-    if (last.state.ui.chart === 'temperature') {
-      chart.update(last.result, range, end, data.climate.naturalOnly, data.enso);
-      people.update(last.result, range, end, mediumBaseline(last.result, last.state.options, end));
-    } else if (last.state.ui.chart === 'avoided') avoided.update(last.result, end);
+    if (last.result) drawResult(last.result, last.state, end);
+  };
+  /** The charts drawn from a run: the temperature with the population, or the warming avoided. */
+  const drawResult = (result: ScenarioResult, s: AppState, end: number) => {
+    if (s.ui.chart === 'temperature') {
+      chart.update(result, s.ui.range, end, data.climate.naturalOnly, data.enso);
+      people.update(result, s.ui.range, end, mediumBaseline(result, s.options, end));
+    } else if (s.ui.chart === 'avoided') avoided.update(result, end);
   };
   const rangeSwitch = segmented<Range>({
     name: 'range',
@@ -241,20 +246,22 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
   );
   const causeList = h('div', { class: 'cause-sections' });
   let arranged = '';
+  /** A cause's section with its groups in `ids`'s order. */
+  const filled = (section: { el: HTMLElement; body: HTMLElement }, ids: readonly string[]) => {
+    section.body.replaceChildren(...ids.flatMap((id) => groups.find((g) => g.id === id)?.el ?? []));
+    return section.el;
+  };
   const arrange = (order: readonly CauseSection[]) => {
     const key = JSON.stringify(order);
-    if (key === arranged) return;
-    arranged = key;
-    causeList.replaceChildren(
-      ...order.flatMap(({ cause, groups: ids }) => {
-        const section = sections.get(cause);
-        if (!section) return [];
-        section.body.replaceChildren(
-          ...ids.flatMap((id) => groups.find((g) => g.id === id)?.el ?? []),
-        );
-        return [section.el];
-      }),
-    );
+    if (key !== arranged) {
+      arranged = key;
+      causeList.replaceChildren(
+        ...order.flatMap(({ cause, groups: ids }) => {
+          const section = sections.get(cause);
+          return section ? [filled(section, ids)] : [];
+        }),
+      );
+    }
   };
   const leversEl = h(
     'section',
@@ -303,9 +310,13 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
     });
     const key = orderKey(s.options, s.ui.horizon, dataVersion);
     const known = groups.every((g) => values.has(g.worth));
-    if (orderedFor === key || (!known && orderedFor !== null)) return;
-    arrange(panelOrder(groups, sizes, (w) => (known ? values.get(w)?.[s.ui.horizon] : undefined)));
-    if (known) orderedFor = key;
+    const settled = orderedFor === key || (!known && orderedFor !== null);
+    if (!settled) {
+      arrange(
+        panelOrder(groups, sizes, (w) => (known ? values.get(w)?.[s.ui.horizon] : undefined)),
+      );
+      if (known) orderedFor = key;
+    }
   };
   const paint = (values: ReadonlyMap<string, Worth>) => {
     paintWorth(aside, values, last.state.ui.horizon, t, locale);
@@ -316,15 +327,13 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
     worthCache({
       run: (scenario: Scenario, options: Options) => {
         ctx.loadAll();
-        try {
+        return attempt(() => {
           const r = runScenario(current, scenario, options, ctx.currentYear);
           return {
             '2050': r.summary.avoidedWarming2050.median,
             '2100': r.summary.avoidedWarming2100.median,
           };
-        } catch {
-          return null;
-        }
+        }, null);
       },
       onChange: paint,
     });

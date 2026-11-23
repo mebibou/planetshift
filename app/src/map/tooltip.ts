@@ -1,7 +1,7 @@
 import type { CountryResult } from '../model/api';
 import type { T } from '../i18n/i18n';
 import { formatArea, formatMass, formatPercent } from '../i18n/format';
-import { beforeAfter, farmland, relativeChange, type BeforeAfter, type LayerSpec } from './layers';
+import { beforeAfter, farmland, relativeChange, type LayerSpec, type Measure } from './layers';
 import { sourceInText, type TierSource } from './sources';
 
 export interface TooltipModel {
@@ -10,15 +10,23 @@ export interface TooltipModel {
   source?: { label: string; url: string | null };
 }
 
+/** A share, with a decimal under 10% so small shares do not all read 0%. */
+const formatShare = (locale: string, v: number): string =>
+  formatPercent(locale, v, v > 0 && v < 0.1 ? 1 : 0);
+
+const FORMATS: Record<Measure, (locale: string, v: number) => string> = {
+  production: (locale, v) => formatMass(locale, v * 1000),
+  emissions: formatMass,
+  land: formatArea,
+  deforestation: formatArea,
+  landShare: formatShare,
+};
+
 /** A layer's quantity in its unit: tonnes of product, kg of gas, hectares, or a share of land. */
 export const formatMeasure =
-  (locale: string, kind: BeforeAfter['kind']) =>
+  (locale: string, kind: Measure) =>
   (v: number): string =>
-    kind === 'landShare'
-      ? formatPercent(locale, v, v > 0 && v < 0.1 ? 1 : 0)
-      : kind === 'land' || kind === 'deforestation'
-        ? formatArea(locale, v)
-        : formatMass(locale, kind === 'production' ? v * 1000 : v);
+    FORMATS[kind](locale, v);
 
 /** The CO₂ the clearing releases, today and with the levers. */
 const clearingCo2Row = (c: CountryResult, t: T, locale: string): [string, string] => [
@@ -47,7 +55,75 @@ const landRows = (c: CountryResult, t: T, locale: string): [string, string][] =>
     }),
   ]);
 
-/** Before and after numbers, the worst intensity tier and its source; for land, its two parts. */
+interface Extra {
+  rows: [string, string][];
+  source?: TooltipModel['source'];
+}
+
+/** The worst intensity tier and its source, for the layers made from intensities. */
+const tierExtra = (c: CountryResult, t: T, worst: TierSource | null): Extra => ({
+  rows: [[t('map.tooltip.tier'), t(`tiers.${worst?.tier ?? c.worstTier}`)]],
+  source: worst ? sourceInText(worst.source) : undefined,
+});
+
+/** What a measure's tooltip is about, and the rows it adds after the change. */
+const MEASURE_TOOLTIPS: Record<
+  Measure,
+  {
+    what: (t: T, spec: LayerSpec) => string;
+    extra: (c: CountryResult, t: T, locale: string, worst: TierSource | null) => Extra;
+  }
+> = {
+  production: {
+    what: (t, spec) => t('map.tooltip.production', { group: t(`groups.${spec.group}`) }),
+    extra: (c, t, _, worst) => tierExtra(c, t, worst),
+  },
+  emissions: {
+    what: (t, spec) => t('map.tooltip.emissions', { gas: t(`gases.${spec.gas}`) }),
+    extra: (c, t, _, worst) => tierExtra(c, t, worst),
+  },
+  deforestation: {
+    what: (t) => t('map.tooltip.deforestation'),
+    extra: (c, t, locale) => ({ rows: [clearingCo2Row(c, t, locale)] }),
+  },
+  landShare: {
+    what: (t) => t('map.tooltip.landShare'),
+    extra: (c, t, locale) => ({ rows: [farmlandRow(c, t, locale), ...landRows(c, t, locale)] }),
+  },
+  land: {
+    what: (t) => t('map.tooltip.land'),
+    extra: (c, t, locale) => ({ rows: landRows(c, t, locale) }),
+  },
+};
+
+/** A country's before and after numbers, then the measure's own rows. */
+const countryTooltip = (
+  name: string,
+  c: CountryResult,
+  spec: LayerSpec,
+  t: T,
+  locale: string,
+  worst: TierSource | null,
+): TooltipModel => {
+  const ba = beforeAfter(c, spec);
+  const measure = formatMeasure(locale, ba.kind);
+  const own = MEASURE_TOOLTIPS[ba.kind];
+  const change = relativeChange(ba);
+  const extra = own.extra(c, t, locale, worst);
+  return {
+    title: name,
+    rows: [
+      [own.what(t, spec), ''],
+      [t('map.tooltip.before'), measure(ba.before)],
+      [t('map.tooltip.after'), measure(ba.after)],
+      [t('map.tooltip.change'), change === null ? '–' : formatPercent(locale, change, 1, true)],
+      ...extra.rows,
+    ],
+    ...(extra.source ? { source: extra.source } : {}),
+  };
+};
+
+/** Before and after numbers, then the measure's own rows: the tier and its source, or land's parts. */
 export const tooltipModel = (
   name: string,
   c: CountryResult | undefined,
@@ -55,37 +131,7 @@ export const tooltipModel = (
   t: T,
   locale: string,
   worst: TierSource | null = null,
-): TooltipModel => {
-  if (!c) return { title: name, rows: [[t('map.tooltip.noData'), '']] };
-  const ba = beforeAfter(c, spec);
-  const measure = formatMeasure(locale, ba.kind);
-  const what =
-    ba.kind === 'production'
-      ? t('map.tooltip.production', { group: t(`groups.${spec.group}`) })
-      : ba.kind === 'emissions'
-        ? t('map.tooltip.emissions', { gas: t(`gases.${spec.gas}`) })
-        : ba.kind === 'deforestation'
-          ? t('map.tooltip.deforestation')
-          : ba.kind === 'landShare'
-            ? t('map.tooltip.landShare')
-            : t('map.tooltip.land');
-  const change = relativeChange(ba);
-  const tier = worst?.tier ?? c.worstTier;
-  const rows: [string, string][] = [
-    [what, ''],
-    [t('map.tooltip.before'), measure(ba.before)],
-    [t('map.tooltip.after'), measure(ba.after)],
-    [t('map.tooltip.change'), change === null ? '–' : formatPercent(locale, change, 1, true)],
-  ];
-  return ba.kind === 'land'
-    ? { title: name, rows: [...rows, ...landRows(c, t, locale)] }
-    : ba.kind === 'landShare'
-      ? { title: name, rows: [...rows, farmlandRow(c, t, locale), ...landRows(c, t, locale)] }
-      : ba.kind === 'deforestation'
-        ? { title: name, rows: [...rows, clearingCo2Row(c, t, locale)] }
-        : {
-            title: name,
-            rows: [...rows, [t('map.tooltip.tier'), t(`tiers.${tier}`)]],
-            source: worst ? sourceInText(worst.source) : undefined,
-          };
-};
+): TooltipModel =>
+  c
+    ? countryTooltip(name, c, spec, t, locale, worst)
+    : { title: name, rows: [[t('map.tooltip.noData'), '']] };

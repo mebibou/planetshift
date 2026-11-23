@@ -125,9 +125,7 @@ export const populationChart = (
     h('figcaption', {}, caption, notes),
   );
   let last: [WorldPopulation, Range, number, number | null] | null = null;
-  const render = () => {
-    if (!last) return;
-    const [p, range, end, shift] = last;
+  const draw = ([p, range, end, shift]: NonNullable<typeof last>) => {
     const from = RANGE_START[range];
     const narrow = (plotEl.clientWidth || 640) < 520;
     const f = frame(
@@ -219,6 +217,9 @@ export const populationChart = (
     ).join(' ');
     notes.textContent = text;
     notes.hidden = text === '';
+  };
+  const render = () => {
+    if (last) draw(last);
   };
   onResize(plotEl, render);
   return {

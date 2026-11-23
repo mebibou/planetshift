@@ -30,23 +30,37 @@ const switchesOf = (schema: ConfigSchema): Record<string, SwitchSchema> =>
  * Every switch's value: the config's, or its default when left out. Throws on a key the schema
  * does not know or a value outside a switch's values, so a fork's build fails rather than guess.
  */
+/** Throws with every problem found, so a fork's build fails rather than guess. */
+const failOn = (errors: string[]): void => {
+  if (errors.length > 0) throw new Error(`planetshift.config.json: ${errors.join('; ')}`);
+};
+
+/** The config's departures, checked to be an object. */
+const departuresIn = (top: Record<string, unknown>): Record<string, unknown> => {
+  const given = top.departures ?? {};
+  failOn(
+    typeof given !== 'object' || given === null || Array.isArray(given)
+      ? ['departures must be an object']
+      : [],
+  );
+  return given as Record<string, unknown>;
+};
+
+/** What is wrong with one departure's value: an unknown switch, or a value it does not take. */
+const departureErrors = (s: SwitchSchema | undefined, k: string, v: unknown): string[] =>
+  !s
+    ? [`unknown departure ${k}`]
+    : !s.enum.includes(v as string)
+      ? [`${k} is ${JSON.stringify(v)}, not one of ${s.enum.join(', ')}`]
+      : [];
+
 export const resolveDepartures = (schema: ConfigSchema, config: unknown): Departures => {
   const known = switchesOf(schema);
   const top = (config ?? {}) as Record<string, unknown>;
   const unknown = Object.keys(top).filter((k) => !(k in schema.properties));
-  if (unknown.length > 0) throw new Error(`planetshift.config.json: unknown keys ${unknown}`);
-  const given = top.departures ?? {};
-  if (typeof given !== 'object' || given === null || Array.isArray(given))
-    throw new Error('planetshift.config.json: departures must be an object');
-  const errors = Object.entries(given).flatMap(([k, v]) => {
-    const s = known[k];
-    return !s
-      ? [`unknown departure ${k}`]
-      : !s.enum.includes(v as string)
-        ? [`${k} is ${JSON.stringify(v)}, not one of ${s.enum.join(', ')}`]
-        : [];
-  });
-  if (errors.length > 0) throw new Error(`planetshift.config.json: ${errors.join('; ')}`);
+  failOn(unknown.length > 0 ? [`unknown keys ${unknown}`] : []);
+  const given = departuresIn(top);
+  failOn(Object.entries(given).flatMap(([k, v]) => departureErrors(known[k], k, v)));
   const values = given as Record<string, string | undefined>;
   return Object.fromEntries(
     Object.entries(known).map(([k, s]) => [k, values[k] ?? s.default]),

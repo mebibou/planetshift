@@ -48,15 +48,16 @@ def co2e(gases: dict) -> float:
 def split(total_co2e: float, profile: dict) -> dict:
     """kg of each gas that make up total_co2e in the proportions of profile's CO2e."""
     weight = co2e(profile)
-    if weight <= 0:
-        return {gas: 0.0 for gas in GASES}
-    return {gas: total_co2e * profile[gas] / weight for gas in GASES}
+    return {gas: total_co2e * profile[gas] / weight if weight > 0 else 0.0 for gas in GASES}
 
 
 def hestia_profiles(intensities: pd.DataFrame) -> dict:
     """(fbs item, scope) → mean kg of each gas per tonne: the World row, or the countries' mean."""
-    if intensities.empty:
-        return {}
+    return item_profiles(intensities) if not intensities.empty else {}
+
+
+def item_profiles(intensities: pd.DataFrame) -> dict:
+    """The World row of each item, else the mean of the countries'."""
     world = intensities[intensities.area == "World"]
     countries = intensities[intensities.area.str.len() == 3]
     rows = pd.concat([world, countries[~countries.fbs_item_code.isin(world.fbs_item_code)]])
@@ -72,8 +73,11 @@ def faostat_profiles(emissions: pd.DataFrame) -> dict:
         (emissions["Area Code"] == WORLD_AREA_CODE)
         & emissions["Element Code"].isin(ON_FARM_ELEMENTS)
     ]
-    if world.empty:
-        return {}
+    return species_profiles(world) if not world.empty else {}
+
+
+def species_profiles(world: pd.DataFrame) -> dict:
+    """Species → kg of each gas, the latest year of the world's rows."""
     latest = world[world.Year == world.Year.max()].assign(
         gas=lambda frame: frame["Element Code"].map(ON_FARM_ELEMENTS)
     )
@@ -87,17 +91,32 @@ def faostat_profiles(emissions: pd.DataFrame) -> dict:
 def scoped(farm_co2e: float, profile: str, hestia_by_item: dict, faostat_by_species: dict) -> dict:
     """kg of each gas per unit of the product, by scope, or {} when the profile is unknown."""
     kind, _, key = profile.partition(":")
-    if kind == "faostat":
-        gases = faostat_by_species.get(key)
-        return {scope: split(farm_co2e, gases) for scope in SCOPES} if gases else {}
-    cradle = hestia_by_item.get((int(key), "cradleToFarmGate"))
-    gate = hestia_by_item.get((int(key), "farmGate"))
-    if not cradle or not gate or co2e(cradle) <= 0:
-        return {}
-    return {
-        "cradleToFarmGate": split(farm_co2e, cradle),
-        "farmGate": split(farm_co2e * co2e(gate) / co2e(cradle), gate),
-    }
+    return (
+        faostat_scoped(farm_co2e, faostat_by_species.get(key))
+        if kind == "faostat"
+        else hestia_scoped(
+            farm_co2e,
+            hestia_by_item.get((int(key), "cradleToFarmGate")),
+            hestia_by_item.get((int(key), "farmGate")),
+        )
+    )
+
+
+def faostat_scoped(farm_co2e: float, gases: dict | None) -> dict:
+    """A FAOSTAT species' split, the same in both scopes."""
+    return {scope: split(farm_co2e, gases) for scope in SCOPES} if gases else {}
+
+
+def hestia_scoped(farm_co2e: float, cradle: dict | None, gate: dict | None) -> dict:
+    """A HESTIA item's split in each scope, the farm gate scaled by its share of the cradle's."""
+    return (
+        {
+            "cradleToFarmGate": split(farm_co2e, cradle),
+            "farmGate": split(farm_co2e * co2e(gate) / co2e(cradle), gate),
+        }
+        if cradle and gate and co2e(cradle) > 0
+        else {}
+    )
 
 
 def load_terms(path: Path = TERMS_CSV) -> pd.DataFrame:
@@ -121,9 +140,15 @@ def literature_rows(terms: pd.DataFrame, hestia_by_item: dict, faostat_by_specie
 
 def combine(rows: list) -> pd.DataFrame:
     """Averages the products of one FBS item, weighted by their food and waste in 2009-11."""
-    if not rows:
-        return pd.DataFrame(columns=COLUMNS).astype({"fbs_item_code": int})
-    frame = pd.DataFrame(rows)
+    return (
+        averaged(pd.DataFrame(rows))
+        if rows
+        else pd.DataFrame(columns=COLUMNS).astype({"fbs_item_code": int})
+    )
+
+
+def averaged(frame: pd.DataFrame) -> pd.DataFrame:
+    """Each item's products averaged by their weight, per scope."""
     weighted = (
         frame[list(GASES)]
         .mul(frame.weight, axis=0)

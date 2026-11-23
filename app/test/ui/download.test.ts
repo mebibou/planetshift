@@ -177,16 +177,16 @@ describe('chart csv', () => {
 
   it('gives warming by cause from the climate data, even before the model has run', () => {
     expect(DEFAULT_OPTIONS.ssp).toBe('ssp245');
-    const file = chart('cause', null);
-    expect(file?.name).toBe('planetshift-cause-ssp245.csv');
-    const [header, first] = lines(file?.text ?? '');
-    expect(header?.split(',')).toHaveLength(1 + 12 + 1 + 7 * 3);
+    const file = chart('cause', null) ?? expect.fail('no file');
+    expect(file.name).toBe('planetshift-cause-ssp245.csv');
+    const [header, first] = lines(file.text) as [string, string];
+    expect(header.split(',')).toHaveLength(1 + 12 + 1 + 7 * 3);
     expect(header).toContain('warming_agriculture_p95_degC');
     expect(header).toContain('observed_degC,warming_co2_fossilIndustry_median_degC');
-    expect(header?.endsWith('warming_n2o_other_p95_degC')).toBe(true);
-    expect(first?.startsWith('2025,1,0,2,0.3,')).toBe(true);
+    expect(header.endsWith('warming_n2o_other_p95_degC')).toBe(true);
+    expect(first.startsWith('2025,1,0,2,0.3,')).toBe(true);
     expect(
-      first?.endsWith(
+      first.endsWith(
         ',1.1,0.9,-0.1,1.9,0.1,-0.9,1.1,0,-1,1,0.2,-0.8,1.2,0.1,-0.9,1.1,0.05,-0.95,1.05,0.01,-0.99,1.01',
       ),
     ).toBe(true);

@@ -17,9 +17,10 @@ const anchor = (id: string) => `method-${id}`;
 /** Scrolls to the section a link names, again once the web font has reflowed the page. */
 export const scrollToSection = (hash: string) => {
   const target = hash.startsWith('#method-') ? document.getElementById(hash.slice(1)) : null;
-  if (!target) return;
-  target.scrollIntoView();
-  void document.fonts?.ready.then(() => target.isConnected && target.scrollIntoView());
+  if (target) {
+    target.scrollIntoView();
+    void document.fonts?.ready.then(() => target.isConnected && target.scrollIntoView());
+  }
 };
 
 /** The Methodology page: the markdown sections in order, with a table of contents beside them. */
@@ -51,9 +52,10 @@ export const methodologyView = (t: T, lang: Lang): HTMLElement => {
     if ((e.target as Element).closest('a')) setOpen(false);
   });
   toc.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape' || !toc.classList.contains('open')) return;
-    setOpen(false);
-    toggle.focus();
+    if (e.key === 'Escape' && toc.classList.contains('open')) {
+      setOpen(false);
+      toggle.focus();
+    }
   });
   const body = sections.length
     ? sections.map((s) => {

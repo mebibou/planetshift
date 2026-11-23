@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from ..cache import fetched, record, recorded, today
+from ..cache import extracted, fetched, record, recorded, today
 
 log = logging.getLogger(__name__)
 
@@ -149,13 +149,11 @@ def kept_rows(chunk: pd.DataFrame, year_col: str, first_year: int, last_year: in
 
 def read(cache_dir: Path, domain: str, first_year: int, last_year: int) -> pd.DataFrame:
     """Rows of a domain for the years asked, kept as an extract in the cache once read."""
-    extract = extract_path(cache_dir, domain, first_year, last_year)
-    if extract.exists():
-        return pd.read_pickle(extract)
-    log.info("reading %s %s-%s", domain, first_year, last_year)
-    df = read_zip(
-        bulk_path(cache_dir, domain), first_year, last_year, ENCODINGS.get(domain, "utf-8")
-    )
-    extract.parent.mkdir(parents=True, exist_ok=True)
-    df.to_pickle(extract)
-    return df
+
+    def build() -> pd.DataFrame:
+        log.info("reading %s %s-%s", domain, first_year, last_year)
+        return read_zip(
+            bulk_path(cache_dir, domain), first_year, last_year, ENCODINGS.get(domain, "utf-8")
+        )
+
+    return extracted(extract_path(cache_dir, domain, first_year, last_year), build)

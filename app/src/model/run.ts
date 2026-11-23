@@ -143,13 +143,12 @@ export const productionChanges = (
   const use = animalUse(prepared, options.feed);
   const { scale } = use;
   /**
-   * Supply change of the animal (or plant) items from their change in end use (`endUse` plus
-   * `extra`), less the losses no longer incurred.
+   * Supply change of the animal (`want` 1) or plant (0) items from their change in end use
+   * (`endUse` plus `extra`), less the losses no longer incurred.
    */
-  const toSupply = (c: number, isAnimal: boolean, endUse: ItemVector, extra?: ItemVector) => {
+  const toSupply = (c: number, want: 0 | 1, endUse: ItemVector, extra?: ItemVector) => {
     const m = multipliers[c] as ItemVector;
     const lost = avoided?.[c];
-    const want = isAnimal ? 1 : 0;
     const out = new Float64Array(n);
     for (let i = 0; i < n; i++)
       if (animal[i] === want) {
@@ -171,7 +170,7 @@ export const productionChanges = (
     : foodList;
   const located = (demand: readonly ItemVector[]) =>
     locateAll(demand, emitting, worldEmitting, options.location);
-  const animals = clipAll(countries, located(used.map((u, c) => toSupply(c, true, u))), emitting);
+  const animals = clipAll(countries, located(used.map((u, c) => toSupply(c, 1, u))), emitting);
   /**
    * Milk and fish are feed items too (fishmeal): their feed use follows, once, the world's change
    * in the groups they feed from the change in food, so that a group removed everywhere takes
@@ -214,7 +213,7 @@ export const productionChanges = (
   );
   const plants = clipAll(
     countries,
-    located(used.map((u, c) => toSupply(c, false, u, feed[c]))),
+    located(used.map((u, c) => toSupply(c, 0, u, feed[c]))),
     emitting,
   );
   return {
@@ -273,17 +272,26 @@ export const countryBase = (pc: PreparedCountry, prepared: Prepared, scope: Scop
  * The supply-chain changes of several modules as one: each one's use applied to the last's,
  * the losses they avoid added, the latest module's multipliers.
  */
+/** A module's use applied to what the modules before it leave. */
+const thenUse = (used: SupplyChain['used'], before: SupplyChain['used']): SupplyChain['used'] =>
+  used && before ? (pc, food) => used(pc, before(pc, food)) : (used ?? before);
+
+/** The losses a module avoids added to those the modules before it avoid. */
+const plusLosses = (
+  lost: SupplyChain['avoidedLosses'],
+  before: SupplyChain['avoidedLosses'],
+): SupplyChain['avoidedLosses'] =>
+  lost && before ? (pc) => addVectors(before(pc), lost(pc)) : (lost ?? before);
+
 const combine = (chains: readonly SupplyChain[]): SupplyChain =>
-  chains.reduce<SupplyChain>((a, c) => {
-    const [used, before] = [c.used, a.used];
-    const [lost, lostBefore] = [c.avoidedLosses, a.avoidedLosses];
-    return {
-      used: used && before ? (pc, food) => used(pc, before(pc, food)) : (used ?? before),
+  chains.reduce<SupplyChain>(
+    (a, c) => ({
+      used: thenUse(c.used, a.used),
       multipliers: c.multipliers ?? a.multipliers,
-      avoidedLosses:
-        lost && lostBefore ? (pc) => addVectors(lostBefore(pc), lost(pc)) : (lost ?? lostBefore),
-    };
-  }, {});
+      avoidedLosses: plusLosses(c.avoidedLosses, a.avoidedLosses),
+    }),
+    {},
+  );
 
 const familyOf = (m: LeverModule): string => m.family ?? m.id;
 
@@ -307,11 +315,16 @@ interface Chain {
   chain: SupplyChain;
 }
 
+/** What a module changes in the supply chain in this run: its use and its chain, or nulls. */
+const supplyHooksOf = (m: LeverModule, ctx: RunContext) => ({
+  used: m.hooks.demand?.(ctx) ?? null,
+  chain: m.hooks.supplyChain?.(ctx) ?? null,
+});
+
 /** The modules that change the supply chain in this run, in registry order. */
 const chainsOf = (ctx: RunContext): Chain[] =>
   MODULES.flatMap((m) => {
-    const used = m.hooks.demand?.(ctx) ?? null;
-    const chain = m.hooks.supplyChain?.(ctx) ?? null;
+    const { used, chain } = supplyHooksOf(m, ctx);
     return used || chain
       ? [{ family: familyOf(m), chain: { ...chain, ...(used ? { used } : {}) } }]
       : [];
@@ -813,6 +826,28 @@ const dietActs = (s: Scenario): boolean =>
 
 const causeOfModule = (m: LeverModule): LeverCause => m.cause ?? DIET_CAUSE;
 
+/** A family's warming from forcing that is no emission, in the cause it mainly acts on. */
+const ownWarming = (
+  module: LeverModule,
+  part: WorldPart,
+  cause: CountedCause,
+  band: Band,
+): number[][] =>
+  module.family && part.extraWarming && causeOfModule(module) === cause
+    ? [part.extraWarming[band]]
+    : [];
+
+/** A family's warming counted in another cause (the energy levers' air pollution). */
+const otherWarming = (
+  module: LeverModule,
+  part: WorldPart,
+  cause: CountedCause,
+  band: Band,
+): number[][] => {
+  const own = part.warmingByCause?.[cause];
+  return module.family && own ? [own[band]] : [];
+};
+
 /**
  * The warming a module's world part adds in a cause, on the temperature years: its own forcing
  * in its own cause, and what it counts in another (the energy levers' air pollution).
@@ -823,10 +858,8 @@ const warmingIn = (
   cause: CountedCause,
   band: Band,
 ): number[][] => [
-  ...(module.family && part.extraWarming && causeOfModule(module) === cause
-    ? [part.extraWarming[band]]
-    : []),
-  ...(module.family && part.warmingByCause?.[cause] ? [part.warmingByCause[cause][band]] : []),
+  ...ownWarming(module, part, cause, band),
+  ...otherWarming(module, part, cause, band),
 ];
 
 const zeroPaths = memoPer<readonly number[], GasVector[]>();
@@ -931,27 +964,27 @@ const emissionsPass = (
         .map(([f, v]) => [f, familyPath(NO_FARM, v, years, scale, shareAt)]),
     ),
   );
+  /** A family's farm emissions in a band, or none. */
+  const farmPath = (f: string, band: Band): GasVector[] => {
+    const farm = farmTotal(parts, f, band);
+    return isZero(farm.own) && isZero(farm.joint)
+      ? zeroPath(years)
+      : familyPath(farm, NO_CLEARING, years, scale, shareAt);
+  };
+  /** A farm family's paths: its farm emissions in farming, its clearing in the other causes. */
+  const farmPaths = (f: string, band: Band): ByCause<GasVector[]> =>
+    causeRecord((c) =>
+      c === 'agriculture' ? farmPath(f, band) : (clearingPaths[c][f] ?? zeroPath(years)),
+    );
+  /** A family's own emissions, all in the cause it mainly acts on. */
+  const ownPaths = (module: LeverModule, extra: GasVector[]): ByCause<GasVector[]> =>
+    causeRecord((c) => (c === causeOfModule(module) ? extra : zeroPath(years)));
   const pathsIn = (band: Band): Record<string, ByCause<GasVector[]>> =>
     Object.fromEntries(
       FAMILIES.map((f) => {
         const own = ownOf(f);
         const extra = own?.part.extraEmissions?.[band];
-        if (extra && own) {
-          const cause = causeOfModule(own.module);
-          return [f, causeRecord((c) => (c === cause ? extra : zeroPath(years)))];
-        }
-        return [
-          f,
-          causeRecord((c) => {
-            if (c === 'agriculture') {
-              const farm = farmTotal(parts, f, band);
-              return isZero(farm.own) && isZero(farm.joint)
-                ? zeroPath(years)
-                : familyPath(farm, NO_CLEARING, years, scale, shareAt);
-            }
-            return clearingPaths[c][f] ?? zeroPath(years);
-          }),
-        ];
+        return [f, extra && own ? ownPaths(own.module, extra) : farmPaths(f, band)];
       }),
     );
   return {
@@ -960,6 +993,12 @@ const emissionsPass = (
     world,
     paths: Object.fromEntries(bands.map((b) => [b, pathsIn(b)])),
   };
+};
+
+/** The warming avoided at horizon `h`: the emissions' and the extra forcing's, with its sign. */
+const avoidedAtHorizon = (warming: readonly number[], extras: number[][], h: 0 | 1): number => {
+  const year = HORIZON_YEARS[h] as number;
+  return 0 - ((warming[h] ?? 0) + sum(extras.map((e) => e[year - FIRST_YEAR] ?? 0)));
 };
 
 /**
@@ -984,11 +1023,10 @@ const familyValues = (pass: Pass, frame: PassFrame, family: string): number[] =>
       HORIZON_YEARS,
     );
     const extras = own ? warmingIn(own.module, own.part, c, 'median') : [];
-    const extraAt = (year: number) => sum(extras.map((e) => e[year - FIRST_YEAR] ?? 0));
     const atEnd = path[completeIndex];
     return [
-      0 - ((warming[0] ?? 0) + extraAt(HORIZON_YEARS[0] as number)),
-      0 - ((warming[1] ?? 0) + extraAt(HORIZON_YEARS[1] as number)),
+      avoidedAtHorizon(warming, extras, 0),
+      avoidedAtHorizon(warming, extras, 1),
       atEnd ? -co2eOf(atEnd) : 0,
     ];
   });
@@ -1043,7 +1081,10 @@ const familyShares = (
     );
   const passValues = (inPlay: readonly string[]): Map<string, number[]> => {
     const key = inPlay.join('|');
-    if (key === fullKey) return fullValues;
+    return key === fullKey ? fullValues : otherPass(inPlay, key);
+  };
+  /** The values of a pass with only the production families `inPlay`, kept per set of them. */
+  const otherPass = (inPlay: readonly string[], key: string): Map<string, number[]> => {
     const { scenario, options, currentYear } = ctx;
     const { shift, groupShifts, basis, replacement, where } = scenario;
     const families = [...inPlay, ...dependent];

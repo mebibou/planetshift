@@ -63,23 +63,52 @@ export const normalise = (weights: ItemVector): ItemVector => {
 
 export const isEmpty = (v: ItemVector): boolean => v.every((x) => x === 0);
 
+/** A yearly series' value in `year` read straight off its index, when its years run one by one. */
+const directAt = (years: readonly number[], values: readonly number[], year: number) => {
+  const first = years[0];
+  return first !== undefined && years[year - first] === year ? values[year - first] : undefined;
+};
+
+/** Linear between the points either side of `upper`, the first point at or after `year`. */
+const between = (
+  years: readonly number[],
+  values: readonly number[],
+  upper: number,
+  year: number,
+) => {
+  const [y0, y1] = [years[upper - 1] as number, years[upper] as number];
+  const [v0, v1] = [values[upper - 1] as number, values[upper] as number];
+  return y1 === y0 ? v1 : v0 + ((v1 - v0) * (year - y0)) / (y1 - y0);
+};
+
+/** Linear between points, held flat beyond the ends, NaN when there are none. */
+const interpolated = (
+  years: readonly number[],
+  values: readonly number[],
+  year: number,
+): number => {
+  const n = Math.min(years.length, values.length);
+  const upper = years.findIndex((y, i) => i < n && y >= year);
+  return n === 0
+    ? NaN
+    : upper === 0
+      ? (values[0] as number)
+      : upper === -1
+        ? (values[n - 1] as number)
+        : between(years, values, upper, year);
+};
+
 /** A series' value in a year: linear between points, held flat beyond its ends, NaN when empty. */
 export const valueAt = (
   years: readonly number[],
   values: readonly number[],
   year: number,
-): number => {
-  const first = years[0];
-  const direct = first === undefined ? undefined : values[year - first];
-  if (first !== undefined && years[year - first] === year && direct !== undefined) return direct;
-  const n = Math.min(years.length, values.length);
-  if (n === 0) return NaN;
-  const upper = years.findIndex((y, i) => i < n && y >= year);
-  if (upper === 0) return values[0] as number;
-  if (upper === -1) return values[n - 1] as number;
-  const [y0, y1] = [years[upper - 1] as number, years[upper] as number];
-  const [v0, v1] = [values[upper - 1] as number, values[upper] as number];
-  return y1 === y0 ? v1 : v0 + ((v1 - v0) * (year - y0)) / (y1 - y0);
+): number => directAt(years, values, year) ?? interpolated(years, values, year);
+
+/** The value kept in `map` for `key`, computed and kept the first time it is asked for. */
+export const cachedIn = <K extends object, V>(map: WeakMap<K, V>, key: K, compute: () => V): V => {
+  if (!map.has(key)) map.set(key, compute());
+  return map.get(key) as V;
 };
 
 /** A value computed once per owner object and key, for what does not depend on the scenario. */
@@ -89,9 +118,8 @@ export const memoPer = <O extends object, V>() => {
     const byKey = store.get(owner) ?? new Map<string, V>();
     if (!store.has(owner)) store.set(owner, byKey);
     const found = byKey.get(key);
-    if (found !== undefined) return found;
-    const value = compute();
-    byKey.set(key, value);
+    const value = found !== undefined ? found : compute();
+    if (found === undefined) byKey.set(key, value);
     return value;
   };
 };
@@ -110,17 +138,14 @@ export const dataValueAt = (
   years: readonly number[],
   values: readonly number[],
   year: number,
-): number => {
-  if (year < FIRST_YEAR || year > END_YEAR) return valueAt(years, values, year);
-  const found = tables.get(values);
-  const table =
-    found ??
-    Float64Array.from({ length: END_YEAR - FIRST_YEAR + 1 }, (_, i) =>
-      valueAt(years, values, FIRST_YEAR + i),
-    );
-  if (!found) tables.set(values, table);
-  return table[year - FIRST_YEAR] as number;
-};
+): number =>
+  year < FIRST_YEAR || year > END_YEAR
+    ? valueAt(years, values, year)
+    : (cachedIn(tables, values, () =>
+        Float64Array.from({ length: END_YEAR - FIRST_YEAR + 1 }, (_, i) =>
+          valueAt(years, values, FIRST_YEAR + i),
+        ),
+      )[year - FIRST_YEAR] as number);
 
 export const zerosOn = (years: readonly number[]): number[] => years.map(() => 0);
 
@@ -138,9 +163,9 @@ export const memoLatest = <O extends object, V>() => {
   const store = new WeakMap<O, { key: string; value: V }>();
   return (owner: O, key: string, compute: () => V): V => {
     const found = store.get(owner);
-    if (found && found.key === key) return found.value;
-    const value = compute();
-    store.set(owner, { key, value });
+    const hit = found !== undefined && found.key === key;
+    const value = hit ? found.value : compute();
+    if (!hit) store.set(owner, { key, value });
     return value;
   };
 };

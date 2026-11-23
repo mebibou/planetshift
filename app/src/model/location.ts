@@ -34,10 +34,20 @@ export const locateAll = (
   emitting: readonly ItemVector[],
   worldEmitting: ItemVector,
   location: Location,
+): ItemVector[] =>
+  location === 'fixedTrade'
+    ? byShare(addVectors(zeros(worldEmitting.length), ...demand), emitting, worldEmitting, demand)
+    : locateDomestic(demand, emitting, worldEmitting.length);
+
+/**
+ * domestic: each country makes what it can of its own change, and what it cannot is shared by
+ * the countries' emitting production after their own change.
+ */
+const locateDomestic = (
+  demand: readonly ItemVector[],
+  emitting: readonly ItemVector[],
+  n: number,
 ): ItemVector[] => {
-  const n = worldEmitting.length;
-  if (location === 'fixedTrade')
-    return byShare(addVectors(zeros(n), ...demand), emitting, worldEmitting, demand);
   const own = demand.map((d, c) => clipChange(emitting[c] as ItemVector, d).change);
   const residual = zeros(n);
   demand.forEach((d, c) => {

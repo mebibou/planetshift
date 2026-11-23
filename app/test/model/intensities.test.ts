@@ -1,3 +1,4 @@
+import { attempt } from '../../src/app/attempt';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -9,18 +10,15 @@ import type { Intensities, IntensitiesFile } from '../../src/data/types';
 const BEFORE_TABLE = '1580d3f';
 const FILE = 'app/public/data/intensities.json';
 
-const before = (): Intensities | null => {
-  try {
+const before = (): Intensities | null =>
+  attempt(() => {
     const text = execFileSync('git', ['show', `${BEFORE_TABLE}:${FILE}`], {
       cwd: __dirname,
       maxBuffer: 64 * 1024 * 1024,
       stdio: ['ignore', 'pipe', 'ignore'],
     });
     return JSON.parse(text.toString('utf8')) as Intensities;
-  } catch {
-    return null;
-  }
-};
+  }, null);
 
 describe('intensities.json with a table of sources', () => {
   const old = before();

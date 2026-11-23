@@ -3,7 +3,7 @@ import { bandRecord, bandValue } from '../../model/bands';
 import type { Band } from '../../model/climate';
 import { OTHER_SCOPE } from '../../model/emissions';
 import { GROUPS, groupIndicesOf, type Prepared, type PreparedCountry } from '../../model/prepare';
-import { memoLatest, memoPer, range, zeros, type ItemVector } from '../../model/util';
+import { cachedIn, memoLatest, memoPer, range, zeros, type ItemVector } from '../../model/util';
 import {
   EMISSION_SOURCES,
   PRACTICES,
@@ -98,15 +98,10 @@ export const practiceCuts = (
 const maskCache = new WeakMap<Practice, Uint8Array>();
 
 /** 1 for each group of GROUPS a practice acts on (all when it names none), once per practice. */
-const groupMask = (p: Practice): Uint8Array => {
-  const found = maskCache.get(p);
-  if (found) return found;
-  const mask = Uint8Array.from(GROUPS, (g) =>
-    p.groups === undefined || p.groups.includes(g) ? 1 : 0,
+const groupMask = (p: Practice): Uint8Array =>
+  cachedIn(maskCache, p, () =>
+    Uint8Array.from(GROUPS, (g) => (p.groups === undefined || p.groups.includes(g) ? 1 : 0)),
   );
-  maskCache.set(p, mask);
-  return mask;
-};
 
 /**
  * The fraction of each item's intensity of each gas that the practices remove: the sum over
@@ -127,19 +122,20 @@ export const intensityCuts = (
     const acting = cuts.flatMap((c, k) =>
       c.practice.gases.includes(gas) && c.practice.sources.includes(source) ? [k] : [],
     );
-    if (acting.length === 0) return;
-    for (let g = 0; g < GROUPS.length; g++) {
-      let left = 1;
-      for (const k of acting)
-        if ((masks[k] as Uint8Array)[g] === 1) left *= 1 - (cuts[k] as PracticeCut).cut;
-      byGroup[g] = 1 - left;
+    if (acting.length > 0) {
+      for (let g = 0; g < GROUPS.length; g++) {
+        let left = 1;
+        for (const k of acting)
+          if ((masks[k] as Uint8Array)[g] === 1) left *= 1 - (cuts[k] as PracticeCut).cut;
+        byGroup[g] = 1 - left;
+      }
+      // An item without a share would only add zero.
+      const target = out[gas];
+      for (const i of items)
+        target[i] =
+          (target[i] as number) +
+          (shares[i] as number) * (byGroup[itemGroups[i] as number] as number);
     }
-    // An item without a share would only add zero.
-    const target = out[gas];
-    for (const i of items)
-      target[i] =
-        (target[i] as number) +
-        (shares[i] as number) * (byGroup[itemGroups[i] as number] as number);
   });
   return out;
 };

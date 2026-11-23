@@ -79,14 +79,16 @@ def n2o_forcing_per_kg() -> float:
 
 def _decay_response(t: np.ndarray, lifetime: float) -> np.ndarray:
     """Temperature per unit forcing-at-emission of a gas decaying with `lifetime` (years)."""
-    if np.isinf(lifetime):
-        return np.sum(Q[:, None] * (1 - np.exp(-t[None, :] / D[:, None])), axis=0)
-    return np.sum(
-        lifetime
-        * Q[:, None]
-        * (np.exp(-t[None, :] / lifetime) - np.exp(-t[None, :] / D[:, None]))
-        / (lifetime - D[:, None]),
-        axis=0,
+    return (
+        np.sum(Q[:, None] * (1 - np.exp(-t[None, :] / D[:, None])), axis=0)
+        if np.isinf(lifetime)
+        else np.sum(
+            lifetime
+            * Q[:, None]
+            * (np.exp(-t[None, :] / lifetime) - np.exp(-t[None, :] / D[:, None]))
+            / (lifetime - D[:, None]),
+            axis=0,
+        )
     )
 
 

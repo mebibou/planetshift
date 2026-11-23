@@ -51,6 +51,37 @@ const animalGroupsOf = (prepared: Prepared): readonly (AnimalGroup | undefined)[
     prepared.items.map((item) => (item.animal ? (item.group as AnimalGroup) : undefined)),
   );
 
+/** Each animal item's food less its group's share, tonnes, and the protein or kcal it held. */
+const removedFood = (
+  food: ItemVector,
+  groups: readonly (AnimalGroup | undefined)[],
+  shares: Record<AnimalGroup, number>,
+  perTonne: ItemVector,
+): { removed: ItemVector; removedBasis: number } => {
+  const removed = new Float64Array(food.length);
+  let total = 0;
+  for (let i = 0; i < food.length; i++) {
+    const t = food[i] as number;
+    const group = groups[i];
+    const r = group !== undefined && t > 0 ? -t * shares[group] : 0;
+    removed[i] = r;
+    total += r * (perTonne[i] as number);
+  }
+  return { removed, removedBasis: -total };
+};
+
+/** The removed food with the same protein or kcal added to the plant recipients, by share. */
+const withRecipients = (
+  removed: ItemVector,
+  recipients: ItemVector,
+  perTonne: ItemVector,
+  removedBasis: number,
+): ItemVector =>
+  Float64Array.from(removed, (t, i) => {
+    const share = recipients[i] as number;
+    return share > 0 ? t + (removedBasis * share) / (perTonne[i] as number) : t;
+  });
+
 /**
  * Change in food supply, tonnes per item: each animal item loses its group's share, and the
  * same protein (or kcal) is added to the plant recipients of the mix. Loops, as this runs for
@@ -61,29 +92,16 @@ export const foodChange = (
   pc: PreparedCountry,
   prepared: Prepared,
 ): ItemVector => {
-  const shares = removalShares(scenario, pc);
-  const groups = animalGroupsOf(prepared);
   const perTonne = basisVector(prepared, scenario.basis);
-  const n = pc.food.length;
-  const removed = new Float64Array(n);
-  let total = 0;
-  for (let i = 0; i < n; i++) {
-    const t = pc.food[i] as number;
-    const group = groups[i];
-    const r = group !== undefined && t > 0 ? -t * shares[group] : 0;
-    removed[i] = r;
-    total += r * (perTonne[i] as number);
-  }
-  const removedBasis = -total;
-  if (!(removedBasis > 0)) return removed;
-  const recipients = recipientsOf(scenario, pc, prepared);
-  const out = new Float64Array(n);
-  for (let i = 0; i < n; i++) {
-    const t = removed[i] as number;
-    const share = recipients[i] as number;
-    out[i] = share > 0 ? t + (removedBasis * share) / (perTonne[i] as number) : t;
-  }
-  return out;
+  const { removed, removedBasis } = removedFood(
+    pc.food,
+    animalGroupsOf(prepared),
+    removalShares(scenario, pc),
+    perTonne,
+  );
+  return removedBasis > 0
+    ? withRecipients(removed, recipientsOf(scenario, pc, prepared), perTonne, removedBasis)
+    : removed;
 };
 
 /** Protein (g) or energy (kcal) per person per day in a food vector. */

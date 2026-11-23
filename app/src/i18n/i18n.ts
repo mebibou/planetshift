@@ -1,3 +1,4 @@
+import { attempt } from '../app/attempt';
 import en from './en.json';
 import fr from './fr.json';
 import { flatten, lookup, type Params, type Tree } from './dict';
@@ -48,13 +49,8 @@ export type T = ReturnType<typeof translator>;
 
 const KEY = 'planetshift.lang';
 
-export const readStoredLang = (): Lang | null => {
-  try {
-    return parseLang(localStorage.getItem(KEY));
-  } catch {
-    return null;
-  }
-};
+export const readStoredLang = (): Lang | null =>
+  parseLang(attempt(() => localStorage.getItem(KEY), null));
 
 export const storeLang = (lang: Lang): void => {
   try {

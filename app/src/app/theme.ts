@@ -1,3 +1,4 @@
+import { attempt } from './attempt';
 export type Theme = 'light' | 'dark';
 
 const KEY = 'planetshift.theme';
@@ -10,13 +11,8 @@ export const effectiveTheme = (stored: Theme | null, prefersDark: boolean): Them
 
 export const toggled = (theme: Theme): Theme => (theme === 'dark' ? 'light' : 'dark');
 
-export const readStoredTheme = (): Theme | null => {
-  try {
-    return parseTheme(localStorage.getItem(KEY));
-  } catch {
-    return null;
-  }
-};
+export const readStoredTheme = (): Theme | null =>
+  parseTheme(attempt(() => localStorage.getItem(KEY), null));
 
 export const storeTheme = (theme: Theme): void => {
   try {

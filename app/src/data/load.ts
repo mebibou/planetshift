@@ -98,11 +98,13 @@ const loadFile = async (fetchFn: Fetch, url: string, optional = false): Promise<
   const response = await fetchFn(url).catch((e: unknown) => {
     throw new LoadError(url, e instanceof Error ? e.name : 'network error');
   });
-  if (optional && response.status === 404) return MISSING;
-  if (!response.ok) throw new LoadError(url, `HTTP ${response.status}`);
-  return response.json().catch(() => {
-    throw new LoadError(url, 'not valid JSON');
-  });
+  const missing = optional && response.status === 404;
+  if (!response.ok && !missing) throw new LoadError(url, `HTTP ${response.status}`);
+  return missing
+    ? MISSING
+    : response.json().catch(() => {
+        throw new LoadError(url, 'not valid JSON');
+      });
 };
 
 const isIntensitiesFile = (body: unknown): body is IntensitiesFile =>
@@ -142,14 +144,15 @@ export const loadAll = async (folder: string, fetchFn: Fetch = fetch): Promise<L
   const inFlight = new Map<string, Promise<unknown>>();
   const failed = new Set<string>();
   const fetchOnce = (f: string): Promise<unknown> => {
-    const known = inFlight.get(f);
-    if (known) return known;
-    const promise = loadFile(fetchFn, urlOf(f), true).catch((e: unknown) => {
-      failed.add(f);
-      throw e;
-    });
-    inFlight.set(f, promise);
-    return promise;
+    if (!inFlight.has(f))
+      inFlight.set(
+        f,
+        loadFile(fetchFn, urlOf(f), true).catch((e: unknown) => {
+          failed.add(f);
+          throw e;
+        }),
+      );
+    return inFlight.get(f) as Promise<unknown>;
   };
 
   const loaded = (data: ModelData, pending: readonly string[]): Loaded => ({

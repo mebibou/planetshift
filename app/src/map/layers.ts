@@ -97,10 +97,14 @@ export const relativeChange = ({ before, after }: BeforeAfter): number | null =>
 
 /** The number the map colours a country by, or null for no data. */
 export const layerValue = (c: CountryResult, spec: LayerSpec): number | null => {
-  if (spec.layer === 'quality') return c.worstTier;
   const ba = beforeAfter(c, spec);
-  if (spec.layer === 'change') return relativeChange(ba);
-  return ba.after > 0 ? ba.after : null;
+  return spec.layer === 'quality'
+    ? c.worstTier
+    : spec.layer === 'change'
+      ? relativeChange(ba)
+      : ba.after > 0
+        ? ba.after
+        : null;
 };
 
 export const layerValues = (
