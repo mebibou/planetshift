@@ -91,12 +91,11 @@ const markReading = (entries: readonly Entry[], list: HTMLElement, current: HTML
   entries.forEach((e, i) => markEntry(e, i === active, line, end));
   current.textContent = entries[active]?.title ?? '';
   const marked = list.querySelector<HTMLElement>('[aria-current]');
-  if (marked) keepInView(scrollerOf(list), marked);
+  if (marked && !scrolls(list)) keepInView(list.parentElement as HTMLElement, marked);
 };
 
-/** What scrolls the links: the list itself when open on a phone, else the table of contents. */
-const scrollerOf = (list: HTMLElement): HTMLElement =>
-  list.scrollHeight > list.clientHeight ? list : (list.parentElement as HTMLElement);
+/** The list scrolls on its own only when open on a phone, where the reader is browsing it. */
+const scrolls = (list: HTMLElement): boolean => list.scrollHeight > list.clientHeight;
 
 /** Scrolls the table of contents, not the page, so `el` is inside it. */
 const keepInView = (box: HTMLElement, el: HTMLElement) => {
