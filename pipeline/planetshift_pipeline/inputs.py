@@ -189,6 +189,7 @@ class Build:
             self.read("QV", y, y),
             crops,
             production,
+            self.nonfood_shares,
         )
         covered = set(self.read("GT", y, y)["area_code"]) & set(self.iso3)
         per_scope = {
@@ -238,11 +239,18 @@ class Build:
         return self.fetch(HESTIA_DEPENDENTS, "region_members", {})
 
     @cached_property
+    def nonfood_shares(self) -> pd.DataFrame:
+        """Share of each species' emissions from the animals not raised for food."""
+        y = self.emissions_year
+        return I.nonfood_shares(
+            self.read("GLE", y, y), self.read("QCL", y, y), self.read("TCL", y, y)
+        )
+
+    @cached_property
     def nonfood(self) -> pd.DataFrame:
         """kg a year by area_code, gas and process of the animals not raised for food."""
         y = self.emissions_year
-        gle = self.read("GLE", y, y)
-        kg = I.nonfood_emissions(gle, I.nonfood_shares(gle, self.read("QCL", y, y)))
+        kg = I.nonfood_emissions(self.read("GLE", y, y), self.nonfood_shares)
         return kg[kg["area_code"].isin(self.iso3)]
 
     @cached_property

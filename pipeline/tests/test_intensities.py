@@ -142,6 +142,51 @@ def test_nonfood_shares_keep_the_head_beyond_milking_and_slaughter():
     assert got[(1, 1107)] == 1.0
 
 
+def test_food_offtake_is_the_lowest_regional_mean():
+    assert I.FOOD_OFFTAKE == 0.067
+
+
+def test_nonfood_shares_grow_with_the_offtake_threshold():
+    gle_rows = gle((1, 961, I.STOCKS, 100.0))
+    qcl = qcl_rows((1, 867, I.SLAUGHTERED, 6.0))
+
+    def share(offtake: float) -> float:
+        got = I.nonfood_shares(gle_rows, qcl, offtake=offtake)
+        return float(got["share"].sum())
+
+    assert share(0.12) == pytest.approx(0.5)
+    assert share(0.099) == pytest.approx(1 - 6 / 9.9)
+    assert share(0.06) == 0.0
+
+
+def test_nonfood_shares_count_net_live_exports_as_offtake():
+    gle_rows = gle(
+        (1, 961, I.STOCKS, 100.0),
+        (2, 961, I.STOCKS, 100.0),
+        (3, 961, I.STOCKS, 100.0),
+        (1, 946, I.STOCKS, 100.0),
+    )
+    qcl = qcl_rows(
+        (1, 867, I.SLAUGHTERED, 1.0),
+        (2, 867, I.SLAUGHTERED, 1.0),
+        (3, 867, I.SLAUGHTERED, 1.0),
+        (1, 947, I.SLAUGHTERED, 1.0),
+    )
+    trade = qcl_rows(
+        (1, 866, I.EXPORTED_HEAD, 2.0),
+        (1, 866, I.IMPORTED_HEAD, 1.0),
+        (2, 866, I.IMPORTED_HEAD, 5.0),
+        (1, 946, I.EXPORTED_HEAD, 3.0),
+    )
+    got = I.nonfood_shares(gle_rows, qcl, trade, offtake=0.1).set_index(["area_code", "species"])
+    assert got.loc[(1, 961), "share"] == pytest.approx(0.8)
+    assert got.loc[(2, 961), "share"] == pytest.approx(0.9)
+    assert got.loc[(3, 961), "share"] == pytest.approx(0.9)
+    assert got.loc[(1, 946), "share"] == pytest.approx(0.6)
+    without = I.nonfood_shares(gle_rows, qcl, offtake=0.1).set_index(["area_code", "species"])
+    assert without.loc[(1, 961), "share"] == pytest.approx(0.9)
+
+
 def test_nonfood_emissions_leave_the_products_and_are_conserved():
     rows = gle((1, 961, 72254, 2.0), (1, 961, 72300, 0.1), (1, 1096, 72254, 1.0))
     shares = pd.DataFrame({"area_code": [1, 1], "species": [961, 1096], "share": [0.25, 1.0]})
