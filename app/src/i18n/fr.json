@@ -402,5 +402,27 @@
     "citeText": "Citez Planetshift et les sources d’origine :",
     "licence": "Licence :",
     "and": " et "
+  },
+  "tour": {
+    "label": "Premiers pas",
+    "progress": "Étape {n} sur {total}",
+    "skip": "Passer",
+    "back": "Précédent",
+    "next": "Suivant",
+    "done": "Commencer",
+    "steps": {
+      "chart": {
+        "title": "Ce que montre le graphique",
+        "text": "Le graphique montre le réchauffement mondial depuis 1850 : la température observée, puis deux trajectoires jusqu'en 2050 ou 2100, sans les leviers et avec les leviers que vous réglez. La bande ombrée autour de chaque trajectoire en donne la fourchette probable. L'onglet Réchauffement évité montre l'écart entre les deux."
+      },
+      "levers": {
+        "title": "Comment fonctionnent les leviers",
+        "text": "Le panneau Leviers range chaque levier sous la cause du réchauffement sur laquelle il agit. Ouvrez un groupe et déplacez un curseur pour choisir la part adoptée : le graphique, le résumé et la carte changent aussitôt. Le chiffre à côté de chaque groupe est le réchauffement qu'il éviterait seul, adopté en entier. Chaque réglage est gardé dans l'adresse de la page : un lien le rouvre."
+      },
+      "causes": {
+        "title": "Où sont les causes",
+        "text": "L'onglet Causes du réchauffement, au-dessus du graphique, répartit le réchauffement par cause (combustibles fossiles et industrie, agriculture, usage des terres et les autres) et montre ce que les leviers retirent de chacune. La page Méthodologie explique chaque étape et ses sources."
+      }
+    }
   }
 }

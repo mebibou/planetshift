@@ -4,17 +4,27 @@ import { browserLang, parseLang, readStoredLang, translator } from './i18n/i18n'
 import { applyTheme, readStoredTheme } from './app/theme';
 import { h } from './app/dom';
 import { startApp } from './app/shell';
+import { openTour, parseTourFlag, readTourSeen, shouldShowTour } from './app/tour';
+import { parseUi } from './app/url';
 
 const root = document.getElementById('app');
 const lang =
   readStoredLang() ?? parseLang(new URLSearchParams(location.search).get('lang')) ?? browserLang();
 const t = translator(lang);
+const tour = shouldShowTour(
+  parseTourFlag(location.search),
+  readTourSeen(),
+  parseUi(location.search).view,
+);
 applyTheme(readStoredTheme());
 
 if (root) {
   root.replaceChildren(h('p', { class: 'loading', role: 'status' }, t('load.loading')));
   loadAll(dataFolder(location.search))
-    .then((loaded) => startApp(root, loaded, lang, new Date().getFullYear()))
+    .then((loaded) => {
+      startApp(root, loaded, lang, new Date().getFullYear());
+      if (tour) openTour(t);
+    })
     .catch((e: unknown) =>
       root.replaceChildren(
         h(
