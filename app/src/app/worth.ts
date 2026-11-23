@@ -103,7 +103,7 @@ export const browserIdle: Idle = (task, delayMs) => {
 };
 
 export interface WorthCacheDeps {
-  run: (s: Scenario, o: Options) => Worth | null;
+  run: (s: Scenario, o: Options) => Promise<Worth | null>;
   onChange: (values: ReadonlyMap<WorthId, Worth>) => void;
   idle?: Idle;
   /** Quiet time after the last request before the first run, so slider moves stay smooth. */
@@ -114,7 +114,7 @@ export interface WorthCacheDeps {
 }
 
 export interface WorthCache {
-  /** The figures for these settings: those known at once, the others computed one per idle slice. */
+  /** The figures for these settings: those known at once, the others computed one at a time. */
   request: (s: Scenario, o: Options) => void;
   values: () => ReadonlyMap<WorthId, Worth>;
   /** Cancels the runs still to come, when the view is dropped. */
@@ -138,12 +138,19 @@ export const worthCache = (deps: WorthCacheDeps): WorthCache => {
     cache.set(key, v);
     if (cache.size > limit) cache.delete(cache.keys().next().value as string);
   };
+  let busy = false;
+  let stopped = false;
+  const missing = () => current.some((j) => !cache.has(j.key));
   const step = () => {
     const next = current.find((j) => !cache.has(j.key));
-    if (next && options) {
-      remember(next.key, run(next.scenario, options));
-      onChange(values());
-      if (current.some((j) => !cache.has(j.key))) cancel = idle(step, 0);
+    if (next && options && !busy && !stopped) {
+      busy = true;
+      void run(next.scenario, options).then((v) => {
+        busy = false;
+        remember(next.key, v);
+        onChange(values());
+        if (!stopped && missing()) cancel = idle(step, 0);
+      });
     }
   };
   return {
@@ -155,9 +162,12 @@ export const worthCache = (deps: WorthCacheDeps): WorthCache => {
       current = keyed;
       cancel();
       if (!same) onChange(values());
-      if (current.some((j) => !cache.has(j.key))) cancel = idle(step, quietMs);
+      if (missing()) cancel = idle(step, quietMs);
     },
     values,
-    stop: () => cancel(),
+    stop: () => {
+      stopped = true;
+      cancel();
+    },
   };
 };

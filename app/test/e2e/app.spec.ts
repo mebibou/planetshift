@@ -1265,3 +1265,9 @@ test('the contents mark the section and heading being read as the page scrolls',
   await expect(page.locator(`.toc-sub a[href="#${id}"]`)).toHaveAttribute('aria-current', '');
   await expect(page.locator('.toc [aria-current]')).toHaveCount(1);
 });
+
+test('the model runs in a Worker', async ({ page }) => {
+  await open(page);
+  await expect.poll(() => page.workers().length).toBeGreaterThanOrEqual(1);
+  await expect(page.locator('.run-error').first()).toBeHidden();
+});

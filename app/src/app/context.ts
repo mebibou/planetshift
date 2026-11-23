@@ -2,6 +2,7 @@ import type { Topology } from 'topojson-specification';
 import type { ModelData } from '../data/types';
 import type { Lang, T } from '../i18n/i18n';
 import type { Options, Scenario } from '../model/api';
+import type { ModelClient } from '../model/client';
 import type { Theme } from './theme';
 import type { UiState } from './url';
 
@@ -26,6 +27,8 @@ export interface ViewContext {
   /** The deferred lever files that failed to load. */
   failedFiles: () => readonly string[];
   world: Topology;
+  /** The model, in a Worker. */
+  model: ModelClient;
   currentYear: number;
   state: AppState;
   setScenario: (change: (s: Scenario) => Scenario) => void;

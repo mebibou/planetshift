@@ -29,6 +29,15 @@ const manual = () => {
   };
 };
 
+/** Runs the idle queue and the replies it waits for until nothing is left. */
+const drain = async (flush: () => void) => {
+  for (let i = 0; i < 20; i++) {
+    flush();
+    await Promise.resolve();
+    await Promise.resolve();
+  }
+};
+
 describe('worth', () => {
   it('runs each figure alone: the diet, each family, each food and each lever', () => {
     const jobs = worthJobs(scenario);
@@ -70,12 +79,12 @@ describe('worth', () => {
     expect(worthShown(values, 'lever:nope', '2050')).toBeNull();
   });
 
-  it('computes one figure per idle slice, keeps them, and waits for quiet', () => {
+  it('computes one figure at a time, keeps them, and waits for quiet', async () => {
     const { idle, queue, flush } = manual();
     let runs = 0;
     const seen: number[] = [];
     const cache = worthCache({
-      run: (s) => (runs++, { '2050': s.shift, '2100': s.shift }),
+      run: (s) => (runs++, Promise.resolve({ '2050': s.shift, '2100': s.shift })),
       onChange: (v) => seen.push(v.size),
       idle,
       jobs: (s) => worthJobs(s).slice(0, 3),
@@ -87,7 +96,7 @@ describe('worth', () => {
     expect(queue).toHaveLength(1);
     queue.shift()?.();
     expect(runs).toBe(1);
-    flush();
+    await drain(flush);
     expect(runs).toBe(3);
     expect(cache.values().get('diet')).toEqual({ '2050': 1, '2100': 1 });
     expect(seen.at(-1)).toBe(3);
@@ -95,7 +104,7 @@ describe('worth', () => {
     expect(queue).toHaveLength(0);
     cache.request(scenario, { ...DEFAULT_OPTIONS, ssp: 'ssp370' });
     expect(cache.values().size).toBe(0);
-    flush();
+    await drain(flush);
     expect(runs).toBe(6);
     cache.request(scenario, DEFAULT_OPTIONS);
     expect(cache.values().size).toBe(3);
@@ -106,7 +115,7 @@ describe('worth', () => {
     const { idle, queue } = manual();
     let runs = 0;
     const cache = worthCache({
-      run: () => (runs++, { '2050': 0, '2100': 0 }),
+      run: () => (runs++, Promise.resolve({ '2050': 0, '2100': 0 })),
       onChange: () => undefined,
       idle,
       jobs: (s) => worthJobs(s).slice(0, 3),
