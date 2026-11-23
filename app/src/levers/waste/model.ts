@@ -1,6 +1,6 @@
 import type { Prepared, PreparedCountry } from '../../model/prepare';
 import { multiplierWith } from '../../model/supplyChain';
-import { memoPer, type ItemVector } from '../../model/util';
+import { memoLatest, memoPer, type ItemVector } from '../../model/util';
 import type { Waste } from './data';
 
 /** Edible waste after shops is at most this share of a country's food supply (waste.md). */
@@ -63,3 +63,14 @@ export const avoidedSupply = (
   losses.map(
     (l, i) => cut * l * multiplierWith(lossShares[i] as number, seedShares[i] as number, cut),
   );
+
+const multiplierCache = memoLatest<PreparedCountry, ItemVector>();
+const avoidedCache = memoLatest<PreparedCountry, ItemVector>();
+
+/** A country's multipliersWith, kept for its latest cut. */
+export const countryMultipliers = (pc: PreparedCountry, cut: number): ItemVector =>
+  multiplierCache(pc, String(cut), () => multipliersWith(pc.lossShares, pc.seedShares, cut));
+
+/** A country's avoidedSupply, kept for its latest cut. */
+export const countryAvoidedSupply = (pc: PreparedCountry, cut: number): ItemVector =>
+  avoidedCache(pc, String(cut), () => avoidedSupply(pc.losses, pc.lossShares, pc.seedShares, cut));

@@ -2,7 +2,7 @@ import type { Departures } from '../../config';
 import type { Ssp } from '../../data/types';
 import { towards } from '../../model/bands';
 import type { Band } from '../../model/climate';
-import { valueAt } from '../../model/util';
+import { dataValueAt, recordFrom } from '../../model/util';
 import { coChange, NO_CO_CHANGE, type CoYear, type KeepsNox } from './coemissions';
 import type { CoEmissions, CoSector, Sector, Sectors } from './data';
 
@@ -35,20 +35,20 @@ export const hasSectors = (sectors: Partial<Sectors> | undefined): sectors is Se
 /** kg of CO₂ a sector emits in a year under an SSP. */
 export const sectorCo2 = (sectors: Sectors, ssp: Ssp, sector: Sector, year: number): number => {
   const s = sectors.co2[ssp][sector];
-  return s ? valueAt(s.years, s.values, year) : 0;
+  return s ? dataValueAt(s.years, s.values, year) : 0;
 };
 
 /** kg of CO₂ per kWh generated, never below zero. */
 export const gridAt = (sectors: Sectors, ssp: Ssp, year: number): number => {
   const g = sectors.gridIntensity[ssp];
-  return g ? Math.max(0, valueAt(g.years, g.values, year)) : 0;
+  return g ? Math.max(0, dataValueAt(g.years, g.values, year)) : 0;
 };
 
 /** kWh a year data centres use beyond 2024's, in the band's direction (more demand, more to avoid). */
 export const dataCentreKwh = (sectors: Sectors, year: number, band: Band): number => {
   const d = sectors.dataCentresTwh;
   const series = band === 'median' ? d.median : band === 'p95' ? d.high : d.low;
-  return d.years.length > 0 ? Math.max(0, valueAt(d.years, series, year)) * KWH_PER_TWH : 0;
+  return d.years.length > 0 ? Math.max(0, dataValueAt(d.years, series, year)) * KWH_PER_TWH : 0;
 };
 
 /** kg of CO₂ the data centres' extra demand emits each year on the SSP's grid; 0 for 'ssp'. */
@@ -69,7 +69,7 @@ export const dataCentreBaseline = (
 export type EnergyAdoption = Record<EnergyLever, number>;
 
 export const energyAdoption = (adoption: (id: string) => number, share: number): EnergyAdoption =>
-  Object.fromEntries(ENERGY_LEVERS.map((id) => [id, adoption(id) * share])) as EnergyAdoption;
+  recordFrom(ENERGY_LEVERS, (id) => adoption(id) * share);
 
 export interface YearContext {
   sectors: Sectors;
@@ -172,7 +172,8 @@ export const energyPaths = (
       forcing: years.map(() => 0),
     };
   const ctx: YearContext = { sectors, ssp, dataCentres, band };
-  const adoptions = years.map((y) => energyAdoption(adoption, shareAt(y)));
+  const full = energyAdoption(adoption, 1);
+  const adoptions = years.map((y) => energyAdoption((id) => full[id as EnergyLever], shareAt(y)));
   const bySource = years.map((y, i) => energyCo2BySource(ctx, y, adoptions[i] as EnergyAdoption));
   return {
     co2: bySource.map((s) => Object.values(s).reduce((total, v) => total + v, 0)),

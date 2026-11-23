@@ -1,7 +1,7 @@
 import type { Ssp } from '../../data/types';
 import { towards } from '../../model/bands';
 import type { Band } from '../../model/climate';
-import { sum, valueAt } from '../../model/util';
+import { dataValueAt, sum } from '../../model/util';
 import { coChange, NO_CO_CHANGE, type CoYear } from '../energy/coemissions';
 import type { CoEmissions, Sectors } from '../energy/data';
 import { gridAt, hasSectors } from '../energy/model';
@@ -26,7 +26,7 @@ export const industryCo2 = (
   year: number,
 ): number => {
   const s = industry.co2[ssp]?.[sector];
-  return s ? valueAt(s.years, s.values, year) : 0;
+  return s ? dataValueAt(s.years, s.values, year) : 0;
 };
 
 /** The adoptions reached in a year: the two levers and renewable electricity. */

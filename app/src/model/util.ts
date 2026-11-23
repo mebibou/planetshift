@@ -100,6 +100,28 @@ export const memoPer = <O extends object, V>() => {
 export const FIRST_YEAR = 1850;
 export const END_YEAR = 2100;
 
+const tables = new WeakMap<readonly number[], Float64Array>();
+
+/**
+ * valueAt for a data series read every year of every run: its values from FIRST_YEAR to END_YEAR
+ * tabulated once per values array, as it is never changed.
+ */
+export const dataValueAt = (
+  years: readonly number[],
+  values: readonly number[],
+  year: number,
+): number => {
+  if (year < FIRST_YEAR || year > END_YEAR) return valueAt(years, values, year);
+  const found = tables.get(values);
+  const table =
+    found ??
+    Float64Array.from({ length: END_YEAR - FIRST_YEAR + 1 }, (_, i) =>
+      valueAt(years, values, FIRST_YEAR + i),
+    );
+  if (!found) tables.set(values, table);
+  return table[year - FIRST_YEAR] as number;
+};
+
 export const zerosOn = (years: readonly number[]): number[] => years.map(() => 0);
 
 export const addSeries = (a: readonly number[], b: readonly number[]): number[] =>

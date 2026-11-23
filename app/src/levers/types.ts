@@ -190,7 +190,11 @@ export interface LeverModule {
   id: string;
   /** The family its effect is counted in, in the by-family breakdown; none for a feedback. */
   family?: string;
-  /** Whether its family is farming (farm emissions, clearing, farmland uptake) or not. */
+  /**
+   * Whether its family is farming (farm emissions, clearing, farmland uptake) or not. The world
+   * hook of a module outside farming reads only the options, the ramp and the adoptions of the
+   * levers outside farming, not the countries, and is kept while only farming moves.
+   */
   farm?: boolean;
   /**
    * The cause of warming its family mainly acts on: the heading its group goes under in the

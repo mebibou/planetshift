@@ -36,20 +36,27 @@ export const pastureChange = (
   return Math.max(-pasture.ha, pasture.ha * relative);
 };
 
+/** An oilseed's feed shares in all, and weighted by each group's relative change. */
+export interface CakeWeights {
+  total: number;
+  change: number;
+}
+
+export const cakeWeights = (
+  shares: Partial<Record<AnimalGroup, number>> | undefined,
+  relative: Partial<Record<AnimalGroup, number>>,
+): CakeWeights => ({
+  total: ANIMAL_GROUPS.reduce((a, g) => a + (shares?.[g] ?? 0), 0),
+  change: ANIMAL_GROUPS.reduce((a, g) => a + (shares?.[g] ?? 0) * (relative[g] ?? 0), 0),
+});
+
 /**
  * Change in an amount an oilseed's cake carries (its land, or its emissions): it changes with the
  * production of the animal groups the cake feeds, weighted by its feed shares, and never falls
  * below zero.
  */
-export const cakeAmountChange = (
-  amount: number,
-  shares: Partial<Record<AnimalGroup, number>> | undefined,
-  relative: Partial<Record<AnimalGroup, number>>,
-): number => {
-  const total = ANIMAL_GROUPS.reduce((a, g) => a + (shares?.[g] ?? 0), 0);
-  const change = ANIMAL_GROUPS.reduce((a, g) => a + (shares?.[g] ?? 0) * (relative[g] ?? 0), 0);
-  return total > 0 ? Math.max(-amount, (amount * change) / total) : 0;
-};
+export const cakeAmountChange = (amount: number, { total, change }: CakeWeights): number =>
+  total > 0 ? Math.max(-amount, (amount * change) / total) : 0;
 
 /** Change in the land of oilseeds crushed for cake, each oilseed's as `cakeAmountChange` says. */
 export const oilcakeChange = (
@@ -58,7 +65,7 @@ export const oilcakeChange = (
   relative: Partial<Record<AnimalGroup, number>>,
 ): number =>
   Object.entries(cakeHa ?? {}).reduce(
-    (acc, [code, ha]) => acc + cakeAmountChange(ha, sharesOf(code), relative),
+    (acc, [code, ha]) => acc + cakeAmountChange(ha, cakeWeights(sharesOf(code), relative)),
     0,
   );
 

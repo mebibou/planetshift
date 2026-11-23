@@ -6,7 +6,7 @@ import {
   type Scope,
   type Tier,
 } from '../data/types';
-import { cakeAmountChange, type CakeDemand } from './land';
+import { cakeAmountChange, cakeWeights, type CakeDemand } from './land';
 import type { Prepared, PreparedCountry } from './prepare';
 import { addGas, dot, gasVector, memoPer, ZERO_GAS, type ItemVector } from './util';
 
@@ -132,8 +132,8 @@ export const cakeEmissions = (cakes: CountryCakes): GasVector =>
 /** The change in each oilcake's emissions as the demand for the cake changes, as its land does. */
 export const cakeEmissionsChange = (cakes: CountryCakes, cake: CakeDemand): GasVector[] =>
   cakes.kg.map((kg, k) => {
-    const shares = cake.sharesOf(cakes.codes[k] as string);
-    return gasVector((g) => cakeAmountChange(kg[g], shares, cake.relative));
+    const weights = cakeWeights(cake.sharesOf(cakes.codes[k] as string), cake.relative);
+    return gasVector((g) => cakeAmountChange(kg[g], weights));
   });
 
 /** kg of each gas removed from oilcakes' emissions `kg` by cutting each oilseed's intensity by `cuts`. */
