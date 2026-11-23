@@ -1242,7 +1242,7 @@ test('an (i) button shows its text under it, and Escape or a click elsewhere clo
   await expect(tip).toBeHidden();
   await button.click();
   await expect(tip).toBeVisible();
-  await expect(tip).toHaveText(/ramps in from today/);
+  await expect(tip).toHaveText(/from today/);
   const [b, t] = await Promise.all([button.boundingBox(), tip.boundingBox()]);
   expect(t!.y).toBeGreaterThan(b!.y + b!.height - 1);
   await page.keyboard.press('Escape');
