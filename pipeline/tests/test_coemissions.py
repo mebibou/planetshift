@@ -89,6 +89,39 @@ def test_an_emission_factor_follows_the_ssp_but_never_worsens_and_is_held_once_c
     assert C.held_trend(np.array([1.0, 2.0]), np.array([1.0, 1.0])) == pytest.approx([1, 1])
 
 
+def test_no_base_year_co2_is_an_error_not_nan():
+    with pytest.raises(ValueError, match="base year"):
+        C.held_trend(np.array([1.0, 1.0]), np.array([0.0, 0.0]))
+
+
+def rcmip_rows(*rows):
+    years = {"1750": [1.0], "2500": [2.0]}
+    return pd.concat(
+        [
+            pd.DataFrame({"Scenario": [s], "Region": ["World"], "Variable": [v], **years})
+            for s, v in rows
+        ],
+        ignore_index=True,
+    )
+
+
+def test_a_misnamed_rcmip_variable_is_an_error_and_one_an_ssp_lacks_is_zero():
+    fossil = "Emissions|{}|MAGICC Fossil and Industrial|{}"
+    df = rcmip_rows(
+        ("ssp245", fossil.format("BC", "Energy Sector")),
+        ("ssp245", fossil.format("CO2", "Energy Sector")),
+        ("ssp245", fossil.format("CO2", "Aircraft")),
+    )
+    years = np.array([1750, 2500])
+    assert C.rcmip_sector(df, "ssp245", "bc", "Energy Sector", years) == pytest.approx([1, 2])
+    assert C.rcmip_sector(df, "ssp126", "bc", "Energy Sector", years) == pytest.approx([0, 0])
+    assert C.rcmip_sector(df, "ssp245", "bc", "Aircraft", years) == pytest.approx([0, 0])
+    with pytest.raises(KeyError, match="no bc or no sector"):
+        C.rcmip_sector(df, "ssp245", "bc", "Energy Sectr", years)
+    with pytest.raises(KeyError, match="no so2"):
+        C.rcmip_sector(df, "ssp245", "so2", "Energy Sector", years)
+
+
 def test_the_cloud_slope_is_the_derivative_of_faris_log_and_close_to_a_real_cut():
     parameters = pd.DataFrame(
         {

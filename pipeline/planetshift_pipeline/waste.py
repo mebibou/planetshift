@@ -59,7 +59,15 @@ SOURCES = [
 
 
 def download(cache_dir: Path) -> list[dict]:
-    return json.loads(fetched(cache_dir, URL, CACHE_NAME).read_text())["data"]
+    return whole_series(json.loads(fetched(cache_dir, URL, CACHE_NAME).read_text()))
+
+
+def whole_series(page: dict) -> list[dict]:
+    """The rows of the one page asked for, checked to be the whole series."""
+    rows, total = page["data"], page.get("totalElements")
+    if total is None or len(rows) < total:
+        raise ValueError(f"{SERIES}: {len(rows)} rows of {total}; raise pageSize in the URL")
+    return rows
 
 
 def report_table(rows: list[dict], sources: tuple[str, ...] = PREFERRED) -> pd.DataFrame:

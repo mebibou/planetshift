@@ -177,7 +177,6 @@ The URL keys of the options, the diet controls and the levers are listed under [
 - **PRIMAP-hist v2.8 is CC BY-NC-SA 4.0**: non-commercial and share-alike. Its world agricultural totals are in the published `climate.json`, and the attribution is computed from it.
 - **Berkeley Earth is CC BY-NC 4.0**: non-commercial; its observed series is in the published `climate.json`.
 - **RCMIP v5.1.0 is CC BY-SA 4.0**: share-alike; the scenario emissions and temperatures derive from it.
-- **IEA-EDGAR CO₂ is CC BY-NC-ND 4.0**: non-commercial and no derivatives. `sectors.json`'s road passenger and freight series are the scenarios' shapes scaled to EDGAR's 2023 road transport CO₂ (6.1 billion tonnes, from transport's 8.24 in its 2024 report). That calibration to one published value may count as a derivative: to settle with the JRC, or replace the value with another source (the IEA puts all transport at nearly 8 billion tonnes in 2022).
 
 The other sources are CC BY 4.0, public domain, the Open Government Licence, Apache 2.0 or MIT.
 

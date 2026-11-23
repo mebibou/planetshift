@@ -15,7 +15,9 @@ import pandas as pd
 from . import climate_fair
 from .cache import DEFAULT_CACHE
 from .climate import AGTP_SSP, DEFAULT_OUT, HORIZON, PULSE_YEAR, SSPS, band, rounded
-from .sources import ar6db, rcmip
+from .coemissions import FUELS as FOSSIL_FUELS
+from .coemissions import ROAD as ROAD_SECTORS
+from .sources import ar6db, ceds, rcmip
 
 log = logging.getLogger(__name__)
 
@@ -28,17 +30,16 @@ KWH_PER_TWH = 1e9
 TWH_PER_EJ = 1e6 / 3.6
 
 # Recent inventory (2023, kg CO₂/yr) each sector's SSP trajectory is scaled to meet.
-# Road: EDGAR 2024 report, transport 8.24 Gt with road about three quarters; split 60/40 between
-# passengers (cars, two- and three-wheelers, buses) and freight (trucks and vans) after the IEA's
-# tracking of cars and vans and of trucks and buses. Aviation (domestic and international): IEA
-# tracking, about 0.95 Gt. Shipping (international and domestic navigation): IEA tracking and the
-# IMO Fourth GHG Study, about 0.85 Gt. Electricity: Ember Global Electricity Review 2024,
-# 14,153 Mt for 29,471 TWh of demand, the basis of Ember's 480 g/kWh.
-ROAD_2023 = 6.1 * KG_PER_GT
+# Road: CEDS's fossil CO₂ of road transport in its last year, 2022 (`road_kg`), carried to 2023
+# by each SSP's transport shape; split 60/40 between passengers (cars, two- and three-wheelers,
+# buses) and freight (trucks and vans) after the IEA's tracking of cars and vans and of trucks and
+# buses. Aviation (domestic and international): IEA tracking, about 0.95 Gt. Shipping
+# (international and domestic navigation): IEA tracking and the IMO Fourth GHG Study, about
+# 0.85 Gt. Electricity: Ember Global Electricity Review 2024, 14,153 Mt for 29,471 TWh of demand,
+# the basis of Ember's 480 g/kWh.
 PASSENGER_SHARE = 0.6
+ROAD_SHARES = {"roadPassenger": PASSENGER_SHARE, "roadFreight": 1 - PASSENGER_SHARE}
 INVENTORY = {
-    "roadPassenger": ROAD_2023 * PASSENGER_SHARE,
-    "roadFreight": ROAD_2023 * (1 - PASSENGER_SHARE),
     "aviation": 0.95 * KG_PER_GT,
     "shipping": 0.85 * KG_PER_GT,
     "electricity": 14_153 * KG_PER_MT,
@@ -92,8 +93,8 @@ FORCING_SPECIE = "Solar"
 FORCING_SCALES = (1.0, 10.0)
 
 SOURCE = (
-    "RCMIP v5.1.0 and the IPCC AR6 Scenario Database (SSP marker runs), harmonised to EDGAR, IEA "
-    "and Ember 2023; IEA Energy and AI (2025); Lee et al. 2021; FaIR 2.2.5 with fair-calibrate "
+    "RCMIP v5.1.0 and the IPCC AR6 Scenario Database (SSP marker runs), harmonised to CEDS 2022, "
+    "IEA and Ember 2023; IEA Energy and AI (2025); Lee et al. 2021; FaIR 2.2.5 with fair-calibrate "
     "1.4.1"
 )
 
@@ -113,11 +114,11 @@ SOURCES = [
         "licence": "CC BY 4.0",
     },
     {
-        "id": "edgar-ghg-2024",
-        "name": "EDGAR, GHG emissions of all world countries, 2024 report (transport CO₂)",
-        "version": "2024",
-        "url": "https://doi.org/10.2760/4002897",
-        "licence": "CC BY-NC-ND 4.0 (IEA-EDGAR CO₂)",
+        "id": "ceds-road",
+        "name": "Community Emissions Data System (CEDS), road transport's fossil CO₂",
+        "version": ceds.VERSION,
+        "url": f"https://doi.org/{ceds.DOI}",
+        "licence": ceds.LICENCE,
     },
     {
         "id": "iea-tracking-transport",
@@ -156,10 +157,26 @@ def ramp(points: dict[int, float], years: np.ndarray) -> np.ndarray:
     return np.interp(years, known, [points[y] for y in known])
 
 
-def transport(rcmip_df: pd.DataFrame, ssp: str, years: np.ndarray) -> dict[str, np.ndarray]:
+def road_kg(table: pd.DataFrame) -> float:
+    """Road transport's fossil CO₂ in a CEDS table of CO₂ by sector and fuel, kg."""
+    rows = table[table["sector"].isin(ROAD_SECTORS) & table["fuel"].isin(FOSSIL_FUELS)]
+    return float(rows["kg"].sum())
+
+
+def transport(
+    rcmip_df: pd.DataFrame, ssp: str, years: np.ndarray, road: float
+) -> dict[str, np.ndarray]:
+    """kg CO₂/yr of each transport sector: its SSP shape scaled to its inventory, road's to
+    `road` in CEDS's last year."""
+    targets = {s: (ceds.LAST_YEAR, road * share) for s, share in ROAD_SHARES.items()} | {
+        s: (BASE_YEAR, INVENTORY[s]) for s in ("aviation", "shipping")
+    }
+
     def one(sector: str) -> np.ndarray:
-        shape = rcmip.series(rcmip_df, ssp, RCMIP_SHAPE[sector], years)
-        return np.maximum(scaled_to(shape, years, BASE_YEAR, INVENTORY[sector]), 0)
+        year, target = targets[sector]
+        span = np.arange(min(year, years[0]), years[-1] + 1)
+        shape = rcmip.series(rcmip_df, ssp, RCMIP_SHAPE[sector], span)
+        return np.maximum(scaled_to(shape, span, year, target)[span >= years[0]], 0)
 
     return {sector: one(sector) for sector in RCMIP_SHAPE}
 
@@ -189,14 +206,14 @@ def series(years: np.ndarray, values: np.ndarray) -> dict:
 
 
 def sector_co2(
-    rcmip_df: pd.DataFrame, rows: list[dict], years: np.ndarray
+    rcmip_df: pd.DataFrame, rows: list[dict], years: np.ndarray, road: float
 ) -> tuple[dict, dict, dict]:
     """kg CO₂/yr by SSP and sector, kg CO₂/kWh by SSP, and data-centre TWh/yr."""
     centres = data_centres_twh(years)
     power = {ssp: electricity(rows, ssp, years) for ssp in SSPS}
     intensity = {ssp: kg / (twh * KWH_PER_TWH) for ssp, (kg, twh) in power.items()}
     co2 = {
-        ssp: transport(rcmip_df, ssp, years)
+        ssp: transport(rcmip_df, ssp, years, road)
         | {
             "electricity": power[ssp][0],
             "dataCentres": centres["median"] * KWH_PER_TWH * intensity[ssp],
@@ -266,7 +283,8 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
     years = np.arange(BASE_YEAR, END_YEAR + 1)
     rcmip_df = rcmip.load(cache_dir)
     rows = ar6db.load(cache_dir)
-    co2, intensity, centres = sector_co2(rcmip_df, rows, years)
+    road = road_kg(ceds.by_sector_fuel(ceds.path(cache_dir), "CO2"))
+    co2, intensity, centres = sector_co2(rcmip_df, rows, years, road)
 
     setup = climate_fair.load_setup(cache_dir, members)
     fair_years = np.arange(climate_fair.START, PULSE_YEAR + HORIZON + 1)
@@ -332,7 +350,7 @@ def build_sectors(cache_dir: Path, out_dir: Path) -> None:
     document, diagnostics = build(cache_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "sectors.json").write_text(
-        json.dumps(document, ensure_ascii=False, separators=(",", ":"))
+        json.dumps(document, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
     )
     for line in summary(document, diagnostics):
         log.info(line)

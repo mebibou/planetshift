@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import inspect
 import json
 import logging
 import re
@@ -27,7 +29,6 @@ GASES = ("co2", "ch4", "n2o")
 SCOPES = ("farmGate", "cradleToFarmGate")
 COLUMNS = ["fbs_item_code", "area", "scope", *GASES, "url"]
 
-MAX_NODES = 400
 SOURCES = [
     {
         "id": "hestia-aggregations",
@@ -205,6 +206,11 @@ def trim_node(node: dict) -> dict:
     }
 
 
+#: Nodes are cached trimmed, so the cache is keyed by the code that trims them: a change to
+#: what `trim_node` keeps fetches them anew.
+TRIM_KEY = hashlib.sha256(inspect.getsource(trim_node).encode()).hexdigest()[:12]
+
+
 def load_terms(path: Path = TERMS_CSV) -> pd.DataFrame:
     return pd.read_csv(path, dtype={"fbs_item_code": int, "priority": int})
 
@@ -329,14 +335,11 @@ def session() -> requests.Session:
 
 
 def cached(path: Path, fetch: Callable[[], Any]) -> Any:
-    """The JSON at path, or fetch() written there; None, uncached, when fetching fails."""
+    """The JSON at path, or fetch() written there (None, a node HESTIA does not serve, is not
+    cached); a failed request raises."""
     if path.exists():
         return json.loads(path.read_text())
-    try:
-        value = fetch()
-    except (requests.RequestException, ValueError) as error:
-        log.warning("HESTIA request for %s failed: %s", path.name, type(error).__name__)
-        return None
+    value = fetch()
     if value is not None:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(value))
@@ -413,11 +416,15 @@ def fetch_nodes(cache_dir: Path) -> list[dict]:
             http, AGGREGATIONS_QUERY, ["@id", "name", "startDate", "endDate", "country.name"]
         ),
     )
-    ids = latest_aggregations(hits or [], set(terms.hestia_term_id))[:MAX_NODES]
+    ids = latest_aggregations(hits, set(terms.hestia_term_id))
+    if not ids:
+        raise ValueError("HESTIA's search found no aggregation of a mapped product")
+    log.info("HESTIA: %d aggregations of mapped products", len(ids))
 
     def node(aggregation_id: str) -> dict | None:
         return cached(
-            root / "nodes" / f"{aggregation_id}.json", lambda: fetch_node(http, aggregation_id)
+            root / "nodes" / TRIM_KEY / f"{aggregation_id}.json",
+            lambda: fetch_node(http, aggregation_id),
         )
 
     with ThreadPoolExecutor(max_workers=WORKERS) as pool:

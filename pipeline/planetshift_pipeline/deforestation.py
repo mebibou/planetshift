@@ -21,6 +21,7 @@ FILE = (
 )
 URL = f"https://zenodo.org/api/records/18953516/files/{quote(FILE, safe='()')}/content"
 CACHED_NAME = "DeDuCE_deforestation_2001-2023_v2.1.xlsx"
+EXTRACT = Path(CACHED_NAME).with_suffix(".pkl").name
 LICENCE = "CC BY 4.0"
 VERSION = "2.1 (2001-2023)"
 
@@ -57,7 +58,7 @@ def path(cache_dir: Path) -> Path:
 
 def read(cache_dir: Path) -> pd.DataFrame:
     """DeDuCE's attribution table, one row per producer country, year and commodity."""
-    extract = cache_dir / "extracts" / "deduce_2001_2023.pkl"
+    extract = cache_dir / "extracts" / EXTRACT
     if extract.exists():
         return pd.read_pickle(extract)
     log.info("reading DeDuCE")

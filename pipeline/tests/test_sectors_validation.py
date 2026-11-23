@@ -9,16 +9,17 @@ import pytest
 
 from planetshift_pipeline import climate, sectors
 from planetshift_pipeline.cache import DEFAULT_CACHE
-from planetshift_pipeline.sources import ar6db
+from planetshift_pipeline.sources import ar6db, ceds
 
 MEMBERS = 100
 REQUIRED = [
     DEFAULT_CACHE / "rcmip" / "rcmip-emissions-annual-means-v5-1-0.csv",
     DEFAULT_CACHE / "ar6db" / ar6db.FILE,
+    DEFAULT_CACHE / "ceds" / ceds.FILE,
 ]
 GT = 1e12
-# Recent world totals, Gt CO₂/yr, and how far the base year may sit from them: road ~6 (EDGAR
-# 2024 report), aviation ~0.95 and shipping ~0.85 (IEA tracking), electricity ~14.2 (Ember 2024).
+# Recent world totals, Gt CO₂/yr, and how far the base year may sit from them: road ~6 (CEDS
+# 2022), aviation ~0.95 and shipping ~0.85 (IEA tracking), electricity ~14.2 (Ember 2024).
 RECENT = {
     "road": (6.0, 0.15),
     "aviation": (0.95, 0.1),
@@ -32,7 +33,7 @@ pytestmark = pytest.mark.network
 @pytest.fixture(scope="module")
 def built():
     if not all(p.exists() for p in REQUIRED):
-        pytest.skip("RCMIP or the AR6 marker runs not downloaded")
+        pytest.skip("RCMIP, the AR6 marker runs or CEDS not downloaded")
     return sectors.build(DEFAULT_CACHE, members=MEMBERS)
 
 

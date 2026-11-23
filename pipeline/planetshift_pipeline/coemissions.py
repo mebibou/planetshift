@@ -206,6 +206,8 @@ def held_trend(species: np.ndarray, co2: np.ndarray) -> np.ndarray:
     """The ratio of `species` to `co2` relative to the first year's, held at its last value once
     `co2` falls below HOLD_BELOW of the first year's, and kept within 0..1: an emission factor
     that only improves on today's."""
+    if co2[0] <= 0:
+        raise ValueError("no CO₂ in the base year to hold a ratio to")
     ratio = (species / species[0]) / np.maximum(co2 / co2[0], 1e-12)
     valid = co2 >= HOLD_BELOW * co2[0]
     last = np.maximum.accumulate(np.where(valid, np.arange(len(co2)), 0))
@@ -213,7 +215,14 @@ def held_trend(species: np.ndarray, co2: np.ndarray) -> np.ndarray:
 
 
 def rcmip_sector(df: pd.DataFrame, ssp: str, species: str, sector: str, years) -> np.ndarray:
-    variable = f"Emissions|{RCMIP_NAME[species]}|MAGICC Fossil and Industrial|{sector}"
+    """A sector's emissions of a species under an SSP; zeros when RCMIP does not give the species
+    for the sector (methane from aircraft), an error when it has no such species or sector."""
+    prefix = "Emissions|{}|MAGICC Fossil and Industrial"
+    names = set(df["Variable"])
+    species_known = any(v.startswith(prefix.format(RCMIP_NAME[species])) for v in names)
+    if not species_known or f"{prefix.format('CO2')}|{sector}" not in names:
+        raise KeyError(f"RCMIP has no {species} or no sector {sector}")
+    variable = f"{prefix.format(RCMIP_NAME[species])}|{sector}"
     try:
         return rcmip.series(df, ssp, variable, years)
     except KeyError:
@@ -520,7 +529,7 @@ def build_coemissions(cache_dir: Path, out_dir: Path) -> None:
     document, diagnostics = build(cache_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "coemissions.json").write_text(
-        json.dumps(document, ensure_ascii=False, separators=(",", ":"))
+        json.dumps(document, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
     )
     for line in summary(document, diagnostics):
         log.info(line)

@@ -95,3 +95,10 @@ def test_waste_json_matches_the_contract():
         },
         "source": "src",
     }
+
+
+def test_a_truncated_series_is_refused():
+    rows = [{"geoAreaCode": "4"}, {"geoAreaCode": "8"}]
+    assert W.whole_series({"data": rows, "totalElements": 2}) == rows
+    with pytest.raises(ValueError, match="2 rows of 3"):
+        W.whole_series({"data": rows, "totalElements": 3})

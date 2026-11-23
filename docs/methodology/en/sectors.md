@@ -19,7 +19,7 @@ Emissions in billion tonnes of CO₂ a year (2023 / 2050 / 2100):
 | Electricity | 14.15 / 4.53 / 0 | 14.15 / 13.07 / 0 | 14.15 / 23.71 / 40.55 |
 | Data centres (extra) | 0 / 0.08 / 0 | 0 / 0.21 / 0 | 0 / 0.40 / 0.43 |
 
-**Road transport** emitted about 6.1 billion tonnes in 2023, three quarters of all transport CO₂ (EDGAR's 2024 report puts transport at 8.24 billion tonnes). Passengers (cars, two- and three-wheelers, buses) take 60% and freight (trucks and vans) 40%, after the IEA's tracking of cars and vans and of trucks and buses; trucks and buses together are over a third of road CO₂. The shape is the scenario's surface transport, which also holds rail and domestic boats, a few percent of it. Under SSP1-2.6 road emissions fall to almost nothing by 2100 as vehicles electrify; under SSP2-4.5 they grow by a third to 2050 before falling; under SSP3-7.0 they stay high all century.
+**Road transport** emitted 5.97 billion tonnes of fossil CO₂ in 2022, CEDS's last year (its road sector, fuels other than biomass), about three quarters of all transport CO₂; each scenario's shape carries that value to 2023, 5.9 to 6.1 billion tonnes depending on the SSP. Passengers (cars, two- and three-wheelers, buses) take 60% and freight (trucks and vans) 40%, after the IEA's tracking of cars and vans and of trucks and buses; trucks and buses together are over a third of road CO₂. The shape is the scenario's surface transport, which also holds rail and domestic boats, a few percent of it. Under SSP1-2.6 road emissions fall to almost nothing by 2100 as vehicles electrify; under SSP2-4.5 they grow by a third to 2050 before falling; under SSP3-7.0 they stay high all century.
 
 **Aviation**, domestic and international flights together, emitted about 0.95 billion tonnes in 2023 (IEA), back to its level before the pandemic. It is the hardest sector to clean up in every scenario: it holds roughly level under SSP1-2.6, nearly doubles under SSP2-4.5 and triples under SSP3-7.0.
 
@@ -138,7 +138,7 @@ The energy levers count the fuel and electricity a sector stops or starts using,
 
 ## Assumptions
 
-- Each sector's emissions are its scenario's shape scaled to a 2023 inventory: road 6.1, aviation 0.95, shipping 0.85 and electricity 14.15 billion tonnes of CO₂.
+- Each sector's emissions are its scenario's shape scaled to an inventory: road 5.97 billion tonnes of CO₂ in 2022 (CEDS), aviation 0.95, shipping 0.85 and electricity 14.15 in 2023.
 - Road passengers and freight split 60/40 in every year and scenario, both following the scenario's surface transport (road, rail and domestic boats together).
 - Shipping, international and domestic, follows the scenario's international shipping.
 - Electricity is generation only; heat from power stations is left out. Its CO₂ and the grid's intensity stop at zero where the scenario's bioenergy with carbon capture would make them negative.
@@ -158,7 +158,6 @@ The energy levers count the fuel and electricity a sector stops or starts using,
 - Byers, E. et al. (2022). AR6 Scenarios Database, hosted by IIASA, version 1.1: [doi:10.5281/zenodo.5886911](https://doi.org/10.5281/zenodo.5886911). Licence: CC BY 4.0. Read for the SSP marker runs' electricity CO₂ (`Emissions|CO2|Energy|Supply|Electricity`) and generation (`Secondary Energy|Electricity`).
 - Ember (2024). Global Electricity Review 2024: 2023 electricity demand and power-sector CO₂, [ember-energy.org](https://ember-energy.org/latest-insights/global-electricity-review-2024/). Licence: CC BY 4.0.
 - Ember (2025). Global Electricity Review 2025 (2023 revised to 484 g/kWh; 2024: 14.6 Gt, 30,856 TWh, 473 g/kWh), [ember-energy.org](https://ember-energy.org/latest-insights/global-electricity-review-2025/). Licence: CC BY 4.0.
-- European Commission, Joint Research Centre (2024). GHG emissions of all world countries, 2024 report (EDGAR): [doi:10.2760/4002897](https://doi.org/10.2760/4002897). Licence of the IEA-EDGAR CO₂ data: CC BY-NC-ND 4.0, non-commercial and no derivatives. Planetshift takes one number from it, road transport's 6.1 billion tonnes in 2023 (from transport's 8.24), and scales the passenger and freight series of `sectors.json` to it; whether that calibration is a derivative under the licence is to settle before public release (see [Assumptions](#method-assumptions)).
 - IEA (2023–2024). Tracking Clean Energy Progress: cars and vans, trucks and buses, aviation, international shipping, [iea.org/energy-system/transport](https://www.iea.org/energy-system/transport); and Global EV Outlook. Licence: CC BY 4.0.
 - IMO (2020). Fourth IMO Greenhouse Gas Study: international shipping 740 Mt CO₂ in 2018 (voyage-based), all shipping 1,056 Mt including domestic and fishing.
 - IEA (2025). Energy and AI, [iea.org/reports/energy-and-ai](https://www.iea.org/reports/energy-and-ai). Licence: CC BY 4.0.

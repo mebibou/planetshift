@@ -427,7 +427,9 @@ def build_climate(cache_dir: Path, out_dir: Path) -> None:
     started = time.monotonic()
     document, diagnostics = build(cache_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "climate.json").write_text(json.dumps(document, separators=(",", ":")))
+    (out_dir / "climate.json").write_text(
+        json.dumps(document, separators=(",", ":"), allow_nan=False)
+    )
     for line in summary(document, diagnostics):
         log.info(line)
     log.info("climate.json built in %.0f s", time.monotonic() - started)

@@ -5,21 +5,16 @@ import pandas as pd
 from .. import breakdown as B
 from .. import intensities as I
 from .. import seafood as Sf
-from ..inputs import Build, log, optional, write
+from ..inputs import HESTIA_DEPENDENTS, Build, write
 
 
 def build(b: Build) -> None:
     _, emissions = b.faostat_tier3
-    mod = optional("sources.hestia")
-    try:
-        hestia = mod.fetch_breakdown(b.cache) if mod else None
-    except Exception as err:  # noqa: BLE001
-        log.warning("hestia.fetch_breakdown failed (%s): HESTIA rows fall back", err)
-        hestia = None
-    if hestia is None:
-        hestia = pd.DataFrame(
-            columns=["fbs_item_code", "area", "scope", "url", "gas", "source", "kg"]
-        )
+    hestia = b.fetch(
+        HESTIA_DEPENDENTS,
+        "fetch_breakdown",
+        pd.DataFrame(columns=["fbs_item_code", "area", "scope", "url", "gas", "source", "kg"]),
+    )
     counted = b.uses("production").merge(b.uses("processing"), on=["iso3", "fbs_code"])
     weights = {
         (r.iso3, r.fbs_code): max(r.production - r.processing, 0.0) for r in counted.itertuples()

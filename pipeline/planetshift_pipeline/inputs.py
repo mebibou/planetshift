@@ -11,6 +11,7 @@ import pandas as pd
 from . import countries as K
 from . import groups as G
 from . import intensities as I
+from . import land as L
 from . import seafood as Sf
 from . import supply as S
 from .sources import faostat, fishstat, naturalearth, worldbank
@@ -21,6 +22,12 @@ OUT_DIR = Path(__file__).resolve().parent.parent.parent / "app" / "public" / "da
 FIRST_FBS_YEAR = 2010
 LAST_YEAR = 2100
 HISTORIC_YEARS = (2000, 2013)
+#: The literature tier reads HESTIA's intensities too, so it goes when HESTIA does.
+HESTIA_DEPENDENTS = ("sources.hestia", "sources.literature")
+
+
+class MissingSource(RuntimeError):
+    """A source the build could not read; `--allow-missing` builds without it instead."""
 
 
 def optional(module: str):
@@ -28,22 +35,39 @@ def optional(module: str):
     try:
         return importlib.import_module(f"planetshift_pipeline.{module}")
     except Exception as err:  # noqa: BLE001 - any failure means building without it
-        log.warning("%s unavailable (%s): building without it", module, err)
+        log.warning("%s unavailable (%s)", module, err)
         return None
 
 
 def write(out_dir: Path, name: str, data) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / name
-    path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")))
+    path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":"), allow_nan=False))
     log.info("wrote %s (%.0f kB)", path.name, path.stat().st_size / 1024)
 
 
 class Build:
     """Everything a section needs, read once and only when asked for."""
 
-    def __init__(self, cache_dir: Path, out_dir: Path):
-        self.cache, self.out = cache_dir, out_dir
+    def __init__(self, cache_dir: Path, out_dir: Path, allow_missing: bool = False):
+        self.cache, self.out, self.allow_missing = cache_dir, out_dir, allow_missing
+        self.missing: dict[str, str] = {}
+
+    def without(self, modules: tuple[str, ...], reason) -> None:
+        """A source that could not be read: the build stops, or with `allow_missing` goes on
+        without it, and meta.json leaves out the modules named."""
+        if not self.allow_missing:
+            raise MissingSource(f"{', '.join(modules)}: {reason}")
+        log.warning("%s unavailable (%s): building without it", ", ".join(modules), reason)
+        self.missing |= dict.fromkeys(modules, str(reason))
+
+    def module(self, name: str, function: str):
+        """A module's function, or None (after `without`) when it cannot be imported."""
+        mod = optional(name)
+        fn = getattr(mod, function, None) if mod else None
+        if fn is None:
+            self.without((name,), f"{name}.{function} missing")
+        return fn
 
     def read(self, domain: str, first: int, last: int) -> pd.DataFrame:
         return faostat.read(self.cache, domain, first, last)
@@ -116,7 +140,7 @@ class Build:
         try:
             return fishstat.read(self.cache, self.year - 4, self.year)
         except Exception as err:  # noqa: BLE001 - seafood falls back to proxies and medians
-            log.warning("FishStat unavailable (%s): no seafood intensities or aquafeed", err)
+            self.without(("sources.fishstat", "seafood"), err)
             return None
 
     @cached_property
@@ -144,7 +168,7 @@ class Build:
             faostat.bulk_path(self.cache, domain)
             return True
         except Exception as err:  # noqa: BLE001
-            log.warning("French names unavailable (%s)", err)
+            self.without((f"faostat-{domain.lower()}",), err)
             return False
 
     @cached_property
@@ -188,27 +212,30 @@ class Build:
         )
         return tier3, emissions
 
-    def external(self, module: str, function: str, tier_country: int, tier_wide: int, members):
-        mod = optional(f"sources.{module}")
-        fetch = getattr(mod, function, None) if mod else None
-        if fetch is None:
-            log.warning("%s.%s missing: no tier %s", module, function, tier_country)
-            return None
+    def fetch(self, modules: tuple[str, ...], function: str, default):
+        """`function` of the first of `modules` on the cache, or `default` (after `without`)
+        when it is missing or fails; the other modules depend on it."""
+        fn = self.module(modules[0], function)
+        if fn is None:
+            return default
         try:
-            df = fetch(self.cache)
-        except Exception as err:  # noqa: BLE001
-            log.warning("%s.%s failed (%s): no tier %s", module, function, err, tier_country)
+            return fn(self.cache)
+        except Exception as err:  # noqa: BLE001 - any failure is a missing source
+            self.without(modules, f"{function} failed: {err}")
+            return default
+
+    def external(
+        self, modules: tuple[str, ...], function: str, tier_country: int, tier_wide: int, members
+    ):
+        df = self.fetch(modules, function, None)
+        if df is None:
             return None
         countries = sorted(set(self.iso3.values()))
         return I.candidates_from(df, countries, members, tier_country, tier_wide)
 
+    @cached_property
     def hestia_members(self) -> dict[str, list[str]]:
-        mod = optional("sources.hestia")
-        try:
-            return mod.region_members(self.cache) if mod else {}
-        except Exception as err:  # noqa: BLE001
-            log.warning("hestia.region_members failed (%s)", err)
-            return {}
+        return self.fetch(HESTIA_DEPENDENTS, "region_members", {})
 
     @cached_property
     def faostat_tier3(self) -> tuple[pd.DataFrame, dict[str, pd.DataFrame]]:
@@ -217,9 +244,11 @@ class Build:
     @cached_property
     def merged(self) -> pd.DataFrame:
         tier3, _ = self.faostat_tier3
-        members = self.hestia_members()
-        hestia = self.external("hestia", "fetch_intensities", 1, 2, members)
-        literature = self.external("literature", "fetch_literature_intensities", 4, 4, {})
+        members = self.hestia_members
+        hestia = self.external(HESTIA_DEPENDENTS, "fetch_intensities", 1, 2, members)
+        literature = self.external(
+            ("sources.literature",), "fetch_literature_intensities", 4, 4, {}
+        )
         countries = sorted(set(self.iso3.values()))
         seafood = (
             Sf.candidates(self.fishstat, self.year, countries)
@@ -246,5 +275,11 @@ class Build:
             self.production[["iso3", "fbs_code", "production"]],
             self.uses("processing"),
             G.byproducts(kept),
+            self.oil_shares,
         )
         return merged
+
+    @cached_property
+    def oil_shares(self) -> dict[int, float]:
+        cakes = L.load_oilcakes()
+        return dict(zip(cakes["oil_code"], cakes["oil_share"], strict=True))

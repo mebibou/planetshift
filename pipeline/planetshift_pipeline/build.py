@@ -83,16 +83,23 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--only", help=f"comma-separated sections among {', '.join(names)}")
     parser.add_argument("--cache", type=Path, default=DEFAULT_CACHE)
     parser.add_argument("--out", type=Path, default=OUT_DIR)
+    parser.add_argument(
+        "--allow-missing",
+        action="store_true",
+        help="build without a source that cannot be read, and leave it out of meta.json",
+    )
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
     wanted = args.only.split(",") if args.only else names
     unknown = set(wanted) - set(names)
     if unknown:
         parser.error(f"unknown sections: {', '.join(sorted(unknown))}")
-    build = Build(args.cache, args.out)
+    build = Build(args.cache, args.out, args.allow_missing)
     for section in (s for s in SECTIONS if s.name in wanted):
         log.info("section %s", section.name)
         section.build(build)
+    if build.missing:
+        log.warning("built without: %s", ", ".join(build.missing))
 
 
 if __name__ == "__main__":

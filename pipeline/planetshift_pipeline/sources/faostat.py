@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from ..cache import fetched
+from ..cache import fetched, record, recorded, today
 
 log = logging.getLogger(__name__)
 
@@ -79,11 +79,17 @@ FBSH_ITEM_CODES = {2805: 2807, 2556: 2552}
 DATASETS = BULK + "datasets_E.json"
 
 
-def updated_on(cache_dir: Path, domain: str) -> str:
-    """The date FAOSTAT last updated a domain, from its bulk listing."""
-    listing = json.loads(fetched(cache_dir, DATASETS).read_text())["Datasets"]["Dataset"]
+def listed_update(cache_dir: Path, domain: str) -> str:
+    """The date FAOSTAT last updated a domain, from today's bulk listing."""
+    path = fetched(cache_dir, DATASETS, f"datasets_E_{today()}.json")
+    listing = json.loads(path.read_text())["Datasets"]["Dataset"]
     code = domain.removesuffix("_FR")
     return next((d["DateUpdate"][:10] for d in listing if d["DatasetCode"] == code), "")
+
+
+def updated_on(cache_dir: Path, domain: str) -> str:
+    """The date FAOSTAT had last updated a domain when its bulk file was downloaded."""
+    return recorded(bulk_path(cache_dir, domain)).get("updated", "")
 
 
 def domain_url(domain: str) -> str:
@@ -91,7 +97,18 @@ def domain_url(domain: str) -> str:
 
 
 def bulk_path(cache_dir: Path, domain: str) -> Path:
-    return fetched(cache_dir, BULK + FILES[domain])
+    """The cached bulk file, with FAOSTAT's update date of the domain in its sidecar."""
+    path = fetched(cache_dir, BULK + FILES[domain])
+    if "updated" not in recorded(path):
+        record(path, updated=listed_update(cache_dir, domain))
+    return path
+
+
+def extract_path(cache_dir: Path, domain: str, first_year: int, last_year: int) -> Path:
+    """The extract of a domain's years, keyed by the bulk file it was read from."""
+    side = recorded(bulk_path(cache_dir, domain))
+    version = f"{side.get('updated', '')}_{side.get('downloaded', '')}"
+    return cache_dir / "extracts" / f"{domain}_{first_year}_{last_year}_{version}.pkl"
 
 
 def tidy(raw: pd.DataFrame) -> pd.DataFrame:
@@ -130,7 +147,7 @@ def kept_rows(chunk: pd.DataFrame, year_col: str, first_year: int, last_year: in
 
 def read(cache_dir: Path, domain: str, first_year: int, last_year: int) -> pd.DataFrame:
     """Rows of a domain for the years asked, kept as an extract in the cache once read."""
-    extract = cache_dir / "extracts" / f"{domain}_{first_year}_{last_year}.pkl"
+    extract = extract_path(cache_dir, domain, first_year, last_year)
     if extract.exists():
         return pd.read_pickle(extract)
     log.info("reading %s %s-%s", domain, first_year, last_year)

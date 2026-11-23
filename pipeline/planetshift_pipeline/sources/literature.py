@@ -139,11 +139,7 @@ def combine(rows: list) -> pd.DataFrame:
 
 
 def read_livestock_emissions(cache_dir: Path) -> pd.DataFrame:
-    try:
-        path = fetched(Path(cache_dir), GLE_URL)
-    except OSError as error:
-        log.warning("FAOSTAT livestock emissions unavailable: %s", type(error).__name__)
-        return pd.DataFrame(columns=["Area Code", "Element Code", "Item", "Year", "Value"])
+    path = fetched(Path(cache_dir), GLE_URL)
     with zipfile.ZipFile(path) as archive:
         name = next(n for n in archive.namelist() if "All_Data" in n)
         return pd.read_csv(

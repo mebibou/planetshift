@@ -3,13 +3,11 @@ guest: world values of a few variables for the SSP marker runs behind RCMIP's SS
 
 import json
 import logging
-from datetime import UTC, datetime
 from pathlib import Path
 
 import numpy as np
-import requests
 
-from ..cache import USER_AGENT, sidecar
+from ..cache import record, session, today
 
 log = logging.getLogger(__name__)
 
@@ -31,16 +29,17 @@ VARIABLES = (ELECTRICITY_CO2, ELECTRICITY_GENERATED)
 FILE = "ar6-markers-world.json"
 
 
-def _get(url: str, token: str | None = None):
-    headers = {"User-Agent": USER_AGENT} | ({"Authorization": f"Bearer {token}"} if token else {})
-    r = requests.get(url, headers=headers, timeout=120)
+def _get(http, url: str, token: str | None = None):
+    headers = {"Authorization": f"Bearer {token}"} if token else {}
+    r = http.get(url, headers=headers, timeout=120)
     r.raise_for_status()
     return r.json()
 
 
 def _download() -> list[dict]:
-    token = _get(TOKEN_URL)
-    runs = _get(f"{API}/runs?getOnlyDefaultRuns=true", token)
+    http = session()
+    token = _get(http, TOKEN_URL)
+    runs = _get(http, f"{API}/runs?getOnlyDefaultRuns=true", token)
     wanted = set(MARKERS.values())
     ids = [r["run_id"] for r in runs if (r["model"], r["scenario"]) in wanted]
     if len(ids) != len(wanted):
@@ -56,10 +55,10 @@ def _download() -> list[dict]:
             "times": [],
         }
     }
-    r = requests.post(
+    r = http.post(
         f"{API}/runs/bulk/ts",
         json=body,
-        headers={"User-Agent": USER_AGENT, "Authorization": f"Bearer {token}"},
+        headers={"Authorization": f"Bearer {token}"},
         timeout=300,
     )
     r.raise_for_status()
@@ -77,12 +76,7 @@ def load(cache_dir: Path) -> list[dict]:
         rows = _download()
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(rows))
-        sidecar(path).write_text(
-            json.dumps(
-                {"url": f"{API}/runs/bulk/ts", "downloaded": datetime.now(UTC).date().isoformat()},
-                indent=2,
-            )
-        )
+        record(path, url=f"{API}/runs/bulk/ts", downloaded=today())
     return json.loads(path.read_text())
 
 

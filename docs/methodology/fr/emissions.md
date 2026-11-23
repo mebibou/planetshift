@@ -51,6 +51,8 @@ Quand un produit transformé n'a pas d'intensité propre (niveaux 1 à 4 ci-dess
 
 Dans les bilans alimentaires actuels, le produit 2562 (« Palmistes ») contient tout le fruit du palmier à huile, dont on presse l'huile de palme et l'huile de palmiste ; les émissions du palmier à huile sont comptées sur lui.
 
+Une huile obtenue ainsi à partir de sa graine partage les émissions de la trituration avec le tourteau selon leur valeur, comme ses terres (voir [Terres](#method-land), `pipeline/oilcakes.csv`) : elle garde la part de l'huile dans la valeur (huile d'arachide 80 %, de coton 66 %, de palmiste 87 %, de coprah 93 %, de sésame 92 %), et le reste, celui du tourteau, est écrit par pays et par oléagineux dans `oilcake` de `intensities.json`, en kg de chaque gaz par an l'année de base. Les huiles de soja, de tournesol, de colza et des autres oléagineux prennent les valeurs de Poore et Nemecek (palier 4), qui partagent déjà la culture avec le tourteau selon leur valeur.
+
 Deux coproduits de la meunerie, l'huile de son de riz et l'huile de germe de maïs, sont tirés de grain déjà compté en alimentation humaine, et non d'une transformation ; leur intensité est nulle. Les abats comestibles et les graisses animales crues ne sont pas non plus transformés à partir de la viande dans les bilans : ils partagent avec la carcasse les émissions des animaux de boucherie, au prorata de la masse (ci-dessous).
 
 ## Niveaux

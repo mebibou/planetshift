@@ -2,6 +2,7 @@
 
 from .. import groups as G
 from .. import intensities as I
+from .. import land as L
 from ..inputs import Build, log, write
 
 
@@ -17,4 +18,11 @@ def build(b: Build) -> None:
             index="group", columns="tier", values="iso3", aggfunc="count", fill_value=0
         ),
     )
-    write(b.out, "intensities.json", I.intensities_json(merged))
+    _, extraction = I.load_proxies()
+    rows = b.uses("production").merge(b.uses("processing"), on=["iso3", "fbs_code"])
+    cake = I.oilcake_emissions(merged, L.load_oilcakes(), extraction, rows)
+    log.info(
+        "oilcakes carry %.0f Mt CO2e a year (cradle to farm gate)",
+        I.co2e(cake[cake["scope"] == "cradleToFarmGate"]).sum() / 1e9,
+    )
+    write(b.out, "intensities.json", I.intensities_json(merged) | {"oilcake": I.oilcake_json(cake)})

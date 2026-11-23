@@ -48,5 +48,14 @@ def sources(b: Build, modules: tuple[str, ...]) -> list[dict]:
         "url": worldbank.PAGE,
         "licence": worldbank.LICENCE,
     }
-    others = [s for module in modules for s in (getattr(optional(module), "SOURCES", None) or [])]
-    return [*own, ne, wb, *others]
+    return [*own, ne, wb, *module_sources(modules, b.missing)]
+
+
+def module_sources(modules: tuple[str, ...], missing) -> list[dict]:
+    """The SOURCES of each module, but those the build went on without."""
+    return [
+        s
+        for module in modules
+        if module not in missing
+        for s in (getattr(optional(module), "SOURCES", None) or [])
+    ]
