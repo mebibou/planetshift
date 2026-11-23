@@ -1,7 +1,7 @@
 import type { Climate, ClimateMethod, GasVector, Range3, Ssp } from '../../data/types';
 import { towards } from '../../model/bands';
 import { agtpOf, convolve, type Band } from '../../model/climate';
-import { valueAt } from '../../model/util';
+import { dataValueAt, recordFrom } from '../../model/util';
 import {
   CO_SPECIES,
   type CoEmissions,
@@ -38,18 +38,13 @@ export const coChange = (
   if (!hasCoEmissions(co)) return NO_CO_CHANGE;
   const ratios = co.perKgCo2[ssp];
   const sectors = (Object.keys(co2) as CoSector[]).filter((s) => co2[s] !== 0 && ratios[s]);
-  return Object.fromEntries(
-    CO_SPECIES.map((species) => [
-      species,
-      sectors.reduce(
-        (total, s) =>
-          species === 'nox' && keepsNox.includes(s)
-            ? total
-            : total + (co2[s] as number) * valueAt(co.years, ratios[s][species], year),
-        0,
-      ),
-    ]),
-  ) as CoChange;
+  return recordFrom(CO_SPECIES, (species) => {
+    let total = 0;
+    for (const s of sectors)
+      if (species !== 'nox' || !keepsNox.includes(s))
+        total += (co2[s] as number) * dataValueAt(co.years, ratios[s][species], year);
+    return total;
+  });
 };
 
 /**
@@ -63,9 +58,9 @@ export const coGases = (co2: readonly number[], co: readonly CoYear[]): GasVecto
   });
 
 const rangeAt = (co: CoEmissions, r: RangeSeries, year: number): Range3 => ({
-  median: valueAt(co.years, r.median, year),
-  low: valueAt(co.years, r.low, year),
-  high: valueAt(co.years, r.high, year),
+  median: dataValueAt(co.years, r.median, year),
+  low: dataValueAt(co.years, r.low, year),
+  high: dataValueAt(co.years, r.high, year),
 });
 
 /** A year's changes: fossil CO₂ by sector, and what comes with it. */

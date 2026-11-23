@@ -26,6 +26,7 @@ import type {
   RunContext,
   Stage,
   SupplyChain,
+  WorldContext,
   WorldPart,
 } from '../levers/types';
 import {
@@ -422,15 +423,16 @@ interface CountryHook {
 const addRecords = (
   parts: readonly CountryPart[],
   key: 'co2' | 'jointCo2',
-): Record<string, number> =>
-  parts.reduce<Record<string, number>>(
-    (acc, p) =>
-      Object.entries(p[key] ?? {}).reduce(
-        (a, [k, v]) => ({ ...a, [k]: k in a ? (a[k] as number) + v : v }),
-        acc,
-      ),
-    {},
-  );
+): Record<string, number> => {
+  const out: Record<string, number> = {};
+  for (const p of parts)
+    for (const [k, v] of Object.entries(p[key] ?? {}))
+      out[k] = k in out ? (out[k] as number) + v : v;
+  return out;
+};
+
+/** What a cut removes from the base year's production, kept while the cut is. */
+const ownCutCache = memoPer<Record<Gas, ItemVector>, GasVector>();
 
 const countryParts = (
   pc: PreparedCountry,
@@ -472,9 +474,11 @@ const countryParts = (
           return [
             band,
             {
-              own: addGas(
-                cutEmissions(pc.emitting, intensities, share),
-                cutCakeEmissions(oilcakes, oilcakes.kg, share),
+              own: ownCutCache(share, `${pc.country.iso3}|${options.scope}`, () =>
+                addGas(
+                  cutEmissions(pc.emitting, intensities, share),
+                  cutCakeEmissions(oilcakes, oilcakes.kg, share),
+                ),
               ),
               joint: addGas(
                 cutEmissions(change, intensities, share),
@@ -533,9 +537,46 @@ const countryParts = (
   };
 };
 
-const farmOf = (p: CountryParts, family: string, band: Band): Joint<GasVector> => {
-  const cut = p.cuts[family]?.[band];
-  return cut ?? { own: p.farm[family] ?? ZERO_GAS, joint: ZERO_GAS };
+/**
+ * The farm emissions of a family summed over the countries, in their order; accumulated in place
+ * as this runs for every family and band of each pass.
+ */
+const farmTotal = (
+  parts: readonly CountryParts[],
+  family: string,
+  band: Band,
+): Joint<GasVector> => {
+  const own = { co2: 0, ch4: 0, n2o: 0 };
+  const joint = { co2: 0, ch4: 0, n2o: 0 };
+  for (const p of parts) {
+    const cut = p.cuts[family]?.[band];
+    const o = cut ? cut.own : (p.farm[family] ?? ZERO_GAS);
+    const j = cut ? cut.joint : ZERO_GAS;
+    own.co2 += o.co2;
+    own.ch4 += o.ch4;
+    own.n2o += o.n2o;
+    joint.co2 += j.co2;
+    joint.ch4 += j.ch4;
+    joint.n2o += j.n2o;
+  }
+  return { own, joint };
+};
+
+/**
+ * The CO₂ streams of a cause summed over the countries, in their order, by family; accumulated in
+ * place, once per pass as they do not depend on the band.
+ */
+const clearingOf = (
+  parts: readonly CountryParts[],
+  cause: CountedCause,
+): Record<string, Joint<number>> => {
+  const out: Record<string, { own: number; joint: number }> = {};
+  for (const p of parts) {
+    for (const [f, v] of Object.entries(p.co2[cause])) (out[f] ??= { own: 0, joint: 0 }).own += v;
+    for (const [f, v] of Object.entries(p.jointCo2[cause]))
+      (out[f] ??= { own: 0, joint: 0 }).joint += v;
+  }
+  return out;
 };
 
 const isZero = (v: GasVector): boolean => GASES.every((g) => v[g] === 0);
@@ -553,10 +594,16 @@ const familyPath = (
 ): GasVector[] =>
   years.map((y) => {
     const r = shareAt(y);
-    const at = (v: GasVector, c: number, g: Gas) => v[g] * scale(g, y) + (g === 'co2' ? c : 0);
-    return gasVector(
-      (g) => r * at(farm.own, clearing.own, g) + r * r * at(farm.joint, clearing.joint, g),
-    );
+    const rr = r * r;
+    const at = (g: Gas, own: number, joint: number) => {
+      const k = scale(g, y);
+      return r * (farm.own[g] * k + own) + rr * (farm.joint[g] * k + joint);
+    };
+    return {
+      co2: at('co2', clearing.own, clearing.joint),
+      ch4: at('ch4', 0, 0),
+      n2o: at('n2o', 0, 0),
+    };
   });
 
 const NO_CLEARING: Joint<number> = { own: 0, joint: 0 };
@@ -767,6 +814,33 @@ interface PassFrame {
   completeIndex: number;
 }
 
+const OUTSIDE_LEVERS = MODULES.filter((m) => m.farm === false).flatMap((m) =>
+  m.levers.map((l) => l.id),
+);
+
+const outsideCaches = memoPer<Prepared, ReturnType<typeof memoLatest<LeverModule, WorldPart>>>();
+
+/**
+ * The world part of a module outside farming with the families in `inPlay` acting, kept per set
+ * of them and keyed by what it reads, so a move of farming redoes none.
+ */
+const outsideWorld = (
+  ctx: RunContext,
+  module: LeverModule,
+  inPlay: string,
+  w: WorldContext,
+): WorldPart =>
+  outsideCaches(ctx.prepared, inPlay, () => memoLatest<LeverModule, WorldPart>())(
+    module,
+    JSON.stringify([
+      OUTSIDE_LEVERS.map((id) => ctx.adoption(id)),
+      ctx.options,
+      ctx.scenario.rampEnd,
+      ctx.currentYear,
+    ]),
+    () => module.hooks.world?.(ctx, w) ?? {},
+  );
+
 /** One pass of the emission changes: what every family changes, by band and cause. */
 interface Pass {
   parts: CountryParts[];
@@ -813,11 +887,22 @@ const emissionsPass = (
     ),
   );
   const countries = parts.map((p) => p.result);
+  const w: WorldContext = { countries, years, tYears, shareAt, completeIndex };
   const world = modules.map((module) => ({
     module,
-    part: module.hooks.world?.(ctx, { countries, years, tYears, shareAt, completeIndex }) ?? {},
+    part:
+      module.farm === false
+        ? outsideWorld(ctx, module, '*', w)
+        : (module.hooks.world?.(ctx, w) ?? {}),
   }));
   const ownOf = (family: string) => world.find((w) => w.module.family === family);
+  const clearingPaths = causeRecord((c) =>
+    Object.fromEntries(
+      Object.entries(clearingOf(parts, c))
+        .filter(([, v]) => v.own !== 0 || v.joint !== 0)
+        .map(([f, v]) => [f, familyPath(NO_FARM, v, years, scale, shareAt)]),
+    ),
+  );
   const pathsIn = (band: Band): Record<string, ByCause<GasVector[]>> =>
     Object.fromEntries(
       FAMILIES.map((f) => {
@@ -831,22 +916,12 @@ const emissionsPass = (
           f,
           causeRecord((c) => {
             if (c === 'agriculture') {
-              const farms = parts.map((p) => farmOf(p, f, band));
-              const farm = {
-                own: sumBy(farms, (x) => x.own),
-                joint: sumBy(farms, (x) => x.joint),
-              };
+              const farm = farmTotal(parts, f, band);
               return isZero(farm.own) && isZero(farm.joint)
                 ? zeroPath(years)
                 : familyPath(farm, NO_CLEARING, years, scale, shareAt);
             }
-            const clearing = {
-              own: sum(parts.map((p) => p.co2[c][f] ?? 0)),
-              joint: sum(parts.map((p) => p.jointCo2[c][f] ?? 0)),
-            };
-            return clearing.own === 0 && clearing.joint === 0
-              ? zeroPath(years)
-              : familyPath(NO_FARM, clearing, years, scale, shareAt);
+            return clearingPaths[c][f] ?? zeroPath(years);
           }),
         ];
       }),
@@ -990,14 +1065,13 @@ const familyShares = (
       const { years, tYears, shareAt, completeIndex } = frame;
       const world = outsideModules.map((module) => ({
         module,
-        part:
-          module.hooks.world?.(masked, {
-            countries: full.countries,
-            years,
-            tYears,
-            shareAt,
-            completeIndex,
-          }) ?? {},
+        part: outsideWorld(masked, module, key, {
+          countries: full.countries,
+          years,
+          tYears,
+          shareAt,
+          completeIndex,
+        }),
       }));
       const paths = Object.fromEntries(
         world.map(({ module, part }) => [

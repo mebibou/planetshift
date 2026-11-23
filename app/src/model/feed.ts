@@ -57,6 +57,14 @@ export const feedByGroup = (
     return ANIMAL_GROUPS.map((g) => pc.feed.map((t, i) => (t > 0 ? t * (shares[i]?.[g] ?? 0) : 0)));
   });
 
+const fedCache = memoPer<PreparedCountry, Uint32Array>();
+
+/** The items a country feeds, the only ones whose feed use can change. */
+const fedItems = (pc: PreparedCountry): Uint32Array =>
+  fedCache(pc, 'fed', () =>
+    Uint32Array.from(Array.from(pc.feed).flatMap((t, i) => (t > 0 ? [i] : []))),
+  );
+
 /**
  * Change in feed use, tonnes per item: each feed item's use falls (or rises) with the
  * production of the groups it feeds, weighted by its feed shares. Items with no shares keep
@@ -71,7 +79,7 @@ export const feedChange = (
   const split = feedByGroup(pc, prepared, method);
   const change = ANIMAL_GROUPS.map((g) => groupChange[g]);
   const out = new Float64Array(pc.feed.length);
-  for (let i = 0; i < out.length; i++) {
+  for (const i of fedItems(pc)) {
     let a = 0;
     for (let g = 0; g < split.length; g++)
       a += ((split[g] as ItemVector)[i] as number) * (change[g] as number);

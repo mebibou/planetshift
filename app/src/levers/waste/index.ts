@@ -1,7 +1,7 @@
 import { lever } from '../define';
 import type { LeverModule } from '../types';
 import { EMPTY_WASTE } from './data';
-import { avoidedSupply, foodWithLessWaste, multipliersWith, wasteShareOf } from './model';
+import { countryAvoidedSupply, countryMultipliers, foodWithLessWaste, wasteShareOf } from './model';
 
 const ID = 'waste';
 
@@ -26,8 +26,8 @@ export const waste: LeverModule = {
       const cut = adoption('supplyLosses');
       return cut > 0
         ? {
-            multipliers: (pc) => multipliersWith(pc.lossShares, pc.seedShares, cut),
-            avoidedLosses: (pc) => avoidedSupply(pc.losses, pc.lossShares, pc.seedShares, cut),
+            multipliers: (pc) => countryMultipliers(pc, cut),
+            avoidedLosses: (pc) => countryAvoidedSupply(pc, cut),
           }
         : null;
     },
