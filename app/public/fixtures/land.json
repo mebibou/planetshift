@@ -127,5 +127,12 @@
       "high": 7.5
     }
   },
-  "regrowthYears": 30
+  "regrowthYears": 30,
+  "landArea": {
+    "FRA": 54700000,
+    "USA": 915000000,
+    "IND": 297000000,
+    "BRA": 836000000,
+    "NGA": 91000000
+  }
 }

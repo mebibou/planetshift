@@ -15,7 +15,7 @@ import { choropleth } from './choropleth';
 import { LAYER_COLOURS, scaleKind } from './colours';
 import { CHANGE_OF, GAS_CHOICES, LAYERS, layerValues, measureOf, type LayerSpec } from './layers';
 import { legendBins } from './legend';
-import { colourScale, pickColours, thresholdsFor } from './scales';
+import { colourScale, LAND_SHARE_THRESHOLDS, pickColours, thresholdsFor } from './scales';
 import { formatMeasure, tooltipModel } from './tooltip';
 import { TIERS, worstSource } from './sources';
 import { tableRows } from './table';
@@ -60,7 +60,10 @@ export const mapCard = (ctx: MapCardContext): MapCard => {
   const layer = segmented({
     name: 'layer',
     legend: t('map.layer'),
-    options: LAYERS.map((v) => ({ value: v, label: t(`map.layers.${v}`) })),
+    options: LAYERS.map((v) => ({
+      value: v,
+      label: t(v === 'land' ? 'map.landUse' : `map.layers.${v}`),
+    })),
     value: ctx.ui.layer,
     onChange: (layer) => setUi((u) => ({ ...u, layer })),
   });
@@ -223,7 +226,8 @@ export const mapCard = (ctx: MapCardContext): MapCard => {
     const values = layerValues(result?.countries ?? [], spec);
     const kind = scaleKind(ui.layer);
     const numbers = [...values.values()].filter((v): v is number => v !== null);
-    const thresholds = thresholdsFor(kind, numbers, 7);
+    const thresholds =
+      ui.layer === 'land' ? LAND_SHARE_THRESHOLDS : thresholdsFor(kind, numbers, 7);
     const colours =
       kind === 'sequential'
         ? pickColours(LAYER_COLOURS[ui.layer], thresholds.length + 1)
@@ -252,7 +256,9 @@ export const mapCard = (ctx: MapCardContext): MapCard => {
           ? t('map.legend.emissions', { gas: t(`gases.${ui.gas}`) })
           : measure === 'deforestation'
             ? t('map.legend.deforestation')
-            : t('map.legend.land');
+            : measure === 'landShare'
+              ? t('map.legend.landShare')
+              : t('map.legend.land');
     legendTitle.textContent =
       ui.layer === 'change'
         ? t('map.legend.change', { what })

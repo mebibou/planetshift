@@ -176,12 +176,13 @@
       "land": "Farmland (cropland and pasture) with the levers",
       "change": "{what}: change once the levers are fully in place",
       "quality": "Least precise source of emission data used",
-      "deforestation": "Forest cleared for farming with the levers, a year"
+      "deforestation": "Forest cleared for farming with the levers, a year",
+      "landShare": "Share of the land farmed (cropland and pasture) with the levers"
     },
     "notes": {
       "production": "Where food is grown, not where it is eaten.",
       "emissions": "Emissions on the farm from growing food and raising animals. CO₂e weighs methane and nitrous oxide over 100 years, for comparison only.",
-      "land": "Cropland harvested for the foods in the model, and permanent pasture shared out by beef and dairy cattle, sheep and goats.",
+      "land": "Cropland harvested for the foods in the model and permanent pasture, as a share of each country's land area: how much of it farming takes. Eating less meat frees pasture and the cropland that grows feed; the tooltip gives the hectares.",
       "change": "Each country's output changes by the same share as world demand for each food, so exporters change with their customers.",
       "quality": "Neighbouring countries can differ only because their figures come from different sources.",
       "deforestation": "Forest cleared for crops and pasture in each country, once the levers are fully in place; hectares a year. The tooltip gives today's clearing, the change and the CO₂ it releases."
@@ -199,7 +200,8 @@
       "pasture": "Pasture",
       "beforeAfter": "{before} → {after}",
       "deforestation": "Forest cleared for farming, a year",
-      "deforestationCo2": "CO₂ from the clearing, a year"
+      "deforestationCo2": "CO₂ from the clearing, a year",
+      "landShare": "Share of the land farmed"
     },
     "noClearing": "No clearing or no data",
     "views": {
@@ -216,7 +218,8 @@
       "page": "Page {page} of {pages}",
       "showing": "Countries {from}–{to} of {total}",
       "none": "No country matches “{query}”"
-    }
+    },
+    "landUse": "Land use"
   },
   "avoidedChart": {
     "title": "Warming avoided",

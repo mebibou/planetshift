@@ -85,6 +85,8 @@ export interface CountryResult {
   land: { cropland: number; pasture: number };
   /** Change in hectares at the full shift (negative when land is freed). */
   landChange: { cropland: number; pasture: number };
+  /** The country's land area, ha; 0 where the data has none. */
+  landArea: number;
 }
 
 export type Band3 = { median: number; p05: number; p95: number };

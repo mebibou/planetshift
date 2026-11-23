@@ -67,9 +67,9 @@ describe('table rows', () => {
     expect(r).toMatchObject({ tier: 3, source: 'https://www.fao.org/faostat/en/#data/GLE' });
     const [land] = tableRows([countryResult()], spec({ layer: 'land' }), namesOf, () => null);
     expect(land).toMatchObject({
-      before: 1000,
-      after: 800,
-      change: -0.2,
+      before: 0.2,
+      after: expect.closeTo(0.16),
+      change: expect.closeTo(-0.2),
       tier: null,
       source: null,
     });

@@ -147,11 +147,14 @@ export interface Feed {
  * ruminant group (sums to 1 where the country has ruminants).
  * regrowth[iso3]: CO₂ taken up by natural regrowth on freed farmland, tonnes of CO₂ per hectare
  * per year, median and range, for `regrowthYears` years after the land is freed.
+ * landArea[iso3]: the country's land area in hectares (FAOSTAT), for the share of it farmed;
+ * a build without it leaves the map's land use layer empty.
  */
 export interface Land {
   cropHaPerTonne: Record<string, Record<string, number>>;
   oilcakeHa?: Record<string, Record<string, number>>;
   fodderHa?: Record<string, number>;
+  landArea?: Record<string, number>;
   pasture: Record<string, { ha: number; shares: Partial<Record<AnimalGroup, number>> }>;
   regrowth: Record<string, { median: number; low: number; high: number }>;
   regrowthYears: number;

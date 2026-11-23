@@ -227,3 +227,11 @@ def test_oil_keeps_its_share_of_the_crush_value_and_the_cake_the_rest():
     assert cake.to_dict("records") == [
         {"iso3": "BRA", "primary_code": 2555, "ha": pytest.approx(20.0 * (1 - soy["oil_share"]))}
     ]
+
+
+def test_hectares_by_iso3_keep_the_areas_listed_with_some_land():
+    ha = pd.Series({10: 1.234567e9, 20: 0.0, 30: 5e5})
+    assert L.hectares_json(ha, {10: "AUS", 20: "XXX", 40: "FRA", 30: "BEL"}) == {
+        "AUS": 1.23e9,
+        "BEL": 5e5,
+    }

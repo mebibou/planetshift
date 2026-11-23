@@ -31,6 +31,9 @@ export const CHANGE_THRESHOLDS = [-0.4, -0.15, -0.02, 0.02, 0.15, 0.4];
 
 export const QUALITY_THRESHOLDS = [1.5, 2.5, 3.5, 4.5, 5.5];
 
+/** The share of a country's land that is farmed: fixed bins, the same for every scenario. */
+export const LAND_SHARE_THRESHOLDS = [0.05, 0.1, 0.2, 0.3, 0.45, 0.6];
+
 export const thresholdsFor = (
   kind: 'sequential' | 'diverging' | 'quality',
   values: number[],

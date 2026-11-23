@@ -309,8 +309,8 @@ def lsu_by_group(ek: pd.DataFrame, qcl: pd.DataFrame, year: int) -> pd.DataFrame
     return pd.DataFrame({"dairy": milk, "ruminantMeat": meat})
 
 
-def fodder_json(ha: pd.Series, iso3: dict[int, str]) -> dict[str, float]:
-    """Temporary meadows and pastures by iso3, where FAOSTAT lists any."""
+def hectares_json(ha: pd.Series, iso3: dict[int, str]) -> dict[str, float]:
+    """Hectares by iso3, where FAOSTAT lists any: temporary meadows, or a country's land area."""
     return {
         code: I.significant(float(ha[area]))
         for area, code in sorted(iso3.items(), key=lambda kv: kv[1])

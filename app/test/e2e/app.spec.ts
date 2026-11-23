@@ -522,23 +522,29 @@ test('the summary announces one short sentence, not the whole section', async ({
   );
 });
 
-test('the land layer draws farmland and keeps its URL key', async ({ page }) => {
+test('the land use layer draws the share of land farmed and keeps its URL key', async ({
+  page,
+}) => {
   await open(page, `${START}&shift=50`);
+  await expect(page.locator('label[for="layer-land"]')).toHaveText('Land use');
   await page.locator('label[for="layer-land"]').click();
   await expect(page).toHaveURL(/layer=land/);
-  await expect(page.locator('.legend-title')).toContainText('Farmland');
+  await expect(page.locator('.legend-title')).toContainText('Share of the land farmed');
+  await expect(page.locator('.legend li').first()).toContainText('%');
   await expect(page.locator('[data-control="gas"]')).toBeHidden();
   await expect(page.locator('[data-control="group"]')).toBeHidden();
   await expect(page.locator('path.country.has-data').first()).toBeVisible();
   await page.locator('path.country.has-data').first().click();
   const tooltip = page.locator('.map-frame .tooltip');
+  await expect(tooltip).toContainText('Share of the land farmed');
+  await expect(tooltip).toContainText('Farmland');
   await expect(tooltip).toContainText('Cropland');
   await expect(tooltip).toContainText('Pasture');
   await expect(tooltip).toContainText('ha');
   const other = await page.context().newPage();
   await other.goto(`${START}&layer=land`);
   await expect(other.locator('#layer-land')).toBeChecked();
-  await expect(other.locator('.legend-title')).toContainText('Farmland');
+  await expect(other.locator('.legend-title')).toContainText('Share of the land farmed');
   await other.close();
 });
 

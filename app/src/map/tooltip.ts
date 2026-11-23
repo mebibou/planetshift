@@ -1,7 +1,7 @@
 import type { CountryResult } from '../model/api';
 import type { T } from '../i18n/i18n';
 import { formatArea, formatMass, formatPercent } from '../i18n/format';
-import { beforeAfter, relativeChange, type BeforeAfter, type LayerSpec } from './layers';
+import { beforeAfter, farmland, relativeChange, type BeforeAfter, type LayerSpec } from './layers';
 import { sourceInText, type TierSource } from './sources';
 
 export interface TooltipModel {
@@ -10,13 +10,15 @@ export interface TooltipModel {
   source?: { label: string; url: string | null };
 }
 
-/** A layer's quantity in its unit: tonnes of product, kg of gas, or hectares. */
+/** A layer's quantity in its unit: tonnes of product, kg of gas, hectares, or a share of land. */
 export const formatMeasure =
   (locale: string, kind: BeforeAfter['kind']) =>
   (v: number): string =>
-    kind === 'land' || kind === 'deforestation'
-      ? formatArea(locale, v)
-      : formatMass(locale, kind === 'production' ? v * 1000 : v);
+    kind === 'landShare'
+      ? formatPercent(locale, v, v > 0 && v < 0.1 ? 1 : 0)
+      : kind === 'land' || kind === 'deforestation'
+        ? formatArea(locale, v)
+        : formatMass(locale, kind === 'production' ? v * 1000 : v);
 
 /** The CO₂ the clearing releases, today and with the levers. */
 const clearingCo2Row = (c: CountryResult, t: T, locale: string): [string, string] => [
@@ -24,6 +26,15 @@ const clearingCo2Row = (c: CountryResult, t: T, locale: string): [string, string
   t('map.tooltip.beforeAfter', {
     before: formatMass(locale, c.deforestationCo2 ?? 0),
     after: formatMass(locale, (c.deforestationCo2 ?? 0) + (c.deforestationChange ?? 0)),
+  }),
+];
+
+/** Cropland and pasture together, hectares today and with the levers. */
+const farmlandRow = (c: CountryResult, t: T, locale: string): [string, string] => [
+  t('map.tooltip.land'),
+  t('map.tooltip.beforeAfter', {
+    before: formatArea(locale, farmland(c.land)),
+    after: formatArea(locale, farmland(c.land) + farmland(c.landChange)),
   }),
 ];
 
@@ -55,7 +66,9 @@ export const tooltipModel = (
         ? t('map.tooltip.emissions', { gas: t(`gases.${spec.gas}`) })
         : ba.kind === 'deforestation'
           ? t('map.tooltip.deforestation')
-          : t('map.tooltip.land');
+          : ba.kind === 'landShare'
+            ? t('map.tooltip.landShare')
+            : t('map.tooltip.land');
   const change = relativeChange(ba);
   const tier = worst?.tier ?? c.worstTier;
   const rows: [string, string][] = [
@@ -66,11 +79,13 @@ export const tooltipModel = (
   ];
   return ba.kind === 'land'
     ? { title: name, rows: [...rows, ...landRows(c, t, locale)] }
-    : ba.kind === 'deforestation'
-      ? { title: name, rows: [...rows, clearingCo2Row(c, t, locale)] }
-      : {
-          title: name,
-          rows: [...rows, [t('map.tooltip.tier'), t(`tiers.${tier}`)]],
-          source: worst ? sourceInText(worst.source) : undefined,
-        };
+    : ba.kind === 'landShare'
+      ? { title: name, rows: [...rows, farmlandRow(c, t, locale), ...landRows(c, t, locale)] }
+      : ba.kind === 'deforestation'
+        ? { title: name, rows: [...rows, clearingCo2Row(c, t, locale)] }
+        : {
+            title: name,
+            rows: [...rows, [t('map.tooltip.tier'), t(`tiers.${tier}`)]],
+            source: worst ? sourceInText(worst.source) : undefined,
+          };
 };

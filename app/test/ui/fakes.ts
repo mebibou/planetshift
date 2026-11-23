@@ -15,6 +15,7 @@ export const countryResult = (over: Partial<CountryResult> = {}): CountryResult 
   kcalAfter: 2900,
   land: { cropland: 600, pasture: 400 },
   landChange: { cropland: 50, pasture: -250 },
+  landArea: 5000,
   deforestationCo2: 0,
   deforestationChange: 0,
   deforestationHa: 0,

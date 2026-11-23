@@ -1,4 +1,5 @@
-"""land.json: cropland per tonne, pasture and its sharing, and natural regrowth rates."""
+"""land.json: cropland per tonne, pasture and its sharing, natural regrowth rates and each
+country's land area."""
 
 import pandas as pd
 
@@ -32,7 +33,8 @@ def build(b: Build) -> None:
             "cropHaPerTonne": L.crop_json(ha_per_t),
             "oilcakeHa": L.cake_json(cake),
             "pasture": L.pasture_json(in_model, L.pasture_shares(lsu), b.iso3),
-            "fodderHa": L.fodder_json(fodder, b.iso3),
+            "fodderHa": L.hectares_json(fodder, b.iso3),
+            "landArea": L.hectares_json(L.latest(rl, L.LAND_AREA, y), b.iso3),
             "regrowth": L.regrowth_json(rates),
             "regrowthYears": L.REGROWTH_YEARS,
         },

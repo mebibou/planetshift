@@ -47,13 +47,14 @@ describe('layers', () => {
     });
   });
 
-  it('measures farmland, cropland and pasture together, before and after', () => {
+  it('measures land use as the share of the land farmed, before and after', () => {
     expect(beforeAfter(countryResult(), spec({ layer: 'land' }))).toEqual({
-      kind: 'land',
-      before: 1000,
-      after: 800,
+      kind: 'landShare',
+      before: 0.2,
+      after: 0.16,
     });
-    expect(layerValue(countryResult(), spec({ layer: 'land' }))).toBe(800);
+    expect(layerValue(countryResult(), spec({ layer: 'land' }))).toBeCloseTo(0.16);
+    expect(layerValue(countryResult({ landArea: 0 }), spec({ layer: 'land' }))).toBeNull();
     expect(layerValue(countryResult(), spec({ layer: 'change', changeOf: 'land' }))).toBeCloseTo(
       -0.2,
     );

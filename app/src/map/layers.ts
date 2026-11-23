@@ -12,8 +12,11 @@ export const LAYERS = [
 export type Layer = (typeof LAYERS)[number];
 export const CHANGE_OF = ['production', 'emissions', 'land'] as const;
 export type ChangeOf = (typeof CHANGE_OF)[number];
-/** What a layer measures: a quantity the Change layer also offers, or the forest area cleared. */
-export type Measure = ChangeOf | 'deforestation';
+/**
+ * What a layer measures: a quantity the Change layer also offers, the forest area cleared, or the
+ * share of a country's land that is farmed.
+ */
+export type Measure = ChangeOf | 'deforestation' | 'landShare';
 export type GasChoice = Gas | 'co2e';
 export const GAS_CHOICES: GasChoice[] = ['co2e', ...GASES];
 export type GroupChoice = Group | 'all';
@@ -52,9 +55,11 @@ export interface BeforeAfter {
 export const measureOf = (spec: Pick<LayerSpec, 'layer' | 'changeOf'>): Measure =>
   spec.layer === 'change'
     ? spec.changeOf
-    : spec.layer === 'emissions' || spec.layer === 'land' || spec.layer === 'deforestation'
-      ? spec.layer
-      : 'production';
+    : spec.layer === 'land'
+      ? 'landShare'
+      : spec.layer === 'emissions' || spec.layer === 'deforestation'
+        ? spec.layer
+        : 'production';
 
 /** The deforestation module's fields of a country: forest cleared a year, ha, and its change. */
 const clearing = (c: CountryResult): [number, number] => [
@@ -62,14 +67,23 @@ const clearing = (c: CountryResult): [number, number] => [
   c.deforestationHaChange ?? 0,
 ];
 
+/** Farmland as a share of the country's land area, and its change; none without the area. */
+const landShare = (c: CountryResult): [number, number] =>
+  c.landArea > 0 ? [farmland(c.land) / c.landArea, farmland(c.landChange) / c.landArea] : [0, 0];
+
+const MEASURES: Record<Measure, (c: CountryResult, spec: LayerSpec) => [number, number]> = {
+  production: (c, spec) => [
+    groupValue(c.production, spec.group),
+    groupValue(c.productionChange, spec.group),
+  ],
+  emissions: (c, spec) => [gasValue(c.emissions, spec.gas), gasValue(c.emissionsChange, spec.gas)],
+  deforestation: clearing,
+  land: (c) => [farmland(c.land), farmland(c.landChange)],
+  landShare,
+};
+
 const beforeAndChange = (c: CountryResult, spec: LayerSpec, kind: Measure): [number, number] =>
-  kind === 'production'
-    ? [groupValue(c.production, spec.group), groupValue(c.productionChange, spec.group)]
-    : kind === 'emissions'
-      ? [gasValue(c.emissions, spec.gas), gasValue(c.emissionsChange, spec.gas)]
-      : kind === 'deforestation'
-        ? clearing(c)
-        : [farmland(c.land), farmland(c.landChange)];
+  MEASURES[kind](c, spec);
 
 export const beforeAfter = (c: CountryResult, spec: LayerSpec): BeforeAfter => {
   const kind = measureOf(spec);
