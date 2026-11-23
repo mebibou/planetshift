@@ -98,6 +98,35 @@ def electricity_shares(gn: pd.DataFrame, iso3: dict[int, str]) -> dict[tuple[str
     }
 
 
+FUEL, CO2, ENERGY_USE = 6812, 7273, 72184
+KWH_PER_MJ = 3.6
+
+
+def electricity_per_fuel_co2(
+    gn: pd.DataFrame, iso3: dict[int, str], kwh_per_mj_fuel: float
+) -> dict[str, float]:
+    """{'World' | iso3: kg CO₂ of the grid electricity that replaces a farm's fuel, per kg of fuel
+    CO₂ it replaces}: the country's on-farm electricity CO₂ per kWh over its fuel's CO₂ per MJ, in
+    its latest year with both; the countries' together where it has none."""
+    rows = gn[
+        gn["item_code"].isin((ELECTRICITY, FUEL)) & gn["element_code"].isin((CO2, ENERGY_USE))
+    ]
+    latest = rows.sort_values("year").drop_duplicates(
+        ["area_code", "item_code", "element_code"], keep="last"
+    )
+    table = latest[latest["area_code"].isin(iso3)].pivot_table(
+        index="area_code", columns=["item_code", "element_code"], values="value", aggfunc="sum"
+    )
+
+    def ratio(t: pd.DataFrame | pd.Series) -> pd.Series | float:
+        grid = t[(ELECTRICITY, CO2)] / t[(ELECTRICITY, ENERGY_USE)] * KWH_PER_MJ
+        return kwh_per_mj_fuel * grid / (t[(FUEL, CO2)] / t[(FUEL, ENERGY_USE)])
+
+    own = ratio(table[(table > 0).all(axis=1)])
+    world = float(ratio(table.sum()))
+    return {"World": world, **{code: float(own.get(area, world)) for area, code in iso3.items()}}
+
+
 def split_energy(frame: pd.DataFrame, shares: dict[tuple[str, str], float]) -> pd.DataFrame:
     """FAOSTAT's energy rows split into electricity and fuel by each country's shares."""
     energy = frame[frame["source"] == "energy"]

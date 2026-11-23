@@ -106,13 +106,15 @@ The cut a practice makes in a country is the adoption you set × the applicable 
 
 **What it cuts.** The CO₂ of the fuel burnt on farms and of making that fuel. Their electricity is left to [Renewable electricity](#method-sectors), which cleans the grid they draw from. All of it is in the cradle-to-farm-gate scope: the farm gate counts the farm's biological processes only, so there the lever has no effect. FAO's review of energy-smart food systems and the IPCC's assessment describe efficiency and renewable energy as the main levers. Planetshift uses 50%: 25% for efficiency alone, 80% with electric or biofuel machinery throughout.
 
+**The electricity it adds.** Beyond the first 25%, which is efficiency, the cut switches pumps, heating and machines to electricity, and the grid's CO₂ for that electricity is added back. An engine turns about 35% of its fuel into work and an electric motor about 90% of its electricity, so 0.11 kWh replaces a MJ of fuel (Planetshift's estimate). Each country's grid emits the CO₂ per kWh of its on-farm electricity in FAOSTAT's *Emissions from energy use in agriculture*, set against the CO₂ per MJ of its on-farm fuel, in the latest year with both; the model's countries together stand for a country without them. Across the world, the grid adds back 0.79 kg of CO₂ per kg of fuel CO₂ switched: 0.06 in France, 0.52 in the United States, and 1.18 in India, where switching raises emissions. Adopted in full, the lever cuts 155 Mt of CO₂ a year rather than the 226 Mt of the fuel alone.
+
 **Where it applies.**
 
 - 80% of the targeted emissions in high-income countries, where grids and capital are available;
 - 70% in upper-middle-income countries, where electric pumps and machinery are within reach;
 - 50% in lower-middle-income and 40% in low-income countries, with diesel pumps and tractors and less grid access.
 
-**Caveats.** Heavy machinery is the hardest to switch. The electricity that electrified pumps and machines then draw is not added to the farm's emissions, so where the grid is still fossil the cut is overstated.
+**Caveats.** Heavy machinery is the hardest to switch. The grid's CO₂ is today's: it neither falls as grids are cleaned over the century nor with [Renewable electricity](#method-sectors), so the CO₂ added back is overstated where the grid gets cleaner. All the fuel switched is charged as electricity, though some tractors would run on biofuel.
 
 ## All practices together
 

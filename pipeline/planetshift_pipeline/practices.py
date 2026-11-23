@@ -156,7 +156,30 @@ def applicable(rows: pd.DataFrame, countries: list[str], regions: dict, incomes:
     return {"World": given["World"], **{iso3: share(iso3) for iso3 in sorted(countries)}}
 
 
-def practice(rows: pd.DataFrame, countries: list[str], regions: dict, incomes: dict) -> dict:
+def value(rows: pd.DataFrame, field: str) -> float | None:
+    """The one value of a field, or None when the practice has none."""
+    values = rows.loc[rows["field"] == field, "value"].astype(float)
+    return float(values.iloc[0]) if len(values) else None
+
+
+def electrified(rows: pd.DataFrame, co2_per_fuel_co2: dict[str, float] | None) -> dict:
+    """The part of a fuel cut beyond `efficiency` switches to grid electricity, which emits
+    co2PerFuelCo2 kg per kg of fuel CO₂ it replaces; nothing for a practice without one."""
+    efficiency = value(rows, "efficiency")
+    return (
+        {"electrified": {"efficiency": efficiency, "co2PerFuelCo2": co2_per_fuel_co2}}
+        if efficiency is not None and co2_per_fuel_co2
+        else {}
+    )
+
+
+def practice(
+    rows: pd.DataFrame,
+    countries: list[str],
+    regions: dict,
+    incomes: dict,
+    co2_per_fuel_co2: dict[str, float] | None = None,
+) -> dict:
     reduction = rows[rows["field"] == "reduction"].set_index("key")["value"].astype(float)
     groups = listed(rows, "groups")
     return {
@@ -165,15 +188,23 @@ def practice(rows: pd.DataFrame, countries: list[str], regions: dict, incomes: d
         **({"groups": groups} if groups else {}),
         "reduction": {k: float(reduction[k]) for k in ("median", "low", "high")},
         "applicable": applicable(rows, countries, regions, incomes),
+        **electrified(rows, co2_per_fuel_co2),
         "source": "; ".join(cited(rows)),
     }
 
 
 def practices_json(
-    table: pd.DataFrame, countries: list[str], regions: dict[str, str], incomes: dict[str, str]
+    table: pd.DataFrame,
+    countries: list[str],
+    regions: dict[str, str],
+    incomes: dict[str, str],
+    co2_per_fuel_co2: dict[str, float] | None = None,
 ) -> dict:
-    """Practices: one record per practice id, every country given its applicable share."""
+    """Practices: one record per practice id, every country given its applicable share, and the
+    grid's CO₂ per kg of fuel CO₂ for a practice that switches fuel to electricity."""
     return {
-        pid: practice(table[table["practice"] == pid], countries, regions, incomes)
+        pid: practice(
+            table[table["practice"] == pid], countries, regions, incomes, co2_per_fuel_co2
+        )
         for pid in PRACTICES
     }

@@ -34,6 +34,12 @@ export interface Breakdown {
   >;
 }
 
+/** A cut beyond `efficiency` switches to the grid: kg CO₂ per kg of fuel CO₂ replaced. */
+export interface Electrified {
+  efficiency: number;
+  co2PerFuelCo2: Record<string, number>;
+}
+
 /** Farming practices that cut emissions at the source. */
 export const PRACTICES = [
   'feedAdditives',
@@ -58,6 +64,7 @@ export interface Practice {
   groups?: Group[];
   reduction: Range3;
   applicable: Record<string, number>;
+  electrified?: Electrified;
   source: string;
 }
 export type Practices = Record<PracticeId, Practice>;

@@ -106,13 +106,15 @@ La réduction qu'une pratique fait dans un pays est l'adoption choisie × la par
 
 **Ce qu'elle réduit.** Le CO₂ du carburant brûlé sur les fermes et de la production de ce carburant. Leur électricité est laissée à [Électricité renouvelable](#method-sectors), qui décarbone le réseau dont elles l'obtiennent. Tout est dans le périmètre du berceau à la sortie de ferme : le périmètre à la ferme ne compte que les processus biologiques de la ferme, et le levier n'y a donc aucun effet. La revue de la FAO sur les systèmes alimentaires économes en énergie et l'évaluation du GIEC décrivent l'efficacité énergétique et les énergies renouvelables comme les principaux leviers. Planetshift retient 50 % : 25 % pour l'efficacité seule, 80 % avec des machines électriques ou aux biocarburants partout.
 
+**L'électricité qu'elle ajoute.** Au-delà des premiers 25 %, qui sont l'efficacité, la réduction fait passer les pompes, le chauffage et les machines à l'électricité, et le CO₂ du réseau pour cette électricité est rajouté. Un moteur thermique transforme environ 35 % de son carburant en travail et un moteur électrique environ 90 % de son électricité : 0,11 kWh remplace donc un MJ de carburant (estimation de Planetshift). Le réseau de chaque pays émet le CO₂ par kWh de l'électricité utilisée sur ses fermes dans *Emissions from energy use in agriculture* de FAOSTAT, rapporté au CO₂ par MJ du carburant de ses fermes, la dernière année où les deux existent ; l'ensemble des pays du modèle tient lieu de valeur pour un pays qui ne les a pas. Pour le monde, le réseau rajoute 0,79 kg de CO₂ par kg de CO₂ de carburant remplacé : 0,06 en France, 0,52 aux États-Unis, et 1,18 en Inde, où le passage à l'électricité augmente les émissions. Adopté en entier, le levier réduit le CO₂ de 155 Mt par an au lieu des 226 Mt du seul carburant.
+
 **Où elle s'applique.**
 
 - 80 % des émissions visées dans les pays à revenu élevé, où le réseau et les capitaux sont disponibles ;
 - 70 % dans les pays à revenu intermédiaire de la tranche supérieure, où pompes et machines électriques sont à portée ;
 - 50 % dans ceux de la tranche inférieure et 40 % dans les pays à faible revenu, avec des pompes et des tracteurs au diesel et un accès moindre au réseau.
 
-**Limites.** Les machines lourdes sont les plus difficiles à convertir. L'électricité que consomment ensuite les pompes et machines électrifiées n'est pas ajoutée aux émissions de la ferme : là où le réseau reste fossile, la réduction est donc surestimée.
+**Limites.** Les machines lourdes sont les plus difficiles à convertir. Le CO₂ du réseau est celui d'aujourd'hui : il ne baisse ni à mesure que les réseaux sont décarbonés au cours du siècle, ni avec [Électricité renouvelable](#method-sectors), et le CO₂ rajouté est donc surestimé là où le réseau devient plus propre. Tout le carburant remplacé est compté comme électricité, bien que certains tracteurs rouleraient aux biocarburants.
 
 ## Toutes les pratiques ensemble
 

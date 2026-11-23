@@ -10,7 +10,13 @@ import {
   w2050,
 } from '../../../test/levers';
 import { groupIndicesOf } from '../../model/prepare';
-import { gasSplitOf, intensityCuts, type PracticeCut, type SourceShares } from './model';
+import {
+  gasSplitOf,
+  intensityCuts,
+  netReduction,
+  type PracticeCut,
+  type SourceShares,
+} from './model';
 import type { Practice, PracticeId } from './data';
 
 const GASES_CUT: Record<PracticeId, Gas[]> = {
@@ -30,6 +36,20 @@ describe('practices', () => {
   it('farmEnergy acts in the cradle-to-farm-gate scope only, where the fuel is counted', () => {
     expect(lever('farmEnergy', 1, {}, { scope: 'farmGate' }).summary.avoided.co2).toBe(0);
     expect(lever('farmEnergy').summary.avoided.co2).toBeGreaterThan(0);
+  });
+  it('farmEnergy charges the fuel it switches to electricity at the country’s grid', () => {
+    const fuel: Practice = {
+      sources: ['fuel'],
+      gases: ['co2'],
+      reduction: { median: 0.5, low: 0.25, high: 0.8 },
+      applicable: { World: 1 },
+      electrified: { efficiency: 0.25, co2PerFuelCo2: { World: 0.8, FRA: 0.1, IND: 1.2 } },
+      source: '',
+    };
+    expect(netReduction(fuel, 'FRA', 'median')).toBeCloseTo(0.5 - 0.25 * 0.1);
+    expect(netReduction(fuel, 'BRA', 'median')).toBeCloseTo(0.5 - 0.25 * 0.8);
+    expect(netReduction(fuel, 'IND', 'p95')).toBeCloseTo(0.8 - 0.55 * 1.2);
+    expect(netReduction({ ...fuel, electrified: undefined }, 'IND', 'median')).toBe(0.5);
   });
   const enteric = (cut: number, groups?: Practice['groups']): PracticeCut => ({
     practice: {
