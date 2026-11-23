@@ -14,15 +14,47 @@ const FILES = indexFiles(
 
 const anchor = (id: string) => `method-${id}`;
 
+/** Scrolls to the section a link names, again once the web font has reflowed the page. */
+export const scrollToSection = (hash: string) => {
+  const target = hash.startsWith('#method-') ? document.getElementById(hash.slice(1)) : null;
+  if (!target) return;
+  target.scrollIntoView();
+  void document.fonts?.ready.then(() => target.isConnected && target.scrollIntoView());
+};
+
 /** The Methodology page: the markdown sections in order, with a table of contents beside them. */
 export const methodologyView = (t: T, lang: Lang): HTMLElement => {
   const sections = pickSections(SECTIONS, FILES, lang, (id) => t(sectionTitleKey(id)));
+  const list = h(
+    'ol',
+    { id: 'toc-list' },
+    ...sections.map((s) => h('li', {}, h('a', { href: `#${anchor(s.id)}` }, s.title))),
+  );
+  const toggle = h(
+    'button',
+    { type: 'button', class: 'toc-toggle', 'aria-expanded': 'false', 'aria-controls': 'toc-list' },
+    t('methodology.toc'),
+  );
   const toc = h(
     'nav',
     { class: 'toc', 'aria-label': t('methodology.toc') },
     h('h2', {}, t('methodology.toc')),
-    h('ol', {}, ...sections.map((s) => h('li', {}, h('a', { href: `#${anchor(s.id)}` }, s.title)))),
+    toggle,
+    list,
   );
+  const setOpen = (open: boolean) => {
+    toc.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+  };
+  toggle.addEventListener('click', () => setOpen(!toc.classList.contains('open')));
+  list.addEventListener('click', (e) => {
+    if ((e.target as Element).closest('a')) setOpen(false);
+  });
+  toc.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || !toc.classList.contains('open')) return;
+    setOpen(false);
+    toggle.focus();
+  });
   const body = sections.length
     ? sections.map((s) => {
         const section = h('section', {

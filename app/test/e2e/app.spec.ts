@@ -230,9 +230,61 @@ test('Methodology renders its sections with a table of contents', async ({ page 
   expect(count).toBeGreaterThanOrEqual(2);
   await expect(page.locator('.toc a')).toHaveCount(count);
   await expect(sections.first()).toHaveAttribute('data-section', 'overview');
+  if (await page.locator('.toc-toggle').isVisible()) await page.locator('.toc-toggle').click();
   await page.locator('.toc a').last().click();
   await expect(page).toHaveURL(/#method-/);
   await noHorizontalScroll(page);
+});
+
+test('a link to a Methodology section opens on its heading, below the header', async ({ page }) => {
+  await page.goto(`${START}&view=methodology#method-climate`);
+  const heading = page.locator('#method-climate > :first-child');
+  await expect(heading).toBeInViewport();
+  const below = async () => {
+    const header = await page.locator('.site-header').boundingBox();
+    const bar = await page.locator('.toc-toggle').boundingBox();
+    return Math.max(header!.y + header!.height, bar && bar.height ? bar.y + bar.height : 0);
+  };
+  await expect
+    .poll(async () => (await heading.boundingBox())!.y)
+    .toBeGreaterThanOrEqual(await below());
+  await page.locator('.site-nav a[data-view="explore"]').click();
+  await page.locator('.site-nav a[data-view="methodology"]').click();
+  if (await page.locator('.toc-toggle').isVisible()) await page.locator('.toc-toggle').click();
+  await page.locator('.toc a[href="#method-options"]').click();
+  await expect(page).toHaveURL(/view=methodology&data=fixtures#method-options$/);
+  const options = page.locator('#method-options > :first-child');
+  await expect(options).toBeInViewport();
+  expect((await options.boundingBox())!.y).toBeGreaterThanOrEqual(await below());
+  await page.goBack();
+  await expect(page).toHaveURL(/view=methodology&data=fixtures$/);
+  await expect(page.locator('.methodology')).toBeVisible();
+});
+
+test('on a phone the contents open from a bar, reach the last link and close on it', async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, 'the contents bar is for phones');
+  await open(page);
+  await page.locator('.site-nav a[data-view="methodology"]').click();
+  const toggle = page.locator('.toc-toggle');
+  const last = page.locator('.toc a').last();
+  await expect(last).toBeHidden();
+  await page.mouse.wheel(0, 3000);
+  await expect(toggle).toBeInViewport();
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await last.scrollIntoViewIfNeeded();
+  await expect(last).toBeInViewport();
+  const id = (await last.getAttribute('href'))!.slice(1);
+  await last.click();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(page).toHaveURL(new RegExp(`#${id}$`));
+  const heading = page.locator(`#${id} > :first-child`);
+  await expect(heading).toBeInViewport();
+  const bar = await toggle.boundingBox();
+  expect((await heading.boundingBox())!.y).toBeGreaterThanOrEqual(bar!.y + bar!.height);
 });
 
 test('the map layers and tooltip work', async ({ page }) => {
@@ -730,6 +782,29 @@ test('the chart comes before the map', async ({ page }) => {
   const top = (selector: string) =>
     page.locator(selector).evaluate((el) => el.getBoundingClientRect().top);
   expect(await top('.chart-card')).toBeLessThan(await top('.map-card'));
+});
+
+test('the chart opens the page and comes before the controls in the reading order', async ({
+  page,
+}) => {
+  await open(page);
+  const box = async (selector: string) =>
+    page.locator(selector).evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      return { top: r.top, bottom: r.bottom };
+    });
+  const chart = await box('.chart-card');
+  expect(chart.top).toBeLessThan(page.viewportSize()!.height);
+  expect(
+    await page.evaluate(() =>
+      document
+        .querySelector('.chart-card')!
+        .compareDocumentPosition(document.querySelector('.panel')!),
+    ),
+  ).toBe(4);
+  const panel = await box('.panel');
+  if (page.viewportSize()!.width <= 860) expect(panel.top).toBeGreaterThanOrEqual(chart.bottom);
+  else expect(panel.top).toBeLessThan(chart.bottom);
 });
 
 test('the deforestation layer shows CO₂ from clearing, with a tooltip', async ({ page }) => {

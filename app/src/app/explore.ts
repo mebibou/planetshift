@@ -300,32 +300,28 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
   const el = h(
     'div',
     { class: 'explore' },
-    aside,
     h(
-      'div',
-      { class: 'stage' },
+      'section',
+      { class: 'card chart-card', 'aria-label': t('charts.title') },
       h(
-        'section',
-        { class: 'card chart-card', 'aria-label': t('charts.title') },
+        'div',
+        { class: 'card-head' },
         h(
           'div',
-          { class: 'card-head' },
-          h(
-            'div',
-            { class: 'chart-tabs', role: 'tablist', 'aria-label': t('charts.title') },
-            ...tabs,
-          ),
-          h('div', { class: 'chart-switches' }, horizonSwitch.el, rangeSwitch.el),
+          { class: 'chart-tabs', role: 'tablist', 'aria-label': t('charts.title') },
+          ...tabs,
         ),
-        panels.temperature,
-        panels.avoided,
-        panels.cause,
-        chartDownload(t, () => ({ ...last, climate: data.climate, currentYear: ctx.currentYear })),
+        h('div', { class: 'chart-switches' }, horizonSwitch.el, rangeSwitch.el),
       ),
+      panels.temperature,
+      panels.avoided,
+      panels.cause,
       error,
-      strip.el,
-      map.el,
+      chartDownload(t, () => ({ ...last, climate: data.climate, currentYear: ctx.currentYear })),
     ),
+    aside,
+    strip.el,
+    map.el,
   );
   const sync = (s: AppState) => {
     panel.set(s.scenario);

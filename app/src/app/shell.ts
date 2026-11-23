@@ -11,7 +11,7 @@ import {
 import { runScenario } from '../model/run';
 import { BASE_SCENARIO } from '../model/scenarios';
 import { decodeState, encodeState } from '../model/state';
-import { methodologyView } from '../methodology/view';
+import { methodologyView, scrollToSection } from '../methodology/view';
 import type { AppState, ViewContext } from './context';
 import { h } from './dom';
 import { exploreView, type ExploreView } from './explore';
@@ -102,6 +102,7 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
     } else {
       views.methodology ??= methodologyView(ctx.t, s.lang);
       main.replaceChildren(views.methodology);
+      scrollToSection(location.hash);
     }
   };
 
@@ -185,13 +186,14 @@ export const startApp = (root: HTMLElement, initial: Loaded, lang: Lang, current
     writeUrl(s, previous);
   });
 
-  window.addEventListener('popstate', () =>
+  window.addEventListener('popstate', () => {
+    if (location.search === queryOf(store.get(), location.search)) return;
     store.update((s) => ({
       ...s,
       ...stateFromQuery(location.search),
       ui: parseUi(location.search),
-    })),
-  );
+    }));
+  });
   if (typeof matchMedia === 'function')
     matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
       if (!readStoredTheme()) store.update((s) => ({ ...s, theme: e.matches ? 'dark' : 'light' }));
