@@ -140,6 +140,8 @@ const capture = async (browser, origin, site, page) => {
   const html = await tab.evaluate(() => {
     const root = document.documentElement;
     root.removeAttribute('style');
+    // Set once the app has drawn its first result: the tests wait for it, not for the snapshot.
+    document.querySelector('main')?.removeAttribute('data-ready');
     root.removeAttribute('data-theme');
     document
       .querySelectorAll('link[rel="canonical"], link[rel="alternate"]')
