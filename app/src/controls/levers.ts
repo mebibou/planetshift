@@ -6,6 +6,7 @@ import type { LeverModule } from '../levers/types';
 import type { Levers, Scenario } from '../model/api';
 import { withFamily, withLever } from './adoption';
 import { group, worthPill } from './group';
+import { info } from './info';
 import { quickPair } from './quick';
 import { slider } from './slider';
 
@@ -41,6 +42,7 @@ export const leverGroups = (
         value: Math.round(adoptionOf(scenario.levers, id) * 100),
         format: pct,
         marks: ui.marks.map((v) => ({ value: v * 100, label: pct(v * 100) })),
+        info: info(t('controls.info', { name: t(ui.label) }), t(ui.hint)),
         onInput: (v) => setScenario((s) => withLever(s, id, v / 100)),
       });
       const on = available(id);
@@ -56,8 +58,7 @@ export const leverGroups = (
           h(
             'div',
             { class: 'lever-foot' },
-            on ? worthPill(`lever:${id}`) : null,
-            h('p', { class: 'hint' }, on ? t(ui.hint) : t('levers.noData')),
+            on ? worthPill(`lever:${id}`) : h('p', { class: 'hint' }, t('levers.noData')),
           ),
         ),
       };

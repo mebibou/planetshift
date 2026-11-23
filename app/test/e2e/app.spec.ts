@@ -653,7 +653,7 @@ test('the energy fold: each slider and adopt all change the summary and the URL'
       await page.locator(`#lever-${lever}`).fill('40');
       await expect(page).toHaveURL(new RegExp(`[?&]${key}=40`));
       await expect.poll(() => summaryText(page)).not.toBe(before);
-      await expect(fold.locator('[data-lever] .hint').first()).not.toBeEmpty();
+      await expect(fold.locator('[data-lever] .info-tip').first()).not.toBeEmpty();
     });
   }
   await fold.locator('button[data-action="reset"]').click();
@@ -1229,4 +1229,23 @@ test('the quick pairs are reached and pressed with the keyboard', async ({ page 
   await page.keyboard.press('Space');
   await expect.poll(() => pressed(page, 'waste')).toBe('zero');
   await expect(fold).not.toHaveAttribute('open');
+});
+
+test('an (i) button shows its text under it, and Escape or a click elsewhere closes it', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const button = page.locator('[data-control="timing"] .info');
+  const tip = page.locator('[data-control="timing"] .info-tip');
+  await expect(tip).toBeHidden();
+  await button.click();
+  await expect(tip).toBeVisible();
+  await expect(tip).toHaveText(/ramps in from today/);
+  const [b, t] = await Promise.all([button.boundingBox(), tip.boundingBox()]);
+  expect(t!.y).toBeGreaterThan(b!.y + b!.height - 1);
+  await page.keyboard.press('Escape');
+  await expect(tip).toBeHidden();
+  await button.click();
+  await page.locator('#levers-title').click();
+  await expect(tip).toBeHidden();
 });
