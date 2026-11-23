@@ -6,9 +6,9 @@ import { lazy, Suspense } from 'react';
 import { stateFromQuery } from './app/shell';
 import { applyTheme, effectiveTheme, prefersDark, readStoredTheme } from './app/theme';
 import { parseTourFlag, readTourSeen, shouldShowTour } from './app/tour';
-import { parseUi } from './app/url';
+import { parseUi, type View } from './app/url';
 import { parseEntry, withEntryView } from './app/entry';
-import { dataFolder, loadAll, LoadError } from './data/load';
+import { dataFolder, loadAll, LoadError, type Loaded } from './data/load';
 import { browserLang, parseLang, readStoredLang, translator } from './i18n/i18n';
 
 /** Shown on a first visit only, so loaded then, in its own file. */
@@ -59,50 +59,58 @@ const Failure = ({ title, lines }: { title: string; lines: string[] }) => (
   </div>
 );
 
+/** Whether the view the reader asked for needs the model's data before it can show anything. */
+const NEEDS_DATA: Record<View, boolean> = { explore: true, methodology: false };
+
+/** What must be loaded before the view can show: the data, or the Methodology's pages. */
+const viewReady = (view: View, data: Promise<Loaded>): Promise<unknown> =>
+  NEEDS_DATA[view]
+    ? data
+    : import('./methodology/Methodology').then((m) => m.preloadMethodology(lang));
+
 if (element) {
   const root = createRoot(element);
   const currentYear = new Date().getFullYear();
-  if (!prerendered)
+  const initial = {
+    ...stateFromQuery(location.search, currentYear),
+    ui: parseUi(location.search),
+    lang,
+    theme: effectiveTheme(readStoredTheme(), prefersDark()),
+  };
+  // A snapshot of another view (Explore's, served for `/?view=methodology`) would mislead.
+  if (!prerendered || entry?.view !== initial.ui.view)
     root.render(
       <p className="loading" role="status">
         {t('load.loading')}
       </p>,
     );
-  loadAll(dataFolder(location.search)).then(
-    (loaded) => {
-      try {
-        const initial = {
-          ...stateFromQuery(location.search, currentYear),
-          ui: parseUi(location.search),
-          lang,
-          theme: effectiveTheme(readStoredTheme(), prefersDark()),
-        };
-        root.render(
-          <StartError
-            fallback={(e) => (
-              <Failure
-                title={t('load.startTitle')}
-                lines={[t('load.startFailed', { reason: reasonOf(e) })]}
-              />
-            )}
-          >
-            <App initial={initial} loaded={loaded} currentYear={currentYear} />
-            {tour && (
-              <Suspense fallback={null}>
-                <Tour t={t} />
-              </Suspense>
-            )}
-          </StartError>,
-        );
-      } catch (e) {
-        console.error(e);
-        root.render(
+  const app = (loaded: Loaded | null) =>
+    root.render(
+      <StartError
+        fallback={(e) => (
           <Failure
             title={t('load.startTitle')}
             lines={[t('load.startFailed', { reason: reasonOf(e) })]}
-          />,
-        );
-      }
+          />
+        )}
+      >
+        <App initial={initial} loaded={loaded} currentYear={currentYear} />
+        {tour && (
+          <Suspense fallback={null}>
+            <Tour t={t} />
+          </Suspense>
+        )}
+      </StartError>,
+    );
+  const data = loadAll(dataFolder(location.search));
+  // The app shows once its view is ready, and again with the data when that arrives.
+  let shown = false;
+  let current: Loaded | null = null;
+  // The data's handler comes first, so a view that waits for the data shows with it at once.
+  data.then(
+    (loaded) => {
+      current = loaded;
+      if (shown) app(loaded);
     },
     (e: unknown) =>
       root.render(
@@ -116,5 +124,12 @@ if (element) {
           ]}
         />,
       ),
+  );
+  void viewReady(initial.ui.view, data).then(
+    () => {
+      shown = true;
+      app(current);
+    },
+    () => undefined,
   );
 }

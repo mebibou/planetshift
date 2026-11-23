@@ -43,6 +43,9 @@ const sectionsFor = (t: T, lang: Lang, files: Map<string, string>): Section[] =>
     ...withHeadingIds(renderMarkdown(s.markdown), anchor(s.id)),
   }));
 
+/** Starts loading the pages in `lang` early, so the page shows as soon as it can. */
+export const preloadMethodology = (lang: Lang): Promise<unknown> => filesFor(lang);
+
 /** Scrolls to the section a link names, again once the web font has reflowed the page. */
 export const scrollToSection = (hash: string) => {
   const target = hash.startsWith('#method-') ? document.getElementById(hash.slice(1)) : null;
