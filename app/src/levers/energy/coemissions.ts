@@ -1,4 +1,4 @@
-import type { Climate, ClimateMethod, Range3, Ssp } from '../../data/types';
+import type { Climate, ClimateMethod, GasVector, Range3, Ssp } from '../../data/types';
 import { towards } from '../../model/bands';
 import { agtpOf, convolve, type Band } from '../../model/climate';
 import { valueAt } from '../../model/util';
@@ -7,13 +7,14 @@ import {
   type CoEmissions,
   type CoSector,
   type CoSpecies,
+  type NoxMethane,
   type RangeSeries,
 } from './data';
 
 /** kg a year of each co-emitted species (negative when avoided). */
 export type CoChange = Record<CoSpecies, number>;
 
-export const NO_CO_CHANGE: CoChange = { ch4: 0, so2: 0, bc: 0, oc: 0, nox: 0 };
+export const NO_CO_CHANGE: CoChange = Object.fromEntries(CO_SPECIES.map((s) => [s, 0])) as CoChange;
 
 /** Whether coemissions.json was loaded with data for the levers to act on. */
 export const hasCoEmissions = (co: Partial<CoEmissions> | undefined): co is CoEmissions =>
@@ -51,6 +52,16 @@ export const coChange = (
   ) as CoChange;
 };
 
+/**
+ * The greenhouse gases of each year's change: the levers' fossil CO₂ with the CO₂ of producing the
+ * fuel, and the methane and N₂O that come with it.
+ */
+export const coGases = (co2: readonly number[], co: readonly CoYear[]): GasVector[] =>
+  co2.map((v, i) => {
+    const change = (co[i] as CoYear).change;
+    return { co2: v + change.co2, ch4: change.ch4, n2o: change.n2o };
+  });
+
 const rangeAt = (co: CoEmissions, r: RangeSeries, year: number): Range3 => ({
   median: valueAt(co.years, r.median, year),
   low: valueAt(co.years, r.low, year),
@@ -65,11 +76,28 @@ export interface CoYear {
   keepsNox?: KeepsNox;
 }
 
+/** Σ over sectors of a per-kg-of-CO₂ range times the sector's change, each band's end its way. */
+const bySector = (
+  co: CoEmissions,
+  perKg: Partial<Record<CoSector, RangeSeries>> | undefined,
+  band: Band,
+  year: number,
+  co2: Readonly<Partial<Record<CoSector, number>>>,
+  more: (v: number) => boolean,
+): number =>
+  (Object.keys(co2) as CoSector[])
+    .filter((s) => co2[s] !== 0 && perKg?.[s])
+    .reduce((total, s) => {
+      const v = co2[s] as number;
+      return total + towards(rangeAt(co, perKg?.[s] as RangeSeries, year), band, more(v)) * v;
+    }, 0);
+
 /**
- * Change in forcing from a change in air pollution in a year, W/m²: the particles' forcing per kg
- * of each sector's CO₂ (sulphate and organic carbon cool, black carbon warms), and NOx's own
- * (its ozone, less its nitrate). Fewer cooling particles warm. Each band takes the end of each
- * range that moves the warming avoided its way.
+ * Change in forcing from a change in air pollution in a year, W/m²: the forcing per kg of each
+ * sector's CO₂ of its particles (sulphate, organic carbon and ammonia's nitrate cool, black
+ * carbon warms) and of the ozone its carbon monoxide and VOCs make, and NOx's own (its ozone,
+ * less its nitrate). Fewer cooling particles warm. Each band takes the end of each range that
+ * moves the warming avoided its way.
  */
 export const airPollutionForcing = (
   co: Partial<CoEmissions> | undefined,
@@ -79,17 +107,28 @@ export const airPollutionForcing = (
   { co2, change }: CoYear,
 ): number => {
   if (!hasCoEmissions(co)) return 0;
-  const particles = co.particleErfPerKgCo2[ssp];
-  const sectors = (Object.keys(co2) as CoSector[]).filter((s) => co2[s] !== 0 && particles[s]);
   const nox =
     change.nox === 0
       ? 0
       : towards(rangeAt(co, co.erfPerKg[ssp].nox, year), band, change.nox < 0) * change.nox;
-  return sectors.reduce((total, s) => {
-    const v = co2[s] as number;
-    return total + towards(rangeAt(co, particles[s], year), band, v < 0) * v;
-  }, nox);
+  const fuel = (perKg?: Partial<Record<CoSector, RangeSeries>>) =>
+    bySector(co, perKg, band, year, co2, (v) => v < 0);
+  return nox + fuel(co.particleErfPerKgCo2[ssp]) + fuel(co.ozoneErfPerKgCo2?.[ssp]);
 };
+
+/**
+ * kg of methane a change in VOCs leaves in the air in a year, less as they fall (they lengthen
+ * methane's lifetime): each sector's change in CO₂ times its methane per kg of CO₂ through its
+ * VOCs, one coefficient everywhere.
+ */
+export const vocMethane = (
+  co: Partial<CoEmissions> | undefined,
+  ssp: Ssp,
+  band: Band,
+  year: number,
+  { co2 }: CoYear,
+): number =>
+  hasCoEmissions(co) ? -bySector(co, co.vocCh4PerKgCo2?.[ssp], band, year, co2, (v) => v > 0) : 0;
 
 /**
  * kg of methane a change in NOx leaves in the air in a year, more as NOx falls: each sector's
@@ -103,9 +142,10 @@ export const noxMethane = (
   band: Band,
   year: number,
   { co2, keepsNox = [] }: CoYear,
+  variant: NoxMethane,
 ): number => {
   if (!hasCoEmissions(co)) return 0;
-  const perKg = co.noxCh4PerKgCo2[ssp];
+  const perKg = co.noxCh4PerKgCo2[variant][ssp];
   return (Object.keys(co2) as CoSector[])
     .filter((s) => co2[s] !== 0 && perKg[s] && !keepsNox.includes(s))
     .reduce((total, s) => {
@@ -117,7 +157,7 @@ export const noxMethane = (
 export interface AirPollutionPaths {
   /** W/m² by year. */
   forcing: number[];
-  /** kg of methane NOx leaves in the air, by year. */
+  /** kg of methane NOx and VOCs leave in the air, by year. */
   methane: number[];
 }
 
@@ -128,9 +168,14 @@ export const airPollutionPaths = (
   band: Band,
   years: readonly number[],
   changes: readonly CoYear[],
+  variant: NoxMethane,
 ): AirPollutionPaths => ({
   forcing: years.map((y, i) => airPollutionForcing(co, ssp, band, y, changes[i] as CoYear)),
-  methane: years.map((y, i) => noxMethane(co, ssp, band, y, changes[i] as CoYear)),
+  methane: years.map(
+    (y, i) =>
+      noxMethane(co, ssp, band, y, changes[i] as CoYear, variant) +
+      vocMethane(co, ssp, band, y, changes[i] as CoYear),
+  ),
 });
 
 /**

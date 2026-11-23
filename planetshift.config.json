@@ -1,0 +1,9 @@
+{
+  "$schema": "./planetshift.config.schema.json",
+  "departures": {
+    "noxMethane": "hoor",
+    "aviationNonCo2": "lee2021",
+    "permafrost": "on",
+    "shippingSulphur2020": "on"
+  }
+}

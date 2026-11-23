@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { data, lever, run, w2050, w2100 } from '../../../test/levers';
+import { data, lever, run, supply, w2050, w2100 } from '../../../test/levers';
 import { DEFAULT_OPTIONS } from '../../model/api';
 import { runScenario } from '../../model/run';
 import { BASE_SCENARIO } from '../../model/scenarios';
@@ -37,7 +37,7 @@ describe('industry levers', () => {
     expect(r.summary.byFamily.avoidedWarming2100.industry).toBeCloseTo(w2100(r), 12);
     expect(r.summary.byFamily.avoidedWarming2100.energy).toBe(0);
     expect(r.summary.avoided.ch4).toBeGreaterThan(0);
-    expect(r.summary.avoided.n2o).toBe(0);
+    expect(r.summary.avoided.n2o).not.toBe(0);
   });
 
   it('clean heating acts on buildings and clean industry on industry', () => {
@@ -52,17 +52,24 @@ describe('industry levers', () => {
   it('heat pumps save the boilers’ CO₂ less the electricity they draw', () => {
     const r = lever('cleanHeating');
     const boilers = at2035('buildings');
-    expect(r.summary.avoided.co2).toBeLessThan(boilers);
-    expect(r.summary.avoided.co2).toBeCloseTo(boilers * (1 - 1.49 * grid2035()), -6);
+    expect(r.summary.avoided.co2).toBeLessThan(boilers * (1 + supply('buildings')));
+    expect(r.summary.avoided.co2).toBeCloseTo(
+      boilers * (1 + supply('buildings') - 1.49 * grid2035() * (1 + supply('electricity'))),
+      -6,
+    );
   });
 
   it('clean industry cuts steel’s and cement’s share of industry, less their electricity', () => {
     const r = lever('cleanIndustry');
     const g = grid2035();
     const expected =
-      at2035('industry') * (0.289 * 0.9 * (1 - 1.5 * g) + 0.287 * 0.8 * (1 - 0.25 * g));
+      at2035('industry') *
+      (0.289 * 0.9 * (1 + supply('industry') - 1.5 * g * (1 + supply('electricity'))) +
+        0.287 * 0.8 * (1 + supply('industry') - 0.25 * g * (1 + supply('electricity'))));
     expect(r.summary.avoided.co2).toBeCloseTo(expected, -6);
-    expect(r.summary.avoided.co2).toBeLessThan(0.576 * at2035('industry'));
+    expect(r.summary.avoided.co2).toBeLessThan(
+      0.576 * at2035('industry') * (1 + supply('industry')),
+    );
   });
 
   it('save more with renewable electricity, and all of their cut on a clean grid', () => {

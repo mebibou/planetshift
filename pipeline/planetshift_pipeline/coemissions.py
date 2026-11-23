@@ -23,9 +23,13 @@ log = logging.getLogger(__name__)
 BASE_YEAR = 2023
 END_YEAR = 2100
 YEARS = np.array([BASE_YEAR, *range(2025, END_YEAR + 1, 5)])
-SPECIES = ("ch4", "so2", "bc", "oc", "nox")
-AEROSOLS = ("so2", "bc", "oc", "nox")
-PARTICLES = ("so2", "bc", "oc")
+# "co2" is the fossil CO₂ emitted producing the fuel (refineries, coke ovens, flaring), on top of
+# the sector's own; every other species is emitted producing and burning it.
+SPECIES = ("co2", "ch4", "n2o", "so2", "bc", "oc", "nh3", "nox", "co", "voc")
+SUPPLY_ONLY = ("co2",)
+AEROSOLS = ("so2", "bc", "oc", "nh3", "nox", "co", "voc")
+PARTICLES = ("so2", "bc", "oc", "nh3")
+OZONE = ("co", "voc")
 SECTORS = (
     "roadPassenger",
     "roadFreight",
@@ -34,9 +38,21 @@ SECTORS = (
     "electricity",
     "buildings",
     "industry",
+    "aviationOwn",
 )
-CEDS_NAME = {"co2": "CO2", "ch4": "CH4", "so2": "SO2", "bc": "BC", "oc": "OC", "nox": "NOx"}
-RCMIP_NAME = {"co2": "CO2", "ch4": "CH4", "so2": "Sulfur", "bc": "BC", "oc": "OC", "nox": "NOx"}
+CEDS_NAME = {
+    "co2": "CO2",
+    "ch4": "CH4",
+    "n2o": "N2O",
+    "so2": "SO2",
+    "bc": "BC",
+    "oc": "OC",
+    "nh3": "NH3",
+    "nox": "NOx",
+    "co": "CO",
+    "voc": "NMVOC",
+}
+RCMIP_NAME = CEDS_NAME | {"so2": "Sulfur", "voc": "VOC"}
 KG_PER_FAIR_UNIT = 1e9
 
 # CEDS fuels by the fossil fuel they are; biomass is left out (its CO₂ is not fossil and no lever
@@ -51,12 +67,14 @@ FUELS = {
     "natural_gas": "gas",
 }
 ROAD = ("1A3b_Road",)
+AVIATION = ("1A3ai_International-aviation", "1A3aii_Domestic-aviation")
 # The CEDS sectors of each lever sector. Industry is the steel and cement the clean-industry lever
 # acts on, fuel and process, as its CO₂ in industry.json includes both.
 CEDS_SECTORS = {
     "roadPassenger": ROAD,
     "roadFreight": ROAD,
-    "aviation": ("1A3ai_International-aviation", "1A3aii_Domestic-aviation"),
+    "aviation": AVIATION,
+    "aviationOwn": AVIATION,
     "shipping": ("1A3di_International-shipping", "1A3dii_Domestic-navigation"),
     "electricity": (
         "1A1a_Electricity-public",
@@ -73,16 +91,26 @@ CEDS_SECTORS = {
     ),
 }
 WITH_PROCESS = ("industry",)
-# Producing each fuel: coal mining, oil production (with its flaring and venting), gas production
-# and distribution. CEDS books them under "process".
+# Producing each fuel, with each CEDS sector's share: coal mining, oil production (with its
+# flaring and venting) and tanker loading, gas production and distribution, all booked under
+# "process"; and the fuel the energy industries burn besides power plants (1A1bc: refineries, coke
+# ovens, oil and gas fields' own use), which the aggregate files do not split by fuel: two thirds
+# to oil and one third to coal is an assumption (docs/methodology/en/sectors.md).
+OTHER_TRANSFORMATION = "1A1bc_Other-transformation"
 SUPPLY_SECTORS = {
-    "coal": ("1B1_Fugitive-solid-fuels",),
-    "oil": ("1B2_Fugitive-petr",),
-    "gas": ("1B2b_Fugitive-NG-prod", "1B2b_Fugitive-NG-distr"),
+    "coal": {"1B1_Fugitive-solid-fuels": 1.0, OTHER_TRANSFORMATION: 1 / 3},
+    "oil": {
+        "1B2_Fugitive-petr": 1.0,
+        "1A3di_Oil_Tanker_Loading": 1.0,
+        OTHER_TRANSFORMATION: 2 / 3,
+    },
+    "gas": {"1B2b_Fugitive-NG-prod": 1.0, "1B2b_Fugitive-NG-distr": 1.0},
 }
 # Aviation's own NOx, sulphate and soot are in sectors.json's aviationNonCo2 (Lee et al. 2021),
-# so only its fuel's supply is counted here.
+# so only its fuel's supply is counted under aviation; aviationOwn carries them through FaIR's
+# coefficients instead, without the supply, for the plain-FaIR aviationNonCo2 departure.
 OWN_EMISSIONS_ELSEWHERE = ("aviation",)
+NO_SUPPLY = ("aviationOwn",)
 
 # The RCMIP (CMIP6, CEDS-harmonised) sector whose ratio of each species to CO₂ sets how the
 # sector's emission factor changes under each SSP; "supply" for the fuel's production.
@@ -90,6 +118,7 @@ RCMIP_SECTOR = {
     "roadPassenger": "Transportation Sector",
     "roadFreight": "Transportation Sector",
     "aviation": "Aircraft",
+    "aviationOwn": "Aircraft",
     "shipping": "International Shipping",
     "electricity": "Energy Sector",
     "buildings": "Residential Commercial Other",
@@ -114,10 +143,24 @@ HOOR_METHANE_MW = {
     "ship": {"TM4": 41.6, "OSLO": 46.4, "LMDz": 52.7, "UCI": 44.9, "TOMCAT": 78.1},
 }
 HOOR_NOX_TGN = {"road": 6.85, "ship": 4.39}
+HOOR_YEAR = 2000
+NO2_PER_N = 46.006 / 14.007
+# ACCMIP's steady-state forcing of a Mt of methane a year, 2.2 mW/m² from the methane and 0.7 from
+# the ozone it makes (Stevenson et al. 2013, ACP 13, 3063, as tabulated in Bellouin et al. 2016,
+# ACP 16, 13885, Table 1): what turns Hoor's methane and methane-ozone forcing into the methane
+# emission that would give it, for the chemistry variant of NOx's methane.
+MW_PER_MT_CH4 = 2.9
+ACCMIP_CH4_MW = 2.2
+# ACCMIP's methane forcing of a Tg of NMVOC a year, same sources: what Hoor's figures are given
+# back for the VOCs emitted with each source's NOx, now that their methane is counted apart.
+ACCMIP_VOC_MW = 0.27
+HOOR_CEDS = {"road": ("1A3b_Road",), "ship": ("1A3di_International-shipping",)}
 # Lever sectors whose NOx is emitted at sea; every other source is on land, like road.
 AT_SEA = ("shipping",)
 SHIPPING_NOX_RCMIP = "Emissions|NOx|MAGICC Fossil and Industrial|International Shipping"
 TOTAL_NOX_RCMIP = "Emissions|NOx"
+# The NOx-methane variants written, picked by planetshift.config.json's noxMethane departure.
+NOX_VARIANTS = ("hoor", "fair", "chemistry")
 
 # Below this share of its base-year CO₂, a sector's ratio is held: what is left of its pollutants
 # is then mostly not from fossil fuel (biomass, processes, bioenergy with capture), and the ratio
@@ -155,7 +198,7 @@ def own_per_kg(tables: dict[str, pd.DataFrame], sector: str) -> dict[str, float]
     co2 = fossil_rows(tables["co2"], CEDS_SECTORS[sector], process)["kg"].sum()
     return {
         s: 0.0
-        if sector in OWN_EMISSIONS_ELSEWHERE
+        if sector in OWN_EMISSIONS_ELSEWHERE or s in SUPPLY_ONLY
         else fossil_rows(tables[s], CEDS_SECTORS[sector], process)["kg"].sum() / co2
         for s in SPECIES
     }
@@ -176,7 +219,9 @@ def supply_per_kg(tables: dict[str, pd.DataFrame]) -> dict[str, dict[str, float]
     burnt_by_fuel = burnt.assign(group=burnt["fuel"].map(FUELS)).groupby("group")["kg"].sum()
 
     def per_kg(fuel: str, species: str) -> float:
-        emitted = tables[species][tables[species]["sector"].isin(SUPPLY_SECTORS[fuel])]["kg"].sum()
+        rows = tables[species]
+        share = rows["sector"].map(SUPPLY_SECTORS[fuel]).fillna(0.0)
+        emitted = (rows["kg"] * share).sum()
         burnt_kg = burnt_by_fuel.get(fuel, 0.0)
         return emitted / burnt_kg if burnt_kg > 0 else 0.0
 
@@ -193,7 +238,9 @@ def base_ratios(tables: dict[str, pd.DataFrame]) -> dict[str, dict[str, dict[str
     return {
         sector: {
             "own": own_per_kg(tables, sector),
-            "supply": upstream_per_kg(fuel_shares(tables["co2"], sector), supply),
+            "supply": dict.fromkeys(SPECIES, 0.0)
+            if sector in NO_SUPPLY
+            else upstream_per_kg(fuel_shares(tables["co2"], sector), supply),
         }
         for sector in SECTORS
     }
@@ -241,7 +288,12 @@ def trends(df: pd.DataFrame, ssp: str, years: np.ndarray) -> dict[str, dict[str,
         return {s: of(rcmip_sector(df, ssp, s, sector, years), co2) for s in SPECIES}
 
     fossil = sum(np.maximum(rcmip_sector(df, ssp, "co2", s, years), 0) for s in FOSSIL_RCMIP)
-    supply = {s: of(rcmip_sector(df, ssp, s, SUPPLY_RCMIP, years), fossil) for s in SPECIES}
+    supply = {
+        s: np.ones(len(years))
+        if s in SUPPLY_ONLY
+        else of(rcmip_sector(df, ssp, s, SUPPLY_RCMIP, years), fossil)
+        for s in SPECIES
+    }
     return {sector: sector_trend(RCMIP_SECTOR[sector]) for sector in SECTORS} | {"supply": supply}
 
 
@@ -271,8 +323,9 @@ def erf_per_kg(
 ) -> dict[str, np.ndarray]:
     """W/m² per kg/yr of each aerosol species, (year, member): its aerosol-radiation efficiency,
     the slope of the aerosol-cloud forcing at the SSP's total emissions that year (`totals`, FaIR
-    units by FaIR specie), black carbon's on snow and ice, and NOx's tropospheric ozone and nitrate.
-    NOx's effect on methane's lifetime is not a forcing of its own: see nox_methane."""
+    units by FaIR specie), black carbon's on snow and ice, and the tropospheric ozone of NOx, CO
+    and VOCs. Their effect on methane's lifetime is not a forcing of its own: see
+    lifetime_methane."""
     p = parameters
     cloud = ("Sulfur", "BC", "OC")
     shapes = {s: p[f"aci_shape[{s}]"].to_numpy() for s in cloud}
@@ -289,12 +342,19 @@ def erf_per_kg(
         species.loc["BC", "lapsi_radiative_efficiency"]
         * p["forcing_scale[Light absorbing particles on snow and ice]"].to_numpy()[None, :]
     )
-    ozone = p["ozone_radiative_efficiency[NOx]"].to_numpy()[None, :]
+
+    def ozone(s: str) -> np.ndarray:
+        return p[f"ozone_radiative_efficiency[{s}]"].to_numpy()[None, :]
+
+    flat = np.zeros_like(denominator)
     per_unit = {
         "so2": ari("Sulfur") + cloud_slope("Sulfur"),
         "bc": ari("BC") + cloud_slope("BC") + snow,
         "oc": ari("OC") + cloud_slope("OC"),
-        "nox": ari("NOx") + ozone + np.zeros_like(denominator),
+        "nh3": ari("NH3") + flat,
+        "nox": ari("NOx") + ozone("NOx") + flat,
+        "co": ozone("CO") + flat,
+        "voc": ari("VOC") + ozone("VOC") + flat,
     }
     return {s: v / KG_PER_FAIR_UNIT for s, v in per_unit.items()}
 
@@ -306,39 +366,84 @@ def methane_sink(airborne: np.ndarray, emissions: np.ndarray, baseline: float) -
     return (emissions - baseline)[:, None] - np.gradient(airborne, axis=0)
 
 
-def nox_methane(
-    sink: np.ndarray, nox: np.ndarray, baseline: float, sensitivity: float
+def lifetime_methane(
+    sink: np.ndarray, emitted: np.ndarray, baseline: float, sensitivity: float
 ) -> np.ndarray:
-    """kg of methane that a kg less NOx leaves in the air each year, (year, member): FaIR scales
-    methane's lifetime by 1 + sensitivity·(E_NOx − baseline), so a kg less NOx lengthens it by
-    −sensitivity / (1 + sensitivity·(E_NOx − baseline)) of itself, and slows the removal of the
-    methane above pre-industrial by as much, which acts as that much more methane emitted."""
-    lengthening = -sensitivity / (1 + sensitivity * (nox - baseline))
+    """kg of methane that a kg less of a specie leaves in the air each year, (year, member): FaIR
+    scales methane's lifetime by 1 + sensitivity·(E − baseline) for NOx and VOCs, so a kg less
+    lengthens it by −sensitivity / (1 + sensitivity·(E − baseline)) of itself, and slows the
+    removal of the methane above pre-industrial by as much, which acts as that much more methane
+    emitted. NOx shortens the lifetime (more methane left), VOCs lengthen it (less)."""
+    lengthening = -sensitivity / (1 + sensitivity * (emitted - baseline))
     return sink * lengthening[:, None]
 
 
-def particle_erf_per_kg_co2(
-    ratios: dict[str, dict[str, np.ndarray]], erf: dict[str, np.ndarray]
+def erf_per_kg_co2(
+    ratios: dict[str, dict[str, np.ndarray]],
+    erf: dict[str, np.ndarray],
+    species: tuple[str, ...],
 ) -> dict[str, np.ndarray]:
-    """W/m² per kg/yr of each sector's fossil CO₂ from the SO₂, black and organic carbon that come
-    with it, (year, member): added up member by member, so the range keeps how FaIR's members
-    trade one species against another. NOx is left apart, as a clean fuel still burnt keeps it."""
+    """W/m² per kg/yr of each sector's fossil CO₂ from the `species` that come with it, (year,
+    member): added up member by member, so the range keeps how FaIR's members trade one species
+    against another. NOx is left apart, as a clean fuel still burnt keeps it."""
     return {
-        sector: sum(by_species[s][:, None] * erf[s] for s in PARTICLES)
+        sector: sum(by_species[s][:, None] * erf[s] for s in species)
         for sector, by_species in ratios.items()
     }
 
 
-def ship_to_land() -> dict[str, float]:
+def hoor_without_voc(nox: pd.DataFrame, voc: pd.DataFrame) -> dict[str, dict[str, float]]:
+    """Hoor et al.'s forcing of each source with the methane of the VOCs emitted with its NOx
+    given back: their models perturbed all of a source's emissions, and the VOCs' own methane is
+    now counted apart, so leaving it in would count it twice. `nox` and `voc` are CEDS's in Hoor's
+    year; a Tg of VOC's methane and methane-ozone forcing is ACCMIP's, its ozone in proportion."""
+
+    def offset(source: str) -> float:
+        def tg(table: pd.DataFrame) -> float:
+            return table[table["sector"].isin(HOOR_CEDS[source])]["kg"].sum() / 1e9
+
+        per_tg_n = tg(voc) / (tg(nox) / NO2_PER_N)
+        return per_tg_n * ACCMIP_VOC_MW * MW_PER_MT_CH4 / ACCMIP_CH4_MW * HOOR_NOX_TGN[source]
+
+    return {
+        source: {m: v + offset(source) for m, v in models.items()}
+        for source, models in HOOR_METHANE_MW.items()
+    }
+
+
+def ship_to_land(table: dict[str, dict[str, float]] = HOOR_METHANE_MW) -> dict[str, float]:
     """How many times as much methane a Tg of ships' NOx destroys as a Tg of road's: the
     multi-model mean, and the lowest and highest model."""
-    per_tg = {
-        k: {m: v / HOOR_NOX_TGN[k] for m, v in models.items()}
-        for k, models in HOOR_METHANE_MW.items()
-    }
+    per_tg = {k: {m: v / HOOR_NOX_TGN[k] for m, v in models.items()} for k, models in table.items()}
     ratios = [per_tg["ship"][m] / per_tg["road"][m] for m in per_tg["road"]]
     mean = np.mean(list(per_tg["ship"].values())) / np.mean(list(per_tg["road"].values()))
     return {"median": float(mean), "low": float(min(ratios)), "high": float(max(ratios))}
+
+
+def chemistry_per_kg(
+    table: dict[str, dict[str, float]] = HOOR_METHANE_MW,
+) -> dict[str, dict[str, float]]:
+    """kg of methane emitted that has the methane and methane-ozone forcing of a kg of NO₂ less
+    in Hoor et al.'s chemistry models, on land (road) and at sea (ships), in their year: the
+    multi-model mean, and the lowest and highest model."""
+
+    def place(source: str) -> dict[str, float]:
+        per_kg = [
+            v / HOOR_NOX_TGN[source] / NO2_PER_N / MW_PER_MT_CH4 for v in table[source].values()
+        ]
+        return {"median": float(np.mean(per_kg)), "low": min(per_kg), "high": max(per_kg)}
+
+    return {"land": place("road"), "sea": place("ship")}
+
+
+def held(per_place: dict[str, dict[str, float]], years: int, scale: float = 1.0) -> dict:
+    """Each place's ends held over `years`, times `scale`. The chemistry variant multiplies them
+    by FaIR's methane per kg of NOx relative to its value in Hoor et al.'s year, so the models'
+    value is carried by FaIR's change with the scenario's methane and NOx."""
+    return {
+        place: {k: np.full(years, v * scale) for k, v in ends.items()}
+        for place, ends in per_place.items()
+    }
 
 
 def nox_factors(
@@ -357,24 +462,31 @@ def nox_factors(
     }
 
 
-def nox_ch4_per_kg_co2(
+def plain_factors(years: int) -> dict[str, dict[str, np.ndarray]]:
+    """FaIR's one coefficient for every source: a factor of 1 on land and at sea."""
+    one = {k: np.ones(years) for k in ("median", "low", "high")}
+    return {"land": one, "sea": one}
+
+
+def ch4_per_kg_co2(
     ratios: dict[str, dict[str, np.ndarray]],
     kept: np.ndarray,
     factors: dict[str, dict[str, np.ndarray]],
+    specie: str = "nox",
 ) -> dict[str, dict[str, list[float]]]:
-    """kg of methane left in the air per kg of each sector's CO₂ cut, through its NOx, by year:
-    its NOx per kg of CO₂ × the place's factor × FaIR's methane per kg of NOx (`kept`, (year,
-    member)). The range spans the ends of both."""
+    """kg of methane left in the air per kg of each sector's CO₂ cut, through its NOx (or VOCs),
+    by year: its kg of the specie per kg of CO₂ × the place's factor × FaIR's methane per kg of
+    the specie (`kept`, (year, member)). The range spans the ends of both."""
     low, median, high = np.percentile(kept, (5, 50, 95), axis=-1)
 
     def one(sector: str) -> dict[str, list[float]]:
         f = factors["sea" if sector in AT_SEA else "land"]
-        nox = ratios[sector]["nox"]
+        emitted = ratios[sector][specie]
         ends = [k * f[e] for k in (low, high) for e in ("low", "high")]
         return {
-            "median": rounded(nox * median * f["median"]),
-            "low": rounded(nox * np.minimum.reduce(ends)),
-            "high": rounded(nox * np.maximum.reduce(ends)),
+            "median": rounded(emitted * median * f["median"]),
+            "low": rounded(emitted * np.minimum.reduce(ends)),
+            "high": rounded(emitted * np.maximum.reduce(ends)),
         }
 
     return {sector: one(sector) for sector in ratios}
@@ -385,42 +497,53 @@ def erf_band(values: np.ndarray) -> dict[str, list[float]]:
     return {"median": rounded(median), "low": rounded(low), "high": rounded(high)}
 
 
-def nox_methane_by_ssp(
-    setup: climate_fair.Setup, rcmip_df: pd.DataFrame, species: pd.DataFrame
-) -> dict[str, np.ndarray]:
-    """nox_methane on YEARS, from one FaIR run of each SSP."""
+LIFETIME_SPECIES = {"nox": "NOx", "voc": "VOC"}
+
+
+def lifetime_methane_by_ssp(
+    setup: climate_fair.Setup, rcmip_df: pd.DataFrame, species: pd.DataFrame, at: np.ndarray
+) -> dict[str, dict[str, np.ndarray]]:
+    """lifetime_methane of NOx and VOCs on the years `at`, from one FaIR run of each SSP."""
     years = np.arange(climate_fair.START, END_YEAR + 2)
     emissions = {ssp: rcmip.fair_emissions(rcmip_df, ssp, setup.emitted, years) for ssp in SSPS}
     run = climate_fair.run(setup, emissions, END_YEAR + 2)
-    index = YEARS - climate_fair.START
+    index = at - climate_fair.START
 
-    def one(i: int, ssp: str) -> np.ndarray:
+    def one(i: int, ssp: str, specie: str) -> np.ndarray:
         sink = methane_sink(
             run.ch4_airborne[:, i, :],
             emissions[ssp]["CH4"][: len(run.years)],
             species.loc["CH4", "baseline_emissions"],
         )
-        return nox_methane(
+        return lifetime_methane(
             sink[index],
-            emissions[ssp]["NOx"][index],
-            species.loc["NOx", "baseline_emissions"],
-            species.loc["NOx", "ch4_lifetime_chemical_sensitivity"],
+            emissions[ssp][specie][index],
+            species.loc[specie, "baseline_emissions"],
+            species.loc[specie, "ch4_lifetime_chemical_sensitivity"],
         )
 
-    return {ssp: one(i, ssp) for i, ssp in enumerate(run.scenarios)}
+    return {
+        key: {ssp: one(i, ssp, specie) for i, ssp in enumerate(run.scenarios)}
+        for key, specie in LIFETIME_SPECIES.items()
+    }
 
 
 # Assembly
 
 
-def load_tables(archive: Path) -> dict[str, pd.DataFrame]:
-    return {s: ceds.by_sector_fuel(archive, CEDS_NAME[s]) for s in ("co2", *SPECIES)}
+def load_tables(archive: Path, year: int = ceds.LAST_YEAR) -> dict[str, pd.DataFrame]:
+    return {s: ceds.by_sector_fuel(archive, CEDS_NAME[s], year) for s in SPECIES}
 
 
 def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
     """The coemissions.json document and diagnostics for the log and tests."""
-    tables = load_tables(ceds.path(cache_dir))
+    archive = ceds.path(cache_dir)
+    tables = load_tables(archive)
     base = base_ratios(tables)
+    hoor_table = hoor_without_voc(
+        ceds.by_sector_fuel(archive, CEDS_NAME["nox"], HOOR_YEAR),
+        ceds.by_sector_fuel(archive, CEDS_NAME["voc"], HOOR_YEAR),
+    )
     rcmip_df = rcmip.load(cache_dir)
     setup = climate_fair.load_setup(cache_dir, members)
     parameters = pd.read_csv(setup.parameters, index_col=0).loc[setup.configs]
@@ -430,14 +553,35 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
         ssp: rcmip.fair_emissions(rcmip_df, ssp, ["Sulfur", "BC", "OC"], YEARS) for ssp in SSPS
     }
     erf = {ssp: erf_per_kg(parameters, species, totals[ssp]) for ssp in SSPS}
-    nox = nox_methane_by_ssp(setup, rcmip_df, species)
-    ratio = ship_to_land()
-    factors = {
+    lifetime = lifetime_methane_by_ssp(setup, rcmip_df, species, np.array([HOOR_YEAR, *YEARS]))
+    nox = {ssp: v[1:] for ssp, v in lifetime["nox"].items()}
+    voc = {ssp: v[1:] for ssp, v in lifetime["voc"].items()}
+    reference = {ssp: v[0] for ssp, v in lifetime["nox"].items()}
+    ratio = ship_to_land(hoor_table)
+    chemistry = chemistry_per_kg(hoor_table)
+    n = len(YEARS)
+    hoor = {
         ssp: nox_factors(
             rcmip.series(rcmip_df, ssp, SHIPPING_NOX_RCMIP, YEARS)
             / rcmip.series(rcmip_df, ssp, TOTAL_NOX_RCMIP, YEARS),
             ratio,
         )
+        for ssp in SSPS
+    }
+    factors = {
+        ssp: {"hoor": hoor[ssp], "fair": plain_factors(n), "chemistry": held(chemistry, n)}
+        for ssp in SSPS
+    }
+    relative = {
+        ssp: factors[ssp] | {"chemistry": held(chemistry, n, 1 / float(np.median(reference[ssp])))}
+        for ssp in SSPS
+    }
+    kept = {
+        ssp: {
+            "hoor": nox[ssp],
+            "fair": nox[ssp],
+            "chemistry": nox[ssp] / reference[ssp][None, :],
+        }
         for ssp in SSPS
     }
     document = {
@@ -452,21 +596,35 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
         "erfPerKg": {ssp: {s: erf_band(v) for s, v in erf[ssp].items()} for ssp in SSPS},
         "noxCh4PerKg": {ssp: erf_band(nox[ssp]) for ssp in SSPS},
         "noxCh4PerKgCo2": {
-            ssp: nox_ch4_per_kg_co2(by_ssp[ssp], nox[ssp], factors[ssp]) for ssp in SSPS
+            variant: {
+                ssp: ch4_per_kg_co2(by_ssp[ssp], kept[ssp][variant], factors[ssp][variant])
+                for ssp in SSPS
+            }
+            for variant in NOX_VARIANTS
         },
         "noxPlaceFactor": {
-            ssp: {
-                place: {k: rounded(v) for k, v in by_end.items()}
-                for place, by_end in factors[ssp].items()
+            variant: {
+                ssp: {
+                    place: {k: rounded(v) for k, v in by_end.items()}
+                    for place, by_end in relative[ssp][variant].items()
+                }
+                for ssp in SSPS
             }
-            for ssp in SSPS
+            for variant in NOX_VARIANTS
         },
-        "particleErfPerKgCo2": {
-            ssp: {
-                sector: erf_band(v)
-                for sector, v in particle_erf_per_kg_co2(by_ssp[ssp], erf[ssp]).items()
+        "vocCh4PerKg": {ssp: erf_band(voc[ssp]) for ssp in SSPS},
+        "vocCh4PerKgCo2": {
+            ssp: ch4_per_kg_co2(by_ssp[ssp], voc[ssp], plain_factors(n), "voc") for ssp in SSPS
+        },
+        **{
+            key: {
+                ssp: {
+                    sector: erf_band(v)
+                    for sector, v in erf_per_kg_co2(by_ssp[ssp], erf[ssp], group).items()
+                }
+                for ssp in SSPS
             }
-            for ssp in SSPS
+            for key, group in (("particleErfPerKgCo2", PARTICLES), ("ozoneErfPerKgCo2", OZONE))
         },
         "source": SOURCE,
     }
@@ -477,7 +635,11 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
         "totals": totals,
         "nox": nox,
         "ship_to_land": ratio,
-        "factors": factors,
+        "hoor": hoor_table,
+        "voc": voc,
+        "factors": relative,
+        "chemistry": chemistry,
+        "reference": reference,
         "members": len(setup.configs),
     }
     return document, diagnostics
@@ -487,9 +649,19 @@ def summary(document: dict, diagnostics: dict) -> list[str]:
     g = 1e3
     supply = diagnostics["supply"]
     lines = [
-        "fuel supply CH₄, g per kg CO₂ burnt: "
-        + ", ".join(f"{f} {supply[f]['ch4'] * g:.2f}" for f in SUPPLY_SECTORS)
+        f"fuel supply {s}, g per kg CO₂ burnt: "
+        + ", ".join(f"{f} {supply[f][s] * g:.2f}" for f in SUPPLY_SECTORS)
+        for s in ("ch4", "co2")
     ]
+    hoor = diagnostics["hoor"]
+    lines.append(
+        "Hoor et al. methane mW/m² per Tg N, VOCs given back (as published): "
+        + ", ".join(
+            f"{k} {np.mean(list(hoor[k].values())) / HOOR_NOX_TGN[k]:.2f} "
+            f"({np.mean(list(HOOR_METHANE_MW[k].values())) / HOOR_NOX_TGN[k]:.2f})"
+            for k in hoor
+        )
+    )
     for sector, parts in diagnostics["base"].items():
         lines.append(
             f"{sector} {BASE_YEAR}, g/kg CO₂ own+supply: "
@@ -513,14 +685,26 @@ def summary(document: dict, diagnostics: dict) -> list[str]:
         f"ships' NOx methane per Tg against road's: {ratio['median']:.2f} "
         f"({ratio['low']:.2f}–{ratio['high']:.2f})"
     )
-    for ssp in SSPS:
-        f = diagnostics["factors"][ssp]
-        lines.append(
-            f"{ssp} NOx methane factor {BASE_YEAR}/2050/2100: land "
-            + "/".join(f"{f['land']['median'][i]:.2f}" for i in (0, 6, -1))
-            + ", sea "
-            + "/".join(f"{f['sea']['median'][i]:.2f}" for i in (0, 6, -1))
+    chemistry = diagnostics["chemistry"]
+    lines.append(
+        f"chemistry models' kg CH₄ per kg NO₂ in {HOOR_YEAR}: "
+        + ", ".join(
+            f"{p} {v['median']:.2f} ({v['low']:.2f}–{v['high']:.2f})" for p, v in chemistry.items()
         )
+    )
+    for ssp in SSPS:
+        lines.append(
+            f"{ssp} FaIR kg CH₄ per kg NOx in {HOOR_YEAR}: "
+            f"{np.median(diagnostics['reference'][ssp]):.2f}"
+        )
+        for variant in NOX_VARIANTS:
+            f = diagnostics["factors"][ssp][variant]
+            lines.append(
+                f"{ssp} {variant} NOx methane factor {BASE_YEAR}/2050/2100: land "
+                + "/".join(f"{f['land']['median'][i]:.2f}" for i in (0, 6, -1))
+                + ", sea "
+                + "/".join(f"{f['sea']['median'][i]:.2f}" for i in (0, 6, -1))
+            )
     return lines
 
 

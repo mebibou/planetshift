@@ -1,6 +1,8 @@
 // The data contract between the pipeline (which writes app/public/data/*.json)
 // and the app. docs/data-contract.md describes each file; change both together.
 
+import type { Departures } from '../configSchema';
+
 export const GASES = ['co2', 'ch4', 'n2o'] as const;
 export type Gas = (typeof GASES)[number];
 export type GasVector = Record<Gas, number>;
@@ -38,6 +40,8 @@ export type FeedMethod = 'species' | 'gleam';
 export interface Meta {
   baseYear: number; // latest complete Food Balance Sheet year
   builtAt: string; // ISO date the pipeline ran
+  /** The departures from FaIR in planetshift.config.json when the data was built. */
+  departures?: Departures;
   sources: { id: string; name: string; version: string; url: string; licence: string }[];
 }
 
@@ -260,4 +264,6 @@ export interface ModelData {
   land: Land;
   /** Optional: a build without it leaves the temperature chart without El Niño marks. */
   enso?: Enso;
+  /** Not a file: the build's departures from FaIR stand for it when it is unset. */
+  departures?: Departures;
 }

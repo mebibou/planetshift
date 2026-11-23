@@ -17,7 +17,9 @@ FILE = "CEDS_v_2024_07_08_aggregate.zip"
 LAST_YEAR = 2022
 
 # kg per unit of each species' file (kt of the species; BC and OC in kt of carbon, NOx as NO₂).
-KG_PER_UNIT = {"ktCO2": 1e6, "ktCH4": 1e6, "ktSO2": 1e6, "ktC": 1e6, "ktNO2": 1e6, "ktNH3": 1e6}
+KG_PER_UNIT = dict.fromkeys(
+    ("ktCO2", "ktCH4", "ktSO2", "ktC", "ktNO2", "ktNH3", "ktCO", "ktNMVOC", "ktN2O"), 1e6
+)
 
 
 def path(cache_dir: Path) -> Path:

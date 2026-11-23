@@ -82,6 +82,32 @@ def test_fuel_supply_is_shared_by_the_co2_of_burning_each_fuel():
     assert upstream["ch4"] == pytest.approx(0.5 * 0.004 + 0.5 * 0.005)
 
 
+def test_supply_co2_takes_refineries_and_coke_ovens_by_the_stated_split_and_no_own_co2():
+    t = tables(
+        {
+            "co2": [
+                (POWER, "hard_coal", 1000.0),
+                (ROAD, "diesel_oil", 500.0),
+                ("1A1bc_Other-transformation", "process", 90.0),
+                ("1B2_Fugitive-petr", "process", 10.0),
+            ],
+        }
+    )
+    supply = C.supply_per_kg(t)
+    assert supply["oil"]["co2"] == pytest.approx((10 + 60) / 500)
+    assert supply["coal"]["co2"] == pytest.approx(30 / 1000)
+    assert C.own_per_kg(t, "roadPassenger")["co2"] == 0
+
+
+def test_hoors_road_gets_back_the_methane_of_its_vocs():
+    nox = table([("1A3b_Road", "diesel_oil", 3.2845e9), ("1A3di_International-shipping", "x", 1e9)])
+    voc = table([("1A3b_Road", "diesel_oil", 2.0e9)])
+    with_voc = C.hoor_without_voc(nox, voc)
+    given_back = 2.0 * C.ACCMIP_VOC_MW * C.MW_PER_MT_CH4 / C.ACCMIP_CH4_MW * C.HOOR_NOX_TGN["road"]
+    assert with_voc["road"]["TM4"] == pytest.approx(C.HOOR_METHANE_MW["road"]["TM4"] + given_back)
+    assert C.ship_to_land(with_voc)["median"] < C.ship_to_land()["median"]
+
+
 def test_an_emission_factor_follows_the_ssp_but_never_worsens_and_is_held_once_co2_halves():
     co2 = np.array([10.0, 10.0, 8.0, 4.0, 1.0])
     species = np.array([2.0, 1.0, 0.8, 0.8, 0.9])
@@ -133,7 +159,11 @@ def test_the_cloud_slope_is_the_derivative_of_faris_log_and_close_to_a_real_cut(
             "erfari_radiative_efficiency[BC]": [0.03, 0.02],
             "erfari_radiative_efficiency[OC]": [-0.004, -0.005],
             "erfari_radiative_efficiency[NOx]": [-0.0001, -0.0001],
+            "erfari_radiative_efficiency[NH3]": [-0.0006, -0.0007],
+            "erfari_radiative_efficiency[VOC]": [-0.00002, 0.0],
             "ozone_radiative_efficiency[NOx]": [0.001, 0.0015],
+            "ozone_radiative_efficiency[CO]": [0.00003, 0.0],
+            "ozone_radiative_efficiency[VOC]": [0.0003, 0.0002],
             "forcing_scale[Light absorbing particles on snow and ice]": [1.0, 0.5],
         }
     )
@@ -154,16 +184,21 @@ def test_the_cloud_slope_is_the_derivative_of_faris_log_and_close_to_a_real_cut(
     assert (erf["so2"][0] * MT - ari) * -20 == pytest.approx(exact, rel=0.1)
     assert erf["bc"][0] * MT == pytest.approx([0.03 + 0.014, 0.02 - 0.6 * 0.02 / 1.52 + 0.007])
     assert erf["nox"][0] * MT == pytest.approx([0.0009, 0.0014])
+    assert erf["nh3"][0] * MT == pytest.approx([-0.0006, -0.0007])
+    assert erf["co"][0] * MT == pytest.approx([0.00003, 0.0])
+    assert erf["voc"][0] * MT == pytest.approx([0.00028, 0.0002])
 
 
-def test_a_sectors_particle_forcing_is_added_up_member_by_member():
+def test_a_sectors_forcing_is_added_up_member_by_member():
     ratios = {"shipping": {"so2": np.array([2.0]), "bc": np.array([1.0]), "oc": np.array([0.0])}}
     erf = {
         "so2": np.array([[-1.0, -3.0]]),
         "bc": np.array([[3.0, 1.0]]),
         "oc": np.array([[0.0, 0.0]]),
     }
-    assert C.particle_erf_per_kg_co2(ratios, erf)["shipping"][0] == pytest.approx([1.0, -5.0])
+    assert C.erf_per_kg_co2(ratios, erf, ("so2", "bc", "oc"))["shipping"][0] == pytest.approx(
+        [1.0, -5.0]
+    )
 
 
 def test_ships_nox_does_about_four_times_roads_and_the_places_average_to_faris_coefficient():
@@ -178,6 +213,42 @@ def test_ships_nox_does_about_four_times_roads_and_the_places_average_to_faris_c
     assert f["land"]["median"][0] < 1 < f["sea"]["median"][0]
 
 
+def test_plain_fair_gives_every_place_faris_coefficient():
+    ratios = {"shipping": {"nox": np.array([0.02])}, "electricity": {"nox": np.array([0.001])}}
+    kept = np.array([[1.0, 2.0, 3.0]])
+    out = C.ch4_per_kg_co2(ratios, kept, C.plain_factors(1))
+    assert out["electricity"]["median"][0] == pytest.approx(0.001 * 2)
+    assert out["shipping"]["median"][0] == pytest.approx(0.02 * 2)
+
+
+def test_the_chemistry_models_give_road_nox_a_few_tenths_of_a_kg_of_methane_and_ships_four_times():
+    per_kg = C.chemistry_per_kg()
+    assert 0.2 < per_kg["land"]["low"] < per_kg["land"]["median"] < per_kg["land"]["high"] < 0.5
+    assert per_kg["sea"]["median"] / per_kg["land"]["median"] == pytest.approx(
+        C.ship_to_land()["median"]
+    )
+    held = C.held(per_kg, 3, 2.0)
+    assert held["land"]["median"] == pytest.approx([2 * per_kg["land"]["median"]] * 3)
+
+
+def test_aviations_own_emissions_carry_no_supply():
+    t = tables(
+        {
+            "co2": [
+                ("1A3ai_International-aviation", "light_oil", 100.0),
+                ("1A1a_Electricity-public", "hard_coal", 100.0),
+            ],
+            "nox": [("1A3ai_International-aviation", "light_oil", 2.0)],
+            "ch4": [("1B2_Fugitive-petr", "process", 1.0)],
+        }
+    )
+    base = C.base_ratios(t)
+    assert base["aviationOwn"]["own"]["nox"] == pytest.approx(0.02)
+    assert base["aviationOwn"]["supply"]["ch4"] == 0
+    assert base["aviation"]["own"]["nox"] == 0
+    assert base["aviation"]["supply"]["ch4"] > 0
+
+
 def test_a_sectors_nox_methane_is_its_nox_times_its_places_factor():
     ratios = {"shipping": {"nox": np.array([0.02])}, "electricity": {"nox": np.array([0.001])}}
     kept = np.array([[1.0, 2.0, 3.0]])
@@ -185,7 +256,7 @@ def test_a_sectors_nox_methane_is_its_nox_times_its_places_factor():
         "land": {"median": np.array([0.7]), "low": np.array([0.8]), "high": np.array([0.6])},
         "sea": {"median": np.array([2.8]), "low": np.array([2.2]), "high": np.array([3.5])},
     }
-    out = C.nox_ch4_per_kg_co2(ratios, kept, factors)
+    out = C.ch4_per_kg_co2(ratios, kept, factors)
     assert out["electricity"]["median"][0] == pytest.approx(0.001 * 2 * 0.7)
     assert out["shipping"]["median"][0] == pytest.approx(0.02 * 2 * 2.8)
     assert out["shipping"]["low"][0] < out["shipping"]["median"][0] < out["shipping"]["high"][0]
@@ -194,7 +265,7 @@ def test_a_sectors_nox_methane_is_its_nox_times_its_places_factor():
 def test_less_nox_leaves_more_methane_in_proportion_to_its_removal():
     sink = C.methane_sink(np.array([[100.0], [110.0], [120.0]]), np.array([60.0] * 3), 40.0)
     assert sink[:, 0] == pytest.approx([10.0, 10.0, 10.0])
-    kept = C.nox_methane(np.array([[300.0]]), np.array([120.0]), 20.0, -0.004)
+    kept = C.lifetime_methane(np.array([[300.0]]), np.array([120.0]), 20.0, -0.004)
     assert kept[0, 0] == pytest.approx(300 * 0.004 / (1 - 0.4))
 
 
@@ -221,7 +292,10 @@ def test_the_file_matches_the_contract(built):
         "noxCh4PerKg",
         "noxCh4PerKgCo2",
         "noxPlaceFactor",
+        "vocCh4PerKg",
+        "vocCh4PerKgCo2",
         "particleErfPerKgCo2",
+        "ozoneErfPerKgCo2",
         "source",
     }
     n = len(document["years"])
@@ -248,6 +322,7 @@ def test_base_year_ratios_meet_the_inventories(built):
         t["ch4"][t["ch4"]["sector"].isin(s)]["kg"].sum() for s in C.SUPPLY_SECTORS.values()
     )
     assert 110 * MT < supply_mt < 145 * MT
+    assert 0.1 < supply["oil"]["co2"] < 0.2 and 0.05 < supply["coal"]["co2"] < 0.15
     assert 3 * G < supply["coal"]["ch4"] < supply["oil"]["ch4"] < supply["gas"]["ch4"] < 6 * G
     assert base["electricity"]["own"]["so2"] == pytest.approx(2.3 * G, rel=0.1)
     assert base["shipping"]["own"]["nox"] > base["roadPassenger"]["own"]["nox"]
@@ -270,7 +345,13 @@ def test_forcing_per_kg_and_nox_methane_reproduce_faris_own_response(built):
     df = rcmip.load(DEFAULT_CACHE)
     years = np.arange(climate_fair.START, climate.PULSE_YEAR + climate.HORIZON + 1)
     base = rcmip.fair_emissions(df, "ssp245", setup.emitted, years)
-    cuts = {"so2": ("Sulfur", 10.0), "bc": ("BC", 1.0), "nox": ("NOx", 10.0)}
+    cuts = {
+        "so2": ("Sulfur", 10.0),
+        "bc": ("BC", 1.0),
+        "nox": ("NOx", 10.0),
+        "voc": ("VOC", 20.0),
+        "co": ("CO", 100.0),
+    }
 
     def cut(specie: str, size: float) -> dict[str, np.ndarray]:
         return base | {specie: base[specie] - np.where(years >= 2025, size, 0.0)}
@@ -290,7 +371,8 @@ def test_forcing_per_kg_and_nox_methane_reproduce_faris_own_response(built):
         faired = faired[span - climate_fair.START]
         erf = np.interp(span, document["years"], document["erfPerKg"]["ssp245"][name]["median"])
         linear = convolve(erf * size * MT * -1, response)
-        if name == "nox":
-            kept = np.interp(span, document["years"], document["noxCh4PerKg"]["ssp245"]["median"])
+        if name in ("nox", "voc"):
+            key = f"{name}Ch4PerKg"
+            kept = np.interp(span, document["years"], document[key]["ssp245"]["median"])
             linear = linear + convolve(kept * size * MT, agtp)
         assert linear[at] == pytest.approx(faired[at], rel=1 / 4 if name == "bc" else 1 / 6), name

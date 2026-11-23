@@ -96,6 +96,17 @@ PERMAFROST_SOURCE = (
 )
 
 
+# The IMO's 2020 fuel sulphur limit, which FaIR's response to the world's SO₂ barely sees: its
+# ERF in W/m², Gettelman et al. (2024)'s median and Forster et al. (2025)'s review range.
+SHIPPING_SULPHUR_YEAR = 2020
+SHIPPING_SULPHUR_ERF = {"median": 0.12, "low": 0.08, "high": 0.14}
+SHIPPING_CO2_RCMIP = "Emissions|CO2|MAGICC Fossil and Industrial|International Shipping"
+SHIPPING_SULPHUR_SOURCE = (
+    "Gettelman et al. 2024 (doi:10.1029/2024GL109077), the range from Forster et al. 2025 "
+    "(doi:10.5194/essd-17-2641-2025); scaled by each SSP's international shipping CO₂ (RCMIP)"
+)
+
+
 def rounded(values: np.ndarray, digits: int = SIGNIFICANT) -> list[float]:
     return [float(f"{v:.{digits}g}") for v in np.asarray(values, dtype=float)]
 
@@ -268,6 +279,22 @@ def permafrost() -> dict:
     }
 
 
+def shipping_sulphur(rcmip_df) -> dict:
+    """Climate.shippingSulphur2020: the forcing the 2020 sulphur rule adds, W/m², by SSP, every
+    five years from 2020, following each scenario's shipping CO₂ from its 2020 level."""
+    years = np.arange(SHIPPING_SULPHUR_YEAR, SCENARIO_END + 1, 5)
+
+    def one(ssp: str) -> dict[str, list[float]]:
+        co2 = rcmip.series(rcmip_df, ssp, SHIPPING_CO2_RCMIP, years)
+        return {k: rounded(v * co2 / co2[0]) for k, v in SHIPPING_SULPHUR_ERF.items()}
+
+    return {
+        "years": [int(y) for y in years],
+        "erf": {ssp: one(ssp) for ssp in SSPS},
+        "source": SHIPPING_SULPHUR_SOURCE,
+    }
+
+
 def natural_only(setup: climate_fair.Setup, years: np.ndarray) -> np.ndarray:
     """Per member, °C vs 1850–1900, with every human emission held at its 1750 level, so only
     the solar and volcanic forcing change the climate."""
@@ -356,6 +383,7 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
         },
         "naturalOnly": band_series(years[shown], band(natural[shown])),
         "permafrost": permafrost(),
+        "shippingSulphur2020": shipping_sulphur(rcmip_df),
     }
     diagnostics = {
         "years": years,

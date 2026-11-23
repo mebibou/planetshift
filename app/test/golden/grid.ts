@@ -138,6 +138,31 @@ export const GRID: Setting[] = [
   ),
 ];
 
+/** Run with every departure from FaIR at its plain-FaIR value (planetshift.config.schema.json). */
+export const PLAIN_GRID: Setting[] = [
+  setting('none', {}),
+  ...[...ENERGY, ...INDUSTRY].map((id) => setting(`${id}@100`, { levers: { [id]: 1 } })),
+  ...['ssp245', 'ssp126', 'ssp370'].map((ssp) =>
+    setting(
+      `allEnergyIndustry+${ssp}`,
+      { levers: all([...ENERGY, ...INDUSTRY]) },
+      { ssp: ssp as Options['ssp'] },
+    ),
+  ),
+  ...['ssp126', 'ssp370'].flatMap((ssp) =>
+    ['electricCars', 'electricTrucks'].map((id) =>
+      setting(`${id}@100+${ssp}`, { levers: { [id]: 1 } }, { ssp: ssp as Options['ssp'] }),
+    ),
+  ),
+  setting('shift100', { shift: 1 }),
+  setting('permafrostAlone', {}, { permafrost: 'on' }),
+  setting(
+    'everythingAllOptions',
+    { shift: 0.5, levers: all(GOLDEN_LEVERS, 0.7) },
+    { regrowth: 'natural', permafrost: 'on', scope: 'cradleToFarmGate' },
+  ),
+];
+
 /** Query strings decoded as they are, invalid values included. */
 export const QUERIES = [
   '',

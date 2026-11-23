@@ -537,6 +537,20 @@ write('climate.json', {
     releaseYears: 20,
     source: 'IPCC AR6 WG1 Chapter 5, Table 5.7 and Box 5.1 (doi:10.1017/9781009157896.007)',
   },
+  shippingSulphur2020: {
+    years: [2020, 2050, 2100],
+    erf: Object.fromEntries(
+      ['ssp126', 'ssp245', 'ssp370'].map((ssp, i) => [
+        ssp,
+        {
+          median: [0.12, 0.12 - 0.02 * (1 - i), 0.12 - 0.04 * (1 - i)],
+          low: [0.08, 0.08, 0.08],
+          high: [0.14, 0.14, 0.14],
+        },
+      ]),
+    ),
+    source: 'Planetshift test fixture: 0.12 W/m² (0.08–0.14) from 2020',
+  },
 });
 
 // El Niño and La Niña: an annual index swinging every few years, classified at ±0.5 °C.
@@ -816,13 +830,102 @@ write('sectors.json', {
 // by a third by 2100; the forcing per kg of each pollutant and the methane a kg less NOx leaves
 const coYears = [2023, 2050, 2100];
 const coGrams = {
-  roadPassenger: { ch4: 5.0, so2: 0.74, bc: 0.185, oc: 0.071, nox: 4.79 },
-  roadFreight: { ch4: 5.0, so2: 0.74, bc: 0.185, oc: 0.071, nox: 4.79 },
-  aviation: { ch4: 4.78, so2: 0.4, bc: 0.023, oc: 0.005, nox: 0.032 },
-  shipping: { ch4: 4.8, so2: 4.47, bc: 0.12, oc: 0.076, nox: 22.87 },
-  electricity: { ch4: 4.1, so2: 2.31, bc: 0.005, oc: 0.006, nox: 1.49 },
-  buildings: { ch4: 5.63, so2: 1.14, bc: 0.1, oc: 0.12, nox: 1.02 },
-  industry: { ch4: 2.07, so2: 1.36, bc: 0.035, oc: 0.039, nox: 1.42 },
+  roadPassenger: {
+    co2: 150,
+    ch4: 5.0,
+    n2o: 0.045,
+    so2: 0.74,
+    bc: 0.185,
+    oc: 0.071,
+    nh3: 0.071,
+    nox: 4.79,
+    co: 13.6,
+    voc: 4.0,
+  },
+  roadFreight: {
+    co2: 150,
+    ch4: 5.0,
+    n2o: 0.045,
+    so2: 0.74,
+    bc: 0.185,
+    oc: 0.071,
+    nh3: 0.071,
+    nox: 4.79,
+    co: 13.6,
+    voc: 4.0,
+  },
+  aviation: {
+    co2: 153,
+    ch4: 4.78,
+    n2o: 0.001,
+    so2: 0.4,
+    bc: 0.023,
+    oc: 0.005,
+    nh3: 0.002,
+    nox: 0.032,
+    co: 0.41,
+    voc: 1.7,
+  },
+  shipping: {
+    co2: 153,
+    ch4: 4.8,
+    n2o: 0.059,
+    so2: 4.47,
+    bc: 0.12,
+    oc: 0.076,
+    nh3: 0.022,
+    nox: 22.87,
+    co: 1.36,
+    voc: 2.8,
+  },
+  electricity: {
+    co2: 76,
+    ch4: 4.1,
+    n2o: 0.027,
+    so2: 2.31,
+    bc: 0.005,
+    oc: 0.006,
+    nh3: 0.071,
+    nox: 1.49,
+    co: 3.0,
+    voc: 1.08,
+  },
+  buildings: {
+    co2: 62,
+    ch4: 5.63,
+    n2o: 0.011,
+    so2: 1.14,
+    bc: 0.1,
+    oc: 0.12,
+    nh3: 0.057,
+    nox: 1.02,
+    co: 8.6,
+    voc: 0.99,
+  },
+  industry: {
+    co2: 36,
+    ch4: 2.07,
+    n2o: 0.006,
+    so2: 1.36,
+    bc: 0.035,
+    oc: 0.039,
+    nh3: 0.035,
+    nox: 1.42,
+    co: 13.4,
+    voc: 0.93,
+  },
+  aviationOwn: {
+    co2: 0,
+    ch4: 0,
+    n2o: 0.032,
+    so2: 0.37,
+    bc: 0.01,
+    oc: 0.004,
+    nh3: 0.053,
+    nox: 4.4,
+    co: 0.88,
+    voc: 0.12,
+  },
 };
 const coRange = (median, low, high) => ({
   median: coYears.map(() => median),
@@ -834,6 +937,9 @@ const coErf = {
   bc: coRange(26e-12, -10e-12, 65e-12),
   oc: coRange(-7e-12, -20e-12, -1.9e-12),
   nox: coRange(1.16e-12, -0.07e-12, 2.27e-12),
+  nh3: coRange(-0.62e-12, -0.69e-12, -0.56e-12),
+  co: coRange(0.026e-12, -0.1e-12, 0.15e-12),
+  voc: coRange(0.25e-12, -0.1e-12, 0.63e-12),
 };
 write('coemissions.json', {
   years: coYears,
@@ -846,7 +952,7 @@ write('coemissions.json', {
           Object.fromEntries(
             Object.entries(grams).map(([species, g]) => [
               species,
-              [1, 0.85, species === 'ch4' ? 0.8 : 0.67].map((k) =>
+              (species === 'co2' ? [1, 1, 1] : [1, 0.85, species === 'ch4' ? 0.8 : 0.67]).map((k) =>
                 Number((g * k * 1e-3).toPrecision(4)),
               ),
             ]),
@@ -856,30 +962,66 @@ write('coemissions.json', {
     ]),
   ),
   erfPerKg: Object.fromEntries(Object.keys(sectorGt).map((ssp) => [ssp, coErf])),
-  noxCh4PerKgCo2: Object.fromEntries(
-    Object.keys(sectorGt).map((ssp) => [
-      ssp,
-      Object.fromEntries(
-        Object.entries(coGrams).map(([sector, g]) => {
-          const m = g.nox * 1e-3 * 2 * (sector === 'shipping' ? 2.75 : 0.69);
-          const p = (x) => Number(x.toPrecision(4));
-          return [sector, coRange(p(m), p(m * 0.8), p(m * 1.25))];
-        }),
-      ),
-    ]),
-  ),
-  noxPlaceFactor: Object.fromEntries(
-    Object.keys(sectorGt).map((ssp) => [
-      ssp,
-      { land: coRange(0.69, 0.79, 0.58), sea: coRange(2.75, 2.15, 3.4) },
-    ]),
-  ),
+  noxCh4PerKgCo2: {
+    hoor: Object.fromEntries(
+      Object.keys(sectorGt).map((ssp) => [
+        ssp,
+        Object.fromEntries(
+          Object.entries(coGrams).map(([sector, g]) => {
+            const m = g.nox * 1e-3 * 2 * (sector === 'shipping' ? 2.75 : 0.69);
+            const p = (x) => Number(x.toPrecision(4));
+            return [sector, coRange(p(m), p(m * 0.8), p(m * 1.25))];
+          }),
+        ),
+      ]),
+    ),
+    fair: Object.fromEntries(
+      Object.keys(sectorGt).map((ssp) => [
+        ssp,
+        Object.fromEntries(
+          Object.entries(coGrams).map(([sector, g]) => {
+            const m = [1, 0.85, 0.67].map((k) => Number((g.nox * k * 1e-3 * 2).toPrecision(4)));
+            return [sector, { median: m, low: m.map((v) => v * 0.985), high: m }];
+          }),
+        ),
+      ]),
+    ),
+    chemistry: Object.fromEntries(
+      Object.keys(sectorGt).map((ssp) => [
+        ssp,
+        Object.fromEntries(
+          Object.entries(coGrams).map(([sector, g]) => {
+            const m = g.nox * 1e-3 * (sector === 'shipping' ? 1.26 : 0.32);
+            const p = (x) => Number(x.toPrecision(4));
+            return [sector, coRange(p(m), p(m * 0.78), p(m * 1.45))];
+          }),
+        ),
+      ]),
+    ),
+  },
+  noxPlaceFactor: {
+    hoor: Object.fromEntries(
+      Object.keys(sectorGt).map((ssp) => [
+        ssp,
+        { land: coRange(0.69, 0.79, 0.58), sea: coRange(2.75, 2.15, 3.4) },
+      ]),
+    ),
+    fair: Object.fromEntries(
+      Object.keys(sectorGt).map((ssp) => [ssp, { land: coRange(1, 1, 1), sea: coRange(1, 1, 1) }]),
+    ),
+    chemistry: Object.fromEntries(
+      Object.keys(sectorGt).map((ssp) => [
+        ssp,
+        { land: coRange(0.21, 0.16, 0.24), sea: coRange(0.83, 0.65, 1.22) },
+      ]),
+    ),
+  },
   particleErfPerKgCo2: Object.fromEntries(
     Object.keys(sectorGt).map((ssp) => [
       ssp,
       Object.fromEntries(
         Object.entries(coGrams).map(([sector, g]) => {
-          const m = (g.so2 * -6e-12 + g.bc * 26e-12 + g.oc * -7e-12) * 1e-3;
+          const m = (g.so2 * -6e-12 + g.bc * 26e-12 + g.oc * -7e-12 + g.nh3 * -0.62e-12) * 1e-3;
           const spread = 0.6 * Math.abs(m) + 2e-15;
           const p = (x) => Number(x.toPrecision(4));
           return [sector, coRange(p(m), p(m - spread), p(m + spread))];
@@ -887,7 +1029,34 @@ write('coemissions.json', {
       ),
     ]),
   ),
+  ozoneErfPerKgCo2: Object.fromEntries(
+    Object.keys(sectorGt).map((ssp) => [
+      ssp,
+      Object.fromEntries(
+        Object.entries(coGrams).map(([sector, g]) => {
+          const m = (g.co * 0.026e-12 + g.voc * 0.25e-12) * 1e-3;
+          const p = (x) => Number(x.toPrecision(4));
+          return [sector, coRange(p(m), p(-0.5 * m), p(2.5 * m))];
+        }),
+      ),
+    ]),
+  ),
   noxCh4PerKg: Object.fromEntries(Object.keys(sectorGt).map((ssp) => [ssp, coRange(2, 1.97, 2.0)])),
+  vocCh4PerKg: Object.fromEntries(
+    Object.keys(sectorGt).map((ssp) => [ssp, coRange(-0.116, -0.118, -0.114)]),
+  ),
+  vocCh4PerKgCo2: Object.fromEntries(
+    Object.keys(sectorGt).map((ssp) => [
+      ssp,
+      Object.fromEntries(
+        Object.entries(coGrams).map(([sector, g]) => {
+          const m = -0.116 * g.voc * 1e-3;
+          const p = (x) => Number(x.toPrecision(4));
+          return [sector, coRange(p(m), p(m * 1.02), p(m * 0.98))];
+        }),
+      ),
+    ]),
+  ),
   source: 'Planetshift test fixture: sectors.md values, air pollution falling by a third',
 });
 

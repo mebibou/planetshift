@@ -1,7 +1,9 @@
-"""meta.json: the base year, the build date and every source with its version."""
+"""meta.json: the base year, the build date, the departures from FaIR the data was built for and
+every source with its version."""
 
 from datetime import UTC, datetime
 
+from .. import config
 from ..cache import downloaded_on
 from ..inputs import Build, optional, write
 from ..sources import faostat, naturalearth, worldbank
@@ -14,6 +16,7 @@ def build(b: Build, modules: tuple[str, ...]) -> None:
         {
             "baseYear": b.year,
             "builtAt": datetime.now(UTC).date().isoformat(),
+            "departures": config.load(),
             "sources": sources(b, modules),
         },
     )

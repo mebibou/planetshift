@@ -17,6 +17,17 @@ cd app && npm ci && npm run dev
 
 `/?data=fixtures` runs the app on the small test fixtures instead of the real data.
 
+## Forking
+
+Planetshift runs its climate arithmetic on FaIR and its calibrated ensemble, and departs from FaIR's own physics in a few named places. `planetshift.config.json`, at the root, sets each departure on or off; `planetshift.config.schema.json` lists them with their values, the website's default and the value that keeps to plain FaIR. The pipeline records the config in `meta.json`, and the app reads it when it is built, so a fork's site carries its own choices; visitors never see these switches, which are neither options nor in the URL. The departures:
+
+- `noxMethane`: the methane a kg less NOx leaves in the air, shared between land and sea after Hoor et al. (2009) (`hoor`, the default), FaIR's one coefficient (`fair`), or the chemistry models' own values (`chemistry`).
+- `aviationNonCo2`: less flying cuts Lee et al. (2021)'s non-CO₂ forcing, contrails included (`lee2021`, the default), or only aviation's own NOx, sulphur and soot through FaIR, which has no contrails (`fair`).
+- `permafrost`: the Permafrost option is offered to visitors (`on`, the default) or the module is left out (`off`).
+- `shippingSulphur2020`: the 2020 limit on ships' fuel sulphur adds its published forcing, 0.12 W/m² (0.08–0.14), outside FaIR's ensemble (`on`, the default), or the scenarios keep their own ships' SO₂ alone (`off`).
+
+`docs/app.md` ("Forking") says where each is in the code and how to add one.
+
 ## Checks
 
 `scripts/check.sh` runs every lint and test (pipeline, app, end-to-end); `scripts/check.sh <section>` runs one. The GitHub Actions workflow (`.github/workflows/ci.yml`) runs the same lint and tests on every pull request and every push to `main` (the speed budgets are reported but don't block there, as shared runners vary), and publishes the site to GitHub Pages from `main` once they pass. Rebuilding the data from its sources stays local.

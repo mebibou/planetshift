@@ -1,9 +1,12 @@
+import type { Departures } from '../../config';
 import type { Ssp } from '../../data/types';
 import { towards } from '../../model/bands';
 import type { Band } from '../../model/climate';
 import { valueAt } from '../../model/util';
 import { coChange, NO_CO_CHANGE, type CoYear, type KeepsNox } from './coemissions';
-import type { CoEmissions, Sector, Sectors } from './data';
+import type { CoEmissions, CoSector, Sector, Sectors } from './data';
+
+export type AviationNonCo2 = Departures['aviationNonCo2'];
 
 /** Levers on the fossil CO₂ of transport, electricity and data centres (sectors.md). */
 export const ENERGY_LEVERS = [
@@ -136,6 +139,20 @@ export interface EnergyPaths {
   forcing: number[];
 }
 
+/**
+ * With plain FaIR's aviation, which has no contrails, the flights not flown cut their own NOx,
+ * sulphur and soot as co-emissions (aviationOwn) in place of Lee et al.'s non-CO₂ forcing.
+ */
+const aviationCo = (
+  ctx: YearContext,
+  year: number,
+  a: EnergyAdoption,
+  aviation: AviationNonCo2,
+): Partial<Record<CoSector, number>> =>
+  aviation === 'fair'
+    ? { aviationOwn: -a.flyLess * sectorCo2(ctx.sectors, ctx.ssp, 'aviation', year) }
+    : {};
+
 /** The energy levers' changes each year, ramping in like the shift; all zero without sectors.json. */
 export const energyPaths = (
   sectors: Partial<Sectors> | undefined,
@@ -146,6 +163,7 @@ export const energyPaths = (
   band: Band,
   years: readonly number[],
   shareAt: (year: number) => number,
+  aviation: AviationNonCo2,
 ): EnergyPaths => {
   if (!hasSectors(sectors) || !ENERGY_LEVERS.some((id) => adoption(id) > 0))
     return {
@@ -159,14 +177,19 @@ export const energyPaths = (
   return {
     co2: bySource.map((s) => Object.values(s).reduce((total, v) => total + v, 0)),
     co: years.map((y, i) => {
-      const co2 = bySource[i] as Record<EnergySource, number>;
+      const co2 = {
+        ...(bySource[i] as Record<EnergySource, number>),
+        ...aviationCo(ctx, y, adoptions[i] as EnergyAdoption, aviation),
+      };
       return {
         co2,
         change: coChange(co, ssp, y, co2, CLEAN_FUEL_KEEPS_NOX),
         keepsNox: CLEAN_FUEL_KEEPS_NOX,
       };
     }),
-    forcing: years.map((y, i) => nonCo2ForcingChange(ctx, y, adoptions[i] as EnergyAdoption)),
+    forcing: years.map((y, i) =>
+      aviation === 'fair' ? 0 : nonCo2ForcingChange(ctx, y, adoptions[i] as EnergyAdoption),
+    ),
   };
 };
 
