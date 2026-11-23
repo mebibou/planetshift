@@ -14,7 +14,7 @@ from planetshift_pipeline.sources import faostat
 
 pytestmark = pytest.mark.network
 
-#: Tolerances: the model leaves out work animals, non-food crops (fibres, tobacco, rubber) and
+#: Tolerances: the model leaves out non-food crops (fibres, tobacco, rubber) and
 #: fish, mixes HESTIA and published intensities with FAOSTAT's, and fills a few countries from
 #: older balances, so it is not expected to match FAOSTAT exactly.
 CH4_TOLERANCE = 0.10
@@ -41,8 +41,9 @@ def read(domain: str, year: int):
 
 def model_world_emissions(scope: str) -> dict[str, float]:
     """kg per year: intensity x (production - processing), the processed share of a primary
-    item being counted on the processed items made from it."""
-    supply, intensities = built("supply.json"), built("intensities.json")["byCountry"]
+    item being counted on the processed items made from it, and the animals not raised for food."""
+    supply, built_intensities = built("supply.json"), built("intensities.json")
+    intensities = built_intensities["byCountry"]
     return {
         gas: sum(
             intensities[iso3][code][scope]["kgPerTonne"][gas]
@@ -50,6 +51,7 @@ def model_world_emissions(scope: str) -> dict[str, float]:
             for iso3, rows in supply["byCountry"].items()
             for code, row in rows.items()
         )
+        + sum(kg[gas] for kg in built_intensities.get("nonFood", {}).values())
         for gas in I.GASES
     }
 

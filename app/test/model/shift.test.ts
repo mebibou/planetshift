@@ -194,10 +194,12 @@ describe('location', () => {
       }),
     );
   });
-  it('records clipped countries', () => {
+  it('takes every animal group to zero at a full shift, with no country clipped', () => {
     const r = run({ shift: 1 }, { ...DEFAULT_OPTIONS, location: 'domestic' });
-    expect(r.summary.clipped.length).toBeGreaterThan(0);
-    expect([...r.summary.clipped].sort()).toEqual(r.summary.clipped);
+    expect(r.summary.clipped).toEqual([]);
+    ANIMAL_GROUPS.forEach((g) =>
+      r.countries.forEach((c) => expect(c.production[g] + c.productionChange[g]).toBeCloseTo(0, 3)),
+    );
   });
 });
 

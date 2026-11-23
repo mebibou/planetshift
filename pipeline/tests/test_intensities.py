@@ -118,6 +118,47 @@ def test_every_faostat_element_and_upstream_item_has_a_process():
     assert elements <= set(I.PROCESSES)
 
 
+def qcl_rows(*rows):
+    return pd.DataFrame(rows, columns=["area_code", "item_code", "element_code", "value"])
+
+
+def test_nonfood_shares_keep_the_head_beyond_milking_and_slaughter():
+    gle_rows = gle(
+        (1, 961, I.STOCKS, 100.0),
+        (2, 961, I.STOCKS, 100.0),
+        (1, 946, I.STOCKS, 100.0),
+        (1, 1107, 72254, 1.0),
+    )
+    qcl = qcl_rows(
+        (1, 867, I.SLAUGHTERED, 100 * I.FOOD_OFFTAKE / 4),
+        (2, 867, I.SLAUGHTERED, 50.0),
+        (1, 951, I.MILK_ANIMALS, 40.0),
+        (1, 947, I.SLAUGHTERED, 60 * I.FOOD_OFFTAKE / 2),
+    )
+    got = I.nonfood_shares(gle_rows, qcl).set_index(["area_code", "species"])["share"]
+    assert got[(1, 961)] == pytest.approx(0.75)
+    assert (2, 961) not in got
+    assert got[(1, 946)] == pytest.approx(0.3)
+    assert got[(1, 1107)] == 1.0
+
+
+def test_nonfood_emissions_leave_the_products_and_are_conserved():
+    rows = gle((1, 961, 72254, 2.0), (1, 961, 72300, 0.1), (1, 1096, 72254, 1.0))
+    shares = pd.DataFrame({"area_code": [1, 1], "species": [961, 1096], "share": [0.25, 1.0]})
+    food = I.livestock(rows, pd.DataFrame(columns=["area_code", "item_code", "value"]), shares)
+    held = I.nonfood_emissions(rows, shares).set_index(["gas", "process"])["kg"]
+    assert food["kg"].sum() == pytest.approx(0.75 * 2.1e6)
+    assert held[("ch4", "enteric")] == pytest.approx(0.5e6 + 1e6)
+    assert held[("n2o", "organicFertiliser")] == pytest.approx(0.025e6)
+
+
+def test_nonfood_json_by_country():
+    kg = pd.DataFrame(
+        {"area_code": [1, 1, 9], "gas": ["ch4", "n2o", "ch4"], "kg": [1234.5, 6.0, 1.0]}
+    )
+    assert I.nonfood_json(kg, {1: "AAA"}) == {"AAA": {"co2": 0.0, "ch4": 1230.0, "n2o": 6.0}}
+
+
 def test_livestock_leaves_out_work_animals_and_aggregates():
     out = I.livestock(
         gle((1, 1096, 72254, 1.0), (1, 1757, 72254, 5.0)),

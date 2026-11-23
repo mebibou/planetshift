@@ -60,7 +60,10 @@ export interface Options {
 
 export interface CountryResult {
   iso3: string;
-  /** Tonnes of primary product per year in the base year, by group. */
+  /**
+   * Tonnes per year in the base year, by group, less what is processed into another item and
+   * counted on it (milk made into butter): the tonnes whose emissions are counted.
+   */
   production: Record<Group, number>;
   /** Change in tonnes at the full shift, by group. */
   productionChange: Record<Group, number>;

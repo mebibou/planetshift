@@ -148,3 +148,9 @@ export const cutCakeEmissions = (
       return i < 0 ? a : a - v[g] * (cuts[g][i] as number);
     }, 0),
   );
+
+/** kg of each gas a year from the country's animals not raised for food: no lever changes it. */
+export const nonFoodEmissions = (prepared: Prepared, iso3: string): GasVector => {
+  const kg = prepared.data.intensities.nonFood?.[iso3];
+  return kg ? gasVector((g) => kg[g] ?? 0) : ZERO_GAS;
+};

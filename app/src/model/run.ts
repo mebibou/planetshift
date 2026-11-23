@@ -1,5 +1,7 @@
 import {
+  ANIMAL_GROUPS,
   GASES,
+  type AnimalGroup,
   type Gas,
   type GasVector,
   type CountedCause,
@@ -42,13 +44,14 @@ import {
   cakeEmissions,
   cakeEmissionsChange,
   countryCakes,
+  nonFoodEmissions,
   countryIntensities,
   cutCakeEmissions,
   cutEmissions,
   emissionsOf,
   worstIntensity,
 } from './emissions';
-import { feedChange, feedSharesOf, groupProductionChange } from './feed';
+import { animalUse, feedChange, feedSharesOf, groupProductionChange } from './feed';
 import { addLand, countryLand, landChangeOf, NO_LAND, type CakeDemand } from './land';
 import { clipChange, locateAll } from './location';
 import { groupTotals, prepare, type Prepared, type PreparedCountry } from './prepare';
@@ -63,6 +66,7 @@ import {
   memoLatest,
   memoPer,
   range,
+  recordFrom,
   sum,
   valueAt,
   zeros,
@@ -98,6 +102,10 @@ const clipAll = (
   };
 };
 
+/** A group's relative change, no more than the whole group. */
+const atLeastAll = (change: Record<AnimalGroup, number>): Record<AnimalGroup, number> =>
+  recordFrom(ANIMAL_GROUPS, (g) => Math.max(-1, change[g]));
+
 const animalCache = memoPer<readonly Item[], Uint8Array>();
 /** 1 for each animal item, 0 for a plant, once per item list. */
 const animalMask = (items: readonly Item[]): Uint8Array =>
@@ -123,6 +131,8 @@ export const productionChanges = (
   const animal = animalMask(items);
   const multipliers = countries.map((pc) => chain.multipliers?.(pc) ?? pc.multipliers);
   const avoided = chain.avoidedLosses ? countries.map(chain.avoidedLosses) : null;
+  const use = animalUse(prepared, options.feed);
+  const { scale } = use;
   /**
    * Supply change of the animal (or plant) items from their change in end use (`endUse` plus
    * `extra`), less the losses no longer incurred.
@@ -135,7 +145,8 @@ export const productionChanges = (
     for (let i = 0; i < n; i++)
       if (animal[i] === want) {
         const d = extra ? (endUse[i] as number) + (extra[i] as number) : (endUse[i] as number);
-        out[i] = lost ? d * (m[i] as number) - (lost[i] as number) : d * (m[i] as number);
+        const supply = lost ? d * (m[i] as number) - (lost[i] as number) : d * (m[i] as number);
+        out[i] = supply * (scale[i] as number);
       }
     return out;
   };
@@ -152,10 +163,42 @@ export const productionChanges = (
   const located = (demand: readonly ItemVector[]) =>
     locateAll(demand, emitting, worldEmitting, options.location);
   const animals = clipAll(countries, located(used.map((u, c) => toSupply(c, true, u))), emitting);
+  /**
+   * Milk and fish are feed items too (fishmeal): their feed use follows, once, the world's change
+   * in the groups they feed from the change in food, so that a group removed everywhere takes
+   * them all. The fish caught for meal are wild and not fed, so this does not feed back.
+   */
+  const fedGroups = atLeastAll(
+    groupProductionChange(
+      use.worldFoodBase,
+      addVectors(zeros(n), ...(animals.change as ItemVector[])),
+      prepared,
+    ),
+  );
+  const fishDemand = countries.map((pc, c) => {
+    const f = feedChange(pc, fedGroups, prepared, options.feed);
+    const m = multipliers[c] as ItemVector;
+    const out = new Float64Array(n);
+    for (let i = 0; i < n; i++)
+      if (animal[i] === 1) out[i] = (f[i] as number) * (m[i] as number) * (scale[i] as number);
+    return out;
+  });
+  const remaining = emitting.map((e, c) => addVectors(e, animals.change[c] as ItemVector));
+  const fish = clipAll(
+    countries,
+    locateAll(fishDemand, remaining, addVectors(zeros(n), ...remaining), options.location),
+    remaining,
+  );
   const feed = countries.map((pc, c) =>
     feedChange(
       pc,
-      groupProductionChange(pc.emitting, animals.change[c] as ItemVector, prepared),
+      atLeastAll(
+        groupProductionChange(
+          pc.emitting,
+          addVectors(zeros(n), animals.change[c] as ItemVector, fish.change[c] as ItemVector),
+          prepared,
+        ),
+      ),
       prepared,
       options.feed,
     ),
@@ -164,21 +207,6 @@ export const productionChanges = (
     countries,
     located(used.map((u, c) => toSupply(c, false, u, feed[c]))),
     emitting,
-  );
-  /**
-   * Fish are feed items too (fishmeal): their feed use follows the groups they feed, once. The
-   * fish caught for meal are wild and not fed, so this change does not feed back into feed.
-   */
-  const fishDemand = feed.map((f, c) => {
-    const m = multipliers[c] as ItemVector;
-    const out = new Float64Array(n);
-    for (let i = 0; i < n; i++) if (animal[i] === 1) out[i] = (f[i] as number) * (m[i] as number);
-    return out;
-  });
-  const fish = clipAll(
-    countries,
-    located(fishDemand),
-    emitting.map((e, c) => addVectors(e, animals.change[c] as ItemVector)),
   );
   return {
     food: dietFood ?? recordOf(countries, foodList),
@@ -217,10 +245,13 @@ export const countryBase = (pc: PreparedCountry, prepared: Prepared, scope: Scop
     const intensities = countryIntensities(pc, prepared, scope);
     const worst = worstIntensity(pc.emitting, intensities);
     return {
-      production: groupTotals(pc.production, prepared),
+      production: groupTotals(pc.emitting, prepared),
       emissions: addGas(
-        emissionsOf(pc.emitting, intensities),
-        cakeEmissions(countryCakes(pc, prepared, scope)),
+        addGas(
+          emissionsOf(pc.emitting, intensities),
+          cakeEmissions(countryCakes(pc, prepared, scope)),
+        ),
+        nonFoodEmissions(prepared, pc.country.iso3),
       ),
       worstTier: worst.tier,
       worstSource: worst.source,

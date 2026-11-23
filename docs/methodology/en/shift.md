@@ -26,8 +26,8 @@ This example uses the test fixtures (`app/public/fixtures/`), whose numbers are 
 1. Removed: 10% of each animal item, such as 152 kt of bovine meat and 1,724 kt of milk, and the fish.
 2. Added: the same protein shared by France's protein-rich plant foods, most of it wheat. Wheat food supply rises by 1,261 kt, maize by 115 kt, rice by 80 kt, oats by 34 kt and beans by 23 kt.
 3. Supply: wheat's losses and seed are 8% of its supply, so its supply needs 1,261 × 1.087 more tonnes.
-4. Feed: with 10% fewer animals, feed falls by 10%. Maize feed is 9.9 Mt, so maize production falls by 959 kt, although maize food rises by 115 kt. Wheat production rises by only 702 kt, as its feed use (6.0 Mt) falls.
-5. Result: protein stays at 107.8 g a day, and energy rises from 2,437 to 2,545 kcal. France's farm emissions fall by about 195 kt of CH₄ (methane), 4.8 kt of N₂O (nitrous oxide) and 0.5 Mt of CO₂ a year.
+4. Feed: France's animal production falls by a little more than 10%, as each animal item falls by the share of its world use removed (step 5), and feed falls with it. Maize feed is 9.9 Mt, so maize production falls by 1,106 kt, although maize food rises by 115 kt. Wheat production rises by only 606 kt, as its feed use (6.0 Mt) falls.
+5. Result: protein stays at 107.8 g a day, and energy rises from 2,437 to 2,545 kcal. France's farm emissions fall by about 224 kt of CH₄ (methane), 5.6 kt of N₂O (nitrous oxide) and 0.6 Mt of CO₂ a year.
 
 ## 1. The kept basis: protein or calories
 
@@ -40,6 +40,8 @@ The protein and calorie contents per tonne are the FBS's own: the food supply in
 ## 2. What is removed
 
 The animal groups are ruminant meat, pig meat, poultry meat, dairy, eggs, and fish and seafood. For each group, the controls give a share: the main slider, or a per-group slider that overrides it. Each animal item in the group loses that share of its food supply.
+
+A 100% shift means no animal farmed for food: every animal group's production falls to zero. Animals not raised for food (draught oxen and buffalo, horses and donkeys, most of India's cattle) stay, and so do their emissions (see [Emissions](#method-emissions)).
 
 With *high-income countries only*, countries outside the World Bank's high-income group keep their diet.
 
@@ -77,7 +79,9 @@ Grass and pasture are not in the FBS, so they do not appear here. Feed often fal
 
 Animal production is placed first (step 6). The feed change is computed where the animals are, before plant production is placed.
 
-Some feed items are animal items: milk fed to calves and piglets, and fish reduced to meal and fed to farmed fish, pigs and poultry. Their feed use changes in the same way. That change is placed like a change in demand, on top of the change in food. It is done once: the fish caught for meal are wild and eat no feed, so a change in them does not change feed again, and the change in milk fed to calves is small. See [Fish and seafood](#method-seafood).
+Some feed items are animal items: milk fed to calves and piglets, and fish reduced to meal and fed to farmed fish, pigs and poultry. Their feed use changes with the world's change in the groups they feed, from the change in food. That change is placed like a change in demand, on top of the change in food. It is done once: the fish caught for meal are wild and eat no feed, so a change in them does not change feed again, and the change in milk fed to calves is small. See [Fish and seafood](#method-seafood). The feed of the crops then follows each country's change in animal production, the fish and milk fed included.
+
+An animal item also has uses that are neither food nor feed: tallow and lard for soap and fuel, milk for industry, and the gap between the world's recorded imports and exports. They come from animals raised for food and go with them. So each animal item's production changes by the same fraction as its world use as food and as feed: a change in use is multiplied by the world's production of the item less processing, over that use. Raw animal fats, half of whose supply goes to such uses, fall by half under a 50% shift, not by a quarter.
 
 ## 6. Where production changes
 
@@ -86,7 +90,9 @@ Some feed items are animal items: milk fed to calves and piglets, and fish reduc
 
 An item no country produces stays where it is eaten.
 
-A change could take a country's production below what it processes (production − processing below zero). It is stopped there, and the country is listed as clipped. With both options, this happens only when a shift removes a whole group (100%). The cut in a primary item such as milk then reaches its processed share, which is counted on the processed item (butter, cheese) and removed there.
+A change could take a country's production below what it processes (production − processing below zero). It is stopped there, and the country is listed as clipped. A diet shift alone no longer does this, even at 100%, as animal production falls by the share of its use removed.
+
+The production shown by group is production less what is processed into another item: the tonnes whose emissions are counted. Milk made into butter or cream is counted on the butter and cream, so it is not counted twice, and a 100% shift takes the dairy group to zero.
 
 ## 7. Emissions
 
@@ -152,6 +158,7 @@ The baseline temperature is the chosen SSP's published temperature. With the *po
 - Milk and fish fed to animals change once, with the animals they feed; that change does not change feed again.
 - Fixed trade shares or domestic production: no change in who exports what.
 - Production cannot fall below what is processed; such cases are clipped and listed.
+- An animal item's uses other than food and feed, and the world's trade gap, follow its production.
 - Intensities per tonne do not change with the amount produced.
 - Hectares per tonne and the pasture's shares stay as in the base year: yields and grazing intensity do not change with the shift.
 - An oilseed's land is shared between its oil and its cake by their value. The cake's part follows the animals that eat it, and temporary meadows follow the ruminants, as pasture does.

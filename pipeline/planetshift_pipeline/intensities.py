@@ -76,7 +76,7 @@ MILK_PROTEIN = {951: 0.042, 982: 0.055, 1020: 0.035, 1130: 0.032}
 MEAT_PROTEIN = 0.15
 
 #: GLE species -> FBS items. A float is a fixed share; a pair (milk, meat) of QCL product codes
-#: splits by protein output. Horses, asses and mules are left out: they are kept for work.
+#: splits by protein output. Horses, asses and mules are kept for work (WORKING).
 LIVESTOCK = {
     960: {2848: DAIRY_MILK_SHARE, 2731: 1 - DAIRY_MILK_SHARE},
     961: {2731: 1.0},
@@ -92,6 +92,12 @@ LIVESTOCK = {
     1068: {2734: 1.0},
     1079: {2734: 1.0},
 }
+WORKING = (1096, 1107, 1110)
+#: Species also kept for draught: (QCL milk item, None when milking cows are GLE 960; meat item).
+DRAUGHT = {961: (None, 867), 946: (951, 947)}
+#: Mean offtake of traditional cattle systems in sub-Saharan Africa (Otte and Chilonda 2002).
+FOOD_OFFTAKE = 0.099
+STOCKS, MILK_ANIMALS, SLAUGHTERED, PRODUCTION = 5111, 5318, 5320, 5510
 RUMINANT_ITEMS = (2731, 2732, 2735, 2848)
 MEAT_ITEMS = (2731, 2732, 2733, 2734, 2735)
 COPRODUCT_ITEMS = (2736, 2737)
@@ -248,10 +254,73 @@ def species_shares(qcl_production: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(fixed + mixed)
 
 
-def livestock(gle: pd.DataFrame, qcl_production: pd.DataFrame) -> pd.DataFrame:
-    """Enteric fermentation, manure management, manure on pasture and manure applied, by item.
-    Species with milk and meat but no output in QCL give everything to meat."""
-    by_species = gases(gle[gle["item_code"].isin(LIVESTOCK)], LIVESTOCK_ELEMENTS)
+def nonfood_shares(gle: pd.DataFrame, qcl: pd.DataFrame) -> pd.DataFrame:
+    """Share of each species' emissions (area_code, species, share) from animals not raised for
+    food: all of WORKING; of a DRAUGHT species, the head beyond those milked and those needed to
+    slaughter what it slaughters at FOOD_OFFTAKE, over its stock (emissions taken per head)."""
+
+    def by_area(df: pd.DataFrame, item: int | None, element: int) -> pd.Series:
+        rows = df[(df["item_code"] == item) & (df["element_code"] == element)]
+        return rows.groupby("area_code")["value"].sum()
+
+    draught = pd.concat(
+        [
+            pd.DataFrame(
+                {
+                    "stock": by_area(gle, species, STOCKS),
+                    "milked": by_area(qcl, milk, MILK_ANIMALS),
+                    "slaughtered": by_area(qcl, meat, SLAUGHTERED),
+                }
+            )
+            .fillna(0.0)
+            .query("stock > 0")
+            .assign(species=species)
+            for species, (milk, meat) in DRAUGHT.items()
+        ]
+    )
+    rest = (draught["stock"] - draught["milked"]).clip(lower=0)
+    kept_for_food = (draught["slaughtered"] / FOOD_OFFTAKE).clip(upper=rest)
+    working = gle.loc[gle["item_code"].isin(WORKING), ["area_code", "item_code"]].drop_duplicates()
+    return pd.concat(
+        [
+            draught.assign(share=(rest - kept_for_food) / draught["stock"]).reset_index()[
+                ["area_code", "species", "share"]
+            ],
+            working.rename(columns={"item_code": "species"}).assign(share=1.0),
+        ],
+        ignore_index=True,
+    ).query("share > 0")
+
+
+def nonfood_emissions(gle: pd.DataFrame, shares: pd.DataFrame) -> pd.DataFrame:
+    """kg by (area_code, gas, process) of the animals not raised for food."""
+    by_species = gases(gle, LIVESTOCK_ELEMENTS).merge(
+        shares, left_on=["area_code", "key"], right_on=["area_code", "species"]
+    )
+    return (
+        by_species.assign(kg=by_species["kg"] * by_species["share"])
+        .groupby(["area_code", "gas", "process"], as_index=False)["kg"]
+        .sum()
+    )
+
+
+def livestock(
+    gle: pd.DataFrame, qcl_production: pd.DataFrame, nonfood: pd.DataFrame | None = None
+) -> pd.DataFrame:
+    """Enteric fermentation, manure management, manure on pasture and manure applied, by item,
+    less the `nonfood_shares` part. Species with milk and meat but no output in QCL give
+    everything to meat."""
+    species = gases(gle[gle["item_code"].isin(LIVESTOCK)], LIVESTOCK_ELEMENTS)
+    held = (
+        species.merge(
+            nonfood, how="left", left_on=["area_code", "key"], right_on=["area_code", "species"]
+        )["share"]
+        .fillna(0.0)
+        .to_numpy()
+        if nonfood is not None and not nonfood.empty
+        else 0.0
+    )
+    by_species = species.assign(kg=species["kg"] * (1 - held))
     shares = species_shares(qcl_production)
     everywhere = by_species.merge(
         shares[shares["area_code"].isna()].drop(columns="area_code"),
@@ -391,8 +460,8 @@ def faostat_emissions(
     area = qcl[qcl["element_code"] == 5312].rename(columns={"item_code": "qcl_code", "value": "ha"})
     area = area[["area_code", "qcl_code", "ha"]]
     crop_n = nitrogen_weights(area, crops, nitrogen_rates(world_area(area, crops)))
-    qcl_production = qcl[qcl["element_code"] == 5510]
-    animals = livestock(gle, qcl_production)
+    qcl_production = qcl[qcl["element_code"] == PRODUCTION]
+    animals = livestock(gle, qcl_production, nonfood_shares(gle, qcl))
     grass = ruminant_weights(animals)
 
     def nitrogen_shared(totals: pd.DataFrame) -> pd.DataFrame:
@@ -718,6 +787,20 @@ def oilcake_json(cake: pd.DataFrame) -> dict:
             for code, cells in country.groupby("primary_code")
         }
         for iso3, country in cake.sort_values(["iso3", "primary_code", "scope"]).groupby("iso3")
+    }
+
+
+def nonfood_json(kg: pd.DataFrame, iso3: dict[int, str]) -> dict:
+    """nonFood[iso3] = kg of each gas a year from the animals not raised for food."""
+    wide = (
+        kg[kg["area_code"].isin(iso3)]
+        .pivot_table(index="area_code", columns="gas", values="kg", aggfunc="sum")
+        .reindex(columns=list(GASES))
+        .fillna(0.0)
+    )
+    return {
+        iso3[area]: {g: significant(row[g]) for g in GASES}
+        for area, row in sorted(wide.iterrows(), key=lambda r: iso3[r[0]])
     }
 
 

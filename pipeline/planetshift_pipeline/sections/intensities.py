@@ -25,4 +25,14 @@ def build(b: Build) -> None:
         "oilcakes carry %.0f Mt CO2e a year (cradle to farm gate)",
         I.co2e(cake[cake["scope"] == "cradleToFarmGate"]).sum() / 1e9,
     )
-    write(b.out, "intensities.json", I.intensities_json(merged) | {"oilcake": I.oilcake_json(cake)})
+    nonfood = b.nonfood
+    log.info(
+        "animals not raised for food emit %.0f Mt CO2e a year",
+        (nonfood["kg"] * nonfood["gas"].map(I.GWP100)).sum() / 1e9,
+    )
+    write(
+        b.out,
+        "intensities.json",
+        I.intensities_json(merged)
+        | {"oilcake": I.oilcake_json(cake), "nonFood": I.nonfood_json(nonfood, b.iso3)},
+    )
