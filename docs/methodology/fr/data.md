@@ -1,6 +1,6 @@
 # Données : bilans alimentaires, pays et groupes
 
-Cette page dit d'où vient l'image que Planetshift se fait de l'alimentation du monde. Tout ce qu'il sait de ce que chaque pays produit, échange et mange vient des bilans alimentaires de FAOSTAT, le service statistique de l'Organisation des Nations unies pour l'alimentation et l'agriculture (FAO). Le modèle part de l'année **2023** et couvre **188 pays** ; la page explique quels pays sont pris en compte, comment les aliments sont regroupés, ce qui est laissé de côté et comment télécharger les données.
+Les données de Planetshift sur ce que chaque pays produit, échange et mange viennent des bilans alimentaires de FAOSTAT, le service statistique de l'Organisation des Nations unies pour l'alimentation et l'agriculture (FAO). Le modèle part de l'année **2023** et couvre **188 pays**. Les sections ci-dessous disent quels pays sont pris en compte, comment les aliments sont regroupés, ce qui est laissé de côté et comment télécharger les données.
 
 ## Les bilans alimentaires
 
@@ -49,7 +49,7 @@ FAOSTAT liste les pays et territoires isolés sous des codes de zone inférieurs
 
 ### Les pays au bilan plus ancien
 
-Certains pays n'ont pas de bilan pour l'année de référence dans cette version. Plutôt que de les laisser vides, Planetshift prend leur dernier bilan. Il multiplie chaque quantité par la croissance de leur population depuis, ce qui garde leur alimentation par personne telle qu'elle était :
+Certains pays n'ont pas de bilan pour l'année de référence dans cette version. Plutôt que de les laisser vides, Planetshift prend leur dernier bilan. Il multiplie chaque quantité par la croissance de leur population depuis. Leur alimentation par personne reste celle de ce bilan :
 
 - dans la série actuelle : Cuba (2019) et la République populaire démocratique de Corée (2018) ;
 - dans la série historique, qui s'arrête en 2013 : le Japon, le Soudan, le Mali, le Tchad, le Bénin, le Togo, la République centrafricaine, le Brunéi Darussalam, la Dominique et les Bermudes. Deux produits ont changé de code entre les séries (le riz, de 2805 à 2807, et les arachides, de 2556 à 2552) et sont renommés.
@@ -63,7 +63,7 @@ Les pays sans aucun bilan ne sont pas dans le modèle. Parmi eux figurent la Som
 - **Végétaux :** céréales, riz (à part pour le méthane de ses rizières), légumineuses, oléagineux (graines, fruits et leurs huiles), légumes, fruits, racines et tubercules, plantes sucrières (canne, betterave, sucre et édulcorants), fruits à coque, café, cacao et thé, et autres végétaux (épices et boissons alcoolisées).
 - **Produits animaux :** viande de ruminants (bovins, buffles, moutons, chèvres, et « autres viandes » : chameaux, lamas, chevaux, lapins, gibier), viande porcine, volaille, produits laitiers (lait, beurre, crème), œufs, et poissons et fruits de mer. Ces derniers comprennent les poissons d'eau douce, démersaux, pélagiques et autres poissons marins, les crustacés, les céphalopodes, les autres mollusques et les autres animaux aquatiques, en poids vif (voir [Poissons et fruits de mer](#method-seafood)).
 
-Les abats comestibles vont avec la viande de ruminants, et les graisses animales crues avec la viande porcine, leur principale source respective.
+Les abats comestibles vont avec la viande de ruminants, et les graisses animales crues avec la viande porcine, car chacun de ces groupes est la principale source de ce produit.
 
 ### Ce qui est laissé de côté
 
@@ -77,9 +77,9 @@ Un test vérifie que chaque produit des bilans dont la production mondiale dépa
 
 ## Hypothèses
 
-- Le bilan de l'année de référence représente le système alimentaire d'aujourd'hui ; le modèle du changement le fait évoluer avec la population.
+- Le bilan de l'année de référence représente le système alimentaire d'aujourd'hui. Le modèle du changement le fait évoluer avec la population.
 - Les 188 pays du modèle comptent 8,02 milliards d'habitants en 2023 et 10,00 milliards en 2100 dans la population de FAOSTAT (Perspectives de la population mondiale). C'est 98 à 99 % des totaux mondiaux des WPP 2024 (8,09 et 10,18 milliards).
-- Les pays absents de l'année de référence gardent l'alimentation par personne de leur dernier bilan, vieux de dix ans au plus, mise à l'échelle de leur population. Pour la série historique, la méthode diffère de celle de la série actuelle.
+- Les pays absents de l'année de référence gardent l'alimentation par personne de leur dernier bilan, vieux de dix ans au plus, mise à l'échelle de leur population. La série historique suit une méthode différente de celle de la série actuelle.
 - `other` boucle le bilan de chaque produit. Les variations de stocks et les résidus statistiques sont donc gardés plutôt que répartis sur les autres utilisations.
 - La sous-région M49 d'un pays est sa région pour les moyennes régionales.
 - Les abats et les graisses animales appartiennent chacun à un seul groupe animal, bien qu'ils viennent de plusieurs espèces.
@@ -89,13 +89,13 @@ Un test vérifie que chaque produit des bilans dont la production mondiale dépa
 La carte de la page Explorer a un bouton Télécharger. Le cadre des graphiques en a un pour le graphique affiché.
 
 - **La carte en CSV** : chaque pays avec les valeurs de la couche aujourd'hui et une fois le changement complet, et la variation relative. Le fichier donne l'unité (tonnes de produit, kg d'un gaz ou de CO₂e, hectares, kg de CO₂ du défrichement). Pour la production et les émissions, il donne aussi le niveau et la source de l'intensité la moins précise utilisée. Licence CC BY 4.0.
-- **Chaque graphique en CSV**, un fichier par onglet. Les fichiers contiennent la température mondiale de 1850 à 2100 (observée, sans et avec les leviers avec leurs fourchettes de 5 à 95 %, facteurs naturels seuls), le réchauffement évité chaque année jusqu'en 2100 avec sa fourchette, et le réchauffement par cause avec la température observée, puis le réchauffement de chaque gaz à effet de serre par cause. Ils dérivent de `climate.json` : licence CC BY-NC-SA 4.0.
+- **Chaque graphique en CSV**, un fichier par onglet. Les fichiers contiennent la température mondiale de 1850 à 2100 (observée, sans et avec les leviers avec leurs fourchettes de 5 à 95 %, facteurs naturels seuls), le réchauffement évité chaque année jusqu'en 2100 avec sa fourchette, et le réchauffement par cause avec la température observée, puis le réchauffement de chaque gaz à effet de serre par cause. Ils dérivent de `climate.json`, leur licence est donc CC BY-NC-SA 4.0.
 - **Le scénario en JSON** : tous les réglages de la page, les mêmes que son adresse, avec les chiffres du résumé, la licence (CC BY-NC-SA 4.0) et la façon de citer.
 - **Les fichiers de données source** : les fichiers JSON que lit la page, chacun selon les conditions de ses sources. `climate.json` et `sectors.json` sont sous CC BY-NC-SA 4.0 (pas d'usage commercial, partage dans les mêmes conditions), `industry.json` sous CC BY-SA 4.0, `population.json` sous CC BY 3.0 IGO et CC BY 4.0, et les autres sous CC BY 4.0. Tout ce qui dérive de `climate.json` ou de `sectors.json` garde leurs conditions.
 
 Les fichiers CSV sont en UTF-8 avec une marque d'ordre des octets, et séparés par des virgules. Ils ont des noms de colonnes en anglais et des nombres bruts (un point pour les décimales, pas de séparateur de milliers), quelle que soit la langue de la page.
 
-**Comment citer.** Citez Planetshift, avec l'adresse de la page (qui contient le scénario), et les sources d'origine listées ci-dessous et dans `meta.json`. Par exemple : « Planetshift (2026), *adresse de la page*. Données : FAOSTAT, HESTIA, PRIMAP-hist, FaIR, HadCRUT5, … ». La liste des téléchargements donne la ligne complète.
+**Comment citer.** Citez Planetshift et donnez l'adresse de la page, qui contient le scénario. Citez aussi les sources d'origine, listées ci-dessous et dans `meta.json`. Par exemple : « Planetshift (2026), *adresse de la page*. Données : FAOSTAT, HESTIA, PRIMAP-hist, FaIR, HadCRUT5, … ». La liste des téléchargements donne la ligne complète.
 
 ## Le code
 

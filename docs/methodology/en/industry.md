@@ -1,14 +1,14 @@
 # Buildings and industry
 
-Besides transport and electricity, two parts of the economy burn fossil fuel directly. In buildings, gas and oil boilers heat rooms and water, and stoves cook. In industry, steel and cement are the largest emitters. Planetshift has two levers here, clean heating and clean steel and cement. Adopted in full, each avoids less than 0.02 °C of warming in 2050, and about 0.07 and 0.09 °C in 2100. They avoid much more when the electricity they use is clean (see *Results* below).
+Besides transport and electricity, two parts of the economy burn fossil fuel directly. In buildings, gas and oil boilers heat rooms and water, and stoves cook food. In industry, steel and cement are the largest emitters. Planetshift has two levers here, clean heating and clean steel and cement. Adopted in full, each avoids less than 0.02 °C of warming in 2050, and about 0.07 and 0.09 °C in 2100. They avoid much more when the electricity they use is clean (see *Results* below).
 
 ## How these emissions are counted
 
-Like the [energy and transport](#method-sectors) sectors, these emissions are part of each scenario's fossil CO₂. They are not added to it: the scenario temperatures already include them.
+Like the [energy and transport](#method-sectors) sectors, these emissions are part of each scenario's fossil CO₂. They are not added to it, because the scenario temperatures already include them.
 
 A lever takes a share of them away. It then draws electricity, whose CO₂ is subtracted from the saving. The change is turned into warming avoided with the same CO₂ response curve as every other lever.
 
-The fuel no longer burnt also takes away the methane leaked while producing it, and its air pollution. The electricity drawn brings the grid's methane and air pollution. This works as for transport (see *Methane and air pollution that come with the fuel* on the [energy and transport](#method-sectors) page).
+Burning less fuel also avoids the methane leaked while producing it, and its air pollution. The electricity drawn adds the grid's methane and air pollution. This works as for transport (see *Methane and air pollution that come with the fuel* on the [energy and transport](#method-sectors) page).
 
 `industry.json` holds the data. The code is `pipeline/planetshift_pipeline/industry.py`, and the lever module is `app/src/levers/industry/`.
 
@@ -37,9 +37,9 @@ The rest of industry, about 42%, has no lever: chemicals, aluminium, paper, food
 
 ## Clean heating
 
-This lever replaces boilers by heat pumps, and gas stoves by induction ones. It removes the fuel's CO₂ but draws electricity. The CO₂ of that electricity depends on the grid, as for an electric vehicle.
+This lever replaces boilers with heat pumps, and gas stoves with induction stoves. It removes the fuel's CO₂ but draws electricity. The CO₂ of that electricity depends on the grid, as for an electric vehicle.
 
-On today's world grid, 0.48 kg of CO₂ per kWh, a heat pump saves about 29% of a gas boiler's CO₂ (1 − 1.49 × 0.48). This is close to the IEA's finding that a heat pump saves "at least 20% even on gas-fired power". On a clean grid, it saves all of it.
+On today's world grid, which emits 0.48 kg of CO₂ per kWh, a heat pump saves about 29% of a gas boiler's CO₂ (1 − 1.49 × 0.48). This is close to the IEA's finding that a heat pump saves "at least 20% even on gas-fired power". On a clean grid, it saves all of it.
 
 ### The electricity a heat pump draws
 
@@ -55,7 +55,7 @@ The CO₂ that clean heating saves is the buildings' CO₂ × (1 − `heatPumpKw
 
 One lever covers both: the share of their production made in clean ways. At full adoption on a clean grid, it removes 49% of industry's CO₂: 26% from steel and 23% from cement. On today's grid, it removes about 27%.
 
-The clean routes draw electricity, and hydrogen made with grid power on a grid that still burns coal saves little. At the high end of the electricity range, on SSP3-7.0's grid, the steel part can add CO₂. The likely range shows this.
+The clean routes draw electricity. Hydrogen made with power from a grid that still burns coal saves little. At the high end of the electricity range, on SSP3-7.0's grid, the steel part can add CO₂. The likely range shows this.
 
 ### Steel
 
@@ -67,13 +67,13 @@ At full adoption, steel's direct CO₂ falls by 90% (75–95%):
 
 These figures are from the IEA's *Iron and Steel Technology Roadmap* (2020) and the Mission Possible Partnership's *Making Net-Zero Steel Possible* (2022).
 
-Hydrogen direct reduction needs about 3.5 MWh of electricity per tonne of steel, mostly to make the hydrogen (Vogl et al. 2018). A blast furnace emits about 2 t of direct CO₂ per tonne, so the hydrogen route draws 1.9 kWh per kg avoided. Scrap in an electric furnace needs about 0.6 MWh per tonne, or 0.3 kWh/kg. The median, 1.5 kWh/kg, is three quarters hydrogen and a quarter more scrap. The range is 0.3 (all scrap) to 2.2 (less efficient electrolysis).
+Hydrogen direct reduction needs about 3.5 MWh of electricity per tonne of steel, mostly to make the hydrogen (Vogl et al. 2018). A blast furnace emits about 2 t of direct CO₂ per tonne, so the hydrogen route draws 1.9 kWh per kg avoided. Scrap in an electric furnace needs about 0.6 MWh per tonne, or 0.3 kWh/kg. The median, 1.5 kWh/kg, takes three quarters of the cut from hydrogen and a quarter from using more scrap. The range is 0.3 (all scrap) to 2.2 (less efficient electrolysis).
 
 ### Cement
 
 At full adoption, cement's direct CO₂ falls by 80% (60–95%). The cut comes from clinker substitutes such as calcined clay and limestone (LC3), from other fuels, and from carbon capture for the process CO₂ that no change of fuel removes (GCCA, *Concrete Future*, 2021; IPCC AR6 WGIII chapter 11).
 
-Capture and compression draw about 0.1–0.3 MWh per tonne of CO₂ avoided (CEMCAP 2019). The lever uses 0.25 kWh/kg at the median, and 0.1 to 1.0 where kilns are also heated by electricity.
+Capture and compression draw about 0.1–0.3 MWh per tonne of CO₂ avoided (CEMCAP 2019). The lever uses 0.25 kWh/kg at the median, and 0.1 to 1.0 kWh/kg where kilns are also heated by electricity.
 
 ### The formula
 
@@ -86,10 +86,10 @@ Neither lever counts the CO₂ of making the heat pumps, electrolysers or captur
 Burning fossil fuel also emits methane and air pollutants. CEDS gives how much came with each kilogram of CO₂ in 2022:
 
 - **Buildings' fossil fuels**: 5.6 g of methane, most of it leaked while producing the gas they burn, 1.1 g of SO₂, 0.10 g of black carbon, 0.12 g of organic carbon and 1.0 g of NOx. The wood and dung burnt for cooking make a large share of buildings' soot. They are left out, as no lever replaces them.
-- **Steel and cement plants**: 2.1 g of methane, 1.4 g of SO₂ and 1.4 g of NOx. The methane is lower than in other sectors because their process CO₂ from limestone burns no fuel.
+- **Steel and cement plants**: 2.1 g of methane, 1.4 g of SO₂ and 1.4 g of NOx. The methane is lower than in other sectors because their process CO₂ comes from limestone, not from burning fuel.
 - **Electricity**: 4.1 g of methane, 2.3 g of SO₂ and 1.5 g of NOx per kg of the grid's CO₂. These fall as renewable electricity cleans the grid.
 
-Each lever cuts its sector's co-emissions with the CO₂ it removes, and the electricity it draws brings the electricity sector's. The method, the forcing per kg and how they change over time are on the [energy and transport](#method-sectors) page.
+Each lever cuts its sector's co-emissions in step with the CO₂ it removes. The electricity it draws adds the electricity sector's co-emissions. The method, the forcing per kg and how they change over time are on the [energy and transport](#method-sectors) page.
 
 ## In the app
 
@@ -113,7 +113,7 @@ The likely range pairs the 95% AGTP with the high end of each cut and the low en
 
 ## Results
 
-The table gives the warming avoided in °C, as a median with the likely range in brackets. Each lever is at 100% from 2026 to 2035, on the real data and SSP2-4.5 with the default options. The figures include the supply CO₂, methane, N₂O and air pollution that come with the fuel. The figure for CO₂ alone follows.
+The table gives the warming avoided in °C, as a median with the likely range in brackets. Each lever is at 100% from 2026 to 2035, on the real data and SSP2-4.5 with the default options. The figures include the supply CO₂, methane, N₂O and air pollution that come with the fuel. Each cell then gives the figure for CO₂ alone.
 
 | Levers | 2050 | 2100 |
 | --- | --- | --- |
@@ -123,19 +123,19 @@ The table gives the warming avoided in °C, as a median with the likely range in
 | Clean heating with renewable electricity | 0.129 (0.068–0.236); CO₂ alone 0.113 | 0.369 (0.244–0.549); CO₂ alone 0.303 |
 | Clean steel and cement with renewable electricity | 0.132 (0.066–0.259); CO₂ alone 0.131 | 0.395 (0.244–0.617); CO₂ alone 0.345 |
 
-Clean heating gains from the co-emissions from the start. The gas it no longer burns leaked methane, and burning gas emits little SO₂.
+Clean heating gains from the co-emissions from the start. The gas it no longer burns would have leaked methane, and burning gas emits little SO₂.
 
-Clean steel and cement lose over a third of their 2050 effect to the co-emissions. Their plants' SO₂ cools the climate, and removing it warms. The hydrogen route also draws a lot of grid power, and adds that power's CO₂ and methane. By 2100 they gain a little: the coke ovens' CO₂ and the CO that the furnaces emit now go with the coal, and make up for it.
+Clean steel and cement lose over a third of their 2050 effect to the co-emissions. Their plants' SO₂ cools the climate, so removing it warms. The hydrogen route also draws a lot of grid power, which adds that power's CO₂ and methane. By 2100 they gain a little. The coke ovens' CO₂ and the CO that the furnaces emit are counted with the coal no longer burnt, and they make up for the loss.
 
-With renewable electricity in full, clean heating adds 0.024 °C in 2050 and 0.089 °C in 2100 to it. Clean steel and cement add 0.027 and 0.115 °C. On a clean grid, each saves more than alone.
+With renewable electricity in full, clean heating adds 0.024 °C in 2050 and 0.089 °C in 2100 to it. Clean steel and cement add 0.027 and 0.115 °C. On a clean grid, each lever saves more than it does alone.
 
-The effects are small in 2050 for two reasons. The CO₂ avoided adds up slowly. Today's grid also takes back much of what the electricity-hungry routes save.
+The effects are small in 2050 for two reasons. The CO₂ avoided adds up slowly. On today's grid, the electricity that the clean routes draw also cancels much of what they save.
 
 ## Other industries
 
 Some industries have no lever. Either the scenarios give no trajectory for them, or there is no clear figure, or their emissions are mostly electricity, which the renewable-electricity lever already covers:
 
-- **Chemicals**: about 1.3 billion tonnes of direct CO₂ (IEA). Much of their fossil carbon ends up in products rather than in the air, which a simple share would misstate.
+- **Chemicals**: about 1.3 billion tonnes of direct CO₂ (IEA). Much of their fossil carbon ends up in products rather than in the air. A simple share of industry's CO₂ would misstate this.
 - **Aluminium**: about 1.1 billion tonnes of CO₂e including electricity, and about 0.27 billion directly (IEA, International Aluminium Institute). Most of it is the electricity of smelters.
 - **Plastics**: 1.8 billion tonnes of CO₂e over their life cycle in 2019 (OECD, *Global Plastics Outlook*, 2022), spread over chemicals, electricity and waste.
 - **Textiles and clothing**: between about 0.9 and 4 billion tonnes of CO₂e, depending on the scope (Apparel Impact Institute 2025; McKinsey and Global Fashion Agenda 2020; Quantis 2018). Most of it is the electricity and heat of mills in Asia.
@@ -147,7 +147,7 @@ Some industries have no lever. Either the scenarios give no trajectory for them,
 - A heat pump needs 1.49 kWh per kg of a boiler's CO₂ avoided, in every year. Heat pumps and boilers do not get more efficient over time.
 - Clean steel and clean cement cut 90% and 80% of their direct CO₂ at full adoption. They draw 1.5 and 0.25 kWh of electricity per kg avoided, on the grid left after renewable electricity.
 - Making the equipment is not counted.
-- What comes with the fuel of buildings and of steel and cement plants (the CO₂ of producing it, methane, N₂O and air pollution) is CEDS's 2022 ratios per kg of their fossil CO₂, process CO₂ included for industry. These ratios change with the scenario's emission factors. The electricity drawn brings the grid's (see [Energy and transport](#method-sectors)).
+- What comes with the fuel of buildings and of steel and cement plants (the CO₂ of producing it, methane, N₂O and air pollution) uses CEDS's 2022 ratios per kg of their fossil CO₂, process CO₂ included for industry. These ratios change with the scenario's emission factors. The electricity drawn adds the grid's co-emissions (see [Energy and transport](#method-sectors)).
 
 ## Sources
 

@@ -1,6 +1,6 @@
 # Farm practices
 
-Besides changing what people eat, emissions can be cut where food is grown. This page describes the seven farm practices Planetshift lets you apply: what farmers do, what each practice cuts and by how much, and where it can be adopted. Adopted in full wherever they apply, the seven together avoid about 0.9 billion tonnes of CO₂-equivalent a year, between the IPCC's estimate at a cost of up to \$100 per tonne and its estimate of what is technically possible (see *All practices together* below).
+Besides changing what people eat, you can cut emissions where food is grown. Planetshift lets you apply seven farm practices. For each one, this page gives what farmers do, what it cuts and by how much, and where it can be adopted. Adopted in full wherever they apply, the seven together avoid about 0.9 billion tonnes of CO₂-equivalent a year. That is between the IPCC's estimate at a cost of up to \$100 per tonne and its estimate of what is technically possible (see *All practices together* below).
 
 ## How a practice is described
 
@@ -11,13 +11,13 @@ Each practice acts on one or more sources of emissions on the farm. For each pra
 - how much it cuts the emissions it reaches on a farm that adopts it: a median, with a low and a high value;
 - in each country, the share of those emissions that could adopt it (the applicable share).
 
-The cut a practice makes in a country is the adoption you set × the applicable share × the reduction (see [Levers](#method-levers)). The parameters, each with one line of reasoning and its citation, are in `pipeline/practices.csv`; the code is `pipeline/planetshift_pipeline/practices.py`. CO₂-equivalent (CO₂e) adds the gases up with their 100-year warming weights, GWP100 (see [From emissions to temperature](#method-climate)).
+The cut a practice makes in a country is the adoption you set × the applicable share × the reduction (see [Levers](#method-levers)). The parameters, each with one line of reasoning and its citation, are in `pipeline/practices.csv`. The code is `pipeline/planetshift_pipeline/practices.py`. CO₂-equivalent (CO₂e) adds the gases up with their 100-year warming weights, GWP100 (see [From emissions to temperature](#method-climate)).
 
 ## Feed additives
 
 **What farmers do.** They add a methane inhibitor to the daily ration. The best studied is 3-nitrooxypropanol (3-NOP), which blocks the last enzyme that methane-making microbes in the rumen use. Red seaweed (*Asparagopsis*), nitrates and oils work in a similar way, less consistently.
 
-**What it cuts.** Enteric methane of dairy cattle and beef: the methane made by microbes in the rumen, the first stomach, as the animal digests. A meta-analysis of 14 dairy trials finds 3-NOP cuts methane by 33% at the usual dose (Kebreab et al. 2023). Another, over dairy and beef trials, finds 39.0% (± 5.4) in dairy cattle and 22.2% (± 3.3) in beef cattle, which eat more fibre and respond less (Dijkstra et al. 2018). Planetshift uses 28% (20–38%).
+**What it cuts.** Enteric methane of dairy cattle and beef: the methane made by microbes in the rumen, the first stomach, as the animal digests. A meta-analysis of 14 dairy trials finds 3-NOP cuts methane by 33% at the usual dose (Kebreab et al. 2023). Another, over dairy and beef trials, finds 39.0% (± 5.4) in dairy cattle and 22.2% (± 3.3) in beef cattle (Dijkstra et al. 2018). Beef cattle eat more fibre and respond less. Planetshift uses 28% (20–38%).
 
 **Where it applies.** The additive must be eaten every day, so only animals fed a ration in a barn or a feedlot can take it. Planetshift assumes the share of the targeted methane that could adopt it is:
 
@@ -26,13 +26,13 @@ The cut a practice makes in a country is the adoption you set × the applicable 
 - 7% in lower-middle-income and 3% in low-income countries, where herds are pastoral or kept by smallholders without a daily ration;
 - less in high-income grazing countries: 5% in New Zealand, 10% in Uruguay, 15% in Australia, 20% in Ireland.
 
-**Caveats.** Grazing animals cannot be dosed today. Slow-release boluses are being tested. The effect may fade with time in some trials, and the safety and acceptance of the additive differ between countries. It is a cost with no gain in yield, so it needs a policy or a price to be adopted.
+**Caveats.** Grazing animals cannot be dosed today. Slow-release boluses are being tested. The effect may fade with time in some trials, and the safety and acceptance of the additive differ between countries. The additive costs money and does not raise yield, so farmers need a policy or a price to adopt it.
 
 ## Breeding and better feed
 
 **What farmers do.** They feed better forage (younger grass, more digestible silage), balance the ration, and breed animals that grow or give milk faster or that make less methane for the same feed.
 
-**What it cuts.** Enteric methane per kilogram of milk or meat of cattle, sheep and goats. A meta-analysis of 430 studies finds that a higher feeding level, younger grass and less forage in the diet cut methane intensity by 12% on average. Planetshift uses 12% (5–20%). The high end adds breeding where the productivity gap is large.
+**What it cuts.** Enteric methane per kilogram of milk or meat of cattle, sheep and goats. A meta-analysis of 430 studies finds that a higher feeding level, younger grass and less forage in the diet cut methane intensity by 12% on average. Planetshift uses 12% (5–20%). The high end of that range adds breeding where the productivity gap is large.
 
 **Where it applies.** Almost everywhere:
 
@@ -54,13 +54,13 @@ The cut a practice makes in a country is the adoption you set × the applicable 
 - 40% in upper-middle-income countries (45% in China, whose pigs are now mostly in large farms with slurry);
 - 20% in lower-middle-income and 10% in low-income countries, where manure is mostly dried, kept in small heaps or burnt as fuel.
 
-**Caveats.** A digester leaks some methane, and the digestate can lose more ammonia when spread. Covers cut ammonia more than methane. Most of the manure methane comes from liquid systems of dairy cattle and pigs; dry manure emits little.
+**Caveats.** A digester leaks some methane, and the digestate can lose more ammonia when spread. Covers cut ammonia more than methane. Most of the manure methane comes from liquid systems of dairy cattle and pigs. Dry manure emits little.
 
 ## Rice paddies drained
 
 **What farmers do.** They drain their paddies during the season instead of keeping them flooded. They drain them once, in mid-season, or several times, letting the water drop below the soil surface before flooding again (alternate wetting and drying, AWD).
 
-**What it cuts.** Methane from rice paddies. The IPCC scales methane by 0.71 for a single drainage and by 0.55 for multiple drainages, relative to continuous flooding. Drying the soil raises nitrous oxide (N₂O). A meta-analysis finds that non-continuous flooding cuts methane by 53% and raises N₂O by 105%, cutting both together by 44% in CO₂-equivalents. The data contract (the format of `practices.json`) has one reduction per practice, so Planetshift nets the N₂O increase into the methane cut. It uses 45% of the paddy methane (25% for a single drainage, 55% at the low end of the IPCC's range for multiple drainages).
+**What it cuts.** Methane from rice paddies. The IPCC scales methane by 0.71 for a single drainage and by 0.55 for multiple drainages, relative to continuous flooding. Drying the soil raises nitrous oxide (N₂O). A meta-analysis finds that non-continuous flooding cuts methane by 53% and raises N₂O by 105%. In CO₂-equivalents, the two together fall by 44%. The data contract (the format of `practices.json`) has one reduction per practice, so Planetshift nets the N₂O increase into the methane cut. It uses 45% of the paddy methane (25% for a single drainage, 55% at the low end of the IPCC's range for multiple drainages).
 
 **Where it applies.** Only irrigated paddies where farmers control the water, and that are still kept flooded:
 
@@ -104,9 +104,9 @@ The cut a practice makes in a country is the adoption you set × the applicable 
 
 **What farmers do.** They burn less fuel (efficient engines, pumps and heating), and run pumps, heating and some machines on electricity or biofuels.
 
-**What it cuts.** The CO₂ of the fuel burnt on farms and of making that fuel. Their electricity is left to [Renewable electricity](#method-sectors), which cleans the grid they draw from. All of it is in the cradle-to-farm-gate scope: the farm gate counts the farm's biological processes only, so there the lever has no effect. FAO's review of energy-smart food systems and the IPCC's assessment describe efficiency and renewable energy as the main levers. Planetshift uses 50%: 25% for efficiency alone, 80% with electric or biofuel machinery throughout.
+**What it cuts.** The CO₂ of the fuel burnt on farms and of making that fuel. Their electricity is left to [Renewable electricity](#method-sectors), which cleans the grid they draw from. All of it is in the cradle-to-farm-gate scope. At the farm gate the lever has no effect, because that scope counts only the farm's biological processes. FAO's review of energy-smart food systems and the IPCC's assessment describe efficiency and renewable energy as the main levers. Planetshift uses 50%: 25% for efficiency alone, 80% with electric or biofuel machinery throughout.
 
-**The electricity it adds.** Beyond the first 25%, which is efficiency, the cut switches pumps, heating and machines to electricity, and the grid's CO₂ for that electricity is added back. An engine turns about 35% of its fuel into work and an electric motor about 90% of its electricity, so 0.11 kWh replaces a MJ of fuel (Planetshift's estimate). Each country's grid emits the CO₂ per kWh of its on-farm electricity in FAOSTAT's *Emissions from energy use in agriculture*, set against the CO₂ per MJ of its on-farm fuel, in the latest year with both; the model's countries together stand for a country without them. Across the world, the grid adds back 0.79 kg of CO₂ per kg of fuel CO₂ switched: 0.06 in France, 0.52 in the United States, and 1.18 in India, where switching raises emissions. Adopted in full, the lever cuts 155 Mt of CO₂ a year rather than the 226 Mt of the fuel alone.
+**The electricity it adds.** Beyond the first 25%, which is efficiency, the cut switches pumps, heating and machines to electricity, and the grid's CO₂ for that electricity is added back. An engine turns about 35% of its fuel into work and an electric motor about 90% of its electricity, so 0.11 kWh replaces a MJ of fuel (Planetshift's estimate). Each country's grid emits the CO₂ per kWh of its on-farm electricity in FAOSTAT's *Emissions from energy use in agriculture*, set against the CO₂ per MJ of its on-farm fuel, in the latest year with both. A country without these figures takes those of the model's countries together. Across the world, the grid adds back 0.79 kg of CO₂ per kg of fuel CO₂ switched: 0.06 in France, 0.52 in the United States, and 1.18 in India, where switching raises emissions. Adopted in full, the lever cuts 155 Mt of CO₂ a year rather than the 226 Mt of the fuel alone.
 
 **Where it applies.**
 
@@ -114,7 +114,7 @@ The cut a practice makes in a country is the adoption you set × the applicable 
 - 70% in upper-middle-income countries, where electric pumps and machinery are within reach;
 - 50% in lower-middle-income and 40% in low-income countries, with diesel pumps and tractors and less grid access.
 
-**Caveats.** Heavy machinery is the hardest to switch. The grid's CO₂ is today's: it neither falls as grids are cleaned over the century nor with [Renewable electricity](#method-sectors), so the CO₂ added back is overstated where the grid gets cleaner. All the fuel switched is charged as electricity, though some tractors would run on biofuel.
+**Caveats.** Heavy machinery is the hardest to switch. The grid's CO₂ is today's value. It does not fall as grids are cleaned over the century, nor with [Renewable electricity](#method-sectors), so the CO₂ added back is overstated where the grid gets cleaner. All the fuel switched is charged as electricity, though some tractors would run on biofuel.
 
 ## All practices together
 
@@ -122,7 +122,7 @@ With every practice adopted in full, wherever it applies, the model avoids about
 
 ## How emissions are split by source
 
-A practice needs to know which part of an item's emissions it can touch. Feed additives, for example, reach the methane from a cow's rumen, not from its manure. `breakdown.json` therefore splits every intensity of `intensities.json` (the emissions per tonne of each food) into ten sources, for every country, item, scope and gas:
+A practice needs to know which part of an item's emissions it acts on. Feed additives, for example, reach the methane from a cow's rumen, not from its manure. `breakdown.json` therefore splits every intensity of `intensities.json` (the emissions per tonne of each food) into ten sources, for every country, item, scope and gas:
 
 - enteric fermentation;
 - manure management;
@@ -145,20 +145,20 @@ The two scopes are defined on the [Emissions per tonne of food](#method-emission
 | Nitrous oxide | 8.0 Mt | 46% organic fertiliser, that is manure on pasture and on fields (3.7 Mt), 36% synthetic fertiliser (2.9 Mt), 8% residues, 6% manure management, 3% other, 2% animals not raised for food |
 | CO₂ | 139 Mt | urea (101 Mt) and, in other, liming (38 Mt); the fuel burnt on farms counts from cradle to farm gate |
 
-FAOSTAT's totals for 2023 are 106, 25 and 10 Mt for the first three sources of methane. From cradle to farm gate, CO₂ rises to 1,688 Mt, with fuel at 575 Mt (burnt on farms and its making), electricity at 332 Mt, and the making of inputs at 670 Mt.
+FAOSTAT's totals for 2023 are 106, 25 and 10 Mt for the first three sources of methane. From cradle to farm gate, CO₂ rises to 1,688 Mt, with fuel at 575 Mt (burning it on farms and making it), electricity at 332 Mt, and the making of inputs at 670 Mt.
 
 ### How each tier is split
 
-The split follows the tier that set the intensity. The tiers rank the sources of an intensity, the lower the more precise (see [Emissions per tonne of food](#method-emissions)):
+The split follows the tier that set the intensity. The tiers rank the sources of an intensity. A lower tier is more precise (see [Emissions per tonne of food](#method-emissions)):
 
 - **HESTIA** (tiers 1 and 2): each emission term the intensity sums is given a source by its id: `EntericFermentation` enteric, `Excreta` manure, `FloodedRice` rice, `InorganicFertiliser` and `UreaHydrolysis` synthetic fertiliser, `OrganicFertiliser` organic fertiliser, `CropResidue…` residues, `FuelCombustion` fuel, counted in the cradle-to-farm-gate scope only. The background emissions of producing fuel are fuel, and those of producing electricity are electricity. Those of every other input (fertilisers, pesticides, machinery, plastics) are the making of inputs. Lime, aquaculture, waste treatment and the rest are other (see [Emission intensities from HESTIA](#method-hestia)).
-- **FAOSTAT** (tier 3): the same allocation that makes the intensity keeps its processes apart. Enteric fermentation is enteric. Manure management (housing and storage) is manure. Manure left on pasture and manure applied to soils are organic fertiliser, since both are nitrogen deposited on soils. Rice cultivation is rice and synthetic fertilisers are synthetic fertiliser. Crop residues and their burning are residues. On-farm energy use is split between electricity and fuel by the electricity share of each country's on-farm energy emissions in FAOSTAT's *Emissions from energy use in agriculture* (the latest year; the model's countries together where a country has none). Heat counts with fuel. Fertiliser and pesticide manufacturing are the making of inputs.
+- **FAOSTAT** (tier 3): the allocation that sets the intensity already keeps its processes apart. Enteric fermentation is enteric. Manure management (housing and storage) is manure. Manure left on pasture and manure applied to soils are organic fertiliser, since both are nitrogen deposited on soils. Rice cultivation is rice and synthetic fertilisers are synthetic fertiliser. Crop residues and their burning are residues. On-farm energy use is split between electricity and fuel by the electricity share of each country's on-farm energy emissions in FAOSTAT's *Emissions from energy use in agriculture* (the latest year; the model's countries together where a country has none). Heat counts with fuel. Fertiliser and pesticide manufacturing are the making of inputs.
 - **Published LCA** (tier 4), that is life-cycle assessment studies: the FAOSTAT split of the same item in the country, or else in the world (see [Emission intensities from published LCA data](#method-literature)).
 - **Proxies** (tier 5): the split of the proxy item in the same country. A processed item takes the split of its primary items, weighted by the emissions each brings per tonne of the product.
 
 ### When a gas has no split
 
-A gas that this leaves without a split takes the first split found in this order:
+If a gas still has no split, it takes the first split found in this order:
 
 1. the FAOSTAT split of the item in the country;
 2. the FAOSTAT split of the item in the world;
@@ -171,12 +171,12 @@ A gas that this leaves without a split takes the first split found in this order
 
 ## Assumptions
 
-- One reduction per practice applies to every source and gas it targets; the N₂O increase of drained paddies is netted into the methane cut in CO₂-equivalents over 100 years.
-- Applicable shares are judgements from the farming systems of each income group and region, with a value of its own for the countries named above; a country takes its own value, else its region's, else its income group's (World Bank), else the world's.
+- One reduction per practice applies to every source and gas it targets. The N₂O increase of drained paddies is netted into the methane cut in CO₂-equivalents over 100 years.
+- Applicable shares are judgements from the farming systems of each income group and region, with a value of its own for the countries named above. A country takes its own value, else its region's, else its income group's (World Bank), else the world's.
 - Practices acting on the same source (feed additives with breeding and feed; nitrogen efficiency with nitrification inhibitors) should be combined multiplicatively, not added.
 - Manure left on pasture and manure applied to soils count as organic fertiliser, not manure, so manure management does not reach them.
 - The making of inputs is one source, so nitrogen efficiency also cuts the making of pesticides and machinery.
-- Literature and proxy intensities take the FAOSTAT split of their item; a processed item takes its primary items' split; items without any split are counted as "other".
+- Literature and proxy intensities take the FAOSTAT split of their item. A processed item takes its primary items' split. Items without any split are counted as "other".
 - A country's split of an item it does not produce is the world's.
 
 ## Sources

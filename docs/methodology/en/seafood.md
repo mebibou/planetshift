@@ -1,6 +1,6 @@
 # Fish and seafood
 
-Fish and other aquatic animals are the sixth animal food group in Planetshift, `seafood`. Like meat, milk and eggs, a diet shift can replace them with plant foods. This page explains where their emissions come from and why replacing wild fish with plants avoids little warming, or can even add a little.
+Fish and other aquatic animals are the sixth animal food group in Planetshift, `seafood`. Like meat, milk and eggs, a diet shift can replace them with plant foods. Replacing wild fish with plants avoids little warming, and can even add a little. Wild fish emit almost nothing but the fuel their boats burn, and the plants that replace them have emissions of their own.
 
 ## What fish and seafood emit
 
@@ -10,22 +10,22 @@ Fish come from two very different systems: wild capture and aquaculture (fish fa
 - **Farmed fish** have no methane from digestion, unlike cattle. Their farms give off nitrous oxide (N₂O) from the water, and use fuel and electricity for pumping, aeration, lighting and vehicles.
 - **Feed** for farmed fish is counted on the crops and the fish they eat, as for pigs and poultry (see [Feed](#method-feed)).
 
-Planetshift counts emissions in one of two scopes, chosen under Options (see [Emissions](#method-emissions)):
+Planetshift counts emissions in one of two scopes, chosen under *Other options* (see [Emissions](#method-emissions)):
 
 - **Farm gate** counts what the farm's biology emits. For seafood this is only the N₂O of fish farms.
 - **Cradle to farm gate** adds the energy used: the fuel of fishing boats and the fuel and electricity of fish farms.
 
-Wild fish therefore have no emissions at the farm gate. Their fuel appears only when the reader chooses cradle to farm gate (*With inputs*) under Options. The same rule keeps tractors' diesel out of the farm-gate emissions of wheat, but its effect is larger for fish. The interface says so in the hint of *Emissions counted* under Options and in the summary's note on what is counted.
+Wild fish therefore have no emissions at the farm gate. Their fuel appears only when you choose cradle to farm gate (*With inputs*) under *Other options*. The same rule keeps tractors' diesel out of the farm-gate emissions of wheat, but its effect is larger for fish. The hint of *Emissions counted* under *Other options* says so, and so does the summary's note on what is counted.
 
 All seafood items together emit 66 Mt (million tonnes) CO₂e a year at the farm gate and 236 Mt CO₂e cradle to farm gate, weighted by the Food Balance Sheets' production. CO₂e (CO₂-equivalent) adds the gases into one figure with their 100-year weights (see [From emissions to temperature](#method-climate)).
 
 ### In the app
 
-Fish and seafood shift like the other animal foods. The main slider moves them, and *Fish and seafood* under "Shift each animal food" sets their own share (`sea` in the address). The protein or calories they bring are replaced by plants, as for meat.
+A diet shift changes fish and seafood in the same way as the other animal foods. The main slider moves them, and *Fish and seafood* under "Shift each animal food" sets their own share (`sea` in the address). The protein or calories they bring are replaced by plants, as for meat.
 
-Wild fish have no emissions at the farm gate, and moderate ones with inputs. Replacing them with plant foods can therefore avoid little warming, or add a little: the plants that replace them have emissions of their own.
+Wild fish have no emissions at the farm gate, and moderate ones when inputs are counted. Replacing them with plant foods can therefore avoid little warming, or add a little, because the plants that replace them have emissions of their own.
 
-The fish items are also feed items, because some fish are caught to make fish meal for animals. When the animals they feed (farmed fish, pigs, poultry) produce less, the fish fed to them fall by the same share of their feed use. This change is placed like a change in demand for fish, on top of the change in what people eat. It is done once and does not loop: the fish caught for meal are wild and eat no feed themselves, so fewer of them changes no feed (`run.ts`, `productionChanges`; the same step applies to milk fed to calves). Aquaculture's share of the feed crops falls with the whole group's production, wild fish included, as the app keeps no split of the group's production by system.
+The fish items are also feed items, because some fish are caught to make fish meal for animals. When the animals they feed (farmed fish, pigs, poultry) produce less, the fish fed to them fall by the same share of their feed use. The model treats this change as a change in demand for fish, on top of the change in what people eat. It is done once and does not loop. The fish caught for meal are wild and eat no feed themselves, so catching fewer of them changes no feed use (`run.ts`, `productionChanges`; the same step applies to milk fed to calves). Aquaculture's share of the feed crops falls with the whole group's production, wild fish included, because the app does not split the group's production by system.
 
 ## Items
 
@@ -62,7 +62,7 @@ FishStat is published under CC BY 4.0 (FAO's statistical database terms of use).
 
 An intensity is the emissions of producing one tonne of a food. Planetshift takes each intensity from the best source available, ranked in tiers from tier 1 (HESTIA's data for the product in that country) to tier 6 (the food group's median over all countries); see [Emissions](#method-emissions).
 
-FAOSTAT's emissions domains do not cover fisheries or aquaculture, so there is no tier 3. HESTIA's current release has no aquatic aggregations, so there are no tiers 1 and 2. A seafood item's intensity is therefore set at tier 4, from the literature, and blended by the country's own production as above. A country whose balance has an item that FishStat does not list for it gets the first proxy of `proxies.csv` (another fish, or another shellfish, at tier 5). Failing that, it gets the group's production-weighted world median (tier 6). In the base year, 1,018 of the 1,504 cells of seafood are tier 4, 208 tier 5 and 278 tier 6. The tier-6 cells are almost all landlocked countries that import all their fish.
+FAOSTAT's emissions domains do not cover fisheries or aquaculture, so there is no tier 3. HESTIA's current release has no aquatic aggregations, so there are no tiers 1 and 2. A seafood item's intensity is therefore set at tier 4, from the literature, and blended by the country's own production as above. A country whose balance has an item that FishStat does not list for it gets the first proxy of `proxies.csv` (another fish, or another shellfish, at tier 5). Otherwise, it gets the group's production-weighted world median (tier 6). In the base year, 1,018 of the 1,504 cells of seafood are tier 4, 208 tier 5 and 278 tier 6. The tier-6 cells are almost all landlocked countries that import all their fish.
 
 ### Wild capture
 
@@ -70,7 +70,7 @@ Wild capture burns fuel at sea. Parker et al. (2018) give the fuel used per tonn
 
 **A worked example.** Small pelagic fish such as sardines need 42 litres of fuel per tonne landed. Each litre counts 2.8 + 0.5 = 3.3 kg of CO₂, so a tonne of sardines carries 42 × 3.3 = 139 kg of CO₂. A tonne of crustaceans, at 1,739 litres, carries 5,739 kg.
 
-Parker et al. also add 1.1 kg CO₂e per litre for vessels, gear and lost refrigerant. Planetshift leaves this out, as it leaves out the making of tractors and farm buildings, and refrigerants are not one of its three gases. Inland fisheries are outside Parker et al.'s data. They are mostly small boats, many without engines, and are given the lowest marine intensity, that of small pelagic fish.
+Parker et al. also add 1.1 kg CO₂e per litre for vessels, gear and lost refrigerant. Planetshift leaves this out, as it leaves out the making of tractors and farm buildings. Refrigerants are not one of its three gases. Inland fisheries are outside Parker et al.'s data. Their fleets are mostly small boats, many without engines. Planetshift gives them the lowest marine intensity, that of small pelagic fish.
 
 | Capture group | Litres per tonne landed | kg CO₂ per tonne, cradle to farm gate |
 | --- | --- | --- |
@@ -123,13 +123,13 @@ At the farm gate, only the farmed share's N₂O remains: 597 for freshwater fish
 
 ## Feed
 
-Aquaculture feed follows the livestock rule. A farmed fish's intensity leaves out the growing of its feed, which is counted on the crops and fish it eats. The Food Balance Sheets' feed use of maize, soybeans, wheat and the other feed items already includes what goes into aquafeed, so `feed.json` now gives seafood a share of it.
+Aquaculture feed follows the livestock rule. A farmed fish's intensity leaves out the growing of its feed, which is counted on the crops and fish it eats. The Food Balance Sheets' feed use of maize, soybeans, wheat and the other feed items already includes what goes into aquafeed, so `feed.json` gives seafood a share of it.
 
 Seafood's production in the feed split is each country's aquaculture of fed species (FishStat, fish and crustaceans): 75 Mt a year in 2021–2023. Bivalves and other filter feeders are not fed. The balance sheets' production is not used here, because most of it is wild or unfed.
 
 The two feed methods (see [Feed](#method-feed)) give seafood its share as follows:
 
-- **By species**: seafood takes 5.5% of the world's concentrate feed. The other groups keep their published proportions, scaled to the remaining 94.5% (`feed_species.csv`). Compound aquafeed was 69.4 Mt in 2023 (Tacon et al., 2025), against some 1.2 to 1.3 Gt of compound feed for all animals. The share was 4% until November 2026, from about 50 Mt of aquafeed in 2017 (Tacon, 2020), which is dated against the 2023 base year.
+- **By species**: seafood takes 5.5% of the world's concentrate feed. The other groups keep their published proportions, scaled to the remaining 94.5% (`feed_species.csv`). Compound aquafeed was 69.4 Mt in 2023 (Tacon et al., 2025), against some 1.2 to 1.3 Gt of compound feed for all animals.
 - **GLEAM-style**: farmed fish eat 1.6 t of feed per tonne in high-income countries (salmon and trout, fed on pellets) and 0.87 t elsewhere (carps and tilapias, partly fed on the pond's own food). This gives about 69 Mt of aquafeed for the world, the 2023 total. Their ration is 30% grain, 40% oilseeds, 5% pulses and 25% fish, in the live-weight tonnes the balance sheets use for fish (`feed_gleam_intake.csv`, `feed_gleam_rations.csv`).
 
 ### Fish fed to animals
@@ -143,11 +143,11 @@ When less farmed fish is eaten, less fish is caught for its feed, and the emissi
 
 ### What changed for the other groups
 
-For every feed item that existed before, in every region and both methods, the five livestock groups keep the same proportions to each other. Their shares are the old ones times one minus seafood's share. `tests/test_seafood_built.py` checks this against the last data without seafood, to within the rounding of the shares (largest difference 0.0003). World seafood shares are 5.5% of every crop in the species method. In the GLEAM-style one they are 2.6% of grain and rice, 5.9% of pulses and 9.1% of soybeans.
+For every feed item that existed before, in every region and both methods, the five livestock groups keep the same proportions to each other. Each of their shares is the old share × (1 − seafood's share). `tests/test_seafood_built.py` checks this against the last data without seafood, to within the rounding of the shares (largest difference 0.0003). World seafood shares are 5.5% of every crop in the species method. In the GLEAM-style one they are 2.6% of grain and rice, 5.9% of pulses and 9.1% of soybeans.
 
 ## Breakdown and land
 
-In `breakdown.json`, seafood's CO₂ is `fuel` (fishing fuel, the farm's diesel and petrol) and `electricity` (the farm's electricity), the farmed share split by each item's world production of the aquaculture groups. Its N₂O is all `other` (the water of fish farms, which no other source names). Nothing is `inputsManufacture`, as vessels, gear and pond fertiliser are left out. The farm-energy practice therefore acts on seafood's fuel in cradle to farm gate, as it does on other farms' fuel.
+In `breakdown.json`, seafood's CO₂ is `fuel` (fishing fuel, the farm's diesel and petrol) and `electricity` (the farm's electricity). The farmed share is split by each item's world production of the aquaculture groups. Its N₂O is all `other` (the water of fish farms, which no other source names). Nothing is `inputsManufacture`, as vessels, gear and pond fertiliser are left out. The farm-energy practice therefore acts on seafood's fuel in cradle to farm gate, as it does on other farms' fuel.
 
 Seafood has no pasture and no cropland of its own. The cropland of its feed belongs to the crops and comes through the feed shares, as for pigs and poultry. `land.py` counts cropland only for plant items and pasture only for ruminants, so seafood is in neither, and `land.json` is unchanged.
 
@@ -165,17 +165,17 @@ Seafood has no pasture and no cropland of its own. The cropland of its feed belo
 | Aquaculture emissions with feed | feed counted on the crops and fish | 263 Mt CO₂e in 2017, 57% of it feed (MacLeod et al.) |
 | Compound aquafeed | about 69 Mt (GLEAM-style intake) | 69.4 Mt in 2023 (Tacon et al., 2025); about 50 Mt in 2017 (Tacon, 2020) |
 
-All seafood items together, weighted by the balance sheets' production, give 66 Mt CO₂e a year at the farm gate and 236 Mt CO₂e cradle to farm gate. The capture total is within a few percent of Parker et al.'s fuel emissions, because world catches have hardly changed since 2011. Aquaculture comes out lower per tonne than MacLeod et al.'s non-feed share for two reasons: N₂O is weighed with AR6's 273 instead of 298, and pond fertiliser is left out. The intensities, supply, items and breakdown of every other item, and `land.json`, are the same as before seafood was added (`tests/test_seafood_built.py`).
+All seafood items together, weighted by the balance sheets' production, give 66 Mt CO₂e a year at the farm gate and 236 Mt CO₂e cradle to farm gate. The capture total is within a few percent of Parker et al.'s fuel emissions, because world catches have hardly changed since 2011. Aquaculture comes out lower per tonne than MacLeod et al.'s non-feed share for two reasons: N₂O is weighed with AR6's 273 instead of 298, and pond fertiliser is left out. Adding seafood leaves the intensities, supply, items and breakdown of every other item, and `land.json`, unchanged (`tests/test_seafood_built.py`).
 
 ## Does eating less fish let the ocean store more carbon?
 
 Two pathways are sometimes put forward. Neither is in Planetshift's numbers.
 
-**Fish carbon.** A large fish that dies at sea sinks, and the carbon in its body reaches the deep ocean, where it stays for centuries. A fish that is caught releases its carbon within days. Mariani et al. (2020) estimate that fisheries removed 318 Mt of tunas, mackerels, billfishes and sharks between 1950 and 2014. These fish held 37.5 Mt of carbon, of which 21.8 Mt would have sunk below the depths that keep it, after accounting for predation. With the fuel burnt to catch them, this makes their headline figure of 0.73 Gt CO₂ since 1950, but the fuel is most of it. The carbon that did not sink is about 80 Mt CO₂ over 65 years, roughly 1 Mt a year. That is under 1% of the fuel emissions of the world's fisheries. Whales do the same at a larger scale per animal, and fertilise the surface with their faeces (the "whale pump"). Aquatic mammals are not eaten in any quantity and are out of the model.
+**Fish carbon.** A large fish that dies at sea sinks, and the carbon in its body reaches the deep ocean, where it stays for centuries. A fish that is caught releases its carbon within days. Mariani et al. (2020) estimate that fisheries removed 318 Mt of tunas, mackerels, billfishes and sharks between 1950 and 2014. These fish held 37.5 Mt of carbon, of which 21.8 Mt would have sunk below the depths that keep it, after accounting for predation. Adding the fuel burnt to catch them gives their headline figure of 0.73 Gt CO₂ since 1950. Most of that figure is fuel. The carbon that would have sunk, and did not, is about 80 Mt CO₂ over 65 years, roughly 1 Mt a year. That is under 1% of the fuel emissions of the world's fisheries. Whales do the same at a larger scale per animal, and fertilise the surface with their faeces (the "whale pump"). Aquatic mammals are not eaten in any quantity and are out of the model.
 
-**Bottom trawling.** Trawls dragged over the sea floor stir up its sediments, and part of their carbon may be oxidised to CO₂. Sala et al. (2021) estimated 0.6 to 1.5 Gt CO₂ a year dissolved in the water, as much as all the world's farm emissions of CO₂. Hiddink et al. (2023) answered that the rates of remineralisation used were far too high, and that the true figure could be an order of magnitude smaller. How much of the dissolved CO₂ reaches the air, and how fast, is still debated. There is no agreed figure per tonne of fish.
+**Bottom trawling.** Trawls dragged over the sea floor stir up its sediments, and part of their carbon may be oxidised to CO₂. Sala et al. (2021) estimated 0.6 to 1.5 Gt CO₂ a year dissolved in the water, as much as all the world's farm emissions of CO₂. Hiddink et al. (2023) replied that the rates of remineralisation used were far too high, and that the true figure could be an order of magnitude smaller. How much of the dissolved CO₂ reaches the air, and how fast, is still debated. There is no agreed figure per tonne of fish.
 
-**Why they are left out.** The fish-carbon pathway is small, and the bottom-trawling one is contested. Both depend far more on where and how a fish is caught than on how much of it is eaten. A per-tonne factor follows from Mariani et al. for a later lever: 21.8 Mt of carbon over 318 Mt of fish is about 0.25 t CO₂ per tonne of tuna, billfish, mackerel or shark caught in deep water. That is about a sixth more than the fuel burnt to catch it (1.42 t CO₂ per tonne). It would act on part of the pelagic and other marine fish items only. It would count as carbon not stored rather than as an emission, like the regrowth of freed farmland. It is not implemented.
+**Why they are left out.** The fish-carbon pathway is small, and the bottom-trawling one is contested. Both depend far more on where and how a fish is caught than on how much of it is eaten. Mariani et al.'s figures give a per-tonne factor that a later lever could use: 21.8 Mt of carbon over 318 Mt of fish is about 0.25 t CO₂ per tonne of tuna, billfish, mackerel or shark caught in deep water. That adds about a sixth to the fuel burnt to catch it (1.42 t CO₂ per tonne). It would act on part of the pelagic and other marine fish items only. It would count as carbon not stored rather than as an emission, like the regrowth of freed farmland. It is not implemented.
 
 ## Data and code
 
@@ -185,16 +185,16 @@ The code is `pipeline/planetshift_pipeline/seafood.py` and `pipeline/planetshift
 
 - Fish and seafood items are in live weight, as FAO keeps them in the balance sheets and FishStat; molluscs include their shell.
 - Each country's mix of capture and aquaculture, and of species groups, is the average of FishStat's three years up to the base year.
-- Fuel per tonne by species group is Parker et al.'s for 2011, the same in every country; national fleets differ (they show 1.6 t CO₂e per tonne for the United States against 5.2 for Australia, whose fleets target rock lobsters and prawns), and that variation is lost.
+- Fuel per tonne by species group is Parker et al.'s for 2011, the same in every country. National fleets differ (Parker et al. show 1.6 t CO₂e per tonne for the United States against 5.2 for Australia, whose fleets target rock lobsters and prawns), and that variation is lost.
 - Inland fisheries burn as little fuel per tonne as small pelagic fisheries.
-- Freshwater species caught at sea, unidentified marine fish and miscellaneous aquatic invertebrates take the average of all fisheries or of demersal molluscs; mackerels and jacks count with tunas as pelagic fish over 30 cm, and sharks with them; krill with crustaceans.
+- Freshwater species caught at sea, unidentified marine fish and miscellaneous aquatic invertebrates take the average of all fisheries or of demersal molluscs. Mackerels and jacks count with tunas as pelagic fish over 30 cm, and so do sharks. Krill count with crustaceans.
 - Farmed crustaceans are all shrimp-like in their energy use, farmed molluscs and other unfed invertebrates all bivalve-like, farmed marine fish salmon-like, and farmed frogs and turtles like freshwater fish.
-- The N₂O factor of fish-farm water applies to every farmed species, bivalves included, as in MacLeod et al.; it is uncertain, and they ask for it to be treated with caution. Methane from ponds, which some studies find large, is not counted, as MacLeod et al. do not count it.
+- The N₂O factor of fish-farm water applies to every farmed species, bivalves included, as in MacLeod et al. It is uncertain, and they ask for it to be treated with caution. Methane from ponds, which some studies find large, is not counted, as MacLeod et al. do not count it.
 - Electricity on fish farms emits the world's average per kWh, in every country.
 - Vessels, gear, refrigerants, pond fertiliser and the building of farms are left out, as are post-landing processing, transport and cold chains.
-- Wild capture has no farm-gate emissions; its fuel counts in cradle to farm gate.
-- Aquafeed is 5.5% of the world's concentrate feed; fish fed to animals go 70% to aquaculture, 23% to pigs and 7% to poultry. The shares and the GLEAM-style intakes and ration are rounded values, chosen to match the published aquafeed total.
-- Fish oils and aquatic plants are left out; the fish reduced to meal and oil are in the fish items.
+- Wild capture has no farm-gate emissions. Its fuel counts in cradle to farm gate.
+- Aquafeed is 5.5% of the world's concentrate feed. Fish fed to animals go 70% to aquaculture, 23% to pigs and 7% to poultry. The shares and the GLEAM-style intakes and ration are rounded values, chosen to match the published aquafeed total.
+- Fish oils and aquatic plants are left out. The fish reduced to meal and oil are in the fish items.
 - The ocean's carbon pathways (fish carcasses, sediments) are not counted.
 
 ## Sources

@@ -1,12 +1,12 @@
 # Leviers
 
-Cette page explique ce qu'est un levier, comment les leviers sont regroupés et comment ils s'additionnent quand plusieurs agissent ensemble. Chaque levier est la part adoptée d'un changement, de 0 à 100 %, atteinte en entier l'année choisie en haut du panneau. Les leviers se chevauchent : ensemble, ils évitent un peu moins de réchauffement que la somme de ce que chacun évite seul, et le résumé partage ce chevauchement à parts égales entre eux.
+Chaque levier est la part adoptée d'un changement, de 0 à 100 %, atteinte en entier l'année choisie en haut du panneau. Les leviers se chevauchent : ensemble, ils évitent un peu moins de réchauffement que la somme de ce que chacun évite seul. Le résumé partage ce chevauchement à parts égales entre eux.
 
 ## Ce qu'est un levier
 
 Chaque moyen de limiter le réchauffement que propose Planetshift est un levier, et aucun n'est privilégié. Les leviers couvrent l'énergie et le transport, les bâtiments et l'industrie, ce que mangent les gens, les pratiques agricoles, moins de nourriture gaspillée, la fin du défrichement des forêts et le carbone stocké dans les terres agricoles.
 
-Chaque levier est un curseur de 0 à 100 % : la part de ce levier adoptée. Le curseur principal de l'alimentation est la part des aliments d'origine animale remplacés par des végétaux. Chaque levier se met en place progressivement à partir d'aujourd'hui et l'est entièrement l'année choisie en haut du panneau, *Tous les leviers en place en*.
+Chaque levier est un curseur de 0 à 100 %, qui fixe la part adoptée. Le curseur principal de l'alimentation est la part des aliments d'origine animale remplacés par des végétaux. Chaque levier se met en place progressivement à partir d'aujourd'hui et est entièrement en place l'année choisie en haut du panneau, *Tous les leviers en place en*.
 
 ## Comment le panneau les regroupe
 
@@ -16,9 +16,9 @@ La section **Leviers** d'Explorer range les leviers sous la cause du réchauffem
 - agriculture : alimentation, pratiques agricoles, gaspillage alimentaire ;
 - usage des terres : déforestation, carbone dans les terres agricoles.
 
-Les causes sont classées selon le réchauffement que chacune cause à l'horizon du graphique dans le scénario choisi, si bien que les combustibles fossiles viennent en premier. Au sein d'une cause, les groupes sont classés selon le réchauffement que chacun éviterait seul et en entier : c'est le chiffre affiché à côté. Cet ordre est recalculé quand une option, l'horizon ou les données changent. Il n'est jamais recalculé pendant qu'un curseur bouge, pour qu'un groupe ne saute pas sous le pointeur.
+Les causes sont classées selon le réchauffement que chacune cause à l'horizon du graphique dans le scénario choisi, si bien que les combustibles fossiles viennent en premier. Au sein d'une cause, les groupes sont classés selon le réchauffement que chacun éviterait seul et en entier : c'est le chiffre affiché à côté. Cet ordre est recalculé quand on change une option ou l'horizon, ou quand les données changent. Il n'est jamais recalculé pendant qu'on déplace un curseur, pour que les groupes restent en place pendant le glissement.
 
-Chaque groupe est un volet, fermé au départ. Il a un bouton qui adopte tous ses leviers en entier et un autre qui les remet à zéro.
+Chaque groupe est un volet, fermé à l'ouverture de la page. Il a un bouton qui met tous ses leviers à 100 % et un autre qui les remet à zéro.
 
 ### Un groupe peut agir sur plus d'une cause
 
@@ -30,7 +30,7 @@ Le réchauffement évité d'un tel groupe est réparti entre les causes selon le
 - le CO₂ du défrichement, la repousse et le carbone stocké dans les terres agricoles comptent dans l'usage des terres ;
 - le CO₂ fossile et le forçage de l'aviation hors CO₂ comptent dans les combustibles fossiles et l'industrie. Le forçage est la variation de l'énergie que la Terre retient, qui la réchauffe (voir [Des émissions à la température](#method-climate)).
 
-Le graphique Causes du réchauffement retire la part de chaque cause de sa bande après aujourd'hui. Le résumé liste les parts sous les mêmes causes, avec les mêmes noms et les mêmes couleurs.
+Après aujourd'hui, le graphique Causes du réchauffement retire la part de chaque cause de la bande de cette cause. Le résumé liste les parts sous les mêmes causes, avec les mêmes noms et les mêmes couleurs.
 
 ## Les groupes de leviers
 
@@ -42,31 +42,31 @@ Le graphique Causes du réchauffement retire la part de chaque cause de sa bande
 - « moins d'azote, mieux employé » et les inhibiteurs agissent sur le protoxyde d'azote des engrais ;
 - l'énergie propre agit sur le CO₂ des carburants.
 
-Pour un pays, un produit et un gaz, la part des émissions supprimée est une somme sur les sources : la part de la source dans ce gaz (`breakdown.json`) multipliée par la part supprimée de cette source. Une pratique supprime adoption × part applicable dans le pays × réduction. Une pratique limitée à certains groupes d'aliments n'agit que sur eux : les additifs n'atteignent que les bovins. Les pratiques réduisent les émissions de la production avec le changement de régime. Leur effet est donc celui de la pratique sur la production actuelle, plus son effet sur ce que le changement de régime modifie.
+Pour un pays, un produit et un gaz, la part des émissions supprimée est une somme sur les sources : la part de la source dans ce gaz (`breakdown.json`) multipliée par la part supprimée de cette source. Une pratique supprime adoption × la part applicable dans le pays × la réduction. Une pratique limitée à certains groupes d'aliments n'agit que sur ces groupes. Les additifs, par exemple, n'agissent que sur les bovins. Les pratiques réduisent les émissions de la production après le changement de régime. Leur effet est donc leur réduction sur la production actuelle, plus leur réduction sur la production que le changement de régime modifie.
 
 **Gaspillage alimentaire** (voir [Pertes et gaspillage](#method-waste)). Il y a deux leviers :
 
 - le gaspillage après les magasins réduit l'offre alimentaire dont un pays a besoin du levier × sa part de gaspillage, après le changement de régime ;
 - les pertes avant les magasins réduisent la part de pertes de chaque produit.
 
-Moins d'offre demande moins de production, donc moins de terres et moins d'émissions. La variation passe par la même chaîne d'approvisionnement que le changement de régime, alimentation animale comprise. Ce que les gens mangent ne change pas : les protéines et les calories affichées sont celles du régime.
+Moins d'offre demande moins de production, qui occupe moins de terres et émet moins. La variation passe par la même chaîne d'approvisionnement que le changement de régime, alimentation animale comprise. Ce que les gens mangent ne change pas : les protéines et les calories affichées sont celles du régime.
 
-**Déforestation** (voir [Déforestation](#method-deforestation)). Défricher la forêt pour l'agriculture libère environ 2 Gt de CO₂ par an (`deforestation.json`, par pays et par produit). Le modèle en fait un flux annuel constant et n'en compte que la variation. Le défrichement lié à un produit varie avec la production de ce produit dans le pays où la forêt est défrichée. Se détourner du bœuf réduit donc, par le commerce, le défrichement pour les pâturages au Brésil, même avec le levier à 0. Cette variation est bornée entre zéro et le double du défrichement actuel. Le levier arrête ensuite sa part de ce qui reste. Ces deux effets sont des variations de CO₂, entrées dans la réponse du climat comme les autres.
+**Déforestation** (voir [Déforestation](#method-deforestation)). Défricher la forêt pour l'agriculture libère environ 2 Gt de CO₂ par an (`deforestation.json`, par pays et par produit). Le modèle garde ce montant annuel constant et n'en compte que la variation. Le défrichement lié à un produit varie avec la production de ce produit dans le pays où la forêt est défrichée. Se détourner du bœuf réduit donc, par le commerce, le défrichement pour les pâturages au Brésil, même avec le levier à 0. Cette variation est bornée entre zéro et le double du défrichement actuel. Le levier empêche ensuite sa part du défrichement qui reste. Ces deux effets sont des variations de CO₂, et ils entrent dans la réponse du climat comme les autres.
 
-**Carbone dans les terres agricoles** (voir [Carbone stocké dans les terres agricoles](#method-removals)). Les couverts végétaux, les arbres dans les fermes, le biochar et la poudre de roche stockent du CO₂. La quantité stockée est adoption × la plus grande part des terres que la pratique peut atteindre (`maxShare`) × les hectares de cultures, de prairies ou des deux une fois le changement complet × le taux du pays. Elle court pendant `years` ans à partir de l'adoption de chaque hectare. Couverts et arbres saturent après 20 ans ; biochar et poudre de roche continuent de stocker jusqu'en 2100.
+**Carbone dans les terres agricoles** (voir [Carbone stocké dans les terres agricoles](#method-removals)). Les couverts végétaux, les arbres dans les fermes, le biochar et la poudre de roche stockent du CO₂. La quantité stockée est adoption × la plus grande part des terres que la pratique peut atteindre (`maxShare`) × les hectares de cultures, de prairies ou des deux une fois le changement complet × le taux du pays. Chaque hectare stocke du carbone pendant `years` ans à partir de l'année où la pratique y commence. Les couverts et les arbres saturent après 20 ans. Le biochar et la poudre de roche continuent de stocker du carbone jusqu'en 2100.
 
-**Énergie et transport** (voir [Énergie et transport](#method-sectors)). Sept leviers agissent sur le CO₂ fossile du scénario choisi dans les Options :
+**Énergie et transport** (voir [Énergie et transport](#method-sectors)). Sept leviers agissent sur le CO₂ fossile du scénario choisi dans *Autres options* :
 
 - voitures électriques et camions électriques : leur CO₂ d'échappement, moins l'électricité qu'ils tirent du réseau ;
 - moins d'avion : le CO₂ de l'aviation et son forçage hors CO₂ ;
 - carburant d'aviation propre : le CO₂ de l'aviation seulement ;
 - transport maritime propre ;
 - électricité renouvelable : le CO₂ du secteur électrique, et avec lui l'intensité du réseau dont dépendent les véhicules électriques et les centres de données ;
-- centres de données à l'énergie propre : la demande supplémentaire des centres de données de l'IA, quand les Options la comptent.
+- centres de données à l'énergie propre : la demande supplémentaire des centres de données de l'IA, quand on la compte dans *Autres options*.
 
-Leur variation de CO₂ est traduite en température avec la courbe du CO₂. La variation du forçage de l'aviation hors CO₂ est traduite avec la réponse de la température au forçage. Le combustible qu'ils retirent emporte avec lui le méthane qui fuit pendant sa production et la pollution de l'air que sa combustion produisait. Ils agissent donc aussi sur la pollution de l'air. Celle-ci refroidit la planète et masque une partie du réchauffement : moins de pollution, c'est moins de refroidissement masqué. C'est un coût des premières décennies, que le méthane économisé compense à peu près.
+Leur variation de CO₂ est traduite en température avec la courbe du CO₂. La variation du forçage de l'aviation hors CO₂ est traduite avec la réponse de la température au forçage. Réduire le combustible réduit aussi le méthane qui fuit pendant sa production et la pollution de l'air que produit sa combustion. Ces leviers agissent donc aussi sur la pollution de l'air. Celle-ci refroidit la planète et masque une partie du réchauffement : moins de pollution masque moins de réchauffement. Cela ajoute du réchauffement les premières décennies, et le méthane économisé le compense à peu près.
 
-**La repousse est une option, pas un groupe de leviers.** La repousse naturelle sur les terres libérées capte aussi du carbone, à côté des quatre pratiques du carbone dans les terres agricoles. Elle se règle dans les Options (*Terres libérées*), pas comme un groupe de leviers (voir [Terres](#method-land)). Elle agit sur les terres que libèrent le changement de régime et la baisse du gaspillage. Le défrichement évité est du CO₂ non émis par une forêt qui reste debout ; ce n'est pas une terre. Les deux ne comptent donc jamais le même hectare.
+**La repousse est une option, pas un groupe de leviers.** La repousse naturelle sur les terres libérées capte aussi du carbone, en plus des quatre pratiques du carbone dans les terres agricoles. Elle se règle dans *Autres options* (*Terres libérées*), pas comme un groupe de leviers (voir [Terres](#method-land)). Elle agit sur les terres que libèrent le changement de régime et la baisse du gaspillage. Le défrichement évité est du CO₂ non émis par une forêt qui reste debout. Il ne libère aucune terre. Les deux ne comptent donc jamais le même hectare.
 
 ## Comment les leviers se combinent
 
@@ -107,9 +107,9 @@ L'effet commun de la repousse est de 0,181 − 0,135 = 0,046 °C. La valeur de S
 
 ### Comment Planetshift les calcule vite
 
-Calculée directement, la valeur de Shapley demande une exécution du modèle pour chaque ensemble de groupes actifs. Cela fait 2ⁿ exécutions pour n groupes : 256 avec les huit groupes actifs, ce qui prend des secondes sur les données réelles, quand un mouvement de curseur dispose de quelques centièmes de seconde.
+Calculée directement, la valeur de Shapley demande une exécution du modèle pour chaque ensemble de groupes actifs. Cela fait 2ⁿ exécutions pour n groupes : 256 avec les huit groupes actifs. Sur les données réelles, cela prend des secondes, alors qu'un mouvement de curseur ne dispose que de quelques centièmes de seconde.
 
-Planetshift s'appuie plutôt sur la façon dont les groupes interagissent. Les groupes agricoles n'interagissent que par la production qu'ils changent. L'alimentation et la baisse du gaspillage changent ce qui est produit. Les pratiques, la déforestation, la repousse et le carbone dans les terres agricoles agissent sur la production que ces deux-là laissent, mais pas les uns sur les autres. La valeur de n'importe quel ensemble de groupes agricoles se lit donc à partir d'un passage des émissions agricoles par ensemble de groupes de production qu'il contient : aucun, l'alimentation, le gaspillage, ou les deux. Cela fait au plus quatre passages, trois en plus de l'exécution elle-même. Chaque passage est conservé tant que bougent les curseurs qui ne le changent pas.
+Planetshift s'appuie plutôt sur la façon dont les groupes interagissent. Les groupes agricoles n'interagissent que par la production qu'ils changent. L'alimentation et la baisse du gaspillage changent ce qui est produit. Les pratiques, la déforestation, la repousse et le carbone dans les terres agricoles agissent sur la production que ces deux-là laissent, mais pas les uns sur les autres. La valeur de n'importe quel ensemble de groupes agricoles se lit donc à partir d'un passage des émissions agricoles pour les groupes de production de cet ensemble : aucun, l'alimentation, le gaspillage, ou les deux. Cela fait au plus quatre passages, trois de plus que l'exécution elle-même. Chaque passage est conservé et réutilisé tant qu'on déplace des curseurs qui ne le changent pas.
 
 Les groupes hors de l'agriculture (énergie et transport, bâtiments et industrie) interagissent entre eux par le réseau que laisse l'électricité renouvelable. Ils n'interagissent pas avec l'agriculture. Leur valeur est leurs propres émissions, recalculées avec les leviers de l'autre groupe à zéro.
 
@@ -117,7 +117,7 @@ Un test vérifie, sur les données de test et sur les données réelles, que cel
 
 ### Une méthode envisagée et écartée
 
-Une seconde méthode a été envisagée : l'effet de chaque groupe seul, mis à l'échelle pour que les parts s'additionnent au total. Elle demande les mêmes passages, donc n'est pas plus rapide. Elle est aussi moins équitable. Un groupe dont l'effet dépend d'un autre n'obtient rien : la repousse seule ne libère aucune terre, elle disparaîtrait donc de la répartition, et son captage serait donné à l'alimentation et au gaspillage. Le chevauchement est aussi partagé en proportion de la taille plutôt qu'à parts égales. Sur les données réelles avec tous les groupes actifs, les deux méthodes diffèrent jusqu'à un quart de la part d'un groupe.
+Une seconde méthode a été envisagée : l'effet de chaque groupe seul, mis à l'échelle pour que les parts s'additionnent au total. Elle demande les mêmes passages, donc n'est pas plus rapide. Elle est aussi moins équitable. Un groupe dont l'effet dépend d'un autre n'obtiendrait rien : la repousse seule ne libère aucune terre, elle disparaîtrait donc de la répartition, et son captage serait donné à l'alimentation et au gaspillage. Le chevauchement est aussi partagé en proportion de la taille plutôt qu'à parts égales. Sur les données réelles avec tous les groupes actifs, les deux méthodes diffèrent jusqu'à un quart de la part d'un groupe.
 
 ### Le pergélisol et le CO₂e dans la répartition
 
@@ -142,11 +142,11 @@ Une partie de l'incertitude n'est pas dans la fourchette :
 ## Hypothèses
 
 - Chaque levier, l'alimentation comprise, monte linéairement de l'année en cours à l'année *Tous les leviers en place en*, puis reste constant.
-- Les réductions des pratiques s'appliquent aux émissions de la production avec le changement de régime et les autres leviers ; le scénario de référence garde les pratiques actuelles.
-- La réduction d'une pratique sur une source se combine de façon multiplicative avec celles des autres ; sa fourchette est lue basse pour le bas du réchauffement évité.
-- Un produit sans répartition par source prend celle du monde, puis celle de l'autre périmètre ; sans aucune, les pratiques n'agissent pas sur lui.
-- Le CO₂ de la déforestation est un flux constant, non multiplié par la population ; il varie avec la variation relative de la production de chaque produit dans le pays (entre −100 % et +100 %), et le levier arrête sa part du reste.
-- Le stockage agit sur les terres une fois le changement complet et dure `years` ans à partir de l'adoption de chaque hectare ; le taux est celui du pays, sinon celui du monde.
-- La répartition est la valeur de Shapley de chaque groupe sur les groupes actifs, répartie par cause ; la variation du pergélisol est répartie en proportion de la taille de chaque part.
-- Les leviers d'énergie retirent une part du CO₂ de chaque secteur dans le scénario choisi dans les Options, en montant comme le changement de régime ; ils ne changent pas les émissions agricoles, et l'électricité utilisée dans les fermes garde sa propre intensité.
+- Les réductions des pratiques s'appliquent aux émissions de la production avec le changement de régime et les autres leviers. Le scénario de référence garde les pratiques actuelles.
+- La réduction d'une pratique sur une source se combine de façon multiplicative avec celles des autres. Le bas du réchauffement évité prend le bas de sa fourchette.
+- Un produit sans répartition par source prend celle du monde, sinon celle de l'autre périmètre. Sans l'une ni l'autre, les pratiques n'agissent pas sur lui.
+- Le CO₂ de la déforestation est un flux constant, non multiplié par la population. Il varie avec la variation relative de la production de chaque produit dans le pays (entre −100 % et +100 %), et le levier empêche sa part de ce qui reste.
+- Le stockage agit sur les terres une fois le changement complet et dure `years` ans à partir de l'adoption de chaque hectare. Le taux est celui du pays, sinon celui du monde.
+- La répartition est la valeur de Shapley de chaque groupe sur les groupes actifs, répartie par cause. La variation du pergélisol est répartie en proportion de la taille de chaque part.
+- Les leviers d'énergie retirent une part du CO₂ de chaque secteur dans le scénario choisi dans *Autres options*, en montant comme le changement de régime. Ils ne changent pas les émissions agricoles, et l'électricité utilisée dans les fermes garde sa propre intensité.
 - Un fichier de levier manquant laisse ses leviers sans effet, affichés comme indisponibles.

@@ -1,6 +1,6 @@
 # Pratiques agricoles
 
-Au-delà de ce que l'on mange, les émissions peuvent être réduites là où les aliments sont produits. Cette page décrit les sept pratiques agricoles que Planetshift permet d'appliquer : ce que font les agriculteurs, ce que chaque pratique réduit et de combien, et où elle peut être adoptée. Adoptées en entier partout où elles s'appliquent, les sept ensemble évitent environ 0,9 milliard de tonnes d'équivalent CO₂ par an, entre l'estimation du GIEC à un coût allant jusqu'à 100 \$ la tonne et son estimation de ce qui est techniquement possible (voir *Toutes les pratiques ensemble* plus bas).
+Au-delà de ce que l'on mange, on peut réduire les émissions là où les aliments sont produits. Planetshift permet d'appliquer sept pratiques agricoles. Pour chacune, cette page indique ce que font les agriculteurs, ce qu'elle réduit et de combien, et où elle peut être adoptée. Adoptées en entier partout où elles s'appliquent, les sept ensemble évitent environ 0,9 milliard de tonnes d'équivalent CO₂ par an. C'est entre l'estimation du GIEC à un coût allant jusqu'à 100 \$ la tonne et son estimation de ce qui est techniquement possible (voir *Toutes les pratiques ensemble* plus bas).
 
 ## Comment une pratique est décrite
 
@@ -11,13 +11,13 @@ Chaque pratique agit sur une ou plusieurs sources d'émissions de la ferme. Pour
 - de combien elle réduit les émissions qu'elle atteint dans une ferme qui l'adopte : une médiane, avec une valeur basse et une valeur haute ;
 - dans chaque pays, la part de ces émissions qui pourrait l'adopter (la part applicable).
 
-La réduction qu'une pratique fait dans un pays est l'adoption choisie × la part applicable × la réduction (voir [Leviers](#method-levers)). Les paramètres, chacun avec une ligne de justification et sa référence, sont dans `pipeline/practices.csv` ; le code est `pipeline/planetshift_pipeline/practices.py`. L'équivalent CO₂ (CO₂e) additionne les gaz avec leurs poids de réchauffement sur 100 ans, le GWP100 (voir [Des émissions à la température](#method-climate)).
+La réduction qu'une pratique fait dans un pays est l'adoption choisie × la part applicable × la réduction (voir [Leviers](#method-levers)). Les paramètres, chacun avec une ligne de justification et sa référence, sont dans `pipeline/practices.csv`. Le code est `pipeline/planetshift_pipeline/practices.py`. L'équivalent CO₂ (CO₂e) additionne les gaz avec leurs poids de réchauffement sur 100 ans, le GWP100 (voir [Des émissions à la température](#method-climate)).
 
 ## Additifs alimentaires
 
 **Ce que font les agriculteurs.** Ils ajoutent à la ration quotidienne un inhibiteur du méthane. Le mieux étudié est le 3-nitrooxypropanol (3-NOP), qui bloque la dernière enzyme qu'utilisent les microbes producteurs de méthane du rumen. L'algue rouge (*Asparagopsis*), les nitrates et les huiles agissent de façon semblable, avec des effets moins réguliers.
 
-**Ce qu'elle réduit.** Le méthane entérique des bovins laitiers et à viande : le méthane que produisent les microbes du rumen, le premier estomac, pendant la digestion. Une méta-analyse de 14 essais sur vaches laitières trouve que le 3-NOP réduit le méthane de 33 % à la dose habituelle (Kebreab et al. 2023). Une autre, sur des essais avec vaches laitières et bovins à viande, trouve 39,0 % (± 5,4) chez les vaches laitières et 22,2 % (± 3,3) chez les bovins à viande, qui mangent plus de fibres et répondent moins (Dijkstra et al. 2018). Planetshift retient 28 % (20–38 %).
+**Ce qu'elle réduit.** Le méthane entérique des bovins laitiers et à viande : le méthane que produisent les microbes du rumen, le premier estomac, pendant la digestion. Une méta-analyse de 14 essais sur vaches laitières trouve que le 3-NOP réduit le méthane de 33 % à la dose habituelle (Kebreab et al. 2023). Une autre, sur des essais avec vaches laitières et bovins à viande, trouve 39,0 % (± 5,4) chez les vaches laitières et 22,2 % (± 3,3) chez les bovins à viande (Dijkstra et al. 2018). Les bovins à viande mangent plus de fibres et répondent moins. Planetshift retient 28 % (20–38 %).
 
 **Où elle s'applique.** L'additif doit être consommé chaque jour : seuls les animaux nourris avec une ration en bâtiment ou en parc d'engraissement peuvent le recevoir. Planetshift suppose que la part du méthane visé qui pourrait l'adopter est de :
 
@@ -26,13 +26,13 @@ La réduction qu'une pratique fait dans un pays est l'adoption choisie × la par
 - 7 % dans les pays à revenu intermédiaire de la tranche inférieure et 3 % dans les pays à faible revenu, où les troupeaux sont pastoraux ou tenus par de petits exploitants sans ration quotidienne ;
 - moins dans les pays à revenu élevé où les animaux pâturent : 5 % en Nouvelle-Zélande, 10 % en Uruguay, 15 % en Australie, 20 % en Irlande.
 
-**Limites.** Les animaux au pâturage ne peuvent pas recevoir l'additif aujourd'hui. Des bolus à libération lente sont à l'essai. L'effet s'atténue avec le temps dans certains essais, et la sécurité et l'acceptation de l'additif diffèrent d'un pays à l'autre. C'est un coût sans gain de rendement : son adoption demande une politique publique ou un prix.
+**Limites.** Les animaux au pâturage ne peuvent pas recevoir l'additif aujourd'hui. Des bolus à libération lente sont à l'essai. L'effet s'atténue avec le temps dans certains essais, et la sécurité et l'acceptation de l'additif diffèrent d'un pays à l'autre. L'additif coûte de l'argent et n'augmente pas le rendement, si bien que les éleveurs ont besoin d'une politique publique ou d'un prix pour l'adopter.
 
 ## Sélection et alimentation
 
 **Ce que font les agriculteurs.** Ils donnent un meilleur fourrage (herbe plus jeune, ensilage plus digestible), équilibrent la ration, et sélectionnent des animaux qui grandissent ou donnent du lait plus vite, ou qui produisent moins de méthane pour la même alimentation.
 
-**Ce qu'elle réduit.** Le méthane entérique par kilogramme de lait ou de viande des bovins, des moutons et des chèvres. Une méta-analyse de 430 études trouve qu'un niveau d'alimentation plus élevé, une herbe plus jeune et moins de fourrage dans la ration réduisent l'intensité en méthane de 12 % en moyenne. Planetshift retient 12 % (5–20 %). La valeur haute ajoute la sélection là où l'écart de productivité est grand.
+**Ce qu'elle réduit.** Le méthane entérique par kilogramme de lait ou de viande des bovins, des moutons et des chèvres. Une méta-analyse de 430 études trouve qu'un niveau d'alimentation plus élevé, une herbe plus jeune et moins de fourrage dans la ration réduisent l'intensité en méthane de 12 % en moyenne. Planetshift retient 12 % (5–20 %). La valeur haute de cette fourchette ajoute la sélection là où l'écart de productivité est grand.
 
 **Où elle s'applique.** Presque partout :
 
@@ -54,13 +54,13 @@ La réduction qu'une pratique fait dans un pays est l'adoption choisie × la par
 - 40 % dans les pays à revenu intermédiaire de la tranche supérieure (45 % en Chine, dont les porcs sont maintenant surtout élevés dans de grandes exploitations sur lisier) ;
 - 20 % dans les pays à revenu intermédiaire de la tranche inférieure et 10 % dans les pays à faible revenu, où les effluents sont surtout séchés, gardés en petits tas ou brûlés comme combustible.
 
-**Limites.** Un méthaniseur laisse fuir un peu de méthane, et le digestat peut perdre plus d'ammoniac à l'épandage. Les couvertures réduisent l'ammoniac plus que le méthane. L'essentiel du méthane des effluents vient des systèmes liquides des bovins laitiers et des porcs ; les effluents secs émettent peu.
+**Limites.** Un méthaniseur laisse fuir un peu de méthane, et le digestat peut perdre plus d'ammoniac à l'épandage. Les couvertures réduisent l'ammoniac plus que le méthane. L'essentiel du méthane des effluents vient des systèmes liquides des bovins laitiers et des porcs. Les effluents secs émettent peu.
 
 ## Rizières drainées
 
 **Ce que font les agriculteurs.** Ils drainent leurs rizières pendant la saison au lieu de les garder inondées. Ils les drainent une fois, en milieu de saison, ou plusieurs fois, en laissant l'eau descendre sous la surface du sol avant de les inonder à nouveau (alternance d'humectation et d'assèchement, AWD).
 
-**Ce qu'elle réduit.** Le méthane des rizières. Le GIEC multiplie le méthane par 0,71 pour un seul drainage et par 0,55 pour des drainages multiples, par rapport à une inondation continue. L'assèchement du sol augmente le protoxyde d'azote (N₂O). Une méta-analyse trouve que l'inondation non continue réduit le méthane de 53 % et augmente le N₂O de 105 %, ce qui réduit les deux ensemble de 44 % en équivalents CO₂. Le contrat de données (le format de `practices.json`) prévoit une seule réduction par pratique : Planetshift déduit donc la hausse du N₂O de la baisse du méthane. Il retient 45 % du méthane des rizières (25 % pour un seul drainage, 55 % au bas de la fourchette du GIEC pour des drainages multiples).
+**Ce qu'elle réduit.** Le méthane des rizières. Le GIEC multiplie le méthane par 0,71 pour un seul drainage et par 0,55 pour des drainages multiples, par rapport à une inondation continue. L'assèchement du sol augmente le protoxyde d'azote (N₂O). Une méta-analyse trouve que l'inondation non continue réduit le méthane de 53 % et augmente le N₂O de 105 %. En équivalents CO₂, les deux ensemble baissent de 44 %. Le contrat de données (le format de `practices.json`) prévoit une seule réduction par pratique : Planetshift déduit donc la hausse du N₂O de la baisse du méthane. Il retient 45 % du méthane des rizières (25 % pour un seul drainage, 55 % au bas de la fourchette du GIEC pour des drainages multiples).
 
 **Où elle s'applique.** Seulement dans les rizières irriguées où les agriculteurs maîtrisent l'eau, et qui sont encore maintenues inondées :
 
@@ -104,9 +104,9 @@ La réduction qu'une pratique fait dans un pays est l'adoption choisie × la par
 
 **Ce que font les agriculteurs.** Ils brûlent moins de carburant (moteurs, pompes et chauffage efficaces), et font fonctionner les pompes, le chauffage et certaines machines à l'électricité ou aux biocarburants.
 
-**Ce qu'elle réduit.** Le CO₂ du carburant brûlé sur les fermes et de la production de ce carburant. Leur électricité est laissée à [Électricité renouvelable](#method-sectors), qui décarbone le réseau dont elles l'obtiennent. Tout est dans le périmètre du berceau à la sortie de ferme : le périmètre à la ferme ne compte que les processus biologiques de la ferme, et le levier n'y a donc aucun effet. La revue de la FAO sur les systèmes alimentaires économes en énergie et l'évaluation du GIEC décrivent l'efficacité énergétique et les énergies renouvelables comme les principaux leviers. Planetshift retient 50 % : 25 % pour l'efficacité seule, 80 % avec des machines électriques ou aux biocarburants partout.
+**Ce qu'elle réduit.** Le CO₂ du carburant brûlé sur les fermes et de la production de ce carburant. Leur électricité est laissée à [Électricité renouvelable](#method-sectors), qui décarbone le réseau dont elles l'obtiennent. Tout est dans le périmètre du berceau à la sortie de ferme. À la ferme, le levier n'a aucun effet, parce que ce périmètre ne compte que les processus biologiques de la ferme. La revue de la FAO sur les systèmes alimentaires économes en énergie et l'évaluation du GIEC décrivent l'efficacité énergétique et les énergies renouvelables comme les principaux leviers. Planetshift retient 50 % : 25 % pour l'efficacité seule, 80 % avec des machines électriques ou aux biocarburants partout.
 
-**L'électricité qu'elle ajoute.** Au-delà des premiers 25 %, qui sont l'efficacité, la réduction fait passer les pompes, le chauffage et les machines à l'électricité, et le CO₂ du réseau pour cette électricité est rajouté. Un moteur thermique transforme environ 35 % de son carburant en travail et un moteur électrique environ 90 % de son électricité : 0,11 kWh remplace donc un MJ de carburant (estimation de Planetshift). Le réseau de chaque pays émet le CO₂ par kWh de l'électricité utilisée sur ses fermes dans *Emissions from energy use in agriculture* de FAOSTAT, rapporté au CO₂ par MJ du carburant de ses fermes, la dernière année où les deux existent ; l'ensemble des pays du modèle tient lieu de valeur pour un pays qui ne les a pas. Pour le monde, le réseau rajoute 0,79 kg de CO₂ par kg de CO₂ de carburant remplacé : 0,06 en France, 0,52 aux États-Unis, et 1,18 en Inde, où le passage à l'électricité augmente les émissions. Adopté en entier, le levier réduit le CO₂ de 155 Mt par an au lieu des 226 Mt du seul carburant.
+**L'électricité qu'elle ajoute.** Au-delà des premiers 25 %, qui sont l'efficacité, la réduction fait passer les pompes, le chauffage et les machines à l'électricité, et le CO₂ du réseau pour cette électricité est rajouté. Un moteur thermique transforme environ 35 % de son carburant en travail et un moteur électrique environ 90 % de son électricité : 0,11 kWh remplace donc un MJ de carburant (estimation de Planetshift). Le réseau de chaque pays émet le CO₂ par kWh de l'électricité utilisée sur ses fermes dans *Emissions from energy use in agriculture* de FAOSTAT, rapporté au CO₂ par MJ du carburant de ses fermes, la dernière année où les deux existent. Un pays qui n'a pas ces chiffres prend ceux de l'ensemble des pays du modèle. Pour le monde, le réseau rajoute 0,79 kg de CO₂ par kg de CO₂ de carburant remplacé : 0,06 en France, 0,52 aux États-Unis, et 1,18 en Inde, où le passage à l'électricité augmente les émissions. Adopté en entier, le levier réduit le CO₂ de 155 Mt par an au lieu des 226 Mt du seul carburant.
 
 **Où elle s'applique.**
 
@@ -114,7 +114,7 @@ La réduction qu'une pratique fait dans un pays est l'adoption choisie × la par
 - 70 % dans les pays à revenu intermédiaire de la tranche supérieure, où pompes et machines électriques sont à portée ;
 - 50 % dans ceux de la tranche inférieure et 40 % dans les pays à faible revenu, avec des pompes et des tracteurs au diesel et un accès moindre au réseau.
 
-**Limites.** Les machines lourdes sont les plus difficiles à convertir. Le CO₂ du réseau est celui d'aujourd'hui : il ne baisse ni à mesure que les réseaux sont décarbonés au cours du siècle, ni avec [Électricité renouvelable](#method-sectors), et le CO₂ rajouté est donc surestimé là où le réseau devient plus propre. Tout le carburant remplacé est compté comme électricité, bien que certains tracteurs rouleraient aux biocarburants.
+**Limites.** Les machines lourdes sont les plus difficiles à convertir. Le CO₂ du réseau est celui d'aujourd'hui. Il ne baisse ni à mesure que les réseaux sont décarbonés au cours du siècle, ni avec [Électricité renouvelable](#method-sectors), et le CO₂ rajouté est donc surestimé là où le réseau devient plus propre. Tout le carburant remplacé est compté comme électricité, bien que certains tracteurs rouleraient aux biocarburants.
 
 ## Toutes les pratiques ensemble
 
@@ -122,7 +122,7 @@ Avec toutes les pratiques adoptées en entier, partout où elles s'appliquent, l
 
 ## Comment les émissions sont réparties par source
 
-Une pratique doit savoir quelle partie des émissions d'un produit elle peut atteindre. Les additifs alimentaires, par exemple, agissent sur le méthane du rumen d'une vache, pas sur celui de ses effluents. `breakdown.json` répartit donc chaque intensité de `intensities.json` (les émissions par tonne de chaque aliment) entre dix sources, pour chaque pays, produit, périmètre et gaz :
+Une pratique doit savoir sur quelle partie des émissions d'un produit elle agit. Les additifs alimentaires, par exemple, agissent sur le méthane du rumen d'une vache, pas sur celui de ses effluents. `breakdown.json` répartit donc chaque intensité de `intensities.json` (les émissions par tonne de chaque aliment) entre dix sources, pour chaque pays, produit, périmètre et gaz :
 
 - fermentation entérique ;
 - gestion des effluents ;
@@ -145,20 +145,20 @@ Les deux périmètres sont définis sur la page [Émissions par tonne d'aliment]
 | Protoxyde d'azote | 8,0 Mt | 46 % engrais organiques, c'est-à-dire les effluents au pâturage et sur les champs (3,7 Mt), 36 % engrais de synthèse (2,9 Mt), 8 % résidus, 6 % gestion des effluents, 3 % autres, 2 % animaux non élevés pour l'alimentation |
 | CO₂ | 139 Mt | l'urée (101 Mt) et, dans les autres, le chaulage (38 Mt) ; le carburant brûlé sur les fermes est compté du berceau à la sortie de ferme |
 
-Les totaux de FAOSTAT pour 2023 sont de 106, 25 et 10 Mt pour les trois premières sources de méthane. Du berceau à la sortie de ferme, le CO₂ monte à 1 688 Mt, dont 575 Mt pour le carburant (brûlé sur les fermes et sa production), 332 Mt pour l'électricité, et 670 Mt pour la fabrication des intrants.
+Les totaux de FAOSTAT pour 2023 sont de 106, 25 et 10 Mt pour les trois premières sources de méthane. Du berceau à la sortie de ferme, le CO₂ monte à 1 688 Mt, dont 575 Mt pour le carburant (sa combustion sur les fermes et sa production), 332 Mt pour l'électricité, et 670 Mt pour la fabrication des intrants.
 
 ### Comment chaque niveau est réparti
 
 La répartition suit le niveau qui a fixé l'intensité. Les niveaux classent les sources d'une intensité, du plus précis (le plus bas) au moins précis (voir [Émissions par tonne d'aliment](#method-emissions)) :
 
 - **HESTIA** (niveaux 1 et 2) : chaque terme d'émission que l'intensité additionne reçoit une source d'après son identifiant : `EntericFermentation` fermentation entérique, `Excreta` effluents, `FloodedRice` rizières, `InorganicFertiliser` et `UreaHydrolysis` engrais de synthèse, `OrganicFertiliser` engrais organiques, `CropResidue…` résidus, `FuelCombustion` carburant, compté dans le périmètre du berceau à la sortie de ferme seulement. Les émissions d'arrière-plan de la production du carburant vont au carburant, et celles de la production d'électricité à l'électricité. Celles de tous les autres intrants (engrais, pesticides, machines, plastiques) vont à la fabrication des intrants. La chaux, l'aquaculture, le traitement des déchets et le reste vont aux autres (voir [Intensités d'émission de HESTIA](#method-hestia)).
-- **FAOSTAT** (niveau 3) : l'allocation même qui produit l'intensité garde ses processus séparés. La fermentation entérique va à la fermentation entérique. La gestion des effluents (bâtiments et stockage) va aux effluents. Les effluents laissés au pâturage et les effluents épandus sur les sols vont aux engrais organiques, puisque les deux sont de l'azote déposé sur les sols. La culture du riz va aux rizières et les engrais de synthèse aux engrais de synthèse. Les résidus de culture et leur brûlage vont aux résidus. L'énergie utilisée sur la ferme est répartie entre électricité et carburant selon la part de l'électricité dans les émissions de l'énergie utilisée sur la ferme de chaque pays, d'après *Emissions from energy use in agriculture* de FAOSTAT (la dernière année ; l'ensemble des pays du modèle quand un pays n'en a pas). La chaleur compte avec le carburant. La fabrication des engrais et des pesticides va à la fabrication des intrants.
+- **FAOSTAT** (niveau 3) : l'allocation qui fixe l'intensité garde déjà ses processus séparés. La fermentation entérique va à la fermentation entérique. La gestion des effluents (bâtiments et stockage) va aux effluents. Les effluents laissés au pâturage et les effluents épandus sur les sols vont aux engrais organiques, puisque les deux sont de l'azote déposé sur les sols. La culture du riz va aux rizières et les engrais de synthèse aux engrais de synthèse. Les résidus de culture et leur brûlage vont aux résidus. L'énergie utilisée sur la ferme est répartie entre électricité et carburant selon la part de l'électricité dans les émissions de l'énergie utilisée sur la ferme de chaque pays, d'après *Emissions from energy use in agriculture* de FAOSTAT (la dernière année ; l'ensemble des pays du modèle quand un pays n'en a pas). La chaleur compte avec le carburant. La fabrication des engrais et des pesticides va à la fabrication des intrants.
 - **ACV publiée** (niveau 4), c'est-à-dire des analyses de cycle de vie publiées : la répartition FAOSTAT du même produit dans le pays, ou à défaut dans le monde (voir [Intensités d'émission tirées d'ACV publiées](#method-literature)).
 - **Substituts** (niveau 5) : la répartition du produit substitut dans le même pays. Un produit transformé prend la répartition de ses produits primaires, pondérée par les émissions que chacun apporte par tonne du produit.
 
 ### Quand un gaz n'a pas de répartition
 
-Un gaz que cela laisse sans répartition prend la première répartition trouvée dans cet ordre :
+Si un gaz n'a toujours pas de répartition, il prend la première trouvée dans cet ordre :
 
 1. la répartition FAOSTAT du produit dans le pays ;
 2. la répartition FAOSTAT du produit dans le monde ;
@@ -171,12 +171,12 @@ Un gaz que cela laisse sans répartition prend la première répartition trouvé
 
 ## Hypothèses
 
-- Une seule réduction par pratique s'applique à chaque source et à chaque gaz qu'elle vise ; la hausse du N₂O des rizières drainées est déduite de la baisse du méthane en équivalents CO₂ sur 100 ans.
-- Les parts applicables sont des jugements fondés sur les systèmes agricoles de chaque groupe de revenu et de chaque région, avec une valeur propre pour les pays cités plus haut ; un pays prend sa propre valeur, sinon celle de sa région, sinon celle de son groupe de revenu (Banque mondiale), sinon celle du monde.
+- Une seule réduction par pratique s'applique à chaque source et à chaque gaz qu'elle vise. La hausse du N₂O des rizières drainées est déduite de la baisse du méthane en équivalents CO₂ sur 100 ans.
+- Les parts applicables sont des jugements fondés sur les systèmes agricoles de chaque groupe de revenu et de chaque région, avec une valeur propre pour les pays cités plus haut. Un pays prend sa propre valeur, sinon celle de sa région, sinon celle de son groupe de revenu (Banque mondiale), sinon celle du monde.
 - Les pratiques qui agissent sur la même source (additifs alimentaires avec sélection et alimentation ; moins d'azote, mieux employé avec inhibiteurs de nitrification) devraient se combiner par multiplication, pas par addition.
 - Les effluents laissés au pâturage et les effluents épandus sur les sols comptent comme engrais organiques, pas comme effluents : la gestion des effluents ne les atteint donc pas.
 - La fabrication des intrants est une seule source : « Moins d'azote, mieux employé » réduit donc aussi la fabrication des pesticides et des machines.
-- Les intensités tirées de la littérature et des substituts prennent la répartition FAOSTAT de leur produit ; un produit transformé prend la répartition de ses produits primaires ; les produits sans aucune répartition sont comptés dans « autres ».
+- Les intensités tirées de la littérature et des substituts prennent la répartition FAOSTAT de leur produit. Un produit transformé prend la répartition de ses produits primaires. Les produits sans aucune répartition sont comptés dans « autres ».
 - La répartition d'un pays pour un produit qu'il ne produit pas est celle du monde.
 
 ## Sources

@@ -1,6 +1,6 @@
 # Intensités d'émission de HESTIA
 
-Pour traduire un changement de production alimentaire en changement d'émissions, Planetshift a besoin des émissions de la production de chaque aliment, par tonne : son intensité d'émission. Quand il le peut, il les prend dans HESTIA, une base de données ouverte qui recalcule les données des fermes avec les mêmes modèles partout. Avec la version actuelle, HESTIA donne des valeurs pour 37 produits alimentaires dans 47 pays et pour le monde entier ; les produits animaux et les huiles végétales ne sont pas encore couverts, et prennent leurs valeurs d'autres sources (voir [Émissions par tonne d'aliment](#method-emissions)).
+Pour traduire un changement de production alimentaire en changement d'émissions, Planetshift a besoin des émissions de la production de chaque aliment, par tonne : son intensité d'émission. Quand il le peut, il les prend dans HESTIA, une base de données ouverte qui recalcule les données des fermes avec les mêmes modèles partout. Avec la version actuelle, HESTIA donne des valeurs pour 37 produits alimentaires dans 47 pays et pour le monde entier. Les produits animaux et les huiles végétales ne sont pas encore couverts, et prennent leurs valeurs d'autres sources (voir [Émissions par tonne d'aliment](#method-emissions)).
 
 ## Ce que fournit HESTIA
 
@@ -30,7 +30,7 @@ Avec la version v1.2, 37 produits des bilans ont une valeur HESTIA, dans 47 pays
 
 1. Une recherche (`POST https://api.hestia.earth/search`, avec l'en-tête `X-Data-Version` réglé sur la date de la version) liste toutes les ImpactAssessment agrégées dont `aggregatedDataValidated` est renseigné. Les agrégations non validées sont aussi dans l'index, mais HESTIA ne les publie pas : elles ne sont pas utilisées.
 2. Pour chaque produit présent dans `hestia_terms.csv` et chaque zone (pays ou Monde), l'agrégation de la période la plus récente est gardée. Les périodes plus anciennes (1990–2009) sont écartées.
-3. Chaque agrégation gardée est téléchargée sous sa forme recalculée (`GET /impactassessments/<id>?dataState=recalculated`), quatre à la fois, toutes. Une requête est retentée à intervalle croissant en cas d'erreur réseau et de réponse 429 ou 5xx. Une agrégation qui répond 401, 403 ou 404 ne donne pas de ligne pour ce produit et cette zone. Une requête qui échoue encore après les nouvelles tentatives arrête la construction. Avec `--allow-missing`, la construction se poursuit sans HESTIA et sans le palier de la littérature, qui le lit.
+3. Le pipeline télécharge chaque agrégation gardée sous sa forme recalculée (`GET /impactassessments/<id>?dataState=recalculated`), quatre requêtes à la fois. Une requête est retentée à intervalle croissant en cas d'erreur réseau et de réponse 429 ou 5xx. Quand la requête d'une agrégation reçoit 401, 403 ou 404, ce produit et cette zone n'ont pas de ligne. Une requête qui échoue encore après les nouvelles tentatives arrête la construction. Avec `--allow-missing`, la construction se poursuit sans HESTIA, et aussi sans le palier de la littérature, qui lit les valeurs de HESTIA.
 4. Les émissions de CO₂, de CH₄ et de N₂O dans l'air sont sommées par gaz et par périmètre (ci-dessous). Elles sont converties en kg de gaz par tonne du produit des bilans alimentaires de FAOSTAT (FBS), et écrites avec l'URL de la page de l'agrégation sur hestia.earth.
 
 ### Le cache
@@ -60,15 +60,15 @@ Les facteurs ont été vérifiés par rapport aux bilans eux-mêmes (production 
 
 - Riz : les bilans actuels comptent le riz et ses produits en paddy (788,8 Mt en 2022, à peu près la production de paddy). Le riz paddy (`riceGrainInHuskFlooded`) est utilisé avec un facteur de 1.
 - Arachides (code FBS 2552) : comptées en coque (55,1 Mt) ; `peanutInShell` a donc un facteur de 1.
-- Palmistes (2562) : sa production égale la récolte de fruits du palmier à huile (408,9 Mt) ; `oilPalmFruit` est donc utilisé avec un facteur de 1.
-- Avoine : FAOSTAT compte l'avoine vêtue. L'avoine décortiquée (`oatGrain`) est un repli à 0,7 kg de gruau par kg d'avoine vêtue, toutes les émissions étant portées par le gruau.
+- Palmistes (2562) : leur production égale la récolte de fruits du palmier à huile (408,9 Mt) ; `oilPalmFruit` est donc utilisé avec un facteur de 1.
+- Avoine : FAOSTAT compte l'avoine vêtue. L'avoine décortiquée (`oatGrain`) est un repli à 0,7 kg de gruau par kg d'avoine vêtue. Le gruau porte toutes les émissions.
 - Viande : les bilans comptent le poids de carcasse. Le poids de carcasse froide est utilisé tel quel. Le poids vif, un repli, est converti avec les rendements en carcasse de Poore & Nemecek (2018, tableau S5) : 52–55 % pour les bovins et les buffles, 47 % pour les moutons et les chèvres, 75 % pour les porcs, 72 % pour les volailles.
 - Lait : lait entier frais. Le lait corrigé en matières grasses et en protéines (4 % de matières grasses, 3,3 % de protéines) est un repli tenu pour égal.
 - Œufs : avec coquille. Les œufs comptés à l'unité sont un repli à 16,7 œufs par kg (60 g l'œuf).
 
 Quand plusieurs produits correspondent à un même produit des bilans, les produits de meilleure `priority` disponibles dans la zone sont moyennés sans pondération (le blé et le blé dur, les légumes des « Autres légumes »). L'URL est celle du premier d'entre eux par identifiant de terme.
 
-Les produits transformés (huiles, tourteaux, riz blanchi, farine, vin) ne sont pas utilisés. Leurs agrégations comptent toute la culture comme une seule entrée d'arrière-plan. On ne peut alors séparer les émissions de la ferme de celles de la transformation, ni le changement d'usage des terres du reste. Les huiles végétales n'ont donc pas de ligne HESTIA.
+Les produits transformés (huiles, tourteaux, riz blanchi, farine, vin) ne sont pas utilisés. Leurs agrégations comptent toute la culture comme une seule entrée d'arrière-plan. On ne peut alors pas séparer les émissions de la ferme de celles de la transformation. On ne peut pas non plus séparer le changement d'usage des terres du reste. Les huiles végétales n'ont donc pas de ligne HESTIA.
 
 ## Des émissions aux trois gaz
 
@@ -84,18 +84,18 @@ Chaque terme d'émission du glossaire qui commence par `co2ToAir`, `ch4ToAir` ou
 
 Le classement se fait par identifiant de terme (`category_of`). Un terme ajouté plus tard au glossaire tombe donc dans la bonne catégorie s'il suit la même convention de nommage.
 
-Un test compare la somme des trois gaz au GWP100 propre à chaque agrégation, tel que HESTIA le calcule avec les facteurs du GIEC AR6 (le GWP100 est la pondération sur 100 ans qui donne le CO₂e ; voir [Des émissions à la température](#method-climate)). Le blé en France donne 0,407 kg CO₂e/kg des deux façons, ce qui montre qu'aucune ligne n'est comptée deux fois.
+Un test compare la somme des trois gaz au GWP100 propre à chaque agrégation, tel que HESTIA le calcule avec les facteurs du GIEC AR6 (le GWP100 est la pondération sur 100 ans qui donne le CO₂e ; voir [Des émissions à la température](#method-climate)). Le blé en France donne 0,407 kg CO₂e/kg par les deux sommes, ce qui montre qu'aucune ligne n'est comptée deux fois.
 
-L'usage des terres est laissé de côté ici parce que le changement d'usage des terres a son propre levier, [Déforestation](#method-deforestation). Les sols organiques drainés sont laissés de côté avec lui, comme dans les domaines de FAOSTAT.
+L'usage des terres est laissé de côté ici parce que le changement d'usage des terres a son propre levier, [Déforestation](#method-deforestation). Les sols organiques drainés sont laissés de côté aussi, comme dans les domaines de FAOSTAT.
 
 ## Les deux périmètres, et pourquoi l'alimentation animale est exclue
 
 - `farmGate` : les émissions des processus biologiques de la ferme, sans le carburant brûlé sur la ferme.
 - `cradleToFarmGate` : les émissions à la ferme, le carburant brûlé sur la ferme et les émissions de la production des intrants de la ferme (engrais, pesticides, carburant, électricité, machines, plastiques, eau, chaux), **sauf les intrants d'origine agricole** : aliments pour animaux, semences, animaux vivants et autres cultures ou produits animaux.
 
-L'alimentation animale est exclue parce que Planetshift la compte ailleurs. Quand le changement retire des animaux, les aliments qu'ils auraient mangés sont retirés aussi. Les émissions de leurs cultures baissent alors par les intensités propres de ces cultures. Ajouter les émissions d'arrière-plan des aliments au produit animal compterait deux fois la même culture.
+L'alimentation animale est exclue parce que Planetshift la compte ailleurs. Quand le changement retire des animaux, les aliments qu'ils auraient mangés sont retirés aussi. Les émissions des cultures fourragères concernées baissent alors par les intensités propres de ces cultures. Ajouter les émissions d'arrière-plan des aliments au produit animal compterait deux fois la même culture.
 
-Les semences et les animaux sont dans le même cas. Ce sont des produits agricoles que le modèle tient déjà comme usages des bilans (les semences sont un élément des bilans).
+Il en va de même pour les semences et les animaux. Ce sont des produits agricoles que le modèle compte déjà comme usages des bilans (les semences sont un élément des bilans).
 
 La règle s'applique ligne par ligne : aucune approximation n'est nécessaire. Chaque ligne d'arrière-plan d'une agrégation HESTIA nomme l'intrant dont elle vient (`inputs`). Une ligne est écartée quand le type de terme de cet intrant est `crop`, `forage`, `animalProduct`, `liveAnimal`, `liveAquaticSpecies`, `processedFood` ou `seed`. Les additifs alimentaires (`feedFoodAdditive`, comme les acides aminés de synthèse) et les engrais organiques sont gardés, car ce ne sont pas des cultures que le modèle compte.
 
@@ -107,7 +107,7 @@ Avec la version v1.2 (exécution du 2026-11-21), il y a 380 agrégations validé
 - niveau 2 (Monde) : 11 produits : blé, maïs, pommes de terre, canne à sucre, betterave sucrière, arachides, soja, colza et moutarde, olives, bananes, raisin ;
 - aucune agrégation régionale.
 
-HESTIA n'a pas encore publié d'agrégations de produits animaux ; sa documentation indique qu'elles sont en cours de développement. L'index en contient des non validées, qui ne sont pas utilisées. La viande bovine, la viande de mouton et de chèvre, la viande porcine, la volaille, le lait et les œufs n'ont donc pas de ligne HESTIA, bien que la table les associe déjà pour une version future. Pas plus que les huiles végétales, le sucre, le thé, les ignames, les bananes plantain, les ananas et les dattes.
+HESTIA n'a pas encore publié d'agrégations de produits animaux. Sa documentation indique qu'elles sont en cours de développement. L'index en contient des non validées, qui ne sont pas utilisées. La viande bovine, la viande de mouton et de chèvre, la viande porcine, la volaille, le lait et les œufs n'ont donc pas de ligne HESTIA, bien que la table les associe déjà pour une version future. Les huiles végétales, le sucre, le thé, les ignames, les bananes plantain, les ananas et les dattes n'ont pas de ligne HESTIA non plus.
 
 ### Quelques valeurs
 
@@ -133,7 +133,7 @@ Pour le méthane du riz, les émissions de la riziculture de FAOSTAT en 2022 div
 - La plus récente version publique (v1.2) est utilisée, et fixée. La version v1.3 reste réservée jusqu'au 2027-05-18.
 - Seules les agrégations validées sont utilisées.
 - La période la plus récente de chaque produit et zone est utilisée, quelle que soit sa durée (2010–2026 pour toutes les lignes gardées).
-- Les produits qui partagent un produit des bilans sont moyennés sans pondération ; la meilleure priorité disponible dans la zone l'emporte.
+- Les produits qui partagent un produit des bilans sont moyennés sans pondération. Seuls les produits de meilleure priorité disponibles dans la zone sont moyennés.
 - Les facteurs de conversion des produits HESTIA vers les produits des bilans sont ceux listés ci-dessus et dans `hestia_terms.csv`. Les rendements en carcasse sont les moyennes de Poore & Nemecek.
 - Le changement d'usage des terres, les sols organiques drainés, le brûlage de la végétation naturelle et le CO₂ biogénique sont exclus des deux périmètres.
 - Les émissions d'arrière-plan des intrants agricoles (aliments pour animaux, semences, animaux, cultures, aliments transformés) sont exclues du périmètre du berceau à la sortie de ferme. Les additifs alimentaires et les engrais organiques sont gardés.

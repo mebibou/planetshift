@@ -1,6 +1,6 @@
 # Emission intensities from HESTIA
 
-To turn a change in food production into a change in emissions, Planetshift needs the emissions of producing each food, per tonne: its emission intensity. Where it can, it takes them from HESTIA, an open database that recalculates farm data with the same models everywhere. With the current release, HESTIA gives values for 37 food items in 47 countries and for the world as a whole; animal products and vegetable oils are not covered yet, and get their values from other sources (see [Emissions](#method-emissions)).
+To turn a change in food production into a change in emissions, Planetshift needs the emissions of producing each food, per tonne: its emission intensity. Where it can, it takes them from HESTIA, an open database that recalculates farm data with the same models everywhere. With the current release, HESTIA gives values for 37 food items in 47 countries and for the world as a whole. Animal products and vegetable oils are not covered yet, and get their values from other sources (see [Emissions](#method-emissions)).
 
 ## What HESTIA provides
 
@@ -30,7 +30,7 @@ With release v1.2, 37 FBS items get a HESTIA value, in 47 countries and for the 
 
 1. One search (`POST https://api.hestia.earth/search`, with the `X-Data-Version` header set to the release date) lists every aggregated ImpactAssessment that has `aggregatedDataValidated` set. Unvalidated aggregations are in the index too, but HESTIA does not publish them, so they are not used.
 2. For each product mapped in `hestia_terms.csv` and each area (country or World), the aggregation with the latest period is kept. Older periods (1990–2009) are dropped.
-3. Each kept aggregation is fetched in its recalculated form (`GET /impactassessments/<id>?dataState=recalculated`), four at a time, all of them. A request is retried with exponential backoff on network errors and on 429 or 5xx answers. An aggregation that answers 401, 403 or 404 gives no row for that product and area. A request that still fails after the retries stops the build. With `--allow-missing`, the build goes on without HESTIA and without the literature tier, which reads it.
+3. The pipeline fetches every kept aggregation in its recalculated form (`GET /impactassessments/<id>?dataState=recalculated`), four requests at a time. A request is retried with exponential backoff on network errors and on 429 or 5xx responses. When an aggregation's request gets 401, 403 or 404, that product and area get no row. A request that still fails after the retries stops the build. With `--allow-missing`, the build goes on without HESTIA, and also without the literature tier, which reads HESTIA's values.
 4. The emissions of CO₂, CH₄ and N₂O to air are summed by gas and by scope (below). They are converted to kg of gas per tonne of the FAOSTAT Food Balance Sheet (FBS) item, and written with the URL of the aggregation's page on hestia.earth.
 
 ### Cache
@@ -58,17 +58,17 @@ intensity per kg of the product × `kg_product_per_kg_item` × 1000
 
 The factors were checked against the FBS itself (2022 world production):
 
-- Rice: the current FBS counts rice and products as paddy (788.8 Mt in 2022, about paddy production). Paddy rice (`riceGrainInHuskFlooded`) is used with a factor of 1.
+- Rice: the current FBS counts rice and products as paddy (788.8 Mt in 2022, about the paddy production). Paddy rice (`riceGrainInHuskFlooded`) is used with a factor of 1.
 - Groundnuts (FBS code 2552): counted in shell (55.1 Mt), so `peanutInShell` has a factor of 1.
-- Palm kernels (2562): its production equals the oil palm fruit harvest (408.9 Mt), so `oilPalmFruit` is used with a factor of 1.
-- Oats: FAOSTAT counts oats in husk. Dehulled oats (`oatGrain`) are a fallback at 0.7 kg of groats per kg of oats in husk, all emissions carried by the groats.
+- Palm kernels (2562): their production equals the oil palm fruit harvest (408.9 Mt), so `oilPalmFruit` is used with a factor of 1.
+- Oats: FAOSTAT counts oats in husk. Dehulled oats (`oatGrain`) are a fallback at 0.7 kg of groats per kg of oats in husk. The groats carry all the emissions.
 - Meat: the FBS counts carcass weight. Cold carcass weight is used as is. Liveweight, a fallback, is converted with the dressing percentages of Poore & Nemecek (2018, table S5): 52–55% for cattle and buffalo, 47% for sheep and goats, 75% for pigs, 72% for poultry.
 - Milk: fresh whole milk. Fat and protein corrected milk (4% fat, 3.3% protein) is a fallback taken as equal.
 - Eggs: in shell. Eggs counted by number are a fallback at 16.7 eggs per kg (60 g an egg).
 
 When several products map to one item, the products with the best `priority` available in that area are averaged without weights (wheat and durum wheat, the vegetables of "Vegetables, other"). The URL is the first of them by term id.
 
-Processed products (oils, meals, refined rice, flour, wine) are not used. Their aggregations count the whole crop as one background input. The farm's emissions cannot then be told apart from the processing's, nor land-use change from the rest. Vegetable oils therefore get no HESTIA row.
+Processed products (oils, meals, refined rice, flour, wine) are not used. Their aggregations count the whole crop as one background input. The farm's emissions then cannot be separated from those of processing, and land-use change cannot be separated from the rest. Vegetable oils therefore get no HESTIA row.
 
 ## From emissions to three gases
 
@@ -84,18 +84,18 @@ Every emission term of the glossary that starts with `co2ToAir`, `ch4ToAir` or `
 
 The classification is by term id (`category_of`). A term added to the glossary later therefore falls in the right category if it follows the same naming.
 
-A test checks the sum of all three gases against each aggregation's own GWP100, as HESTIA computes it with the IPCC AR6 factors (GWP100 is the 100-year weighting behind CO₂e; see [Climate](#method-climate)). Wheat in France gives 0.407 kg CO₂e/kg both ways, which shows no row is counted twice.
+A test checks the sum of all three gases against each aggregation's own GWP100, as HESTIA computes it with the IPCC AR6 factors (GWP100 is the 100-year weighting behind CO₂e; see [Climate](#method-climate)). Wheat in France gives 0.407 kg CO₂e/kg by both sums, which shows that no row is counted twice.
 
-Land use is left out here because land-use change has its own lever, [Deforestation](#method-deforestation). Drained organic soils are left out with it, as in FAOSTAT's domains.
+Land use is left out here because land-use change has its own lever, [Deforestation](#method-deforestation). Drained organic soils are left out too, as in FAOSTAT's domains.
 
 ## The two scopes, and why feed is excluded
 
 - `farmGate`: on-farm emissions of the farm's biological processes, without the fuel burnt on the farm.
 - `cradleToFarmGate`: on-farm emissions, the fuel burnt on the farm, and the emissions of producing the farm's inputs (fertilisers, pesticides, fuel, electricity, machinery, plastics, water, lime), **except inputs of agricultural origin**: feed, seed, live animals and other crops or animal products.
 
-Feed is excluded because Planetshift counts it elsewhere. When the shift removes animals, the feed they would have eaten is removed too. Its crops' emissions then fall through the crops' own intensities. Adding the feed's background emissions to the animal product would count the same crop twice.
+Feed is excluded because Planetshift counts it elsewhere. When the shift removes animals, the feed they would have eaten is removed too. The emissions of those feed crops then go down through the crops' own intensities. Adding the feed's background emissions to the animal product would count the same crop twice.
 
-Seed and animals are the same case. They are agricultural products that the model already holds as FBS uses (seed is an FBS element).
+The same goes for seed and animals. They are agricultural products that the model already counts as FBS uses (seed is an FBS element).
 
 The rule is applied row by row, so no approximation is needed. Every background row of a HESTIA aggregation names the input it comes from (`inputs`). A row is dropped when that input's term type is `crop`, `forage`, `animalProduct`, `liveAnimal`, `liveAquaticSpecies`, `processedFood` or `seed`. Feed additives (`feedFoodAdditive`, such as synthetic amino acids) and organic fertilisers are kept, since they are not crops the model counts.
 
@@ -107,7 +107,7 @@ With release v1.2 (run on 2026-11-21), there are 380 validated aggregations. 236
 - tier 2 (World): 11 items: wheat, maize, potatoes, sugar cane, sugar beet, groundnuts, soybeans, rapeseed and mustard, olives, bananas, grapes;
 - no regional aggregation.
 
-HESTIA has not yet released aggregations of animal products; its documentation says they are under development. The index holds unvalidated ones, which are not used. Bovine meat, mutton and goat, pig meat, poultry, milk and eggs therefore get no HESTIA row, though the table maps them for a later release. Nor do vegetable oils, sugar, tea, yams, plantains, pineapples and dates.
+HESTIA has not yet released aggregations of animal products. Its documentation says they are under development. The index holds unvalidated ones, which are not used. Bovine meat, mutton and goat, pig meat, poultry, milk and eggs therefore get no HESTIA row, though the table maps them for a later release. Vegetable oils, sugar, tea, yams, plantains, pineapples and dates get no HESTIA row either.
 
 ### Some values
 
@@ -130,10 +130,10 @@ For rice methane, FAOSTAT's 2022 rice-cultivation emissions divided by paddy pro
 
 ## Assumptions
 
-- The newest public release (v1.2) is used, pinned. Release v1.3 stays restricted until 2027-05-18.
+- The newest public release (v1.2) is used, and pinned. Release v1.3 stays restricted until 2027-05-18.
 - Only validated aggregations are used.
 - The latest period of each product and area is used, whatever its length (2010–2026 for all kept rows).
-- Products that share an FBS item are averaged without weights; the best priority available in the area wins.
+- Products that share an FBS item are averaged without weights. Only the products with the best priority available in the area are averaged.
 - Conversion factors from HESTIA products to FBS items are those listed above and in `hestia_terms.csv`. Dressing percentages are Poore & Nemecek's averages.
 - Land-use change, drained organic soils, burning of natural vegetation and biogenic CO₂ are excluded from both scopes.
 - Background emissions of agricultural inputs (feed, seed, animals, crops, processed food) are excluded from cradle to farm gate. Feed additives and organic fertilisers are kept.

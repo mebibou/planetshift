@@ -1,8 +1,8 @@
 # Émissions par tonne d'aliment
 
-Pour traduire un changement de production en changement d'émissions, Planetshift doit savoir ce qu'émet chaque aliment. Pour chaque pays et chaque produit alimentaire, il connaît les kilogrammes de dioxyde de carbone (CO₂), de méthane (CH₄) et de protoxyde d'azote (N₂O) émis par tonne produite : c'est l'intensité d'émission du produit. Les estimations de FAOSTAT donnent les deux tiers des émissions agricoles mondiales du modèle, HESTIA un cinquième, et les moyennes publiées et les valeurs de substitution le reste. Additionnées sur le monde, elles sont proches des totaux de FAOSTAT : 138,1 Mt de méthane par an, contre 141,8 Mt.
+Pour traduire un changement de production en changement d'émissions, Planetshift doit savoir ce qu'émet chaque aliment. Pour chaque pays et chaque produit alimentaire, il connaît les kilogrammes de dioxyde de carbone (CO₂), de méthane (CH₄) et de protoxyde d'azote (N₂O) émis par tonne produite : c'est l'intensité d'émission du produit. Les estimations de FAOSTAT donnent les deux tiers des émissions agricoles mondiales du modèle. HESTIA en donne un cinquième, et les moyennes publiées et les valeurs de substitution donnent le reste. Additionnées sur le monde, elles sont proches des totaux de FAOSTAT : 138,1 Mt de méthane par an, contre 141,8 Mt.
 
-Cette page explique d'où vient chaque intensité, ce qu'elle couvre et comment les manques sont comblés. Les gaz restent séparés jusqu'au modèle climatique.
+Les trois gaz restent séparés jusqu'au modèle climatique.
 
 ## Ce qui est compté
 
@@ -29,7 +29,7 @@ Chaque valeur est tirée de la meilleure source disponible. Pour chaque pays, pr
 2. **HESTIA, région ou monde** : la plus petite région HESTIA contenant le pays, puis le monde.
 3. **FAOSTAT, pays** : les émissions de FAOSTAT pour le pays, divisées par sa production (voir *Niveau 3* plus bas).
 4. **ACV publiée** : les moyennes mondiales de Poore et Nemecek (2018), une étude d'analyse du cycle de vie (ACV) (voir [Données ACV publiées](#method-literature)).
-5. **Substitut** : une valeur de remplacement. Pour un produit transformé, c'est la valeur de son produit primaire divisée par le taux d'extraction (voir *Les produits transformés* plus bas). Sinon, c'est la valeur de niveau 1 à 4 d'un produit similaire dans le même pays, d'après la liste de la partie *Substituts* plus bas. Un substitut n'emprunte jamais un autre substitut ni une médiane.
+5. **Substitut** : une valeur de remplacement. Pour un produit transformé, c'est la valeur de son produit primaire divisée par le taux d'extraction (voir *Les produits transformés* plus bas). Sinon, c'est la valeur de niveau 1 à 4 d'un produit similaire dans le même pays, d'après la liste de la partie *Substituts* plus bas. Un substitut n'est jamais pris d'un autre substitut ni d'une médiane.
 6. **Médiane du groupe** : la médiane, pondérée par la production, sur tous les pays, des valeurs de niveau 1 à 4 des produits du groupe.
 
 Chaque pays du modèle a une valeur pour chaque produit et pour les deux périmètres, y compris pour les produits qu'il ne produit pas. Le modèle peut ainsi déplacer la production vers n'importe quel pays.
@@ -38,7 +38,7 @@ Chaque pays du modèle a une valeur pour chaque produit et pour les deux périm�
 
 Le tableau compte les cases pays × produit du périmètre à la ferme que remplit chaque niveau, par groupe, pour les 188 pays et 90 produits. Le périmètre du berceau à la sortie de ferme est proche.
 
-Seuls les poissons et fruits de mer ont besoin du niveau 6 : 278 de leurs 1 504 cases. Ce sont presque toutes des pays sans littoral qui importent tout leur poisson, et dont le bilan contient un produit que FishStat ne leur attribue pas (voir [Poissons et fruits de mer](#method-seafood)). Pour tous les autres produits, les moyennes mondiales publiées du niveau 4 couvrent ce qui n'a pas de substitut.
+Seuls les poissons et fruits de mer ont besoin du niveau 6 : 278 de leurs 1 504 cases. Ce sont presque toutes des pays sans littoral qui importent tout leur poisson. Leur bilan contient un produit que FishStat ne leur attribue pas (voir [Poissons et fruits de mer](#method-seafood)). Pour tous les autres produits, les moyennes mondiales publiées du niveau 4 couvrent ce qui n'a pas de substitut.
 
 | Groupe | 1 | 2 | 3 | 4 | 5 | 6 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -81,7 +81,7 @@ La dose vient de l'enquête de l'International Fertilizer Association sur l'usag
 
 La même enquête trouve 3,6 % de l'azote épandus sur les prairies. Cette part va aux produits des ruminants (bœuf, mouton, autres viandes, lait) en proportion de leur méthane, dans les pays qui ont à la fois des cultures et des ruminants.
 
-Les parts conservent le total de chaque pays. La partie qui tombe sur des cultures non alimentaires est laissée hors du modèle : les fibres, le tabac, le caoutchouc, et 85 % du coton-graine (sa fibre).
+La somme des parts est égale au total de chaque pays. La partie qui tombe sur des cultures non alimentaires est laissée hors du modèle : les fibres, le tabac, le caoutchouc, et 85 % du coton-graine (sa fibre).
 
 ### Élevage
 
@@ -153,7 +153,7 @@ Triturer une graine oléagineuse donne de l'huile et du tourteau (la farine donn
 
 Le reste est la part du tourteau. Elle est écrite par pays et par oléagineux dans `oilcake` de `intensities.json`, en kg de chaque gaz par an l'année de référence. Les huiles de soja, de tournesol, de colza et des autres oléagineux prennent les valeurs de Poore et Nemecek (niveau 4), qui partagent déjà la culture avec le tourteau selon leur valeur. La part de leur tourteau est aussi écrite dans `oilcake`.
 
-Le modèle ajoute les émissions des tourteaux aux émissions agricoles de chaque pays. Il les fait varier comme les terres du tourteau : avec la production des groupes animaux qui le mangent. Un régime avec moins d'animaux les supprime donc. Une pratique agricole les réduit comme elle réduit l'intensité de l'oléagineux lui-même.
+Le modèle ajoute les émissions des tourteaux aux émissions agricoles de chaque pays. Le modèle fait varier les émissions des tourteaux comme les terres du tourteau : avec la production des groupes animaux qui le mangent. Un régime avec moins d'animaux les supprime donc. Une pratique agricole les réduit comme elle réduit l'intensité de l'oléagineux lui-même.
 
 ### Les coproduits sans émissions propres
 
@@ -163,7 +163,7 @@ Les abats comestibles et les graisses animales crues ne sont pas non plus transf
 
 ## Poissons et fruits de mer
 
-Les émissions de FAOSTAT ne couvrent ni la pêche ni l'aquaculture, et HESTIA n'a pas d'agrégations aquatiques. Les produits de la mer sont donc fixés au niveau 4 d'après deux études : Parker et al. (2018) pour le carburant de la pêche, et MacLeod et al. (2020) pour le N₂O de l'eau et l'énergie de l'aquaculture. Les deux sont combinées selon la pêche et l'aquaculture de chaque groupe d'espèces dans chaque pays, d'après FishStat de la FAO. À défaut, un produit prend un substitut (niveau 5) ou la médiane du groupe (niveau 6).
+Les émissions de FAOSTAT ne couvrent ni la pêche ni l'aquaculture, et HESTIA n'a pas d'agrégations aquatiques. Les produits de la mer sont donc fixés au niveau 4 d'après deux études : Parker et al. (2018) pour le carburant de la pêche, et MacLeod et al. (2020) pour le N₂O de l'eau et l'énergie de l'aquaculture. Les deux sont combinées selon la pêche et l'aquaculture de chaque groupe d'espèces dans chaque pays, d'après FishStat de la FAO. Quand ce mélange n'est pas possible, un produit prend un substitut (niveau 5) ou la médiane du groupe (niveau 6).
 
 Le carburant et l'électricité ne comptent que dans le périmètre du berceau à la sortie de ferme, comme pour les fermes. Les poissons sauvages n'ont donc pas d'émissions à la ferme. La page [Poissons et fruits de mer](#method-seafood) donne la méthode, les facteurs et les vérifications.
 
@@ -202,7 +202,7 @@ Aucune source nationale n'a été trouvée sur le taux d'exploitation des bovins
 
 ### Ce que change le seuil
 
-Le seuil change la base, mais à peine l'effet d'un changement de régime. Un troupeau compté comme non élevé pour l'alimentation sort à la fois des émissions des produits et de ce que le changement peut éviter. Construit avec chaque seuil, sur SSP2-4.5 avec les options par défaut :
+Le seuil change la base, mais à peine l'effet d'un changement de régime. Un troupeau compté comme non élevé pour l'alimentation est exclu à la fois des émissions des produits et de ce qu'un changement peut éviter. Le tableau donne les résultats d'une construction avec chaque seuil, sur SSP2-4.5 avec les options par défaut :
 
 | Seuil de taux d'exploitation | Base hors alimentation, Mt CO₂e | Inde | Niger | Éthiopie | Mali | Changement complet : émissions évitées, Gt CO₂e | Changement complet : réchauffement évité en 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -215,9 +215,9 @@ Un demi-changement évite la moitié (de 2,51 à 2,56 Gt CO₂e, de 0,133 à 0,1
 
 ### Les limites de la règle
 
-- Les exportations d'animaux vivants que FAOSTAT n'enregistre pas ressemblent encore à des animaux qui ne sont pas élevés pour l'alimentation. Le commerce sur pied à travers le Sahel n'est souvent pas enregistré.
+- Les exportations d'animaux vivants que FAOSTAT n'enregistre pas ressemblent encore à des animaux qui ne sont pas élevés pour l'alimentation. Le commerce d'animaux vivants à travers le Sahel n'est souvent pas enregistré.
 - Les abattages que FAOSTAT n'enregistre pas (les buffles du Brésil) ont le même effet.
-- Les animaux de trait d'un pays qui abat aussi beaucoup de bovins ne sont pas vus.
+- La règle ne détecte pas les animaux de trait d'un pays qui abat aussi beaucoup de bovins.
 - Un bœuf de travail et un veau comptent pareil par tête.
 
 Aucun domaine de FAOSTAT ne compte les animaux de trait. La règle n'utilise donc que les cheptels, les animaux traits et abattus, et le commerce d'animaux vivants.
@@ -289,7 +289,7 @@ Le lait n'a pas de substitut : aucun autre produit n'est un équivalent honnête
 
 ## Vérifications par rapport aux totaux de FAOSTAT
 
-Un test recalcule les émissions mondiales à partir des fichiers produits, et les compare aux totaux mondiaux de FAOSTAT pour les mêmes processus en 2023. Le méthane est à quelques pour cent près ; le N₂O est plus élevé, et c'est le CO₂ qui diffère le plus, pour les raisons données plus bas.
+Un test recalcule les émissions mondiales à partir des fichiers produits, et les compare aux totaux mondiaux de FAOSTAT pour les mêmes processus en 2023. Le méthane est à quelques pour cent près. Le N₂O est plus élevé, et c'est le CO₂ qui diffère le plus, pour les raisons données plus bas.
 
 | | Planetshift, test | FAOSTAT | Tolérance | Planetshift avec les tourteaux, comme les compte l'appli |
 | --- | --- | --- | --- | --- |
@@ -319,7 +319,7 @@ Le N₂O agricole direct était de 6,1 Mt en 2020 (3,9 Tg N, Tian et al., 2024).
 
 Le méthane du riz est de 22,6 Mt dans le modèle, contre 24,9 Mt dans FAOSTAT pour 2023 et 32 (25–37) Tg dans le Global Methane Budget. L'essentiel de l'écart vient de l'Inde.
 
-L'intensité de l'Inde est celle de HESTIA (niveau 1) : 16,7 kg de méthane dû à l'inondation par tonne de paddy, et 17,1 kg avec le reste. Celle de FAOSTAT est de 24,6 kg (5,08 Mt pour 206,7 Mt de paddy). Les deux sont par tonne de paddy, l'unité du riz des bilans : l'écart n'est donc pas une erreur de conversion. Par hectare, HESTIA donne environ 72 kg de méthane et FAOSTAT environ 106.
+L'intensité de l'Inde est celle de HESTIA (niveau 1) : 16,7 kg de méthane dû à l'inondation par tonne de paddy, et 17,1 kg avec le reste. Celle de FAOSTAT est de 24,6 kg (5,08 Mt pour 206,7 Mt de paddy). Les deux sont par tonne de paddy, l'unité qu'utilisent les bilans pour le riz : l'écart n'est donc pas une erreur de conversion. Par hectare, HESTIA donne environ 72 kg de méthane et FAOSTAT environ 106.
 
 Le modèle de HESTIA applique l'affinement de 2019 du GIEC aux régimes hydriques et aux amendements de ses données sur le riz indien. FAOSTAT applique la méthode de niveau 1 du GIEC avec ses propres hypothèses sur les régimes hydriques. La différence tient à la méthode : la valeur de HESTIA est donc gardée, comme le niveau le mieux documenté. Avec l'intensité de FAOSTAT pour l'Inde, le total mondial serait d'environ 24,1 Mt.
 

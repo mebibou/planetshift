@@ -1,6 +1,6 @@
 # Causes du réchauffement climatique
 
-Cette page explique quelle part du réchauffement depuis 1850 vient de chaque cause, et comment un modèle climatique la calcule. L'agriculture a causé environ 18 % du réchauffement sur 2015–2024, et 28 % avec l'usage des terres. Les combustibles fossiles et l'industrie en causent le plus, et la pollution de l'air en masque une partie en refroidissant.
+L'agriculture a causé environ 18 % du réchauffement sur 2015–2024, et 28 % avec l'usage des terres. Les combustibles fossiles et l'industrie en causent le plus. La pollution de l'air refroidit la planète, ce qui masque une partie du réchauffement.
 
 ## Ce que montre le graphique
 
@@ -13,15 +13,15 @@ Cette page explique quelle part du réchauffement depuis 1850 vient de chaque ca
 - les facteurs naturels : le soleil et les volcans ;
 - les autres émissions humaines.
 
-Après aujourd'hui, la bande de chaque cause montre ce qu'il en reste une fois que les leviers choisis ont agi sur elle. La bande sans les leviers est tracée en pointillés. Ce qui a causé le réchauffement continue de le causer, et chaque levier réduit une cause ou plusieurs (voir [Leviers](#method-levers)).
+Après aujourd'hui, la bande de chaque cause montre ce qu'il en reste une fois que les leviers qu'on a choisis ont agi sur elle. La bande sans les leviers est tracée en pointillés. Les causes du réchauffement passé sont celles qui continuent de le causer, et chaque levier réduit une cause ou plusieurs (voir [Leviers](#method-levers)).
 
-Un sélecteur au-dessus du graphique, *Tous les gaz*, *CO₂*, *Méthane* et *N₂O*, montre un gaz à effet de serre à la fois : quelle part du réchauffement de ce gaz vient de chaque cause, avec et sans les leviers (voir « Chaque gaz par cause » plus bas). La pollution de l'air et les facteurs naturels ne sont pas des gaz à effet de serre : ils n'apparaissent que sous *Tous les gaz*.
+Un sélecteur au-dessus du graphique, *Tous les gaz*, *CO₂*, *Méthane* et *N₂O*, montre un gaz à effet de serre à la fois. Pour ce gaz, il montre quelle part du réchauffement vient de chaque cause, avec et sans les leviers (voir « Chaque gaz par cause » plus bas). La pollution de l'air et les facteurs naturels ne sont pas des gaz à effet de serre : ils n'apparaissent que sous *Tous les gaz*.
 
 ## Attribution, et non corrélation
 
 Les émissions et la température mondiale ont toutes deux augmenté depuis 1850. Presque tout ce que font les humains a augmenté aussi : la population, la consommation d'énergie, le ciment, les voitures. Deux courbes qui montent ne disent rien de la part de l'une dans l'autre.
 
-Il faut poser la question à un modèle de la réponse du climat aux émissions. De combien le monde serait-il plus frais aujourd'hui si une cause n'avait jamais rien émis, tout le reste étant égal ? C'est une attribution, et c'est ce que montre le graphique.
+Pour y répondre, il faut un modèle de la réponse du climat aux émissions. De combien le monde serait-il plus frais aujourd'hui si une cause n'avait jamais rien émis, tout le reste étant égal ? C'est une attribution, et c'est ce que montre le graphique.
 
 Le modèle est FaIR, le modèle climatique décrit sur la [page sur la température](#method-climate). Il est lancé une fois avec toutes les émissions, puis à nouveau sans les émissions d'une cause. La contribution d'une cause une année donnée est l'écart entre les deux températures.
 
@@ -69,9 +69,9 @@ Sur SSP2-4.5, médiane et intervalle de 5 à 95 % de la moyenne sur 2015–2024,
 | Agriculture | 0,06 °C (0,04–0,09) | 0,12 °C (0,08–0,18) |
 | Autres sources et interactions | 0,03 °C (0,02–0,04) | 0,05 °C (0,03–0,07) |
 
-L'essentiel du réchauffement dû à l'agriculture vient du méthane, et l'essentiel du reste du N₂O ; son CO₂ est faible. L'usage des terres n'émet ici que du CO₂ : il n'apparaît que sous CO₂.
+L'essentiel du réchauffement dû à l'agriculture vient du méthane, et l'essentiel du reste du N₂O. Son CO₂ est faible. L'usage des terres n'émet ici que du CO₂ : il n'apparaît que sous CO₂.
 
-Les *autres sources et interactions* du méthane sont importantes. Elles comprennent le méthane des déchets et des autres sources qu'aucune cause ne nomme, comme la combustion de biomasse, et deux effets du retrait de tout un gaz d'un coup. D'abord, le méthane raccourcit sa propre durée de vie quand il diminue : retirer tout le méthane refroidit davantage que retirer tour à tour la part de chaque cause. Ensuite, l'agriculture émettait déjà du méthane avant 1850, et ce réchauffement fait partie de la référence 1850–1900 (voir « La part de l'agriculture »).
+Les *autres sources et interactions* du méthane sont importantes. Elles comprennent le méthane des déchets et des autres sources qu'aucune cause ne couvre, comme la combustion de biomasse. Elles comprennent aussi deux effets du retrait de tout un gaz d'un coup. D'abord, la durée de vie du méthane raccourcit quand il y en a moins : retirer tout le méthane refroidit davantage que retirer tour à tour la part de chaque cause. Ensuite, l'agriculture émettait déjà du méthane avant 1850, et ce réchauffement fait partie de la référence 1850–1900 (voir « La part de l'agriculture »).
 
 ## Pourquoi la pollution de l'air refroidit
 
@@ -81,22 +81,22 @@ L'AR6 du GIEC (GT1, Résumé à l'intention des décideurs A.1.3 et chapitre 7) 
 
 Dans les simulations FaIR utilisées ici, le refroidissement est plus fort : 0,73 °C (0,27–1,43) sur 2015–2024. Il y a deux raisons. Retirer tous les aérosols d'un coup compte tout leur effet, y compris la partie la plus raide de la réponse des nuages. Et l'ensemble de FaIR couvre une large gamme d'intensités des aérosols.
 
-Le refroidissement diminue à mesure que la qualité de l'air s'améliore, ce qui démasque du réchauffement. Les contrôles de la Chine sur le soufre des centrales dans les années 2010 l'ont réduit. La limite de 2020 sur le soufre du carburant des navires (OMI 2020) aussi. Les scénarios le réduisent encore à mesure que l'usage des combustibles fossiles recule.
+Le refroidissement diminue à mesure que la qualité de l'air s'améliore, et il masque donc moins de réchauffement. Les contrôles de la Chine sur le soufre des centrales dans les années 2010 l'ont réduit. La limite de 2020 sur le soufre du carburant des navires (OMI 2020) aussi. Les scénarios le réduisent encore à mesure que l'usage des combustibles fossiles recule.
 
 Les scénarios étalent la baisse du transport maritime sur 2015–2020, et FaIR compte une tonne de soufre des navires comme n'importe quelle autre. La marche brutale de 2020 n'est donc pas dans ces chiffres. Les études l'estiment à 0,03–0,08 °C de réchauffement supplémentaire sur les années 2020 (voir la [page sur la température](#method-climate), « Pourquoi 2023 et 2024 ont été si chaudes »).
 
 ### Ce que les leviers font à la pollution de l'air
 
-Aucun levier de Planetshift ne vise la pollution de l'air. Les leviers d'énergie, de chauffage et d'industrie la réduisent pourtant, avec le combustible qu'ils ne brûlent plus :
+Aucun levier de Planetshift ne vise la pollution de l'air. Les leviers d'énergie, de chauffage et d'industrie la réduisent pourtant, parce qu'ils réduisent le combustible brûlé :
 
 - moins de soufre et de carbone organique, qui refroidissent ;
 - moins de carbone noir, qui réchauffe ;
 - moins de NOx (oxydes d'azote), dont l'ozone réchauffe et qui refroidissent en raccourcissant la durée de vie du méthane ;
 - moins de monoxyde de carbone et de COV (composés organiques volatils), dont l'ozone réchauffe.
 
-Quand ces leviers agissent, le refroidissement de la bande de la pollution de l'air diminue donc après aujourd'hui : c'est le réchauffement qu'elle ne masque plus. Les leviers réduisent aussi le CO₂ émis et le méthane qui fuit pendant la production du combustible, ce qui fait diminuer la bande des combustibles fossiles.
+Quand ces leviers agissent, le refroidissement de la bande de la pollution de l'air diminue donc après aujourd'hui. Cette baisse est le réchauffement que la pollution de l'air ne masque plus. Les leviers réduisent aussi le CO₂ émis et le méthane qui fuit pendant la production du combustible, ce qui fait diminuer la bande des combustibles fossiles.
 
-Avec tous les leviers d'énergie, de chauffage et d'industrie en entier sur SSP2-4.5, le refroidissement perdu égale à peu près les gains vers 2030. Ensuite, les gains l'emportent. En 2050, −0,07 °C de refroidissement est perdu, contre +0,12 °C gagnés sur l'approvisionnement en combustible, le méthane et le N₂O, et +0,26 °C sur le CO₂ des leviers eux-mêmes (voir [Énergie et transport](#method-sectors)). Dans la répartition sous le graphique, ces leviers apparaissent sous *pollution de l'air* avec le réchauffement qu'ils y ajoutent.
+Avec tous les leviers d'énergie, de chauffage et d'industrie en entier sur SSP2-4.5, le refroidissement perdu égale à peu près les gains vers 2030. Ensuite, les gains sont plus grands. En 2050, −0,07 °C de refroidissement est perdu. En face, l'approvisionnement en combustible, le méthane et le N₂O donnent +0,12 °C, et le CO₂ des leviers eux-mêmes +0,26 °C (voir [Énergie et transport](#method-sectors)). Dans la répartition sous le graphique, ces leviers apparaissent sous *pollution de l'air* avec le réchauffement qu'ils y ajoutent.
 
 ## Comment chaque cause est calculée
 
@@ -104,20 +104,20 @@ FaIR est lancé avec les 841 membres de son ensemble calibré sur toutes les ém
 
 Ce que chaque cause retire :
 
-- **Combustibles fossiles et industrie** : le CO₂ fossile et industriel de FaIR, moins le CO₂ de l'urée et du chaulage de l'agriculture, pour qu'aucune tonne ne soit retirée deux fois. Aussi le CH₄ (méthane) et le N₂O des catégories *énergie* (1) et *procédés industriels* (2) du GIEC : tirés de PRIMAP-hist jusqu'en 2023, puis le CH₄ *Fossil and Industrial* (moins ses déchets) et le N₂O de chaque scénario, mis à l'échelle pour rejoindre PRIMAP-hist en 2023.
+- **Combustibles fossiles et industrie** : le CO₂ fossile et industriel de FaIR, moins le CO₂ de l'urée et du chaulage de l'agriculture, pour qu'aucune tonne ne soit retirée deux fois. Aussi le CH₄ (méthane) et le N₂O des catégories *énergie* (1) et *procédés industriels* (2) du GIEC. Jusqu'en 2023, ils viennent de PRIMAP-hist. Ensuite, ils viennent du CH₄ *Fossil and Industrial* (moins ses déchets) et du N₂O de chaque scénario, mis à l'échelle pour rejoindre PRIMAP-hist en 2023.
 - **Agriculture** : le CO₂, le CH₄ et le N₂O de la catégorie *agriculture* du GIEC (M.AG : fermentation entérique et effluents d'élevage, riz, sols cultivés et engrais, brûlage des résidus, urée et chaulage). Pour 1750–2023, ils viennent de PRIMAP-hist v2.8, total mondial, scénario des données déclarées par les pays (HISTCR). À partir de 2024, ils suivent la trajectoire agricole propre à chaque scénario (le CH₄ *AFOLU|Agriculture* et le N₂O *AFOLU* de RCMIP), mise à l'échelle pour rejoindre PRIMAP-hist en 2023. Les scénarios n'ont pas de variable pour le CO₂ de l'urée et du chaulage : il est maintenu à son niveau de 2023.
 - **Usage des terres** : tout le CO₂ d'usage des terres de FaIR (déforestation et autres changements d'usage des terres), avec le changement d'albédo de surface que FaIR en déduit. Son historique dans RCMIP vient du Global Carbon Budget 2016 à partir de 1959, de PRIMAP-hist v1.0 pour 1850–1958 et d'une rétro-extrapolation avant. Le CO₂ d'usage des terres de chaque SSP prend la suite. La catégorie LULUCF propre à PRIMAP-hist n'a pas été utilisée. Elle est construite à partir d'inventaires nationaux qui comptent l'absorption des forêts gérées : elle devient donc négative ces dernières décennies et ne mesure pas le changement d'usage des terres.
 - **Pollution de l'air (refroidit)** : les aérosols et leurs précurseurs tels que FaIR les simule, de toutes les sources : dioxyde de soufre, carbone noir et organique, ammoniac et oxydes d'azote. Chacun est ramené à ses émissions préindustrielles (1750) plutôt qu'à zéro.
-- **Facteurs naturels (soleil et volcans)** : FaIR lancé avec toutes les émissions humaines maintenues à leur niveau de 1750, si bien que seuls les forçages solaire et volcanique font varier le climat, par rapport à sa propre moyenne de 1850–1900. Les creux qui suivent le Krakatoa (1883), l'Agung (1963), El Chichón (1982) et le Pinatubo (1991) apparaissent ici, comme naturels, et non dans une cause humaine.
+- **Facteurs naturels (soleil et volcans)** : FaIR lancé avec toutes les émissions humaines maintenues à leur niveau de 1750, si bien que seuls les forçages solaire et volcanique font varier le climat, par rapport à sa propre moyenne de 1850–1900. Les creux qui suivent le Krakatoa (1883), l'Agung (1963), El Chichón (1982) et le Pinatubo (1991) apparaissent ici comme des effets naturels, et non dans une cause humaine.
 - **Autres émissions humaines** : ce qui reste, pour que les causes fassent le total. On y trouve le méthane des déchets et des autres sources non nommées ci-dessus, les gaz fluorés et les autres gaz mineurs, les précurseurs d'ozone que sont le monoxyde de carbone et les composés organiques volatils, et les interactions entre les causes.
 
 La médiane des *autres émissions humaines* est fixée pour que les médianes fassent exactement la médiane du total. Sa fourchette de 5 à 95 % est calculée membre par membre.
 
 ### Pourquoi les causes ne s'additionnent pas tout à fait
 
-Retirer les causes une par une ne s'additionne pas tout à fait. Avec tout le reste présent, la durée de vie du méthane et les puits de CO₂ réagissent un peu différemment.
+Les effets du retrait des causes une par une ne s'additionnent pas tout à fait à l'effet de leur retrait ensemble. Avec tout le reste présent, la durée de vie du méthane et les puits de CO₂ réagissent un peu différemment.
 
-Retirer ensemble les trois causes liées aux gaz à effet de serre (combustibles fossiles et industrie, agriculture, usage des terres) donne 0,03 °C de réchauffement en plus aujourd'hui (0,04 °C en 2050) que la somme des retraits un par un. La pollution de l'air interagit davantage avec les autres causes. Ses oxydes d'azote raccourcissent la durée de vie du méthane, et le monde plus frais qu'elle produit absorbe plus de CO₂.
+Retirer ensemble les trois causes liées aux gaz à effet de serre (combustibles fossiles et industrie, agriculture, usage des terres) donne 0,03 °C de réchauffement en plus aujourd'hui (0,04 °C en 2050) que leurs retraits un par un additionnés. La pollution de l'air interagit davantage avec les autres causes. Ses oxydes d'azote raccourcissent la durée de vie du méthane, et le monde plus frais qu'elle produit absorbe plus de CO₂.
 
 Ces interactions se trouvent dans les *autres émissions humaines*. C'est pourquoi cette bande est plus large que ne le voudraient les seuls gaz mineurs.
 
@@ -136,13 +136,13 @@ Une partie de ce que changent les leviers de l'énergie n'est pas un gaz à effe
 ## Comparaison avec d'autres études
 
 - **Élevage, 2010.** Une étude de 2018 a trouvé que le CH₄ et le N₂O directs de l'élevage causaient environ 19 % du réchauffement modélisé en 2010. Ici, toute l'agriculture cause environ 19 % du réchauffement de 2010–2019.
-- **Méthane agricole, 2010–2019.** Un rapport de 2024 utilisait une calibration plus ancienne de FaIR (1.3.1). Il attribuait au seul méthane agricole environ 0,19 °C sur environ 1,06 °C de réchauffement en 2010–2019, soit environ 40 % des 0,5 °C dus à l'ensemble du méthane. Ici, le méthane, le N₂O et le CO₂ de l'agriculture donnent ensemble 0,20 °C. La différence vient surtout de la calibration. La v1.4.1 attribue à toutes les émissions de méthane environ 0,43 °C de réchauffement en 2010–2019 (une vérification sur 100 membres), contre 0,49 °C pour la v1.3.1 et 0,5 °C (0,3 à 0,8) dans l'évaluation de l'AR6. Les 0,10 °C déjà comptés en 1850–1900 retirent aussi davantage à l'agriculture qu'aux autres causes. Un test vérifie que le réchauffement dû à l'agriculture sur 2010–2019 est compris entre 0,12 et 0,30 °C et entre 12 % et 30 % du total.
+- **Méthane agricole, 2010–2019.** Un rapport de 2024 utilisait une calibration plus ancienne de FaIR (1.3.1). Il attribuait au seul méthane agricole environ 0,19 °C sur environ 1,06 °C de réchauffement en 2010–2019, soit environ 40 % des 0,5 °C dus à l'ensemble du méthane. Ici, le méthane, le N₂O et le CO₂ de l'agriculture donnent ensemble 0,20 °C. La différence vient surtout de la calibration. La v1.4.1 attribue à toutes les émissions de méthane environ 0,43 °C de réchauffement en 2010–2019 (une vérification sur 100 membres), contre 0,49 °C pour la v1.3.1 et 0,5 °C (0,3 à 0,8) dans l'évaluation de l'AR6. Les 0,10 °C déjà dans la référence 1850–1900 réduisent aussi davantage le chiffre de l'agriculture que celui des autres causes. Un test vérifie que le réchauffement dû à l'agriculture sur 2010–2019 est compris entre 0,12 et 0,30 °C et entre 12 % et 30 % du total.
 - **L'alimentation, d'ici 2100.** Une étude de 2023 a gardé les régimes actuels par personne et fait croître la consommation alimentaire avec la population. Elle a trouvé que cela « pourrait ajouter près de 1 °C au réchauffement d'ici 2100 » par les émissions postérieures à 2020 (de 0,7 à 0,9 °C dans sa prépublication). Les trois quarts venaient de la viande de ruminants, des produits laitiers et du riz, et plus de 55 % étaient évitables. Calculé de la même façon (émissions de l'agriculture et de l'usage des terres retirées à partir de 2020 seulement), Planetshift trouve 0,31 °C (0,22–0,45) sur SSP2-4.5 et 0,54 °C (0,40–0,76) sur SSP3-7.0. L'écart est attendu, pour trois raisons :
   - cette étude compte toute la chaîne alimentaire, dont environ 5 milliards de tonnes par an de CO₂ de l'énergie, de la transformation et du transport, qui ici se trouvent sous les combustibles fossiles ;
   - elle garde les régimes par personne fixes pendant que la population augmente, alors que le méthane agricole de SSP2-4.5 n'augmente que de 4 % d'ici 2050 et que son CO₂ d'usage des terres tombe presque à zéro d'ici 2100 ;
   - elle utilise un autre modèle climatique (MAGICC6).
 
-  SSP3-7.0, le plus proche de sa référence à forte population, s'en approche le plus. Un test vérifie que le chiffre de SSP2-4.5 se situe entre le quart de sa borne basse et sa borne haute, et que celui de SSP3-7.0 est plus élevé.
+  SSP3-7.0, le plus proche de la référence à forte population de l'étude, s'en approche le plus. Un test vérifie que le chiffre de SSP2-4.5 se situe entre le quart de sa borne basse et sa borne haute, et que celui de SSP3-7.0 est plus élevé.
 
 ## Hypothèses
 
@@ -154,8 +154,8 @@ Une partie de ce que changent les leviers de l'énergie n'est pas un gaz à effe
 - La pollution de l'air comprend le dioxyde de soufre, le carbone noir et organique, l'ammoniac et les oxydes d'azote de toutes les sources, ammoniac agricole compris, ramenés à leurs niveaux de 1750. Le monoxyde de carbone et les composés organiques volatils restent dans les *autres émissions humaines*.
 - La variation de la pollution de l'air due aux leviers est comptée avec le forçage par kg de FaIR et le méthane que laissent les NOx et les COV. C'est la même physique, linéarisée autour des émissions du scénario. Le monoxyde de carbone et les COV des leviers comptent malgré tout dans la pollution de l'air, comme une partie de ce qu'émet la combustion du combustible. C'est un petit décalage avec la bande.
 - Les facteurs naturels sont une simulation à part avec le seul forçage naturel, pas un retrait. Les *autres émissions humaines* sont le total moins chaque cause nommée et les facteurs naturels.
-- Un retrait ne fait jamais passer les émissions d'une espèce chimique sous zéro, sauf pour le CO₂. Le retrait de carbone des scénarios fait passer le CO₂ net sous zéro (le CO₂ fossile sur SSP1-2.6 à partir de 2079), et retirer une cause laisse ce retrait en place : le monde sans agriculture le garde, et le monde sans combustibles fossiles ni industrie ne garde que le CO₂ de l'agriculture.
-- Les parts de chaque gaz viennent des mêmes émissions que les causes : un gaz n'a pas d'autre répartition par source que celle que font les causes.
+- Un retrait ne fait jamais passer les émissions d'une espèce chimique sous zéro, sauf pour le CO₂. Le retrait de carbone des scénarios fait passer le CO₂ net sous zéro (le CO₂ fossile sur SSP1-2.6 à partir de 2079). Retirer une cause laisse ce retrait en place. Le monde sans agriculture le garde, et le monde sans combustibles fossiles ni industrie ne garde que le CO₂ de l'agriculture.
+- Les parts de chaque gaz viennent des mêmes émissions que les causes. Un gaz n'a pas d'autre répartition par source que celle que font les causes.
 - Les simulations avec toutes les émissions sont aussi les températures des scénarios de la [page sur la température](#method-climate).
 
 ## Sources

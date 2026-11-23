@@ -1,14 +1,14 @@
 # Intensités d'émission tirées d'ACV publiées
 
-Cette page explique où Planetshift trouve les émissions d'un aliment quand HESTIA n'a pas de données pour lui. Il peut alors utiliser une méta-analyse publiée d'analyses de cycle de vie : Poore & Nemecek (2018), la plus vaste étude de ce type, qui couvre environ 38 700 fermes dans 119 pays. L'étude donne une moyenne mondiale par aliment. Avec FAOSTAT, elle fournit les émissions de la viande, du lait et des œufs, que HESTIA ne couvre pas encore.
+Quand HESTIA n'a pas de données pour un aliment, Planetshift peut prendre ses émissions dans une méta-analyse publiée d'analyses de cycle de vie : Poore & Nemecek (2018), la plus vaste étude de ce type, qui couvre environ 38 700 fermes dans 119 pays. L'étude donne une moyenne mondiale par aliment. Avec FAOSTAT, elle fournit les émissions de la viande, du lait et des œufs, que HESTIA ne couvre pas encore.
 
 ## Ce qu'apporte l'étude
 
-Une analyse de cycle de vie (ACV) compte les émissions d'un produit à chaque étape, de la fabrication des intrants jusqu'au magasin. Une intensité d'émission est la quantité de chaque gaz à effet de serre émise pour produire une tonne d'un aliment. Planetshift prend chaque intensité dans la meilleure source disponible, en six étapes appelées niveaux (voir [Émissions](#method-emissions)). Poore & Nemecek forment le niveau 4 : ils servent quand HESTIA (niveaux 1 et 2) et FAOSTAT (niveau 3) n'ont pas de valeur.
+Une analyse de cycle de vie (ACV) compte les émissions d'un produit à chaque étape, de la fabrication des intrants jusqu'au magasin. Une intensité d'émission est la quantité de chaque gaz à effet de serre émise pour produire une tonne d'un aliment. Planetshift prend chaque intensité dans la meilleure source disponible, en six étapes appelées niveaux (voir [Émissions](#method-emissions)). Poore & Nemecek forment le niveau 4. Ils servent quand HESTIA (niveaux 1 et 2) et FAOSTAT (niveau 3) n'ont pas de valeur.
 
 Leurs valeurs sont des moyennes mondiales : chaque ligne a donc la zone `World`. Planetshift n'utilise que les émissions de la ferme. Il répartit le chiffre unique en équivalent CO₂ de l'étude entre les trois gaz, parce que le modèle climatique a besoin de chaque gaz séparément. Il convertit aussi quelques unités de l'étude vers celles des bilans alimentaires actuels.
 
-Le code est `pipeline/planetshift_pipeline/sources/literature.py` ; la table des produits est `pipeline/literature_terms.csv`.
+Le code est `pipeline/planetshift_pipeline/sources/literature.py`. La table des produits est `pipeline/literature_terms.csv`.
 
 ## Les données
 
@@ -39,10 +39,10 @@ Seule l'étape agricole est utilisée :
 - L'alimentation animale est laissée de côté, parce que Planetshift la compte par les cultures qu'elle réduit.
 - La transformation, le transport, l'emballage et la distribution ont lieu après la sortie de ferme (le moment où le produit quitte la ferme) : ils sont aussi laissés de côté.
 
-Planetshift a deux périmètres, choisis dans les Options (voir [Émissions](#method-emissions)). Le périmètre à la ferme compte ce qui se passe sur la ferme. Le périmètre du berceau à la sortie de ferme compte aussi la fabrication des intrants de la ferme, comme les engrais. L'étape agricole de l'étude donne les deux périmètres ainsi :
+Planetshift a deux périmètres, choisis dans *Autres options* (voir [Émissions](#method-emissions)). Le périmètre à la ferme compte ce qui se passe sur la ferme. Le périmètre du berceau à la sortie de ferme compte aussi la fabrication des intrants de la ferme, comme les engrais. L'étape agricole de l'étude donne les deux périmètres ainsi :
 
 - `cradleToFarmGate` = l'étape agricole. Pour les cultures, elle comprend déjà la production des intrants autres que l'alimentation animale.
-- `farmGate` = l'étape agricole × la part des émissions à la ferme dans les émissions du berceau à la sortie de ferme de HESTIA pour le même produit (en CO₂e, avec les facteurs ci-dessous). Pour les cultures, la répartition de HESTIA entre émissions à la ferme et émissions de la production des intrants est la seule disponible ; Poore & Nemecek ne la publient pas.
+- `farmGate` = l'étape agricole × la part des émissions à la ferme dans les émissions du berceau à la sortie de ferme de HESTIA pour le même produit (en CO₂e, avec les facteurs ci-dessous). Pour les cultures, la répartition de HESTIA entre émissions à la ferme et émissions de la production des intrants est la seule disponible. Poore & Nemecek ne la publient pas.
 - Pour les produits animaux, l'étape d'élevage se passe presque entièrement à la ferme (fermentation entérique et effluents) : les deux périmètres prennent donc toute l'étape agricole. Les émissions de la fertilisation des pâturages et de l'énergie utilisée sur la ferme sont gardées dans les deux.
 
 ## Répartir le CO₂e entre les gaz
@@ -55,13 +55,13 @@ $$
 \text{kg de gaz} = \text{CO}_2\text{e agricole} \times \frac{\text{CO}_2\text{e du gaz dans le profil}}{\text{CO}_2\text{e total du profil}} \div \text{GWP du gaz}
 $$
 
-Remultiplié par 34 et 298, le résultat redonne exactement la valeur de Poore & Nemecek.
+En remultipliant chaque gaz par 34 et 298, on retrouve exactement la valeur de Poore & Nemecek.
 
-**Exemple.** La viande bovine a une valeur de l'étape agricole de 29 040 kg CO₂e par tonne (tableau ci-dessous). Après la répartition, elle porte 703 kg de CH₄ et 17,3 kg de N₂O par tonne. Remultipliés, 703 × 34 ≈ 23 900 et 17,3 × 298 ≈ 5 160, qui font ensemble les 29 040 kg CO₂e de l'étude, aux arrondis du tableau près.
+**Exemple.** La viande bovine a une valeur de l'étape agricole de 29 040 kg CO₂e par tonne (tableau ci-dessous). Après la répartition, elle porte 703 kg de CH₄ et 17,3 kg de N₂O par tonne. Remultipliés, 703 × 34 ≈ 23 900 et 17,3 × 298 ≈ 5 160. Ensemble, ils font les 29 040 kg CO₂e de l'étude, aux arrondis du tableau près.
 
 Les profils viennent de deux sources :
 
-- **Cultures.** Le profil est celui des intensités HESTIA du même produit des bilans (`hestia:<code>`), tiré de son agrégation Monde s'il y en a une, sinon de la moyenne de ses pays. Quand HESTIA n'a pas le produit, on nomme à la place le profil d'un produit proche :
+- **Cultures.** Le profil est celui des intensités HESTIA du même produit des bilans (`hestia:<code>`), tiré de son agrégation Monde s'il y en a une, sinon de la moyenne de ses pays. Quand HESTIA n'a pas le produit, on utilise à la place le profil d'un produit proche :
   - l'huile de palme prend celui du fruit du palmier à huile ;
   - l'huile de soja prend celui du soja ;
   - le thé prend celui du café ;
@@ -80,7 +80,7 @@ Les émissions de l'élevage selon FAOSTAT ne contiennent pas de CO₂ : les lig
 
 ## Unités
 
-Les unités de Poore & Nemecek sont celles des anciens bilans alimentaires de FAOSTAT (avant 2010). Elles diffèrent des actuelles pour deux produits. `kg_product_per_kg_item` les convertit :
+Les unités de Poore & Nemecek sont celles des anciens bilans alimentaires de FAOSTAT (avant 2010). Elles diffèrent des actuelles pour deux produits, le riz et les arachides. `kg_product_per_kg_item` convertit ces unités et les autres ci-dessous :
 
 - **Riz** : leur unité est le riz usiné. Les bilans actuels comptent le paddy, dont le riz usiné représente 66,7 %, d'où 0,667.
 - **Arachides** : leur unité est l'arachide décortiquée. Les bilans actuels les comptent en coque, dont les graines représentent 70 %, d'où 0,7.
@@ -102,7 +102,7 @@ Quand plusieurs produits partagent un produit des bilans, ils sont moyennés ave
 - **19 autres ont des lignes HESTIA pour certains pays mais pas d'agrégation Monde** : la ligne tirée de la littérature est donc leur seule valeur mondiale. Ce sont le riz, l'avoine, le seigle, les autres céréales, le manioc, les haricots, les pois, les autres légumineuses, les fruits à coque, les autres oléagineux, les tomates, les oignons, les autres légumes, les oranges, les citrons, les pommes, les autres fruits, le café et le cacao.
 - **Certains produits n'en ont pas** : l'orge, le millet, le sorgho, les patates douces, les ignames, le soja, les graines de tournesol, le colza, le sésame, les palmistes et les olives. Poore & Nemecek ne donnent l'orge que sous forme de bière, et le soja que sous forme de tofu, de boisson au soja et d'huile.
 
-Quelques valeurs (à la ferme, kg par tonne du produit des bilans) :
+Valeurs à la ferme de quelques produits, en kg par tonne du produit des bilans :
 
 | Produit | CO₂ | CH₄ | N₂O | CO₂e (AR5) |
 | --- | --- | --- | --- | --- |
@@ -128,7 +128,7 @@ Quelques valeurs (à la ferme, kg par tonne du produit des bilans) :
 - Aucune deuxième source de la littérature n'est utilisée :
   - Clune et al. (2017) compile pour l'essentiel les mêmes études, dans un article payant dont la licence des données n'a pas pu être confirmée.
   - Agribalyse ne décrit que la production française.
-  - Les produits que Poore & Nemecek n'ont pas (l'orge en grain, le soja, les graines de tournesol, le colza, le sésame, les olives, les patates douces, les ignames, le millet, le sorgho) sont pour l'essentiel couverts par les pays de HESTIA. Le reste est laissé aux niveaux des substituts et des médianes de groupe.
+  - Les produits que Poore & Nemecek n'ont pas (l'orge en grain, le soja, les graines de tournesol, le colza, le sésame, les olives, les patates douces, les ignames, le millet, le sorgho) sont pour l'essentiel couverts par les pays de HESTIA. Les autres prennent leurs valeurs dans les niveaux des substituts et des médianes de groupe.
 
 ## Sources
 

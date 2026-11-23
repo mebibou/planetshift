@@ -1,8 +1,8 @@
 # Feed: which animals eat which crops
 
-When fewer animal products are eaten, fewer animals are raised, and the crops grown to feed them are no longer needed. To know which crops fall, Planetshift needs to know which animals eat them. By default, the world's concentrate feed (the grain, oilseeds, pulses, roots and other crops fed to animals, as opposed to grass, hay and crop residues) is shared between the animal groups as published surveys of feed by species find, and each region's share follows what it produces.
+When fewer animal products are eaten, fewer animals are raised, and the crops grown to feed them are no longer needed. To work out which crops are no longer needed, Planetshift has to know which animals eat them. By default, the world's concentrate feed (the grain, oilseeds, pulses, roots and other crops fed to animals, as opposed to grass, hay and crop residues) is shared between the animal groups in the proportions that published surveys of feed by species report. Each region's share follows what it produces.
 
-The Food Balance Sheets say how much of each item is used as feed in each country, but not by which animals. Planetshift splits each feed item's feed use between the six animal groups, by region, in two ways. The reader can switch between them under Options.
+The Food Balance Sheets say how much of each item is used as feed in each country, but not by which animals. Planetshift splits each feed item's feed use between the six animal groups, by region, in two ways. You can switch between them under *Other options*.
 
 ## What is split
 
@@ -16,7 +16,7 @@ Every item with feed use somewhere in the world is split:
 
 Grass, hay, crop residues and oil cakes are not items of the Food Balance Sheets, so they are not in the split. Grass and residues are most of what ruminants eat.
 
-The shares are written for the world and for each M49 sub-region, the UN's grouping of countries into regions such as "Western Africa" (as in the country table, see [Data](#method-data)). For each method, region and item, the shares sum to 1 over the animal groups.
+The shares are written for the world and for each M49 sub-region. The M49 sub-regions are the UN's grouping of countries into regions such as "Western Africa", as in the country table (see [Data](#method-data)). For each method, region and item, the shares sum to 1 over the animal groups.
 
 ## Method 1, by species (the default)
 
@@ -52,26 +52,26 @@ For each region, the demand for a feed class by a group is the sum over the regi
 
 production × concentrate per tonne × the class's share of the ration
 
-The country's income level decides which value of concentrate per tonne applies. A feed item then goes to the groups in proportion to the demand for its class. Items whose class no ration has (nuts, spices, meat, for instance) use the species split.
+Which value of concentrate per tonne applies depends on the country's income level. A feed item then goes to the groups in proportion to the demand for its class. Items in a class that no ration includes (nuts, spices and meat, for instance) use the species split.
 
-These values give world totals of about 1.2 billion tonnes of concentrate feed. That matches the order of magnitude of the world's compound feed output, and their split between species is close to method 1's.
+These values give world totals of about 1.2 billion tonnes of concentrate feed. That is the same order of magnitude as the world's compound feed output. Their split between species is close to method 1's.
 
 ## Seafood
 
-Farmed fish and shrimp eat aquafeed made of grain, oilseeds and fishmeal. The balance sheets' feed use already includes it. In the split, seafood's production is each country's aquaculture of fed species from FAO FishStat, not its balance-sheet production, most of which is wild or unfed.
+Farmed fish and shrimp eat aquafeed made of grain, oilseeds and fishmeal. The balance sheets' feed use already includes it. For seafood, the split uses each country's aquaculture of fed species, from FAO FishStat. It does not use the balance-sheet production, because most of that is wild or unfed.
 
 - In method 1, seafood takes 5.5% of the world's concentrate feed. The other five groups keep their proportions in the remaining 94.5%: 11% becomes 10.4% for ruminant meat, and so on.
 - In method 2, farmed fish need 1.6 t of feed per tonne in high-income countries and 0.87 t elsewhere. The ration is 30% grain, 40% oilseeds, 5% pulses and 25% fish.
 
-Fish fed to animals go about 70% to aquaculture, 23% to pigs and 7% to poultry. For every other feed item, the five livestock groups keep the same shares relative to each other as before seafood was added. [Fish and seafood](#method-seafood) gives the sources.
+Of the fish fed to animals, about 70% goes to aquaculture, 23% to pigs and 7% to poultry. For every other feed item, the five livestock groups keep the same shares relative to each other as before seafood was added. [Fish and seafood](#method-seafood) gives the sources.
 
 ## Assumptions
 
-- The split is the same for every feed item in method 1, except the fish items, which have a split of their own. Maize and soybeans are therefore shared between species alike.
-- Concentrate feed per tonne and ration shares are rounded values in the spirit of GLEAM 2.0's regional results. They are not a copy of its tables, which are not published in this form. They are a starting point to review.
+- The split is the same for every feed item in method 1, except the fish items, which have a split of their own. Maize and soybeans are therefore shared between species in the same proportions.
+- Concentrate feed per tonne and ration shares are rounded values modelled on GLEAM 2.0's regional results. They are not a copy of its tables, which are not published in this form. They are a starting point, and should be reviewed.
 - Two income levels stand for the many production systems GLEAM distinguishes.
 - Regions without animal production (none at present) take the world shares.
-- Grass, crop residues and oil cakes are outside the balance sheets, so they are not split here. The land of the oilseeds crushed for cake, and of temporary meadows, follows the animals in [Land](#method-land), and so do the cake's emissions ([Emissions](#method-emissions)); permanent pasture follows the ruminants.
+- Grass, crop residues and oil cakes are outside the balance sheets, so they are not split here. The land of the oilseeds crushed for cake, and of temporary meadows, follows the animals in [Land](#method-land). So do the cake's emissions ([Emissions](#method-emissions)). Permanent pasture follows the ruminants.
 
 ## Where the code is
 
