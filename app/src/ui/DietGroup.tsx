@@ -5,6 +5,7 @@ import { formatPercent } from '../i18n/format';
 import type { T } from '../i18n/i18n';
 import type { Basis, Replacement, Scenario, Where } from '../model/api';
 import { Group } from './Group';
+import { Info } from './Info';
 import { QuickPair } from './QuickPair';
 import { Segmented } from './Segmented';
 import { Slider } from './Slider';
@@ -21,11 +22,17 @@ const MAIN_MARKS = [0, 10, 25, 50, 75, 100];
 
 const pct = (locale: string) => (v: number) => formatPercent(locale, v / 100);
 
-/** One of the diet's switches: its legend and values from `controls.<field>` texts. */
+/** One of the diet's switches: its legend, values and note from `controls.<field>` texts. */
 const choice = <V extends string>(t: T, field: string, values: readonly V[]) => ({
   name: field,
   legend: t(`controls.${field}.label`),
   options: values.map((v) => ({ value: v, label: t(`controls.${field}.${v}`) })),
+  info: (
+    <Info
+      label={t('controls.info', { name: t(`controls.${field}.label`) })}
+      text={t(`controls.${field}.hint`)}
+    />
+  ),
 });
 
 /** The animal foods set apart from the main shift, each with its own slider. */
@@ -43,6 +50,12 @@ const FoodShifts = ({ t, locale, scenario, setScenario }: PanelProps) => (
           step={1}
           value={Math.round((scenario.groupShifts[g] ?? scenario.shift) * 100)}
           format={pct(locale)}
+          info={
+            <Info
+              label={t('controls.info', { name: t(`groups.${g}`) })}
+              text={t(`controls.groupHints.${g}`)}
+            />
+          }
           onChange={(v) => setScenario((s) => withGroupShift(s, g, v / 100))}
         />
         <div className="lever-foot">
@@ -101,6 +114,12 @@ export const DietGroup = (props: PanelProps) => {
         value={Math.round(scenario.shift * 100)}
         format={pct(locale)}
         marks={MAIN_MARKS.map((v) => ({ value: v, label: pct(locale)(v) }))}
+        info={
+          <Info
+            label={t('controls.info', { name: t('controls.shift') })}
+            text={t('controls.shiftHint')}
+          />
+        }
         onChange={(v) => setScenario((s) => withShift(s, v / 100))}
       />
       <Segmented<Basis>
