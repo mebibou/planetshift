@@ -126,6 +126,11 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
     value: state.ui.horizon,
     onChange: (horizon) => ctx.setUi((u) => ({ ...u, horizon })),
   });
+  const download = chartDownload(t, () => ({
+    ...last,
+    climate: data.climate,
+    currentYear: ctx.currentYear,
+  }));
   const tabs = CHARTS.map((tab) =>
     h(
       'button',
@@ -332,22 +337,14 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
     h(
       'section',
       { class: 'card chart-card', 'aria-label': t('charts.title') },
-      h(
-        'div',
-        { class: 'card-head' },
-        h(
-          'div',
-          { class: 'chart-tabs', role: 'tablist', 'aria-label': t('charts.title') },
-          ...tabs,
-        ),
-        h('div', { class: 'chart-switches' }, horizonSwitch.el, rangeSwitch.el),
-      ),
+      h('div', { class: 'chart-tabs', role: 'tablist', 'aria-label': t('charts.title') }, ...tabs),
+      h('div', { class: 'chart-switches' }, horizonSwitch.el, rangeSwitch.el, download.button),
+      download.status,
       panels.temperature,
       panels.avoided,
       panels.cause,
       error,
       fileError,
-      chartDownload(t, () => ({ ...last, climate: data.climate, currentYear: ctx.currentYear })),
     ),
     aside,
     strip.el,

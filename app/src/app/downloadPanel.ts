@@ -24,16 +24,26 @@ const saveTo = (t: T, status: HTMLElement) => (file: DownloadFile | null) => {
   if (file) saveFile(file);
 };
 
-/** A button with the download icon. */
-export const downloadButton = (label: string, onClick: () => void, className = ''): HTMLElement =>
+/** A button with the download icon; `name` is what a screen reader says, when it says more. */
+export const downloadButton = (
+  label: string,
+  onClick: () => void,
+  className = '',
+  name = label,
+): HTMLElement =>
   h(
     'button',
-    { type: 'button', class: `download-button ${className}`.trim(), onclick: onClick },
+    {
+      type: 'button',
+      class: `download-button ${className}`.trim(),
+      'aria-label': name,
+      onclick: onClick,
+    },
     icon('download'),
     h('span', {}, label),
   );
 
-/** The chart card's footer: one button that saves the current tab's data. */
+/** The chart card's button that saves the current tab's data, and the line saying when it cannot. */
 export const chartDownload = (
   t: T,
   current: () => {
@@ -42,23 +52,22 @@ export const chartDownload = (
     climate: Climate;
     currentYear: number;
   },
-): HTMLElement => {
+): { button: HTMLElement; status: HTMLElement } => {
   const status = downloadStatus();
   const save = saveTo(t, status);
-  return h(
-    'div',
-    { class: 'card-foot' },
+  return {
     status,
-    downloadButton(
-      t('download.chartButton'),
+    button: downloadButton(
+      t('download.button'),
       () => {
         const { result, state, climate, currentYear } = current();
         const { ui, scenario, options } = state;
         save(chartCsv({ tab: ui.chart, result, climate, scenario, options, currentYear }));
       },
       'download-chart',
+      t('download.chartButton'),
     ),
-  );
+  };
 };
 
 export const formatBytes = (locale: string, bytes: number): string =>

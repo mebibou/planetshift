@@ -823,9 +823,40 @@ select {
 .map-head .map-controls {
   margin-bottom: 0;
 }
-.map-head .view-tabs {
+.card-tools {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  flex: none;
   margin-left: auto;
 }
+.chart-card .chart-switches {
+  margin: 12px 0 8px;
+}
+.chart-switches .download-chart {
+  margin-left: auto;
+}
+.map-head {
+  flex-wrap: nowrap;
+}
+.map-head .card-tools {
+  order: 2;
+}
+.map-head .map-controls {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+@media (max-width: 760px) {
+  .map-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .map-head .card-tools {
+    order: 0;
+  }
+}
+
 .icon {
   flex: none;
   fill: none;
@@ -880,24 +911,18 @@ select {
   cursor: default;
   opacity: 0.6;
 }
-.card-foot {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 12px;
-  margin-top: 12px;
-}
 .download-status {
   margin: 0;
+  text-align: right;
 }
 .download-toggle[aria-expanded='true'] {
   background: var(--accent-soft);
   border-color: var(--accent);
 }
 .download-panel {
-  border-top: 1px solid var(--rule);
-  margin-top: 12px;
-  padding-top: 12px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 12px;
+  padding-bottom: 12px;
 }
 .download-list,
 .file-list {
