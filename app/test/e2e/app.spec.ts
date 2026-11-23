@@ -775,7 +775,7 @@ test('a reload restores the levers from the URL', async ({ page }) => {
   await noHorizontalScroll(page);
 });
 
-test('the panel is in groups, all closed, under their causes, with the timing on top', async ({
+test('the panel is in groups, all closed, under their causes, with the time settings on top', async ({
   page,
 }) => {
   await open(page);
@@ -789,7 +789,11 @@ test('the panel is in groups, all closed, under their causes, with the timing on
   ])
     await expect(page.locator(`details[data-group="${id}"]`)).not.toHaveAttribute('open');
   await expect(page.locator('details[data-group="options"]')).not.toHaveAttribute('open');
-  await expect(page.locator('.panel > *').first()).toHaveAttribute('data-control', 'timing');
+  const time = page.locator('.panel > *').first();
+  await expect(time).toHaveClass('time-settings');
+  await expect(time.locator('> *').first()).toHaveAttribute('data-control', 'timing');
+  await expect(time.locator('> *').nth(1)).toHaveAttribute('data-control', 'horizon');
+  await expect(time).toContainText('Results up to');
   await expect(page.locator('.panel > details.group').last()).toHaveAttribute(
     'data-group',
     'options',

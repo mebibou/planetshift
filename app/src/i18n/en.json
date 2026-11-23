@@ -49,7 +49,8 @@
     "advanced": "Shift each animal food",
     "groupsHint": "A food you set here keeps its own share; the others follow the main slider.",
     "groupsReset": "Follow the main slider again",
-    "rampHint": "Every lever, the diet included, ramps in from today and is in place in full by this year."
+    "rampHint": "Every lever, the diet included, ramps in from today and is in place in full by this year.",
+    "horizon": "Results up to"
   },
   "levers": {
     "title": "Levers",
@@ -345,7 +346,6 @@
   },
   "charts": {
     "title": "Charts",
-    "horizon": "Up to",
     "tabs": {
       "temperature": "Global temperature",
       "avoided": "Warming avoided",

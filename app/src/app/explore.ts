@@ -121,7 +121,7 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
   });
   const horizonSwitch = segmented<Horizon>({
     name: 'horizon',
-    legend: t('charts.horizon'),
+    legend: t('controls.horizon'),
     options: HORIZONS.map((v) => ({ value: v, label: v })),
     value: state.ui.horizon,
     onChange: (horizon) => ctx.setUi((u) => ({ ...u, horizon })),
@@ -276,7 +276,7 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
   const aside = h(
     'aside',
     { class: 'panel', 'aria-label': t('explore.panel') },
-    timing.el,
+    h('div', { class: 'time-settings' }, timing.el, horizonSwitch.el),
     worthLegend,
     leversEl,
     options.el,
@@ -338,7 +338,7 @@ export const exploreView = (ctx: ViewContext): ExploreView => {
       'section',
       { class: 'card chart-card', 'aria-label': t('charts.title') },
       h('div', { class: 'chart-tabs', role: 'tablist', 'aria-label': t('charts.title') }, ...tabs),
-      h('div', { class: 'chart-switches' }, horizonSwitch.el, rangeSwitch.el, download.button),
+      h('div', { class: 'chart-switches' }, rangeSwitch.el, download.button),
       download.status,
       panels.temperature,
       panels.avoided,
