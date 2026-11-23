@@ -94,7 +94,7 @@ Planetshift partage les terres entre les deux selon leur valeur, comme le font d
 
 Les parts viennent de `pipeline/oilcakes.csv` : les tonnes de tourteau par tonne d'huile d'après les facteurs de conversion techniques de la FAO, et les prix mondiaux d'après les données commerciales de FAOSTAT (valeur des exportations sur leur quantité, 2021–2023).
 
-| Huile | Tourteau par tonne d'huile | Huile, $/t | Tourteau, $/t | Part des terres pour l'huile |
+| Huile | Tourteau par tonne d'huile | Huile, \$/t | Tourteau, \$/t | Part des terres pour l'huile |
 | --- | --- | --- | --- | --- |
 | Soja | 4,4 | 1 277 | 495 | 37 % |
 | Colza et moutarde | 1,4 | 1 413 | 354 | 74 % |

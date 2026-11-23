@@ -51,7 +51,9 @@ Poore & Nemecek donnent des équivalents CO₂ (CO₂e). Un chiffre en CO₂e ad
 
 Planetshift a besoin de chaque gaz séparément. L'étape agricole de chaque produit est répartie selon les proportions d'un profil de gaz, un mélange typique des gaz pour ce genre de produit. Le CO₂e de chaque gaz est ensuite divisé par son facteur :
 
-kg de gaz = CO₂e agricole × (CO₂e du gaz dans le profil / CO₂e total du profil) / GWP du gaz
+$$
+\text{kg de gaz} = \text{CO}_2\text{e agricole} \times \frac{\text{CO}_2\text{e du gaz dans le profil}}{\text{CO}_2\text{e total du profil}} \div \text{GWP du gaz}
+$$
 
 Remultiplié par 34 et 298, le résultat redonne exactement la valeur de Poore & Nemecek.
 

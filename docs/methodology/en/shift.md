@@ -115,9 +115,11 @@ A country frees the fall in its cropland and pasture together. A country that ne
 
 With *natural regrowth* under Options, freed land grows back to natural vegetation. It takes up CO₂ at the country's rate (tonnes of CO₂ per hectare per year) for `regrowthYears` years after it is freed (30 in the data).
 
-Land is freed as the shift ramps in. The land freed in a year starts taking up CO₂ that year and stops 30 years later. The uptake in year t is:
+Land is freed as the shift ramps in. The land freed in a year starts taking up CO₂ that year and stops 30 years later. The uptake in year $t$ is, over countries $c$, with $h_c$ their net freed hectares:
 
-uptake(t) = Σ over countries of net freed hectares × rate × (ramp(t) − ramp(t − 30))
+$$
+\text{uptake}(t) = \sum_{c} h_c \times \text{rate} \times \big(\text{ramp}(t) - \text{ramp}(t - 30)\big)
+$$
 
 A country that farms more land in all than before has negative net freed hectares. It is charged the uptake that land forgoes (see [Land](#method-land)).
 
@@ -142,7 +144,9 @@ The avoided emissions shown in the summary are those of the year the shift is co
 
 Each gas warms the world in its own way over time. The absolute global temperature change potential (AGTP) of a gas is how much warmer the world is, year by year, after one kilogram of it is emitted (see [Climate](#method-climate)). The warming from a change in emissions adds up, over gases and years, each year's change × the gas's AGTP after the years since:
 
-ΔT(t) = Σ_gas Σ_τ≤t ΔE_gas(τ) · AGTP_gas(t − τ)
+$$
+\Delta T(t) = \sum_{\text{gas}} \sum_{\tau \le t} \Delta E_{\text{gas}}(\tau) \cdot \mathrm{AGTP}_{\text{gas}}(t - \tau)
+$$
 
 The AGTP curves come from pulse runs of FaIR, a simple climate model, or from the AR6 fallback; see [Options](#method-options).
 

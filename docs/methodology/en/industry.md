@@ -99,10 +99,10 @@ In the breakdown by lever in the summary, all of these levers' effect counts as 
 
 ### How each year is computed
 
-In each year *y*, each adoption *a* is already ramped, and *g* is the grid's intensity in the chosen scenario. The grid these levers draw on is *g′* = *g* × (1 − *a*re), where *a*re is the renewable-electricity lever of the [energy and transport](#method-sectors) fold:
+In each year $y$, each adoption $a$ is already ramped, and $g$ is the grid's intensity in the chosen scenario. The grid these levers draw on is $g' = g\,(1 - a_{\text{re}})$, where $a_{\text{re}}$ is the renewable-electricity lever of the [energy and transport](#method-sectors) fold:
 
-- Clean heating (`ch`) saves *a* × buildings' CO₂ × (1 − `heatPumpKwhPerKgCo2` × *g′*).
-- Clean steel and cement (`ci`) saves *a* × industry's CO₂ × Σ share × cut × (1 − `kwhPerKgCo2` × *g′*) over steel and cement.
+- Clean heating (`ch`) saves $a \times \text{buildings' CO}_2 \times (1 - k\,g')$, with $k$ = `heatPumpKwhPerKgCo2`.
+- Clean steel and cement (`ci`) saves $a \times \text{industry's CO}_2 \times \sum_{i} \text{share}_i \times \text{cut}_i \times (1 - k_i\,g')$ over $i$ in steel and cement, with $k_i$ = `kwhPerKgCo2`.
 
 The CO₂ changes are convolved with the CO₂ AGTP curve (the warming from one kilogram of CO₂ over time). What comes with them is treated as for transport:
 

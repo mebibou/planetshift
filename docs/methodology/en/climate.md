@@ -40,9 +40,11 @@ At 100 years, FaIR's CO₂ curve is 11% below AR6's and its N₂O curve 9% above
 
 ### How the app uses the curves
 
-The levers change each gas's emissions, year by year. The app adds up the warming from every year's change: each year's change in a gas, times that gas's AGTP for the years elapsed since. In symbols, with ΔE_gas(τ) the change in a gas's emissions in year τ:
+The levers change each gas's emissions, year by year. The app adds up the warming from every year's change: each year's change in a gas, times that gas's AGTP for the years elapsed since. In symbols, with $\Delta E_{\text{gas}}(\tau)$ the change in a gas's emissions in year $\tau$:
 
-ΔT(t) = Σ_gas Σ_{τ ≤ t} ΔE_gas(τ) · AGTP_gas(t − τ)
+$$
+\Delta T(t) = \sum_{\text{gas}} \sum_{\tau \le t} \Delta E_{\text{gas}}(\tau) \cdot \mathrm{AGTP}_{\text{gas}}(t - \tau)
+$$
 
 This sum is exact for a model whose response is proportional to its input. It is close for FaIR as long as the levers' change is small next to the world's emissions (see [Limitations](#method-limitations) for the energy levers in full).
 

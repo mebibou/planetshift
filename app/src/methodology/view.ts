@@ -1,7 +1,8 @@
-import { marked } from 'marked';
+import 'katex/dist/katex.min.css';
 import { h } from '../app/dom';
 import type { Lang, T } from '../i18n/i18n';
 import { SECTIONS, sectionTitleKey } from './sections';
+import { renderMarkdown } from './markdown';
 import { indexFiles, pickSections } from './select';
 import { activeIndex, slug } from './spy';
 
@@ -32,7 +33,7 @@ const renderSection = (s: { id: string; lang: string; markdown: string }): HTMLE
     lang: s.lang,
     'data-section': s.id,
   });
-  section.innerHTML = marked.parse(s.markdown, { async: false });
+  section.innerHTML = renderMarkdown(s.markdown);
   section
     .querySelectorAll('h2')
     .forEach((h2) => (h2.id = `${anchor(s.id)}-${slug(h2.textContent ?? '')}`));

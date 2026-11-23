@@ -13,32 +13,48 @@ The two are counted in different places, and the lever can act on each.
 
 There are two reductions, each between 0 and 1, which can be set apart:
 
-- r<sub>L</sub> for losses before shops;
-- r<sub>W</sub> for waste after shops.
+- $r_L$ for losses before shops;
+- $r_W$ for waste after shops.
 
-The reference is SDG target 12.3 (one of the UN's Sustainable Development Goals): halve per capita food waste at the retail and consumer levels by 2030 (r<sub>W</sub> = 0.5), and reduce losses along production and supply chains.
+The reference is SDG target 12.3 (one of the UN's Sustainable Development Goals): halve per capita food waste at the retail and consumer levels by 2030 ($r_W = 0.5$), and reduce losses along production and supply chains.
 
 Wasting less does not change what people eat. It lowers the food supply a country needs for the same meals. Cutting losses lowers the supply needed to bring the same food to shops. The lower supply then goes through the model like a diet shift: it changes production where the item is grown (step 6 of the [model](#method-shift)). When less meat, milk or eggs are wasted, it also lowers the feed the animals need (step 5).
 
-**Example.** A country's food supply is 800 kg per person, of which 100 kg is wasted after shops (w = 0.125). It halves its waste (r<sub>W</sub> = 0.5). Its food supply falls by 0.5 × 0.125 = 6.25%, to 750 kg, for the same 700 kg eaten. Say wheat's losses are 5% of its supply and seed 3%. Halving losses as well lowers wheat's multiplier from 1 ÷ 0.92 to 1 ÷ 0.945, and saves 0.5 × 5% ÷ 0.945 = 2.6% of its supply.
+**Example.** A country's food supply is 800 kg per person, of which 100 kg is wasted after shops ($w = 0.125$). It halves its waste ($r_W = 0.5$). Its food supply falls by 0.5 × 0.125 = 6.25%, to 750 kg, for the same 700 kg eaten. Say wheat's losses are 5% of its supply and seed 3%. Halving losses as well lowers wheat's multiplier from 1 ÷ 0.92 to 1 ÷ 0.945, and saves 0.5 × 5% ÷ 0.945 = 2.6% of its supply.
 
 ### Waste after shops: the formula
 
 For a country, the share of its food supply that is wasted is
 
-w = min((retail + foodService + household) ÷ (food supply per person, kg), 0.4)
+$$
+w = \min\left(\frac{\text{retail} + \text{foodService} + \text{household}}{\text{food supply per person, kg}},\ 0.4\right)
+$$
 
-where the food supply per person is the sum of `food` over its items in `supply.json` × 1000 ÷ its population in the base year. The same share is applied to every item: food eaten = food × (1 − w), and food wasted = food × w. With a reduction r<sub>W</sub>, the same food is eaten and less is wasted:
+where the food supply per person is the sum of `food` over its items in `supply.json` × 1000 ÷ its population in the base year. The same share is applied to every item: food eaten = food × (1 − $w$), and food wasted = food × $w$. With a reduction $r_W$, the same food is eaten and less is wasted:
 
-new food = eaten + (1 − r<sub>W</sub>) × wasted = food × (1 − r<sub>W</sub> × w)
+$$
+\text{new food} = \text{eaten} + (1 - r_W) \times \text{wasted} = \text{food} \times (1 - r_W\, w)
+$$
 
 It is applied after the diet shift, to the food the shifted diet needs. A country that eats less meat and wastes less therefore needs both less meat and less of the rest. In the steps of the [model](#method-shift), it multiplies each item's food use before step 4.
 
 ### Losses before shops: the formula
 
-Each item's loss share of domestic supply is ℓ = the larger of FAO's share for its group and the Food Balance Sheets' losses ÷ domestic supply. The database splits FAO's shares by group for the world only, so a country's share for a group is its sub-region's share for all products × the world's share for the group ÷ the world's for all products. Items outside FAO's four groups (oil crops, sugar crops, nuts, stimulants and others) take the all-products share. With a reduction r<sub>L</sub>, ℓ becomes (1 − r<sub>L</sub>) × ℓ.
+Each item's loss share of domestic supply is the larger of FAO's share for its group and the Food Balance Sheets' own:
 
-The supply needed for a change in use is multiplied by (1 − ℓ − seed share) ÷ (1 − (1 − r<sub>L</sub>) × ℓ − seed share), so that with no reduction the model is unchanged. The base year's supply falls by r<sub>L</sub> × ℓ × domestic supply × the new multiplier. This counts the losses avoided, and also the losses and seed that supply no longer carries, as both stay shares of it. With a quarter of the supply lost and half the losses avoided, that is 14% more than the losses avoided alone. FAO's losses beyond the Food Balance Sheets' are taken to sit in the supply the balances give, mostly in `food`, so the balances are left as they are.
+$$
+\ell = \max\left(\text{FAO's share},\ \frac{\text{losses}}{\text{domestic supply}}\right)
+$$
+
+The database splits FAO's shares by group for the world only, so a country's share for a group is its sub-region's share for all products × the world's share for the group ÷ the world's for all products. Items outside FAO's four groups (oil crops, sugar crops, nuts, stimulants and others) take the all-products share. With a reduction $r_L$, $\ell$ becomes $(1 - r_L)\,\ell$.
+
+With $s$ the seed share, the supply needed for a change in use is multiplied by
+
+$$
+\frac{1 - \ell - s}{1 - (1 - r_L)\,\ell - s}
+$$
+
+so that with no reduction the model is unchanged. The base year's supply falls by $r_L \times \ell \times$ domestic supply × the new multiplier. This counts the losses avoided, and also the losses and seed that supply no longer carries, as both stay shares of it. With a quarter of the supply lost and half the losses avoided, that is 14% more than the losses avoided alone. FAO's losses beyond the Food Balance Sheets' are taken to sit in the supply the balances give, mostly in `food`, so the balances are left as they are.
 
 ## What it changes
 
