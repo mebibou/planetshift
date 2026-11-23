@@ -514,6 +514,13 @@ test('the chart tabs and the chart values are reachable from the keyboard', asyn
   await expect(tooltip).toContainText('Observed');
   await page.keyboard.press('Escape');
   await expect(tooltip).toBeHidden();
+  // A redraw while the chart keeps the focus (here a resize) leaves it dismissed.
+  const size = page.viewportSize()!;
+  await page.setViewportSize({ width: size.width - 40, height: size.height });
+  await page.waitForTimeout(300);
+  await expect(tooltip).toBeHidden();
+  await page.keyboard.press('ArrowLeft');
+  await expect(tooltip).toBeVisible();
 });
 
 test('the summary announces one short sentence, not the whole section', async ({ page }) => {
