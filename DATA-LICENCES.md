@@ -13,6 +13,12 @@ The code in this repository is under the Apache License 2.0 (`LICENSE`). The dat
 
 The road transport series in `sectors.json` are calibrated to CEDS's 2022 road transport CO₂ (v_2024_07_08, CC BY 4.0), which the co-emissions already read; no EDGAR data is used.
 
-Some parameters are single published values cited from articles that are not openly licensed (for example fuel use per tonne of fish from Parker et al. 2018, natural regrowth rates from Cook-Patton et al. 2020, and the reductions of several farming practices). They are reused as cited figures, with the reference on the Methodology page; the articles themselves are not redistributed. The UNEP Food Waste Index estimates are reused for non-profit purposes with acknowledgement, as UNEP's terms allow.
+Some parameters are single published values cited from articles that are not openly licensed (for example fuel use per tonne of fish from Parker et al. 2018, natural regrowth rates from Cook-Patton et al. 2020, and the reductions of several farming practices). They are reused as cited figures, with the reference on the Methodology page; the articles themselves are not redistributed. The UNEP Food Waste Index estimates are read from the UN SDG Global Database (indicator 12.3.1(b)) and credited to UNEP's Food Waste Index Report 2024.
+
+Some sources add conditions to their licence, which reuse of the files must keep:
+
+- **FAO** (FAOSTAT, FishStat): CC BY 4.0, and FAO's terms of use forbid using the data for, or with, the promotion of a commercial enterprise or its products. Cite as FAO asks: "FAO. [year]. [database]. Accessed on [date]. [URL]. Licence: CC BY 4.0."
+- **Berkeley Earth**: CC BY-NC 4.0; credit Berkeley Earth with a link to berkeleyearth.org. Commercial use needs Berkeley Earth's permission.
+- **IEA**: its reports, charts and figures are under CC BY 4.0; its standalone datasets and data annexes are not, and none is used here. The figures in `sectors.json` and `industry.json` are read from the reports and their charts. Credit as the IEA asks: "IEA [year], [title], [URL], Licence: CC BY 4.0".
 
 When reusing the data, credit Planetshift and the original sources listed in `meta.json`.
