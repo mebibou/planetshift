@@ -1,8 +1,13 @@
 """FaIR v2 with the fair-calibrate v1.4.1 calibrated, constrained ensemble, driven by emissions."""
 
+import hashlib
+import os
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
+from functools import partial
 from pathlib import Path
 
+import fair
 import numpy as np
 import pandas as pd
 from fair import FAIR
@@ -27,6 +32,11 @@ NATURAL_FORCING_SCENARIO = "medium-extension"
 
 START = 1750
 BATCH = 4
+BATCH_MEMORY = 6e9
+CH4_METHOD = "Thornhill2021"
+FIELDS = ("temperature", "co2", "ch4_airborne")
+RUNS_FOLDER = "runs"
+WORKERS_VARIABLE = "PLANETSHIFT_FAIR_WORKERS"
 
 
 @dataclass(frozen=True)
@@ -93,7 +103,7 @@ def _run_batch(
     setup: Setup, emissions: dict[str, dict[str, np.ndarray]], end: int, carbon_feedback: bool
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     scenarios = list(emissions)
-    f = FAIR(ch4_method="Thornhill2021")
+    f = FAIR(ch4_method=CH4_METHOD)
     f.define_time(START, end, 1)
     f.define_scenarios(scenarios)
     f.define_configs(setup.configs)
@@ -125,6 +135,53 @@ def _run_batch(
     return annual_means(temperature), annual_means(co2), annual_means(ch4)
 
 
+def setup_digest(setup: Setup) -> str:
+    """What a run's result depends on besides its emissions: the calibration, the natural
+    forcing (which a forcing pulse changes), the members and FaIR's version."""
+    digest = hashlib.sha256()
+    for part in (
+        setup.parameters.read_bytes(),
+        setup.species_file.read_bytes(),
+        setup.natural_forcing.to_csv(index=False).encode(),
+        repr((setup.configs, fair.__version__, CH4_METHOD)).encode(),
+    ):
+        digest.update(part)
+    return digest.hexdigest()
+
+
+def run_key(
+    digest: str, by_specie: dict[str, np.ndarray], emitted: list[str], end: int, feedback: bool
+) -> str:
+    """The cache key of one scenario's run."""
+    key = hashlib.sha256(f"{digest}|{end}|{feedback}".encode())
+    for specie in emitted:
+        key.update(specie.encode())
+        key.update(np.ascontiguousarray(by_specie[specie][: end - START], dtype=float).tobytes())
+    return key.hexdigest()
+
+
+def workers() -> int:
+    """FaIR batches to run at once: PLANETSHIFT_FAIR_WORKERS, else as many as memory allows (a
+    batch of the full ensemble peaks near 4 GB, and FaIR is held back by memory bandwidth
+    beyond two), at least one."""
+    if os.environ.get(WORKERS_VARIABLE):
+        return max(1, int(os.environ[WORKERS_VARIABLE]))
+    memory = os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES")
+    return max(1, min(2, (os.cpu_count() or 1) // 2, int(memory // BATCH_MEMORY)))
+
+
+def _run_batches(
+    setup: Setup, batches: list[dict[str, dict[str, np.ndarray]]], end: int, feedback: bool
+) -> list[tuple[np.ndarray, np.ndarray, np.ndarray]]:
+    count = min(workers(), len(batches))
+    if count <= 1:
+        return [_run_batch(setup, batch, end, feedback) for batch in batches]
+    with ProcessPoolExecutor(count) as pool:
+        return list(
+            pool.map(partial(_run_batch, setup, end=end, carbon_feedback=feedback), batches)
+        )
+
+
 def run(
     setup: Setup,
     emissions: dict[str, dict[str, np.ndarray]],
@@ -133,19 +190,33 @@ def run(
 ) -> Result:
     """Run each scenario's emissions (per specie, one value per calendar year START..end-1).
 
-    Scenarios go through FaIR a few at a time to bound memory. `carbon_feedback=False` turns off
-    the effect of warming on carbon uptake, for diagnostics.
+    Each scenario's result is kept in `cache/fair/runs/`, keyed by everything it depends on, so
+    only scenarios not run before go through FaIR: a few at a time to bound memory, in parallel
+    processes (`workers`). `carbon_feedback=False` turns off the effect of warming on carbon
+    uptake, for diagnostics.
     """
+    folder = setup.parameters.parent / RUNS_FOLDER
+    folder.mkdir(parents=True, exist_ok=True)
+    digest = setup_digest(setup)
     names = list(emissions)
-    batches = [names[i : i + BATCH] for i in range(0, len(names), BATCH)]
-    outputs = [
-        _run_batch(setup, {n: emissions[n] for n in batch}, end, carbon_feedback)
-        for batch in batches
-    ]
+    paths = {
+        n: folder / f"{run_key(digest, emissions[n], setup.emitted, end, carbon_feedback)}.npz"
+        for n in names
+    }
+    missing = [n for n in names if not paths[n].exists()]
+    batches = [missing[i : i + BATCH] for i in range(0, len(missing), BATCH)]
+    outputs = _run_batches(
+        setup, [{n: emissions[n] for n in batch} for batch in batches], end, carbon_feedback
+    )
+    for batch, output in zip(batches, outputs, strict=True):
+        for i, name in enumerate(batch):
+            fields = dict(zip(FIELDS, (o[:, i, :] for o in output), strict=True))
+            partial = paths[name].with_suffix(".partial.npz")
+            np.savez(partial, **fields)
+            partial.replace(paths[name])
+    runs = [np.load(paths[n]) for n in names]
     return Result(
         years=np.arange(START, end),
         scenarios=names,
-        temperature=np.concatenate([o[0] for o in outputs], axis=1),
-        co2=np.concatenate([o[1] for o in outputs], axis=1),
-        ch4_airborne=np.concatenate([o[2] for o in outputs], axis=1),
+        **{f: np.stack([r[f] for r in runs], axis=1) for f in FIELDS},
     )

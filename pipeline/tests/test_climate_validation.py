@@ -24,7 +24,7 @@ pytestmark = pytest.mark.network
 def built():
     if not all(p.exists() for p in REQUIRED):
         pytest.skip("RCMIP or PRIMAP-hist not downloaded")
-    return climate.build(DEFAULT_CACHE, members=MEMBERS)
+    return climate.build(DEFAULT_CACHE, members=MEMBERS, diagnostics=True)
 
 
 def window_mean(diagnostics: dict, ssp: str, part: str, first: int, last: int) -> np.ndarray:
