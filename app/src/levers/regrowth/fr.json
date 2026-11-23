@@ -9,7 +9,7 @@
     }
   },
   "summary": {
-    "title": "CO₂ absorbé par la repousse en {year}",
+    "title": "CO₂ absorbé net par la repousse en {year}",
     "detail": "par an, probablement de {low} à {high}"
   }
 }

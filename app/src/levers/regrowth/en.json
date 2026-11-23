@@ -9,7 +9,7 @@
     }
   },
   "summary": {
-    "title": "CO₂ taken up by regrowth in {year}",
+    "title": "Net CO₂ taken up by regrowth in {year}",
     "detail": "a year, likely {low} to {high}"
   }
 }

@@ -1,5 +1,5 @@
 import { bandRecord } from '../../model/bands';
-import { freedHa, uptakeAsEmissions } from '../../model/land';
+import { netFreedHa, uptakeAsEmissions } from '../../model/land';
 import { option } from '../define';
 import type { LeverModule } from '../types';
 import { regrowthPaths } from './model';
@@ -15,8 +15,9 @@ declare module '../../model/api' {
   }
   interface Summary {
     /**
-     * CO₂ taken up by natural regrowth on freed land in the year the shift is complete, kg a
-     * year, median and range; zero when regrowth is off. It is already in `avoided.co2`.
+     * CO₂ taken up by natural regrowth on freed land, net of the uptake forgone on land newly
+     * used, in the year the shift is complete, kg a year, median and range; zero when regrowth
+     * is off. It is already in `avoided.co2`.
      */
     regrowthCo2: { median: number; p05: number; p95: number };
   }
@@ -35,7 +36,7 @@ export const regrowth: LeverModule = {
     world: ({ prepared, options }, { countries, years, shareAt, completeIndex }) => {
       const paths = regrowthPaths(
         options.regrowth === 'natural',
-        countries.map((c) => ({ iso3: c.iso3, ha: freedHa(c.landChange) })),
+        countries.map((c) => ({ iso3: c.iso3, ha: netFreedHa(c.landChange) })),
         prepared.data.land,
         years,
         shareAt,

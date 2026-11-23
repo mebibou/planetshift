@@ -117,13 +117,13 @@ export const landChangeOf = (
   };
 };
 
-/** Farmland a country no longer uses (cropland and pasture together), never negative. */
-export const freedHa = (change: Farmland): number => Math.max(0, -farmlandTotal(change));
+/** Farmland a country frees, net of the farmland it newly uses: negative when it uses more. */
+export const netFreedHa = (change: Farmland): number => -farmlandTotal(change);
 
 /**
- * CO₂ taken up each year, kg (positive), from land freed as the shift ramps in. Land freed in
- * year y takes up CO₂ from y for `years` years, so the uptake in t is the full uptake times the
- * share of land freed between t − years and t.
+ * CO₂ taken up each year, kg, from land freed as the shift ramps in (negative for land newly
+ * used). Land freed in year y takes up CO₂ from y for `years` years, so the uptake in t is the
+ * full uptake times the share of land freed between t − years and t.
  */
 export const uptakePath = (
   full: number,
