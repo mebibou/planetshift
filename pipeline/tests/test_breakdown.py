@@ -252,3 +252,20 @@ def test_split_energy_keeps_the_kg_and_leaves_other_sources():
     assert by_source == pytest.approx(
         {"electricity": 25.0, "fuel": 75.0, "inputsManufacture": 40.0}
     )
+
+
+def test_electricity_per_fuel_co2_is_the_grid_over_the_fuel_it_replaces():
+    gn = gn_rows(
+        [
+            (1, B.ELECTRICITY, B.CO2, 2022, 0.5),
+            (1, B.ELECTRICITY, B.ENERGY_USE, 2022, 3.6),
+            (1, B.FUEL, B.CO2, 2022, 0.07),
+            (1, B.FUEL, B.ENERGY_USE, 2022, 1.0),
+            (2, B.FUEL, B.CO2, 2022, 0.14),
+            (2, B.FUEL, B.ENERGY_USE, 2022, 1.0),
+        ]
+    )
+    drawn = B.electricity_per_fuel_co2(gn, {1: "AAA", 2: "BBB"}, 0.1)
+    assert drawn["AAA"] == pytest.approx(0.1 * 0.5 / 0.07)
+    assert drawn["BBB"] == drawn["World"]
+    assert drawn["World"] == pytest.approx(0.1 * 0.5 / 0.105)

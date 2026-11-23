@@ -45,7 +45,7 @@ def contract_list(name: str) -> list[str]:
 
 @pytest.fixture(scope="module")
 def built():
-    return P.practices_json(P.load(), COUNTRIES, REGIONS, INCOMES)
+    return P.practices_json(P.load(), COUNTRIES, REGIONS, INCOMES, {"World": 0.8, "FRA": 0.1})
 
 
 def test_ids_and_sources_match_the_contract():
@@ -65,6 +65,10 @@ def check(practices: dict, countries: list[str]) -> None:
         assert set(countries) <= set(p["applicable"]), pid
         assert all(0 <= v <= 1 for v in p["applicable"].values()), pid
         assert p["source"].startswith("https://"), pid
+    electrified = practices["farmEnergy"]["electrified"]
+    assert 0 < electrified["efficiency"] <= practices["farmEnergy"]["reduction"]["median"]
+    assert "World" in electrified["co2PerFuelCo2"]
+    assert all(v >= 0 for v in electrified["co2PerFuelCo2"].values())
 
 
 def test_practices_follow_the_contract(built):
@@ -92,3 +96,11 @@ def test_the_built_file_follows_the_contract():
         pytest.skip("practices.json not built")
     countries = [c["iso3"] for c in json.loads((OUT_DIR / "countries.json").read_text())]
     check(json.loads(path.read_text()), countries)
+
+
+def test_only_a_practice_with_an_efficiency_is_electrified(built):
+    assert built["farmEnergy"]["electrified"] == {
+        "efficiency": 0.25,
+        "co2PerFuelCo2": {"World": 0.8, "FRA": 0.1},
+    }
+    assert "electrified" not in built["feedAdditives"]

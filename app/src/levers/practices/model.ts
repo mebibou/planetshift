@@ -76,9 +76,18 @@ export const applicableIn = (practice: Practice, iso3: string): number =>
 
 export interface PracticeCut {
   practice: Practice;
-  /** adoption × applicable × reduction: the share of the targeted emissions removed. */
+  /** adoption × applicable × net reduction: the share of the targeted emissions removed (added below 0). */
   cut: number;
 }
+
+/** Below zero where the grid emits more than the fuel it replaces. */
+export const netReduction = (practice: Practice, iso3: string, band: Band): number => {
+  const reduction = bandValue(practice.reduction, band);
+  const e = practice.electrified;
+  const switched = e ? Math.max(0, reduction - e.efficiency) : 0;
+  const grid = e ? (e.co2PerFuelCo2[iso3] ?? e.co2PerFuelCo2['World'] ?? 0) : 0;
+  return reduction - switched * grid;
+};
 
 /** The practices adopted in a country and the share of their targeted emissions each removes. */
 export const practiceCuts = (
@@ -90,9 +99,9 @@ export const practiceCuts = (
   PRACTICES.flatMap((id) => {
     const practice = practices[id];
     const cut = practice
-      ? adoption(id) * applicableIn(practice, iso3) * bandValue(practice.reduction, band)
+      ? adoption(id) * applicableIn(practice, iso3) * netReduction(practice, iso3, band)
       : 0;
-    return practice && cut > 0 ? [{ practice, cut: Math.min(1, cut) }] : [];
+    return practice && cut !== 0 ? [{ practice, cut: Math.min(1, cut) }] : [];
   });
 
 const maskCache = new WeakMap<Practice, Uint8Array>();

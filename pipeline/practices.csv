@@ -99,6 +99,8 @@ farmEnergy,gases,,co2,the CO2 of fuel,
 farmEnergy,reduction,median,0.50,"efficient engines and buildings, pumps and heating moved to electricity, and some biofuel in tractors","FAO 2011, Energy-smart food for people and climate, https://www.fao.org/3/i2454e/i2454e.pdf"
 farmEnergy,reduction,low,0.25,efficiency only,"IPCC AR6 WGIII ch. 7, https://doi.org/10.1017/9781009157926.009"
 farmEnergy,reduction,high,0.80,"electric or biofuel machinery, leaving residual fuel",FAO 2011 https://www.fao.org/3/i2454e/i2454e.pdf
+farmEnergy,efficiency,,0.25,"the part of the cut that burns less fuel, the low estimate; the rest switches pumps, heating and machines to grid electricity, whose CO2 is added back","IPCC AR6 WGIII ch. 7, https://doi.org/10.1017/9781009157926.009"
+farmEnergy,kwhPerMjFuel,,0.11,"kWh of electricity per MJ of fuel it replaces: an engine turns about 35% of its fuel into work and an electric motor about 90% of its electricity (0.35 / 0.90 / 3.6), Planetshift's estimate",
 farmEnergy,applicable,World,0.60,most on-farm energy use can switch,
 farmEnergy,applicable,income:High income,0.80,electricity grids and capital are available,
 farmEnergy,applicable,income:Upper middle income,0.70,much irrigation pumping on grids that can be cleaned,
