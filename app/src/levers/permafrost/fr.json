@@ -2,7 +2,7 @@
   "options": {
     "permafrost": {
       "label": "Pergélisol",
-      "hint": "Le sol gelé qui dégèle et libère CO₂ et méthane à mesure que le monde se réchauffe, ce qui le réchauffe davantage, ou laissé de côté, comme dans les scénarios publiés.",
+      "hint": "Le sol gelé qui dégèle libère du CO₂ et du méthane à mesure que le monde se réchauffe, ce qui le réchauffe davantage. Les scénarios publiés le laissent de côté.",
       "off": "Non compté",
       "on": "Dégèle"
     }

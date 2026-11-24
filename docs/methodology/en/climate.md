@@ -276,8 +276,8 @@ The feedback adds about 0.02 °C to the baseline in 2050 and 0.05 °C in 2100 on
 The median is small for four reasons:
 
 - Most of the release comes after 2100. Permafrost carbon thaws and decomposes over centuries, and the model stops in 2100. The feedback grows after that, even if emissions stop.
-- Only the warming still to come counts. The release before today is in the observed record, so the carbon counted is AR6's 18 PgC per °C times about 1.4 °C of further warming: about 27 PgC by 2100 on SSP2-4.5, some 100 Gt of CO₂, about two and a half years of today's fossil emissions.
-- Abrupt thaw (collapsing ground, thermokarst lakes) is not in AR6's central figure, and so not in the model. Some studies find that it could roughly double the release.
+- Only the warming still to come counts, because the release before today is in the observed record. That gives the 27 PgC above, about 100 Gt of CO₂, or two and a half years of today's fossil CO₂ emissions.
+- Abrupt thaw (collapsing ground, thermokarst lakes) is missing from most of the models behind AR6's figure, so it is not in the model either. It could add substantially to the release.
 - The feedback is computed in one pass: the further thaw its own warming would cause is left out. That would add a few percent.
 
 ### Why it is a switch
