@@ -16,7 +16,7 @@ The uptake of a practice is its rate per hectare times the hectares where it is 
 | Practice | Land | Median (likely range), t CO₂/ha/yr | Most of the land | Years at that rate |
 | --- | --- | --- | --- | --- |
 | Cover crops | cropland | 1.17 (0.6–2.0) in moist climates, 0.45 (0.2–0.8) in dry ones | 25% | 20 |
-| Trees on farms (agroforestry) | cropland and pasture | 8.7 (4.4–17.5) tropical moist, 6.1 tropical dry, 4.3 (2.2–8.7) temperate moist, 3.0 temperate dry | 5% | 20 |
+| Trees on farms (agroforestry) | cropland and pasture | 9.4 (4.7–18.7) tropical moist, 6.5 tropical dry, 4.3 (2.2–8.7) temperate moist, 3.0 temperate dry | 5% | 20 |
 | Biochar | cropland | 1.9 (0.6–4.9) everywhere | 20% | 100 (no saturation) |
 | Rock dust (enhanced weathering) | cropland | 3.0 (1.0–5.0) tropical moist, 2.0 (0.5–3.5) temperate moist, 1.0 tropical dry, 0.8 temperate dry | 20% | 100 (no saturation) |
 
@@ -45,9 +45,9 @@ Cover crops reach at most a quarter of cropland, the area that Poeplau and Don's
 
 Trees on farms (agroforestry) means planting trees in fields of crops (silvoarable systems, alley cropping) or in pastures (silvopasture). The trees store carbon in their wood and roots, and their litter adds to the soil.
 
-Cardinael et al. (2018) synthesised 542 observations into rates by system and climate. Averaged over silvoarable systems and silvopasture, trees and soil take up about 8.6 t of CO₂ per hectare a year in temperate climates and 17.5 t in the tropics. Those rates are for the plots studied, which have a median of 1250 trees per hectare and a median age of 8 to 11 years, and grow fast. Systems adopted on a large scale have fewer trees. The median is therefore half the synthesis' mean. The low is a quarter of it, and the high is the mean itself. In dry climates the rate is 0.7 times the moist rate, the IPCC's ratio of tree growth in the dry tropics to the moist tropics.
+Cardinael et al. (2018) synthesised 542 observations into rates by system and climate. Averaged over silvoarable systems and silvopasture, trees and soil take up about 8.6 t of CO₂ per hectare a year in temperate climates. In the moist tropics, where the synthesis has silvoarable systems only, they take up 18.7 t; its means for the whole tropics rest mostly on dry Asian plots. Those rates are for the plots studied, which have a median of 1250 trees per hectare and a median age of 8 to 11 years, and grow fast. Systems adopted on a large scale have fewer trees. The median is therefore half the synthesis' mean. The low is a quarter of it, and the high is the mean itself. In dry climates the rate is 0.7 times the moist rate, the IPCC's ratio of tree growth in the dry tropics to the moist tropics.
 
-Planetshift takes 5% of cropland and pasture as a realistic maximum. On about 4.7 billion hectares of farmland, it gives about 1.3 Gt of CO₂ a year. This lies between the cost-effective and the technical potentials of Roe et al. (2021) and of the IPCC's Sixth Assessment Report. For agroforestry, the IPCC report gives 0.8 (0.4–1.1) Gt CO₂-equivalent a year at up to \$100 a tonne, and 4.1 (0.3–9.4) technically.
+Planetshift takes 5% of cropland and pasture as a realistic maximum. On about 4.7 billion hectares of farmland, it gives about 1.4 Gt of CO₂ a year. This lies between the cost-effective and the technical potentials of Roe et al. (2021) and of the IPCC's Sixth Assessment Report. For agroforestry, the IPCC report gives 0.8 (0.4–1.1) Gt CO₂-equivalent a year at up to \$100 a tonne, and 4.1 (0.3–9.4) technically.
 
 ### Biochar
 
@@ -69,7 +69,7 @@ Rock dust (enhanced weathering) is crushed silicate rock, usually basalt, spread
 
 A four-year field trial in the US Corn Belt measured 10.5 ± 3.8 t of CO₂ per hectare from 50 t of basalt a hectare each year (Beerling et al., 2024). That is 2.6 t a year. Taking off about a fifth for quarrying, grinding and transport leaves 2 t. Weathering is faster where it is warm and wet, and slow where water does not move through the soil. The tropics therefore get a higher rate and dry croplands a lower one.
 
-Rock supply and haulage limit rock dust to at most a fifth of cropland. With a typical 2 t per hectare, it gives about 0.6 Gt a year. This is within the 0.5–2 Gt that Beerling et al. (2020) found for the main agricultural countries.
+Rock supply and haulage limit rock dust to at most a fifth of cropland. With a typical 2 t per hectare, it gives about 0.6 Gt a year. Beerling et al. (2020) find that the main agricultural countries reach 0.5 Gt a year, net of the emissions of logistics, on about a tenth of their cropland, and 1 Gt on about a quarter of it.
 
 ## Countries and climate
 

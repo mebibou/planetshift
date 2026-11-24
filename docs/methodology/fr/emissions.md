@@ -77,9 +77,9 @@ Le domaine *Emissions from Crops* (GCE) donne le méthane des rizières, le N₂
 
 Le N₂O des engrais azotés de synthèse est un total national dans FAOSTAT. Planetshift le répartit entre les cultures en proportion de la surface récoltée de chaque culture × une dose d'azote par hectare pour sa classe de cultures. Un hectare de maïs ou de légumes reçoit donc plus qu'un hectare de légumineuses.
 
-La dose vient de l'enquête de l'International Fertilizer Association sur l'usage des engrais par culture (Heffer et al., 2017). C'est la part de la classe dans l'azote utilisé dans le monde (blé 18 %, maïs 16 %, riz 16 %, légumes 10 %, fruits 7 %, etc.), divisée par la surface récoltée mondiale de la classe.
+La dose vient de l'enquête de l'International Fertilizer Association sur l'usage des engrais par culture (Heffer et al., 2017). C'est la part de la classe dans l'azote utilisé dans le monde (blé 18 %, maïs 18 %, riz 15 %, légumes 7 %, fruits 6 %, etc. : les parts mondiales d'azote de son annexe 2), divisée par la surface récoltée mondiale de la classe.
 
-La même enquête trouve 3,6 % de l'azote épandus sur les prairies. Cette part va aux produits des ruminants (bœuf, mouton, autres viandes, lait) en proportion de leur méthane, dans les pays qui ont à la fois des cultures et des ruminants.
+La même enquête trouve 4,7 % de l'azote épandus sur les prairies. Cette part va aux produits des ruminants (bœuf, mouton, autres viandes, lait) en proportion de leur méthane, dans les pays qui ont à la fois des cultures et des ruminants.
 
 La somme des parts est égale au total de chaque pays. La partie qui tombe sur des cultures non alimentaires est laissée hors du modèle : les fibres, le tabac, le caoutchouc, et 85 % du coton-graine (sa fibre).
 
@@ -87,7 +87,7 @@ La somme des parts est égale au total de chaque pays. La partie qui tombe sur d
 
 Le domaine *Emissions from Livestock* (GLE) donne, par espèce, le CH₄ de la fermentation entérique et de la gestion des effluents, et le N₂O de la gestion des effluents, des effluents au pâturage et des effluents épandus. Il va aux produits comme suit :
 
-- **Vaches laitières** : 85 % au lait et 15 % au bœuf, celui des vaches de réforme et des veaux en surplus. Cette allocation physique est proche de la valeur mondiale par défaut de la Fédération internationale de laiterie.
+- **Vaches laitières** : 85 % au lait et 15 % au bœuf, celui des vaches de réforme et des veaux en surplus. C'est une allocation physique, comme le demande la norme de la Fédération internationale de laiterie ; son exemple chiffré donne 85,1 % pour une ferme, mais la norme ne fixe aucune valeur mondiale par défaut.
 - **Autres bovins** : le bœuf, moins les animaux qui ne sont pas élevés pour l'alimentation (voir plus bas).
 - **Buffles, moutons, chèvres et chameaux** : répartis entre lait et viande selon les protéines que produit le cheptel de chaque pays (production FAOSTAT × teneur en protéines). Là où aucun lait n'est enregistré, tout va à la viande. Pour les buffles, les animaux qui ne sont pas élevés pour l'alimentation sont d'abord retirés.
 - Les **porcs** vont à la viande porcine, les **poulets de chair, canards et dindes** à la volaille, les **poules pondeuses** aux œufs, et les **lamas** aux autres viandes.
@@ -124,7 +124,7 @@ Les taux sont dans `proxies.csv`. La plupart sont le rapport entre la production
 
 | Produit transformé | Produit primaire et taux (t par t) | Base |
 | --- | --- | --- |
-| 2541 Sucre non centrifugé | 2536 canne : 0,10 | facteurs de conversion techniques de la FAO |
+| 2541 Sucre non centrifugé | 2536 canne : 0,09 | facteurs de conversion techniques de la FAO (Inde, premier producteur) |
 | 2542 Sucre (équivalent brut) | 2536 canne : 0,11 ; 2537 betterave : 0,16 | bilan mondial 2023 |
 | 2543 Autres édulcorants | 2514 maïs : 1,7 | bilan mondial 2023 (la mélasse, un coproduit du sucre, fait partie du produit) |
 | 2571 Huile de soja | 2555 soja : 0,19 | bilan mondial 2023 |
@@ -137,11 +137,11 @@ Les taux sont dans `proxies.csv`. La plupart sont le rapport entre la production
 | 2578 Huile de coco | 2560 noix de coco : 0,13 | bilan mondial 2023 |
 | 2579 Huile de sésame | 2561 sésame : 0,46 | bilan mondial 2023 |
 | 2580 Huile d'olive | 2563 olives : 0,16 | bilan mondial 2023 |
-| 2586 Autres huiles d'oléagineux | 2570 autres oléagineux : 0,35 | facteurs de conversion techniques de la FAO (le rapport mondial dépasse 1 : le produit contient des huiles de graines listées ailleurs) |
+| 2586 Autres huiles d'oléagineux | 2570 autres oléagineux : 0,35 | facteurs de conversion techniques de la FAO, lin et carthame (le rapport mondial dépasse 1 : le produit contient des huiles de graines listées ailleurs) |
 | 2655 Vin | 2620 raisin : 0,63 | bilan mondial 2023 |
 | 2656 Bière | 2513 orge : 5,8 | bilan mondial 2023 |
-| 2657 Boissons fermentées | 2518 sorgho : 4 | facteurs de conversion techniques de la FAO |
-| 2658 Boissons alcoolisées | 2514 maïs : 0,9 | facteurs de conversion techniques de la FAO |
+| 2657 Boissons fermentées | 2518 sorgho : 4 | hypothèse (les facteurs de conversion techniques de la FAO n'en donnent aucun pour les boissons) |
+| 2658 Boissons alcoolisées | 2514 maïs : 0,9 | hypothèse (les facteurs de conversion techniques de la FAO n'en donnent aucun pour les boissons) |
 | 2740 Beurre, ghee | 2848 lait : 0,056 | bilan mondial 2023, 85 % du lait transformé |
 | 2743 Crème | 2848 lait : 0,09 | bilan mondial 2023, 15 % du lait transformé |
 
@@ -355,7 +355,7 @@ Le code est dans `pipeline/planetshift_pipeline/intensities.py`. Ses tables sont
 
 - Les estimations de niveau 1 de FAOSTAT valent pour chaque pays, plutôt que les inventaires propres aux pays.
 - L'azote de synthèse est réparti selon la surface × une dose mondiale par classe de cultures. Les doses réelles varient d'un pays à l'autre.
-- 3,6 % de l'azote de synthèse de chaque pays va aux prairies, comme dans la moyenne mondiale.
+- 4,7 % de l'azote de synthèse de chaque pays va aux prairies, comme dans la moyenne mondiale.
 - 85 % des émissions d'un troupeau laitier vont au lait partout.
 - Les cheptels mixtes (buffles, moutons, chèvres, chameaux) sont répartis selon les protéines, avec 15 % de protéines dans la viande en carcasse.
 - L'énergie est répartie selon la valeur de la production, la fabrication des pesticides selon la surface.
@@ -378,8 +378,9 @@ Le code est dans `pipeline/planetshift_pipeline/intensities.py`. Ses tables sont
 - FAOSTAT, Bilans alimentaires (production et transformation) : <https://www.fao.org/faostat/en/#data/FBS>, CC BY 4.0.
 - Otte, M. J., Chilonda, P. (2002). Cattle and Small Ruminant Production Systems in sub-Saharan Africa: A Systematic Review. FAO, Rome : <https://www.fao.org/4/y4176e/y4176e00.htm> ; chapitre 5 : <https://www.fao.org/4/y4176e/y4176e08.htm> ; annexes 6 et 7 : <https://www.fao.org/4/y4176e/y4176e0i.htm>, <https://www.fao.org/4/y4176e/y4176e0j.htm>.
 - Department of Animal Husbandry and Dairying, Government of India (2019). 20th Livestock Census 2019: Key Results, tableaux 6 et 7 : <https://static.pib.gov.in/WriteReadData/userfiles/key%20results.pdf>.
-- Heffer, P., Gruère, A., Roberts, T. (2017). Assessment of Fertilizer Use by Crop at the Global Level 2014–2014/15. International Fertilizer Association et International Plant Nutrition Institute : <https://www.ifastat.org/>.
+- Heffer, P., Gruère, A., Roberts, T. (2017). Assessment of Fertilizer Use by Crop at the Global Level 2014–2014/15. International Fertilizer Association et International Plant Nutrition Institute, annexe 2 : <https://www.fertilizer.org/wp-content/uploads/2023/01/2017_IFA_AgCom_17_134-rev_FUBC-assessment-2014.pdf>.
 - Fédération internationale de laiterie (2015). A common carbon footprint approach for the dairy sector. Bulletin of the IDF 479/2015 : <https://fil-idf.org/>.
+- Fédération internationale de laiterie (2022). The IDF global Carbon Footprint standard for the dairy sector. Bulletin of the IDF 520/2022, équation 2 et annexe 10.5.
 - FAO, Technical Conversion Factors for Agricultural Commodities : <https://www.fao.org/statistics/en/>.
 - GIEC (2006, affinées en 2019). Lignes directrices pour les inventaires nationaux de gaz à effet de serre, volume 4 : <https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html>.
 - Poore, J., Nemecek, T. (2018). Reducing food's environmental impacts through producers and consumers. Science 360, 987–992 : <https://doi.org/10.1126/science.aaq0216>.

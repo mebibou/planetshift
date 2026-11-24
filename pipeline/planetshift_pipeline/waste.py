@@ -26,13 +26,16 @@ SECTORS = {"RTL": "retail", "OOHC": "foodService", "HHS": "household"}
 FIELDS = list(SECTORS.values())
 
 #: Share of each sector's waste that is edible: the Index counts inedible parts (peels, bones,
-#: shells) too, and only the edible part can be avoided. Household: about three quarters in the
-#: UK (WRAP, Household Food and Drink Waste in the United Kingdom 2021/22), taken as 0.75 for
-#: high-income countries and 0.5 elsewhere, where more food is prepared from raw produce.
-#: Food service and retail: assumed, as no country-wide measure was found.
+#: shells) too, and only the edible part can be avoided. Household: 74% in the UK (WRAP, Household
+#: Food and Drink Waste in the United Kingdom 2021/22, executive summary), 0.75 for high-income
+#: countries; 31% in Brazil, 34% in Indonesia and 39% in Rio de Janeiro, the only measures
+#: outside high-income countries (UNEP Food Waste Index Report 2024, Table 19 and Box 2), 0.35
+#: elsewhere. Food service: 74% in the UK (WRAP, UK Food Waste & Food Surplus Key Facts 2025,
+#: Tables 3 and 5) and 72% in Germany (Thünen Report 71, Table K.1). Retail: 84% in Germany
+#: (same table), where WRAP takes all of it as edible.
 EDIBLE_SHARE = {
     True: {"retail": 0.85, "foodService": 0.75, "household": 0.75},
-    False: {"retail": 0.85, "foodService": 0.75, "household": 0.5},
+    False: {"retail": 0.85, "foodService": 0.75, "household": 0.35},
 }
 
 #: Edible waste after shops is at most this share of a country's FBS food supply; the Index

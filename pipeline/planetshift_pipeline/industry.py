@@ -39,7 +39,8 @@ CEMENT_VERSION = "260830"
 # Calcination is about 60% of a cement plant's direct CO₂, the rest kiln fuel (IEA cement
 # tracking; Andrew 2019, ESSD 11, 1675).
 CEMENT_PROCESS_SHARE = 0.6
-# Iron and steel's direct CO₂, about 2.6 Gt in 2022 (IEA Tracking Clean Energy Progress 2023).
+# Iron and steel's direct CO₂, 2.6 Gt a year (IEA 2020, Iron and Steel Technology Roadmap, 2019
+# data), taken for 2022.
 STEEL_2022 = 2.6 * KG_PER_GT
 
 # Fossil CO₂ per kWh of fuel (IPCC 2006 Guidelines, vol. 2, table 1.4: natural gas 56.1 and
@@ -59,17 +60,18 @@ HEAT_PUMP = {
 # avoided. Steel: hydrogen direct reduction with an electric furnace cuts 90–95% against a blast
 # furnace, scrap in electric furnaces about as much on site, blast furnaces with capture 75–90%
 # (IEA 2020, Iron and Steel Technology Roadmap; Mission Possible Partnership 2022). Hydrogen
-# direct reduction needs about 3.5 MWh per tonne of steel, mostly electrolysis (Vogl et al.
-# 2018), against about 2 t of direct CO₂ from a blast furnace, so 1.9 kWh/kg; scrap in an
-# electric furnace about 0.6 MWh/t, 0.3 kWh/kg. Median: three quarters hydrogen, a quarter extra
-# scrap. Cement: clinker substitutes, alternative fuels and carbon capture together, 60–95%,
-# 80% at the median (GCCA 2021, Concrete Future roadmap; IPCC AR6 WGIII ch. 11). Capture and
-# compression draw about 0.1–0.3 MWh per tonne of CO₂ avoided (CEMCAP 2019); electric kilns for
-# the fuel part reach about 1 kWh/kg of all the CO₂ avoided.
+# direct reduction needs 3.48 MWh per tonne of liquid steel, mostly electrolysis, and avoids
+# 1.82 t of CO₂ against a blast furnace (Vogl et al. 2018, abstract and section 2.1), so
+# 1.9 kWh/kg; scrap in an electric furnace 0.67 MWh/t (same, section 2), 0.4 kWh/kg. Median:
+# three quarters hydrogen, a quarter extra scrap. Cement: clinker substitutes, alternative fuels
+# and carbon capture together, 60–95%, 80% at the median (GCCA 2021, Concrete Future roadmap;
+# IPCC AR6 WGIII ch. 11). Capture and compression draw about 0.1–0.3 MWh per tonne of CO₂
+# avoided (CEMCAP 2019); electric kilns for the fuel part reach about 1 kWh/kg of all the CO₂
+# avoided.
 PARTS = {
     "steel": {
         "cut": {"median": 0.9, "low": 0.75, "high": 0.95},
-        "kwhPerKgCo2": {"median": 1.5, "low": 0.3, "high": 2.2},
+        "kwhPerKgCo2": {"median": 1.5, "low": 0.4, "high": 2.2},
     },
     "cement": {
         "cut": {"median": 0.8, "low": 0.6, "high": 0.95},

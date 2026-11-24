@@ -58,7 +58,7 @@ fbs_code,fbs_item,proxies,extraction,reason
 2736,"Offals, Edible",2731;2733,,the matching meat (cattle and pig offal dominate)
 2737,"Fats, Animals, Raw",2733;2731,,the matching meat (mostly pig fat)
 2744,Eggs,2734,,poultry meat (the same birds and feed)
-2541,Sugar non-centrifugal,,2536:0.10,"FAO technical conversion factors: about 0.10 t of non-centrifugal sugar per t of cane"
+2541,Sugar non-centrifugal,,2536:0.09,"FAO Technical Conversion Factors for Agricultural Commodities: 0.092 t of non-centrifugal sugar per t of cane in India, the main producer (0.10 in Pakistan and Bangladesh, 0.09 in Colombia)"
 2542,Sugar (Raw Equivalent),,2536:0.11;2537:0.16,"world balance 2023: 0.11 t of raw sugar per t of cane processed and 0.16 per t of beet together give the world sugar output"
 2543,"Sweeteners, Other",,2514:1.7,"world balance 2023: sweetener output per t of maize processed (molasses, a sugar by-product, is part of the item)"
 2571,Soyabean Oil,,2555:0.19,"world balance 2023: oil produced per t of soybeans crushed"
@@ -71,11 +71,11 @@ fbs_code,fbs_item,proxies,extraction,reason
 2578,Coconut Oil,,2560:0.13,"world balance 2023: oil produced per t of coconuts processed"
 2579,Sesameseed Oil,,2561:0.46,"world balance 2023: oil produced per t of seed crushed"
 2580,Olive Oil,,2563:0.16,"world balance 2023: oil produced per t of olives pressed"
-2586,"Oilcrops Oil, Other",,2570:0.35,"FAO technical conversion factors: about 0.35 t of oil per t of linseed, safflower and similar seeds (the world balance ratio is above 1: the item also holds oils of seeds listed elsewhere)"
+2586,"Oilcrops Oil, Other",,2570:0.35,"FAO Technical Conversion Factors for Agricultural Commodities: 0.34 t of oil per t of linseed or safflower, median of the country tables (the world balance ratio is above 1: the item also holds oils of seeds listed elsewhere)"
 2655,Wine,,2620:0.63,"world balance 2023: wine per t of grapes processed (FAO factors give about 0.7)"
 2656,Beer,,2513:5.8,"world balance 2023: beer per t of barley processed"
-2657,"Beverages, Fermented",,2518:4,"FAO technical conversion factors: about 0.25 t of grain per t of sorghum or millet beer"
-2658,"Beverages, Alcoholic",,2514:0.9,"FAO technical conversion factors: about 1.1 t of grain per t of spirits at 40% alcohol"
+2657,"Beverages, Fermented",,2518:4,"assumed: about 0.25 t of grain per t of sorghum or millet beer (FAO's technical conversion factors give none for beverages)"
+2658,"Beverages, Alcoholic",,2514:0.9,"assumed: about 1.1 t of grain per t of spirits at 40% alcohol (FAO's technical conversion factors give none for beverages)"
 2740,"Butter, Ghee",,2848:0.056,"world balance 2023: butter per t of the 85% of processed milk given to it (FAO factors: about 0.045 t per t of whole milk)"
 2743,Cream,,2848:0.09,"world balance 2023: cream per t of the 15% of processed milk given to it"
 2761,Freshwater Fish,2762;2763,,"another fish; a country that lands or farms no freshwater fish but has some in its balance"

@@ -77,9 +77,9 @@ The URL keys of the options, the diet controls and the levers are listed under [
 - **Some HESTIA emissions are left out of both scopes**: land use, burning of natural vegetation, biogenic CO₂ and natural background N₂O. The production of agricultural inputs (feed, seed, animals, crops, processed food) is also left out of cradle to farm gate. Feed additives and organic fertilisers are kept. See [HESTIA](#method-hestia).
 - **Processed products' HESTIA aggregations are not used**: they count the whole crop as one background input. See [HESTIA](#method-hestia).
 - **FAOSTAT's own Tier 1 estimates, not countries' inventories**, for the emissions year closest to 2023, so that every country is estimated the same way. See [Emissions](#method-emissions).
-- **Synthetic nitrogen is shared by harvested area × a world rate per crop class.** The rates come from the shares of world nitrogen use in Heffer et al. (2017): wheat 18%, maize 16%, rice 16%, vegetables 10%, fruit 7%, and so on. Real rates vary between countries. See [Emissions](#method-emissions).
-- **3.6% of each country's synthetic nitrogen goes on grassland**, as in the world average of the same survey. It is given to ruminant products in proportion to their methane. See [Emissions](#method-emissions).
-- **A dairy herd's emissions go 85% to milk and 15% to beef** everywhere. This is a physical allocation close to the International Dairy Federation's global default. See [Emissions](#method-emissions).
+- **Synthetic nitrogen is shared by harvested area × a world rate per crop class.** The rates come from the shares of world nitrogen use in Heffer et al. (2017): wheat 18%, maize 18%, rice 15%, vegetables 7%, fruit 6%, and so on. Real rates vary between countries. See [Emissions](#method-emissions).
+- **4.7% of each country's synthetic nitrogen goes on grassland**, as in the world average of the same survey. It is given to ruminant products in proportion to their methane. See [Emissions](#method-emissions).
+- **A dairy herd's emissions go 85% to milk and 15% to beef** everywhere. This is a physical allocation, as the International Dairy Federation's standard asks; its worked example gives 85.1% for one farm, but the standard sets no global default. See [Emissions](#method-emissions).
 - **Mixed herds (buffalo, sheep, goats, camels) are split between milk and meat by protein**, with 15% protein in carcass meat and 3.2–5.5% in milk depending on the species. See [Emissions](#method-emissions).
 - **Horses, asses and mules are left out**: they are kept mainly for work. See [Emissions](#method-emissions).
 - **Offal and animal fats carry the same emissions per tonne as the carcass**, sharing the meat's emissions by mass. See [Emissions](#method-emissions).
@@ -195,15 +195,18 @@ The other sources are CC BY 4.0, public domain, the Open Government Licence, Apa
 
 ### Values recalled rather than checked against the source
 
-- The feed split by species (11/16/28/28/17) and the GLEAM-style concentrate intakes and rations. See [Feed](#method-feed).
-- The shares of world nitrogen use by crop class and on grassland, from Heffer et al. (2017). See [Emissions](#method-emissions).
-- The 85% of a dairy herd's emissions given to milk, said to be close to the International Dairy Federation's default. See [Emissions](#method-emissions).
-- The FAO technical conversion factors in the extraction-rate table (non-centrifugal sugar, other oilcrop oils, fermented and alcoholic beverages). See [Emissions](#method-emissions).
-- The tonnes of oilcake per tonne of oil in `oilcakes.csv`, from FAO's technical conversion factors. They set how a crushed oilseed's land is shared between oil and cake. See [Land](#method-land).
-- The sugar extraction rates used to convert Poore & Nemecek's units (11% for cane, 15% for beet). The emissions page's world balance gives 0.16 for beet. See [Published LCA data](#method-literature).
+- The feed split by species (11/16/28/28/17). GLEAM's grain intakes (Mottet et al., 2017, Table SI 2) and the feed industry's survey give about the same share to ruminants together and to pigs, but neither gives dairy 16% or poultry meat as little as 28%. See [Feed](#method-feed).
+- The GLEAM-style concentrate intakes and rations, which no published table gives in this form, and aquafeed's 30/40/5/25 ration. See [Feed](#method-feed).
+- Compound aquafeed in 2023 (69.4 Mt, Tacon et al., 2025), behind seafood's 5.5% of concentrate feed: the article could not be read. See [Fish and seafood](#method-seafood).
+- The 85% of a dairy herd's emissions given to milk. The International Dairy Federation's 2022 standard gives the allocation formula and an 85.1% worked example for one farm, but no global default; its 2015 bulletin could not be read. See [Emissions](#method-emissions).
+- The grain per tonne of fermented (0.25 t) and alcoholic (1.1 t) beverages, which FAO's technical conversion factors do not give. See [Emissions](#method-emissions).
 - The legume mix (60% pulses, 20% soybeans, 20% cereals). See [The shift](#method-shift).
 - The plant-milk mix (50% soybeans, 50% oats). See [The shift](#method-shift).
-- Each practice's applicable share by country and each removal's largest share of land. See [Farm practices](#method-practices) and [Carbon in farmland](#method-removals).
+- Each practice's applicable share by country, a judgement no source gives. See [Farm practices](#method-practices).
+- Cover crops' quarter of cropland and their rate's independence from climate, and enhanced weathering's rates by climate zone and the fifth taken off for logistics: the meta-analysis could be read only in its abstract, and the weathering studies give neither. See [Carbon in farmland](#method-removals).
+- Shipping's 0.85 Gt, read only where others quote the IEA, and the road split of 60% passengers and 40% freight, which the IEA's shares bound (over 60% for cars and vans, about a third for trucks) without giving vans'. See [Energy and transport](#method-sectors).
+- An electric car's 0.15–0.22 kWh/km. See [Energy and transport](#method-sectors).
+- Steel's and cement's cuts at full adoption (90%, 80%) and cement's electricity per kg avoided, and buildings' 3.0 Gt of direct CO₂, read only in a search summary of the IEA's page. See [Buildings and industry](#method-industry).
 
 ### HESTIA has no animal products yet
 

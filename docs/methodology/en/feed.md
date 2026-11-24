@@ -63,7 +63,7 @@ Farmed fish and shrimp eat aquafeed made of grain, oilseeds and fishmeal. The ba
 - In method 1, seafood takes 5.5% of the world's concentrate feed. The other five groups keep their proportions in the remaining 94.5%: 11% becomes 10.4% for ruminant meat, and so on.
 - In method 2, farmed fish need 1.6 t of feed per tonne in high-income countries and 0.87 t elsewhere. The ration is 30% grain, 40% oilseeds, 5% pulses and 25% fish.
 
-Of the fish fed to animals, about 70% goes to aquaculture, 23% to pigs and 7% to poultry. For every other feed item, the five livestock groups keep the same shares relative to each other as before seafood was added. [Fish and seafood](#method-seafood) gives the sources.
+Of the fish fed to animals, about 90% goes to aquaculture, 9% to pigs and 1% to poultry. For every other feed item, the five livestock groups keep the same shares relative to each other as before seafood was added. [Fish and seafood](#method-seafood) gives the sources.
 
 ## Assumptions
 

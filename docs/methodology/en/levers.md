@@ -99,11 +99,11 @@ A lever that only acts together with another shares that joint effect half and h
 
 | Groups acting | Warming avoided in 2100 |
 | --- | --- |
-| Diet alone | 0.135 °C |
+| Diet alone | 0.1355 °C |
 | Regrowth alone | 0 (it frees no land) |
-| Diet and regrowth | 0.181 °C |
+| Diet and regrowth | 0.1816 °C |
 
-The joint effect of regrowth is 0.181 − 0.135 = 0.046 °C. The Shapley value shares it half and half. Regrowth gets 0.023 °C and the diet gets 0.135 + 0.023 = 0.158 °C, which is what the summary shows.
+The joint effect of regrowth is 0.1816 − 0.1355 = 0.0461 °C. The Shapley value shares it half and half. Regrowth gets 0.0231 °C and the diet gets 0.1355 + 0.0231 = 0.1586 °C, which is what the summary shows (the last digit is rounded).
 
 ### How Planetshift computes them quickly
 

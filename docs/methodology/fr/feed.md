@@ -63,7 +63,7 @@ Les poissons et crevettes d'élevage mangent des aliments aquacoles faits de gra
 - Dans la méthode 1, les produits de la mer prennent 5,5 % des aliments concentrés du monde. Les cinq autres groupes gardent leurs proportions dans les 94,5 % restants : 11 % devient 10,4 % pour la viande de ruminants, et ainsi de suite.
 - Dans la méthode 2, les poissons d'élevage ont besoin de 1,6 t d'aliments par tonne dans les pays à revenu élevé et de 0,87 t ailleurs. La ration est à 30 % de grain, 40 % d'oléagineux, 5 % de légumineuses et 25 % de poisson.
 
-Du poisson donné aux animaux, environ 70 % va à l'aquaculture, 23 % aux porcs et 7 % aux volailles. Pour tous les autres produits fourragers, les cinq groupes d'élevage gardent entre eux les mêmes parts qu'avant l'ajout des produits de la mer. La page [Poissons et fruits de mer](#method-seafood) donne les sources.
+Du poisson donné aux animaux, environ 90 % va à l'aquaculture, 9 % aux porcs et 1 % aux volailles. Pour tous les autres produits fourragers, les cinq groupes d'élevage gardent entre eux les mêmes parts qu'avant l'ajout des produits de la mer. La page [Poissons et fruits de mer](#method-seafood) donne les sources.
 
 ## Hypothèses
 

@@ -85,7 +85,7 @@ The fuels' CO₂ is the UK government's 2023 factor for 100% mineral fuel: 2.33 
 
 **Electric cars** act on road passengers' CO₂. They need 1.10 kWh per kg of CO₂ avoided (0.72–1.72). An electric car uses about 0.18 kWh per km at the plug (0.15–0.22, charging losses included). The petrol car it replaces burns about 7 litres per 100 km (5.5–9). On today's world grid, 0.48 kg/kWh, an electric car saves about half of its petrol car's CO₂ (1 − 1.10 × 0.48 = 0.47). On a clean grid it saves almost all of it.
 
-**Electric trucks** act on road freight's CO₂. They need 1.50 kWh per kg avoided (1.06–2.03). A 40-tonne battery truck uses about 1.3 kWh per km at the plug, against 33 litres of diesel per 100 km. Electric vans (0.25 kWh/km against 9 L/100 km) are the low end. On today's grid a truck saves about 30% of its CO₂ (1 − 1.50 × 0.48 = 0.28). On the grid of SSP3-7.0, where intensity rises, it saves little.
+**Electric trucks** act on road freight's CO₂. They need 1.27 kWh per kg avoided (1.06–2.03). A 40-tonne battery truck uses about 1.1 kWh per km at the plug in German fleets (Oeko-Institut, 2025), against 33 litres of diesel per 100 km. Electric vans (0.25 kWh/km against 9 L/100 km) are the low end. On today's grid a truck saves about 40% of its CO₂ (1 − 1.27 × 0.48 = 0.39). On the grid of SSP3-7.0, where intensity rises, it saves little.
 
 ### Less flying
 
@@ -325,7 +325,7 @@ Warming avoided in °C, median (likely range). Each lever is at 100% from 2026 t
 | Levers | 2050, CO₂ only | 2050, with | 2100, CO₂ only | 2100, with |
 | --- | --- | --- | --- | --- |
 | Electric cars | 0.021 (0.011–0.034) | 0.045 (−0.011–0.116) | 0.072 (0.042–0.110) | 0.106 (0.025–0.199) |
-| Electric trucks | 0.011 (0.006–0.019) | 0.027 (−0.010–0.075) | 0.043 (0.026–0.067) | 0.065 (0.014–0.126) |
+| Electric trucks | 0.013 (0.006–0.019) | 0.029 (−0.010–0.075) | 0.046 (0.026–0.067) | 0.068 (0.014–0.126) |
 | Less flying | 0.049 (0.014–0.115) | 0.054 (0.017–0.124) | 0.104 (0.040–0.237) | 0.122 (0.049–0.267) |
 | Clean aviation fuel | 0.009 (0.007–0.012) | 0.015 (0.010–0.022) | 0.042 (0.029–0.057) | 0.059 (0.038–0.087) |
 | Clean shipping | 0.006 (0.004–0.008) | 0.008 (0.005–0.013) | 0.021 (0.014–0.028) | 0.029 (0.019–0.043) |
@@ -358,7 +358,7 @@ With every energy, heating and industry lever in full, two effects roughly cance
 - SSP1-2.6: 0.033 and 0.049 °C (CO₂ alone 0.016 and 0.036);
 - SSP2-4.5: 0.045 and 0.106 (CO₂ alone 0.021 and 0.072).
 
-In SSP3-7.0, the grid stays dirty and NOx and methane are high. That methane takes back part of the gain, but electric vehicles still avoid more than their CO₂ alone. Electric cars avoid 0.030 °C in 2050 and 0.054 °C in 2100 (CO₂ alone 0.013 and 0.041). Electric trucks avoid 0.016 and 0.020 (CO₂ alone 0.005 and 0.014). With FaIR's one coefficient for every source, they would add 0.018 and 0.026 °C by 2100. With that coefficient shared between land and sea, they would add 0.009 and 0.020 (see [Limitations](#method-limitations)).
+In SSP3-7.0, the grid stays dirty and NOx and methane are high. That methane takes back part of the gain, but electric vehicles still avoid more than their CO₂ alone. Electric cars avoid 0.030 °C in 2050 and 0.054 °C in 2100 (CO₂ alone 0.013 and 0.041). Electric trucks avoid 0.018 and 0.029 (CO₂ alone 0.007 and 0.022). With FaIR's one coefficient for every source, they would add 0.018 and 0.026 °C by 2100. With that coefficient shared between land and sea, they would add 0.009 and 0.020 (see [Limitations](#method-limitations)).
 
 ### Against published phase-outs
 
@@ -415,7 +415,7 @@ The electric car lever's saving is about 47% of tailpipe CO₂ on today's world 
 - Shipping, international and domestic, follows the scenario's international shipping.
 - Electricity is generation only. Heat from power stations is left out. Its CO₂ and the grid's intensity stop at zero where the scenario's bioenergy with carbon capture would make them negative.
 - The scenario models are those CMIP6 used for each pathway: IMAGE for SSP1-2.6, MESSAGE-GLOBIOM for SSP2-4.5, AIM/CGE for SSP3-7.0. So electricity follows the same story as the emissions FaIR runs on.
-- An electric vehicle needs 1.10 (car) or 1.50 (truck) kWh per kg of tailpipe CO₂ avoided, in every year. Vehicles do not get more efficient over time, and making them is not counted.
+- An electric vehicle needs 1.10 (car) or 1.27 (truck) kWh per kg of tailpipe CO₂ avoided, in every year. Vehicles do not get more efficient over time, and making them is not counted.
 - Aviation's non-CO₂ forcing is proportional to its CO₂ in the same year, at the 2018 ratio. Clean fuel does not change it.
 - Data centres add their electricity beyond 2024's 415 TWh, following the IEA's cases to 2035 and held flat after. Building them is not counted.
 - The response to forcing is FaIR's response to solar forcing (efficacy 1) on SSP2-4.5 in 2035, used for every year and scenario.
@@ -435,6 +435,7 @@ The electric car lever's saving is about 47% of tailpipe CO₂ on today's world 
 - IEA (2025). Energy and AI, [iea.org/reports/energy-and-ai](https://www.iea.org/reports/energy-and-ai). Licence: CC BY 4.0.
 - Lee, D. S. et al. (2021). The contribution of global aviation to anthropogenic climate forcing for 2000 to 2018. Atmospheric Environment 244, 117834, [doi:10.1016/j.atmosenv.2020.117834](https://doi.org/10.1016/j.atmosenv.2020.117834). Licence: CC BY 4.0.
 - ICCT (2023). A total cost of ownership comparison of truck decarbonization pathways in Europe, for the energy use of battery-electric and diesel trucks.
+- Le Corguillé, J., Hacker, F., Dolinga, T. (2025). Real-world data analysis of battery electric trucks operating in Germany. Oeko-Institut, EVS38: 1.06 kWh/km for the eActros 600 tractor and 1.15 for a 38 t Scania, [oeko.de](https://www.oeko.de/fileadmin/oekodoc/Real-world-data-analysis-of-battery-electric-trucks-operating-in-Germany.pdf).
 - Bieker, G. (2021). A global comparison of the life-cycle greenhouse gas emissions of combustion engine and electric passenger cars. ICCT white paper, [theicct.org](https://theicct.org/publication/a-global-comparison-of-the-life-cycle-greenhouse-gas-emissions-of-combustion-engine-and-electric-passenger-cars/).
 - IEA (2024). Global EV Outlook 2024, [iea.org/reports/global-ev-outlook-2024](https://www.iea.org/reports/global-ev-outlook-2024). Licence: CC BY 4.0.
 - Schlömer, S. et al. (2014). Annex III: Technology-specific cost and performance parameters. In Climate Change 2014: Mitigation of Climate Change, contribution of Working Group III to the IPCC's Fifth Assessment Report, Cambridge University Press, table A.III.2.

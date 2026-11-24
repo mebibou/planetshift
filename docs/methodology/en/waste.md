@@ -1,6 +1,6 @@
 # Food loss and waste
 
-Some of the food farms grow is never eaten. Wasting less of it means farms need to grow less for the same meals, and so use less land and emit less. Worldwide, about 84 kg of edible food per person is wasted each year after it reaches shops. The lever lets you cut that waste, and the losses before shops, by a share you choose.
+Some of the food farms grow is never eaten. Wasting less of it means farms need to grow less for the same meals, and so use less land and emit less. Worldwide, about 74 kg of edible food per person is wasted each year after it reaches shops. The lever lets you cut that waste, and the losses before shops, by a share you choose.
 
 ## Losses and waste
 
@@ -82,17 +82,17 @@ The Index counts food and the inedible parts that go with it: bones, peels, shel
 
 | Sector | High-income countries | Other countries |
 | --- | --- | --- |
-| Household | 0.75 | 0.50 |
+| Household | 0.75 | 0.35 |
 | Food service | 0.75 | 0.75 |
 | Retail | 0.85 | 0.85 |
 
-The household share for high-income countries follows the United Kingdom's measurements, where "around three-quarters" of household food waste is edible (WRAP, 2021/22: about 4.7 of 6.4 million tonnes, 73%). In lower-income countries more food is bought raw and prepared at home, so a larger part of household waste is peels, husks and bones. The share of 0.5 is an assumption in the range of the few studies available. Food service and retail waste is mostly unsold or unserved food, so most of it is edible. Their shares are assumptions, as no country-wide measurement was found.
+The household share for high-income countries follows the United Kingdom's measurements, where 74% of household food waste is edible (WRAP, 2021/22: 4.7 of 6.4 million tonnes). Other high-income countries measure less: 77% in Switzerland, but 54% in Israel, 49% in New Zealand and 33% in Japan (UNEP, 2024, Table 19). In lower-income countries more food is bought raw and prepared at home, so a larger part of household waste is peels, husks and bones. The only measurements outside high-income countries find 31% in Brazil, 34% in Indonesia (UNEP, 2024, Table 19) and 39% in Rio de Janeiro (Box 2), so the share is 0.35. Food service and retail waste is mostly unsold or unserved food, so most of it is edible: 74% in British food service (WRAP, 2025), 72% in German food service and 84% in German retail (Schmidt et al., 2019). WRAP takes all retail waste as edible.
 
-With these shares, the world's edible waste after shops is about 674 million tonnes, 84 kg per person a year: 43 kg in households, 27 kg in food service and 14 kg in retail. By country, household edible waste runs from 9 to 141 kg per person, with a median of 46 kg.
+With these shares, the world's edible waste after shops is about 594 million tonnes, 74 kg per person a year: 33 kg in households, 27 kg in food service and 14 kg in retail. By country, household edible waste runs from 6 to 141 kg per person, with a median of 32 kg.
 
 ### A cap at 40% of the food supply
 
-The edible waste is also capped at 40% of a country's food supply in the Food Balance Sheets (all items kept in the model, kg per person). No country reaches the cap. The share runs from 3% (Spain) to 35% (Yemen), with a median of 12%, and nine countries in ten are below 19%. The highest shares are in countries with a small food supply per person, where the Index's estimates are extrapolated (Yemen, Syria, Chad, Afghanistan).
+The edible waste is also capped at 40% of a country's food supply in the Food Balance Sheets (all items kept in the model, kg per person). No country reaches the cap. The share runs from 3% (Spain) to 29% (Yemen), with a median of 11%, and nine countries in ten are below 17%. The highest shares are in countries with a small food supply per person, where the Index's estimates are extrapolated (Yemen, Syria, Chad, Afghanistan).
 
 ## Caveats
 
@@ -118,7 +118,9 @@ The edible waste is also capped at 40% of a country's food supply in the Food Ba
 - United Nations Environment Programme (2024). Food Waste Index Report 2024. Think Eat Save: Tracking Progress to Halve Global Food Waste. Nairobi: <https://wedocs.unep.org/20.500.11822/45230>. Reproduction for educational or non-profit services is allowed with acknowledgement of the source.
 - United Nations Statistics Division, SDG Global Database, indicator 12.3.1(b), series AG_FOOD_WST_PC (food waste per capita, by sector): <https://unstats.un.org/sdgs/dataportal>. Free to copy and distribute with the United Nations cited as the source; commercial redistribution needs the UN's permission.
 - Eurostat, Food waste and food waste prevention by NACE Rev. 2 activity (env_wasfw), the European figures reported to the SDG database: <https://ec.europa.eu/eurostat/web/waste/food-waste>.
-- WRAP (2023). Household Food and Drink Waste in the United Kingdom 2021/22 (edible share of household food waste): <https://wrap.ngo/resources/report/household-food-and-drink-waste-united-kingdom-202122>.
+- WRAP (2023). Household Food and Drink Waste in the United Kingdom 2021/22, executive summary (edible share of household food waste): <https://www.wrap.ngo/sites/default/files/2024-05/WRAP-Household-Food-and-Drink-Waste-in-the-United-Kingdom-2021-22-v6.1.pdf>.
+- WRAP (2025). UK Food Waste & Food Surplus – Key Facts, Tables 3 and 5 (edible share of food service waste).
+- Schmidt, T., Schneider, F., Leverenz, D., Hafner, G. (2019). Lebensmittelabfälle in Deutschland – Baseline 2015. Thünen Report 71, Table K.1 (avoidable share of food service and retail waste): <https://www.zugutfuerdietonne.de/fileadmin/zgfdt/inhalt/hintergrund/Thuenen_Kurzfassung.pdf>.
 - FAO, SDG indicator 12.3.1(a), food loss percentage (series AG_FLS_PCT), by region and group of products, 2023, UN SDG Global Database: <https://unstats.un.org/sdgs/dataportal>; metadata: <https://unstats.un.org/sdgs/metadata/files/Metadata-12-03-01A.pdf>.
 - FAO (2019). The State of Food and Agriculture 2019. Moving forward on food loss and waste reduction (food loss index, SDG indicator 12.3.1(a)): <https://www.fao.org/publications/sofa>.
 - United Nations, Sustainable Development Goal target 12.3: <https://sdgs.un.org/goals/goal12>.

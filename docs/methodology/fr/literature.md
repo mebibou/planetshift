@@ -122,7 +122,7 @@ Valeurs à la ferme de quelques produits, en kg par tonne du produit des bilans 
 - Le profil de gaz d'un produit est celui de HESTIA pour ce produit (ou pour le produit proche nommé), ou celui des émissions de l'élevage à la ferme selon FAOSTAT pour les produits animaux. Le profil est une moyenne mondiale.
 - Les produits animaux ne portent pas de CO₂, et les deux périmètres sont égaux pour eux.
 - Les facteurs GWP100 (les pondérations à 100 ans qui convertissent chaque gaz en CO₂e) sont ceux de l'AR5 avec rétroactions climat-carbone : 34 pour le CH₄ et 298 pour le N₂O, pour le CH₄ fossile comme biogénique.
-- Les conversions vers la quantité des bilans actuels sont celles listées ci-dessus. Les taux d'extraction du sucre de 11 % (canne) et 15 % (betterave) sont des valeurs typiques, qui ne viennent pas de l'étude.
+- Les conversions vers la quantité des bilans actuels sont celles listées ci-dessus. Les taux d'extraction du sucre de 11 % (canne) et 15 % (betterave) ne viennent pas de l'étude. Ce sont les facteurs de conversion techniques de la FAO pour le sucre brut chez les principaux producteurs : 11 % en Inde et aux États-Unis, 15 % en France et en Allemagne.
 - Les produits qui partagent un produit des bilans sont pondérés par leur alimentation et leur gaspillage de 2009–11.
 - Les estimations de Poore & Nemecek pour les produits des bilans qu'ils n'ont pas étudiés (« Cereals & Oilcrops Misc. », « Oils Misc. », « Stimulants & Spices Misc. ») sont utilisées pour les autres céréales, les autres oléagineux, les autres huiles et le thé.
 - Aucune deuxième source de la littérature n'est utilisée :
