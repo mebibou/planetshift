@@ -98,7 +98,7 @@ Each lever's adoption is 0–100, in percent. It is left out of the address at 0
 | Farm practices | feed additives (`fa`), breeding and feed (`bf`), manure management (`mm`), rice paddies drained (`rw`), less nitrogen, better used (`ne`), clean farm energy (`fe`) |
 | Food waste | waste after shops (`fw`), losses before shops (`sl`) |
 | Deforestation | deforestation stopped (`df`) |
-| Carbon in farmland | cover crops (`cc`), trees on farms (`af`), biochar (`bc`), rock dust (`ew`) |
+| Carbon in farmland | cover crops (`cc`), trees on farms (`af`), biochar (`bc`), rock dust, experimental (`ew`) |
 | Energy and transport | electric cars (`ev`), electric trucks (`et`), less flying (`fl`), clean aviation fuel (`saf`), clean shipping (`cs`), renewable electricity (`re`) |
 | Buildings and industry | clean heating (`ch`), clean steel and cement (`ci`) |
 

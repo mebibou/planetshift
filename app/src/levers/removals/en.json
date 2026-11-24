@@ -16,8 +16,8 @@
     "description": "Charred crop residues added to soil keep their carbon for centuries."
   },
   "enhancedWeathering": {
-    "title": "Rock dust",
-    "description": "Crushed basalt spread on fields takes up CO₂ as it weathers."
+    "title": "Rock dust (experimental)",
+    "description": "Crushed basalt spread on fields takes up CO₂ as it weathers. Shown so far only in small field trials, which measure far less than models predict."
   },
   "summary": {
     "title": "CO₂ stored in farmland in {year}",

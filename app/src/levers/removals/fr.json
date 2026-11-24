@@ -16,8 +16,8 @@
     "description": "Des résidus de culture carbonisés, enfouis dans le sol, gardent leur carbone des siècles."
   },
   "enhancedWeathering": {
-    "title": "Poudre de roche",
-    "description": "Du basalte broyé épandu sur les champs capte du CO₂ en s'altérant."
+    "title": "Poudre de roche (expérimental)",
+    "description": "Du basalte broyé épandu sur les champs capte du CO₂ en s'altérant. Montré jusqu'ici seulement dans de petits essais au champ, qui mesurent bien moins que ce que prévoient les modèles."
   },
   "summary": {
     "title": "CO₂ stocké dans les terres en {year}",

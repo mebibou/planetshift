@@ -98,7 +98,7 @@ L'adoption de chaque levier va de 0 à 100, en pour cent. Elle est omise de l'ad
 | Pratiques agricoles | additifs alimentaires (`fa`), sélection et alimentation (`bf`), gestion des effluents (`mm`), rizières drainées (`rw`), moins d'azote, mieux employé (`ne`), énergie propre à la ferme (`fe`) |
 | Gaspillage alimentaire | gaspillage après les magasins (`fw`), pertes avant les magasins (`sl`) |
 | Déforestation | déforestation arrêtée (`df`) |
-| Carbone dans les terres agricoles | couverts végétaux (`cc`), arbres dans les fermes (`af`), biochar (`bc`), poudre de roche (`ew`) |
+| Carbone dans les terres agricoles | couverts végétaux (`cc`), arbres dans les fermes (`af`), biochar (`bc`), poudre de roche, expérimentale (`ew`) |
 | Énergie et transport | voitures électriques (`ev`), camions électriques (`et`), moins d'avion (`fl`), carburant d'aviation propre (`saf`), transport maritime propre (`cs`), électricité renouvelable (`re`) |
 | Bâtiments et industrie | chauffage propre (`ch`), acier et ciment propres (`ci`) |
 

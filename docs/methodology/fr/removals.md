@@ -1,6 +1,6 @@
 # Carbone stocké dans les terres agricoles
 
-L'agriculture peut retirer du CO₂ de l'air autant qu'en émettre. Les plantes font entrer du carbone dans le sol, les arbres le stockent dans leur bois, et certains matériaux épandus sur les champs le stockent. Cette page explique les quatre pratiques que Planetshift propose comme leviers, la quantité de CO₂ que chacune absorbe par hectare, et ce que chacune pourrait stocker dans le monde. Avec chaque pratique sur le plus de terres qu'elle peut atteindre, cela fait environ 0,37 Gt (milliard de tonnes) de CO₂ par an pour les couverts végétaux, 1,3 Gt pour les arbres dans les fermes, 0,63 Gt pour le biochar et 0,6 Gt pour la poudre de roche.
+L'agriculture peut retirer du CO₂ de l'air autant qu'en émettre. Les plantes font entrer du carbone dans le sol, les arbres le stockent dans leur bois, et certains matériaux épandus sur les champs le stockent. Cette page explique les quatre pratiques que Planetshift propose comme leviers, la quantité de CO₂ que chacune absorbe par hectare, et ce que chacune pourrait stocker dans le monde. Avec chaque pratique sur le plus de terres qu'elle peut atteindre, cela fait environ 0,37 Gt (milliard de tonnes) de CO₂ par an pour les couverts végétaux, 1,3 Gt pour les arbres dans les fermes, 0,63 Gt pour le biochar et 0,16 Gt pour la poudre de roche, qui est expérimentale.
 
 ## Comment l'absorption est comptée
 
@@ -18,7 +18,7 @@ L'absorption d'une pratique est son rythme par hectare multiplié par les hectar
 | Couverts végétaux | cultures | 1,17 (0,6–2,0) en climat humide, 0,45 (0,2–0,8) en climat sec | 25 % | 20 |
 | Arbres dans les fermes (agroforesterie) | cultures et prairies | 9,4 (4,7–18,7) tropical humide, 6,5 tropical sec, 4,3 (2,2–8,7) tempéré humide, 3,0 tempéré sec | 5 % | 20 |
 | Biochar | cultures | 1,9 (0,6–4,9) partout | 20 % | 100 (pas de saturation) |
-| Poudre de roche (altération forcée des roches) | cultures | 3,0 (1,0–5,0) tropical humide, 2,0 (0,5–3,5) tempéré humide, 1,0 tropical sec, 0,8 tempéré sec | 20 % | 100 (pas de saturation) |
+| Poudre de roche (altération forcée des roches), expérimentale | cultures | 1,5 (0,3–2,7) tropical humide, 1,0 (0,2–1,8) tempéré humide, 0,5 tropical sec, 0,4 tempéré sec | 10 % | 100 (pas de saturation) |
 
 Les cultures du modèle couvrent 1,65 milliard d'hectares : la surface récoltée des cultures alimentaires, avec les terres des tourteaux et les prairies temporaires (voir [Terres](#method-land)).
 
@@ -63,13 +63,15 @@ La fourchette va de 0,5 t d'un charbon mal carbonisé à 2 t d'un charbon produi
 
 À ce rythme, la biomasse durable de Woolf et al. (2010) peut fournir au plus un cinquième des cultures. À ce plafond, le biochar stocke environ 0,63 Gt de CO₂ par an. C'est sous le potentiel du biochar du sixième rapport d'évaluation du GIEC (1,1, de 0,3 à 1,8, Gt d'équivalent CO₂ par an jusqu'à 100 \$ la tonne ; 2,6 techniquement) : une lecture prudente.
 
-### Poudre de roche
+### Poudre de roche (expérimentale)
 
 La poudre de roche (l'altération forcée des roches) est de la roche silicatée broyée, en général du basalte, épandue sur les champs. En se dissolvant, elle transforme le CO₂ de l'air du sol en bicarbonate. Le bicarbonate s'écoule vers les rivières et l'océan, où il reste pendant plusieurs milliers d'années.
 
-Un essai au champ de quatre ans dans la Corn Belt américaine a mesuré 10,5 ± 3,8 t de CO₂ par hectare pour 50 t de basalte par hectare et par an (Beerling et al., 2024). Cela fait 2,6 t par an. Une fois retiré environ un cinquième pour l'extraction, le broyage et le transport, il reste 2 t. L'altération est plus rapide là où il fait chaud et humide, et lente là où l'eau ne circule pas dans le sol. Les tropiques ont donc un rythme plus élevé et les cultures en climat sec un rythme plus bas.
+La poudre de roche est expérimentale. Le sixième rapport d'évaluation du GIEC la juge démontrée en laboratoire et dans de petits essais au champ (niveau de maturité technologique 3–4), mais pas encore à grande échelle (groupe de travail III, chapitre 12). Planetshift la propose avec des rythmes fixés sur ce que les essais au champ ont mesuré.
 
-L'approvisionnement en roche et son transport limitent la poudre de roche à un cinquième des cultures au plus. Avec 2 t par hectare, une valeur typique, cela donne environ 0,6 Gt par an. Beerling et al. (2020) trouvent que les principaux pays agricoles atteignent 0,5 Gt par an, déduction faite des émissions de la logistique, sur environ un dixième de leurs cultures, et 1 Gt sur environ un quart.
+Un essai sur une prairie écossaise a mesuré 0,26 à 0,41 t de CO₂ par hectare en environ 1,5 an pour 78 et 126 t de basalte par hectare, une fois retirés 22 % pour le CO₂ qui dégaze (McBride et al., 2025). Cela fait environ 0,2 t par an, le bas de la fourchette, et 1 à 2 % de ce que la roche pourrait capter en théorie. Un essai au champ de quatre ans dans la Corn Belt américaine a mesuré 10,5 ± 3,8 t de CO₂ par hectare pour 50 t de basalte par hectare et par an (Beerling et al., 2024). Cela fait 2,6 t par an. Le broyage et le transport de la roche peuvent en reprendre jusqu'à 30 % sur les réseaux électriques actuels (Beerling et al., 2020, tel que le rapporte le GIEC), ce qui laisse 1,8 t, le haut de la fourchette. La médiane dans les cultures tempérées humides est de 1 t, entre les deux. L'altération est plus rapide là où il fait chaud et humide, et lente là où l'eau ne circule pas dans le sol. Les tropiques ont donc 1,5 fois ce rythme, et les cultures en climat sec 0,4 à 0,5 fois.
+
+L'approvisionnement en roche limite la poudre de roche à un dixième des cultures au plus. Plus de 3 milliards de tonnes de roche broyée adaptée sont produites chaque année (McBride et al., 2025, citant Renforth et al., 2011). Beerling et al. (2020) trouvent que les principaux pays agricoles atteignent 0,5 Gt par an, déduction faite des émissions de la logistique, sur environ un dixième de leurs cultures, ce qui demande déjà environ 3,1 Gt de basalte par an à leurs 40 t par hectare (tableau 1). 1 Gt demande environ un quart de leurs cultures et 5,9 Gt de roche. Sur un dixième des cultures du modèle, la poudre de roche stocke environ 0,16 Gt de CO₂ par an.
 
 ## Pays et climat
 
@@ -103,7 +105,7 @@ Les fourchettes sont larges, pour plusieurs raisons :
 - Le carbone du sol se mesure comme une petite différence entre deux grands stocks, souvent seulement dans les 30 premiers cm. Des gains en surface peuvent être compensés par des pertes plus en profondeur.
 - Les essais au champ ont lieu là où la pratique fonctionne bien, et ils sont courts. Les extrapoler à tout un pays et sur des décennies ajoute une forte incertitude.
 - Les rythmes des arbres dans les fermes dépendent du nombre d'arbres plantés et de leur conduite, ce qu'aucun chiffre mondial ne peut saisir.
-- La poudre de roche a peu d'essais au champ, et certains trouvent une absorption plus lente que ce que prévoient les modèles. La part du carbone dissous qui atteint l'océan est encore en cours de mesure.
+- La poudre de roche a peu d'essais au champ, et certains trouvent une absorption plus lente que ce que prévoient les modèles : l'essai écossais a mesuré 1 à 2 % de l'absorption théorique. La part du carbone dissous qui atteint l'océan est encore en cours de mesure.
 - Le bénéfice du biochar dépend de ce que la biomasse serait devenue autrement. Quand on fait du biochar avec des résidus qui auraient sinon pourri dans le sol, le gain est plus faible que ne le dit le rythme.
 
 Ces rythmes ne comptent pas les effets secondaires sur les rendements ou sur le protoxyde d'azote des sols. Ils laissent aussi de côté les émissions de fabrication de la poudre de roche et du charbon, au-delà de la part du transport pour la poudre de roche.
@@ -118,7 +120,7 @@ Les valeurs, avec une ligne de justification pour chacune, sont dans `pipeline/r
 - Couverts végétaux : 0,32 t C/ha/an en climat humide, un tiers de ce gain en climat sec ; au plus un quart des cultures ; 20 ans.
 - Arbres dans les fermes : la moitié de la moyenne de Cardinael et al. (2018) pour les systèmes agrosylvicoles et sylvopastoraux, arbres et sol ensemble ; climats secs à 0,7 fois les climats humides ; au plus 5 % des terres agricoles ; 20 ans.
 - Biochar : 1 t/ha/an, 0,65 t C/t, 80 % gardés après un siècle ; au plus un cinquième des cultures ; pas de saturation.
-- Poudre de roche : 2 t CO₂/ha/an net dans les cultures tempérées humides, d'après un essai au champ à 50 t de basalte/ha/an, plus sous les tropiques, moins dans les cultures en climat sec ; au plus un cinquième des cultures ; pas de saturation.
+- Poudre de roche, expérimentale : 1 t CO₂/ha/an net dans les cultures tempérées humides, entre les essais au champ en Écosse (environ 0,2) et dans la Corn Belt américaine (1,8 net de la logistique), plus sous les tropiques, moins dans les cultures en climat sec ; au plus un dixième des cultures, faute de roche ; pas de saturation.
 - Chaque pays prend une seule zone climatique, celle de la plus grande partie de ses cultures.
 - Les pratiques sont comptées indépendamment. Leurs absorptions sur le même hectare s'additionnent, même si un couvert végétal et du biochar sur un même champ peuvent ne pas s'additionner entièrement.
 
@@ -134,3 +136,5 @@ Les valeurs, avec une ligne de justification pour chacune, sont dans `pipeline/r
 - Woolf, D. et al. (2010). Sustainable biochar to mitigate global climate change. Nature Communications 1, 56, doi:10.1038/ncomms1053.
 - Beerling, D. J. et al. (2020). Potential for large-scale CO₂ removal via enhanced rock weathering with croplands. Nature 583, 242–248, doi:10.1038/s41586-020-2448-9.
 - Beerling, D. J. et al. (2024). Enhanced weathering in the US Corn Belt delivers carbon removal with agronomic benefits. PNAS 121, e2319436121, doi:10.1073/pnas.2319436121. CC BY 4.0.
+- McBride, A. L. et al. (2025). Quantifying potential carbon dioxide removal via enhanced weathering using porewater from a field trial in Scotland. Frontiers in Climate 7, doi:10.3389/fclim.2025.1606574. CC BY 4.0.
+- Babiker, M. et al. (2022). Cross-sectoral perspectives. Dans Climate Change 2022: Mitigation of Climate Change, GIEC AR6 GT3, chapitre 12 (section 12.3.1.2, altération forcée), doi:10.1017/9781009157926.014.

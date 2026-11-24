@@ -1,6 +1,6 @@
 # Carbon stored in farmland
 
-Farming can take CO₂ out of the air as well as emit it. Plants put carbon into the soil, trees store it in wood, and some materials spread on fields store it. This page explains the four practices Planetshift offers as levers, how much CO₂ each takes up per hectare, and how much each could store worldwide. With each practice on the most land it can reach, that is about 0.37 Gt (billion tonnes) of CO₂ a year for cover crops, 1.3 Gt for trees on farms, 0.63 Gt for biochar and 0.6 Gt for rock dust.
+Farming can take CO₂ out of the air as well as emit it. Plants put carbon into the soil, trees store it in wood, and some materials spread on fields store it. This page explains the four practices Planetshift offers as levers, how much CO₂ each takes up per hectare, and how much each could store worldwide. With each practice on the most land it can reach, that is about 0.37 Gt (billion tonnes) of CO₂ a year for cover crops, 1.3 Gt for trees on farms, 0.63 Gt for biochar and 0.16 Gt for rock dust, which is experimental.
 
 ## How the uptake is counted
 
@@ -18,7 +18,7 @@ The uptake of a practice is its rate per hectare times the hectares where it is 
 | Cover crops | cropland | 1.17 (0.6–2.0) in moist climates, 0.45 (0.2–0.8) in dry ones | 25% | 20 |
 | Trees on farms (agroforestry) | cropland and pasture | 9.4 (4.7–18.7) tropical moist, 6.5 tropical dry, 4.3 (2.2–8.7) temperate moist, 3.0 temperate dry | 5% | 20 |
 | Biochar | cropland | 1.9 (0.6–4.9) everywhere | 20% | 100 (no saturation) |
-| Rock dust (enhanced weathering) | cropland | 3.0 (1.0–5.0) tropical moist, 2.0 (0.5–3.5) temperate moist, 1.0 tropical dry, 0.8 temperate dry | 20% | 100 (no saturation) |
+| Rock dust (enhanced weathering), experimental | cropland | 1.5 (0.3–2.7) tropical moist, 1.0 (0.2–1.8) temperate moist, 0.5 tropical dry, 0.4 temperate dry | 10% | 100 (no saturation) |
 
 The model's cropland is 1.65 billion hectares: the harvested area of the food crops, plus the oilcakes' land and temporary meadows (see [Land](#method-land)).
 
@@ -63,13 +63,15 @@ The range spans 0.5 t of poorly carbonised char to 2 t of char made at high temp
 
 At that rate, the sustainable feedstock of Woolf et al. (2010) can supply at most a fifth of cropland. At that cap, biochar stores about 0.63 Gt of CO₂ a year. This is below the IPCC Sixth Assessment Report's potential for biochar (1.1, 0.3–1.8, Gt CO₂-equivalent a year at up to \$100 a tonne; 2.6 technically), so it is a conservative reading.
 
-### Rock dust
+### Rock dust (experimental)
 
 Rock dust (enhanced weathering) is crushed silicate rock, usually basalt, spread on fields. As it dissolves, it turns CO₂ from the air in the soil into bicarbonate. The bicarbonate drains to rivers and the ocean, where it stays for many thousands of years.
 
-A four-year field trial in the US Corn Belt measured 10.5 ± 3.8 t of CO₂ per hectare from 50 t of basalt a hectare each year (Beerling et al., 2024). That is 2.6 t a year. Taking off about a fifth for quarrying, grinding and transport leaves 2 t. Weathering is faster where it is warm and wet, and slow where water does not move through the soil. The tropics therefore get a higher rate and dry croplands a lower one.
+Rock dust is experimental. The IPCC's Sixth Assessment Report finds it demonstrated in the laboratory and in small field trials (technology readiness level 3–4), but not yet at scale (Working Group III, chapter 12). Planetshift offers it with rates set to what field trials have measured.
 
-Rock supply and haulage limit rock dust to at most a fifth of cropland. With a typical 2 t per hectare, it gives about 0.6 Gt a year. Beerling et al. (2020) find that the main agricultural countries reach 0.5 Gt a year, net of the emissions of logistics, on about a tenth of their cropland, and 1 Gt on about a quarter of it.
+A trial on a Scottish grassland measured 0.26–0.41 t of CO₂ per hectare over about 1.5 years from 78 and 126 t of basalt a hectare, after taking off 22% for the CO₂ that degasses (McBride et al., 2025). That is about 0.2 t a year, the low end of the range, and 1–2% of what the rock could take up in theory. A four-year trial in the US Corn Belt measured 10.5 ± 3.8 t of CO₂ per hectare from 50 t of basalt a hectare each year (Beerling et al., 2024). That is 2.6 t a year. Grinding and hauling the rock can take back up to 30% of it on today's grids (Beerling et al., 2020, as the IPCC reports it), which leaves 1.8 t, the high end. The median in moist temperate croplands is 1 t, between the two. Weathering is faster where it is warm and wet, and slow where water does not move through the soil. The tropics therefore get 1.5 times that rate, and dry croplands 0.4 to 0.5 times it.
+
+Rock supply limits rock dust to at most a tenth of cropland. Over 3 billion tonnes of suitable crushed rock are produced each year (McBride et al., 2025, citing Renforth et al., 2011). Beerling et al. (2020) find that the main agricultural countries reach 0.5 Gt a year, net of the emissions of logistics, on about a tenth of their cropland, which already takes about 3.1 Gt of basalt a year at their 40 t a hectare (Table 1). 1 Gt takes about a quarter of their cropland and 5.9 Gt of rock. On a tenth of the model's cropland, rock dust stores about 0.16 Gt of CO₂ a year.
 
 ## Countries and climate
 
@@ -103,7 +105,7 @@ The ranges are wide, for several reasons:
 - Soil carbon is measured as a small difference between two large stocks, often only in the top 30 cm. Gains in the topsoil can be offset by losses deeper down.
 - Field trials are made where the practice works well, and they are short. Extrapolating them to a whole country and over decades adds a large uncertainty.
 - The agroforestry rates depend on how many trees are planted and how they are managed, which no global figure can capture.
-- Enhanced weathering has few field trials, and some find slower uptake than models predict. How much of the dissolved carbon reaches the ocean is still being measured.
+- Enhanced weathering has few field trials, and some find slower uptake than models predict: the Scottish trial measured 1–2% of the theoretical uptake. How much of the dissolved carbon reaches the ocean is still being measured.
 - Biochar's benefit depends on what the biomass would otherwise have done. When residues that would otherwise have rotted into the soil are made into biochar, the gain is smaller than the rate says.
 
 These rates do not count side effects on yields or on nitrous oxide from soils. They also leave out the emissions of making the rock powder and the char, beyond the transport share for weathering.
@@ -118,7 +120,7 @@ The values, with one line of reasoning for each, are in `pipeline/removals.csv`.
 - Cover crops: 0.32 t C/ha/yr in moist climates, a third of that gain in dry ones; at most a quarter of cropland; 20 years.
 - Trees on farms: half the mean of Cardinael et al. (2018) for silvoarable and silvopastoral systems, trees and soil together; dry climates 0.7 of moist; at most 5% of farmland; 20 years.
 - Biochar: 1 t/ha/yr, 0.65 t C/t, 80% kept after a century; at most a fifth of cropland; no saturation.
-- Rock dust: 2 t CO₂/ha/yr net in moist temperate croplands from a field trial at 50 t of basalt/ha/yr, more in the tropics, less in dry croplands; at most a fifth of cropland; no saturation.
+- Rock dust, experimental: 1 t CO₂/ha/yr net in moist temperate croplands, between the field trials in Scotland (about 0.2) and the US Corn Belt (1.8 net of logistics), more in the tropics, less in dry croplands; at most a tenth of cropland, for rock supply; no saturation.
 - Each country takes one climate zone, that of most of its cropland.
 - Practices are counted independently. Their uptakes on the same hectare are added, though a cover crop and biochar on one field may not add up in full.
 
@@ -134,3 +136,5 @@ The values, with one line of reasoning for each, are in `pipeline/removals.csv`.
 - Woolf, D. et al. (2010). Sustainable biochar to mitigate global climate change. Nature Communications 1, 56, doi:10.1038/ncomms1053.
 - Beerling, D. J. et al. (2020). Potential for large-scale CO₂ removal via enhanced rock weathering with croplands. Nature 583, 242–248, doi:10.1038/s41586-020-2448-9.
 - Beerling, D. J. et al. (2024). Enhanced weathering in the US Corn Belt delivers carbon removal with agronomic benefits. PNAS 121, e2319436121, doi:10.1073/pnas.2319436121. CC BY 4.0.
+- McBride, A. L. et al. (2025). Quantifying potential carbon dioxide removal via enhanced weathering using porewater from a field trial in Scotland. Frontiers in Climate 7, doi:10.3389/fclim.2025.1606574. CC BY 4.0.
+- Babiker, M. et al. (2022). Cross-sectoral perspectives. In Climate Change 2022: Mitigation of Climate Change, IPCC AR6 WGIII, chapter 12 (section 12.3.1.2, enhanced weathering), doi:10.1017/9781009157926.014.

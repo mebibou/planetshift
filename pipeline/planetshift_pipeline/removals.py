@@ -36,6 +36,11 @@ CITATIONS = {
     "croplands (Beerling et al., 2020), doi:10.1038/s41586-020-2448-9",
     "beerling-2024": "Enhanced weathering in the US Corn Belt delivers carbon removal with "
     "agronomic benefits (Beerling et al., 2024), doi:10.1073/pnas.2319436121",
+    "mcbride-2025": "Quantifying potential carbon dioxide removal via enhanced weathering using "
+    "porewater from a field trial in Scotland (McBride et al., 2025), "
+    "doi:10.3389/fclim.2025.1606574",
+    "ipcc-ar6-ch12": "IPCC AR6 WGIII, ch. 12 Cross-sectoral perspectives (2022), section 12.3.1.2 "
+    "Enhanced weathering, doi:10.1017/9781009157926.014",
 }
 
 SOURCES = [
@@ -43,7 +48,7 @@ SOURCES = [
         "id": "removals-literature",
         "name": "Published rates of carbon storage on farmland (cover crops, agroforestry, "
         "biochar, enhanced weathering): see pipeline/removals.csv",
-        "version": "syntheses 2010-2024",
+        "version": "syntheses and field trials 2010-2025",
         "url": "https://doi.org/10.1088/1748-9326/aaeb5f",
         "licence": "values cited from the publications",
     }
