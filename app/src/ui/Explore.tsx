@@ -21,6 +21,7 @@ import type { Options } from '../model/api';
 import type { RunResult } from '../model/engine';
 import { SidePanel } from './Panel';
 import { Summary } from './Summary';
+import { CARD, LINK_BUTTON, MAP_CARD } from './classes';
 import { Segmented } from './Segmented';
 import { useChartDownload } from './Download';
 import { useDrawn } from './useDrawn';
@@ -59,14 +60,18 @@ const makeTemperature = (ctx: ViewContext) => {
 const ChartTabs = ({ ctx, chart }: { ctx: ViewContext; chart: ChartTab }) => {
   const select = (tab: ChartTab) => ctx.setUi((u) => ({ ...u, chart: tab }));
   return (
-    <div className="chart-tabs" role="tablist" aria-label={ctx.t('charts.title')}>
+    <div
+      className="chart-tabs flex gap-1 self-end border-b border-rule"
+      role="tablist"
+      aria-label={ctx.t('charts.title')}
+    >
       {CHARTS.map((tab) => (
         <button
           key={tab}
           type="button"
           role="tab"
           id={`chart-tab-${tab}`}
-          className="chart-tab"
+          className="chart-tab -mb-px cursor-pointer border-0 border-b-3 border-solid border-transparent bg-transparent px-3 py-2 text-[1.05rem] font-bold text-muted aria-selected:border-accent aria-selected:text-ink max-sm:px-2 max-sm:text-[0.92rem]"
           aria-controls={`chart-panel-${tab}`}
           aria-selected={tab === chart}
           tabIndex={tab === chart ? 0 : -1}
@@ -134,7 +139,7 @@ const ChartSwitches = (props: {
   const { ctx, ui, split } = props;
   const { t } = ctx;
   return (
-    <div className="chart-switches">
+    <div className="chart-switches mt-3 mb-2 flex flex-wrap items-end gap-x-5 gap-y-3 [&>.download-menu]:ml-auto">
       <Segmented<Range>
         name="range"
         legend={t('chart.range')}
@@ -159,6 +164,8 @@ const ChartSwitches = (props: {
   );
 };
 
+const RUN_ERROR = 'run-error m-0 mt-2 font-bold text-danger';
+
 /** The chart card: its tabs, its switches and the chart shown. */
 const ChartCard = (props: ExploreProps) => {
   const { ctx, state, result } = props;
@@ -176,7 +183,7 @@ const ChartCard = (props: ExploreProps) => {
   const causeGas = causeGasOf(state.ui, split);
   return (
     <section
-      className="card chart-card"
+      className={`${CARD} chart-card lg:[grid-area:chart] max-lg:aria-busy:min-h-[1000px]`}
       aria-label={t('charts.title')}
       aria-busy={result === undefined}
     >
@@ -194,7 +201,7 @@ const ChartCard = (props: ExploreProps) => {
         <span className="drawn" ref={temperatureRef} />
         <button
           type="button"
-          className="link-button see-causes"
+          className={`${LINK_BUTTON} see-causes mt-2`}
           aria-controls="chart-panel-cause"
           onClick={() => ctx.setUi((u) => ({ ...u, chart: 'cause' }))}
         >
@@ -216,7 +223,7 @@ const ChartCard = (props: ExploreProps) => {
         hidden={chart !== 'cause'}
       >
         {chart === 'cause' && (
-          <Suspense fallback={<div className="cause-view" aria-busy="true" />}>
+          <Suspense fallback={<div className="cause-view grid gap-2" aria-busy="true" />}>
             <CauseView
               t={t}
               locale={ctx.locale}
@@ -232,10 +239,10 @@ const ChartCard = (props: ExploreProps) => {
           </Suspense>
         )}
       </div>
-      <p className="run-error" role="alert" hidden={result !== null}>
+      <p className={RUN_ERROR} role="alert" hidden={result !== null}>
         {result === null ? t('explore.runError') : ''}
       </p>
-      <p className="run-error" role="alert" hidden={failed.length === 0}>
+      <p className={RUN_ERROR} role="alert" hidden={failed.length === 0}>
         {failed.length
           ? t('explore.fileError', { files: failed.map((f) => `${f}.json`).join(', ') })
           : ''}
@@ -263,7 +270,7 @@ export const Explore = (props: ExploreProps) => {
   const shown = props.result ?? null;
   return (
     <WorthContext.Provider value={worth}>
-      <div className="explore">
+      <div className="explore grid grid-cols-[minmax(0,1fr)] items-start gap-x-5 gap-y-4 *:min-w-0 lg:grid-cols-[minmax(280px,340px)_minmax(0,1fr)] lg:[grid-template-areas:'panel_chart'_'panel_summary'_'panel_map'] xl:grid-cols-[minmax(280px,340px)_minmax(0,1fr)_minmax(260px,320px)] xl:[grid-template-areas:'panel_chart_summary'_'panel_map_summary']">
         <ChartCard {...props} />
         <SidePanel
           t={t}
@@ -294,7 +301,7 @@ export const Explore = (props: ExploreProps) => {
           horizon={horizon}
           options={state.options}
         />
-        <Suspense fallback={<section className="card map-card" aria-busy="true" />}>
+        <Suspense fallback={<section className={MAP_CARD} aria-busy="true" />}>
           <MapCard
             t={t}
             locale={locale}

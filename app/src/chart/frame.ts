@@ -56,7 +56,7 @@ export const drawAxes = (
   const xTicks = Math.max(2, Math.min(8, Math.floor(f.innerWidth / 80)));
   f.plot
     .append('g')
-    .attr('class', 'grid')
+    .attr('class', 'gridlines')
     .call(
       axisLeft(y)
         .ticks(yTicks)

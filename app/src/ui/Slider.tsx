@@ -1,4 +1,5 @@
 import { useEffect, useRef, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
+import { SLIDER_HEAD, SLIDER_LABEL, SLIDER_NAME, SLIDER_VALUE } from './classes';
 import { useLatest } from './useLatest';
 
 export interface SliderProps {
@@ -20,6 +21,8 @@ export interface SliderProps {
   valueText?: (v: number) => string;
   /** Keys handled in place of the input's own steps (a value of `undefined` leaves them). */
   keyValue?: (key: string, value: number) => number | undefined;
+  /** Under a head of its own: no head, and its marks drawn as ticks. */
+  headless?: boolean;
   onChange: (v: number) => void;
 }
 
@@ -54,13 +57,15 @@ export const Slider = (p: SliderProps) => {
   }, [onChange]);
   const listId = nativeList(p);
   return (
-    <div className="slider">
-      <div className="slider-head">
-        <span className="slider-label">
-          <label htmlFor={id}>{label}</label>
+    <div className="slider relative grid gap-1 pb-1">
+      <div className={p.headless ? 'hidden' : SLIDER_HEAD}>
+        <span className={SLIDER_LABEL}>
+          <label htmlFor={id} className={SLIDER_NAME}>
+            {label}
+          </label>
           {info}
         </span>
-        <output htmlFor={id} className="slider-value">
+        <output htmlFor={id} className={SLIDER_VALUE}>
           {format(value)}
         </output>
       </div>
@@ -79,8 +84,9 @@ export const Slider = (p: SliderProps) => {
         onKeyDown={keyValue && onKeyDown}
         aria-valuetext={(p.valueText ?? format)(value)}
         style={{ '--fill': position(value, min, max) } as CSSProperties}
+        className="m-0 mt-1.5 h-7 w-full accent-accent disabled:cursor-not-allowed disabled:opacity-45"
       />
-      <Marks marks={marks} min={min} max={max} listId={listId} />
+      <Marks marks={marks} min={min} max={max} listId={listId} ticks={p.headless} />
     </div>
   );
 };
@@ -90,11 +96,13 @@ const Marks = ({
   min,
   max,
   listId,
+  ticks,
 }: {
   marks: NonNullable<SliderProps['marks']>;
   min: number;
   max: number;
   listId: string | undefined;
+  ticks?: boolean;
 }) => (
   <>
     {listId && (
@@ -104,9 +112,16 @@ const Marks = ({
         ))}
       </datalist>
     )}
-    <div className="slider-marks" aria-hidden="true">
+    <div
+      className={`slider-marks relative mx-[9px] text-[0.72rem] text-muted ${ticks ? 'h-1.5' : 'h-[1.1em]'}`}
+      aria-hidden="true"
+    >
       {marks.map((m) => (
-        <span key={m.value} style={{ left: position(m.value, min, max) }}>
+        <span
+          key={m.value}
+          style={{ left: position(m.value, min, max) }}
+          className={`absolute -translate-x-1/2 whitespace-nowrap ${ticks ? 'top-0 h-1.5 w-px bg-current' : ''}`}
+        >
           {m.label}
         </span>
       ))}

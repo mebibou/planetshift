@@ -40,6 +40,9 @@ interface Shown {
   added: boolean;
 }
 
+const PILL =
+  'worth flex-none whitespace-nowrap rounded-full border border-rule bg-[linear-gradient(to_right,var(--accent-soft)_var(--share,0%),var(--surface)_var(--share,0%))] px-1.5 py-px text-[0.75rem] font-bold tabular-nums';
+
 /** What a figure says at the horizon, or null while it is not known. */
 const shownOf = (ctx: WorthState | null, id: WorthId): Shown | null => {
   const shown = ctx && worthShown(ctx.values, id, ctx.horizon);
@@ -59,7 +62,7 @@ export const WorthPill = ({ id }: { id: WorthId }) => {
   const shown = shownOf(useContext(WorthContext), id);
   return shown ? (
     <span
-      className={shown.added ? 'worth is-added' : 'worth'}
+      className={`${PILL} ${shown.added ? 'is-added text-danger' : 'text-ink'}`}
       data-worth={id}
       title={shown.sentence}
       style={{ '--share': shown.share } as CSSProperties}
@@ -68,6 +71,6 @@ export const WorthPill = ({ id }: { id: WorthId }) => {
       <span className="visually-hidden">{shown.sentence}</span>
     </span>
   ) : (
-    <span className="worth" data-worth={id} hidden />
+    <span className={PILL} data-worth={id} hidden />
   );
 };

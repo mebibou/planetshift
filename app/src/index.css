@@ -1,0 +1,131 @@
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import './styles.css';
+
+/* The interface's tokens (styles.css) as Tailwind's theme, so utilities follow light and dark. */
+@theme inline {
+  --breakpoint-*: initial;
+  --breakpoint-xs: 421px;
+  --breakpoint-sm: 521px;
+  --breakpoint-md: 761px;
+  --breakpoint-lg: 861px;
+  --breakpoint-xl: 1400px;
+  --color-*: initial;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-focus: var(--focus);
+  --color-danger: var(--danger);
+  --font-sans: var(--font);
+  --radius-card: var(--radius);
+}
+
+/* Elements without a class, below the utilities so a class on them wins. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+  h1,
+  h2,
+  h3 {
+    line-height: 1.2;
+    margin: 0 0 0.5em;
+    letter-spacing: -0.01em;
+  }
+  h1 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 900;
+  }
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  h3 {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p {
+    margin: 0 0 0.75em;
+  }
+  a {
+    color: var(--accent);
+  }
+  button,
+  input,
+  select,
+  textarea,
+  svg {
+    font: inherit;
+    color: inherit;
+  }
+  select {
+    appearance: none;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 6px 34px 6px 10px;
+    min-height: 36px;
+    background-color: var(--surface);
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+      linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position:
+      calc(100% - 18px) 50%,
+      calc(100% - 13px) 50%;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+  }
+}
+
+/* A disclosure's chevron, pointing right when closed and down when open. */
+@utility chevron {
+  &::before {
+    content: '';
+    flex: none;
+    width: 7px;
+    height: 7px;
+    margin-right: 3px;
+    margin-left: 1px;
+    border-right: 2px solid var(--muted);
+    border-bottom: 2px solid var(--muted);
+    transform: rotate(-45deg);
+    transition: transform 0.15s;
+  }
+  details[open] > &::before {
+    transform: rotate(45deg);
+  }
+}
+
+/* Hidden on screen, read by screen readers. */
+@utility visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

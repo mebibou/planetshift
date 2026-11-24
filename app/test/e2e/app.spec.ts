@@ -822,7 +822,7 @@ test('the panel is in groups, all closed, under their causes, with the time sett
   }
   await expect(page.locator('details[data-group="options"]')).not.toHaveAttribute('open');
   const time = page.locator('.panel > *').first();
-  await expect(time).toHaveClass('time-settings');
+  await expect(time).toHaveClass(/\btime-settings\b/);
   await expect(time.locator('> *').first()).toHaveAttribute('data-control', 'timing');
   await expect(time.locator('> *').nth(1)).toHaveAttribute('data-control', 'horizon');
   await expect(time).toContainText('Results up to');

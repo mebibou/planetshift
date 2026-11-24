@@ -27,6 +27,21 @@ import {
 } from './series';
 import { withPageTexts } from './texts';
 import './deeptime.css';
+import { CARD } from '../ui/classes';
+
+const TEXT = 'card-text text-muted';
+const SWITCH = 'flex flex-wrap gap-1 rounded-lg bg-surface-2 p-[3px]';
+const SWITCH_BUTTON =
+  'min-h-8 cursor-pointer rounded-md border-0 bg-transparent px-2.5 py-1.5 text-[0.88rem] text-ink focus-visible:outline-offset-1 aria-pressed:bg-surface aria-pressed:font-bold aria-pressed:ring-1 aria-pressed:ring-rule';
+const STICKY_WIDE =
+  'min-[1200px]:sticky min-[1200px]:top-[calc(var(--header-h)+20px)] min-[1200px]:max-h-[calc(100dvh-var(--header-h)-32px)] min-[1200px]:overflow-y-auto';
+const LIST = 'm-0 mb-2 grid gap-2 p-0';
+const CELL = 'border-b border-rule px-2 py-1 whitespace-nowrap';
+const MARKER_EDGE = {
+  extinction: 'border-l-danger',
+  human: 'border-l-accent',
+  climate: 'border-l-muted',
+};
 
 type Loaded = DeepTimeFile | 'loading' | 'failed';
 
@@ -146,12 +161,13 @@ const Presets = ({
   view: View | null;
   go: (p: Preset) => void;
 }) => (
-  <div className="deeptime-presets" role="group" aria-label={ctx.t('deeptime.presets')}>
+  <div className={`deeptime-presets ${SWITCH}`} role="group" aria-label={ctx.t('deeptime.presets')}>
     {PRESETS.map((p) => (
       <button
         key={p}
         type="button"
         data-preset={p}
+        className={SWITCH_BUTTON}
         aria-pressed={view !== null && sameView(view, PRESET_VIEWS[p])}
         onClick={() => go(p)}
       >
@@ -169,12 +185,13 @@ const Steps = ({ ctx, chart }: { ctx: ViewContext; chart: DeepTimeChart | null }
     ['panRight', () => chart?.pan(-0.2)],
   ];
   return (
-    <div className="deeptime-steps" role="group" aria-label={ctx.t('deeptime.move')}>
+    <div className={`deeptime-steps ${SWITCH}`} role="group" aria-label={ctx.t('deeptime.move')}>
       {steps.map(([id, act]) => (
         <button
           key={id}
           type="button"
           data-step={id}
+          className={`${SWITCH_BUTTON} min-w-9 font-bold`}
           aria-label={ctx.t(`deeptime.${id}`)}
           onClick={act}
         >
@@ -209,7 +226,10 @@ const ScenarioEnd = ({
   const ssp = t(`options.ssp.${ctx.state.options.ssp}`);
   const same = end !== null && Math.abs(end.baseline - end.scenario) < 0.05;
   return (
-    <section className="card deeptime-scenario" aria-labelledby="deeptime-scenario">
+    <section
+      className={`${CARD} deeptime-scenario [grid-area:scenario]`}
+      aria-labelledby="deeptime-scenario"
+    >
       <h2 id="deeptime-scenario">{t('deeptime.scenario.title')}</h2>
       {end === null ? (
         <p>{t('load.loading')}</p>
@@ -227,7 +247,7 @@ const ScenarioEnd = ({
               })}
         </p>
       )}
-      <p className="card-text">{t('deeptime.scenario.scale')}</p>
+      <p className={TEXT}>{t('deeptime.scenario.scale')}</p>
     </section>
   );
 };
@@ -238,18 +258,31 @@ const Rates = ({ ctx, file, lines }: { ctx: ViewContext; file: DeepTimeFile; lin
   const today = rates.find((r) => r.id === 'observed')!.perCentury;
   const top = Math.max(...rates.map((r) => r.perCentury));
   return (
-    <section className="card deeptime-rates" aria-labelledby="deeptime-rates">
+    <section
+      className={`${CARD} deeptime-rates [grid-area:rates] ${STICKY_WIDE}`}
+      aria-labelledby="deeptime-rates"
+    >
       <h2 id="deeptime-rates">{t('deeptime.rates.title')}</h2>
-      <ul>
+      <ul className={`${LIST} list-none`}>
         {rates.map((r) => (
-          <li key={r.id} data-rate={r.id}>
-            <span className="deeptime-rate-label">
+          <li
+            key={r.id}
+            data-rate={r.id}
+            className="grid grid-cols-[minmax(0,1fr)_30%] gap-x-3 gap-y-0.5 text-[0.9rem] min-[1200px]:grid-cols-[minmax(0,1fr)]"
+          >
+            <span className="deeptime-rate-label col-[1/-1]">
               {t(`deeptime.rates.${r.id}`, { from: ctx.currentYear })}
             </span>
-            <span className="deeptime-rate-bar" aria-hidden="true">
-              <span style={{ width: `${Math.max(0.5, (100 * r.perCentury) / top)}%` }} />
+            <span
+              className="deeptime-rate-bar h-2.5 self-center rounded-[3px] bg-surface-2"
+              aria-hidden="true"
+            >
+              <span
+                className={`block h-full rounded-[3px] ${r.id === 'observed' || r.id === 'projected' ? 'bg-danger' : 'bg-[var(--series-baseline)]'}`}
+                style={{ width: `${Math.max(0.5, (100 * r.perCentury) / top)}%` }}
+              />
             </span>
-            <span className="deeptime-rate-value">
+            <span className="deeptime-rate-value text-[0.85rem] text-muted">
               {t('deeptime.rates.value', { value: formatSignificant(locale, r.perCentury, 2) })}
               {r.id !== 'observed' && r.id !== 'projected' && r.perCentury > 0
                 ? ` · ${t('deeptime.rates.slower', { times: formatSignificant(locale, today / r.perCentury, 2) })}`
@@ -258,7 +291,7 @@ const Rates = ({ ctx, file, lines }: { ctx: ViewContext; file: DeepTimeFile; lin
           </li>
         ))}
       </ul>
-      <p className="card-text">{t('deeptime.rates.note')}</p>
+      <p className={TEXT}>{t('deeptime.rates.note')}</p>
     </section>
   );
 };
@@ -286,10 +319,13 @@ const Markers = ({
   go: (v: View) => void;
   light: (id: string | null) => void;
 }) => (
-  <aside className="card deeptime-markers" aria-labelledby="deeptime-markers">
+  <aside
+    className={`${CARD} deeptime-markers [grid-area:markers] ${STICKY_WIDE}`}
+    aria-labelledby="deeptime-markers"
+  >
     <h2 id="deeptime-markers">{ctx.t('deeptime.eventsTitle')}</h2>
-    <p className="card-text">{ctx.t('deeptime.markersHint')}</p>
-    <ol>
+    <p className={TEXT}>{ctx.t('deeptime.markersHint')}</p>
+    <ol className="m-0 mb-2 grid list-none gap-0.5 p-0">
       {EVENTS.map((e) => (
         <li
           key={e.id}
@@ -298,26 +334,34 @@ const Markers = ({
         >
           <button
             type="button"
+            className={`grid w-full cursor-pointer gap-0.5 rounded-r-md border-0 border-l-3 border-solid bg-transparent py-1.5 pr-2 pl-3 text-left text-ink hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:outline-none in-data-outside:opacity-55 ${MARKER_EDGE[e.kind]}`}
             onClick={() => go(markerView(e.year))}
             onMouseEnter={() => light(e.id)}
             onMouseLeave={() => light(null)}
             onFocus={() => light(e.id)}
             onBlur={() => light(null)}
           >
-            <span className="deeptime-marker-name">{ctx.t(`deeptime.events.${e.id}.short`)}</span>
-            <span className="deeptime-marker-note">{ctx.t(`deeptime.events.${e.id}.note`)}</span>
+            <span className="deeptime-marker-name text-[0.9rem] font-bold">
+              {ctx.t(`deeptime.events.${e.id}.short`)}
+            </span>
+            <span className="deeptime-marker-note text-[0.82rem] leading-[1.4] text-muted">
+              {ctx.t(`deeptime.events.${e.id}.note`)}
+            </span>
           </button>
         </li>
       ))}
     </ol>
-    <p className="card-text">{ctx.t('deeptime.extinctions')}</p>
+    <p className={TEXT}>{ctx.t('deeptime.extinctions')}</p>
   </aside>
 );
 
 const Offsets = ({ ctx, file }: { ctx: ViewContext; file: DeepTimeFile }) => (
-  <section className="card deeptime-offsets" aria-labelledby="deeptime-offsets">
+  <section
+    className={`${CARD} deeptime-offsets [grid-area:offsets]`}
+    aria-labelledby="deeptime-offsets"
+  >
     <h2 id="deeptime-offsets">{ctx.t('deeptime.offsets.title')}</h2>
-    <ul>
+    <ul className={`${LIST} list-disc pl-[1.2em]`}>
       {PALEO_IDS.map((id) => (
         <li key={id} data-offset={id}>
           {ctx.t(`deeptime.offsets.${id}`, {
@@ -327,8 +371,8 @@ const Offsets = ({ ctx, file }: { ctx: ViewContext; file: DeepTimeFile }) => (
       ))}
       <li>{ctx.t('deeptime.offsets.recent')}</li>
     </ul>
-    <p className="card-text">{ctx.t('deeptime.offsets.disagree')}</p>
-    <p className="card-text">{ctx.t('deeptime.offsets.resolution')}</p>
+    <p className={TEXT}>{ctx.t('deeptime.offsets.disagree')}</p>
+    <p className={TEXT}>{ctx.t('deeptime.offsets.resolution')}</p>
   </section>
 );
 
@@ -340,15 +384,17 @@ const DataTable = ({ ctx, lines, view }: { ctx: ViewContext; lines: Line[]; view
   const years = Array.from({ length: TABLE_ROWS }, (_, i) => yearAt(view, i / (TABLE_ROWS - 1)));
   const { ids, rows } = tableOf(lines, years);
   return (
-    <details className="deeptime-table">
-      <summary>{ctx.t('deeptime.table.show')}</summary>
-      <table>
-        <caption>{ctx.t('deeptime.table.caption')}</caption>
+    <details className="deeptime-table mt-2 text-[0.85rem]">
+      <summary className="cursor-pointer text-accent">{ctx.t('deeptime.table.show')}</summary>
+      <table className="mt-2 block w-full border-collapse overflow-x-auto">
+        <caption className="pb-1.5 text-left text-muted">{ctx.t('deeptime.table.caption')}</caption>
         <thead>
           <tr>
-            <th scope="col">{ctx.t('deeptime.table.when')}</th>
+            <th scope="col" className={`${CELL} text-left`}>
+              {ctx.t('deeptime.table.when')}
+            </th>
             {ids.map((id) => (
-              <th key={id} scope="col">
+              <th key={id} scope="col" className={`${CELL} text-right`}>
                 {ctx.t(`deeptime.series.${id}`)}
               </th>
             ))}
@@ -357,9 +403,13 @@ const DataTable = ({ ctx, lines, view }: { ctx: ViewContext; lines: Line[]; view
         <tbody>
           {rows.map((r) => (
             <tr key={r.year}>
-              <th scope="row">{describeYear(ctx, r.year, span)}</th>
+              <th scope="row" className={`${CELL} text-left`}>
+                {describeYear(ctx, r.year, span)}
+              </th>
               {r.values.map((p, i) => (
-                <td key={ids[i]}>{p ? valueText(ctx, p) : '–'}</td>
+                <td key={ids[i]} className={`${CELL} text-right`}>
+                  {p ? valueText(ctx, p) : '–'}
+                </td>
               ))}
             </tr>
           ))}
@@ -424,20 +474,28 @@ const DeepTime = ({ ctx: app, result }: DeepTimeProps) => {
   const light = useActiveMarker(host, view);
   const { t } = ctx;
   return (
-    <div className="deeptime">
-      <section className="card deeptime-main" aria-labelledby="deeptime-title">
-        <div className="card-head">
+    <div className="deeptime grid grid-cols-2 items-start gap-x-5 gap-y-4 [grid-template-areas:'main_main'_'markers_markers'_'scenario_rates'_'offsets_offsets'] max-md:grid-cols-[minmax(0,1fr)] max-md:[grid-template-areas:'main'_'markers'_'scenario'_'rates'_'offsets'] min-[1200px]:grid-cols-[minmax(260px,320px)_minmax(0,1fr)_minmax(280px,360px)] min-[1200px]:[grid-template-areas:'markers_main_rates'_'markers_scenario_rates'_'markers_offsets_rates'] [&_h1]:m-0 [&_h1]:text-[1.4rem] [&_h2]:m-0 [&_h2]:mb-2 [&_h2]:text-[1.05rem]">
+      <section
+        className={`${CARD} deeptime-main [grid-area:main]`}
+        aria-labelledby="deeptime-title"
+      >
+        <div className="card-head mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
           <h1 id="deeptime-title">{t('deeptime.title')}</h1>
-          <span className="deeptime-badge">{t('deeptime.prototype')}</span>
+          <span className="deeptime-badge rounded-full bg-accent-soft px-2.5 py-0.5 text-[0.75rem] font-bold tracking-[0.04em] text-accent uppercase">
+            {t('deeptime.prototype')}
+          </span>
         </div>
-        <p className="card-text">{t('deeptime.intro')}</p>
+        <p className={TEXT}>{t('deeptime.intro')}</p>
         <p className="deeptime-context">{t('deeptime.context')}</p>
-        <div className="deeptime-tools">
+        <div className="deeptime-tools mt-3 mb-2 flex flex-wrap justify-between gap-x-4 gap-y-2">
           <Presets ctx={ctx} view={view} go={(p) => chart.current?.go(PRESET_VIEWS[p])} />
           <Steps ctx={ctx} chart={chart.current} />
         </div>
         <Status ctx={ctx} file={file} />
-        <div ref={host} className="deeptime-plot" />
+        <div
+          ref={host}
+          className="deeptime-plot relative min-h-[320px] cursor-grab touch-pan-y select-none focus-visible:rounded focus-visible:outline-offset-4 active:cursor-grabbing"
+        />
         <UnderChart ctx={ctx} view={view} lines={lines} />
       </section>
       <Markers ctx={ctx} view={view} go={(v) => chart.current?.go(v)} light={light} />

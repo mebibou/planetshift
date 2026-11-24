@@ -1,4 +1,4 @@
-import './styles.css';
+import './index.css';
 import { createRoot } from 'react-dom/client';
 import { App } from './app/App';
 import { StartError } from './app/StartError';
@@ -52,8 +52,8 @@ applyTheme(readStoredTheme());
 const reasonOf = (e: unknown): string => (e instanceof Error ? e.message : String(e));
 
 const Failure = ({ title, lines }: { title: string; lines: string[] }) => (
-  <div className="load-error" role="alert">
-    <h1>{title}</h1>
+  <div className="load-error mx-auto my-[15vh] max-w-[60ch] px-(--gutter)" role="alert">
+    <h1 className="text-danger">{title}</h1>
     {lines.map((line) => (
       <p key={line}>{line}</p>
     ))}

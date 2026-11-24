@@ -5,6 +5,7 @@ import { OPTIONS } from '../model/options';
 import { Group } from './Group';
 import { Info } from './Info';
 import { Segmented } from './Segmented';
+import { HINT } from './classes';
 
 /** The UN projection, which the people-on-Earth number replaces while it is set. */
 const replaced = (options: Options, field: string): boolean =>
@@ -27,7 +28,7 @@ export const OptionsGroup = ({
       title={t('options.title')}
       meta={count > 0 ? t('options.changed', { count }) : t('options.defaults')}
     >
-      <p className="hint">{t('options.intro')}</p>
+      <p className={HINT}>{t('options.intro')}</p>
       {OPTIONS.filter((o) => !replaced(options, o.field)).map(({ field, values, texts }) => (
         <Segmented<string>
           key={field}

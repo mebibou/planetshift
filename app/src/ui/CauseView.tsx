@@ -5,6 +5,7 @@ import { attributionFor, type CauseGas } from '../chart/series';
 import type { Climate, Ssp, TemperatureSource } from '../data/types';
 import type { T } from '../i18n/i18n';
 import type { ScenarioResult } from '../model/api';
+import { CHART_SUBTITLE, FOLD, FOLD_SUMMARY } from './classes';
 import { useDrawn } from './useDrawn';
 
 export interface CauseViewProps {
@@ -45,15 +46,17 @@ export const CauseView = (props: CauseViewProps) => {
   const lines = { t, locale };
   const titles = titleTexts(t, shown, from);
   return (
-    <div className="cause-view">
-      <div className="cause-intro" aria-live="polite">
-        <p className="headline-sub">{scenarioText(lines, result, ssp, end)}</p>
+    <div className="cause-view grid gap-2">
+      <div className="cause-intro mb-2" aria-live="polite">
+        <p className="headline-sub pl-[18px] text-[1.05rem]">
+          {scenarioText(lines, result, ssp, end)}
+        </p>
       </div>
-      <h3 className="chart-subtitle">{titles.title}</h3>
-      <p className="card-text">{titles.text}</p>
+      <h3 className={CHART_SUBTITLE}>{titles.title}</h3>
+      <p className="m-0 mb-1 text-[0.88rem] text-muted">{titles.text}</p>
       <div className="drawn" ref={stackedRef} />
-      <details className="fold cause-notes">
-        <summary>{t('link.whyTitle')}</summary>
+      <details className={`${FOLD} cause-notes [&_p]:text-[0.9rem]`}>
+        <summary className={FOLD_SUMMARY}>{t('link.whyTitle')}</summary>
         <p>{t('link.intro')}</p>
         <p>{t('link.whyMethane')}</p>
         <p>{t('link.whyNitrous')}</p>

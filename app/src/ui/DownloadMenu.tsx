@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
+import { DOWNLOAD_BUTTON, POPUP_SHADOW } from './classes';
 import { Icon } from './Icon';
 
 export interface MenuItem {
@@ -71,11 +72,11 @@ export const DownloadMenu = ({ label, name = label, className = '', items }: Dow
     }
   };
   return (
-    <span className="download-menu">
+    <span className="download-menu relative inline-flex">
       <button
         ref={button}
         type="button"
-        className={`download-button ${className}`.trim()}
+        className={`${DOWNLOAD_BUTTON} ${className}`}
         aria-label={name}
         aria-haspopup="menu"
         aria-expanded={open}
@@ -90,7 +91,7 @@ export const DownloadMenu = ({ label, name = label, className = '', items }: Dow
         ref={menu}
         id={id}
         role="menu"
-        className="download-menu-list"
+        className={`download-menu-list absolute top-[calc(100%+4px)] right-0 z-20 m-0 min-w-[140px] list-none rounded-lg border border-rule bg-surface p-1 ${POPUP_SHADOW}`}
         hidden={!open}
         onKeyDown={onMenuKey}
       >
@@ -100,6 +101,7 @@ export const DownloadMenu = ({ label, name = label, className = '', items }: Dow
               type="button"
               role="menuitem"
               data-format={item.id}
+              className="block w-full cursor-pointer rounded-md border-0 bg-transparent px-3 py-2 text-left text-[0.88rem] text-ink hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:outline-none"
               tabIndex={-1}
               onClick={() => {
                 close(true);

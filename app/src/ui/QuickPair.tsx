@@ -10,6 +10,7 @@ export interface QuickPairProps {
   /** Each button's accessible name from its value, such as "Set Farm practices to 0%". */
   name: (value: string) => string;
   setScenario: (change: (s: Scenario) => Scenario) => void;
+  className?: string;
 }
 
 const LEVELS = [
@@ -21,17 +22,21 @@ const LEVELS = [
  * A "0%" / "100%" pair setting a set of groups at once, in one change of the scenario; the one
  * matching where they stand is pressed, neither when they are in between.
  */
-export const QuickPair = ({ ids, scope, locale, scenario, name, setScenario }: QuickPairProps) => {
+export const QuickPair = (props: QuickPairProps) => {
+  const { ids, scope, locale, scenario, name, setScenario } = props;
   const level = groupsLevel(scenario, ids);
   return (
-    <span className="quick" data-quick-scope={scope}>
+    <span
+      className={`quick inline-flex flex-none ${props.className ?? ''}`}
+      data-quick-scope={scope}
+    >
       {LEVELS.map(({ adoption, quick }) => {
         const value = formatPercent(locale, adoption);
         return (
           <button
             key={quick}
             type="button"
-            className="quick-button"
+            className="quick-button min-h-6 min-w-[30px] cursor-pointer border border-rule bg-surface px-1.5 text-[0.72rem] leading-none text-muted tabular-nums first:rounded-l-full hover:text-ink focus-visible:relative focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-focus aria-pressed:bg-surface-2 aria-pressed:font-bold aria-pressed:text-ink [&+&]:rounded-r-full [&+&]:border-l-0"
             data-quick={quick}
             aria-label={name(value)}
             aria-pressed={level === quick}
