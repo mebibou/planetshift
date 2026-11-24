@@ -93,7 +93,7 @@ The interface adds its own keys when they differ from their defaults (`src/app/u
 
 The URL also keeps `data=`. A shared link therefore reopens the same controls, options and view. `?view=link` opens Explore on the Causes of warming tab, and the URL is rewritten to `?chart=cause`.
 
-**Pre-rendered pages.** For search engines and link previews, `scripts/prerender.mjs` writes the drawn HTML of four entry pages. The deploy runs it after the build. It opens the built site in a headless browser and writes `/` (Explore), `/methodology/`, `/fr/` and `/fr/methodology/`. Each page has its own canonical URL and its English and French alternates. The pages leave out the map's countries, which make up most of the page's weight and hold no text. The app draws them.
+**Pre-rendered pages.** For search engines and link previews, `scripts/prerender.mjs` writes the drawn HTML of four entry pages. The end-to-end tests run it after the build, and the deploy publishes what they tested. It opens the built site in a headless browser and writes `/` (Explore), `/methodology/`, `/fr/` and `/fr/methodology/`. Each page has its own canonical URL and its English and French alternates. The pages leave out the map's countries, which make up most of the page's weight and hold no text. The app draws them.
 
 A `planetshift:entry` meta tells the app which view and language the page shows (`src/app/entry.ts`). The root page names no language, so a reader's own choice comes first there. The app keeps the drawn page on screen until it has drawn its own. It first moves its URL back to the site's root: `/fr/methodology/` becomes `/?view=methodology` in French. The state then stays in the query, as everywhere else, and the data is fetched from the root.
 
