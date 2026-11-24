@@ -185,7 +185,7 @@ const drawLines = (f: Frame, x: Scale, y: Scale, observed: Point[]): void => {
     .attr('x2', f.innerWidth)
     .attr('y1', y(0))
     .attr('y2', y(0));
-  if (observed.length)
+  if (observed.length) {
     f.plot
       .append('path')
       .datum(observed)
@@ -196,6 +196,7 @@ const drawLines = (f: Frame, x: Scale, y: Scale, observed: Point[]): void => {
           .x((p) => x(p.year))
           .y((p) => y(p.value)),
       );
+  }
 };
 
 /** A cause's warming in a row, with its value without the levers when they move it. */
@@ -280,7 +281,9 @@ export const attributionChart = (t: T, locale: string, currentYear: number): Att
     );
   };
   const render = () => {
-    if (last) draw(last);
+    if (last) {
+      draw(last);
+    }
   };
   onResize(plotEl, render);
   return {

@@ -41,8 +41,11 @@ const useUrl = (state: AppState) => {
     const next = queryOf(state, location.search) || location.pathname;
     const first = view.current === null;
     const hash = first || state.ui.view === 'methodology' ? location.hash : '';
-    if (!first && state.ui.view !== view.current) history.pushState(null, '', next + hash);
-    else history.replaceState(null, '', next + hash);
+    if (!first && state.ui.view !== view.current) {
+      history.pushState(null, '', next + hash);
+    } else {
+      history.replaceState(null, '', next + hash);
+    }
     view.current = state.ui.view;
   }, [state]);
 };
@@ -52,12 +55,13 @@ const usePopState = (state: AppState, setState: Change<AppState>, currentYear: n
   const latest = useLatest(state);
   useEffect(() => {
     const onPop = () => {
-      if (location.search !== queryOf(latest.current, location.search))
+      if (location.search !== queryOf(latest.current, location.search)) {
         setState((s) => ({
           ...s,
           ...stateFromQuery(location.search, currentYear),
           ui: parseUi(location.search),
         }));
+      }
     };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
@@ -70,7 +74,9 @@ const useSystemTheme = (setState: Change<AppState>) =>
     const media =
       typeof matchMedia === 'function' ? matchMedia('(prefers-color-scheme: dark)') : null;
     const onChange = (e: MediaQueryListEvent) => {
-      if (!readStoredTheme()) setState((s) => ({ ...s, theme: e.matches ? 'dark' : 'light' }));
+      if (!readStoredTheme()) {
+        setState((s) => ({ ...s, theme: e.matches ? 'dark' : 'light' }));
+      }
     };
     media?.addEventListener('change', onChange);
     return () => media?.removeEventListener('change', onChange);

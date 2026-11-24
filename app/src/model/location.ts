@@ -52,8 +52,9 @@ const locateDomestic = (
   const residual = zeros(n);
   demand.forEach((d, c) => {
     const o = own[c] as ItemVector;
-    for (let i = 0; i < n; i++)
+    for (let i = 0; i < n; i++) {
       residual[i] = (residual[i] as number) + ((d[i] as number) - (o[i] as number));
+    }
   });
   const remaining = own.map((o, c) => addVectors(emitting[c] as ItemVector, o));
   const traded = byShare(residual, remaining, addVectors(zeros(n), ...remaining), null);

@@ -150,12 +150,13 @@ export const productionChanges = (
     const m = multipliers[c] as ItemVector;
     const lost = avoided?.[c];
     const out = new Float64Array(n);
-    for (let i = 0; i < n; i++)
+    for (let i = 0; i < n; i++) {
       if (animal[i] === want) {
         const d = extra ? (endUse[i] as number) + (extra[i] as number) : (endUse[i] as number);
         const supply = lost ? d * (m[i] as number) - (lost[i] as number) : d * (m[i] as number);
         out[i] = supply * (scale[i] as number);
       }
+    }
     return out;
   };
   const emitting = countries.map((pc) => pc.emitting);
@@ -187,8 +188,11 @@ export const productionChanges = (
     const f = feedChange(pc, fedGroups, prepared, options.feed);
     const m = multipliers[c] as ItemVector;
     const out = new Float64Array(n);
-    for (let i = 0; i < n; i++)
-      if (animal[i] === 1) out[i] = (f[i] as number) * (m[i] as number) * (scale[i] as number);
+    for (let i = 0; i < n; i++) {
+      if (animal[i] === 1) {
+        out[i] = (f[i] as number) * (m[i] as number) * (scale[i] as number);
+      }
+    }
     return out;
   });
   const remaining = emitting.map((e, c) => addVectors(e, animals.change[c] as ItemVector));
@@ -446,9 +450,11 @@ const addRecords = (
   key: 'co2' | 'jointCo2',
 ): Record<string, number> => {
   const out: Record<string, number> = {};
-  for (const p of parts)
-    for (const [k, v] of Object.entries(p[key] ?? {}))
+  for (const p of parts) {
+    for (const [k, v] of Object.entries(p[key] ?? {})) {
       out[k] = k in out ? (out[k] as number) + v : v;
+    }
+  }
   return out;
 };
 
@@ -594,9 +600,12 @@ const clearingOf = (
 ): Record<string, Joint<number>> => {
   const out: Record<string, { own: number; joint: number }> = {};
   for (const p of parts) {
-    for (const [f, v] of Object.entries(p.co2[cause])) (out[f] ??= { own: 0, joint: 0 }).own += v;
-    for (const [f, v] of Object.entries(p.jointCo2[cause]))
+    for (const [f, v] of Object.entries(p.co2[cause])) {
+      (out[f] ??= { own: 0, joint: 0 }).own += v;
+    }
+    for (const [f, v] of Object.entries(p.jointCo2[cause])) {
       (out[f] ??= { own: 0, joint: 0 }).joint += v;
+    }
   }
   return out;
 };

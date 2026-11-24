@@ -99,7 +99,9 @@ const loadFile = async (fetchFn: Fetch, url: string, optional = false): Promise<
     throw new LoadError(url, e instanceof Error ? e.name : 'network error');
   });
   const missing = optional && response.status === 404;
-  if (!response.ok && !missing) throw new LoadError(url, `HTTP ${response.status}`);
+  if (!response.ok && !missing) {
+    throw new LoadError(url, `HTTP ${response.status}`);
+  }
   return missing
     ? MISSING
     : response.json().catch(() => {
@@ -114,7 +116,9 @@ const isIntensitiesFile = (body: unknown): body is IntensitiesFile =>
   typeof (body as IntensitiesFile).byCountry === 'object';
 
 const intensitiesOf = (url: string, body: unknown): Intensities => {
-  if (!isIntensitiesFile(body)) throw new LoadError(url, 'not the expected shape');
+  if (!isIntensitiesFile(body)) {
+    throw new LoadError(url, 'not the expected shape');
+  }
   return decodeIntensities(body);
 };
 
@@ -144,7 +148,7 @@ export const loadAll = async (folder: string, fetchFn: Fetch = fetch): Promise<L
   const inFlight = new Map<string, Promise<unknown>>();
   const failed = new Set<string>();
   const fetchOnce = (f: string): Promise<unknown> => {
-    if (!inFlight.has(f))
+    if (!inFlight.has(f)) {
       inFlight.set(
         f,
         loadFile(fetchFn, urlOf(f), true).catch((e: unknown) => {
@@ -152,6 +156,7 @@ export const loadAll = async (folder: string, fetchFn: Fetch = fetch): Promise<L
           throw e;
         }),
       );
+    }
     return inFlight.get(f) as Promise<unknown>;
   };
 

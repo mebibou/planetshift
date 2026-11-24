@@ -45,7 +45,9 @@ const record = (data: ModelData, countries: readonly string[], grid: readonly Se
   );
 
 const check = (name: string, actual: Record<string, unknown>) => {
-  if (UPDATE) write(name, actual);
+  if (UPDATE) {
+    write(name, actual);
+  }
   const expected = read(name);
   expect(Object.keys(actual)).toEqual(Object.keys(expected));
   Object.keys(expected).forEach((id) => expect(actual[id], id).toEqual(expected[id]));

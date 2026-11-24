@@ -66,11 +66,13 @@ describe.each(MODULES.map((m) => [m.id, m] as const))('module %s', (id, module) 
 
   it('has a Methodology page in both languages, or names the core page that covers it', () => {
     const m = module.methodology;
-    if ('page' in m)
+    if ('page' in m) {
       ['en', 'fr'].forEach((lang) =>
         expect(existsSync(join(ROOT, `docs/methodology/${lang}/${m.page}.md`)), lang).toBe(true),
       );
-    else expect(CORE_SECTIONS).toContain(m.coveredBy);
+    } else {
+      expect(CORE_SECTIONS).toContain(m.coveredBy);
+    }
   });
 
   it('has a fixture for each data file it reads', () =>

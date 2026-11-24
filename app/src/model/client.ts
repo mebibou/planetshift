@@ -24,7 +24,9 @@ export const inProcessPort = (): Port => {
           const out = respond(data, req);
           data = out.data;
           const reply = out.reply;
-          if (reply) setTimeout(() => on(reply), 0);
+          if (reply) {
+            setTimeout(() => on(reply), 0);
+          }
         }),
       );
     },
@@ -82,7 +84,9 @@ export const modelClient = (port: Port): ModelClient => {
     if ('result' in reply && reply.id === running) {
       running = null;
       onResult(reply.result);
-      if (waiting) send(waiting);
+      if (waiting) {
+        send(waiting);
+      }
       waiting = null;
     } else if ('avoided' in reply) {
       pending.get(reply.id)?.(reply.avoided);
@@ -92,15 +96,19 @@ export const modelClient = (port: Port): ModelClient => {
   port.listen(received);
   return {
     setData: (data) => {
-      if (data !== sent)
+      if (data !== sent) {
         port.post(
           sent ? { kind: 'files', files: changedFiles(sent, data) } : { kind: 'data', data },
         );
+      }
       sent = data;
     },
     run: (scenario, options, year) => {
-      if (running === null) send({ scenario, options, year });
-      else waiting = { scenario, options, year };
+      if (running === null) {
+        send({ scenario, options, year });
+      } else {
+        waiting = { scenario, options, year };
+      }
     },
     onResult: (on) => (onResult = on),
     avoided: (scenario, options, year) =>

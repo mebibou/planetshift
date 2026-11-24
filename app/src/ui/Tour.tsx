@@ -12,7 +12,9 @@ export const Tour = ({ t }: { t: T }) => {
   const dialog = useRef<HTMLDialogElement>(null);
   const next = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    if (dialog.current && !dialog.current.open) dialog.current.showModal();
+    if (dialog.current && !dialog.current.open) {
+      dialog.current.showModal();
+    }
     // React focuses autoFocus before showModal, which moves focus to the first button.
     next.current?.focus();
   }, []);
@@ -22,7 +24,9 @@ export const Tour = ({ t }: { t: T }) => {
   };
   const go = (to: number) => {
     setStep(Math.min(Math.max(to, 0), LAST));
-    if (to <= 0) next.current?.focus();
+    if (to <= 0) {
+      next.current?.focus();
+    }
   };
   const id = TOUR_STEPS[step];
   return open ? (

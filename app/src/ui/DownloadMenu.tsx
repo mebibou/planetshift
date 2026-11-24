@@ -38,15 +38,23 @@ export const DownloadMenu = ({ label, name = label, className = '', items }: Dow
   const id = useId();
   useEffect(() => {
     const outside = (e: PointerEvent) => {
-      if (!button.current?.parentElement?.contains(e.target as Node)) setOpen(false);
+      if (!button.current?.parentElement?.contains(e.target as Node)) {
+        setOpen(false);
+      }
     };
-    if (open) itemsOf(menu.current)[0]?.focus();
-    if (open) document.addEventListener('pointerdown', outside);
+    if (open) {
+      itemsOf(menu.current)[0]?.focus();
+    }
+    if (open) {
+      document.addEventListener('pointerdown', outside);
+    }
     return () => document.removeEventListener('pointerdown', outside);
   }, [open]);
   const close = (refocus: boolean) => {
     setOpen(false);
-    if (refocus) button.current?.focus();
+    if (refocus) {
+      button.current?.focus();
+    }
   };
   const onMenuKey = (e: KeyboardEvent) => {
     const list = itemsOf(menu.current);
@@ -55,8 +63,12 @@ export const DownloadMenu = ({ label, name = label, className = '', items }: Dow
       e.preventDefault();
       list[move(list.indexOf(document.activeElement as HTMLButtonElement), list.length)]?.focus();
     }
-    if (e.key === 'Escape') close(true);
-    if (e.key === 'Tab') close(false);
+    if (e.key === 'Escape') {
+      close(true);
+    }
+    if (e.key === 'Tab') {
+      close(false);
+    }
   };
   return (
     <span className="download-menu">

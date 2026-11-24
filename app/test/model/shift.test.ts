@@ -75,8 +75,11 @@ describe('the diet', () => {
     const change = foodChange({ ...BASE_SCENARIO, shift: 0.2 }, fra, prepared);
     nonzero(change).forEach(([code, t]) => {
       const item = prepared.itemByCode.get(code)!;
-      if (item.animal) expect(t).toBeCloseTo(-0.2 * valueOf(prepared, fra.food, code), 6);
-      else expect(t).toBeGreaterThan(0);
+      if (item.animal) {
+        expect(t).toBeCloseTo(-0.2 * valueOf(prepared, fra.food, code), 6);
+      } else {
+        expect(t).toBeGreaterThan(0);
+      }
     });
   });
   it('lets group shares override the shift', () => {

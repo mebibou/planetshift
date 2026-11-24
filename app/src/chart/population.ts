@@ -223,7 +223,9 @@ export const populationChart = (
     notes.hidden = text === '';
   };
   const render = () => {
-    if (last) draw(last);
+    if (last) {
+      draw(last);
+    }
   };
   onResize(plotEl, render);
   return {

@@ -23,7 +23,9 @@ import { useWorth, WorthContext } from './Worth';
 /** A counter that goes up each time `data` changes: a deferred lever file arriving. */
 const useVersion = (data: unknown): number => {
   const [seen, setSeen] = useState({ data, version: 0 });
-  if (seen.data !== data) setSeen({ data, version: seen.version + 1 });
+  if (seen.data !== data) {
+    setSeen({ data, version: seen.version + 1 });
+  }
   return seen.data === data ? seen.version : seen.version + 1;
 };
 
@@ -113,8 +115,9 @@ const useCharts = ({ ctx, state, result, data }: ExploreProps) => {
   const { ui, options } = state;
   useEffect(() => {
     const draw = { result, ui, options, data, currentYear: ctx.currentYear };
-    if (result && ui.chart !== 'cause')
+    if (result && ui.chart !== 'cause') {
       DRAW[ui.chart]({ temperature, avoided }, { ...draw, result });
+    }
   }, [result, ui, options, data, temperature, avoided, ctx.currentYear]);
   return { temperatureRef, avoidedRef };
 };

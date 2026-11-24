@@ -134,16 +134,20 @@ export const intensityCuts = (
     if (acting.length > 0) {
       for (let g = 0; g < GROUPS.length; g++) {
         let left = 1;
-        for (const k of acting)
-          if ((masks[k] as Uint8Array)[g] === 1) left *= 1 - (cuts[k] as PracticeCut).cut;
+        for (const k of acting) {
+          if ((masks[k] as Uint8Array)[g] === 1) {
+            left *= 1 - (cuts[k] as PracticeCut).cut;
+          }
+        }
         byGroup[g] = 1 - left;
       }
       // An item without a share would only add zero.
       const target = out[gas];
-      for (const i of items)
+      for (const i of items) {
         target[i] =
           (target[i] as number) +
           (shares[i] as number) * (byGroup[itemGroups[i] as number] as number);
+      }
     }
   });
   return out;

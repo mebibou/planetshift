@@ -140,8 +140,9 @@ const drawSeries = (f: Frame, x: Scale, y: Scale, s: Shown): void => {
   f.plot.append('path').datum(s.scenBand).attr('class', 'band scenario-band').attr('d', bandArea);
   f.plot.append('path').datum(s.scenMedian).attr('class', 'line scenario-line').attr('d', lineOf);
   f.plot.append('path').datum(s.baseMedian).attr('class', 'line baseline-line').attr('d', lineOf);
-  if (s.naturalLine.length)
+  if (s.naturalLine.length) {
     f.plot.append('path').datum(s.naturalLine).attr('class', 'line natural-line').attr('d', lineOf);
+  }
   f.plot.append('path').datum(s.observed).attr('class', 'line observed-line').attr('d', lineOf);
 };
 
@@ -184,13 +185,14 @@ const crossingDot = (
     .attr('r', 4)
     .append('title')
     .text(String(year));
-  if (!v.narrow)
+  if (!v.narrow) {
     g.append('text')
       .attr('class', `${className}-label`)
       .attr('x', cx)
       .attr('y', v.y(level) + dy)
       .attr('text-anchor', anchorAt(cx, v.f.innerWidth))
       .text(String(year));
+  }
 };
 
 /** The years each median crosses each level, where they fall on the years shown. */
@@ -199,9 +201,12 @@ const drawCrossings = (v: CrossingView, tp: Temperature, currentYear: number): v
     year !== null && year >= v.from && year <= v.end;
   milestones(tp, currentYear).levels.forEach((m) => {
     const g = v.f.plot.append('g').attr('class', 'crossings').attr('data-level', String(m.level));
-    if (shown(m.baseline) && m.baseline !== m.scenario)
+    if (shown(m.baseline) && m.baseline !== m.scenario) {
       crossingDot(v, g, m.level, m.baseline, 'crossing-baseline', 15);
-    if (shown(m.scenario)) crossingDot(v, g, m.level, m.scenario, 'crossing-scenario', -7);
+    }
+    if (shown(m.scenario)) {
+      crossingDot(v, g, m.level, m.scenario, 'crossing-scenario', -7);
+    }
   });
 };
 
@@ -269,7 +274,9 @@ const hoverRows =
 /** The current year, 2050 when the chart goes past it, and the horizon. */
 const drawRules = (f: Frame, x: Scale, currentYear: number, end: number): void => {
   verticalRule(f, x(currentYear), String(currentYear));
-  if (end > 2050) verticalRule(f, x(2050), '2050');
+  if (end > 2050) {
+    verticalRule(f, x(2050), '2050');
+  }
   verticalRule(f, x(end), String(end));
 };
 
@@ -293,7 +300,9 @@ const milestoneText = (t: T, reaches2100: boolean): string =>
 
 /** Hides a legend item, when the legend has it. */
 const showItem = (item: HTMLElement | null, shown: boolean): void => {
-  if (item) item.hidden = !shown;
+  if (item) {
+    item.hidden = !shown;
+  }
 };
 
 /**
@@ -357,7 +366,9 @@ export const temperatureChart = (
       .attr('y', -10)
       .text(t('chart.unit'));
     drawLevels(f, y, t);
-    if (reaches2100) drawPolicies(f, y, t);
+    if (reaches2100) {
+      drawPolicies(f, y, t);
+    }
     drawSeries(f, x, y, s);
     const marks = ensoMarks(enso, s.observed);
     drawEnso(f, x, y, marks, narrow);
@@ -365,7 +376,9 @@ export const temperatureChart = (
     drawRules(f, x, currentYear, end);
     const gap = gapAt(tp.years, tp.baseline.median, tp.scenario.median, end);
     const gapValue = gapText(locale, gap);
-    if (gap !== null) drawGap(f, x, y, s, end, t('chart.gap', { value: gapValue, year: end }));
+    if (gap !== null) {
+      drawGap(f, x, y, s, end, t('chart.gap', { value: gapValue, year: end }));
+    }
     caption.textContent = t('chart.caption', { gap: gapValue, year: end });
     milestoneCaption.textContent = milestoneText(t, reaches2100);
     showItem(legendItem('key-natural'), s.naturalLine.length > 0);
@@ -382,7 +395,9 @@ export const temperatureChart = (
     );
   };
   const render = () => {
-    if (last) draw(last);
+    if (last) {
+      draw(last);
+    }
   };
   onResize(plotEl, render);
   return {

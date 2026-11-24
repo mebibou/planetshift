@@ -35,8 +35,9 @@ export const shapley = <P>(
         if ((mask & bit) === 0) {
           const w = weight[bitCount(mask)] as number;
           const joined = worths[mask | bit] as readonly number[];
-          for (let k = 0; k < length; k++)
+          for (let k = 0; k < length; k++) {
             value[k] = (value[k] as number) + w * ((joined[k] as number) - (without[k] as number));
+          }
         }
       });
       return [player, value];

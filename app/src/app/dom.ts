@@ -9,10 +9,13 @@ const apply = <E extends Element>(
   children: Child[],
 ): E => {
   Object.entries(attrs).forEach(([key, value]) => {
-    if (typeof value === 'function') el.addEventListener(key.slice(2), value);
-    else if (value === true) el.setAttribute(key, '');
-    else if (value !== false && value !== null && value !== undefined)
+    if (typeof value === 'function') {
+      el.addEventListener(key.slice(2), value);
+    } else if (value === true) {
+      el.setAttribute(key, '');
+    } else if (value !== false && value !== null && value !== undefined) {
       el.setAttribute(key, String(value));
+    }
   });
   el.append(
     ...children

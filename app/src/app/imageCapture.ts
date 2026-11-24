@@ -39,21 +39,27 @@ const inLightTheme = <T>(f: () => T): T => {
   try {
     return f();
   } finally {
-    if (before === null) root.removeAttribute('data-theme');
-    else root.setAttribute('data-theme', before);
+    if (before === null) {
+      root.removeAttribute('data-theme');
+    } else {
+      root.setAttribute('data-theme', before);
+    }
   }
 };
 
 /** Writes each element's computed styles into its copy; an element not displayed is dropped. */
 const inlineStyles = (source: Element, copy: Element): void => {
   const cs = getComputedStyle(source);
-  if (cs.display === 'none') copy.remove();
-  else {
+  if (cs.display === 'none') {
+    copy.remove();
+  } else {
     PROPS.forEach((p) => (copy as SVGElement).style.setProperty(p, cs.getPropertyValue(p)));
     const kids = [...copy.children];
     [...source.children].forEach((child, i) => {
       const twin = kids[i];
-      if (twin) inlineStyles(child, twin);
+      if (twin) {
+        inlineStyles(child, twin);
+      }
     });
   }
 };

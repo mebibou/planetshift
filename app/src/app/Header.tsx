@@ -28,7 +28,9 @@ const useHeaderHeight = (ref: React.RefObject<HTMLElement | null>) =>
         getComputedStyle(el).position === 'sticky' ? `${el.offsetHeight}px` : '0px',
       );
     const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(update) : null;
-    if (el) observer?.observe(el);
+    if (el) {
+      observer?.observe(el);
+    }
     window.addEventListener('resize', update);
     update();
     return () => {

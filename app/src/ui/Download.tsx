@@ -59,12 +59,16 @@ const useSave = (t: T) => {
     status,
     save: (file: DownloadFile | null) => {
       say(file !== null);
-      if (file) saveFile(file);
+      if (file) {
+        saveFile(file);
+      }
     },
     saveImage: (name: string, blob: Promise<Blob | null>) =>
       blob.then((b) => {
         say(b !== null);
-        if (b) saveBlob(name, b);
+        if (b) {
+          saveBlob(name, b);
+        }
       }),
   };
 };

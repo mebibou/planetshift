@@ -26,6 +26,9 @@ export const prefersDark = (): boolean =>
   typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches;
 
 export const applyTheme = (stored: Theme | null): void => {
-  if (stored) document.documentElement.dataset.theme = stored;
-  else delete document.documentElement.dataset.theme;
+  if (stored) {
+    document.documentElement.dataset.theme = stored;
+  } else {
+    delete document.documentElement.dataset.theme;
+  }
 };

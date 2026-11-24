@@ -19,7 +19,9 @@ const recording = () => {
   const answer = (req: Request) => {
     const out = respond(data, req);
     data = out.data;
-    if (out.reply) on(out.reply);
+    if (out.reply) {
+      on(out.reply);
+    }
   };
   return { port, posted, answer };
 };

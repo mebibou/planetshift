@@ -24,7 +24,9 @@ const manual = () => {
     idle,
     queue,
     flush: () => {
-      while (queue.length) queue.shift()?.();
+      while (queue.length) {
+        queue.shift()?.();
+      }
     },
   };
 };

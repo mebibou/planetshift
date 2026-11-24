@@ -105,7 +105,9 @@ export const buildQuery = (encodedModel: string, ui: UiState, current: string): 
   const kept = new URLSearchParams(current);
   KEPT_KEYS.forEach((k) => {
     const v = kept.get(k);
-    if (v !== null) p.set(k, v);
+    if (v !== null) {
+      p.set(k, v);
+    }
   });
   const s = p.toString();
   return s ? `?${s}` : '';
