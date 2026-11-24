@@ -27,6 +27,8 @@ ELECTRICITY_CO2 = "Emissions|CO2|Energy|Supply|Electricity"
 ELECTRICITY_GENERATED = "Secondary Energy|Electricity"
 VARIABLES = (ELECTRICITY_CO2, ELECTRICITY_GENERATED)
 FILE = "ar6-markers-world.json"
+POPULATION = "Population"
+POPULATION_FILE = "ar6-markers-population.json"
 
 
 def _get(http, url: str, token: str | None = None):
@@ -36,7 +38,7 @@ def _get(http, url: str, token: str | None = None):
     return r.json()
 
 
-def _download() -> list[dict]:
+def _download(variables: tuple[str, ...]) -> list[dict]:
     http = session()
     token = _get(http, TOKEN_URL)
     runs = _get(http, f"{API}/runs?getOnlyDefaultRuns=true", token)
@@ -47,7 +49,7 @@ def _download() -> list[dict]:
     body = {
         "filters": {
             "regions": ["World"],
-            "variables": list(VARIABLES),
+            "variables": list(variables),
             "runs": ids,
             "years": [],
             "units": [],
@@ -68,12 +70,12 @@ def _download() -> list[dict]:
     ]
 
 
-def load(cache_dir: Path) -> list[dict]:
+def load(cache_dir: Path, variables: tuple[str, ...] = VARIABLES, file: str = FILE) -> list[dict]:
     """Rows (model, scenario, variable, unit, year, value), downloaded once into the cache."""
-    path = cache_dir / "ar6db" / FILE
+    path = cache_dir / "ar6db" / file
     if not path.exists():
         log.info("downloading the AR6 marker runs from %s", API)
-        rows = _download()
+        rows = _download(variables)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(rows))
         record(path, url=f"{API}/runs/bulk/ts", downloaded=today())

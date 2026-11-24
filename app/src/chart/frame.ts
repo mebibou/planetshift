@@ -87,13 +87,19 @@ export const drawAxes = (
     .call((g) => g.select('.domain').remove());
 };
 
-export const verticalRule = (f: Frame, x: number, label: string, className = 'rule'): void => {
+export const verticalRule = (
+  f: Frame,
+  x: number,
+  label: string,
+  className = 'rule',
+  anchor?: 'start' | 'end',
+): void => {
   const g = f.plot.append('g').attr('class', className);
   g.append('line').attr('x1', x).attr('x2', x).attr('y1', 0).attr('y2', f.innerHeight);
   g.append('text')
     .attr('x', x)
     .attr('y', -6)
-    .attr('text-anchor', x > f.innerWidth - 40 ? 'end' : 'middle')
+    .attr('text-anchor', anchor ?? (x > f.innerWidth - 40 ? 'end' : 'middle'))
     .text(label);
 };
 

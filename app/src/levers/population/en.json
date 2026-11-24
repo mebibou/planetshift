@@ -1,4 +1,12 @@
 {
+  "title": "Population",
+  "description": "How many people the world feeds depends on choices families make, by choice and free from coercion.",
+  "family": "Population",
+  "familyPlanning": {
+    "title": "Education and voluntary family planning",
+    "description": "Universal schooling, especially for girls, and access to voluntary family planning lead to smaller families, by choice. At 100%, fertility follows the UN's low projection: half a child per woman below the projection chosen in Options, in place by the year all levers are (no sooner than the UN's own low projection allows). Population responds over decades, as today's young people still have children, so most of the effect comes after 2050. It changes how much food is needed; energy and industry keep their scenario's own path. The 100% is a UN scenario, not a target number of people.",
+    "unavailable": "Not available with the UN's low projection, which already has half a child per woman fewer."
+  },
   "options": {
     "population": {
       "label": "World population (UN projection)",
@@ -27,6 +35,22 @@
     "larger": "larger",
     "smaller": "smaller",
     "projection": "UN {variant} projection",
-    "baselineShift": "With this projection, the warming without the levers in {year} moves by {value} from the medium projection's."
+    "baselineShift": "With this projection, the warming without the levers in {year} moves by {value} from the medium projection's.",
+    "peopleLine": "People on Earth chosen",
+    "peopleShift": "With this number of people, the warming without the levers in {year} moves by {value} from the UN medium projection's.",
+    "area": "World population (right axis)"
+  },
+  "people": {
+    "label": "People on Earth in {year}",
+    "hint": "How many people live on Earth by the year every lever is in place. Every human emission changes with that number: farming, energy, industry, transport, buildings, land clearing and air pollution. At 0, they stop: the cleaner air warms the planet for a few years, then the carbon dioxide already in the air keeps it warm.",
+    "value": "{value} billion",
+    "follow": "Follow the UN population projections",
+    "marksLabel": "UN projections for 2050",
+    "marks": {
+      "low": "UN low",
+      "medium": "UN medium",
+      "high": "UN high"
+    },
+    "more": "More in the Methodology"
   }
 }

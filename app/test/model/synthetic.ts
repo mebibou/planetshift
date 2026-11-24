@@ -188,5 +188,6 @@ export const syntheticData = (nCountries = 180, nItems = 100): ModelData => {
     population: fixture.population,
     industry: fixture.industry,
     coemissions: fixture.coemissions,
+    people: fixture.people,
   };
 };

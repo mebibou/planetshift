@@ -2,6 +2,7 @@ import {
   ANIMAL_GROUPS,
   GASES,
   type AnimalGroup,
+  type CauseWarming,
   type Gas,
   type GasVector,
   type CountedCause,
@@ -15,6 +16,7 @@ import {
   adoptionOf,
   COUNTED_CAUSES,
   DIET_CAUSE,
+  ALL_FAMILIES,
   FAMILIES,
   FARM_FAMILIES,
   LEVER_CAUSES,
@@ -32,6 +34,7 @@ import type {
 } from '../levers/types';
 import {
   GWP100,
+  type Baseline,
   type CountryResult,
   type Options,
   type Scenario,
@@ -710,6 +713,10 @@ export const gasShares = (
 interface BaselineBand {
   /** The baseline temperature. */
   temperature: number[];
+  /** The population baseline's farm emissions over the SSP's, warming by gas. */
+  farm: Record<Gas, number[]>;
+  /** The warming the modules add, split by cause where they say. */
+  byCause: readonly CauseWarming[];
   /** What each module's baseline hook kept for its feedback. */
   memo: Readonly<Record<string, unknown>>;
 }
@@ -726,11 +733,27 @@ const BASELINE_OPTIONS = MODULES.filter((m) => m.hooks.baseline || m.hooks.popul
 const worldPopulationOf = (
   prepared: Prepared,
   options: Options,
+  currentYear: number,
 ): Readonly<Record<number, number>> =>
   MODULES.reduce<Readonly<Record<number, number>> | null>(
-    (found, m) => found ?? m.hooks.population?.({ prepared, options }) ?? null,
+    (found, m) => found ?? m.hooks.population?.({ prepared, options, currentYear }) ?? null,
     null,
   ) ?? prepared.worldPopulation;
+
+/** The first module's multiplier on every human emission outside farming, or none. */
+const peopleOf = (
+  prepared: Prepared,
+  options: Options,
+  currentYear: number,
+): ((year: number) => number) | null =>
+  MODULES.reduce<((year: number) => number) | null>(
+    (found, m) => found ?? m.hooks.people?.({ prepared, options, currentYear }) ?? null,
+    null,
+  );
+
+/** With people on Earth set, farm emissions follow the people whatever the baseline option. */
+const baselineOf = (options: Options): Baseline =>
+  options.people === undefined ? options.baseline : 'population';
 
 /**
  * The baseline temperature by band: the SSP's, plus the population baseline's farm emissions,
@@ -749,6 +772,8 @@ const baselineTemperature = (
       options.ssp,
       options.climate,
       ...BASELINE_OPTIONS.map((f) => (options as unknown as Record<string, string>)[f]),
+      options.people ?? '',
+      options.peopleYear ?? '',
       currentYear,
     ].join('|'),
     () => {
@@ -756,21 +781,21 @@ const baselineTemperature = (
       const tYears = range(FIRST_YEAR, END_YEAR);
       const total = climate.scenarioTemperature[options.ssp];
       const scale = baselineScale(
-        options.baseline,
+        baselineOf(options),
         climate,
-        worldPopulationOf(prepared, options),
+        worldPopulationOf(prepared, options, currentYear),
         prepared.baseYear,
       );
       const adjustmentEmissions =
-        options.baseline === 'population'
+        baselineOf(options) === 'population'
           ? populationAdjustmentEmissions(climate, options.ssp, prepared.baseYear, (y) =>
               scale('co2', y),
             )
           : [];
       return bandRecord((band) => {
-        const adjustment =
+        const farm =
           adjustmentEmissions.length > 0
-            ? warmingFrom(
+            ? warmingByGas(
                 adjustmentEmissions,
                 prepared.baseYear,
                 climate,
@@ -778,7 +803,8 @@ const baselineTemperature = (
                 band,
                 tYears,
               )
-            : zerosOn(tYears);
+            : gasRecord(() => zerosOn(tYears));
+        const adjustment = sumOfGases(farm);
         return MODULES.reduce<BaselineBand>(
           (acc, m) => {
             const part = m.hooks.baseline?.({
@@ -794,18 +820,119 @@ const baselineTemperature = (
                   temperature: part.warming
                     ? addSeries(acc.temperature, part.warming)
                     : acc.temperature,
+                  farm,
+                  byCause: part.byCause ? [...acc.byCause, part.byCause] : acc.byCause,
                   memo: { ...acc.memo, [m.id]: part.memo },
                 }
               : acc;
           },
           {
             temperature: addSeries(seriesOn(total, total[band], tYears), adjustment),
+            farm,
+            byCause: [],
             memo: {},
           },
         );
       });
     },
   );
+
+const gasRecord = <T>(f: (g: Gas) => T): Record<Gas, T> =>
+  Object.fromEntries(GASES.map((g) => [g, f(g)])) as Record<Gas, T>;
+
+const subtract = (a: readonly number[], b: readonly number[]): number[] =>
+  a.map((v, i) => v - (b[i] ?? 0));
+
+/** Series added up by key, each key's sum. */
+const addByKey = <K extends string>(
+  records: readonly Partial<Record<K, number[]>>[],
+  tYears: readonly number[],
+): Partial<Record<K, number[]>> =>
+  records.reduce<Partial<Record<K, number[]>>>(
+    (acc, r) => ({
+      ...acc,
+      ...Object.fromEntries(
+        (Object.entries(r) as [K, number[]][]).map(([k, v]) => [
+          k,
+          addSeries(acc[k] ?? zerosOn(tYears), v),
+        ]),
+      ),
+    }),
+    {},
+  );
+
+/** The modules' warming by cause, added up. */
+const modulesByCause = (band: BaselineBand, tYears: readonly number[]): CauseWarming => ({
+  byCause: addByKey(
+    band.byCause.map((w) => w.byCause),
+    tYears,
+  ),
+  byGas: Object.fromEntries(
+    GASES.map((g) => [
+      g,
+      addByKey(
+        band.byCause.map((w) => w.byGas[g] ?? {}),
+        tYears,
+      ),
+    ]),
+  ),
+});
+
+/** `a` less `b`, key by key, for the keys of either. */
+const differenceByKey = <K extends string>(
+  a: Partial<Record<K, number[]>>,
+  b: Partial<Record<K, number[]>>,
+  tYears: readonly number[],
+): Partial<Record<K, number[]>> =>
+  Object.fromEntries(
+    [...new Set([...Object.keys(a), ...Object.keys(b)])].map((k) => [
+      k,
+      subtract(a[k as K] ?? zerosOn(tYears), b[k as K] ?? zerosOn(tYears)),
+    ]),
+  ) as Partial<Record<K, number[]>>;
+
+/**
+ * The change from one baseline to another in median warming, by cause and each gas's by cause:
+ * farming through the population baseline, the rest as the modules split it, and what is left
+ * over (the permafrost's answer to the warming) in `other`.
+ */
+const baselineDifference = (
+  chosen: BaselineBand,
+  own: BaselineBand,
+  tYears: readonly number[],
+): CauseWarming => {
+  const farm = gasRecord((g) => subtract(chosen.farm[g], own.farm[g]));
+  const [a, b] = [modulesByCause(chosen, tYears), modulesByCause(own, tYears)];
+  const byCause = {
+    ...differenceByKey(a.byCause, b.byCause, tYears),
+    agriculture: sumOfGases(farm),
+  };
+  const counted = Object.values(byCause).reduce((acc, v) => addSeries(acc, v), zerosOn(tYears));
+  const rest = subtract(subtract(chosen.temperature, own.temperature), counted);
+  return {
+    byCause: { ...byCause, other: addSeries(byCause.other ?? zerosOn(tYears), rest) },
+    byGas: gasRecord((g) => ({
+      ...differenceByKey(a.byGas[g] ?? {}, b.byGas[g] ?? {}, tYears),
+      agriculture: farm[g],
+    })),
+  };
+};
+
+/** What the people chosen change in the baseline's warming by cause; none without them. */
+const peopleChange = (
+  prepared: Prepared,
+  options: Options,
+  currentYear: number,
+): CauseWarming | null => {
+  const without: Options = { ...options, people: undefined, peopleYear: undefined };
+  return options.people === undefined
+    ? null
+    : baselineDifference(
+        baselineTemperature(prepared, options, currentYear).median,
+        baselineTemperature(prepared, without, currentYear).median,
+        range(FIRST_YEAR, END_YEAR),
+      );
+};
 
 /** Warming avoided each year from the warming change of each band, its range ordered low to high. */
 export const avoidedBand = (delta: {
@@ -879,16 +1006,68 @@ interface PassFrame {
   ctx: RunContext;
   years: readonly number[];
   tYears: readonly number[];
+  /** The scale of the scenario's farm emissions: the baseline's, times a module's scenarioScale. */
   scale: Scale;
+  baseScale: Scale;
   shareAt: (year: number) => number;
   completeIndex: number;
+  /** The multiplier on what the families outside farming change, by year, or none. */
+  people: ((year: number) => number) | null;
 }
+
+/** The modules that scale the scenario's farm emissions: players every farm family meets. */
+const SCALING = MODULES.filter((m) => m.family && m.hooks.scenarioScale);
+
+/** The first module's multiplier on the scenario's farm emissions, or none. */
+const scenarioFactorOf = (ctx: RunContext): ((year: number) => number) | null =>
+  MODULES.reduce<((year: number) => number) | null>(
+    (found, m) => found ?? m.hooks.scenarioScale?.(ctx) ?? null,
+    null,
+  );
 
 const OUTSIDE_LEVERS = MODULES.filter((m) => m.farm === false).flatMap((m) =>
   m.levers.map((l) => l.id),
 );
 
 const outsideCaches = memoPer<Prepared, ReturnType<typeof memoLatest<LeverModule, WorldPart>>>();
+
+const scaledBands = (
+  byBand: Record<Band, number[]>,
+  years: readonly number[],
+  people: (year: number) => number,
+): Record<Band, number[]> =>
+  bandRecord((b) => byBand[b].map((v, i) => v * people(years[i] as number)));
+
+/**
+ * A world part outside farming with fewer or more people: its emissions scaled by the people
+ * each year, its warming from forcing by the people that year (that forcing is short-lived).
+ */
+const withPeople = (
+  part: WorldPart,
+  people: ((year: number) => number) | null,
+  w: WorldContext,
+): WorldPart => {
+  const extra = part.extraEmissions;
+  const byCause = part.warmingByCause;
+  return people
+    ? {
+        ...part,
+        ...(extra && {
+          extraEmissions: bandRecord((b) =>
+            extra[b].map((v, i) => gasVector((g) => v[g] * people(w.years[i] as number))),
+          ),
+        }),
+        ...(part.extraWarming && {
+          extraWarming: scaledBands(part.extraWarming, w.tYears, people),
+        }),
+        ...(byCause && {
+          warmingByCause: Object.fromEntries(
+            Object.entries(byCause).map(([c, v]) => [c, scaledBands(v, w.tYears, people)]),
+          ),
+        }),
+      }
+    : part;
+};
 
 /**
  * The world part of a module outside farming with the families in `inPlay` acting, kept per set
@@ -899,6 +1078,7 @@ const outsideWorld = (
   module: LeverModule,
   inPlay: string,
   w: WorldContext,
+  people: ((year: number) => number) | null,
 ): WorldPart =>
   outsideCaches(ctx.prepared, inPlay, () => memoLatest<LeverModule, WorldPart>())(
     module,
@@ -908,7 +1088,7 @@ const outsideWorld = (
       ctx.scenario.rampEnd,
       ctx.currentYear,
     ]),
-    () => module.hooks.world?.(ctx, w) ?? {},
+    () => withPeople(module.hooks.world?.(ctx, w) ?? {}, people, w),
   );
 
 /** One pass of the emission changes: what every family changes, by band and cause. */
@@ -957,12 +1137,19 @@ const emissionsPass = (
     ),
   );
   const countries = parts.map((p) => p.result);
-  const w: WorldContext = { countries, years, tYears, shareAt, completeIndex };
+  const w: WorldContext = {
+    countries,
+    years,
+    tYears,
+    shareAt,
+    completeIndex,
+    baselineScale: frame.baseScale,
+  };
   const world = modules.map((module) => ({
     module,
     part:
       module.farm === false
-        ? outsideWorld(ctx, module, '*', w)
+        ? outsideWorld(ctx, module, '*', w, frame.people)
         : (module.hooks.world?.(ctx, w) ?? {}),
   }));
   const ownOf = (family: string) => world.find((w) => w.module.family === family);
@@ -990,7 +1177,7 @@ const emissionsPass = (
     causeRecord((c) => (c === causeOfModule(module) ? extra : zeroPath(years)));
   const pathsIn = (band: Band): Record<string, ByCause<GasVector[]>> =>
     Object.fromEntries(
-      FAMILIES.map((f) => {
+      ALL_FAMILIES.map((f) => {
         const own = ownOf(f);
         const extra = own?.part.extraEmissions?.[band];
         return [f, extra && own ? ownPaths(own.module, extra) : farmPaths(f, band)];
@@ -1070,10 +1257,15 @@ const familyShares = (
   chains: readonly Chain[],
 ): Map<string, number[]> => {
   const { ctx } = frame;
-  const production = [...(dietActs(ctx.scenario) ? ['diet'] : []), ...chains.map((c) => c.family)];
+  const scaling = SCALING.filter((m) => m.hooks.scenarioScale?.(ctx)).map(familyOf);
+  const production = [
+    ...(dietActs(ctx.scenario) ? ['diet'] : []),
+    ...chains.map((c) => c.family),
+    ...scaling,
+  ];
   const farmModules = MODULES.filter((m) => m.family && m.farm !== false);
   const dependent = farmModules
-    .filter((m) => !production.includes(familyOf(m)) && acts(m, ctx))
+    .filter((m) => !m.hooks.scenarioScale && !production.includes(familyOf(m)) && acts(m, ctx))
     .map(familyOf);
   const outside = MODULES.filter((m) => m.family && m.farm === false && acts(m, ctx)).map(familyOf);
   const players = [...production, ...dependent, ...outside];
@@ -1111,7 +1303,9 @@ const familyShares = (
           inPlay.length === 0 && dependent.length === 0
             ? null
             : emissionsPass(
-                frame,
+                inPlay.some((f) => scaling.includes(f))
+                  ? frame
+                  : { ...frame, scale: frame.baseScale },
                 productionSteps(ctx, chains, (f) => inPlay.includes(f)),
                 farmModules,
                 ['median'],
@@ -1143,13 +1337,20 @@ const familyShares = (
       const { years, tYears, shareAt, completeIndex } = frame;
       const world = outsideModules.map((module) => ({
         module,
-        part: outsideWorld(masked, module, key, {
-          countries: full.countries,
-          years,
-          tYears,
-          shareAt,
-          completeIndex,
-        }),
+        part: outsideWorld(
+          masked,
+          module,
+          key,
+          {
+            countries: full.countries,
+            years,
+            tYears,
+            shareAt,
+            completeIndex,
+            baselineScale: frame.baseScale,
+          },
+          frame.people,
+        ),
       }));
       const paths = Object.fromEntries(
         world.map(({ module, part }) => [
@@ -1181,12 +1382,16 @@ const familyShares = (
 };
 
 /** Runs a scenario on prepared data: shift, levers, production, emissions, temperature. */
+const withPeopleYear = (options: Options, scenario: Scenario): Options =>
+  options.people === undefined ? options : { ...options, peopleYear: scenario.rampEnd };
+
 export const runPrepared = (
   prepared: Prepared,
   scenario: Scenario,
-  options: Options,
+  given: Options,
   currentYear: number,
 ): ScenarioResult => {
+  const options = withPeopleYear(given, scenario);
   const { climate } = prepared.data;
   const levers = scenario.levers ?? {};
   const ctx: RunContext = {
@@ -1202,32 +1407,46 @@ export const runPrepared = (
   const tYears = range(FIRST_YEAR, END_YEAR);
   const scale = tabulate(
     baselineScale(
-      options.baseline,
+      baselineOf(options),
       climate,
-      worldPopulationOf(prepared, options),
+      worldPopulationOf(prepared, options, currentYear),
       prepared.baseYear,
     ),
     years,
   );
   const shareAt = (y: number) => (y < currentYear ? 0 : ramp(y, currentYear, scenario.rampEnd));
   const completeIndex = Math.min(Math.max(scenario.rampEnd, currentYear), END_YEAR) - currentYear;
-  const frame: PassFrame = { ctx, years, tYears, scale, shareAt, completeIndex };
+  const people = peopleOf(prepared, options, currentYear);
+  const factor = scenarioFactorOf(ctx);
+  const frame: PassFrame = {
+    ctx,
+    years,
+    tYears,
+    scale: factor ? tabulate((g, y) => scale(g, y) * factor(y), years) : scale,
+    baseScale: scale,
+    shareAt,
+    completeIndex,
+    people,
+  };
   const full = emissionsPass(frame, steps, MODULES, BANDS);
   const { countries, world } = full;
   const worldBase = sumBy(countries, (c) => c.emissions);
   const byFamily = bandRecord((band): Record<string, GasVector[]> =>
     Object.fromEntries(
-      FAMILIES.map((f) => {
+      ALL_FAMILIES.map((f) => {
         const byCause = full.paths[band]?.[f] as ByCause<GasVector[]>;
         return [f, sumPaths(COUNTED_CAUSES.map((c) => byCause[c]))];
       }),
     ),
   );
-  const differenceIn = bandRecord((band) => sumPaths(FAMILIES.map((f) => byFamily[band][f] ?? [])));
+  const differenceIn = bandRecord((band) =>
+    sumPaths(ALL_FAMILIES.map((f) => byFamily[band][f] ?? [])),
+  );
   const baselinePath = years.map((y) => gasVector((g) => worldBase[g] * scale(g, y)));
   const farmDifference = sumPaths(FARM_FAMILIES.map((f) => byFamily.median[f] ?? []));
 
   const base = baselineTemperature(prepared, options, currentYear);
+  const change = peopleChange(prepared, options, currentYear);
   const extraWarming = bandRecord((band) =>
     sumSeries(
       world.flatMap((w) => [
@@ -1275,7 +1494,7 @@ export const runPrepared = (
 
   const causeGas = causeRecord((c) =>
     warmingByGas(
-      sumPaths(FAMILIES.map((f) => full.paths.median?.[f]?.[c] ?? [])),
+      sumPaths(ALL_FAMILIES.map((f) => full.paths.median?.[f]?.[c] ?? [])),
       currentYear,
       climate,
       options.climate,
@@ -1327,11 +1546,12 @@ export const runPrepared = (
     return k < 0 ? 0 : (sharedAt[h]?.[k * causes + c] ?? 0);
   };
   const co2eOfFamily = (family: string, c: number): number => shares.get(family)?.[c * 3 + 2] ?? 0;
+  const listed = ALL_FAMILIES.filter((f) => FAMILIES.includes(f) || shares.has(f));
   const perFamily = (f: (family: string) => number): Record<string, number> =>
-    Object.fromEntries(FAMILIES.map((family) => [family, f(family)]));
+    Object.fromEntries(listed.map((family) => [family, f(family)]));
   const byCauseOf = (f: (family: string, c: number) => number) =>
     Object.fromEntries(
-      FAMILIES.map((family) => [family, causeRecord((c) => f(family, COUNTED_CAUSES.indexOf(c)))]),
+      listed.map((family) => [family, causeRecord((c) => f(family, COUNTED_CAUSES.indexOf(c)))]),
     ) as Record<string, ByCause<number>>;
   const familyCause = {
     avoidedCo2e: byCauseOf(co2eOfFamily),
@@ -1340,7 +1560,7 @@ export const runPrepared = (
   };
   const totalOf = (r: ByCause<number>) => sum(COUNTED_CAUSES.map((c) => r[c]));
   const causeTotal = (r: Record<string, ByCause<number>>) =>
-    causeRecord((c) => sum(FAMILIES.map((f) => r[f]?.[c] ?? 0)));
+    causeRecord((c) => sum(ALL_FAMILIES.map((f) => r[f]?.[c] ?? 0)));
 
   const result: ScenarioResult = {
     countries,
@@ -1355,6 +1575,7 @@ export const runPrepared = (
       avoided: avoidedBand(delta),
       avoidedByCause,
       avoidedByGas,
+      ...(change && { baselineChange: change }),
     },
     summary: Object.assign(
       {

@@ -19,6 +19,8 @@ import {
   type Margin,
 } from './frame';
 import { ensoMarks, gapAt, inRange, zipBand, zipSeries, type EnsoMark } from './series';
+import { drawPopulationArea, peoplePoints, populationRow, withAxis } from './populationArea';
+import { pageControl } from '../levers/population/switch';
 
 export type { Range };
 export const RANGE_START: Record<Range, number> = { full: 1850, recent: 2000 };
@@ -238,7 +240,14 @@ const valueIn = (locale: string, years: number[], values: (number | null)[], yea
 
 /** The hover's rows in a year: observed, El Niño or La Niña, both medians, natural factors. */
 const hoverRows =
-  (t: T, locale: string, tp: Temperature, natural: BandSeries | undefined, marks: EnsoMark[]) =>
+  (
+    t: T,
+    locale: string,
+    tp: Temperature,
+    natural: BandSeries | undefined,
+    marks: EnsoMark[],
+    people: readonly Point[] = [],
+  ) =>
   (year: number): HoverRow[] => {
     const at = (years: number[], values: (number | null)[]) => valueIn(locale, years, values, year);
     const enso = marks.filter((m) => m.year === year);
@@ -268,17 +277,36 @@ const hoverRows =
             },
           ]
         : []),
+      ...populationRow(t, locale, people, year),
     ];
   };
 
 /** The current year, 2050 when the chart goes past it, and the horizon. */
-const drawRules = (f: Frame, x: Scale, currentYear: number, end: number): void => {
-  verticalRule(f, x(currentYear), String(currentYear));
+const drawRules = (f: Frame, x: Scale, currentYear: number, end: number, apart = false): void => {
+  const { left, right } = crowding(x, currentYear, end, apart);
+  verticalRule(f, x(currentYear), String(currentYear), 'rule', left ? 'end' : undefined);
   if (end > 2050) {
-    verticalRule(f, x(2050), '2050');
+    verticalRule(f, x(2050), left && right ? '' : '2050', 'rule', middleAnchor(left, right));
   }
   verticalRule(f, x(end), String(end));
 };
+
+/** px a year's label takes, at the rules' font size. */
+const LABEL_WIDTH = 28;
+
+/**
+ * Whether 2050's label would run into the current year's (left) or the horizon's (right), each
+ * pushed aside in turn; only beside the population area, which narrows the plot.
+ */
+const crowding = (x: Scale, currentYear: number, end: number, apart: boolean) => {
+  const left = apart && x(2050) - x(currentYear) < LABEL_WIDTH + 4;
+  const room = left ? 2 * LABEL_WIDTH + 4 : 1.5 * LABEL_WIDTH + 4;
+  return { left, right: apart && end > 2050 && x(end) - x(2050) < room };
+};
+
+/** 2050's label: away from the one it is near. */
+const middleAnchor = (left: boolean, right: boolean): 'start' | 'end' | undefined =>
+  left ? 'start' : right ? 'end' : undefined;
 
 /** The chart's size: narrow under 520 px, with room for the policies band when it reaches 2100. */
 const layoutOf = (plotEl: HTMLElement, end: number) => {
@@ -332,6 +360,9 @@ export const temperatureChart = (
     { label: t('chart.enso.legend'), className: 'key-enso' },
     { label: t('milestones.levels.short'), className: 'key-milestone' },
     { label: t('milestones.policies.short'), className: 'key-policies' },
+    ...(pageControl() === 'people'
+      ? [{ label: t('levers.population.chart.area'), className: 'key-population-area' }]
+      : []),
   ]);
   const legendItem = (className: string) =>
     legend.querySelector(`.${className}`)?.parentElement ?? null;
@@ -349,7 +380,9 @@ export const temperatureChart = (
   const draw = ([result, range, end, natural, enso]: NonNullable<typeof last>) => {
     const tp = result.temperature;
     const from = RANGE_START[range];
-    const { narrow, reaches2100, margin, height } = layoutOf(plotEl, end);
+    const { narrow, reaches2100, height, ...layout } = layoutOf(plotEl, end);
+    const people = peoplePoints(result.population, from, end);
+    const margin = withAxis(layout.margin, people, reaches2100);
     const f = frame(plotEl, height, margin, t('chart.label', { year: end }));
     const s = shownSeries(tp, natural, from, end, currentYear);
     const values = yValues(s, reaches2100);
@@ -365,6 +398,9 @@ export const temperatureChart = (
       .attr('x', -margin.left + 4)
       .attr('y', -10)
       .text(t('chart.unit'));
+    if (people.length > 0) {
+      drawPopulationArea(f, x, people, locale, reaches2100);
+    }
     drawLevels(f, y, t);
     if (reaches2100) {
       drawPolicies(f, y, t);
@@ -373,7 +409,7 @@ export const temperatureChart = (
     const marks = ensoMarks(enso, s.observed);
     drawEnso(f, x, y, marks, narrow);
     drawCrossings({ f, x, y, from, end, narrow }, tp, currentYear);
-    drawRules(f, x, currentYear, end);
+    drawRules(f, x, currentYear, end, people.length > 0);
     const gap = gapAt(tp.years, tp.baseline.median, tp.scenario.median, end);
     const gapValue = gapText(locale, gap);
     if (gap !== null) {
@@ -384,12 +420,13 @@ export const temperatureChart = (
     showItem(legendItem('key-natural'), s.naturalLine.length > 0);
     showItem(legendItem('key-enso'), marks.length > 0);
     showItem(legendItem('key-policies'), reaches2100);
+    showItem(legendItem('key-population-area'), people.length > 0);
     addHover(
       plotEl,
       f,
       x,
       margin,
-      hoverRows(t, locale, tp, natural, marks),
+      hoverRows(t, locale, tp, natural, marks, people),
       t('chart.keys'),
       linked,
     );

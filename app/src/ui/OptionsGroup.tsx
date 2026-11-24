@@ -6,6 +6,10 @@ import { Group } from './Group';
 import { Info } from './Info';
 import { Segmented } from './Segmented';
 
+/** The UN projection, which the people-on-Earth number replaces while it is set. */
+const replaced = (options: Options, field: string): boolean =>
+  field === 'population' && options.people !== undefined;
+
 /** The Other options group: the core's options, then the lever modules', each a switch. */
 export const OptionsGroup = ({
   t,
@@ -24,7 +28,7 @@ export const OptionsGroup = ({
       meta={count > 0 ? t('options.changed', { count }) : t('options.defaults')}
     >
       <p className="hint">{t('options.intro')}</p>
-      {OPTIONS.map(({ field, values, texts }) => (
+      {OPTIONS.filter((o) => !replaced(options, o.field)).map(({ field, values, texts }) => (
         <Segmented<string>
           key={field}
           name={`option-${field}`}

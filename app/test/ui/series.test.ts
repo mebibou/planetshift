@@ -6,10 +6,12 @@ import {
   causesAt,
   causesBySize,
   causesIn,
+  changeOf,
   ensoMarks,
   type Attribution,
   gapAt,
   inRange,
+  shiftedBy,
   zipBand,
   zipSeries,
 } from '../../src/chart/series';
@@ -116,6 +118,35 @@ describe('series', () => {
   it('measures the gap between two series in a year', () => {
     expect(gapAt([2049, 2050], [1, 2], [1, 1.9], 2050)).toBeCloseTo(-0.1);
     expect(gapAt([2049], [1], [1], 2050)).toBeNull();
+  });
+});
+
+describe('the baseline’s change by cause', () => {
+  const change = { years: [2001, 2002], byCause: { fossilIndustry: [-0.2, -0.3] } };
+
+  it('moves a cause’s band by the change in its year, and leaves the others', () => {
+    const shifted = shiftedBy(attribution, change);
+    expect(shifted.fossilIndustry?.median).toEqual([0.8, 0.7]);
+    expect(shifted.fossilIndustry?.p95).toEqual([0.8, 0.7]);
+    expect(shifted.agriculture).toBe(attribution.agriculture);
+  });
+
+  it('leaves the attribution as it is without a change', () => {
+    expect(shiftedBy(attribution, null)).toBe(attribution);
+  });
+
+  it('reads every cause’s change, or one gas’s', () => {
+    const temperature = {
+      years: [2001],
+      baselineChange: {
+        byCause: { fossilIndustry: [-0.2] },
+        byGas: { ch4: { agriculture: [-0.1] } },
+      },
+    };
+    expect(changeOf(temperature, 'all')?.byCause).toEqual({ fossilIndustry: [-0.2] });
+    expect(changeOf(temperature, 'ch4')?.byCause).toEqual({ agriculture: [-0.1] });
+    expect(changeOf(temperature, 'n2o')?.byCause).toEqual({});
+    expect(changeOf({ years: [2001] }, 'all')).toBeNull();
   });
 });
 

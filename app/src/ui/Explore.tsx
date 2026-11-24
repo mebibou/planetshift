@@ -6,6 +6,7 @@ import { CHARTS, type ChartTab, type Horizon } from '../app/url';
 import { avoidedChart } from '../chart/avoided';
 import { hoverLink } from '../chart/frame';
 import { populationChart } from '../chart/population';
+import { pageControl } from '../levers/population/switch';
 import { RANGE_START, temperatureChart, type Range } from '../chart/temperature';
 import { dataFolder } from '../data/load';
 import type { ModelData } from '../data/types';
@@ -48,7 +49,9 @@ const makeTemperature = (ctx: ViewContext) => {
   const link = hoverLink();
   const chart = temperatureChart(ctx.t, ctx.locale, ctx.currentYear, link);
   const people = populationChart(ctx.t, ctx.locale, ctx.currentYear, link);
-  chart.slot.append(people.el);
+  if (pageControl() !== 'people') {
+    chart.slot.append(people.el);
+  }
   return { el: chart.el, chart, people };
 };
 
@@ -253,6 +256,7 @@ export const Explore = (props: ExploreProps) => {
           values={values}
           dataVersion={dataVersion}
           available={(id) => leverAvailable(data, id)}
+          population={data.population}
         />
         <Summary
           t={t}

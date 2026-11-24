@@ -37,6 +37,15 @@ const readPercent = (raw: string | null): number | undefined => {
   return Number.isFinite(n) && n >= 0 && n <= 100 ? n / 100 : undefined;
 };
 
+/** The people-on-Earth number's key, in billions with two decimals (a prototype, see Options). */
+const PEOPLE_KEY = 'ppl';
+const MAX_PEOPLE = 100;
+
+const readPeople = (raw: string | null): number | undefined => {
+  const n = raw === null || raw.trim() === '' ? NaN : Number(raw);
+  return Number.isFinite(n) && n >= 0 && n <= MAX_PEOPLE ? Math.round(n * 100) / 100 : undefined;
+};
+
 const optionValue = (options: Options, field: string): string =>
   (options as unknown as Record<string, string>)[field] ?? '';
 
@@ -68,6 +77,9 @@ export const encodeState = (scenario: Scenario, options: Options): string => {
       const value = optionValue(options, field);
       return value !== optionValue(DEFAULT_OPTIONS, field) ? [[key, value]] : [];
     }),
+    ...(options.people === undefined
+      ? []
+      : [[PEOPLE_KEY, String(Math.round(options.people * 100) / 100)] as [string, string]]),
   ];
   return new URLSearchParams(entries).toString();
 };
@@ -123,5 +135,6 @@ export const decodeState = (
       pick(get(key), values, optionValue(DEFAULT_OPTIONS, field)),
     ]),
   ) as unknown as Options;
-  return { scenario, options };
+  const people = readPeople(get(PEOPLE_KEY));
+  return { scenario, options: people === undefined ? options : { ...options, people } };
 };

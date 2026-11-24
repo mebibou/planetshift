@@ -86,6 +86,8 @@ export interface WorldPopulation {
   inconsistent: boolean;
   /** Whether farm emissions follow population (the 'population' baseline); with 'ssp2' they do not. */
   applies: boolean;
+  /** People, from the year after the last estimate: the people-on-Earth path, when it is on. */
+  people?: Series;
 }
 
 export const worldPopulation = (
@@ -93,11 +95,41 @@ export const worldPopulation = (
   variant: PopulationVariant,
   ssp: Ssp,
   applies: boolean,
+  people: Readonly<Record<number, number>> | null = null,
 ): WorldPopulation => ({
   variant,
   ssp,
   history: pop.world.history,
   variants: { medium: pop.world.medium, low: pop.world.low, high: pop.world.high },
-  inconsistent: inconsistentWith(variant, ssp),
+  inconsistent: !people && inconsistentWith(variant, ssp),
   applies,
+  ...(people ? { people: projected(people, pop.lastEstimate) } : {}),
 });
+
+/** A path by year as a series from the year after the last estimate. */
+const projected = (path: Readonly<Record<number, number>>, lastEstimate: number): Series => {
+  const years = Object.keys(path)
+    .map(Number)
+    .filter((y) => y > lastEstimate)
+    .sort((a, b) => a - b);
+  return { years, values: years.map((y) => path[y] as number) };
+};
+
+/** WPP's low variant has its whole half child fewer from this year on (0.25, 0.4, then 0.5). */
+export const LOW_COMPLETE_YEAR = 2034;
+
+/**
+ * Years the low variant's gap is moved later by: to be complete when every lever is, and to start
+ * no earlier than this year; never earlier, as fertility cannot fall faster than WPP's low path.
+ */
+export const fertilityLag = (pop: PopulationData, rampEnd: number, currentYear: number): number =>
+  Math.max(0, rampEnd - LOW_COMPLETE_YEAR, currentYear - (pop.lastEstimate + 1));
+
+/**
+ * The scenario's population over the projection chosen, by year, with half a child per woman
+ * fewer times `adoption`: the low variant's ratio to the medium one, `lag` years later.
+ */
+export const fewerChildren =
+  (pop: PopulationData, adoption: number, lag: number) =>
+  (year: number): number =>
+    year - lag <= pop.lastEstimate ? 1 : 1 + adoption * (worldRatio(pop, 'low', year - lag) - 1);

@@ -38,8 +38,12 @@ const withMedium = (data: ModelData, job: Job, r: ScenarioResult | null): RunRes
   r && {
     ...r,
     mediumBaseline:
-      r.population && r.population.variant !== 'medium'
-        ? baselineMedian(data, { ...job.options, population: 'medium' }, job.year)
+      r.population && (r.population.variant !== 'medium' || r.population.people)
+        ? baselineMedian(
+            data,
+            { ...job.options, population: 'medium', people: undefined },
+            job.year,
+          )
         : null,
   };
 

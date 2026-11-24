@@ -24,6 +24,7 @@ from .sections import (
     landuse,
     map,
     meta,
+    people,
     population,
     practices,
     removals,
@@ -75,6 +76,7 @@ SECTIONS: tuple[Section, ...] = (
     Section("landuse", landuse.build, ("landuse.json",), ("landuse",)),
     Section("removals", removals.build, ("removals.json",), ("removals",)),
     Section("population", population.build, ("population.json",), ("population",)),
+    Section("people", people.build, ("people.json",)),
     Section("map", map.build, ("world.topo.json",)),
     Section("meta", lambda b: meta.build(b, source_modules()), ("meta.json",)),
 )

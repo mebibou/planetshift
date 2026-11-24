@@ -4,6 +4,7 @@
 
 import type {
   AnimalGroup,
+  CauseWarming,
   ClimateMethod,
   FeedMethod,
   Gas,
@@ -125,6 +126,11 @@ export interface ScenarioResult {
      * gases can fall short of its `avoidedByCause`.
      */
     avoidedByGas: Record<Gas, Record<LeverCause, number[]>>;
+    /**
+     * What a choice of people on Earth changes in the baseline's median warming, by cause and
+     * each gas's by cause, °C on `years`; absent when the population follows the UN's.
+     */
+    baselineChange?: CauseWarming;
   };
   summary: Summary;
 }

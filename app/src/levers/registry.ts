@@ -2,6 +2,7 @@
 // from them. With `modules.ts`, the only files a new module shares.
 
 import { DEPARTURES } from '../config';
+import { pageControl } from './population/switch';
 import type { Cause, CountedCause, LeverCause, ModelData } from '../data/types';
 import type { Levers } from '../model/api';
 import { deforestationSpec as deforestation } from './deforestation/spec';
@@ -53,9 +54,9 @@ const ordered = (order: readonly string[]): LeverSpec[] => [
   ...MODULES.filter((m) => !order.includes(m.id)),
 ];
 
-/** Modules with levers, in the order of the panel. */
+/** Modules with levers, in the order of the panel; a prototype's only behind its switch. */
 export const PANEL_MODULES: readonly LeverSpec[] = ordered(PANEL_ORDER).filter(
-  (m) => m.levers.length > 0,
+  (m) => m.levers.length > 0 && (m.prototype === undefined || m.prototype === pageControl()),
 );
 
 /** Modules with a summary figure, in the order of the strip. */
@@ -74,15 +75,23 @@ export const LEVER_IDS: readonly LeverId[] = LEVERS.map((l) => l.id);
 /** The modules' options, in registry order. */
 export const MODULE_OPTIONS: readonly OptionDef[] = MODULES.flatMap((m) => m.options);
 
-/** What the warming avoided is shared out between: the diet shift and each module's family. */
-export const FAMILIES: readonly string[] = [
+/**
+ * What the warming avoided is shared out between, the model's: the diet shift and each module's
+ * family, a prototype's included.
+ */
+export const ALL_FAMILIES: readonly string[] = [
   'diet',
   ...MODULES.flatMap((m) => (m.family ? [m.family] : [])),
 ];
 export type Family = string;
 
+/** The families the breakdown always lists: every one but a prototype's, listed while it acts. */
+export const FAMILIES: readonly string[] = ALL_FAMILIES.filter(
+  (f) => !MODULES.some((m) => m.family === f && m.prototype !== undefined),
+);
+
 /** The families of farming, whose change is farm emissions, clearing and farmland uptake. */
-export const FARM_FAMILIES: readonly string[] = FAMILIES.filter(
+export const FARM_FAMILIES: readonly string[] = ALL_FAMILIES.filter(
   (f) => !MODULES.some((m) => m.family === f && m.farm === false),
 );
 

@@ -1,4 +1,12 @@
 {
+  "title": "Population",
+  "description": "Le nombre de personnes que le monde nourrit dépend des choix des familles, faits librement et sans contrainte.",
+  "family": "Population",
+  "familyPlanning": {
+    "title": "Éducation et planification familiale volontaire",
+    "description": "La scolarisation pour tous, en particulier des filles, et l'accès à la planification familiale volontaire mènent à des familles plus petites, par choix. À 100 %, la fécondité suit la projection basse de l'ONU : un demi-enfant par femme de moins que la projection choisie dans les Options, en place l'année où tous les leviers le sont (pas plus tôt que ne le permet la projection basse de l'ONU elle-même). La population réagit sur des décennies, car les jeunes d'aujourd'hui auront encore des enfants : l'essentiel de l'effet vient après 2050. Cela change la quantité de nourriture nécessaire ; l'énergie et l'industrie gardent la trajectoire de leur scénario. Les 100 % sont un scénario de l'ONU, pas un nombre de personnes visé.",
+    "unavailable": "Indisponible avec la projection basse de l'ONU, qui compte déjà un demi-enfant par femme de moins."
+  },
   "options": {
     "population": {
       "label": "Population mondiale (projection de l'ONU)",
@@ -27,6 +35,22 @@
     "larger": "plus grande",
     "smaller": "plus petite",
     "projection": "Projection {variant} de l'ONU",
-    "baselineShift": "Avec cette projection, le réchauffement sans les leviers en {year} varie de {value} par rapport à la projection moyenne."
+    "baselineShift": "Avec cette projection, le réchauffement sans les leviers en {year} varie de {value} par rapport à la projection moyenne.",
+    "peopleLine": "Personnes sur Terre choisies",
+    "peopleShift": "Avec ce nombre de personnes, le réchauffement sans les leviers en {year} varie de {value} par rapport à la projection moyenne de l'ONU.",
+    "area": "Population mondiale (axe de droite)"
+  },
+  "people": {
+    "label": "Personnes sur Terre en {year}",
+    "hint": "Le nombre de personnes sur Terre l'année où tous les leviers sont en place. Chaque émission humaine change avec ce nombre : agriculture, énergie, industrie, transports, bâtiments, défrichement et pollution de l'air. À 0, elles cessent : l'air plus propre réchauffe la planète quelques années, puis le dioxyde de carbone déjà dans l'air la maintient chaude.",
+    "value": "{value} milliards",
+    "follow": "Suivre les projections de population de l’ONU",
+    "marksLabel": "Projections de l’ONU pour 2050",
+    "marks": {
+      "low": "ONU basse",
+      "medium": "ONU moyenne",
+      "high": "ONU haute"
+    },
+    "more": "En savoir plus dans la Méthodologie"
   }
 }

@@ -1,13 +1,20 @@
-import { option } from '../define';
+import { lever, option } from '../define';
 import type { LeverSpec } from '../types';
-import { EMPTY_POPULATION, VARIANTS, type PopulationVariant } from './data';
-import type { WorldPopulation } from './model';
+import { EMPTY_PEOPLE, EMPTY_POPULATION, VARIANTS, type PopulationVariant } from './data';
+import { hasPopulation, type WorldPopulation } from './model';
 
 const ID = 'population';
 
 declare module '../../model/api' {
   interface Options {
     population: PopulationVariant;
+    /**
+     * People on Earth by `peopleYear`, billions: a thought experiment in place of the UN
+     * projection, on only behind ?popctl=people. Every human emission follows it.
+     */
+    people?: number;
+    /** The year `people` is reached: the scenario's "All levers fully in place by". */
+    peopleYear?: number;
   }
   interface ScenarioResult {
     /** World population for the chart, with the variant chosen; null without the data. */
@@ -19,12 +26,25 @@ declare module '../../model/api' {
  * The world's population to 2100, one of the UN's projections: a method option, not a lever. It
  * changes the baseline and the scenario alike (through the population baseline's scale), so the
  * warming avoided moves only because the farm emissions the levers act on are larger or smaller.
+ * Its lever (behind ?popctl=lever) lowers fertility from that projection's.
  */
 export const populationSpec: LeverSpec = {
   id: ID,
-  levers: [],
+  family: ID,
+  farm: true,
+  cause: 'agriculture',
+  prototype: 'lever',
+  levers: [lever(ID, 'familyPlanning', 'fp')],
   options: [option(ID, 'population', 'pop', VARIANTS)],
-  files: [{ name: 'population', empty: EMPTY_POPULATION }],
-  ui: {},
+  files: [
+    { name: 'population', empty: EMPTY_POPULATION },
+    { name: 'people', empty: EMPTY_PEOPLE },
+  ],
+  available: (data) => hasPopulation(data.population),
+  ui: {
+    section: 'levers',
+    blocked: (options) =>
+      options.population === 'low' ? `levers.${ID}.familyPlanning.unavailable` : null,
+  },
   methodology: { coveredBy: 'options' },
 };

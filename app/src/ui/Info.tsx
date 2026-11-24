@@ -8,7 +8,15 @@ const viewport = () => ({ width: window.innerWidth, height: window.innerHeight }
  * elsewhere or Escape closes it. A scroll closes it too, as it would leave the button behind.
  * `label` names the button for screen readers.
  */
-export const Info = ({ label, text }: { label: string; text: string }) => {
+export const Info = ({
+  label,
+  text,
+  more,
+}: {
+  label: string;
+  text: string;
+  more?: { href: string; text: string };
+}) => {
   const id = useId();
   const button = useRef<HTMLButtonElement>(null);
   const tip = useRef<HTMLDivElement>(null);
@@ -46,6 +54,12 @@ export const Info = ({ label, text }: { label: string; text: string }) => {
       </button>
       <div ref={tip} id={id} className="info-tip" popover="auto" role="tooltip">
         {text}
+        {more && (
+          <>
+            {' '}
+            <a href={more.href}>{more.text}</a>
+          </>
+        )}
       </div>
     </span>
   );
