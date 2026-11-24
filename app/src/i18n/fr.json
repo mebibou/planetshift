@@ -371,6 +371,7 @@
       "climate": "Climat",
       "link": "Causes du réchauffement",
       "deeptime": "Temps géologiques",
+      "impacts": "Ce que signifie le réchauffement",
       "options": "Options",
       "assumptions": "Hypothèses",
       "limitations": "Limites"
@@ -431,6 +432,115 @@
     "below": "sous {level} même sans les leviers",
     "peak": "Pic de réchauffement avec les leviers : {value} en {year}.",
     "peakRising": "Avec les leviers, le réchauffement monte encore en {year} : {value}."
+  },
+  "impacts": {
+    "title": "Ce que signifie le réchauffement",
+    "intro": "Ce que le GIEC prévoit au réchauffement atteint vers {year}, en moyenne sur 20 ans. Entre les niveaux de réchauffement qu'une source a étudiés, les valeurs sont interpolées linéairement. Au-delà, la carte indique qu'elles n'ont pas été évaluées.",
+    "all": "Tous les impacts, par source",
+    "futures": "{without} sans les leviers → {with} avec eux",
+    "futureSame": "{without} sans les leviers",
+    "impact": "Impact",
+    "baseline": "Sans les leviers",
+    "scenario": "Avec les leviers",
+    "levels": "Évalué à {levels}",
+    "levelsOnly": "Évalué à {levels} seulement",
+    "above": "non évalué au-dessus de {level}",
+    "below": "non évalué en dessous de {level}",
+    "atLeast": "≥ {value}",
+    "atLeastNote": "Au-dessus de {level}, la source ne donne pas de valeur. Cet impact ne fait que croître avec le réchauffement : la carte montre donc au moins sa valeur à {level}.",
+    "info": "À propos : {name}",
+    "assessed": "Évalué : {values}.",
+    "atLevel": "{value} à {level}",
+    "separator": " ; ",
+    "range": "{name} : {parts}.",
+    "rangeWithout": "{range} sans les leviers",
+    "rangeWith": "{range} avec eux",
+    "note": "Les fourchettes du (i) sont celles des sources, pas celle du réchauffement. Les dommages économiques, le niveau de la mer et l'acidité des océans sont laissés de côté.",
+    "more": "Comment c'est lu",
+    "units": {
+      "times": "{value} fois",
+      "percent": "{value} %",
+      "perCentury": "{value} sur 100",
+      "megatonnes": "{value} Mt"
+    },
+    "groups": {
+      "wgi": {
+        "title": "Extrêmes, combien de fois plus souvent qu'en 1850–1900 (GIEC AR6, groupe I)",
+        "range": "Fourchette du GIEC, 5–95 % des modèles"
+      },
+      "wgii": {
+        "title": "Espèces (GIEC AR6, groupe II)"
+      },
+      "sr15": {
+        "title": "Écosystèmes et pêche (GIEC SR1.5)"
+      },
+      "heatwave": {
+        "title": "Vagues de chaleur (Dosio et al. 2018)",
+        "range": "Fourchette des modèles de l'étude"
+      }
+    },
+    "rows": {
+      "hot10": {
+        "label": "Chaleur extrême une fois en 10 ans",
+        "note": "Combien de fois plus souvent revient un jour aussi chaud que le plus chaud de 10 années typiques de 1850–1900 sur les terres. C'est la médiane des modèles CMIP6.",
+        "short": "Chaleurs extrêmes d’une fois en 10 ans, fois plus fréquentes"
+      },
+      "hot50": {
+        "label": "Chaleur extrême une fois en 50 ans",
+        "note": "Combien de fois plus souvent revient un jour aussi chaud que le plus chaud de 50 années typiques de 1850–1900 sur les terres. C'est la médiane des modèles CMIP6.",
+        "short": "Chaleurs extrêmes d’une fois en 50 ans, fois plus fréquentes"
+      },
+      "rain10": {
+        "label": "Forte pluie sur un jour, une fois en 10 ans",
+        "note": "Combien de fois plus souvent tombe la plus forte pluie sur un jour de 10 années typiques de 1850–1900 sur les terres. C'est la médiane des modèles CMIP6.",
+        "short": "Fortes pluies sur un jour, fois plus fréquentes"
+      },
+      "drought10": {
+        "label": "Sécheresse agricole et écologique une fois en 10 ans, dans les régions qui s'assèchent",
+        "note": "Combien de fois plus souvent revient une sécheresse des sols vue une fois en 10 ans en 1850–1900 dans les régions qui s'assèchent. C'est la médiane des modèles CMIP6.",
+        "short": "Sécheresses dans les régions qui s’assèchent, fois plus fréquentes"
+      },
+      "extinction": {
+        "label": "Espèces terrestres à très haut risque d'extinction",
+        "note": "La part des dizaines de milliers d'espèces terrestres évaluées qui feront probablement face à un très haut risque d'extinction (en danger critique, au sens de l'UICN). Le GIEC donne une fourchette, pas de valeur centrale.",
+        "short": "Espèces terrestres à très haut risque d’extinction"
+      },
+      "coral": {
+        "label": "Récifs coralliens perdus, déclin supplémentaire",
+        "note": "Le déclin supplémentaire des récifs coralliens d'eau chaude. Le GIEC donne plus de 99 % à 2 °C, montré comme 99–100 %.",
+        "short": "Récifs coralliens perdus"
+      },
+      "arctic": {
+        "label": "Étés à Arctique sans glace, sur 100",
+        "note": "Les étés où l'océan Arctique est libre de glace de mer : un par siècle à 1,5 °C, au moins un par décennie à 2 °C.",
+        "short": "Étés sans glace en Arctique"
+      },
+      "rangeInsects": {
+        "label": "Insectes perdant plus de la moitié de leur aire",
+        "note": "Sur 105 000 espèces étudiées, la part des insectes qui perdraient plus de la moitié de l'aire que leur climat permet.",
+        "short": "Insectes perdant la moitié de leur aire"
+      },
+      "rangePlants": {
+        "label": "Plantes perdant plus de la moitié de leur aire",
+        "note": "Sur 105 000 espèces étudiées, la part des plantes qui perdraient plus de la moitié de l'aire que leur climat permet.",
+        "short": "Plantes perdant la moitié de leur aire"
+      },
+      "rangeVertebrates": {
+        "label": "Vertébrés perdant plus de la moitié de leur aire",
+        "note": "Sur 105 000 espèces étudiées, la part des vertébrés qui perdraient plus de la moitié de l'aire que leur climat permet.",
+        "short": "Vertébrés perdant la moitié de leur aire"
+      },
+      "fishery": {
+        "label": "Prises de pêche en mer perdues chaque année",
+        "note": "Les prises annuelles de la pêche maritime mondiale perdues, selon un modèle mondial de pêche : environ 1,5 million de tonnes à 1,5 °C, plus de 3 millions de tonnes à 2 °C.",
+        "short": "Prises de poissons marins perdues chaque année"
+      },
+      "heatwave": {
+        "label": "Personnes exposées à de fortes vagues de chaleur au moins une fois tous les 5 ans",
+        "note": "La part de la population mondiale exposée à de fortes vagues de chaleur au moins une fois tous les 5 ans, d'après une étude (Dosio et al. 2018), pas d'après le GIEC. Elle prend la même population (SSP3) aux deux niveaux.",
+        "short": "Personnes exposées à de fortes vagues de chaleur"
+      }
+    }
   },
   "download": {
     "button": "Télécharger",

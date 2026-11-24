@@ -18,6 +18,7 @@ from .sections import (
     deforestation,
     enso,
     feed,
+    impacts,
     industry,
     intensities,
     items,
@@ -79,6 +80,7 @@ SECTIONS: tuple[Section, ...] = (
     Section("population", population.build, ("population.json",), ("population",)),
     Section("people", people.build, ("people.json",)),
     Section("deeptime", deeptime.build, ("deeptime.json",), ("deeptime",)),
+    Section("impacts", impacts.build, ("impacts.json",), ("impacts",)),
     Section("map", map.build, ("world.topo.json",)),
     Section("meta", lambda b: meta.build(b, source_modules()), ("meta.json",)),
 )

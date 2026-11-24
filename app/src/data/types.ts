@@ -280,6 +280,40 @@ export interface LandUse {
   source: string;
 }
 
+/** How an impact is counted: times as often, a percentage, summers in a century, Mt a year. */
+export type ImpactUnit = 'times' | 'percent' | 'perCentury' | 'megatonnes';
+
+/**
+ * One impact at each of its group's levels: a central value (`mid`), a range (`low`, `high`), or
+ * both. A row has at least one of them.
+ */
+export interface ImpactRow {
+  id: string;
+  unit: ImpactUnit;
+  /** Where the values are published: figure, panel, paragraph or page. */
+  ref: string;
+  mid?: number[];
+  low?: number[];
+  high?: number[];
+}
+
+export type ImpactGroupId = 'wgi' | 'wgii' | 'sr15' | 'heatwave';
+
+/** The impacts one source assessed, at the same global warming levels, °C above 1850–1900. */
+export interface ImpactGroup {
+  id: ImpactGroupId;
+  url: string;
+  levels: number[];
+  /** Read only when both futures lie within `levels`, as for the studies that stop at 2 °C. */
+  jointly: boolean;
+  rows: ImpactRow[];
+}
+
+/** impacts.json: what the IPCC and one study assessed at given levels of global warming. */
+export interface Impacts {
+  groups: ImpactGroup[];
+}
+
 /**
  * All files loaded together: the core's here, each lever module's added by its `data.ts`
  * (app/src/levers/<id>/data.ts), which also describes the file.
@@ -297,6 +331,8 @@ export interface ModelData {
   enso?: Enso;
   /** Optional: a build without it leaves the map's land-use CO₂ layer without data. */
   landuse?: LandUse;
+  /** Optional: a build without it has no card on what the warming means. */
+  impacts?: Impacts;
   /** Not a file: the build's departures from FaIR stand for it when it is unset. */
   departures?: Departures;
 }

@@ -20,6 +20,7 @@ import { leverAvailable } from '../levers/registry';
 import type { Options } from '../model/api';
 import type { RunResult } from '../model/engine';
 import { SidePanel } from './Panel';
+import { Impacts } from './Impacts';
 import { Summary } from './Summary';
 import { CARD, LINK_BUTTON, MAP_CARD } from './classes';
 import { ChartLoading } from './ChartLoading';
@@ -284,7 +285,7 @@ export const Explore = (props: ExploreProps) => {
   const shown = props.result ?? null;
   return (
     <WorthContext.Provider value={worth}>
-      <div className="explore grid grid-cols-[minmax(0,1fr)] items-start gap-x-5 gap-y-4 *:min-w-0 lg:grid-cols-[minmax(280px,340px)_minmax(0,1fr)] lg:[grid-template-areas:'panel_chart'_'panel_summary'_'panel_map'] xl:grid-cols-[minmax(280px,340px)_minmax(0,1fr)_minmax(260px,320px)] xl:[grid-template-areas:'panel_chart_summary'_'panel_map_summary']">
+      <div className="explore grid grid-cols-[minmax(0,1fr)] items-start gap-x-5 gap-y-4 *:min-w-0 lg:grid-cols-[minmax(280px,340px)_minmax(0,1fr)] lg:[grid-template-areas:'panel_chart'_'panel_summary'_'panel_impacts'_'panel_map'] xl:grid-cols-[minmax(280px,340px)_minmax(0,1fr)_minmax(260px,320px)] xl:[grid-template-areas:'panel_chart_summary'_'panel_impacts_summary'_'panel_map_summary']">
         <ChartCard {...props} />
         <SidePanel
           t={t}
@@ -315,6 +316,9 @@ export const Explore = (props: ExploreProps) => {
           horizon={horizon}
           options={state.options}
         />
+        {data.impacts && (
+          <Impacts t={t} locale={locale} impacts={data.impacts} result={shown} horizon={horizon} />
+        )}
         <Suspense fallback={<section className={MAP_CARD} aria-busy="true" />}>
           <MapCard
             t={t}

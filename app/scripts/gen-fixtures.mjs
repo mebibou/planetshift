@@ -595,6 +595,71 @@ write('enso.json', {
   source: 'Synthetic fixture',
 });
 
+// Impacts at warming levels: the real file's groups and levels, with round synthetic values.
+const impactRow = (id, unit, values) => ({ id, unit, ref: 'Synthetic fixture', ...values });
+write('impacts.json', {
+  groups: [
+    {
+      id: 'wgi',
+      url: 'https://example.org/wgi',
+      jointly: false,
+      levels: [1, 1.5, 2, 3, 4],
+      rows: [
+        impactRow('hot10', 'times', {
+          mid: [3, 4, 6, 8, 10],
+          low: [2, 3, 4, 6, 8],
+          high: [4, 5, 7, 9, 11],
+        }),
+        impactRow('hot50', 'times', {
+          mid: [5, 9, 14, 27, 39],
+          low: [2, 4, 7, 15, 27],
+          high: [6, 11, 17, 31, 41],
+        }),
+        impactRow('rain10', 'times', {
+          mid: [1.3, 1.5, 1.7, 2.2, 2.7],
+          low: [1.2, 1.4, 1.6, 1.9, 2.3],
+          high: [1.4, 1.7, 2, 2.7, 3.6],
+        }),
+        impactRow('drought10', 'times', {
+          mid: [1.7, 2, 2.4, 3.2, 4.1],
+          low: [0.7, 1, 1.3, 1.4, 1.7],
+          high: [4, 5, 6, 8, 7],
+        }),
+      ],
+    },
+    {
+      id: 'wgii',
+      url: 'https://example.org/wgii',
+      jointly: false,
+      levels: [1.5, 2, 3, 4, 5],
+      rows: [
+        impactRow('extinction', 'percent', { low: [3, 3, 3, 3, 3], high: [14, 18, 29, 39, 48] }),
+      ],
+    },
+    {
+      id: 'sr15',
+      url: 'https://example.org/sr15',
+      jointly: true,
+      levels: [1.5, 2],
+      rows: [
+        impactRow('coral', 'percent', { low: [70, 99], high: [90, 100] }),
+        impactRow('arctic', 'perCentury', { mid: [1, 10] }),
+        impactRow('rangeInsects', 'percent', { mid: [6, 18] }),
+        impactRow('rangePlants', 'percent', { mid: [8, 16] }),
+        impactRow('rangeVertebrates', 'percent', { mid: [4, 8] }),
+        impactRow('fishery', 'megatonnes', { mid: [1.5, 3] }),
+      ],
+    },
+    {
+      id: 'heatwave',
+      url: 'https://example.org/heatwave',
+      jointly: true,
+      levels: [1.5, 2],
+      rows: [impactRow('heatwave', 'percent', { mid: [14, 37], low: [9, 32], high: [18, 45] })],
+    },
+  ],
+});
+
 // TopoJSON: one rough rectangle per country, absolute coordinates (no transform), clockwise rings for d3-geo.
 const rects = {
   FRA: [-5, 42, 8, 51],

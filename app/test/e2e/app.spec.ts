@@ -1539,3 +1539,43 @@ test('the deep-time prototype opens from the footer, and each preset sets the ax
   await expect(page.locator('.deeptime-rates [data-rate="observed"]')).toBeVisible();
   await expect(page.locator('.deeptime-offsets [data-offset="phanda"]')).toContainText('−14.46');
 });
+
+test('the card on what the warming means reads each source at both futures', async ({ page }) => {
+  await open(page);
+  const card = page.locator('.impacts-card');
+  await expect(card.locator('h2')).toHaveText('What the warming means');
+  // The fixtures' baseline lies above 2 °C, where SR1.5 and the heatwave study stop.
+  const tiles = card.locator('.impact-tile');
+  await expect(tiles).toHaveCount(6);
+  await expect(tiles.first()).toHaveAttribute('data-row', 'extinction');
+  // No lever is set yet: one figure a tile, and one warming beside the title.
+  await expect(tiles.first()).not.toContainText('→');
+  await expect(card.locator('.impacts-futures')).not.toContainText('with them');
+  await expect(card.locator('.impact-tile[data-row="coral"]')).toContainText('≥ 99%');
+  await card.locator('details > summary').click();
+  const table = card.locator('.impacts-table');
+  const groups = table.locator('.impact-group');
+  await expect(groups).toHaveCount(4);
+  await expect(groups.nth(0)).toHaveAttribute('data-group', 'wgi');
+  await expect(groups.nth(3)).toHaveAttribute('data-group', 'heatwave');
+  await expect(groups.nth(2).locator('.impact-levels')).toHaveText(
+    'Assessed at 1.5 °C and 2 °C only',
+  );
+  const hot = table.locator('[data-row="hot10"] .impact-value');
+  await expect(hot).toHaveCount(2);
+  await expect(hot.first()).toContainText('×');
+  await expect(table.locator('[data-row="coral"] .impact-value').first()).toHaveText('≥ 99%');
+  await expect(table.locator('[data-row="heatwave"] .impact-value').first()).toContainText('≥');
+  await table.locator('[data-row="hot10"] .info').click();
+  await expect(table.locator('[data-row="hot10"] .info-tip')).toContainText(
+    'IPCC range, 5–95% of the models',
+  );
+  await page.keyboard.press('Escape');
+  await page.locator('label[for="horizon-2100"]').click();
+  await expect(card.locator('.impacts-intro')).toContainText('around 2100');
+  await quick(page, 'all', 'full').click();
+  await expect(tiles.first()).toContainText('→');
+  const extinction = table.locator('[data-row="extinction"] .impact-value');
+  await expect(extinction.nth(1)).toHaveText('not assessed below 1.5 °C');
+  await expect(extinction.nth(0)).toContainText('%');
+});
