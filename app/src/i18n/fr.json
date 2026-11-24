@@ -450,9 +450,9 @@
     "and": " et ",
     "unavailable": "Rien à télécharger : le modèle n'a pas pu calculer ce scénario.",
     "formats": {
-      "csv": "CSV, les données du graphique",
-      "png": "Image PNG",
-      "svg": "Image SVG, pour l'impression et la retouche"
+      "csv": "CSV (données)",
+      "png": "PNG",
+      "svg": "SVG"
     },
     "credit": "Planetshift · planetshift.org · {date}",
     "mapImage": "Télécharger la carte en {format}"
