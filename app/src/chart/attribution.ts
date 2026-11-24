@@ -17,6 +17,7 @@ import {
   drawAxes,
   frame,
   legendList,
+  offIn,
   onResize,
   verticalRule,
   type Frame,
@@ -79,10 +80,23 @@ const legendKeys = (t: T, view: AttributionView, levers: boolean) => [
   ...causesBySize(view.attribution, view.end).map((c) => ({
     label: causeLabel(t, view.gas)(c),
     className: `key-cause-${c}`,
+    toggle: c,
   })),
-  ...(levers ? [{ label: t('link.withoutLevers'), className: 'key-outline' }] : []),
-  ...(view.observed ? [{ label: t('chart.observed'), className: 'key-observed' }] : []),
+  ...(levers
+    ? [{ label: t('link.withoutLevers'), className: 'key-outline', toggle: 'outlines' }]
+    : []),
+  ...(view.observed
+    ? [{ label: t('chart.observed'), className: 'key-observed', toggle: 'observed' }]
+    : []),
 ];
+
+/** The view without the causes switched off in the legend, which the stack leaves out. */
+const shownOf = (view: AttributionView, off: ReadonlySet<string>): AttributionView => ({
+  ...view,
+  attribution: Object.fromEntries(
+    Object.entries(view.attribution).filter(([c]) => !off.has(c)),
+  ) as Attribution,
+});
 
 /** The rows without the levers, and with them when they act. */
 const rowsOf = (view: AttributionView, levers: boolean) => {
@@ -269,6 +283,7 @@ const hoverRows =
               label: t('chart.observed'),
               value: obs ? formatTemperature(locale, obs.value, 2) : '–',
               swatch: 'var(--ink)',
+              toggle: 'observed',
             },
           ]
         : []),
@@ -286,10 +301,12 @@ export const attributionChart = (t: T, locale: string, currentYear: number): Att
   const caption = h('figcaption', {}, t('link.attributionCaption'));
   const el = h('figure', { class: 'chart attribution-chart' }, legendEl, plotEl, caption);
   let last: AttributionView | null = null;
-  const draw = (view: AttributionView) => {
-    const levers = actsOn(view.avoided);
-    caption.textContent = t(view.gas === 'all' ? 'link.attributionCaption' : 'link.gasCaption');
-    legendEl.replaceChildren(legendList(legendKeys(t, view, levers)));
+  const draw = (all: AttributionView) => {
+    const levers = actsOn(all.avoided);
+    caption.textContent = t(all.gas === 'all' ? 'link.attributionCaption' : 'link.gasCaption');
+    const off = offIn(el);
+    legendEl.replaceChildren(legendList(legendKeys(t, all, levers), render, off));
+    const view = shownOf(all, off);
     const causes = causesIn(view.attribution);
     const rows = rowsOf(view, levers);
     const layers = stackOf(causes, rows.rows);

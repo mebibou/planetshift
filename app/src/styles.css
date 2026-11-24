@@ -1404,6 +1404,52 @@ input[type='range']:disabled {
     gap: 6px;
   }
 }
+.legend-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  &:hover {
+    color: var(--ink);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--focus);
+  }
+  &[aria-pressed='false'] {
+    opacity: 0.45;
+    text-decoration: line-through;
+  }
+}
+/* What a legend item switched off hides: its figure's data-off names it. */
+.chart[data-off~='observed'] .observed-line,
+.chart[data-off~='baseline'] .baseline-line,
+.chart[data-off~='baseline'] .baseline-band,
+.chart[data-off~='scenario'] .scenario-line,
+.chart[data-off~='scenario'] .scenario-band,
+.chart[data-off~='scenario'] .gap-annotation,
+.chart[data-off~='baseline'] .gap-annotation,
+.chart[data-off~='scenario'] .crossings,
+.chart[data-off~='baseline'] .crossings,
+.chart[data-off~='band'] .band,
+.chart[data-off~='natural'] .natural-line,
+.chart[data-off~='enso'] .enso-marks,
+.chart[data-off~='milestone'] .milestone,
+.chart[data-off~='policies'] .policies,
+.chart[data-off~='population'] .population-area,
+.chart[data-off~='population'] .population-axis,
+.chart[data-off~='outlines'] .baseline-outlines,
+.chart[data-off~='history'] .population-history,
+.chart[data-off~='chosen'] .population-variant.is-chosen,
+.chart[data-off~='others'] .population-variant:not(.is-chosen) {
+  display: none;
+}
 .key {
   display: inline-block;
   width: 18px;

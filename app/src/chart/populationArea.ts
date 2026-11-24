@@ -92,6 +92,7 @@ export const populationRow = (
           label: t('levers.population.chart.area'),
           value: t('levers.population.chart.billion', { value: formatNumber(locale, q.value, 2) }),
           swatch: 'var(--series-population)',
+          toggle: 'population',
         },
       ]
     : [];
