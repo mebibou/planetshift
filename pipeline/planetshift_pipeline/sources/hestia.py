@@ -6,6 +6,7 @@ import hashlib
 import inspect
 import json
 import logging
+import os
 import re
 from collections.abc import Callable, Iterable
 from concurrent.futures import ThreadPoolExecutor
@@ -21,8 +22,21 @@ log = logging.getLogger(__name__)
 
 API = "https://api.hestia.earth"
 SITE = "https://hestia.earth"
-# v1.2, the newest release past HESTIA's 182-day restriction; change it deliberately.
-RELEASE = "2026-04-30"
+# HESTIA's releases by data version (the API's /settings `dataReleases`). A release is open to
+# priority-access tokens for its first 182 days, then to everyone; change these deliberately.
+PUBLIC_RELEASE = "2026-04-30"
+LATEST_RELEASE = "2026-11-17"
+RELEASE_NAMES = {PUBLIC_RELEASE: "v1.2", LATEST_RELEASE: "v1.3"}
+TOKEN_ENV = "HESTIA_API_TOKEN"
+
+
+def release_for(token: str | None) -> str:
+    """The release the build reads: the latest with a token, the newest public one without."""
+    return LATEST_RELEASE if token else PUBLIC_RELEASE
+
+
+TOKEN = os.environ.get(TOKEN_ENV) or None
+RELEASE = release_for(TOKEN)
 TERMS_CSV = Path(__file__).resolve().parents[2] / "hestia_terms.csv"
 
 GASES = ("co2", "ch4", "n2o")
@@ -33,7 +47,7 @@ SOURCES = [
     {
         "id": "hestia-aggregations",
         "name": "HESTIA aggregated impact assessments",
-        "version": RELEASE,
+        "version": f"{RELEASE_NAMES[RELEASE]} ({RELEASE})",
         "url": f"{SITE}/data",
         "licence": "CC BY 4.0",
     }
@@ -357,7 +371,7 @@ def ancestor_names(parents: list[dict]) -> list[str]:
     ]
 
 
-def session() -> requests.Session:
+def session(token: str | None = TOKEN, release: str = RELEASE) -> requests.Session:
     retry = Retry(
         total=5,
         backoff_factor=2,
@@ -366,7 +380,9 @@ def session() -> requests.Session:
     )
     http = requests.Session()
     http.mount("https://", HTTPAdapter(max_retries=retry, pool_maxsize=WORKERS))
-    http.headers.update({"Accept": "application/json", "X-Data-Version": RELEASE})
+    http.headers.update({"Accept": "application/json", "X-Data-Version": release})
+    if token:
+        http.headers["X-ACCESS-TOKEN"] = token
     return http
 
 
@@ -403,10 +419,33 @@ AGGREGATIONS_QUERY = {
 }
 
 
+#: What `trim_node` reads, asked of the API so that a node's distributions, most of its 20 MB or
+#: so, are never downloaded.
+NODE_FIELDS = ",".join(
+    [
+        "@id",
+        "name",
+        "startDate",
+        "endDate",
+        "aggregatedDataValidated",
+        "country.@id",
+        "product.term.@id",
+        "product.term.units",
+        "emissionsResourceUse.term.@id",
+        "emissionsResourceUse.value",
+        "emissionsResourceUse.methodTier",
+        "emissionsResourceUse.inputs.@id",
+        "emissionsResourceUse.inputs.termType",
+        "impacts.term.@id",
+        "impacts.value",
+    ]
+)
+
+
 def fetch_node(http: requests.Session, aggregation_id: str) -> dict | None:
     response = http.get(
         f"{API}/impactassessments/{aggregation_id}",
-        params={"dataState": "recalculated"},
+        params={"dataState": "recalculated", "fields": NODE_FIELDS},
         timeout=TIMEOUT,
     )
     refused = response.status_code in (401, 403, 404)

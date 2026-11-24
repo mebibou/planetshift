@@ -235,3 +235,8 @@ def test_fuel_burnt_on_the_farm_counts_from_cradle_to_farm_gate_only():
         sum(r["value"] for r in fuel if r["term"]["@id"].startswith("co2"))
     )
     assert {hestia.source_of(r["term"]["@id"]) for r in fuel} == {"fuel"}
+
+
+def test_each_release_has_its_own_cache_folder():
+    assert hestia.release_dir(Path("cache")) == Path("cache") / "hestia" / hestia.RELEASE
+    assert hestia.RELEASE_NAMES[hestia.RELEASE] in hestia.SOURCES[0]["version"]

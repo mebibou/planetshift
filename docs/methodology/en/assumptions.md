@@ -70,7 +70,7 @@ The URL keys of the options, the diet controls and the levers are listed under [
 - **Rice bran oil and maize germ oil carry no emissions**: they come from grain already counted as food. See [Emissions](#method-emissions).
 - **Six tiers, best first**: HESTIA for the country, HESTIA for its region or the world, FAOSTAT for the country, a published world average, a proxy, and the group's world median. Each cell takes the first value available. See [Emissions](#method-emissions).
 - **Every country has a value for every item**, including items it does not grow, so that production can shift to any country. See [Emissions](#method-emissions).
-- **HESTIA release v1.2 (2026-04-30), pinned**: the newest public release. The numbers change only when the constant does. See [HESTIA](#method-hestia).
+- **HESTIA release v1.3 (2026-11-17), pinned**: read with a priority-access token, as it stays restricted until 2027-05-18. The numbers change only when the pinned version does. See [HESTIA](#method-hestia).
 - **Only validated HESTIA aggregations, the latest period of each product and area**: HESTIA does not publish unvalidated ones. See [HESTIA](#method-hestia).
 - **HESTIA products that share an item are averaged without weights.** The best priority available in the area is used. See [HESTIA](#method-hestia).
 - **HESTIA conversion factors**: oats in husk to groats 0.7; Poore & Nemecek's dressing percentages for meat counted live (52–55% cattle and buffalo, 47% sheep and goats, 75% pigs, 72% poultry); 16.7 eggs per kg; fat- and protein-corrected milk taken as whole milk. See [HESTIA](#method-hestia).

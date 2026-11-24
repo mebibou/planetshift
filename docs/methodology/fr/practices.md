@@ -184,5 +184,5 @@ Si un gaz n'a toujours pas de répartition, il prend la première trouvée dans 
 - Lam, S. K. et al. (2017). Using nitrification inhibitors to mitigate agricultural N₂O emission: a double-edged sword? Global Change Biology 23, 485–489 : <https://doi.org/10.1111/gcb.13338>.
 - FAO (2011). Energy-smart food for people and climate. Issue paper : <https://www.fao.org/3/i2454e/i2454e.pdf>.
 - FAOSTAT, Emissions from Crops, Emissions from Livestock et Emissions totals : <https://www.fao.org/faostat/en/#data/GT>, CC BY 4.0.
-- Évaluations d'impact agrégées de HESTIA, version du 2026-04-30 : <https://hestia.earth/data>, CC BY 4.0.
+- Évaluations d'impact agrégées de HESTIA, version v1.3 (2026-11-17) : <https://hestia.earth/data>, CC BY 4.0.
 - Banque mondiale, groupes de pays et de prêt : <https://datahelpdesk.worldbank.org/knowledgebase/articles/906519>, CC BY 4.0.

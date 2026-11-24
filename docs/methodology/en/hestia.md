@@ -16,7 +16,7 @@ Each aggregation is an ImpactAssessment, HESTIA's record of the impacts of a pro
 
 ### Releases
 
-HESTIA publishes its data in releases. A release is restricted to priority-access users for its first 182 days, then public. Planetshift pins the newest public release, v1.2 (2026-04-30), in `RELEASE`. A new release therefore changes the numbers only when someone changes that constant.
+HESTIA publishes its data in releases. A release is restricted to priority-access users for its first 182 days, then public. Planetshift's data is built from release v1.3 (2026-11-17), open to priority-access users until 2027-05-18. The pipeline reads it with a HESTIA API token, in `HESTIA_API_TOKEN`. Without a token, it reads the newest public release, v1.2 (2026-04-30). Both versions are pinned in `sources/hestia.py`, so a new release changes the numbers only when someone changes them. The figures published here are averages by country and product derived from v1.3, not HESTIA's records themselves.
 
 ### What is counted
 
@@ -24,7 +24,7 @@ Planetshift keeps three gases: carbon dioxide (CO₂), methane (CH₄) and nitro
 
 ### Coverage in brief
 
-With release v1.2, 37 FBS items get a HESTIA value, in 47 countries and for the World. HESTIA has not yet released aggregations of animal products. Meat, milk and eggs, vegetable oils, sugar and a few crops therefore take their intensities from the other tiers. The full list is under *Coverage in detail* below.
+With release v1.3, 39 FBS items get a HESTIA value, in 61 countries and for the World. Eggs are the only animal product with a validated aggregation, for Canada and the United States. Meat and milk, vegetable oils, sugar and a few crops therefore take their intensities from the other tiers. The full list is under *Coverage in detail* below.
 
 ## How Planetshift reads the aggregations
 
@@ -58,7 +58,8 @@ intensity per kg of the product × `kg_product_per_kg_item` × 1000
 
 The factors were checked against the FBS itself (2022 world production):
 
-- Rice: the current FBS counts rice and products as paddy (788.8 Mt in 2022, about the paddy production). Paddy rice (`riceGrainInHuskFlooded`) is used with a factor of 1.
+- Rice: the current FBS counts rice and products as paddy (788.8 Mt in 2022, about the paddy production). Paddy rice (`riceGrainInHuskFlooded`) is used with a factor of 1. Upland paddy (`riceGrainInHuskUpland`) comes second: it is used only where a country has no flooded-rice aggregation.
+- Tea (FBS code 2635): counted as made tea, so the dry teas (`blackTeaDry`, `greenTeaDry`, `oolongTeaDry`) have a factor of 1. Fresh tea leaf (`teaLeaf`) is not mapped, as it would need a ratio of leaf to made tea.
 - Groundnuts (FBS code 2552): counted in shell (55.1 Mt), so `peanutInShell` has a factor of 1.
 - Palm kernels (2562): their production equals the oil palm fruit harvest (408.9 Mt), so `oilPalmFruit` is used with a factor of 1.
 - Oats: FAOSTAT counts oats in husk. Dehulled oats (`oatGrain`) are a fallback at 0.7 kg of groats per kg of oats in husk. The groats carry all the emissions.
@@ -101,13 +102,13 @@ The rule is applied row by row, so no approximation is needed. Every background 
 
 ## Coverage in detail
 
-With release v1.2 (run on 2026-11-21), there are 380 validated aggregations. 236 are fetched (the latest period of each mapped product and area). They give 37 FBS items, 47 countries and World:
+With release v1.3 (run on 2026-11-24), there are 649 validated aggregations. 327 are fetched (the latest period of each mapped product and area). They give 39 FBS items, 61 countries and World:
 
-- tier 1 (country): 184 item × country cells per scope;
-- tier 2 (World): 11 items: wheat, maize, potatoes, sugar cane, sugar beet, groundnuts, soybeans, rapeseed and mustard, olives, bananas, grapes;
+- tier 1 (country): 261 item × country cells per scope;
+- tier 2 (World): 15 items: wheat, maize, rice, potatoes, sugar cane, sugar beet, nuts, groundnuts, soybeans, sunflower seed, rapeseed and mustard, olives, other vegetables, grapes, other fruit;
 - no regional aggregation.
 
-HESTIA has not yet released aggregations of animal products. Its documentation says they are under development. The index holds unvalidated ones, which are not used. Bovine meat, mutton and goat, pig meat, poultry, milk and eggs therefore get no HESTIA row, though the table maps them for a later release. Vegetable oils, sugar, tea, yams, plantains, pineapples and dates get no HESTIA row either.
+Eggs are the only animal product with a validated aggregation, for Canada and the United States. Bovine meat, mutton and goat, pig meat, poultry and milk get no HESTIA row, though the table maps them for a later release. Vegetable oils, sugar, sweet potatoes, plantains, pineapples and dates get no HESTIA row either. v1.3 has validated aggregations of refined rapeseed and sunflower oil and of raw cane sugar, but the table does not map them: the model derives oils and sugar from their crops (see [Emissions](#method-emissions)), and a direct value would bypass that. v1.3 has none for sweet potatoes, which v1.2 had. The table also leaves out v1.3's by-products (broken rice, wheat bran), seed, silage and pullets, which are not FBS items, its seaweeds, which the model has no item for, its abalone and bivalves, as seafood has its own method, and cotton bolls, whose emissions would need splitting between lint and seed.
 
 ### Some values
 
@@ -115,22 +116,22 @@ The table gives cradle-to-farm-gate values, in kg per tonne of the FBS item. The
 
 | Item | Area | CO₂ | CH₄ | N₂O | CO₂e |
 | --- | --- | --- | --- | --- | --- |
-| Wheat | World | 230 | 1.0 | 0.75 | 488 |
-| Wheat | France | 143 | 0.66 | 0.88 | 427 |
-| Maize | World | 176 | 0.81 | 0.61 | 385 |
-| Rice (paddy) | India | 136 | 17.6 | 0.13 | 772 |
-| Rice (paddy) | China | 243 | 26.6 | 0.40 | 1265 |
-| Soybeans | World | 216 | 1.6 | 0.41 | 391 |
+| Wheat | World | 258 | 1.3 | 0.77 | 532 |
+| Wheat | France | 144 | 1.7 | 1.0 | 500 |
+| Maize | World | 173 | 0.84 | 0.64 | 391 |
+| Rice (paddy) | India | 209 | 18.6 | 0.31 | 933 |
+| Rice (paddy) | China | 239 | 26.8 | 0.41 | 1272 |
+| Soybeans | World | 212 | 1.7 | 0.42 | 395 |
 
 ### Comparison with other sources
 
 Poore & Nemecek (2018) give, for the farm stage without land-use change, about 850 kg CO₂e per tonne of wheat, 475 for maize and 2,370 per tonne of paddy rice. HESTIA's values are lower. The gap has not been investigated.
 
-For rice methane, FAOSTAT's 2022 rice-cultivation emissions divided by paddy production give about 25 kg per tonne in China (HESTIA: 26.6), 25 in India (HESTIA: 17.6) and 31 for the world.
+For rice methane, FAOSTAT's 2022 rice-cultivation emissions divided by paddy production give about 25 kg per tonne in China (HESTIA: 26.8), 25 in India (HESTIA: 18.6) and 31 for the world.
 
 ## Assumptions
 
-- The newest public release (v1.2) is used, and pinned. Release v1.3 stays restricted until 2027-05-18.
+- Release v1.3 is used, and pinned, read with a priority-access token. It is restricted until 2027-05-18; without a token the pipeline reads v1.2.
 - Only validated aggregations are used.
 - The latest period of each product and area is used, whatever its length (2010–2026 for all kept rows).
 - Products that share an FBS item are averaged without weights. Only the products with the best priority available in the area are averaged.

@@ -12,6 +12,8 @@ uv run python -m planetshift_pipeline.build --out ./out           # somewhere el
 uv run python -m planetshift_pipeline.build --allow-missing       # without unreadable sources
 ```
 
+HESTIA's aggregations come from release v1.3, open to priority-access users until 2027-05-18. To read it, set `HESTIA_API_TOKEN` to a HESTIA API token with priority access (HESTIA's own tools call it `API_ACCESS_TOKEN`). The pipeline sends it in the `X-ACCESS-TOKEN` header and never logs it or writes it to the cache or `meta.json`. Without a token, the build reads the newest public release, v1.2, from its own cache folder (`pipeline/cache/hestia/<release>`), and `meta.json` names the release used. Each aggregation is requested with only the fields the pipeline reads (`NODE_FIELDS` in `sources/hestia.py`), so its distributions, most of a node's size, are never downloaded.
+
 A source that cannot be read (a module that does not import, a download or an API request that fails) stops the build. With `--allow-missing` the build goes on without it, logs what it left out, and `meta.json` lists only the sources it used; such a build is for trying things, not for committing.
 
 The sections, in the order they run: `countries`, `items`, `supply`, `feed`, `intensities`, `breakdown`, `climate`, `enso`, `sectors`, `industry`, `coemissions`, `waste`, `land`, `practices`, `deforestation`, `landuse`, `removals`, `population`, `deeptime`, `map`, `meta`. Each writes one file and reads only what it needs. A full first run downloads about 620 MB of FAOSTAT, Natural Earth and World Bank files (plus what the HESTIA and climate modules fetch) and takes several minutes; later runs read from the cache.

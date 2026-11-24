@@ -2,6 +2,7 @@ fbs_item_code,fbs_item,hestia_term_id,priority,kg_product_per_kg_item,note
 2511,Wheat and products,wheatGrain,1,1,FBS wheat is grain; same quantity
 2511,Wheat and products,durumWheatGrain,1,1,durum wheat is part of FAOSTAT wheat
 2513,Barley and products,barleyGrainWhole,1,1,whole grain as harvested
+2513,Barley and products,barleyGrainInHusk,2,1,grain in husk as harvested
 2514,Maize and products,maizeGrain,1,1,dry grain as harvested
 2515,Rye and products,ryeGrain,1,1,grain as harvested
 2516,Oats,oatGrainInHusk,1,1,FAOSTAT oats are grain in husk
@@ -10,7 +11,14 @@ fbs_item_code,fbs_item,hestia_term_id,priority,kg_product_per_kg_item,note
 2517,Millet and products,fingerMilletGrainInHusk,1,1,FAOSTAT millet is threshed grain as harvested
 2518,Sorghum and products,sorghumGrain,1,1,grain as harvested
 2520,"Cereals, other",quinoaGrain,1,1,quinoa is one of FAOSTAT's other cereals
+2520,"Cereals, other",triticaleGrain,1,1,triticale is one of FAOSTAT's other cereals
+2520,"Cereals, other",teffGrainWhole,1,1,teff is one of FAOSTAT's other cereals
+2535,Yams,yamTuber,1,1,fresh tubers
+2635,Tea (including mate),blackTeaDry,1,1,FAOSTAT tea is made tea
+2635,Tea (including mate),greenTeaDry,1,1,FAOSTAT tea is made tea
+2635,Tea (including mate),oolongTeaDry,1,1,FAOSTAT tea is made tea
 2807,Rice and products,riceGrainInHuskFlooded,1,1,FBS rice is in paddy equivalent (788.8 Mt world production in 2022)
+2807,Rice and products,riceGrainInHuskUpland,2,1,"upland paddy, where a country has no flooded rice aggregation"
 2531,Potatoes and products,potatoTuber,1,1,fresh tubers
 2532,Cassava and products,cassavaRoot,1,1,fresh roots
 2533,Sweet potatoes,sweetPotatoRoot,1,1,fresh roots
@@ -25,9 +33,14 @@ fbs_item_code,fbs_item,hestia_term_id,priority,kg_product_per_kg_item,note
 2549,"Pulses, Other and products",broadBeanSeedWhole,1,1,dry seed
 2549,"Pulses, Other and products",pigeonPeaSeedWhole,1,1,dry seed
 2549,"Pulses, Other and products",lupinSeedWhole,1,1,dry seed
+2549,"Pulses, Other and products",cowpeaSeedWhole,1,1,dry seed
+2549,"Pulses, Other and products",bambaraBeanSeedWhole,1,1,dry seed
+2549,"Pulses, Other and products",runnerBeanSeedWhole,1,1,dry seed
 2551,Nuts and products,almondInShell,1,1,FAOSTAT tree nuts are in shell
 2551,Nuts and products,hazelnutInShell,1,1,FAOSTAT tree nuts are in shell
 2551,Nuts and products,pistachioInShell,1,1,FAOSTAT tree nuts are in shell
+2551,Nuts and products,walnutInShell,1,1,FAOSTAT tree nuts are in shell
+2551,Nuts and products,cashewInShell,1,1,FAOSTAT tree nuts are in shell
 2555,Soyabeans,soybeanSeedWhole,1,1,dry beans
 2552,Groundnuts,peanutInShell,1,1,FBS groundnuts are in shell (55.1 Mt world production in 2022)
 2557,Sunflower seed,sunflowerSeedWhole,1,1,dry seed
@@ -38,6 +51,7 @@ fbs_item_code,fbs_item,hestia_term_id,priority,kg_product_per_kg_item,note
 2563,Olives (including preserved),oliveFruit,1,1,fresh fruit
 2570,"Oilcrops, Other",safflowerSeedWhole,1,1,dry seed
 2570,"Oilcrops, Other",hempSeedWhole,1,1,dry seed
+2570,"Oilcrops, Other",nigerSeed,1,1,dry seed
 2601,Tomatoes and products,tomatoFruit,1,1,fresh fruit
 2602,Onions,onionBulb,1,1,fresh bulbs
 2605,"Vegetables, other",aubergineFruit,1,1,fresh produce
@@ -60,6 +74,7 @@ fbs_item_code,fbs_item,hestia_term_id,priority,kg_product_per_kg_item,note
 2605,"Vegetables, other",sweetPepperFruit,1,1,fresh produce
 2605,"Vegetables, other",melonFruit,1,1,FAOSTAT counts melons as vegetables
 2605,"Vegetables, other",watermelonFruit,1,1,FAOSTAT counts watermelons as vegetables
+2605,"Vegetables, other",chiliFruit,1,1,fresh chillies are vegetables in FAOSTAT (dried ones are Pimento)
 2611,"Oranges, Mandarines",orangeFruit,1,1,fresh fruit
 2611,"Oranges, Mandarines",mandarinFruit,1,1,fresh fruit
 2612,"Lemons, Limes and products",lemonFruit,1,1,fresh fruit
