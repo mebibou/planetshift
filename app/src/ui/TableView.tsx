@@ -16,6 +16,7 @@ import {
   type TableRow,
 } from '../map/table';
 import { formatMeasure } from '../map/tooltip';
+import { FIELD, FIELD_LABEL, OUTLINE_BUTTON } from './classes';
 
 export interface TableViewProps {
   t: T;
@@ -33,13 +34,20 @@ const HEADS: Record<Column, string> = {
   tier: 'map.tooltip.tier',
 };
 
+const CELL = 'border-b border-rule px-2 py-1.5 align-top';
+const TEXT_CELL = `${CELL} text-left`;
+const NUM_CELL = `num ${CELL} text-right whitespace-nowrap`;
+const PAGER_BUTTON = `pager-button ${OUTLINE_BUTTON} enabled:hover:bg-accent-soft disabled:cursor-default disabled:text-muted disabled:opacity-60`;
+const SORT_MARK =
+  "sort-mark after:font-normal after:text-muted after:content-['↕'] [[aria-sort=ascending]_&]:after:text-ink [[aria-sort=ascending]_&]:after:content-['↑'] [[aria-sort=descending]_&]:after:text-ink [[aria-sort=descending]_&]:after:content-['↓']";
+
 const TierCell = ({ t, row }: { t: T; row: TableRow }) => {
   const link = row.source ? sourceInText(row.source) : null;
   return (
-    <td className="tier-cell">
+    <td className={`tier-cell ${TEXT_CELL} min-w-[13em]`}>
       {row.tier === null ? '–' : t(`tiers.${row.tier}`)}
       {link && (
-        <span className="tier-source">
+        <span className="tier-source block text-[0.78rem] text-muted">
           {link.url ? (
             <a href={link.url} target="_blank" rel="noopener">
               {link.label}
@@ -79,11 +87,13 @@ const Cell = ({
   spec: LayerSpec;
 }) =>
   column === 'name' ? (
-    <th scope="row">{row.name}</th>
+    <th scope="row" className={`${TEXT_CELL} font-normal`}>
+      {row.name}
+    </th>
   ) : column === 'tier' ? (
     <TierCell t={t} row={row} />
   ) : (
-    <td className="num">{numberText(locale, row, column, spec)}</td>
+    <td className={NUM_CELL}>{numberText(locale, row, column, spec)}</td>
   );
 
 const Pager = ({
@@ -97,20 +107,26 @@ const Pager = ({
   pages: number;
   go: (step: number) => void;
 }) => (
-  <nav className="pager" aria-label={t('map.pager.label')} hidden={pages <= 1}>
+  <nav
+    className="pager mt-3 flex items-center justify-center gap-3"
+    aria-label={t('map.pager.label')}
+    hidden={pages <= 1}
+  >
     <button
       type="button"
-      className="pager-button pager-prev"
+      className={`${PAGER_BUTTON} pager-prev`}
       disabled={page <= 1}
       onClick={() => go(-1)}
     >
       <span aria-hidden="true">‹ </span>
       {t('map.pager.previous')}
     </button>
-    <span className="pager-position">{t('map.pager.page', { page, pages })}</span>
+    <span className="pager-position text-[0.88rem] tabular-nums">
+      {t('map.pager.page', { page, pages })}
+    </span>
     <button
       type="button"
-      className="pager-button pager-next"
+      className={`${PAGER_BUTTON} pager-next`}
       disabled={page >= pages}
       onClick={() => go(1)}
     >
@@ -133,13 +149,15 @@ export const TableView = ({ t, locale, rows, spec, caption }: TableViewProps) =>
   const page = pageOf(sortRows(filterRows(rows, query), sort, locale), wanted, PAGE_SIZE);
   return (
     <div className="table-view">
-      <div className="table-tools">
-        <div className="field table-search">
-          <label htmlFor="map-table-search">{t('map.search')}</label>
+      <div className="table-tools mb-2 flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
+        <div className={`${FIELD} table-search max-w-[280px] flex-[1_1_220px]`}>
+          <label htmlFor="map-table-search" className={FIELD_LABEL}>
+            {t('map.search')}
+          </label>
           <input
             type="search"
             id="map-table-search"
-            className="table-search-input"
+            className="table-search-input min-h-9 w-[min(100%,280px)] rounded-lg border border-rule bg-surface px-2.5 py-1.5"
             autoComplete="off"
             spellCheck={false}
             value={query}
@@ -149,14 +167,23 @@ export const TableView = ({ t, locale, rows, spec, caption }: TableViewProps) =>
             }}
           />
         </div>
-        <p className="table-count" role="status" aria-live="polite">
+        <p
+          className="table-count m-0 text-[0.85rem] text-muted tabular-nums"
+          role="status"
+          aria-live="polite"
+        >
           {page.total
             ? t('map.pager.showing', { from: page.from, to: page.to, total: page.total })
             : t('map.pager.none', { query: query.trim() })}
         </p>
       </div>
-      <div className="table-scroll" role="region" tabIndex={0} aria-label={t('map.tableLabel')}>
-        <table className="data-table">
+      <div
+        className="table-scroll max-w-full overflow-x-auto"
+        role="region"
+        tabIndex={0}
+        aria-label={t('map.tableLabel')}
+      >
+        <table className="data-table w-full border-collapse text-[0.88rem] tabular-nums">
           <caption className="visually-hidden">{caption}</caption>
           <thead>
             <tr>
@@ -165,19 +192,19 @@ export const TableView = ({ t, locale, rows, spec, caption }: TableViewProps) =>
                   key={column}
                   scope="col"
                   data-column={column}
-                  className={column === 'name' || column === 'tier' ? '' : 'num'}
+                  className={`border-b-2 border-rule p-0 align-top whitespace-nowrap ${column === 'name' || column === 'tier' ? 'text-left' : 'num text-right'}`}
                   aria-sort={sort.column === column ? sort.direction : 'none'}
                 >
                   <button
                     type="button"
-                    className="sort-button"
+                    className={`sort-button inline-flex w-full cursor-pointer items-center gap-1 border-0 bg-transparent p-2 text-[0.85rem] font-bold [text-align:inherit] ${column === 'name' || column === 'tier' ? '' : 'justify-end'}`}
                     onClick={() => {
                       setSort(nextSort(sort, column));
                       setPage(1);
                     }}
                   >
                     {t(HEADS[column])}
-                    <span className="sort-mark" aria-hidden="true" />
+                    <span className={SORT_MARK} aria-hidden="true" />
                   </button>
                 </th>
               ))}

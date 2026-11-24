@@ -29,6 +29,7 @@ import { tableRows, type TableRow } from '../map/table';
 import { formatMeasure, tooltipModel } from '../map/tooltip';
 import type { ScenarioResult } from '../model/api';
 import { DownloadButton, DownloadPanel, type DownloadSources } from './Download';
+import { FIELD, FIELD_LABEL, MAP_CARD, TOOL_BUTTON } from './classes';
 import { Icon } from './Icon';
 import { Segmented } from './Segmented';
 import { TableView } from './TableView';
@@ -109,14 +110,14 @@ const Legend = ({
       ? TIERS.map((tier, i) => ({ colour: palette.colours[i] ?? '', label: t(`tiers.${tier}`) }))
       : legendBins(palette.thresholds, palette.colours, valueFormatter(ui, t, locale));
   return (
-    <ul className="legend">
+    <ul className="legend m-0 flex list-none flex-wrap gap-x-3 gap-y-1 p-0 text-[0.78rem] text-muted tabular-nums">
       {bins.map((b) => (
-        <li key={b.label}>
+        <li key={b.label} className={LEGEND_ITEM}>
           <span className="swatch" style={{ background: b.colour }} />
           {b.label}
         </li>
       ))}
-      <li>
+      <li className={LEGEND_ITEM}>
         <span className="swatch nodata" />
         {t(ui.layer === 'deforestation' ? 'map.noClearing' : 'map.noData')}
       </li>
@@ -208,17 +209,23 @@ const usePaint = (props: MapCardProps, names: Map<string, string>, landUse: Land
   return { mapRef, palette };
 };
 
+const LEGEND_ITEM = 'inline-flex items-center gap-[5px]';
+
 const ViewTabs = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui: UiState }) => {
   const select = (v: UiState['mapView']) => setUi((u) => ({ ...u, mapView: v }));
   return (
-    <div className="view-tabs" role="tablist" aria-label={t('map.views.label')}>
+    <div
+      className="view-tabs flex gap-1 rounded-lg bg-surface-2 p-[3px]"
+      role="tablist"
+      aria-label={t('map.views.label')}
+    >
       {MAP_VIEWS.map((v) => (
         <button
           key={v}
           type="button"
           role="tab"
           id={`map-tab-${v}`}
-          className="view-tab"
+          className={`view-tab ${TOOL_BUTTON} border-0 bg-transparent text-muted not-aria-selected:hover:bg-accent-soft aria-selected:bg-surface aria-selected:font-bold aria-selected:text-ink aria-selected:ring-1 aria-selected:ring-rule`}
           data-view={v}
           aria-controls={`map-panel-${v}`}
           aria-selected={ui.mapView === v}
@@ -240,7 +247,7 @@ const ViewTabs = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui: Ui
 const MapControls = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui: UiState }) => {
   const measure = measureOf(ui);
   return (
-    <div className="map-controls">
+    <div className="map-controls flex min-w-0 flex-auto flex-wrap items-end gap-x-5 gap-y-3">
       <Segmented<Layer>
         name="layer"
         legend={t('map.layer')}
@@ -267,8 +274,10 @@ const MapControls = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui:
         hidden={measure !== 'emissions'}
         onChange={(gas) => setUi((u) => ({ ...u, gas }))}
       />
-      <div className="field" data-control="group" hidden={measure !== 'production'}>
-        <label htmlFor="map-group">{t('map.group')}</label>
+      <div className={FIELD} data-control="group" hidden={measure !== 'production'}>
+        <label htmlFor="map-group" className={FIELD_LABEL}>
+          {t('map.group')}
+        </label>
         <select
           id="map-group"
           value={ui.group}
@@ -304,16 +313,16 @@ export const MapCard = (props: MapCardProps) => {
   const { mapRef, palette } = usePaint(props, names, landUse);
   const legendTitle = legendTitleOf(t, ui, props.landUse?.years ?? []);
   return (
-    <section ref={card} className="card map-card" aria-labelledby="map-title">
+    <section ref={card} className={MAP_CARD} aria-labelledby="map-title">
       <h2 id="map-title" className="visually-hidden">
         {t('map.title')}
       </h2>
-      <div className="map-head">
-        <div className="card-tools">
+      <div className="map-head mb-2 flex items-start justify-between gap-x-5 gap-y-3 max-md:flex-col max-md:items-stretch">
+        <div className="card-tools order-2 ml-auto flex flex-none items-center justify-end gap-2 max-md:order-none">
           <ViewTabs t={t} ui={ui} setUi={setUi} />
           <DownloadButton
             label={t('download.button')}
-            className="download-toggle"
+            className="download-toggle aria-expanded:border-accent aria-expanded:bg-accent-soft"
             aria-expanded={downloading}
             aria-controls="map-downloads"
             onClick={() => setDownloading(!downloading)}
@@ -342,8 +351,8 @@ export const MapCard = (props: MapCardProps) => {
         hidden={ui.mapView !== 'map'}
       >
         <div className="drawn" ref={mapRef} />
-        <div className="legend-row">
-          <p className="legend-title">{legendTitle}</p>
+        <div className="legend-row mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+          <p className="legend-title m-0 text-[0.85rem] font-bold">{legendTitle}</p>
           <Legend t={t} locale={locale} ui={ui} palette={palette} />
         </div>
       </div>
@@ -362,7 +371,7 @@ export const MapCard = (props: MapCardProps) => {
           caption={legendTitle}
         />
       </div>
-      <p className="map-note">{t(`map.notes.${ui.layer}`)}</p>
+      <p className="map-note m-0 mt-2 text-[0.82rem] text-muted">{t(`map.notes.${ui.layer}`)}</p>
     </section>
   );
 };

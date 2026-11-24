@@ -48,29 +48,41 @@ export const Header = ({ t, lang, view, theme, go, setLang, toggleTheme }: Heade
   const ref = useRef<HTMLElement>(null);
   useHeaderHeight(ref);
   return (
-    <header className="site-header" ref={ref}>
-      <div className="brand">
-        <a href="?" className="wordmark" onClick={follow(() => go('explore'))}>
+    <header
+      className="site-header flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-rule bg-surface px-(--gutter) py-3.5 lg:sticky lg:top-0 lg:z-20"
+      ref={ref}
+    >
+      <div className="brand mr-auto flex flex-wrap items-center gap-3">
+        <a
+          href="?"
+          className="wordmark inline-flex items-center gap-2 text-[1.45rem] font-black tracking-[-0.03em] text-ink no-underline"
+          onClick={follow(() => go('explore'))}
+        >
           <PlanetMark />
           Planetshift
         </a>
-        <p className="tagline">{t('header.tagline')}</p>
+        <p className="tagline m-0 text-[0.95rem] text-muted">{t('header.tagline')}</p>
       </div>
-      <nav className="site-nav" aria-label={t('header.nav')}>
+      <nav className="site-nav flex gap-1" aria-label={t('header.nav')}>
         {NAV_VIEWS.map((v) => (
           <a
             key={v}
             href={`?view=${v}`}
             data-view={v}
             aria-current={v === view ? 'page' : undefined}
+            className="rounded-full px-3 py-1.5 font-bold text-ink no-underline hover:bg-surface-2 aria-[current=page]:bg-ink aria-[current=page]:text-surface"
             onClick={follow(() => go(v))}
           >
             {t(`nav.${v}`)}
           </a>
         ))}
       </nav>
-      <div className="header-tools">
-        <div className="lang" role="group" aria-label={t('header.language')}>
+      <div className="header-tools flex items-center gap-2">
+        <div
+          className="lang inline-flex overflow-hidden rounded-full border border-rule"
+          role="group"
+          aria-label={t('header.language')}
+        >
           {LANGS.map((l) => (
             <button
               key={l}
@@ -78,6 +90,7 @@ export const Header = ({ t, lang, view, theme, go, setLang, toggleTheme }: Heade
               lang={l}
               data-lang={l}
               aria-pressed={l === lang}
+              className="min-h-8 cursor-pointer border-0 bg-transparent px-2.5 py-1 text-[0.85rem] font-bold aria-pressed:bg-accent aria-pressed:text-accent-ink"
               onClick={() => setLang(l)}
             >
               {l.toUpperCase()}
@@ -86,12 +99,15 @@ export const Header = ({ t, lang, view, theme, go, setLang, toggleTheme }: Heade
         </div>
         <button
           type="button"
-          className="theme-toggle"
+          className="theme-toggle grid h-9 w-9 cursor-pointer place-items-center rounded-full border border-rule bg-surface"
           aria-pressed={theme === 'dark'}
           title={t('header.darkTheme')}
           onClick={toggleTheme}
         >
-          <span className="theme-icon" aria-hidden="true" />
+          <span
+            className="theme-icon h-4 w-4 rounded-full bg-[linear-gradient(90deg,var(--ink)_50%,transparent_50%)] shadow-[0_0_0_1.5px_var(--ink)]"
+            aria-hidden="true"
+          />
           <span className="visually-hidden">{t('header.darkTheme')}</span>
         </button>
       </div>

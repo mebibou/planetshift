@@ -10,6 +10,7 @@ import { QuickPair } from './QuickPair';
 import { Segmented } from './Segmented';
 import { Slider } from './Slider';
 import { WorthPill } from './Worth';
+import { FOLD, FOLD_SUMMARY, HINT, LEVER_FOOT, LINK_BUTTON } from './classes';
 
 export interface PanelProps {
   t: T;
@@ -37,9 +38,9 @@ const choice = <V extends string>(t: T, field: string, values: readonly V[]) => 
 
 /** The animal foods set apart from the main shift, each with its own slider. */
 const FoodShifts = ({ t, locale, scenario, setScenario }: PanelProps) => (
-  <details className="fold" data-fold="advanced">
-    <summary>{t('controls.advanced')}</summary>
-    <p className="hint">{t('controls.groupsHint')}</p>
+  <details className={FOLD} data-fold="advanced">
+    <summary className={FOLD_SUMMARY}>{t('controls.advanced')}</summary>
+    <p className={HINT}>{t('controls.groupsHint')}</p>
     {ANIMAL_GROUPS.map((g) => (
       <div className="lever" key={g}>
         <Slider
@@ -58,14 +59,14 @@ const FoodShifts = ({ t, locale, scenario, setScenario }: PanelProps) => (
           }
           onChange={(v) => setScenario((s) => withGroupShift(s, g, v / 100))}
         />
-        <div className="lever-foot">
+        <div className={LEVER_FOOT}>
           <WorthPill id={`group:${g}`} />
         </div>
       </div>
     ))}
     <button
       type="button"
-      className="link-button"
+      className={LINK_BUTTON}
       onClick={() => setScenario((s) => ({ ...s, groupShifts: {} }))}
     >
       {t('controls.groupsReset')}
@@ -104,7 +105,7 @@ export const DietGroup = (props: PanelProps) => {
         />
       }
     >
-      <p className="hint">{t('diet.description')}</p>
+      <p className={HINT}>{t('diet.description')}</p>
       <Slider
         id="shift"
         label={t('controls.shift')}

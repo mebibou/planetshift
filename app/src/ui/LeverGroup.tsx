@@ -11,6 +11,7 @@ import { Info } from './Info';
 import { QuickPair } from './QuickPair';
 import { Slider } from './Slider';
 import { WorthPill } from './Worth';
+import { HINT, HINT_TEXT, LEVER_FOOT, LINK_BUTTON } from './classes';
 
 export interface LeverGroupProps extends PanelProps {
   module: LeverSpec;
@@ -57,8 +58,8 @@ const LeverSlider = ({
         disabled={!on}
         onChange={(v) => setScenario((s: Scenario) => withLever(s, id, v / 100))}
       />
-      <div className="lever-foot">
-        {on ? <WorthPill id={`lever:${id}`} /> : <p className="hint">{t(note)}</p>}
+      <div className={LEVER_FOOT}>
+        {on ? <WorthPill id={`lever:${id}`} /> : <p className={`${HINT_TEXT} m-0`}>{t(note)}</p>}
       </div>
     </div>
   );
@@ -72,7 +73,7 @@ export const LeverGroup = ({ module, available, ...props }: LeverGroupProps) => 
   const button = (label: string, adoption: number) => (
     <button
       type="button"
-      className="link-button"
+      className={LINK_BUTTON}
       data-action={adoption > 0 ? 'max' : 'reset'}
       onClick={() => setScenario((s) => withFamily(s, module, adoption))}
     >
@@ -96,7 +97,7 @@ export const LeverGroup = ({ module, available, ...props }: LeverGroupProps) => 
         />
       }
     >
-      <p className="hint">{t(`levers.${module.id}.description`)}</p>
+      <p className={HINT}>{t(`levers.${module.id}.description`)}</p>
       {module.levers.map((lever) => (
         <LeverSlider
           key={lever.id}
@@ -106,7 +107,7 @@ export const LeverGroup = ({ module, available, ...props }: LeverGroupProps) => 
           note={blocked ?? undefined}
         />
       ))}
-      <div className="lever-actions">
+      <div className="lever-actions mb-2 flex flex-wrap gap-4">
         {button(t('levers.maxAll'), 1)}
         {button(t('levers.reset'), 0)}
       </div>

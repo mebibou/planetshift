@@ -12,7 +12,7 @@ export type IconName = keyof typeof PATHS;
 /** A 20 px line icon drawn in the text colour, hidden from screen readers. */
 export const Icon = ({ name }: { name: IconName }) => (
   <svg
-    className="icon"
+    className="icon flex-none fill-none stroke-current stroke-[1.8] [stroke-linecap:round] [stroke-linejoin:round]"
     viewBox="0 0 24 24"
     width={20}
     height={20}

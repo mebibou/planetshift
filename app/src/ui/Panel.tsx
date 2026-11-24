@@ -16,6 +16,7 @@ import { Segmented } from './Segmented';
 import { Slider } from './Slider';
 import { PeopleControl } from './PeopleControl';
 import type { PopulationData } from '../levers/population/data';
+import { HINT_TEXT } from './classes';
 
 /** The diet, then each lever module, each under the cause of warming it mainly acts on. */
 const GROUPS: readonly PanelGroup[] = [
@@ -146,12 +147,12 @@ const Cause = ({
   const { t, locale, horizon, scenario, setScenario } = props;
   const name = t(`link.causes.${cause}`);
   return (
-    <section className="cause-section" data-cause={cause} aria-label={name}>
-      <div className="cause-head">
-        <h3 className="cause-heading">
+    <section className="cause-section mt-2.5" data-cause={cause} aria-label={name}>
+      <div className="cause-head flex items-start justify-between gap-2">
+        <h3 className="cause-heading m-0 mb-0.5 flex min-w-0 flex-auto flex-wrap items-center gap-x-2 gap-y-1 text-[0.85rem] font-bold">
           <span className={`key key-cause-${cause}`} aria-hidden="true" />
-          <span>{name}</span>
-          <span className="cause-meta">
+          <span className="min-w-0 flex-[1_1_0]">{name}</span>
+          <span className="cause-meta basis-full text-[0.78rem] font-normal text-muted">
             {t('levers.causeWarming', { value: formatTemperature(locale, size, 2), year: horizon })}
           </span>
         </h3>
@@ -163,6 +164,7 @@ const Cause = ({
             scenario={scenario}
             name={(value) => t('quick.cause', { name, value })}
             setScenario={setScenario}
+            className="-mt-0.5"
           />
         )}
       </div>
@@ -191,10 +193,14 @@ export const SidePanel = (props: SidePanelProps) => {
     orderKey(options, horizon, props.dataVersion),
   );
   return (
-    <aside className="panel" aria-label={t('explore.panel')}>
-      <div className="time-settings">
+    <aside
+      className="panel lg:[grid-area:panel] sticky top-[calc(var(--header-h)+20px)] grid max-h-[calc(100dvh-var(--header-h)-32px)] gap-[18px] overflow-y-auto rounded-card border border-rule bg-surface p-4 max-lg:static max-lg:max-h-none"
+      aria-label={t('explore.panel')}
+    >
+      <div className="time-settings grid gap-3.5 border-b border-rule pb-3">
         <Timing {...props} />
         <Segmented<Horizon>
+          compact
           name="horizon"
           legend={t('controls.horizon')}
           options={HORIZONS.map((v) => ({ value: v, label: v }))}
@@ -218,14 +224,17 @@ export const SidePanel = (props: SidePanelProps) => {
           setOptions={props.setOptions}
         />
       )}
-      <p className="hint worth-legend">{t('worth.legend', { year: horizon })}</p>
-      <section className="levers" aria-labelledby="levers-title">
-        <div className="levers-head">
-          <h2 id="levers-title" className="panel-heading">
+      <p className={`${HINT_TEXT} worth-legend m-0`}>{t('worth.legend', { year: horizon })}</p>
+      <section className="levers grid gap-0" aria-labelledby="levers-title">
+        <div className="levers-head mt-1.5 flex items-center justify-between gap-2">
+          <h2
+            id="levers-title"
+            className="panel-heading m-0 text-[0.78rem] tracking-[0.06em] text-muted uppercase"
+          >
             {t('levers.title')}
           </h2>
-          <span className="quick-all">
-            <span className="quick-label" aria-hidden="true">
+          <span className="quick-all inline-flex items-center gap-1.5">
+            <span className="quick-label text-[0.72rem] text-muted" aria-hidden="true">
               {t('quick.allLabel')}
             </span>
             <QuickPair
@@ -238,7 +247,7 @@ export const SidePanel = (props: SidePanelProps) => {
             />
           </span>
         </div>
-        <p className="hint">{t('levers.intro')}</p>
+        <p className={`${HINT_TEXT} mx-0 mt-0.5 mb-1.5`}>{t('levers.intro')}</p>
         <div className="cause-sections">
           {order.map(({ cause, groups }) => (
             <Cause key={cause} props={props} cause={cause} ids={groups} size={sizes[cause]} />

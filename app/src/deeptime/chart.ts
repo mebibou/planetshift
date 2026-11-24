@@ -53,7 +53,7 @@ type Scale = ReturnType<typeof scaleLinear<number, number>>;
 const drawYAxis = (f: Frame, y: Scale, formatY: (v: number) => string) => {
   f.plot
     .append('g')
-    .attr('class', 'grid')
+    .attr('class', 'gridlines')
     .call(
       axisLeft(y)
         .ticks(6)

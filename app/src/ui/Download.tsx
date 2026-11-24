@@ -19,6 +19,15 @@ import type { T } from '../i18n/i18n';
 import type { ScenarioResult } from '../model/api';
 import { DownloadMenu } from './DownloadMenu';
 import { Icon } from './Icon';
+import {
+  CHART_SUBTITLE,
+  DOWNLOAD_BUTTON,
+  FOLD,
+  FOLD_SUMMARY,
+  HINT,
+  HINT_TEXT,
+  SMALL_NOTE,
+} from './classes';
 
 /** A button with the download icon; `name` is what a screen reader says, when it says more. */
 export const DownloadButton = ({
@@ -27,12 +36,7 @@ export const DownloadButton = ({
   className = '',
   ...rest
 }: { label: string; name?: string } & ButtonHTMLAttributes<HTMLButtonElement>) => (
-  <button
-    type="button"
-    className={`download-button ${className}`.trim()}
-    aria-label={name}
-    {...rest}
-  >
+  <button type="button" className={`${DOWNLOAD_BUTTON} ${className}`} aria-label={name} {...rest}>
     <Icon name="download" />
     <span>{label}</span>
   </button>
@@ -40,7 +44,7 @@ export const DownloadButton = ({
 
 /** A line under the download buttons that says when there is nothing to save. */
 const Status = ({ text }: { text: string }) => (
-  <p className="hint download-status" role="status">
+  <p className={`${HINT_TEXT} download-status m-0 text-right`} role="status">
     {text}
   </p>
 );
@@ -117,7 +121,7 @@ export const useChartDownload = (t: T, current: () => ChartData) => {
 };
 
 const LicenceLinks = ({ t, licences }: { t: T; licences: Licence[] }) => (
-  <span className="licence">
+  <span className={`licence ${SMALL_NOTE}`}>
     {t('download.licence')}{' '}
     {licences.map((l, i) => (
       <span key={l.url}>
@@ -162,7 +166,7 @@ const Item = ({
 }) => (
   <li>
     {button}
-    <p className="hint">
+    <p className={`${HINT} max-w-[70ch]`}>
       {text} <LicenceLinks t={t} licences={licences} />
     </p>
   </li>
@@ -181,13 +185,17 @@ export const DownloadPanel = ({
 }: DownloadPanelProps) => {
   const { status, save, saveImage } = useSave(t);
   return (
-    <div className="download-panel" id="map-downloads" hidden={hidden}>
-      <h3 className="chart-subtitle">{t('download.title')}</h3>
-      <ul className="download-list">
+    <div
+      className="download-panel mb-3 border-b border-rule pb-3"
+      id="map-downloads"
+      hidden={hidden}
+    >
+      <h3 className={CHART_SUBTITLE}>{t('download.title')}</h3>
+      <ul className="download-list m-0 mb-2 grid list-none gap-3 p-0">
         <Item
           t={t}
           button={
-            <span className="download-formats">
+            <span className="download-formats inline-flex flex-wrap gap-1.5">
               <DownloadButton
                 label={t('download.map')}
                 className="download-map"
@@ -243,26 +251,28 @@ export const DownloadPanel = ({
         />
       </ul>
       <Status text={status} />
-      <p className="hint">{t('download.format')}</p>
-      <details className="fold download-files">
-        <summary>{t('download.files')}</summary>
-        <p className="hint">{t('download.filesText')}</p>
-        <ul className="file-list">
+      <p className={HINT}>{t('download.format')}</p>
+      <details className={`${FOLD} download-files`}>
+        <summary className={FOLD_SUMMARY}>{t('download.files')}</summary>
+        <p className={HINT}>{t('download.filesText')}</p>
+        <ul className="file-list m-0 mb-2 grid list-none gap-1.5 p-0 text-[0.88rem]">
           {files.map((f) => (
-            <li key={f.name}>
+            <li key={f.name} className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <a href={folder + f.name} download={f.name}>
                 {f.name}
               </a>
-              <span className="file-size">{formatBytes(locale, f.bytes)}</span>
+              <span className={`file-size ${SMALL_NOTE}`}>{formatBytes(locale, f.bytes)}</span>
               <LicenceLinks t={t} licences={fileLicences(f.name)} />
             </li>
           ))}
         </ul>
       </details>
-      <details className="fold download-cite">
-        <summary>{t('download.cite')}</summary>
-        <p className="hint">{t('download.citeText')}</p>
-        <p className="citation">{hidden ? '' : citation(meta, location.href)}</p>
+      <details className={`${FOLD} download-cite`}>
+        <summary className={FOLD_SUMMARY}>{t('download.cite')}</summary>
+        <p className={HINT}>{t('download.citeText')}</p>
+        <p className="citation text-[0.85rem] wrap-anywhere">
+          {hidden ? '' : citation(meta, location.href)}
+        </p>
       </details>
     </div>
   );

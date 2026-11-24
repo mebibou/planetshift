@@ -6,6 +6,7 @@ import { PEOPLE_AXIS_MAX as MAX } from '../chart/populationArea';
 import { BILLION, variantPeople } from '../levers/population/people';
 import type { Options } from '../model/api';
 import { Info } from './Info';
+import { SLIDER_HEAD, SLIDER_LABEL, SLIDER_NAME, SLIDER_VALUE } from './classes';
 import { Slider } from './Slider';
 
 const TEXTS = 'levers.population.people';
@@ -59,16 +60,18 @@ export const peopleKey = (
 };
 
 const PeopleHead = (p: { own: boolean; label: string; info: ReactNode; text: string }) => (
-  <div className="slider-head">
-    <span className="slider-label">
+  <div className={SLIDER_HEAD}>
+    <span className={SLIDER_LABEL}>
       {p.own ? (
-        <label htmlFor="people">{p.label}</label>
+        <label htmlFor="people" className={SLIDER_NAME}>
+          {p.label}
+        </label>
       ) : (
-        <span className="slider-name">{p.label}</span>
+        <span className={`slider-name ${SLIDER_NAME}`}>{p.label}</span>
       )}
       {p.info}
     </span>
-    <output htmlFor={p.own ? 'people' : undefined} className="slider-value">
+    <output htmlFor={p.own ? 'people' : undefined} className={SLIDER_VALUE}>
       {p.text}
     </output>
   </div>
@@ -118,8 +121,9 @@ export const PeopleControl = ({
         info={info}
         text={format(own ? value : markOf(marks, options.population as PeopleMark['variant']))}
       />
-      <label className="people-follow">
+      <label className="people-follow mt-1.5 mb-1 flex items-center gap-2 text-[0.92rem]">
         <input
+          className="accent-accent"
           type="checkbox"
           checked={!own}
           onChange={(e) =>
@@ -142,11 +146,12 @@ export const PeopleControl = ({
             keyValue={(key, v) => peopleKey(key, v, [0, ...marks.map((m) => m.value), MAX])}
             marks={marks.map((m) => ({ value: m.value, label: '' }))}
             nativeTicks={false}
+            headless
             info={info}
             onChange={(people) => setOptions((o) => ({ ...o, people: hundredths(people) }))}
           />
           <div
-            className="people-marks"
+            className="people-marks mt-1.5 flex flex-wrap gap-1"
             role="group"
             aria-label={t(`${TEXTS}.marksLabel`, { year })}
           >
@@ -154,6 +159,7 @@ export const PeopleControl = ({
               <button
                 key={m.variant}
                 type="button"
+                className="cursor-pointer rounded-full border border-rule bg-transparent px-2 py-0.5 text-[0.78rem] text-muted aria-pressed:border-accent aria-pressed:text-ink"
                 aria-pressed={Math.abs(m.value - value) < 1e-9}
                 onClick={() => setOptions((o) => ({ ...o, people: m.value }))}
               >

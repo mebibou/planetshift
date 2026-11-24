@@ -129,7 +129,7 @@ export interface AppProps {
 }
 
 const Loading = ({ t }: { t: (key: string) => string }) => (
-  <p className="loading" role="status">
+  <p className="loading mx-auto my-[15vh] max-w-[60ch] px-(--gutter)" role="status">
     {t('load.loading')}
   </p>
 );
@@ -230,7 +230,10 @@ export const App = ({ initial, loaded: first, currentYear }: AppProps) => {
     });
   return (
     <>
-      <a href="#main" className="skip-link">
+      <a
+        href="#main"
+        className="skip-link absolute top-2 -left-[999px] z-10 bg-surface px-3 py-2 focus:left-2"
+      >
         {t('header.skip')}
       </a>
       <Header
@@ -242,7 +245,13 @@ export const App = ({ initial, loaded: first, currentYear }: AppProps) => {
         setLang={(lang: Lang) => setState((s) => ({ ...s, lang }))}
         toggleTheme={toggleTheme}
       />
-      <main id="main" tabIndex={-1} ref={main} data-ready={result === undefined ? undefined : ''}>
+      <main
+        id="main"
+        className="px-(--gutter) pt-5 pb-10 focus:outline-none"
+        tabIndex={-1}
+        ref={main}
+        data-ready={result === undefined ? undefined : ''}
+      >
         <CurrentView
           state={state}
           ctx={ctx}
@@ -252,9 +261,11 @@ export const App = ({ initial, loaded: first, currentYear }: AppProps) => {
           t={t}
         />
       </main>
-      <footer className="site-footer">
-        {loaded && <p>{t('footer.text', { year: loaded.data.meta.baseYear })}</p>}
-        <p className="footer-links">
+      <footer className="site-footer px-(--gutter) pt-4 pb-8 text-[0.85rem] text-muted">
+        {loaded && (
+          <p className="max-w-[110ch]">{t('footer.text', { year: loaded.data.meta.baseYear })}</p>
+        )}
+        <p className="footer-links flex max-w-[110ch] flex-wrap gap-x-4 gap-y-1 [&_a]:text-inherit">
           <span>{t('footer.copyright', { year: currentYear })}</span>
           <a href={CODE_LICENCE}>{t('footer.code')}</a>
           <a href={DATA_LICENCES}>{t('footer.data')}</a>
