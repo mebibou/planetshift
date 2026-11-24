@@ -998,7 +998,7 @@ select {
   top: calc(100% + 4px);
   right: 0;
   z-index: 20;
-  min-width: 220px;
+  min-width: 140px;
   margin: 0;
   padding: 4px;
   list-style: none;
@@ -1892,7 +1892,7 @@ input[type='range']:disabled {
   gap: 12px 20px;
   align-items: end;
   margin: 12px 0 8px;
-  & .download-chart {
+  & > .download-menu {
     margin-left: auto;
   }
 }
