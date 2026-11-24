@@ -198,10 +198,16 @@ export type LeverCause = 'fossilIndustry' | 'agriculture' | 'landUse';
 export type CountedCause = LeverCause | 'airPollution';
 
 export type Cause =
-  'fossilIndustry' | 'agriculture' | 'landUse' | 'airPollution' | 'natural' | 'other';
+  | 'fossilIndustry'
+  | 'agriculture'
+  | 'landUse'
+  | 'airPollution'
+  | 'natural'
+  | 'permafrost'
+  | 'other';
 
 /** A part of one gas's warming: a greenhouse cause that emits it, or its other sources. */
-export type GasCause = LeverCause | 'other';
+export type GasCause = LeverCause | 'permafrost' | 'other';
 
 /** Warming by cause of warming, and each gas's by the causes that emit it, °C by year. */
 export interface CauseWarming {

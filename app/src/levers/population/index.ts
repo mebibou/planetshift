@@ -1,6 +1,7 @@
 import type { Options } from '../../model/api';
 import type { Prepared } from '../../model/prepare';
 import { forcingResponseOf } from '../energy/model';
+import { totalWarming } from '../../model/climate';
 import type { LeverModule, PopulationContext, RunContext, WorldContext } from '../types';
 import { bandRecord } from '../../model/bands';
 import { addGas, gasVector, memoPer, ZERO_GAS } from '../../model/util';
@@ -22,7 +23,6 @@ import {
   peoplePath,
   peopleWarmingByCause,
   sspPopulation,
-  totalWarming,
   worldMedium,
 } from './people';
 

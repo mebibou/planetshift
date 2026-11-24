@@ -312,7 +312,7 @@
     "intro": "L'essentiel du réchauffement vient des combustibles fossiles. L'agriculture y contribue autrement, surtout par le méthane des bovins et des rizières, et le protoxyde d'azote des engrais et des effluents. Ces gaz retiennent bien plus de chaleur que le CO₂ tant qu'ils durent.",
     "attributionTitle": "Réchauffement par cause depuis {from}",
     "attributionText": "Chaque bande est le réchauffement dû à une cause ou, sous zéro, le refroidissement. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause. Les contours en pointillés sont les bandes sans les leviers. La ligne est la température mesurée.",
-    "attributionCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui. Chaque cause est le réchauffement qu'ajoutent ses émissions. La pollution de l'air refroidit : ses particules renvoient la lumière du soleil et éclaircissent les nuages. Les leviers de l'énergie, du chauffage et de l'industrie réduisent aussi la pollution de l'air des combustibles qu'ils ne brûlent plus : son refroidissement diminue quand ils agissent.",
+    "attributionCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui. Chaque cause est le réchauffement qu'ajoutent ses émissions. La pollution de l'air refroidit : ses particules renvoient la lumière du soleil et éclaircissent les nuages. Les leviers de l'énergie, du chauffage et de l'industrie réduisent aussi la pollution de l'air des combustibles qu'ils ne brûlent plus : son refroidissement diminue quand ils agissent. Ce que la référence ajoute au scénario (émissions agricoles qui suivent la population, pergélisol, centres de données au-delà du scénario, nombre d'humains) est ajouté à sa cause, et Autres émissions humaines contient aussi ce qui sépare encore la température du scénario des causes, pour que l'empilement rejoigne la courbe sans les leviers.",
     "attributionLabel": "Graphique empilé du réchauffement par cause de {from} à {year}, avec la température observée",
     "projection": "Projection",
     "causes": {
@@ -321,7 +321,8 @@
       "landUse": "Usage des terres",
       "other": "Autres émissions humaines",
       "airPollution": "Pollution de l'air (refroidit)",
-      "natural": "Facteurs naturels (soleil et volcans)"
+      "natural": "Facteurs naturels (soleil et volcans)",
+      "permafrost": "Dégel du pergélisol"
     },
     "gas": "Gaz",
     "gasChoices": {
@@ -348,6 +349,8 @@
     "separator": " ; ",
     "withoutLevers": "Sans les leviers",
     "withoutValue": "{value} ({without} sans les leviers)",
+    "totalProjected": "Réchauffement projeté",
+    "totalModelled": "Réchauffement modélisé",
     "parts": "Ce que chaque cause ajoute ou retire : {parts}."
   },
   "methodology": {

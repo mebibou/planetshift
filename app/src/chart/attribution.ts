@@ -213,7 +213,36 @@ const cellText = (
     : now;
 };
 
-/** The hover's rows in a year: each cause, biggest first, then the temperature measured. */
+/** The causes added up in a row. */
+const totalOf = (causes: readonly Cause[], row: CauseRow): number =>
+  causes.reduce((sum, c) => sum + row[c], 0);
+
+/** A total, and the one without the levers beside it when they change it. */
+const totalText = (t: T, locale: string, total: number, without: number | undefined): string => {
+  const value = formatTemperature(locale, total, 2);
+  return without !== undefined && Math.abs(without - total) >= 0.0005
+    ? t('link.withoutValue', { value, without: formatTemperature(locale, without, 2) })
+    : value;
+};
+
+/** The causes' total in a year, projected past today, with the levers' change beside it. */
+const totalRow = (
+  t: T,
+  locale: string,
+  causes: readonly Cause[],
+  rows: { row: CauseRow | undefined; base: CauseRow | undefined },
+  projected: boolean,
+): HoverRow => ({
+  label: t(projected ? 'link.totalProjected' : 'link.totalModelled'),
+  value: rows.row
+    ? totalText(t, locale, totalOf(causes, rows.row), rows.base && totalOf(causes, rows.base))
+    : '–',
+});
+
+/**
+ * The hover's rows in a year: each cause, biggest first, their total (projected past today),
+ * then the temperature measured.
+ */
 const hoverRows =
   (
     t: T,
@@ -221,6 +250,7 @@ const hoverRows =
     view: AttributionView,
     rows: ReturnType<typeof rowsOf>,
     observed: Point[],
+    currentYear: number,
   ) =>
   (year: number): HoverRow[] => {
     const row = rows.rows.find((r) => r.year === year);
@@ -232,7 +262,8 @@ const hoverRows =
         value: cellText(t, locale, c, row, base),
         swatch: `var(--cause-${c})`,
       })),
-      ...(view.observed
+      totalRow(t, locale, causesIn(view.attribution), { row, base }, year > currentYear),
+      ...(view.observed && year <= currentYear
         ? [
             {
               label: t('chart.observed'),
@@ -276,7 +307,7 @@ export const attributionChart = (t: T, locale: string, currentYear: number): Att
       f,
       scales.x,
       MARGIN,
-      hoverRows(t, locale, view, rows, observed),
+      hoverRows(t, locale, view, rows, observed, currentYear),
       t('chart.keys'),
     );
   };
