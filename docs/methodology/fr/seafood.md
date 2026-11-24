@@ -15,7 +15,7 @@ Planetshift compte les émissions dans l'un de deux périmètres, choisi dans *A
 - **À la ferme** compte ce qu'émet la biologie de l'exploitation. Pour les produits de la mer, ce n'est que le N₂O des élevages.
 - **Du berceau à la sortie de ferme** ajoute l'énergie utilisée : le carburant des bateaux de pêche, et le carburant et l'électricité des élevages.
 
-Les poissons sauvages n'ont donc aucune émission à la ferme. Leur carburant n'apparaît que quand on choisit « Avec les intrants » dans *Autres options*. La même règle garde le diesel des tracteurs hors des émissions à la ferme du blé, mais son effet est plus grand pour le poisson. L'aide de *Émissions comptées* dans *Autres options* le dit, tout comme la note du résumé sur ce qui est compté.
+Les poissons sauvages n'ont donc aucune émission à la ferme. Leur carburant n'apparaît que dans le périmètre du berceau à la sortie de ferme (« Avec les intrants »), le choix par défaut ; « Processus biologiques seulement » dans *Autres options* le laisse de côté. La même règle garde le diesel des tracteurs hors des émissions à la ferme du blé, mais son effet est plus grand pour le poisson. L'aide de *Émissions comptées* dans *Autres options* le dit, tout comme la note du résumé sur ce qui est compté.
 
 Tous les produits de la mer ensemble émettent 66 Mt (millions de tonnes) CO₂e par an à la ferme et 236 Mt CO₂e du berceau à la sortie de ferme, pondérés par la production des bilans alimentaires. Le CO₂e (équivalent CO₂) additionne les gaz en un seul chiffre avec leurs poids à 100 ans (voir [Des émissions à la température](#method-climate)).
 

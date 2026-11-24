@@ -183,7 +183,7 @@ The charge is the uptake forgone, not the CO₂ of clearing standing forest:
 
 Every country of the model has a rate in `land.json`. A country missing from the table takes the median of the table's countries, band by band, rather than nothing. This can happen in a build or in the test fixtures. Freed and newly used land is summed over countries at each country's rate, so a hectare freed in Ireland and one taken in Kazakhstan do not cancel.
 
-The table shows what netting changes, on the real data with FaIR and SSP2-4.5 (see [Climate](#method-climate) and [Options](#method-options)). "Before" is the result without netting. Warming avoided is the median, with the 5–95% range of the climate runs in brackets for 2100. Gt is billions of tonnes.
+The table shows what netting changes, on the real data with FaIR, SSP2-4.5 and biological processes only (`scope=farmGate`; see [Climate](#method-climate) and [Options](#method-options)). "Before" is the result without netting. Warming avoided is the median, with the 5–95% range of the climate runs in brackets for 2100. Gt is billions of tonnes.
 
 | Scenario, regrowth on | Net uptake when complete (Gt CO₂ a year) | Avoided in 2050 (°C) | Avoided in 2100 (°C) |
 | --- | --- | --- | --- |

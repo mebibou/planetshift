@@ -127,7 +127,7 @@ Une pratique doit savoir sur quelle partie des émissions d'un produit elle agit
 
 ### Ce que montre la répartition pour le monde
 
-Les deux périmètres sont définis sur la page [Émissions par tonne d'aliment](#method-emissions). *À la ferme* est le périmètre par défaut. *Du berceau à la sortie de ferme* ajoute l'énergie utilisée par la ferme et la fabrication des engrais et des pesticides.
+Les deux périmètres sont définis sur la page [Émissions par tonne d'aliment](#method-emissions). *Du berceau à la sortie de ferme* est le périmètre par défaut. *À la ferme* (processus biologiques seulement) laisse de côté l'énergie utilisée par la ferme et la fabrication des engrais et des pesticides.
 
 | Gaz, à la ferme | Total mondial du modèle | Principales sources |
 | --- | --- | --- |

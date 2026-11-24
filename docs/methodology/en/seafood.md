@@ -15,7 +15,7 @@ Planetshift counts emissions in one of two scopes, chosen under *Other options* 
 - **Farm gate** counts what the farm's biology emits. For seafood this is only the N₂O of fish farms.
 - **Cradle to farm gate** adds the energy used: the fuel of fishing boats and the fuel and electricity of fish farms.
 
-Wild fish therefore have no emissions at the farm gate. Their fuel appears only when you choose cradle to farm gate (*With inputs*) under *Other options*. The same rule keeps tractors' diesel out of the farm-gate emissions of wheat, but its effect is larger for fish. The hint of *Emissions counted* under *Other options* says so, and so does the summary's note on what is counted.
+Wild fish therefore have no emissions at the farm gate. Their fuel appears only in the cradle-to-farm-gate scope (*With inputs*), the default; *Biological processes only* under *Other options* leaves it out. The same rule keeps tractors' diesel out of the farm-gate emissions of wheat, but its effect is larger for fish. The hint of *Emissions counted* under *Other options* says so, and so does the summary's note on what is counted.
 
 All seafood items together emit 66 Mt (million tonnes) CO₂e a year at the farm gate and 236 Mt CO₂e cradle to farm gate, weighted by the Food Balance Sheets' production. CO₂e (CO₂-equivalent) adds the gases into one figure with their 100-year weights (see [From emissions to temperature](#method-climate)).
 

@@ -16,7 +16,7 @@ A few terms used on this page:
 
 | Option (URL key) | Default | Alternative | What changes |
 | --- | --- | --- | --- |
-| Emissions counted (`scope`) | on the farm (`farmGate`) | with inputs (`cradleToFarmGate`) | Adds the emissions of making inputs (fertiliser, energy) to each intensity, mostly CO₂. Base and avoided emissions both rise. Wild fish have no farm-gate emissions at all. Almost all of their emissions come from the fuel their boats burn, which counts only in this scope (see [Fish and seafood](#method-seafood)). |
+| Emissions counted (`scope`) | with inputs (`cradleToFarmGate`) | biological processes only (`farmGate`) | Leaves out the emissions of making inputs (fertiliser, energy), mostly CO₂, and the fuel burnt on the farm. Base and avoided emissions both fall. Wild fish then have no emissions at all: almost all of theirs come from the fuel their boats burn, which counts only with inputs (see [Fish and seafood](#method-seafood)). Links that carry `scope=farmGate` keep this choice. |
 | Feed shared out (`feed`) | by species (`species`) | regional rations, GLEAM-style (`gleam`) | Which animal groups each feed crop goes to, so how much maize, wheat or soy is freed when one group shrinks. |
 | Farming's future without the levers (`base`) | population growth: today's diet × population (`population`) | SSP2 path for farm emissions (`ssp2`) | The baseline emissions to 2100, and the size of the avoided emissions, which are scaled the same way. |
 | Where production changes (`loc`) | trade shares held (`fixedTrade`) | each country itself (`domestic`) | Which countries' farms change on the map. World totals of animal products are the same; feed crops differ because feed falls where animals are. A cut a country cannot make in its own production goes to its suppliers. |
@@ -40,7 +40,7 @@ With the default *today's diet × population* baseline, each year's farm emissio
 
 The option changes the baseline's farm emissions from the base year on, and so its temperature. With SSP2-4.5 and the FaIR response, the baseline is 2.81 °C in 2100 with the medium projection, 2.74 °C with the low and 2.91 °C with the high. In 2050 the low and the high projections are within 0.01 °C of the medium one.
 
-The diet shift and the farm levers change emissions that are scaled the same way. So what they avoid grows or shrinks with population. A 50% shift avoids 0.135 °C in 2100 with the medium projection, 0.112 °C with the low and 0.164 °C with the high (0.058, 0.056 and 0.061 °C in 2050).
+The diet shift and the farm levers change emissions that are scaled the same way. So what they avoid grows or shrinks with population. A 50% shift avoids 0.141 °C in 2100 with the medium projection, 0.116 °C with the low and 0.170 °C with the high (0.060, 0.057 and 0.062 °C in 2050).
 
 The less-waste lever acts on the same scaled supply. Clearing (deforestation), carbon stored in farmland, natural regrowth and the energy levers are not scaled with population, so they do not change.
 

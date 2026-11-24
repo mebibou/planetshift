@@ -16,7 +16,7 @@ Quelques termes employés sur cette page :
 
 | Option (clé d'URL) | Par défaut | Alternative | Ce qui change |
 | --- | --- | --- | --- |
-| Émissions comptées (`scope`) | sur la ferme (`farmGate`) | avec les intrants (`cradleToFarmGate`) | Ajoute à chaque intensité les émissions de la fabrication des intrants (engrais, énergie), surtout du CO₂. Les émissions de base et les émissions évitées augmentent toutes deux. Les poissons sauvages n'ont aucune émission à la ferme. Presque toutes leurs émissions viennent du carburant que brûlent leurs bateaux, qui n'est compté que dans ce périmètre (voir [Poissons et fruits de mer](#method-seafood)). |
+| Émissions comptées (`scope`) | avec les intrants (`cradleToFarmGate`) | processus biologiques seulement (`farmGate`) | Retire les émissions de la fabrication des intrants (engrais, énergie), surtout du CO₂, et le carburant brûlé sur la ferme. Les émissions de base et les émissions évitées baissent toutes deux. Les poissons sauvages n'ont alors aucune émission : presque toutes les leurs viennent du carburant que brûlent leurs bateaux, qui n'est compté qu'avec les intrants (voir [Poissons et fruits de mer](#method-seafood)). Les liens qui portent `scope=farmGate` gardent ce choix. |
 | Répartition des aliments du bétail (`feed`) | par espèce (`species`) | rations régionales, de type GLEAM (`gleam`) | À quels groupes animaux va chaque culture fourragère, donc quelle quantité de maïs, de blé ou de soja est libérée quand un groupe diminue. |
 | Avenir de l'agriculture sans les leviers (`base`) | croissance démographique : régime actuel × population (`population`) | trajectoire SSP2 des émissions agricoles (`ssp2`) | Les émissions de référence jusqu'en 2100, et l'ampleur des émissions évitées, mises à l'échelle de la même façon. |
 | Où la production change (`loc`) | parts du commerce fixes (`fixedTrade`) | chaque pays pour lui-même (`domestic`) | Quelles fermes changent sur la carte. Les totaux mondiaux des produits animaux sont les mêmes ; les cultures fourragères diffèrent, car l'alimentation animale baisse là où sont les animaux. Une baisse qu'un pays ne peut pas faire dans sa propre production va à ses fournisseurs. |
@@ -40,7 +40,7 @@ Avec la référence par défaut, *régime actuel × population*, les émissions 
 
 L'option change les émissions agricoles de la référence à partir de l'année de référence, et donc sa température. Avec SSP2-4.5 et la réponse de FaIR, la référence atteint 2,81 °C en 2100 avec la projection moyenne, 2,74 °C avec la basse et 2,91 °C avec la haute. En 2050, les projections basse et haute sont à moins de 0,01 °C de la moyenne.
 
-Le changement de régime et les leviers agricoles modifient des émissions mises à l'échelle de la même façon. Ce qu'ils évitent grandit ou diminue donc avec la population. Un changement de 50 % évite 0,135 °C en 2100 avec la projection moyenne, 0,112 °C avec la basse et 0,164 °C avec la haute (0,058, 0,056 et 0,061 °C en 2050).
+Le changement de régime et les leviers agricoles modifient des émissions mises à l'échelle de la même façon. Ce qu'ils évitent grandit ou diminue donc avec la population. Un changement de 50 % évite 0,141 °C en 2100 avec la projection moyenne, 0,116 °C avec la basse et 0,170 °C avec la haute (0,060, 0,057 et 0,062 °C en 2050).
 
 Le levier du gaspillage agit sur les mêmes disponibilités mises à l'échelle. Le défrichement (déforestation), le carbone stocké dans les terres agricoles, la repousse naturelle et les leviers d'énergie ne sont pas mis à l'échelle de la population : ils ne changent pas.
 

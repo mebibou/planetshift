@@ -8,8 +8,8 @@ The three gases are kept separate all the way to the climate model.
 
 The app offers two scopes:
 
-- **Farm gate** (the default): the emissions of the farm's biological processes. These are enteric fermentation (the methane made in ruminants' stomachs as they digest), manure management, manure left on pasture and spread on fields, synthetic fertiliser, crop residues, rice paddies and the burning of residues.
-- **Cradle to farm gate**: the same, plus the farm's energy use (fuel and electricity) and the making of fertilisers and pesticides. The fuel burnt on the farm counts here, whichever source the intensity comes from.
+- **Farm gate** (*Biological processes only* in the app): the emissions of the farm's biological processes. These are enteric fermentation (the methane made in ruminants' stomachs as they digest), manure management, manure left on pasture and spread on fields, synthetic fertiliser, crop residues, rice paddies and the burning of residues.
+- **Cradle to farm gate** (*With inputs*, the default): the same, plus the farm's energy use (fuel and electricity) and the making of fertilisers and pesticides. The fuel burnt on the farm counts here, whichever source the intensity comes from.
 
 Neither scope includes land-use change, drained organic soils, or anything after the farm: processing, transport, retail, cooking and waste.
 
@@ -202,7 +202,7 @@ No country source was found for the offtake of Niger's cattle. FAOSTAT records n
 
 ### What the threshold changes
 
-The threshold moves the baseline, but it hardly moves the effect of a shift. A herd counted as not raised for food is left out of both the products' emissions and what a shift can avoid. The table gives the results of a build with each threshold, at SSP2-4.5 with the default options:
+The threshold moves the baseline, but it hardly moves the effect of a shift. A herd counted as not raised for food is left out of both the products' emissions and what a shift can avoid. The table gives the results of a build with each threshold, at SSP2-4.5 with the default options but biological processes only (`scope=farmGate`):
 
 | Offtake threshold | Non-food baseline, Mt CO₂e | India | Niger | Ethiopia | Mali | Full shift: emissions avoided, Gt CO₂e | Full shift: warming avoided in 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |

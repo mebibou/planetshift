@@ -63,7 +63,7 @@ const MIXED: Partial<Scenario> = {
 };
 
 const OPTION_CASES: [string, Partial<Options>][] = [
-  ['cradle', { scope: 'cradleToFarmGate' }],
+  ['biological', { scope: 'farmGate' }],
   ['gleam', { feed: 'gleam' }],
   ['ssp2Baseline', { baseline: 'ssp2' }],
   ['domestic', { location: 'domestic' }],
