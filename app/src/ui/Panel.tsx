@@ -16,7 +16,6 @@ import { Segmented } from './Segmented';
 import { Slider } from './Slider';
 import { PeopleControl } from './PeopleControl';
 import type { PopulationData } from '../levers/population/data';
-import { pageControl } from '../levers/population/switch';
 
 /** The diet, then each lever module, each under the cause of warming it mainly acts on. */
 const GROUPS: readonly PanelGroup[] = [
@@ -99,7 +98,7 @@ export interface SidePanelProps extends PanelProps {
   /** Goes up each time a deferred lever file arrives. */
   dataVersion: number;
   available: (id: LeverId) => boolean;
-  /** The UN's projections, which mark the people-on-Earth control (behind ?popctl=people). */
+  /** The UN's projections, which mark the people-on-Earth control. */
   population?: PopulationData;
   setOptions: (change: (o: Options) => Options) => void;
   setHorizon: (horizon: Horizon) => void;
@@ -209,7 +208,7 @@ export const SidePanel = (props: SidePanelProps) => {
           onChange={props.setHorizon}
         />
       </div>
-      {props.population && pageControl() === 'people' && (
+      {props.population && (
         <PeopleControl
           t={t}
           locale={locale}

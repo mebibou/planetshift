@@ -237,11 +237,6 @@ export interface LeverModule {
   files: readonly DataFileDef[];
   /** Whether the data has what a lever needs to act. */
   available?: (data: ModelData, leverId: string) => boolean;
-  /**
-   * A prototype shown only behind ?popctl=<this value>: its levers stay out of the panel, and
-   * its family out of the breakdown while it does not act, so nothing changes without it.
-   */
-  prototype?: string;
   hooks: Hooks;
   ui: {
     /** Its levers' fold in the Levers section; options always render in the Options group. */

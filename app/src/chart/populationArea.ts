@@ -2,13 +2,12 @@ import { area, axisRight, scaleLinear, type ScaleLinear } from 'd3';
 import { formatNumber } from '../i18n/format';
 import type { T } from '../i18n/i18n';
 import type { WorldPopulation } from '../levers/population/model';
-import { pageControl } from '../levers/population/switch';
 import type { Frame, HoverRow, Margin } from './frame';
 import { inRange, zipSeries, type Point } from './series';
 
 /**
  * World population as a light area behind the temperature lines, on an axis in billions on the
- * right: the people-on-Earth path, with ?popctl=people only.
+ * right: the people-on-Earth path when one is set, else the UN projection in use.
  */
 
 /** Room on the right for the axis, past the current-policies band when it is drawn. */
@@ -19,22 +18,19 @@ export const PEOPLE_AXIS_MAX = 14;
 
 const ahead = (p: WorldPopulation) => p.people ?? p.variants[p.variant];
 
-/** Billions in from..end: the people-on-Earth path, else the UN projection in use. */
+/** People by year: the estimates, then the people-on-Earth path, else the UN projection in use. */
+export const populationPath = (p: WorldPopulation): Point[] => [
+  ...zipSeries(p.history.years, p.history.values),
+  ...zipSeries(ahead(p).years, ahead(p).values),
+];
+
+/** Billions in from..end. */
 export const peoplePoints = (
   p: WorldPopulation | null | undefined,
   from: number,
   end: number,
 ): Point[] =>
-  p && pageControl() === 'people'
-    ? inRange(
-        [
-          ...zipSeries(p.history.years, p.history.values),
-          ...zipSeries(ahead(p).years, ahead(p).values),
-        ],
-        from,
-        end,
-      ).map((q) => ({ ...q, value: q.value / 1e9 }))
-    : [];
+  p ? inRange(populationPath(p), from, end).map((q) => ({ ...q, value: q.value / 1e9 })) : [];
 
 /** The margin with room for the axis on the right, or as it was without an area. */
 export const withAxis = (margin: Margin, points: readonly Point[], reaches2100: boolean): Margin =>

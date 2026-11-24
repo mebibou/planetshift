@@ -308,8 +308,8 @@ describe('energy levers and new options in the URL', () => {
   it('read invalid values as none or the default', () => {
     const { scenario, options } = decodeState('ev=abc&fl=150&re=-5&et=20&dc=x&pf=maybe');
     expect(scenario.levers).toEqual({ electricTrucks: 0.2 });
-    expect(options.dataCentres).toBe('iea');
-    expect(options.permafrost).toBe('on');
+    expect(options.dataCentres).toBe(DEFAULT_OPTIONS.dataCentres);
+    expect(options.permafrost).toBe(DEFAULT_OPTIONS.permafrost);
   });
   it('ignore the data centres on clean power of an old URL, now part of renewable electricity', () => {
     expect(decodeState('re=50&cdc=100').scenario.levers).toEqual({ renewableElectricity: 0.5 });

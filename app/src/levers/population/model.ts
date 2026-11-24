@@ -1,4 +1,4 @@
-import type { Country, Series, Ssp } from '../../data/types';
+import type { Country, Series } from '../../data/types';
 import { populationIn } from '../../model/prepare';
 import { END_YEAR, range, sum, valueAt } from '../../model/util';
 import type { PopulationData } from './data';
@@ -67,25 +67,13 @@ export const variantWorldPopulation = (
 export const hasPopulation = (pop: PopulationData | undefined): pop is PopulationData =>
   (pop?.world.medium.years.length ?? 0) > 0 && (pop?.world.history.years.length ?? 0) > 0;
 
-/**
- * Pairings that tell two different stories about the future: the UN's low projection with
- * SSP3-7.0 (a world of fast population growth), the high one with SSP1-2.6 (of slow growth).
- */
-export const inconsistentWith = (variant: PopulationVariant, ssp: Ssp): boolean =>
-  (variant === 'low' && ssp === 'ssp370') || (variant === 'high' && ssp === 'ssp126');
-
-/** What the population chart draws, and the notes beside it. */
+/** The world population the temperature chart draws behind its lines. */
 export interface WorldPopulation {
   variant: PopulationVariant;
-  ssp: Ssp;
   /** People, 1850..the last estimate. */
   history: Series;
   /** People, from the year after the last estimate to 2100. */
   variants: Record<PopulationVariant, Series>;
-  /** The variant and the SSP tell different stories (`inconsistentWith`). */
-  inconsistent: boolean;
-  /** Whether farm emissions follow population (the 'population' baseline); with 'ssp2' they do not. */
-  applies: boolean;
   /** People, from the year after the last estimate: the people-on-Earth path, when it is on. */
   people?: Series;
 }
@@ -93,16 +81,11 @@ export interface WorldPopulation {
 export const worldPopulation = (
   pop: PopulationData,
   variant: PopulationVariant,
-  ssp: Ssp,
-  applies: boolean,
   people: Readonly<Record<number, number>> | null = null,
 ): WorldPopulation => ({
   variant,
-  ssp,
   history: pop.world.history,
   variants: { medium: pop.world.medium, low: pop.world.low, high: pop.world.high },
-  inconsistent: !people && inconsistentWith(variant, ssp),
-  applies,
   ...(people ? { people: projected(people, pop.lastEstimate) } : {}),
 });
 
@@ -114,22 +97,3 @@ const projected = (path: Readonly<Record<number, number>>, lastEstimate: number)
     .sort((a, b) => a - b);
   return { years, values: years.map((y) => path[y] as number) };
 };
-
-/** WPP's low variant has its whole half child fewer from this year on (0.25, 0.4, then 0.5). */
-export const LOW_COMPLETE_YEAR = 2034;
-
-/**
- * Years the low variant's gap is moved later by: to be complete when every lever is, and to start
- * no earlier than this year; never earlier, as fertility cannot fall faster than WPP's low path.
- */
-export const fertilityLag = (pop: PopulationData, rampEnd: number, currentYear: number): number =>
-  Math.max(0, rampEnd - LOW_COMPLETE_YEAR, currentYear - (pop.lastEstimate + 1));
-
-/**
- * The scenario's population over the projection chosen, by year, with half a child per woman
- * fewer times `adoption`: the low variant's ratio to the medium one, `lag` years later.
- */
-export const fewerChildren =
-  (pop: PopulationData, adoption: number, lag: number) =>
-  (year: number): number =>
-    year - lag <= pop.lastEstimate ? 1 : 1 + adoption * (worldRatio(pop, 'low', year - lag) - 1);

@@ -7,7 +7,6 @@ import { runScenario } from '../../model/run';
 import { BASE_SCENARIO } from '../../model/scenarios';
 import { decodeState, encodeState } from '../../model/state';
 import { peopleKey, peopleMarks } from '../../ui/PeopleControl';
-import { gatePopulation, populationControl } from './switch';
 import {
   BILLION,
   PEOPLE_YEAR,
@@ -114,7 +113,7 @@ describe('people on Earth in the model', () => {
     expect(w2100(run({ shift: 0.5 }, { people: 4 }))).toBeLessThan(w2100(run({ shift: 0.5 })));
   });
 
-  it('draws the path on the population chart and ignores the UN projection', () => {
+  it('draws the path behind the temperature chart and ignores the UN projection', () => {
     const r = run({}, { people: 4, population: 'high' });
     expect(r.population?.people?.values.at(-1)).toBeCloseTo(4 * BILLION, 0);
     expect(r.population?.variant).toBe('medium');
@@ -123,20 +122,10 @@ describe('people on Earth in the model', () => {
 });
 
 describe('the people-on-Earth control', () => {
-  it('reads the number from the URL only behind ?popctl=people', () => {
+  it('keeps the number in the URL and reads it back, ignoring an invalid one', () => {
     const query = encodeState(BASE_SCENARIO, { ...DEFAULT_OPTIONS, people: 6.25 });
     expect(query).toBe('ppl=6.25');
-    const decoded = decodeState(query);
-    expect(decoded.options.people).toBe(6.25);
-    expect(gatePopulation(decoded, populationControl('?popctl=people&ppl=6.25')).options).toEqual(
-      decoded.options,
-    );
-    expect(gatePopulation(decoded, populationControl('?ppl=6.25')).options).toEqual(
-      DEFAULT_OPTIONS,
-    );
-    expect(gatePopulation(decoded, populationControl('?popctl=lever')).options.people).toBe(
-      undefined,
-    );
+    expect(decodeState(query).options.people).toBe(6.25);
     ['-1', 'abc', ''].forEach((raw) =>
       expect(decodeState(`ppl=${raw}`).options).toEqual(DEFAULT_OPTIONS),
     );

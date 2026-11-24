@@ -24,8 +24,8 @@ describe('the causes of warming', () => {
     );
   });
 
-  it('shows permafrost as its own cause, on by default, and none when it is off', () => {
-    expect(stackAndLine({}, 2100).attribution.permafrost).toBeDefined();
+  it('shows permafrost as its own cause when it is on, and none when it is off', () => {
+    expect(stackAndLine({ permafrost: 'on' }, 2100).attribution.permafrost).toBeDefined();
     expect(stackAndLine({ permafrost: 'off' }, 2100).attribution.permafrost).toBeUndefined();
   });
 });

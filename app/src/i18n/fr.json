@@ -251,7 +251,9 @@
     "label": "Réchauffement évité chaque année jusqu'en {year} grâce aux leviers, avec sa fourchette probable",
     "unit": "°C de réchauffement en moins",
     "line": "Réchauffement évité",
-    "caption": "De combien le monde est plus frais chaque année avec les leviers que sans. L'écart grandit à mesure que les leviers se mettent en place. Le réchauffement du méthane déjà évité s'efface en quelques décennies."
+    "caption": "De combien le monde est plus frais chaque année avec les leviers que sans. L'écart grandit à mesure que les leviers se mettent en place. Le réchauffement du méthane déjà évité s'efface en quelques décennies.",
+    "empty": "Rien d'évité pour l'instant.",
+    "emptyHint": "Déplacez un levier ou changez l'alimentation dans le panneau."
   },
   "chart": {
     "title": "Température mondiale jusqu'en {year}",
@@ -308,11 +310,10 @@
     "live": "Réchauffement évité en {year} : {value}."
   },
   "link": {
-    "headline": "En {year}, le monde s'est réchauffé de {total}.",
     "scenario": "Avec les leviers choisis, le monde serait plus frais de {avoided} en {year} que sans eux ({ssp}) : {parts}.",
     "intro": "L'essentiel du réchauffement vient des combustibles fossiles. L'agriculture y contribue autrement, surtout par le méthane des bovins et des rizières, et le protoxyde d'azote des engrais et des effluents. Ces gaz retiennent bien plus de chaleur que le CO₂ tant qu'ils durent.",
     "attributionTitle": "Réchauffement par cause depuis {from}",
-    "attributionText": "Chaque bande est le réchauffement dû à une cause ou, sous zéro, le refroidissement. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause. Les contours en pointillés sont les bandes sans les leviers. La ligne est la température mesurée.",
+    "attributionText": "Chaque bande est le réchauffement dû à une cause ou, sous zéro, le refroidissement. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause.",
     "attributionCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui. Chaque cause est le réchauffement qu'ajoutent ses émissions. La pollution de l'air refroidit : ses particules renvoient la lumière du soleil et éclaircissent les nuages. Les leviers de l'énergie, du chauffage et de l'industrie réduisent aussi la pollution de l'air des combustibles qu'ils ne brûlent plus : son refroidissement diminue quand ils agissent. Ce que la référence ajoute au scénario va dans la cause dont il relève : les émissions agricoles qui suivent la population, la croissance des centres de données, le carburant plus propre des navires, le pergélisol et le nombre d'humains. L'écart entre la température du scénario et la somme des causes va aussi dans Autres émissions humaines, pour que l'empilement rejoigne la courbe sans les leviers.",
     "attributionLabel": "Graphique empilé du réchauffement par cause de {from} à {year}, avec la température observée",
     "projection": "Projection",
@@ -338,7 +339,7 @@
       "n2o": "N₂O"
     },
     "gasTitle": "Réchauffement dû au {gas} par cause depuis {from}",
-    "gasText": "Chaque bande est le réchauffement dû aux émissions de ce gaz par une cause. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause. Les contours en pointillés sont les bandes sans les leviers. La pollution de l'air, les traînées des avions et les facteurs naturels ne sont pas des gaz à effet de serre : ils n'apparaissent que sous Tous les gaz.",
+    "gasText": "Chaque bande est le réchauffement dû aux émissions de ce gaz par une cause. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause. La pollution de l'air, les traînées des avions et les facteurs naturels ne sont pas des gaz à effet de serre : ils n'apparaissent que sous Tous les gaz.",
     "gasCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui. Chaque cause est le réchauffement qu'ajoutent ses émissions de ce gaz. Les autres sources et interactions sont le reste du réchauffement dû au gaz.",
     "gasOther": "Autres sources et interactions",
     "gasAttributionLabel": "Graphique empilé du réchauffement dû au {gas} par cause de {from} à {year}",
@@ -351,8 +352,7 @@
     "withoutLevers": "Sans les leviers",
     "withoutValue": "{value} ({without} sans les leviers)",
     "totalProjected": "Réchauffement projeté",
-    "totalModelled": "Réchauffement modélisé",
-    "parts": "Ce que chaque cause ajoute ou retire : {parts}."
+    "totalModelled": "Réchauffement modélisé"
   },
   "methodology": {
     "title": "Méthodologie",

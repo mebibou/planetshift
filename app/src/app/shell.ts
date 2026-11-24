@@ -1,5 +1,4 @@
 import { attempt } from './attempt';
-import { gatePopulation, populationControl } from '../levers/population/switch';
 import { DEFAULT_OPTIONS, type Options, type Scenario } from '../model/api';
 import { BASE_SCENARIO } from '../model/scenarios';
 import { decodeState, encodeState } from '../model/state';
@@ -11,13 +10,10 @@ export const stateFromQuery = (
   query: string,
   currentYear?: number,
 ): { scenario: Scenario; options: Options } =>
-  attempt(
-    () => gatePopulation(decodeState(modelQuery(query), currentYear), populationControl(query)),
-    {
-      scenario: BASE_SCENARIO,
-      options: DEFAULT_OPTIONS,
-    },
-  );
+  attempt(() => decodeState(modelQuery(query), currentYear), {
+    scenario: BASE_SCENARIO,
+    options: DEFAULT_OPTIONS,
+  });
 
 export const queryOf = (s: AppState, current: string): string =>
   buildQuery(

@@ -2,13 +2,10 @@ import type { Options } from '../../model/api';
 import type { Prepared } from '../../model/prepare';
 import { forcingResponseOf } from '../energy/model';
 import { totalWarming } from '../../model/climate';
-import type { LeverModule, PopulationContext, RunContext, WorldContext } from '../types';
-import { bandRecord } from '../../model/bands';
-import { addGas, gasVector, memoPer, ZERO_GAS } from '../../model/util';
+import type { LeverModule, PopulationContext } from '../types';
+import { memoPer } from '../../model/util';
 import { populationSpec } from './spec';
 import {
-  fertilityLag,
-  fewerChildren,
   hasPopulation,
   variantWorldPopulation,
   worldPopulation,
@@ -35,8 +32,6 @@ declare module '../../model/api' {
     population?: WorldPopulation | null;
   }
 }
-
-const FAMILY_PLANNING = 'familyPlanning';
 
 const worldCache = memoPer<Prepared, Record<number, number>>();
 
@@ -101,32 +96,11 @@ const countriesWithPeople = (ctx: PopulationContext) => {
 };
 
 /**
- * The scenario's population over the baseline's with education and voluntary family planning;
- * none at 0, or with the low projection, which already has half a child fewer.
- */
-const fewerOf = ({ prepared, scenario, options, currentYear, adoption }: RunContext) => {
-  const pop = prepared.data.population;
-  const a = adoption(FAMILY_PLANNING);
-  return a > 0 && options.population !== 'low' && options.people === undefined && hasPopulation(pop)
-    ? fewerChildren(pop, a, fertilityLag(pop, scenario.rampEnd, currentYear))
-    : null;
-};
-
-/** The farm emissions fewer people need, kg a year: the baseline's times the ratio, less one. */
-const fewerEmissions = (w: WorldContext, fewer: (year: number) => number) => {
-  const base = w.countries.reduce((a, c) => addGas(a, c.emissions), ZERO_GAS);
-  const path = w.years.map((y) =>
-    gasVector((g) => base[g] * w.baselineScale(g, y) * (fewer(y) - 1)),
-  );
-  return bandRecord(() => path);
-};
-
-/**
  * The world's population to 2100, one of the UN's projections: a method option, not a lever. It
  * changes the baseline and the scenario alike (through the population baseline's scale), so the
  * warming avoided moves only because the farm emissions the levers act on are larger or smaller.
- * With `people` set (a prototype behind ?popctl=people), a number of people reached in 2050 takes
- * its place, and every human emission follows it.
+ * With `people` set, a number of people reached by the year every lever is in place takes its
+ * place, and every human emission follows it.
  */
 export const population: LeverModule = {
   ...populationSpec,
@@ -155,23 +129,14 @@ export const population: LeverModule = {
           : null;
       return { warming: byCause && totalWarming(byCause, tYears), byCause };
     },
-    scenarioScale: fewerOf,
-    world: (ctx, w) => {
+    world: (ctx) => {
       const { prepared, options, currentYear } = ctx;
       const pop = prepared.data.population;
       const path = peopleOf({ prepared, options, currentYear });
-      const fewer = fewerOf(ctx);
       return {
-        ...(fewer && { extraEmissions: fewerEmissions(w, fewer) }),
         result: {
           population: hasPopulation(pop)
-            ? worldPopulation(
-                pop,
-                path ? 'medium' : options.population,
-                options.ssp,
-                options.baseline === 'population' || path !== null,
-                path,
-              )
+            ? worldPopulation(pop, path ? 'medium' : options.population, path)
             : null,
         },
       };

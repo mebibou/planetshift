@@ -20,7 +20,6 @@ import {
 } from './frame';
 import { ensoMarks, gapAt, inRange, zipBand, zipSeries, type EnsoMark } from './series';
 import { drawPopulationArea, peoplePoints, populationRow, withAxis } from './populationArea';
-import { pageControl } from '../levers/population/switch';
 
 export type { Range };
 export const RANGE_START: Record<Range, number> = { full: 1850, recent: 2000 };
@@ -329,9 +328,13 @@ const layoutOf = (plotEl: HTMLElement, end: number) => {
   };
 };
 
-/** The caption on the Paris levels, and on the policies band when it is drawn. */
-const milestoneText = (t: T, reaches2100: boolean): string =>
-  [t('milestones.caption'), reaches2100 ? t('milestones.policies.caption') : '']
+/** The caption on the Paris levels, and on the policies band and the population when drawn. */
+const milestoneText = (t: T, reaches2100: boolean, population: boolean): string =>
+  [
+    t('milestones.caption'),
+    reaches2100 ? t('milestones.policies.caption') : '',
+    population ? t('levers.population.chart.caption') : '',
+  ]
     .filter(Boolean)
     .join(' ');
 
@@ -369,15 +372,11 @@ export const temperatureChart = (
     { label: t('chart.enso.legend'), className: 'key-enso', toggle: 'enso' },
     { label: t('milestones.levels.short'), className: 'key-milestone', toggle: 'milestone' },
     { label: t('milestones.policies.short'), className: 'key-policies', toggle: 'policies' },
-    ...(pageControl() === 'people'
-      ? [
-          {
-            label: t('levers.population.chart.area'),
-            className: 'key-population-area',
-            toggle: 'population',
-          },
-        ]
-      : []),
+    {
+      label: t('levers.population.chart.area'),
+      className: 'key-population-area',
+      toggle: 'population',
+    },
   ]);
   const legendItem = (className: string) =>
     legend.querySelector(`.${className}`)?.closest('li') ?? null;
@@ -431,7 +430,7 @@ export const temperatureChart = (
       drawGap(f, x, y, s, end, t('chart.gap', { value: gapValue, year: end }));
     }
     caption.textContent = t('chart.caption', { gap: gapValue, year: end });
-    milestoneCaption.textContent = milestoneText(t, reaches2100);
+    milestoneCaption.textContent = milestoneText(t, reaches2100, people.length > 0);
     showItem(legendItem('key-natural'), s.naturalLine.length > 0);
     showItem(legendItem('key-enso'), marks.length > 0);
     showItem(legendItem('key-policies'), reaches2100);

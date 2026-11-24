@@ -1,5 +1,4 @@
 import { GROUP_CHOICES } from './groups';
-import { POPCTL_KEY } from '../levers/population/switch';
 import { CAUSE_GASES, type CauseGas } from '../chart/series';
 import {
   CHANGE_OF,
@@ -42,7 +41,7 @@ export interface UiState {
 
 export const DEFAULT_UI: UiState = {
   view: 'explore',
-  layer: 'change',
+  layer: 'emissions',
   changeOf: 'emissions',
   group: 'all',
   gas: 'co2e',
@@ -66,7 +65,7 @@ const UI_KEYS = {
   range: 'range',
   causeGas: 'causegas',
 };
-const KEPT_KEYS = ['data', POPCTL_KEY];
+const KEPT_KEYS = ['data'];
 const OWN_KEYS = [...Object.values(UI_KEYS), ...KEPT_KEYS];
 
 const oneOf = <V extends string>(values: readonly V[], value: string | null, fallback: V): V =>

@@ -7,7 +7,7 @@ import { prepare } from '../../model/prepare';
 import { runScenario } from '../../model/run';
 import { BASE_SCENARIO } from '../../model/scenarios';
 import { sum } from '../../model/util';
-import { inconsistentWith, variantRatio, variantWorldPopulation, VARIANTS } from './model';
+import { variantRatio, variantWorldPopulation, VARIANTS } from './model';
 
 const pop = data.population;
 const baselineIn = (r: ScenarioResult, year: number) =>
@@ -64,16 +64,13 @@ describe('world population', () => {
       run({ shift: 0.5 }, { population, baseline: 'ssp2' }),
     ) as [ScenarioResult, ScenarioResult];
     expect(low.temperature).toEqual(medium.temperature);
-    expect(low.population?.applies).toBe(false);
-    expect(medium.population?.applies).toBe(false);
   });
 
-  it('gives the chart the history, the three variants and the one chosen', () => {
+  it('gives the temperature chart the history, the three variants and the one chosen', () => {
     const r = run({}, { population: 'high' });
     expect(r.population?.variant).toBe('high');
     expect(r.population?.history.years[0]).toBe(1850);
     expect(Object.keys(r.population?.variants ?? {})).toEqual([...VARIANTS]);
-    expect(r.population?.applies).toBe(true);
     expect(
       runScenario(
         {
@@ -85,16 +82,6 @@ describe('world population', () => {
         CURRENT_YEAR,
       ).population,
     ).toBeNull();
-  });
-
-  it('flags the pairings that tell different stories', () => {
-    expect(inconsistentWith('low', 'ssp370')).toBe(true);
-    expect(inconsistentWith('high', 'ssp126')).toBe(true);
-    expect(inconsistentWith('medium', 'ssp370')).toBe(false);
-    expect(inconsistentWith('low', 'ssp126')).toBe(false);
-    expect(inconsistentWith('high', 'ssp245')).toBe(false);
-    expect(run({}, { population: 'low', ssp: 'ssp370' }).population?.inconsistent).toBe(true);
-    expect(run({}, { population: 'low', ssp: 'ssp245' }).population?.inconsistent).toBe(false);
   });
 });
 

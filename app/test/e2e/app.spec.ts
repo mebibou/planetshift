@@ -167,7 +167,7 @@ test('toggles the theme and keeps it', async ({ page }) => {
   await expect(page.locator('html')).toHaveAttribute('data-theme', theme ?? '');
 });
 
-test('Causes of warming shows the headline and the stacked warming chart', async ({ page }) => {
+test('Causes of warming shows the stacked warming chart', async ({ page }) => {
   await open(page);
   await expect(page.locator('.site-nav a')).toHaveCount(2);
   await page.locator('#chart-tab-cause').click();
@@ -184,7 +184,6 @@ test('Causes of warming shows the headline and the stacked warming chart', async
   );
   await expect(page.locator('.attribution-chart .stack-outline')).toHaveCount(0);
   await expect(page.locator('.gas-chart')).toHaveCount(0);
-  await expect(page.locator('.headline')).toContainText('°C');
   await noHorizontalScroll(page);
 });
 
@@ -371,10 +370,11 @@ test('the map layers and tooltip work', async ({ page }) => {
     'landCo2',
     'quality',
     'change',
+    'emissions',
   ]) {
     await page.locator(`label[for="layer-${layer}"]`).click();
     await expect(page).toHaveURL(
-      layer === 'change' ? /^(?!.*layer=)/ : new RegExp(`layer=${layer}`),
+      layer === 'emissions' ? /^(?!.*layer=)/ : new RegExp(`layer=${layer}`),
     );
     await expect(page.locator('.legend li').first()).toBeVisible();
   }
@@ -481,6 +481,7 @@ test('moving the shift recolours the map and raises the avoided warming', async 
       .evaluateAll((paths) => paths.map((p) => getComputedStyle(p).fill).join('|'));
   await page.locator('#chart-tab-avoided').click();
   await expect(page).toHaveURL(/chart=avoided/);
+  await expect(page.locator('.avoided-chart .chart-empty')).toHaveCount(0);
   const before = { fills: await fills(), top: await lastY(page, '.avoided-chart .scenario-line') };
   await openDiet(page);
   await page.locator('#shift').fill('80');
@@ -578,7 +579,7 @@ test('the land use layer draws the share of land farmed and keeps its URL key', 
 });
 
 test('the change layer shows the change in farmland', async ({ page }) => {
-  await open(page, `${START}&shift=50`);
+  await open(page, `${START}&shift=50&layer=change`);
   const fills = () =>
     page
       .locator('path.country.has-data')
@@ -762,54 +763,30 @@ test('the data-centre and permafrost options move the baseline', async ({ page }
   await expect.poll(baseline).not.toBe(start);
 });
 
-test('the population option moves the baseline and the projection the chart highlights', async ({
+test('the population option moves the baseline and the population area behind it', async ({
   page,
 }) => {
   await open(page);
-  const people = page.locator('.population-chart');
-  const chosen = people.locator('.population-variant.is-chosen');
-  await expect(people.locator('.population-history')).toHaveCount(1);
-  await expect(people.locator('.population-variant')).toHaveCount(3);
-  await expect(chosen).toHaveAttribute('data-variant', 'medium');
+  await expect(page.locator('.population-chart')).toHaveCount(0);
   await page.locator('details[data-group="options"] > summary').click();
   await page.locator('label[for="horizon-2100"]').click();
   const baseline = () => page.locator('.temperature-chart .baseline-line').getAttribute('d');
-  const start = await baseline();
+  const area = () => page.locator('.temperature-chart .population-area').getAttribute('d');
+  const [start, startArea] = [await baseline(), await area()];
   await page.locator('label[for="option-population-low"]').click();
   await expect(page).toHaveURL(/pop=low/);
-  await expect(chosen).toHaveAttribute('data-variant', 'low');
   await expect.poll(baseline).not.toBe(start);
-  const note = people.locator('.population-note');
-  await expect(note).toHaveText(
-    /^With this projection, the warming without the levers in 2100 moves by −\d[.\d]*.°C from the medium projection's\.$/,
-  );
-  await page.locator('label[for="option-ssp-ssp370"]').click();
-  await expect(people.locator('.population-note')).toContainText('SSP3-7.0');
-  await expect(people.locator('.population-note')).toContainText('moves by');
+  await expect.poll(area).not.toBe(startArea);
   await page.locator('label[for="option-population-medium"]').click();
   await expect(page).not.toHaveURL(/pop=/);
-  await expect(people.locator('.population-note')).toBeHidden();
   await noHorizontalScroll(page);
 });
 
-test('the population chart follows the temperature chart’s hover year, and back', async ({
-  page,
-}) => {
+test('the temperature chart’s hover gives the world population', async ({ page }) => {
   await open(page);
   const temperature = page.locator('.temperature-chart > .chart-plot');
-  const people = page.locator('.population-chart .chart-plot');
-  const target = temperature.locator('.hover-target');
-  await target.hover();
-  const year = await temperature.locator('.chart-tooltip strong').innerText();
-  await expect(people.locator('.chart-tooltip strong')).toHaveText(year);
-  await expect(people.locator('.crosshair')).not.toHaveCSS('display', 'none');
-  await page.mouse.move(0, 0);
-  await expect(people.locator('.chart-tooltip')).toBeHidden();
-  const own = people.locator('.hover-target');
-  const box = await own.boundingBox();
-  await own.hover({ position: { x: (box?.width ?? 0) / 4, y: (box?.height ?? 0) / 2 } });
-  const other = await people.locator('.chart-tooltip strong').innerText();
-  await expect(temperature.locator('.chart-tooltip strong')).toHaveText(other);
+  await temperature.locator('.hover-target').hover();
+  await expect(temperature.locator('.chart-tooltip')).toContainText('World population');
 });
 
 test('a reload restores the levers from the URL', async ({ page }) => {
@@ -1183,7 +1160,7 @@ test('the map and the chart download their data as CSV', async ({ page }) => {
   await page.locator('.download-toggle').click();
   await expect(page.locator('.download-toggle')).toHaveAttribute('aria-expanded', 'true');
   const map = await readDownload(page, () => page.locator('.download-map').click());
-  expect(map.name).toMatch(/^planetshift-map-change-emissions-co2e-shift50-\d{4}\.csv$/);
+  expect(map.name).toMatch(/^planetshift-map-emissions-co2e-shift50-\d{4}\.csv$/);
   expect(map.text.startsWith('﻿iso3,country,layer,measure,')).toBe(true);
   expect(map.text.trimEnd().split('\r\n')).toHaveLength(6);
   const chart = await readDownload(page, chartFormat(page, 'csv'));
@@ -1487,12 +1464,8 @@ test('every slider and switch of the panel has a note behind an (i)', async ({ p
   );
 });
 
-test('behind ?popctl=people, a number of people on Earth replaces the UN projection', async ({
-  page,
-}) => {
+test('a number of people on Earth can replace the UN projection', async ({ page }) => {
   await open(page);
-  await expect(page.locator('[data-control="people"]')).toHaveCount(0);
-  await open(page, `${START}&popctl=people`);
   const follow = page.locator('[data-control="people"] .people-follow input');
   const slider = page.locator('#people');
   await expect(follow).toBeChecked();
@@ -1515,7 +1488,6 @@ test('behind ?popctl=people, a number of people on Earth replaces the UN project
   const [start, startArea] = [await baseline(), await area()];
   await slider.fill('0');
   await expect(page).toHaveURL(/ppl=0(&|$)/);
-  await expect(page).toHaveURL(/popctl=people/);
   await expect.poll(baseline).not.toBe(start);
   await expect.poll(area).not.toBe(startArea);
   await slider.focus();
@@ -1528,35 +1500,6 @@ test('behind ?popctl=people, a number of people on Earth replaces the UN project
   await follow.check();
   await expect(slider).toHaveCount(0);
   await expect(page).not.toHaveURL(/ppl=/);
-  await noHorizontalScroll(page);
-});
-
-test('behind ?popctl=lever, education and voluntary family planning is a lever', async ({
-  page,
-}) => {
-  await open(page, `${START}&fp=50`);
-  await expect(page.locator('#lever-familyPlanning')).toHaveCount(0);
-  await expect(page).not.toHaveURL(/fp=/);
-  await open(page, `${START}&popctl=lever&to=2100`);
-  const fold = page.locator('details[data-group="levers-population"]');
-  await fold.locator('summary').click();
-  const slider = page.locator('#lever-familyPlanning');
-  await expect(slider).toBeVisible();
-  await slider.fill('100');
-  await expect(page).toHaveURL(/fp=100/);
-  await expect(page).toHaveURL(/popctl=lever/);
-  await expect(page.locator('.gap-annotation text')).toContainText('−');
-  await page.locator('[data-lever="familyPlanning"] button.info').click();
-  await expect(page.locator('[data-lever="familyPlanning"] .info-tip')).toContainText(
-    'voluntary family planning',
-  );
-  await page.keyboard.press('Escape');
-  await page.locator('details[data-group="options"] > summary').click();
-  await page.locator('label[for="option-population-low"]').click();
-  await expect(slider).toBeDisabled();
-  await expect(page.locator('[data-lever="familyPlanning"] .lever-foot')).toContainText(
-    'low projection',
-  );
   await noHorizontalScroll(page);
 });
 

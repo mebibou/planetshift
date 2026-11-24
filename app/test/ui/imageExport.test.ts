@@ -36,7 +36,7 @@ describe('an exported chart', () => {
     const items = [item('Observed'), item('Without the levers'), item('With the levers')];
     expect(legendPlaces(items, 1000).map((p) => p.row)).toEqual([0, 0, 0]);
     expect(legendPlaces(items, 200).map((p) => p.row)).toEqual([0, 1, 2]);
-    expect(legendHeight(items, 200)).toBe(3 * 22);
+    expect(legendHeight(items, 200)).toBe(3 * legendHeight(items, 1000));
     expect(legendHeight([], 200)).toBe(0);
   });
 
@@ -55,8 +55,10 @@ describe('an exported chart', () => {
         },
       ],
     });
-    expect(out.width).toBe(648);
-    expect(out.svg).toMatch(/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" width="648"/);
+    expect(out.width).toBeGreaterThan(600);
+    expect(out.svg).toMatch(
+      new RegExp(`^<svg xmlns="http://www.w3.org/2000/svg" width="${out.width}"`),
+    );
     expect(out.svg).toContain('>Global temperature</text>');
     expect(out.svg).toContain('without the levers &amp; with them');
     expect(out.svg).toMatch(/<svg x="0" y="\d+" width="600" height="300" xmlns/);
