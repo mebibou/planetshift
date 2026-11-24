@@ -16,7 +16,7 @@ const stackAndLine = (options: Partial<Options>, year: number) => {
 
 describe('the causes of warming', () => {
   it('add up to the line without the levers, whatever the baseline adds', () => {
-    [{}, { baseline: 'ssp2' as const }, { permafrost: 'on' as const }, { people: 0 }].forEach(
+    [{}, { baseline: 'ssp2' as const }, { permafrost: 'off' as const }, { people: 0 }].forEach(
       (options) => {
         const { stack, line } = stackAndLine(options, 2100);
         expect(stack).toBeCloseTo(line as number, 9);
@@ -24,8 +24,8 @@ describe('the causes of warming', () => {
     );
   });
 
-  it('shows permafrost as its own cause only when it is on', () => {
-    expect(stackAndLine({ permafrost: 'on' }, 2100).attribution.permafrost).toBeDefined();
-    expect(stackAndLine({}, 2100).attribution.permafrost).toBeUndefined();
+  it('shows permafrost as its own cause, on by default, and none when it is off', () => {
+    expect(stackAndLine({}, 2100).attribution.permafrost).toBeDefined();
+    expect(stackAndLine({ permafrost: 'off' }, 2100).attribution.permafrost).toBeUndefined();
   });
 });

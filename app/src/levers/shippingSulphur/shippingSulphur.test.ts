@@ -11,7 +11,8 @@ const withStep = (step: 'on' | 'off', levers = {}) =>
   runScenario(
     { ...data, departures: { ...DEPARTURES, shippingSulphur2020: step } },
     { ...BASE_SCENARIO, levers },
-    DEFAULT_OPTIONS,
+    // Permafrost answers the baseline's warming, so it would move what the levers avoid too.
+    { ...DEFAULT_OPTIONS, permafrost: 'off' },
     CURRENT_YEAR,
   );
 const at = (r: ScenarioResult, year: number, band: 'median' | 'p05' | 'p95' = 'median') =>

@@ -299,9 +299,9 @@ describe('energy levers and new options in the URL', () => {
         renewableElectricity: 0.8,
       },
     };
-    const options: Options = { ...DEFAULT_OPTIONS, dataCentres: 'ssp', permafrost: 'on' };
+    const options: Options = { ...DEFAULT_OPTIONS, dataCentres: 'ssp', permafrost: 'off' };
     expect(encodeState(scenario, options)).toBe(
-      'sea=40&ev=50&et=25&fl=30&saf=10&cs=100&re=80&dc=ssp&pf=on',
+      'sea=40&ev=50&et=25&fl=30&saf=10&cs=100&re=80&dc=ssp&pf=off',
     );
     expect(decodeState(encodeState(scenario, options))).toEqual({ scenario, options });
   });
@@ -309,7 +309,7 @@ describe('energy levers and new options in the URL', () => {
     const { scenario, options } = decodeState('ev=abc&fl=150&re=-5&et=20&dc=x&pf=maybe');
     expect(scenario.levers).toEqual({ electricTrucks: 0.2 });
     expect(options.dataCentres).toBe('iea');
-    expect(options.permafrost).toBe('off');
+    expect(options.permafrost).toBe('on');
   });
   it('ignore the data centres on clean power of an old URL, now part of renewable electricity', () => {
     expect(decodeState('re=50&cdc=100').scenario.levers).toEqual({ renewableElectricity: 0.5 });

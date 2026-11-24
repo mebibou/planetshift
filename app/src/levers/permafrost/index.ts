@@ -49,7 +49,9 @@ const releaseOf = (
 
 const ownCause = (byGas: Record<Gas, number[]>): CauseWarming => ({
   byCause: { permafrost: sumOfGases(byGas) },
-  byGas: Object.fromEntries(GASES.map((g) => [g, { permafrost: byGas[g] }])),
+  byGas: Object.fromEntries(
+    GASES.filter((g) => byGas[g].some((v) => v !== 0)).map((g) => [g, { permafrost: byGas[g] }]),
+  ),
 });
 
 /**

@@ -20,7 +20,7 @@ export const permafrostSpec: LeverSpec = {
   id: ID,
   departure: 'permafrost',
   levers: [],
-  options: [option(ID, 'permafrost', 'pf', ['off', 'on'])],
+  options: [option(ID, 'permafrost', 'pf', ['on', 'off'])],
   files: [],
   ui: {},
   methodology: { coveredBy: 'climate' },

@@ -62,7 +62,7 @@ describe.skipIf(real === null)('the breakdown on the real data', () => {
       levers: { ...sample.levers, cleanHeating: 0.5, cleanIndustry: 0.5 },
     };
     const run = (s: Scenario, o: Partial<Options>) =>
-      runScenario(data, s, { ...DEFAULT_OPTIONS, ...o }, CURRENT_YEAR).summary;
+      runScenario(data, s, { ...DEFAULT_OPTIONS, permafrost: 'off', ...o }, CURRENT_YEAR).summary;
     const familyOfLever = (id: string) =>
       MODULES.find((m) => m.levers.some((l) => l.id === id))?.family ?? '';
     const on = run(scenario, { regrowth: 'natural' });
