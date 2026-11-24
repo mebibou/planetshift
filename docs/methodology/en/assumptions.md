@@ -203,7 +203,7 @@ The other sources are CC BY 4.0, public domain, the Open Government Licence, Apa
 - The legume mix (60% pulses, 20% soybeans, 20% cereals). See [The shift](#method-shift).
 - The plant-milk mix (50% soybeans, 50% oats). See [The shift](#method-shift).
 - Each practice's applicable share by country, a judgement no source gives. See [Farm practices](#method-practices).
-- Cover crops' quarter of cropland and their rate's independence from climate, and enhanced weathering's rates by climate zone and the fifth taken off for logistics: the meta-analysis could be read only in its abstract, and the weathering studies give neither. See [Carbon in farmland](#method-removals).
+- Cover crops' quarter of cropland and their rate's independence from climate, and enhanced weathering's ratios between climate zones (1.5 in the moist tropics, 0.4–0.5 in dry croplands): the meta-analysis could be read only in its abstract, and the weathering studies give no such ratio. See [Carbon in farmland](#method-removals).
 - Shipping's 0.85 Gt, read only where others quote the IEA, and the road split of 60% passengers and 40% freight, which the IEA's shares bound (over 60% for cars and vans, about a third for trucks) without giving vans'. See [Energy and transport](#method-sectors).
 - An electric car's 0.15–0.22 kWh/km. See [Energy and transport](#method-sectors).
 - Steel's and cement's cuts at full adoption (90%, 80%) and cement's electricity per kg avoided, and buildings' 3.0 Gt of direct CO₂, read only in a search summary of the IEA's page. See [Buildings and industry](#method-industry).

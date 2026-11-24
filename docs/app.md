@@ -70,7 +70,7 @@ Each lever's adoption is a percentage under the key its module declares. A lever
 | `practices` | `fa` feed additives, `bf` breeding and feed, `mm` manure, `rw` rice water, `ne` nitrogen efficiency, `fe` farm energy |
 | `waste` | `fw` food waste, `sl` supply losses |
 | `deforestation` | `df` deforestation |
-| `removals` | `cc` cover crops, `af` agroforestry, `bc` biochar, `ew` rock dust |
+| `removals` | `cc` cover crops, `af` agroforestry, `bc` biochar, `ew` rock dust (experimental) |
 | `energy` | `ev` electric cars, `et` electric trucks, `fl` less flying, `saf` clean aviation fuel, `cs` clean shipping, `re` renewable electricity |
 | `industry` | `ch` clean heating, `ci` clean industry |
 
