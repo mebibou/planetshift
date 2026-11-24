@@ -11,8 +11,10 @@ import {
   type Layer,
 } from '../map/layers';
 
-export const VIEWS = ['explore', 'methodology'] as const;
+export const VIEWS = ['explore', 'methodology', 'deeptime'] as const;
 export type View = (typeof VIEWS)[number];
+/** The views the header lists by default; the deep-time prototype only once opened by its URL. */
+export const NAV_VIEWS: readonly View[] = ['explore', 'methodology'];
 
 export const CHARTS = ['temperature', 'avoided', 'cause'] as const;
 export type ChartTab = (typeof CHARTS)[number];

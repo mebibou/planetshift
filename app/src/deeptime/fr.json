@@ -1,0 +1,131 @@
+{
+  "title": "La température à travers les temps géologiques",
+  "prototype": "Prototype",
+  "intro": "La température à la surface de la Terre depuis 485 millions d'années, jusqu'à ce scénario en 2100. Zoomez avec la molette ou en pinçant, faites glisser pour vous déplacer, ou choisissez une période.",
+  "context": "La Terre a été bien plus chaude qu'aujourd'hui pendant des millions d'années, avec d'autres continents, peu ou pas de glace, des mers plus hautes de dizaines de mètres, et sans êtres humains. Ce qui est nouveau, c'est la vitesse. Le réchauffement actuel est bien plus rapide que tout changement que ces relevés peuvent montrer. Il touche huit milliards de personnes, qui dépendent d'une agriculture née dans le climat stable des 10 000 dernières années.",
+  "presets": "Période",
+  "preset": {
+    "phanerozoic": "485 Ma",
+    "cenozoic": "66 Ma",
+    "glacial": "24 000 ans",
+    "commonEra": "2 000 ans",
+    "industrial": "1850–2100"
+  },
+  "move": "Se déplacer et zoomer",
+  "panLeft": "Plus tôt",
+  "panLeftIcon": "←",
+  "panRight": "Plus tard",
+  "panRightIcon": "→",
+  "zoomIn": "Zoomer",
+  "zoomInIcon": "+",
+  "zoomOut": "Dézoomer",
+  "zoomOutIcon": "−",
+  "keys": "La température à travers les temps géologiques. Les flèches gauche et droite vont plus tôt ou plus tard. Les flèches haut et bas zooment et dézooment.",
+  "chartLabel": "Réchauffement par rapport à 1850–1900, de {from} à {to}",
+  "ago": {
+    "myr": "il y a {n} millions d'années",
+    "kyr": "il y a {n} milliers d'années"
+  },
+  "bce": "{year} av. J.-C.",
+  "axis": {
+    "myr": "Millions d'années avant aujourd'hui",
+    "kyr": "Milliers d'années avant aujourd'hui",
+    "year": "Année"
+  },
+  "yAxis": "°C par rapport à 1850–1900",
+  "paris": "{level} °C · Paris",
+  "end": {
+    "baseline": "2100 : {value} sans les leviers",
+    "scenario": "{value} avec les leviers",
+    "same": "2100 : {value}"
+  },
+  "series": {
+    "phanda": "PhanDA, moyennes par étage (5–95 %)",
+    "cenozoic": "CENOGRID en température mondiale (GIEC AR6)",
+    "lgmr": "LGMR, moyennes sur 200 ans (5–95 %)",
+    "pages2k": "PAGES 2k, moyennes sur 10 ans (5–95 %)",
+    "observed": "Observé",
+    "baseline": "Sans les leviers",
+    "scenario": "Avec les leviers"
+  },
+  "caption": "Chaque série est aussi détaillée que ses relevés le permettent. L'axe du temps est étiré vers le présent : sur toute période, une année au bord droit prend jusqu'à trois fois la place d'une année au bord gauche.",
+  "eventsTitle": "Repères",
+  "markersHint": "Choisissez-en un pour y zoomer la frise.",
+  "events": {
+    "ordovician": {
+      "short": "Fin de l'Ordovicien",
+      "note": "Il y a environ 445 millions d'années : la première des cinq extinctions de masse, pendant une courte glaciation."
+    },
+    "devonian": {
+      "short": "Dévonien supérieur",
+      "note": "Il y a environ 372 millions d'années : la deuxième extinction de masse, par vagues, avec une perte d'oxygène des océans."
+    },
+    "permian": {
+      "short": "Fin du Permien",
+      "note": "Il y a environ 252 millions d'années : la plus grande, avec d'énormes émissions volcaniques de CO₂ et un fort réchauffement."
+    },
+    "triassic": {
+      "short": "Fin du Trias",
+      "note": "Il y a environ 201 millions d'années : avec le CO₂ volcanique de l'ouverture de l'Atlantique."
+    },
+    "cretaceous": {
+      "short": "Fin du Crétacé",
+      "note": "Il y a 66 millions d'années : un astéroïde a mis fin aux dinosaures non aviens."
+    },
+    "petm": {
+      "short": "MTPE",
+      "note": "Il y a environ 56 millions d'années : le maximum thermique du passage Paléocène-Éocène, un coup de chaud quand une grande quantité de carbone est entrée dans l'air en quelques milliers d'années."
+    },
+    "lgm": {
+      "short": "Dernier maximum glaciaire",
+      "note": "Il y a environ 21 000 ans : des calottes sur l'Amérique du Nord et le nord de l'Europe. LGMR place cette époque environ 7 °C sous 1850–1900."
+    },
+    "agriculture": {
+      "short": "Premières cultures",
+      "note": "Il y a environ 11 500 ans : l'agriculture naît en Asie du Sud-Ouest, quand le climat se réchauffe et se stabilise."
+    },
+    "industrial": {
+      "short": "1850",
+      "note": "L'ère industrielle : le charbon, puis le pétrole et le gaz. 1850–1900 est la référence de toutes les séries ici."
+    }
+  },
+  "extinctions": "Les cinq extinctions de masse sont allées de pair avec de grands changements du climat et du cycle du carbone. Song et al. (2021) relient les grandes extinctions marines à un réchauffement de plus de 5,2 °C, à plus de 10 °C par million d'années. Ces chiffres sont des seuils, pas des dates. Les chercheurs débattent de savoir si une sixième a commencé. Aucune source n'en donne la date.",
+  "scenario": {
+    "title": "Ce scénario en 2100",
+    "text": "D'après les réglages d'Explorer, avec le reste du monde sur {ssp} : {without} sans les leviers et {with} avec, par rapport à 1850–1900.",
+    "none": "D'après les réglages d'Explorer, avec le reste du monde sur {ssp} : {value} par rapport à 1850–1900. Aucun levier n'est réglé dans Explorer, il n'y a donc pas de seconde courbe.",
+    "scale": "L'écart que font les leviers se voit sur les périodes 1850–2100 et 2 000 ans. Sur des périodes plus longues, il est trop petit pour se voir sur le graphique. À l'échelle des temps géologiques, ce qui compte est la vitesse du réchauffement, pas son point d'arrivée."
+  },
+  "rates": {
+    "title": "À quelle vitesse : °C par siècle",
+    "value": "{value} °C par siècle",
+    "slower": "{times} fois plus lent que les 50 dernières années",
+    "threshold": "Réchauffement lié aux grandes extinctions marines (Song et al. 2021 : plus de 10 °C par million d'années)",
+    "holocene": "Holocène, d'il y a 9 000 ans à 1850 (LGMR)",
+    "deglacialMean": "Fin de la dernière glaciation, d'il y a 18 000 à 11 000 ans (LGMR)",
+    "deglacialFastest": "Les 1 000 ans les plus rapides de la fin de la glaciation (LGMR)",
+    "observed": "Observé, 50 dernières années (tendance)",
+    "projected": "Ce scénario sans les leviers, {from}–2100",
+    "note": "Les vitesses passées sont des moyennes sur mille ans ou plus. Un pic bref ne s'y verrait pas. Même ainsi, le changement le plus rapide des 24 000 ans de LGMR est bien plus lent que celui d'aujourd'hui."
+  },
+  "offsets": {
+    "title": "Comment les séries partagent une même référence",
+    "phanda": "PhanDA (Judd et al. 2024, CC BY 4.0) donne des températures absolues. Planetshift ajoute {offset} °C, pour que sa moyenne de l'Holocène égale celle de LGMR.",
+    "cenozoic": "L'encadré 2.1 du GIEC AR6 convertit CENOGRID (Westerhold et al. 2020) en température mondiale avec les formules de Hansen et al. (2013) (CC BY 4.0). L'AR6 a ajouté {offset} °C pour passer de 1961–1990 à 1850–1900. Les données publiées par l'AR6 s'arrêtent il y a 33,5 millions d'années : Planetshift applique la même formule aux données de CENOGRID elles-mêmes jusqu'à il y a 66 millions d'années, y compris le MTPE.",
+    "lgmr": "LGMR (Osman et al. 2021, NOAA NCEI, CC0) donne des températures absolues. Planetshift ajoute {offset} °C, pour que ses 200 dernières années (1750–1950) tiennent lieu de 1850–1900.",
+    "pages2k": "PAGES 2k (2019), comme dans la figure 2.11a du GIEC AR6 (CC BY 4.0), de 1 à 1849. L'AR6 a ajouté {offset} °C.",
+    "recent": "Observé et projeté : les séries d'Explorer, déjà par rapport à 1850–1900.",
+    "disagree": "Là où PhanDA et la série CENOGRID se recouvrent, un étage de PhanDA et la série CENOGRID moyennée sur lui diffèrent au plus d'environ 7 °C. Le plus grand écart est au Miocène, il y a 23 à 5 millions d'années. Elles viennent de méthodes différentes, et toutes deux sont incertaines.",
+    "resolution": "Les points de PhanDA sont des moyennes sur des étages géologiques longs de 11 700 ans à 21,6 millions d'années. Un pic comme celui d'aujourd'hui n'apparaîtrait pas dans un seul étage, si bien que la courbe ne peut pas montrer qu'aucun pic de ce genre n'a eu lieu avant."
+  },
+  "failed": "Les données des temps géologiques n'ont pas pu être chargées.",
+  "hover": {
+    "value": "{value} °C",
+    "range": "{value} °C ({lo} à {hi})"
+  },
+  "table": {
+    "show": "Afficher les données en tableau",
+    "caption": "Réchauffement par rapport à 1850–1900 en douze points de la période affichée, avec la fourchette de 5 à 95 % quand la série en a une.",
+    "when": "Quand"
+  }
+}

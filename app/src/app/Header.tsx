@@ -2,7 +2,7 @@ import { useEffect, useRef, type MouseEvent } from 'react';
 import { LANGS, type Lang, type T } from '../i18n/i18n';
 import { PlanetMark } from './Logo';
 import type { Theme } from './theme';
-import { VIEWS, type View } from './url';
+import { NAV_VIEWS, type View } from './url';
 
 export interface HeaderProps {
   t: T;
@@ -57,7 +57,7 @@ export const Header = ({ t, lang, view, theme, go, setLang, toggleTheme }: Heade
         <p className="tagline">{t('header.tagline')}</p>
       </div>
       <nav className="site-nav" aria-label={t('header.nav')}>
-        {VIEWS.map((v) => (
+        {NAV_VIEWS.map((v) => (
           <a
             key={v}
             href={`?view=${v}`}
