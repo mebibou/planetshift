@@ -1,0 +1,34 @@
+{
+  "year": 2024,
+  "byCountry": {
+    "FRA": {
+      "dairy": 1820000,
+      "ruminantMeat": 6020000,
+      "pigMeat": 760000,
+      "other": 120000
+    },
+    "USA": {
+      "dairy": 4800000,
+      "ruminantMeat": 31400000,
+      "pigMeat": 4600000,
+      "other": 2400000
+    },
+    "IND": {
+      "dairy": 47500000,
+      "ruminantMeat": 13600000,
+      "pigMeat": 230000,
+      "other": 14100000
+    },
+    "BRA": {
+      "dairy": 5200000,
+      "ruminantMeat": 69900000,
+      "pigMeat": 1200000,
+      "other": 2300000
+    }
+  },
+  "wild": {
+    "land": 22000000,
+    "marine": 39000000
+  },
+  "source": "Synthetic fixture"
+}

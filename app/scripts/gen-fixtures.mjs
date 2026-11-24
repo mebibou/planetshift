@@ -826,6 +826,19 @@ write('landuse.json', {
   source: 'Synthetic fixture',
 });
 
+// farmed mammals' live weight, tonnes by the food group each herd follows; NGA left without data
+write('mammals.json', {
+  year: 2024,
+  byCountry: {
+    FRA: { dairy: 1.82e6, ruminantMeat: 6.02e6, pigMeat: 7.6e5, other: 1.2e5 },
+    USA: { dairy: 4.8e6, ruminantMeat: 3.14e7, pigMeat: 4.6e6, other: 2.4e6 },
+    IND: { dairy: 4.75e7, ruminantMeat: 1.36e7, pigMeat: 2.3e5, other: 1.41e7 },
+    BRA: { dairy: 5.2e6, ruminantMeat: 6.99e7, pigMeat: 1.2e6, other: 2.3e6 },
+  },
+  wild: { land: 2.2e7, marine: 3.9e7 },
+  source: 'Synthetic fixture',
+});
+
 // carbon stored in farmland, t CO₂ per ha a year
 const removal = (rate, appliesTo, maxShare, years) => ({
   rate: Object.fromEntries(

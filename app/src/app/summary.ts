@@ -10,7 +10,9 @@ import {
 } from '../i18n/format';
 import { SUMMARY_MODULES } from '../levers/registry';
 import type { Format } from '../levers/types';
+import type { Mammals } from '../data/types';
 import type { Options, ScenarioResult } from '../model/api';
+import { mammalRatio, type MammalRatio } from './mammals';
 import { gasChange, landStat, type PerCapita } from './summaryModel';
 import type { Milestone, Milestones } from './milestones';
 
@@ -94,9 +96,31 @@ const beforeAfter = (t: T, locale: string, before: number, after: number, digits
     after: formatNumber(locale, after, digits),
   });
 
+/** Farmed mammals for each wild one, today and with the levers, and the tonnes behind it. */
+export const mammalStat = (t: T, locale: string, m: MammalRatio): Stat => ({
+  label: t('summary.mammals.label'),
+  value: t('summary.beforeAfter', {
+    before: t('summary.mammals.ratio', { value: formatNumber(locale, m.before, 1) }),
+    after: t('summary.mammals.ratio', { value: formatNumber(locale, m.after, 1) }),
+  }),
+  detail: t('summary.mammals.detail', {
+    before: formatMass(locale, m.farmedBefore * 1000),
+    after: formatMass(locale, m.farmedAfter * 1000),
+    wild: formatMass(locale, m.wild * 1000),
+  }),
+  className: 'stat-mammals',
+});
+
+/** The mammals' figure, where the data has farmed and wild mammals. */
+const mammalStats = (t: T, locale: string, result: ScenarioResult, wild?: Mammals['wild']) => {
+  const m = mammalRatio(result.countries, wild);
+  return m ? [mammalStat(t, locale, m)] : [];
+};
+
 /**
  * The summary's figures: the warming avoided by the horizon, the emissions avoided as CO₂e and by
- * gas, the land freed, each module's own figure, and the protein and calories per person.
+ * gas, the land freed, farmed against wild mammals, each module's own figure, and the protein and
+ * calories per person.
  */
 export const summaryStats = (
   t: T,
@@ -106,6 +130,7 @@ export const summaryStats = (
   completeYear: number,
   horizon: '2050' | '2100',
   options: Options,
+  wild?: Mammals['wild'],
 ): Stat[] => {
   const s = result.summary;
   const w = horizon === '2100' ? s.avoidedWarming2100 : s.avoidedWarming2050;
@@ -144,6 +169,7 @@ export const summaryStats = (
       }),
       className: 'stat-land',
     },
+    ...mammalStats(t, locale, result, wild),
     ...SUMMARY_MODULES.flatMap((m) => {
       const own = m.ui.stat?.(result, options, completeYear, format);
       return own ? [own] : [];

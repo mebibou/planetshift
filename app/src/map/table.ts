@@ -52,6 +52,12 @@ const tierOf = (c: CountryResult, worst: TierSource | null) => ({
   source: worst?.source ?? (c.worstSource || null),
 });
 
+/** Whether the layer has data for a country: land-use CO₂ and farmed mammals only where the files do. */
+const listed = (c: CountryResult, spec: LayerSpec, landUse: LandUseCo2): boolean =>
+  spec.layer === 'landCo2'
+    ? landUse.has(c.iso3)
+    : spec.layer !== 'mammals' || (c.mammals > 0 && c.landArea > 0);
+
 export const tableRows = (
   countries: CountryResult[],
   spec: LayerSpec,
@@ -60,7 +66,7 @@ export const tableRows = (
   landUse: LandUseCo2 = new Map(),
 ): TableRow[] =>
   countries
-    .filter((c) => spec.layer !== 'landCo2' || landUse.has(c.iso3))
+    .filter((c) => listed(c, spec, landUse))
     .map((c) => {
       const ba = beforeAfter(c, spec, landUse);
       return {

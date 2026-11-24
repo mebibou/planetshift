@@ -73,6 +73,7 @@ const UNITS: Record<Measure, (spec: LayerSpec) => string> = {
   landShare: () => 'share of land area',
   deforestation: () => 'ha',
   landCo2: () => 'kg CO2',
+  mammals: () => 't live weight per km2',
   emissions: (spec) => (spec.gas === 'co2e' ? 'kg CO2e (GWP100)' : `kg ${spec.gas.toUpperCase()}`),
 };
 

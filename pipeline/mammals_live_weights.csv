@@ -1,0 +1,13 @@
+species,animal,north_america,western_europe,eastern_europe,oceania,latin_america,africa,middle_east,asia,indian_subcontinent,ref,reason
+960,"Cattle, dairy",604,600,550,500,400,275,275,350,275,"IPCC 2006, Vol. 4, Table 10A-4","Average dairy cow mass of each region, the typical animal mass IPCC uses for manure"
+961,"Cattle, non-dairy",389,420,391,330,305,173,173,319,110,"IPCC 2006, Vol. 4, Table 10A-5","Average other cattle mass of each region, calves and young stock included"
+946,Buffalo,380,380,380,380,380,380,380,380,295,"IPCC 2006, Vol. 4, Table 10A-6","Average buffalo mass; the regions the table marks not applicable take the 380 kg of every other region outside India, as in Greenspoon et al. (2023)"
+976,Sheep,48.5,48.5,48.5,48.5,28,28,28,28,28,"IPCC 2006, Vol. 4, Table 10A-9","Developed countries (North America, Europe, Oceania) and developing countries, the two columns IPCC gives"
+1016,Goats,38.5,38.5,38.5,38.5,30,30,30,30,30,"IPCC 2006, Vol. 4, Table 10A-9","Developed and developing countries as for sheep"
+1126,Camels,217,217,217,217,217,217,217,217,217,"IPCC 2006, Vol. 4, Table 10A-9","One mass for every region; Table 10.10 gives 570 kg for enteric methane, but the manure table's typical mass is the one Greenspoon et al. (2023) used, so the two totals compare like with like"
+1177,Llamas,65,65,65,65,65,65,65,65,65,"IPCC 2006, Vol. 4, Table 10.10","The alpaca's live weight, the only South American camelid IPCC gives a mass for; llamas are heavier, so this counts them low"
+1049,"Swine, market",46,50,50,45,28,28,28,28,28,"IPCC 2006, Vol. 4, Table 10A-7","Average market swine mass of each region"
+1051,"Swine, breeding",198,198,180,180,28,28,28,28,28,"IPCC 2006, Vol. 4, Table 10A-8","Average breeding swine mass of each region"
+1096,Horses,377,377,377,377,238,238,238,238,238,"IPCC 2006, Vol. 4, Table 10A-9","Developed and developing countries as for sheep; Table 10.10 gives 550 kg, the manure table's mass is kept as for camels"
+1107,Asses,130,130,130,130,130,130,130,130,130,"IPCC 2006, Vol. 4, Table 10A-9","Mules and asses share one mass; Table 10.10 gives 245 kg, the manure table's mass is kept as for camels"
+1110,Mules and hinnies,130,130,130,130,130,130,130,130,130,"IPCC 2006, Vol. 4, Table 10A-9","Mules and asses share one mass, as for asses"

@@ -78,6 +78,22 @@ describe('table rows', () => {
     expect(r?.change).toBeNull();
   });
 
+  it('lists only the countries with farmed mammals and a land area, without a tier', () => {
+    const rows = tableRows(
+      [
+        countryResult({ mammals: 1e6, mammalsChange: -5e5 }),
+        countryResult({ iso3: 'USA', mammals: 0 }),
+        countryResult({ iso3: 'DEU', landArea: 0 }),
+      ],
+      spec({ layer: 'mammals' }),
+      namesOf,
+      () => ({ tier: 3, source: 'x' }),
+    );
+    expect(rows.map((r) => [r.iso3, r.before, r.after, r.change, r.tier])).toEqual([
+      ['FRA', 1e6 / 50, 5e5 / 50, -0.5, null],
+    ]);
+  });
+
   it('lists only the countries with land-use data, today and with the levers', () => {
     const rows = tableRows(
       [countryResult(), countryResult({ iso3: 'USA' })],

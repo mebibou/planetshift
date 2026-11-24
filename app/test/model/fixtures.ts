@@ -19,6 +19,7 @@ import population from '../../public/fixtures/population.json';
 import industry from '../../public/fixtures/industry.json';
 import coemissions from '../../public/fixtures/coemissions.json';
 import people from '../../public/fixtures/people.json';
+import mammals from '../../public/fixtures/mammals.json';
 
 /** The fixtures in public/fixtures, as the app loads them. */
 export const loadFixtures = (): ModelData =>
@@ -42,6 +43,7 @@ export const loadFixtures = (): ModelData =>
     industry,
     coemissions,
     people,
+    mammals,
   }) as unknown as ModelData;
 
 export const CURRENT_YEAR = 2026;

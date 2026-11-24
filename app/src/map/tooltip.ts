@@ -1,6 +1,6 @@
 import type { CountryResult } from '../model/api';
 import type { T } from '../i18n/i18n';
-import { formatArea, formatMass, formatPercent } from '../i18n/format';
+import { formatArea, formatMass, formatPercent, formatPerKm2 } from '../i18n/format';
 import {
   beforeAfter,
   farmland,
@@ -28,6 +28,7 @@ const FORMATS: Record<Measure, (locale: string, v: number) => string> = {
   deforestation: formatArea,
   landShare: formatShare,
   landCo2: formatMass,
+  mammals: formatPerKm2,
 };
 
 /** A layer's quantity in its unit: tonnes of product, kg of gas, hectares, or a share of land. */
@@ -47,6 +48,15 @@ const clearingCo2Row = (
   t('map.tooltip.beforeAfter', {
     before: formatMass(locale, c.deforestationCo2 ?? 0),
     after: formatMass(locale, (c.deforestationCo2 ?? 0) + (c.deforestationChange ?? 0)),
+  }),
+];
+
+/** Farmed mammals' live weight, today and with the levers. */
+const mammalsRow = (c: CountryResult, t: T, locale: string): [string, string] => [
+  t('map.tooltip.mammalsWeight'),
+  t('map.tooltip.beforeAfter', {
+    before: formatMass(locale, c.mammals * 1000),
+    after: formatMass(locale, (c.mammals + c.mammalsChange) * 1000),
   }),
 ];
 
@@ -106,6 +116,10 @@ const MEASURE_TOOLTIPS: Record<
   land: {
     what: (t) => t('map.tooltip.land'),
     extra: (c, t, locale) => ({ rows: landRows(c, t, locale) }),
+  },
+  mammals: {
+    what: (t) => t('map.tooltip.mammals'),
+    extra: (c, t, locale) => ({ rows: [mammalsRow(c, t, locale)] }),
   },
   landCo2: {
     what: (t) => t('map.tooltip.landCo2'),

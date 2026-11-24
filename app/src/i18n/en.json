@@ -185,6 +185,7 @@
       "land": "Farmland",
       "deforestation": "Deforestation",
       "landCo2": "Land-use CO₂",
+      "mammals": "Farmed mammals",
       "change": "Change",
       "quality": "Data quality"
     },
@@ -201,7 +202,8 @@
       "quality": "Least precise source of emission data used",
       "deforestation": "Forest cleared for farming with the levers, a year",
       "landCo2": "Net CO₂ from land-use change with the levers, a year (today's: mean of {from}–{to})",
-      "landShare": "Share of the land farmed (cropland and pasture) with the levers"
+      "landShare": "Share of the land farmed (cropland and pasture) with the levers",
+      "mammals": "Farmed mammals' live weight per km² of land with the levers"
     },
     "notes": {
       "production": "Where food is grown, not where it is eaten.",
@@ -210,7 +212,8 @@
       "change": "Each country's output changes by the same share as world demand for each food. Exporters change along with the countries that buy from them.",
       "quality": "Neighbouring countries can differ only because their figures come from different sources.",
       "deforestation": "Forest cleared for crops and pasture in each country once the levers are fully in place, in hectares a year. The tooltip gives today's clearing, the change and the CO₂ it releases.",
-      "landCo2": "Each country's net CO₂ from all land-use change: forest cleared for any reason, peat drained and other changes, less forest regrowing on abandoned land. Blue countries take up more than they release. Today's figure is the mean of the Global Carbon Budget's three bookkeeping models over the years shown. The levers change two parts of it. One is the forest cleared for farming (the Deforestation layer shows its area). The other is the CO₂ that freed farmland takes up as it grows back, when Freed farmland is set to Grows back in the options. The rest of each country's land-use CO₂ stays as it is."
+      "landCo2": "Each country's net CO₂ from all land-use change: forest cleared for any reason, peat drained and other changes, less forest regrowing on abandoned land. Blue countries take up more than they release. Today's figure is the mean of the Global Carbon Budget's three bookkeeping models over the years shown. The levers change two parts of it. One is the forest cleared for farming (the Deforestation layer shows its area). The other is the CO₂ that freed farmland takes up as it grows back, when Freed farmland is set to Grows back in the options. The rest of each country's land-use CO₂ stays as it is.",
+      "mammals": "Cattle, buffalo, sheep, goats, pigs, camels, llamas, horses, asses and mules as FAOSTAT counts them, times IPCC's typical live weight in each region, per km² of each country's land. Each herd grows or shrinks with the production of the food it gives. Animals kept for work stay. The summary sets the world's farmed mammals against its wild ones. The tooltip gives the tonnes."
     },
     "tooltip": {
       "noData": "No data for this country",
@@ -229,7 +232,9 @@
       "clearing": "Of which clearing for farming, with the levers",
       "regrowth": "Taken up by freed farmland regrowing, a year",
       "deforestationCo2": "CO₂ from the clearing, a year",
-      "landShare": "Share of the land farmed"
+      "landShare": "Share of the land farmed",
+      "mammals": "Farmed mammals per km² of land",
+      "mammalsWeight": "Live weight of farmed mammals"
     },
     "noClearing": "No clearing or no data",
     "views": {
@@ -298,6 +303,11 @@
     "landFreed": "Farmland freed",
     "landAdded": "Farmland added",
     "landDetail": "cropland {cropland}, pasture {pasture}; {share} of the world's farmland",
+    "mammals": {
+      "label": "Farmed mammals to wild ones, by weight",
+      "ratio": "{value} to 1",
+      "detail": "farmed {before} → {after} of live weight once the levers are in full; wild, on land and at sea, {wild} (Greenspoon et al. 2023)"
+    },
     "protein": "Protein per person",
     "kcal": "Calories per person",
     "beforeAfter": "{before} → {after}",
@@ -375,6 +385,7 @@
       "link": "Causes of warming",
       "deeptime": "Deep time",
       "impacts": "What the warming means",
+      "biodiversity": "Biodiversity",
       "options": "Options",
       "assumptions": "Assumptions",
       "limitations": "Limitations"

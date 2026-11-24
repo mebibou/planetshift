@@ -22,7 +22,13 @@ import {
   type Measure,
 } from '../map/layers';
 import { legendBins } from '../map/legend';
-import { colourScale, LAND_SHARE_THRESHOLDS, pickColours, thresholdsFor } from '../map/scales';
+import {
+  colourScale,
+  LAND_SHARE_THRESHOLDS,
+  MAMMAL_THRESHOLDS,
+  pickColours,
+  thresholdsFor,
+} from '../map/scales';
 import { TIERS, worstSource } from '../map/sources';
 import { tableRows, type TableRow } from '../map/table';
 import { formatMeasure, tooltipModel } from '../map/tooltip';
@@ -61,11 +67,17 @@ const valueFormatter = (spec: LayerSpec, t: T, locale: string) => (v: number) =>
       ? t(`tiers.${Math.round(v)}`)
       : formatMeasure(locale, measureOf(spec))(v);
 
+/** The layers whose bins are the same in every scenario, so a change shows in the colours. */
+const FIXED_THRESHOLDS: Partial<Record<Layer, number[]>> = {
+  land: LAND_SHARE_THRESHOLDS,
+  mammals: MAMMAL_THRESHOLDS,
+};
+
 /** The layer's colour scale: its kind, thresholds and colours, from the values it shows. */
 const paletteOf = (layer: Layer, values: ReadonlyMap<string, number | null>) => {
   const kind = scaleKind(layer);
   const numbers = [...values.values()].filter((v): v is number => v !== null);
-  const thresholds = layer === 'land' ? LAND_SHARE_THRESHOLDS : thresholdsFor(kind, numbers, 7);
+  const thresholds = FIXED_THRESHOLDS[layer] ?? thresholdsFor(kind, numbers, 7);
   const colours =
     kind === 'sequential'
       ? pickColours(LAYER_COLOURS[layer], thresholds.length + 1)
@@ -82,6 +94,7 @@ const MEASURE_TITLES: Record<Measure, (t: T, ui: UiState, years: readonly number
   landShare: (t) => t('map.legend.landShare'),
   land: (t) => t('map.legend.land'),
   landCo2: (t, _, [from, to]) => t('map.legend.landCo2', { from: from ?? '', to: to ?? '' }),
+  mammals: (t) => t('map.legend.mammals'),
 };
 
 const legendTitleOf = (t: T, ui: UiState, years: readonly number[]): string => {

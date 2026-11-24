@@ -7,6 +7,7 @@ export const LAYERS = [
   'land',
   'deforestation',
   'landCo2',
+  'mammals',
   'change',
   'quality',
 ] as const;
@@ -15,9 +16,19 @@ export const CHANGE_OF = ['production', 'emissions', 'land'] as const;
 export type ChangeOf = (typeof CHANGE_OF)[number];
 /**
  * What a layer measures: a quantity the Change layer also offers, the forest area cleared, the
- * share of a country's land that is farmed, or its net land-use CO₂.
+ * share of a country's land that is farmed, its net land-use CO₂, or its farmed mammals' live
+ * weight per km² of land.
  */
-export type Measure = ChangeOf | 'deforestation' | 'landShare' | 'landCo2';
+export type Measure = ChangeOf | 'deforestation' | 'landShare' | 'landCo2' | 'mammals';
+
+/** What each layer but Change measures, production where it is not listed. */
+const LAYER_MEASURES: Partial<Record<Layer, Measure>> = {
+  emissions: 'emissions',
+  land: 'landShare',
+  deforestation: 'deforestation',
+  landCo2: 'landCo2',
+  mammals: 'mammals',
+};
 export type GasChoice = Gas | 'co2e';
 export const GAS_CHOICES: GasChoice[] = ['co2e', ...GASES];
 export type GroupChoice = Group | 'all';
@@ -60,13 +71,7 @@ export interface BeforeAfter {
 }
 
 export const measureOf = (spec: Pick<LayerSpec, 'layer' | 'changeOf'>): Measure =>
-  spec.layer === 'change'
-    ? spec.changeOf
-    : spec.layer === 'land'
-      ? 'landShare'
-      : spec.layer === 'emissions' || spec.layer === 'deforestation' || spec.layer === 'landCo2'
-        ? spec.layer
-        : 'production';
+  spec.layer === 'change' ? spec.changeOf : (LAYER_MEASURES[spec.layer] ?? 'production');
 
 /** The deforestation module's fields of a country: forest cleared a year, ha, and its change. */
 const clearing = (c: CountryResult): [number, number] => [
@@ -82,6 +87,17 @@ export const landCo2Change = (c: CountryResult): number =>
 const landShare = (c: CountryResult): [number, number] =>
   c.landArea > 0 ? [farmland(c.land) / c.landArea, farmland(c.landChange) / c.landArea] : [0, 0];
 
+const KM2_PER_HA = 0.01;
+
+/**
+ * Farmed mammals' live weight per km² of the country's land, tonnes, and its change; none
+ * without the area.
+ */
+export const mammalDensity = (c: CountryResult): [number, number] =>
+  c.landArea > 0
+    ? [c.mammals / (c.landArea * KM2_PER_HA), c.mammalsChange / (c.landArea * KM2_PER_HA)]
+    : [0, 0];
+
 const MEASURES: Record<
   Measure,
   (c: CountryResult, spec: LayerSpec, landUse: LandUseCo2) => [number, number]
@@ -95,6 +111,7 @@ const MEASURES: Record<
   land: (c) => [farmland(c.land), farmland(c.landChange)],
   landShare,
   landCo2: (c, _, landUse) => [landUse.get(c.iso3) ?? 0, landCo2Change(c)],
+  mammals: mammalDensity,
 };
 
 export const beforeAfter = (
@@ -119,6 +136,7 @@ const VALUES: Partial<Record<Layer, Value>> = {
   quality: (c) => c.worstTier,
   change: (_, ba) => relativeChange(ba),
   landCo2: (c, ba, landUse) => (landUse.has(c.iso3) ? ba.after : null),
+  mammals: (c, ba) => (c.mammals > 0 && c.landArea > 0 ? ba.after : null),
 };
 
 /** The number the map colours a country by, or null for no data. */

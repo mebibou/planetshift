@@ -63,6 +63,10 @@ export const formatArea = (locale: string, ha: number): string => {
   return `${formatSignificant(locale, ha / factor, 3)}${NBSP}${unit}`;
 };
 
+/** Tonnes per km², as farmed mammals' live weight per km² of land. */
+export const formatPerKm2 = (locale: string, tonnes: number): string =>
+  `${formatSignificant(locale, tonnes, 2)}${NBSP}t/km²`;
+
 export const formatSignedArea = (locale: string, ha: number): string =>
   `${ha > 0 ? '+' : ''}${formatArea(locale, ha)}`;
 
