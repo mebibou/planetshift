@@ -122,10 +122,11 @@ const keyStyle = (cs: CSSStyleDeclaration): Pick<LegendItem, 'kind' | 'colour' |
     : { kind, colour: COLOUR[kind](cs) };
 };
 
-/** A legend on the page, its items shown, as legend items. */
+/** A legend on the page, its items shown and not switched off, as legend items. */
 const legendOf = (list: Element | null): LegendItem[] =>
   [...(list?.querySelectorAll('li') ?? [])]
     .filter((li) => getComputedStyle(li).display !== 'none')
+    .filter((li) => !li.querySelector('[aria-pressed="false"]'))
     .map((li) => {
       const key = li.querySelector('.key, .swatch');
       return {

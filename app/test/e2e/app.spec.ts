@@ -725,6 +725,25 @@ test('the fish and seafood slider shifts seafood alone', async ({ page }) => {
   await noHorizontalScroll(page);
 });
 
+test('a chart’s legend shows or hides each of its series', async ({ page }) => {
+  await open(page);
+  const observed = page.locator('.temperature-chart button[data-toggle="observed"]');
+  await expect(observed).toHaveAttribute('aria-pressed', 'true');
+  await observed.click();
+  await expect(observed).toHaveAttribute('aria-pressed', 'false');
+  await expect(page.locator('.temperature-chart .observed-line')).toBeHidden();
+  await observed.click();
+  await expect(page.locator('.temperature-chart .observed-line')).toBeVisible();
+  await page.locator('#chart-tab-cause').click();
+  const farming = page.locator('.attribution-chart button[data-toggle="agriculture"]');
+  await expect(page.locator('.attribution-chart .stack.cause-agriculture')).toHaveCount(1);
+  await farming.click();
+  await expect(page.locator('.attribution-chart .stack.cause-agriculture')).toHaveCount(0);
+  await expect(farming).toHaveAttribute('aria-pressed', 'false');
+  await farming.click();
+  await expect(page.locator('.attribution-chart .stack.cause-agriculture')).toHaveCount(1);
+});
+
 test('the data-centre and permafrost options move the baseline', async ({ page }) => {
   await open(page);
   await page.locator('details[data-group="options"] > summary').click();

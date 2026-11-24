@@ -107,6 +107,8 @@ export interface HoverRow {
   label: string;
   value: string;
   swatch?: string; // CSS colour of the series
+  /** The series' legend toggle: the row is left out while it is off. */
+  toggle?: string;
 }
 
 /** Charts on the same years that follow one another's hover year. */
@@ -154,6 +156,9 @@ const yearForKey = (
   return key === 'Home' ? lo : key === 'End' ? hi : step ? clamp(at + step) : null;
 };
 
+const shownRows = (rows: HoverRow[], off: ReadonlySet<string>): HoverRow[] =>
+  rows.filter((r) => !r.toggle || !off.has(r.toggle));
+
 export const addHover = (
   container: HTMLElement,
   f: Frame,
@@ -192,7 +197,7 @@ export const addHover = (
       h(
         'dl',
         {},
-        ...rowsAt(year).flatMap((r) => [
+        ...shownRows(rowsAt(year), offIn(container)).flatMap((r) => [
           h(
             'dt',
             {},
@@ -288,9 +293,67 @@ export const onResize = (el: HTMLElement, render: () => void): void => {
   }
 };
 
-export const legendList = (items: { label: string; className: string }[]): HTMLElement =>
-  h(
-    'ul',
-    { class: 'chart-legend' },
-    ...items.map((i) => h('li', {}, h('span', { class: `key ${i.className}` }), i.label)),
-  );
+export interface LegendEntry {
+  label: string;
+  className: string;
+  /** The series' name in the chart's `data-off`: the item is a button that shows or hides it. */
+  toggle?: string;
+}
+
+/** The series switched off in a chart, from its figure's `data-off`. */
+export const offIn = (el: Element | null): ReadonlySet<string> =>
+  new Set((el?.closest<HTMLElement>('figure')?.dataset.off ?? '').split(' ').filter(Boolean));
+
+const setOff = (figure: HTMLElement, key: string, off: boolean): void => {
+  const keys = new Set(offIn(figure));
+  if (off) {
+    keys.add(key);
+  } else {
+    keys.delete(key);
+  }
+  figure.dataset.off = [...keys].join(' ');
+};
+
+const legendItem = (i: LegendEntry, off: ReadonlySet<string>): HTMLElement => {
+  const key = h('span', { class: `key ${i.className}` });
+  return i.toggle
+    ? h(
+        'li',
+        {},
+        h(
+          'button',
+          {
+            type: 'button',
+            class: 'legend-toggle',
+            'aria-pressed': String(!off.has(i.toggle)),
+            'data-toggle': i.toggle,
+          },
+          key,
+          i.label,
+        ),
+      )
+    : h('li', {}, key, i.label);
+};
+
+/**
+ * A chart's legend. An item with `toggle` shows or hides its series: the CSS hides what its
+ * figure's `data-off` names, and `onToggle` redraws a chart that leaves it out instead.
+ */
+export const legendList = (
+  items: LegendEntry[],
+  onToggle?: () => void,
+  off: ReadonlySet<string> = new Set(),
+): HTMLElement => {
+  const list = h('ul', { class: 'chart-legend' }, ...items.map((i) => legendItem(i, off)));
+  list.addEventListener('click', (e) => {
+    const button = (e.target as Element).closest<HTMLButtonElement>('button[data-toggle]');
+    const figure = list.closest<HTMLElement>('figure');
+    if (button && figure) {
+      const shown = button.getAttribute('aria-pressed') === 'true';
+      button.setAttribute('aria-pressed', String(!shown));
+      setOff(figure, button.dataset.toggle as string, shown);
+      onToggle?.();
+    }
+  });
+  return list;
+};

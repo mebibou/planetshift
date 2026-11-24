@@ -33,8 +33,8 @@ export const avoidedChart = (t: T, locale: string, currentYear: number): Avoided
     'figure',
     { class: 'chart avoided-chart' },
     legendList([
-      { label: t('avoidedChart.line'), className: 'key-scenario' },
-      { label: t('chart.band'), className: 'key-band' },
+      { label: t('avoidedChart.line'), className: 'key-scenario', toggle: 'scenario' },
+      { label: t('chart.band'), className: 'key-band', toggle: 'band' },
     ]),
     plotEl,
     h('figcaption', {}, h('p', { class: 'chart-caption' }, t('avoidedChart.caption'))),
@@ -95,6 +95,7 @@ export const avoidedChart = (t: T, locale: string, currentYear: number): Avoided
             label: t('avoidedChart.line'),
             value: v === undefined ? '–' : formatTemperature(locale, v, 3),
             swatch: 'var(--series-scenario)',
+            toggle: 'scenario',
           },
         ];
       },

@@ -122,9 +122,21 @@ export const populationChart = (
     { class: 'chart population-chart', hidden: true },
     h('h3', { class: 'chart-subtitle' }, t('levers.population.chart.title')),
     legendList([
-      { label: t('levers.population.chart.history'), className: 'key-population-history' },
-      { label: t('levers.population.chart.chosen'), className: 'key-population-chosen' },
-      { label: t('levers.population.chart.others'), className: 'key-population-other' },
+      {
+        label: t('levers.population.chart.history'),
+        className: 'key-population-history',
+        toggle: 'history',
+      },
+      {
+        label: t('levers.population.chart.chosen'),
+        className: 'key-population-chosen',
+        toggle: 'chosen',
+      },
+      {
+        label: t('levers.population.chart.others'),
+        className: 'key-population-other',
+        toggle: 'others',
+      },
     ]),
     plotEl,
     h('figcaption', {}, caption, notes),
@@ -190,6 +202,7 @@ export const populationChart = (
                 label: t('levers.population.chart.history'),
                 value: billion(past),
                 swatch: 'var(--ink)',
+                toggle: 'history',
               },
             ]
           : [...lines.variants].reverse().flatMap((v) => {
@@ -206,6 +219,7 @@ export const populationChart = (
                             }),
                       value: billion(value),
                       swatch: v.chosen ? 'var(--ink)' : 'var(--series-baseline)',
+                      toggle: v.chosen ? 'chosen' : 'others',
                     },
                   ];
             });

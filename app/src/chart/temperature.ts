@@ -252,21 +252,29 @@ const hoverRows =
     const at = (years: number[], values: (number | null)[]) => valueIn(locale, years, values, year);
     const enso = marks.filter((m) => m.year === year);
     return [
-      { label: t('chart.observed'), value: at(tp.years, tp.observed), swatch: 'var(--ink)' },
+      {
+        label: t('chart.observed'),
+        value: at(tp.years, tp.observed),
+        swatch: 'var(--ink)',
+        toggle: 'observed',
+      },
       ...enso.map((m) => ({
         label: t(`chart.enso.${m.phase}`),
         value: t('chart.enso.oni', { value: formatTemperature(locale, m.oni, 1, true) }),
         swatch: `var(--enso-${m.phase})`,
+        toggle: 'enso',
       })),
       {
         label: t('chart.baseline'),
         value: at(tp.years, tp.baseline.median),
         swatch: 'var(--series-baseline)',
+        toggle: 'baseline',
       },
       {
         label: t('chart.scenario'),
         value: at(tp.years, tp.scenario.median),
         swatch: 'var(--series-scenario)',
+        toggle: 'scenario',
       },
       ...(natural
         ? [
@@ -274,6 +282,7 @@ const hoverRows =
               label: t('chart.natural'),
               value: at(natural.years, natural.median),
               swatch: 'var(--series-natural)',
+              toggle: 'natural',
             },
           ]
         : []),
@@ -352,20 +361,26 @@ export const temperatureChart = (
   const caption = h('p', { class: 'chart-caption' });
   const milestoneCaption = h('p', { class: 'chart-caption milestone-caption' });
   const legend = legendList([
-    { label: t('chart.observed'), className: 'key-observed' },
-    { label: t('chart.baseline'), className: 'key-baseline' },
-    { label: t('chart.scenario'), className: 'key-scenario' },
-    { label: t('chart.band'), className: 'key-band' },
-    { label: t('chart.natural'), className: 'key-natural' },
-    { label: t('chart.enso.legend'), className: 'key-enso' },
-    { label: t('milestones.levels.short'), className: 'key-milestone' },
-    { label: t('milestones.policies.short'), className: 'key-policies' },
+    { label: t('chart.observed'), className: 'key-observed', toggle: 'observed' },
+    { label: t('chart.baseline'), className: 'key-baseline', toggle: 'baseline' },
+    { label: t('chart.scenario'), className: 'key-scenario', toggle: 'scenario' },
+    { label: t('chart.band'), className: 'key-band', toggle: 'band' },
+    { label: t('chart.natural'), className: 'key-natural', toggle: 'natural' },
+    { label: t('chart.enso.legend'), className: 'key-enso', toggle: 'enso' },
+    { label: t('milestones.levels.short'), className: 'key-milestone', toggle: 'milestone' },
+    { label: t('milestones.policies.short'), className: 'key-policies', toggle: 'policies' },
     ...(pageControl() === 'people'
-      ? [{ label: t('levers.population.chart.area'), className: 'key-population-area' }]
+      ? [
+          {
+            label: t('levers.population.chart.area'),
+            className: 'key-population-area',
+            toggle: 'population',
+          },
+        ]
       : []),
   ]);
   const legendItem = (className: string) =>
-    legend.querySelector(`.${className}`)?.parentElement ?? null;
+    legend.querySelector(`.${className}`)?.closest('li') ?? null;
   const slot = h('div', { class: 'chart-slot' });
   const el = h(
     'figure',
