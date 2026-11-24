@@ -44,7 +44,7 @@ Le changement de régime et les leviers agricoles modifient des émissions mises
 
 Le levier du gaspillage agit sur les mêmes disponibilités mises à l'échelle. Le défrichement (déforestation), le carbone stocké dans les terres agricoles, la repousse naturelle et les leviers d'énergie ne sont pas mis à l'échelle de la population : ils ne changent pas.
 
-Avec la référence *Trajectoire SSP2*, les émissions agricoles suivent la trajectoire propre à SSP2-4.5, et la population choisie ne change rien. Le graphique l'indique alors.
+Avec la référence *Trajectoire SSP2*, les émissions agricoles suivent la trajectoire propre à SSP2-4.5, et la population choisie ne change rien.
 
 ### D'où viennent les chiffres
 
@@ -70,13 +70,19 @@ L'option fixe l'avenir par rapport auquel les leviers sont mesurés. La référe
 
 Les combustibles fossiles, les aérosols et l'usage des terres du scénario (`ssp`) vont avec la population que leurs auteurs ont supposée : les projections des SSP de 2017, environ 6,9 milliards en 2100 pour SSP1, 9,0 pour SSP2 et 12,6 pour SSP3. L'option ne les change pas.
 
-Les associations qui vont à peu près ensemble sont la basse avec SSP1-2.6, la moyenne avec SSP2-4.5 et la haute avec SSP3-7.0. Les deux qui se contredisent, la projection basse avec SSP3-7.0 et la haute avec SSP1-2.6, sont permises, et une mention sous le graphique de la population le signale.
+Les associations qui vont à peu près ensemble sont la basse avec SSP1-2.6, la moyenne avec SSP2-4.5 et la haute avec SSP3-7.0. Les deux qui se contredisent, la projection basse avec SSP3-7.0 et la haute avec SSP1-2.6, sont permises.
 
-### Le graphique de la population
+### Personnes sur Terre
 
-Le graphique de la population se trouve sous celui de la température, sur les mêmes années. Il montre la population mondiale recensée et estimée jusqu'en 2023 : la série de long terme d'Our World in Data, tirée de HYDE 3.3 et de Gapminder, jusqu'en 1949, puis les estimations des WPP 2024. Il montre ensuite les trois projections, celle choisie en pointillés et les deux autres en clair.
+Le réglage *Personnes sur Terre*, dans le panneau, remplace la projection de l'ONU par un nombre de personnes que vous choisissez, comme une expérience de pensée. Par défaut, sa case *Suivre les projections de population de l’ONU* est cochée. Décochez-la, et son curseur fixe le nombre de personnes, de 0 à 14 milliards, atteint l'année où tous les leviers sont en place. La population va en ligne droite de son effectif actuel jusqu'à ce nombre, puis s'y maintient. Des repères sur le curseur montrent ce que donnent cette année-là les projections basse, moyenne et haute de l'ONU. Tant qu'un nombre est fixé, l'option *Population mondiale* est masquée, et l'adresse garde le nombre sous la clé `ppl`, en milliards.
 
-Il a son propre axe, en milliards, et non un second axe sur le graphique de la température, car avec deux échelles sur un même graphique, le point où les courbes se croisent semble avoir un sens alors qu'il n'en a pas.
+Chaque émission humaine change avec le nombre de personnes. Les émissions agricoles le suivent par la référence de population, quelle que soit l'option de référence. Toute autre émission est l'émission du scénario par personne, multipliée par le nombre de personnes. Cela couvre les gaz à effet de serre des combustibles fossiles, de l'industrie, des déchets et de l'usage des terres, par leur réponse en température. Cela couvre aussi la pollution de l'air, par son forçage et par le méthane que laissent dans l'air ses NOx et COV. La population propre au scénario est d'abord ramenée à l'effectif actuel, pour que les émissions ne sautent pas l'année en cours. La référence et le scénario bougent ensemble : le réchauffement évité par les leviers ne compte donc pas les personnes elles-mêmes. Sur le graphique des causes du réchauffement, chaque changement est compté dans la cause dont il vient.
+
+À 0, les émissions humaines cessent. La planète se réchauffe quelques années, car la pollution de l'air ne la refroidit plus. Ensuite, le dioxyde de carbone déjà dans l'air maintient la température. Elle ne baisse que lentement, à mesure que le méthane disparaît.
+
+### La population sur le graphique de la température
+
+La population mondiale est dessinée en aire claire derrière les courbes de température, sur un axe en milliards à droite. Elle montre la population mondiale recensée et estimée jusqu'en 2023 : la série de long terme d'Our World in Data, tirée de HYDE 3.3 et de Gapminder, jusqu'en 1949, puis les estimations des WPP 2024. Elle montre ensuite la projection utilisée, ou le chemin des personnes sur Terre quand il est fixé. Les autres projections ne sont pas dessinées. Leurs chiffres sont dans le tableau plus haut. Le survol du graphique donne la population de chaque année.
 
 ## Réglages du régime
 

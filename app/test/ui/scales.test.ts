@@ -38,10 +38,10 @@ describe('scales', () => {
 
   it('keeps change thresholds fixed and symmetric with a neutral middle', () => {
     const t = CHANGE_THRESHOLDS;
-    expect(t).toHaveLength(6);
-    expect(t[0]).toBeCloseTo(-(t[5] ?? 0));
-    expect(t[2]).toBeLessThan(0);
-    expect(t[3]).toBeGreaterThan(0);
+    const mid = t.length / 2;
+    expect(t[0]).toBeCloseTo(-(t.at(-1) ?? 0));
+    expect(t[mid - 1]).toBeLessThan(0);
+    expect(t[mid]).toBeGreaterThan(0);
   });
 
   it('chooses thresholds per kind', () => {

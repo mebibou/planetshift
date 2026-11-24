@@ -150,7 +150,7 @@ export interface Texts {
   credit: string;
 }
 
-/** The charts shown in a chart panel (the population chart under the temperature, when shown). */
+/** The charts shown in a chart panel. */
 const chartBlocks = (panel: Element): Block[] =>
   [...panel.querySelectorAll('figure.chart')]
     .filter((f) => !f.closest('[hidden]'))

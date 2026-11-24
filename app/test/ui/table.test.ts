@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { LayerSpec } from '../../src/map/layers';
 import {
-  columnsOf,
-  defaultSort,
   filterRows,
   fold,
   nextSort,
@@ -89,21 +87,6 @@ describe('table rows', () => {
       new Map([['FRA', -2e9]]),
     );
     expect(rows.map((r) => [r.iso3, r.before, r.tier])).toEqual([['FRA', -2e9, null]]);
-    expect(columnsOf(spec({ layer: 'landCo2' }))).toEqual(['name', 'before', 'after']);
-    expect(defaultSort(spec({ layer: 'landCo2' })).column).toBe('after');
-  });
-
-  it('shows the columns each layer has, sorted by what the map colours', () => {
-    expect(columnsOf(spec())).toEqual(['name', 'before', 'after', 'change', 'tier']);
-    expect(columnsOf(spec({ layer: 'land' }))).toEqual(['name', 'before', 'after', 'change']);
-    expect(columnsOf(spec({ layer: 'change', changeOf: 'land' }))).not.toContain('tier');
-    expect(columnsOf(spec({ layer: 'quality' }))).toEqual(['name', 'tier']);
-    expect(defaultSort(spec({ layer: 'change' }))).toEqual({
-      column: 'change',
-      direction: 'descending',
-    });
-    expect(defaultSort(spec({ layer: 'quality' })).column).toBe('tier');
-    expect(defaultSort(spec()).column).toBe('after');
   });
 });
 

@@ -251,7 +251,9 @@
     "label": "Warming avoided by the levers each year to {year}, with its likely range",
     "unit": "°C less warming",
     "line": "Warming avoided",
-    "caption": "How much cooler the world is each year with the levers than without them. It grows as the levers ramp up. The warming of methane already avoided fades within decades."
+    "caption": "How much cooler the world is each year with the levers than without them. It grows as the levers ramp up. The warming of methane already avoided fades within decades.",
+    "empty": "Nothing avoided yet.",
+    "emptyHint": "Move a lever or shift the diet in the panel."
   },
   "chart": {
     "title": "Global temperature to {year}",
@@ -308,11 +310,10 @@
     "live": "Less warming in {year}: {value}."
   },
   "link": {
-    "headline": "By {year} the world has warmed by {total}.",
     "scenario": "With the levers chosen, the world would be {avoided} cooler in {year} than without them ({ssp}): {parts}.",
     "intro": "Most warming comes from burning fossil fuels. Farming adds to it in a different way, mostly through methane from cattle and rice paddies, and nitrous oxide from fertiliser and manure. These gases trap far more heat than CO₂ while they last.",
     "attributionTitle": "Warming by cause since {from}",
-    "attributionText": "Each band is the warming from one cause, or, below zero, the cooling. After today, each band is what is left once the levers chosen act on its cause. The dashed outlines are the bands without the levers. The line is the measured temperature.",
+    "attributionText": "Each band is the warming from one cause, or, below zero, the cooling. After today, each band is what is left once the levers chosen act on its cause.",
     "attributionCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today. Each cause is the warming its emissions add. Air pollution cools: its particles reflect sunlight and brighten clouds. The energy, heating and industry levers also cut the air pollution of the fuel they no longer burn, so its cooling shrinks when they act. What the baseline adds to the scenario goes into the cause it belongs to: farm emissions that follow the population, the data centres' growth, ships' cleaner fuel, permafrost and the people on Earth. The gap between the scenario's temperature and the sum of the causes also goes into Other human emissions, so the stack meets the line without the levers.",
     "attributionLabel": "Stacked chart of warming by cause from {from} to {year}, with observed temperature",
     "projection": "Projection",
@@ -338,7 +339,7 @@
       "n2o": "N₂O"
     },
     "gasTitle": "Warming from {gas} by cause since {from}",
-    "gasText": "Each band is the warming from one cause's emissions of this gas. After today, each band is what is left once the levers chosen act on its cause. The dashed outlines are the bands without the levers. Air pollution, aviation's contrails and the natural factors are not greenhouse gases: they show under All gases only.",
+    "gasText": "Each band is the warming from one cause's emissions of this gas. After today, each band is what is left once the levers chosen act on its cause. Air pollution, aviation's contrails and the natural factors are not greenhouse gases: they show under All gases only.",
     "gasCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today. Each cause is the warming its emissions of this gas add. The other sources and interactions are the rest of the gas's warming.",
     "gasOther": "Other sources and interactions",
     "gasAttributionLabel": "Stacked chart of the warming from {gas} by cause from {from} to {year}",
@@ -351,8 +352,7 @@
     "withoutLevers": "Without the levers",
     "withoutValue": "{value} ({without} without the levers)",
     "totalProjected": "Projected warming",
-    "totalModelled": "Modelled warming",
-    "parts": "What each cause adds or takes away: {parts}."
+    "totalModelled": "Modelled warming"
   },
   "methodology": {
     "title": "Methodology",

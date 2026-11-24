@@ -4,7 +4,7 @@ import { formatTemperature } from '../i18n/format';
 import { COUNTED_CAUSES } from '../levers/registry';
 import type { ScenarioResult, Summary } from '../model/api';
 import type { AvoidedByCause } from './attribution';
-import { causesAt, causesBySize, type Attribution, type CauseGas } from './series';
+import type { CauseGas } from './series';
 
 /** What the levers avoid in the causes of a gas choice. */
 export const avoidedOf = (result: ScenarioResult, gas: CauseGas): AvoidedByCause => ({
@@ -23,22 +23,6 @@ const partText = ({ t, locale }: Lines, cause: Cause, value: number): string =>
     cause: t(`link.causes.${cause}`),
     value: formatTemperature(locale, value, 2, true),
   });
-
-/** The warming so far, and what each cause adds or takes away, in the current year. */
-export const nowTexts = (lines: Lines, attribution: Attribution, year: number) => {
-  const { t, locale } = lines;
-  const now = causesAt(attribution, year);
-  return now
-    ? {
-        headline: t('link.headline', { total: formatTemperature(locale, now.total, 2), year }),
-        parts: t('link.parts', {
-          parts: causesBySize(attribution, year)
-            .map((c) => partText(lines, c, now.byCause[c]))
-            .join(t('link.separator')),
-        }),
-      }
-    : { headline: '', parts: '' };
-};
 
 /** What the levers avoid at the horizon, overall and by cause, when it is large enough to tell. */
 const avoidedAt = (summary: Summary | undefined, end: number) => {

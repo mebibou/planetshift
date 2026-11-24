@@ -11,7 +11,7 @@ describe('the panel groups’ summary lines', () => {
     expect(dietMeta(BASE_SCENARIO).key).toBe('diet.none');
     expect(dietMeta({ ...BASE_SCENARIO, shift: 0.5 })).toEqual({
       key: 'diet.moved',
-      params: { share: 0.5, year: 2035 },
+      params: { share: 0.5, year: BASE_SCENARIO.rampEnd },
     });
     expect(dietMeta({ ...BASE_SCENARIO, groupShifts: { dairy: 0.3 } }).key).toBe('diet.movedOwn');
   });

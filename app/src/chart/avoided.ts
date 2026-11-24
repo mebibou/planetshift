@@ -17,6 +17,8 @@ import { inRange, zipBand, zipSeries } from './series';
 /** The axis reaches at least this high, so a small shift looks small instead of filling the chart. */
 const AXIS_FLOOR = 0.05;
 const MARGIN: Margin = { top: 24, right: 16, bottom: 28, left: 56 };
+/** Below this, every year reads 0.000 °C: the levers avoid nothing yet. */
+const NOTHING = 0.0005;
 
 export interface AvoidedChart {
   el: HTMLElement;
@@ -60,6 +62,17 @@ export const avoidedChart = (t: T, locale: string, currentYear: number): Avoided
       .text(t('avoidedChart.unit'));
     if (end > 2050) {
       verticalRule(f, x(2050), '2050');
+    }
+    if (median.every((p) => Math.abs(p.value) < NOTHING)) {
+      f.plot
+        .append('text')
+        .attr('class', 'chart-empty')
+        .selectAll('tspan')
+        .data([t('avoidedChart.empty'), t('avoidedChart.emptyHint')])
+        .join('tspan')
+        .attr('x', f.innerWidth / 2)
+        .attr('y', (_, i) => f.innerHeight / 2 + (i - 0.5) * 20)
+        .text((s) => s);
     }
     f.plot
       .append('path')

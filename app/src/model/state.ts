@@ -37,7 +37,7 @@ const readPercent = (raw: string | null): number | undefined => {
   return Number.isFinite(n) && n >= 0 && n <= 100 ? n / 100 : undefined;
 };
 
-/** The people-on-Earth number's key, in billions with two decimals (a prototype, see Options). */
+/** The people-on-Earth number's key, in billions with two decimals. */
 const PEOPLE_KEY = 'ppl';
 const MAX_PEOPLE = 100;
 

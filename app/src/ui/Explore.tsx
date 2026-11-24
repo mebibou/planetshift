@@ -1,12 +1,18 @@
-import { lazy, Suspense, useEffect, useMemo, useState, type KeyboardEvent } from 'react';
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useMemo,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from 'react';
 import type { AppState, ViewContext } from '../app/context';
-import { valueAt, worldPerCapita } from '../app/summaryModel';
+import { worldPerCapita } from '../app/summaryModel';
 import { tabKeys } from '../app/tabs';
 import { CHARTS, type ChartTab, type Horizon } from '../app/url';
 import { avoidedChart } from '../chart/avoided';
-import { hoverLink } from '../chart/frame';
-import { populationChart } from '../chart/population';
-import { pageControl } from '../levers/population/switch';
+import { CAUSE_GASES, type CauseGas } from '../chart/series';
 import { RANGE_START, temperatureChart, type Range } from '../chart/temperature';
 import { dataFolder } from '../data/load';
 import type { ModelData } from '../data/types';
@@ -44,20 +50,11 @@ export interface ExploreProps {
 const MapCard = lazy(() => import('./MapCard').then((m) => ({ default: m.MapCard })));
 const CauseView = lazy(() => import('./CauseView').then((m) => ({ default: m.CauseView })));
 
-/** The temperature chart with the population chart under it, sharing the hovered year. */
+/** The temperature chart, with the world population as an area behind its lines. */
 const makeTemperature = (ctx: ViewContext) => {
-  const link = hoverLink();
-  const chart = temperatureChart(ctx.t, ctx.locale, ctx.currentYear, link);
-  const people = populationChart(ctx.t, ctx.locale, ctx.currentYear, link);
-  if (pageControl() !== 'people') {
-    chart.slot.append(people.el);
-  }
-  return { el: chart.el, chart, people };
+  const chart = temperatureChart(ctx.t, ctx.locale, ctx.currentYear);
+  return { el: chart.el, chart };
 };
-
-/** The baseline at `end` under the UN's medium projection, when another one is chosen. */
-const mediumBaseline = (result: RunResult, end: number): number | null =>
-  result.mediumBaseline && valueAt(result.mediumBaseline.years, result.mediumBaseline.values, end);
 
 const ChartTabs = ({ ctx, chart }: { ctx: ViewContext; chart: ChartTab }) => {
   const select = (tab: ChartTab) => ctx.setUi((u) => ({ ...u, chart: tab }));
@@ -106,7 +103,6 @@ const DRAW: Record<
   temperature: ({ temperature }, { result, ui, data }) => {
     const end = Number(ui.horizon);
     temperature.chart.update(result, ui.range, end, data.climate.naturalOnly, data.enso);
-    temperature.people.update(result, ui.range, end, mediumBaseline(result, end));
   },
   avoided: ({ avoided }, { result, ui }) => avoided.update(result, Number(ui.horizon)),
 };
@@ -125,6 +121,44 @@ const useCharts = ({ ctx, state, result, data }: ExploreProps) => {
   return { temperatureRef, avoidedRef };
 };
 
+/** The gas the Causes of warming tab shows: every emission when the build has no split by gas. */
+const causeGasOf = (ui: AppState['ui'], split: boolean): CauseGas => (split ? ui.causeGas : 'all');
+
+/** The switches above the charts, together on one row with the download button. */
+const ChartSwitches = (props: {
+  ctx: ViewContext;
+  ui: AppState['ui'];
+  split: boolean;
+  children: ReactNode;
+}) => {
+  const { ctx, ui, split } = props;
+  const { t } = ctx;
+  return (
+    <div className="chart-switches">
+      <Segmented<Range>
+        name="range"
+        legend={t('chart.range')}
+        options={(['full', 'recent'] as const).map((v) => ({
+          value: v,
+          label: t(`chart.ranges.${v}`),
+        }))}
+        value={ui.range}
+        hidden={ui.chart === 'avoided'}
+        onChange={(r) => ctx.setUi((u) => ({ ...u, range: r }))}
+      />
+      <Segmented<CauseGas>
+        name="causegas"
+        legend={t('link.gas')}
+        options={CAUSE_GASES.map((value) => ({ value, label: t(`link.gasChoices.${value}`) }))}
+        value={causeGasOf(ui, split)}
+        hidden={ui.chart !== 'cause' || !split}
+        onChange={(g) => ctx.setUi((u) => ({ ...u, causeGas: g }))}
+      />
+      {props.children}
+    </div>
+  );
+};
+
 /** The chart card: its tabs, its switches and the chart shown. */
 const ChartCard = (props: ExploreProps) => {
   const { ctx, state, result } = props;
@@ -138,6 +172,8 @@ const ChartCard = (props: ExploreProps) => {
   }));
   const failed = ctx.failedFiles();
   const { chart, range } = state.ui;
+  const split = props.data.climate.attributionByGas !== undefined;
+  const causeGas = causeGasOf(state.ui, split);
   return (
     <section
       className="card chart-card"
@@ -145,20 +181,9 @@ const ChartCard = (props: ExploreProps) => {
       aria-busy={result === undefined}
     >
       <ChartTabs ctx={ctx} chart={chart} />
-      <div className="chart-switches">
-        <Segmented<Range>
-          name="range"
-          legend={t('chart.range')}
-          options={(['full', 'recent'] as const).map((v) => ({
-            value: v,
-            label: t(`chart.ranges.${v}`),
-          }))}
-          value={range}
-          hidden={chart === 'avoided'}
-          onChange={(r) => ctx.setUi((u) => ({ ...u, range: r }))}
-        />
+      <ChartSwitches ctx={ctx} ui={state.ui} split={split}>
         {download.button}
-      </div>
+      </ChartSwitches>
       {download.status}
       <div
         role="tabpanel"
@@ -202,8 +227,7 @@ const ChartCard = (props: ExploreProps) => {
               temperature={state.options.temperature}
               from={RANGE_START[range]}
               end={Number(state.ui.horizon)}
-              gas={state.ui.causeGas}
-              onGas={(causeGas) => ctx.setUi((u) => ({ ...u, causeGas }))}
+              gas={causeGas}
             />
           </Suspense>
         )}

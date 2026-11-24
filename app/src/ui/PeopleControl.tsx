@@ -76,7 +76,7 @@ const PeopleHead = (p: { own: boolean; label: string; info: ReactNode; text: str
 
 /**
  * People on Earth by the year every lever is in place, from none to 14 billion, marked at the UN's low, medium and high
- * projections: a thought experiment in place of the UN projection (behind ?popctl=people).
+ * projections: a thought experiment in place of the UN projection.
  */
 export const PeopleControl = ({
   t,
@@ -145,7 +145,11 @@ export const PeopleControl = ({
             info={info}
             onChange={(people) => setOptions((o) => ({ ...o, people: hundredths(people) }))}
           />
-          <div className="people-marks" role="group" aria-label={t(`${TEXTS}.marksLabel`)}>
+          <div
+            className="people-marks"
+            role="group"
+            aria-label={t(`${TEXTS}.marksLabel`, { year })}
+          >
             {marks.map((m) => (
               <button
                 key={m.variant}

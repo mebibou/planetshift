@@ -154,7 +154,14 @@ const climate = {
   naturalOnly: { years: [2026], median: [0.01], p05: [0], p95: [0.02] },
 } as unknown as Climate;
 const chart = (tab: 'temperature' | 'avoided' | 'cause', r: ScenarioResult | null = result) =>
-  chartCsv({ tab, result: r, climate, scenario, options: DEFAULT_OPTIONS, currentYear: 2026 });
+  chartCsv({
+    tab,
+    result: r,
+    climate,
+    scenario,
+    options: { ...DEFAULT_OPTIONS, ssp: 'ssp245' },
+    currentYear: 2026,
+  });
 
 describe('chart csv', () => {
   it('gives the temperature with bands and natural factors by year, without the causes', () => {
@@ -168,6 +175,20 @@ describe('chart csv', () => {
     expect(second).toBe('2026,,2,1,3,1.5,0.5,2.5,0.01,0,0.02');
   });
 
+  it('adds the world population the chart draws, the history then the path ahead', () => {
+    const population = {
+      variant: 'medium',
+      history: { years: [2025], values: [8.2e9] },
+      variants: { medium: { years: [2026], values: [8.3e9] } },
+      people: { years: [2026], values: [4e9] },
+    };
+    const withPeople = { ...result, population } as unknown as ScenarioResult;
+    const [header, first, second] = lines(chart('temperature', withPeople)?.text ?? '');
+    expect(header?.split(',').at(-1)).toBe('world_population_people');
+    expect(first?.split(',').at(-1)).toBe('8200000000');
+    expect(second?.split(',').at(-1)).toBe('4000000000');
+  });
+
   it('gives the warming avoided from the current year', () => {
     const [header, ...rows] = lines(chart('avoided')?.text ?? '');
     expect(header).toBe(
@@ -177,7 +198,6 @@ describe('chart csv', () => {
   });
 
   it('gives warming by cause from the climate data, even before the model has run', () => {
-    expect(DEFAULT_OPTIONS.ssp).toBe('ssp245');
     const file = chart('cause', null) ?? expect.fail('no file');
     expect(file.name).toBe('planetshift-cause-ssp245.csv');
     const [header, first] = lines(file.text) as [string, string];

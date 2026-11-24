@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { attributionChart } from '../chart/attribution';
-import { avoidedOf, nowTexts, scenarioText, titleTexts } from '../chart/cause';
-import { attributionFor, CAUSE_GASES, type CauseGas } from '../chart/series';
+import { avoidedOf, scenarioText, titleTexts } from '../chart/cause';
+import { attributionFor, type CauseGas } from '../chart/series';
 import type { Climate, Ssp, TemperatureSource } from '../data/types';
 import type { T } from '../i18n/i18n';
 import type { ScenarioResult } from '../model/api';
-import { Segmented } from './Segmented';
 import { useDrawn } from './useDrawn';
 
 export interface CauseViewProps {
@@ -18,8 +17,8 @@ export interface CauseViewProps {
   temperature: TemperatureSource;
   from: number;
   end: number;
+  /** 'all' when the build has no split by gas. */
   gas: CauseGas;
-  onGas: (gas: CauseGas) => void;
 }
 
 /**
@@ -28,10 +27,9 @@ export interface CauseViewProps {
  * each.
  */
 export const CauseView = (props: CauseViewProps) => {
-  const { t, locale, currentYear, result, climate, ssp, temperature, from, end, gas } = props;
+  const { t, locale, currentYear, result, climate, ssp, temperature, from, end } = props;
   const [stacked, stackedRef] = useDrawn(() => attributionChart(t, locale, currentYear));
-  const split = climate.attributionByGas !== undefined;
-  const shown: CauseGas = split ? gas : 'all';
+  const shown = props.gas;
   useEffect(
     () =>
       stacked.update({
@@ -45,28 +43,13 @@ export const CauseView = (props: CauseViewProps) => {
     [stacked, climate, ssp, shown, temperature, from, end, result],
   );
   const lines = { t, locale };
-  const now = nowTexts(
-    lines,
-    attributionFor(climate, ssp, 'all', result?.temperature),
-    currentYear,
-  );
   const titles = titleTexts(t, shown, from);
   return (
     <div className="cause-view">
       <div className="cause-intro" aria-live="polite">
-        <p className="headline">{now.headline}</p>
-        <p className="headline-parts">{now.parts}</p>
         <p className="headline-sub">{scenarioText(lines, result, ssp, end)}</p>
       </div>
       <h3 className="chart-subtitle">{titles.title}</h3>
-      <Segmented<CauseGas>
-        name="causegas"
-        legend={t('link.gas')}
-        options={CAUSE_GASES.map((value) => ({ value, label: t(`link.gasChoices.${value}`) }))}
-        value={shown}
-        hidden={!split}
-        onChange={props.onGas}
-      />
       <p className="card-text">{titles.text}</p>
       <div className="drawn" ref={stackedRef} />
       <details className="fold cause-notes">

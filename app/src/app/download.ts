@@ -1,4 +1,5 @@
 import { GASES, type BandSeries, type Climate, type Meta, type Series } from '../data/types';
+import { populationPath } from '../chart/populationArea';
 import type { Options, Scenario, ScenarioResult } from '../model/api';
 import { attributionFor, causesIn, type Attribution } from '../chart/series';
 import { measureOf, type LayerSpec, type Measure } from '../map/layers';
@@ -137,13 +138,28 @@ const bandAt = (band: BandSeries) => {
 
 const seriesAt = (s: Series) => at(s.years, s.values);
 
-/** Global temperature, 1850–2100: observed, without and with the levers (5–95%), natural factors. */
+/** The world population the temperature chart draws, by year, when the build has it. */
+const populationAt = (result: ScenarioResult) => {
+  const path = result.population ? populationPath(result.population) : null;
+  return path
+    ? at(
+        path.map((q) => q.year),
+        path.map((q) => q.value),
+      )
+    : null;
+};
+
+/**
+ * Global temperature, 1850–2100: observed, without and with the levers (5–95%), natural factors,
+ * and the world population.
+ */
 export const temperatureRows = (
   result: ScenarioResult,
   natural?: BandSeries,
 ): { header: string[]; rows: Cell[][] } => {
   const tp = result.temperature;
   const nat = natural ? bandAt(natural) : null;
+  const pop = populationAt(result);
   return {
     header: [
       'year',
@@ -151,6 +167,7 @@ export const temperatureRows = (
       ...bandColumns('without_levers', 'degC'),
       ...bandColumns('with_levers', 'degC'),
       ...(nat ? bandColumns('natural_only', 'degC') : []),
+      ...(pop ? ['world_population_people'] : []),
     ],
     rows: tp.years.map((year, i) => [
       year,
@@ -162,6 +179,7 @@ export const temperatureRows = (
       tp.scenario.p05[i],
       tp.scenario.p95[i],
       ...(nat ? nat(year) : []),
+      ...(pop ? [pop(year)] : []),
     ]),
   };
 };

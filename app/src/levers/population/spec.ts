@@ -1,4 +1,4 @@
-import { lever, option } from '../define';
+import { option } from '../define';
 import type { LeverSpec } from '../types';
 import { EMPTY_PEOPLE, EMPTY_POPULATION, VARIANTS, type PopulationVariant } from './data';
 import { hasPopulation, type WorldPopulation } from './model';
@@ -10,7 +10,7 @@ declare module '../../model/api' {
     population: PopulationVariant;
     /**
      * People on Earth by `peopleYear`, billions: a thought experiment in place of the UN
-     * projection, on only behind ?popctl=people. Every human emission follows it.
+     * projection. Every human emission follows it.
      */
     people?: number;
     /** The year `people` is reached: the scenario's "All levers fully in place by". */
@@ -26,25 +26,16 @@ declare module '../../model/api' {
  * The world's population to 2100, one of the UN's projections: a method option, not a lever. It
  * changes the baseline and the scenario alike (through the population baseline's scale), so the
  * warming avoided moves only because the farm emissions the levers act on are larger or smaller.
- * Its lever (behind ?popctl=lever) lowers fertility from that projection's.
  */
 export const populationSpec: LeverSpec = {
   id: ID,
-  family: ID,
-  farm: true,
-  cause: 'agriculture',
-  prototype: 'lever',
-  levers: [lever(ID, 'familyPlanning', 'fp')],
+  levers: [],
   options: [option(ID, 'population', 'pop', VARIANTS)],
   files: [
     { name: 'population', empty: EMPTY_POPULATION },
     { name: 'people', empty: EMPTY_PEOPLE },
   ],
   available: (data) => hasPopulation(data.population),
-  ui: {
-    section: 'levers',
-    blocked: (options) =>
-      options.population === 'low' ? `levers.${ID}.familyPlanning.unavailable` : null,
-  },
+  ui: {},
   methodology: { coveredBy: 'options' },
 };

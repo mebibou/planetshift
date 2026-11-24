@@ -44,7 +44,7 @@ The diet shift and the farm levers change emissions that are scaled the same way
 
 The less-waste lever acts on the same scaled supply. Clearing (deforestation), carbon stored in farmland, natural regrowth and the energy levers are not scaled with population, so they do not change.
 
-With the *SSP2 path* baseline, farm emissions follow SSP2-4.5's own path, and the population chosen changes nothing. The chart then says so.
+With the *SSP2 path* baseline, farm emissions follow SSP2-4.5's own path, and the population chosen changes nothing.
 
 ### Where the numbers come from
 
@@ -70,13 +70,19 @@ The option sets the future against which the levers are measured. The baseline a
 
 The fossil fuels, aerosols and land use of the scenario world (`ssp`) come with the population their authors assumed: the 2017 SSP projections, about 6.9 billion in 2100 for SSP1, 9.0 for SSP2 and 12.6 for SSP3. The option does not change them.
 
-The pairings that roughly fit together are low with SSP1-2.6, medium with SSP2-4.5, and high with SSP3-7.0. The two that contradict each other, the low projection with SSP3-7.0 and the high one with SSP1-2.6, are allowed, and a note under the population chart says so.
+The pairings that roughly fit together are low with SSP1-2.6, medium with SSP2-4.5, and high with SSP3-7.0. The two that contradict each other, the low projection with SSP3-7.0 and the high one with SSP1-2.6, are allowed.
 
-### The population chart
+### People on Earth
 
-The population chart sits under the temperature chart, on the same years. It shows world population counted and estimated to 2023: Our World in Data's long-run series, from HYDE 3.3 and Gapminder, to 1949, then WPP 2024's estimates. Then it shows the three projections, the chosen one in a dashed line and the other two faint.
+The *People on Earth* control, in the panel, replaces the UN projection with a number of people you choose, as a thought experiment. By default, its box *Follow the UN population projections* is ticked. Untick it, and its slider sets the number of people, from 0 to 14 billion, reached by the year every lever is in place. The population goes in a straight line from today's count to that number, then holds it. Marks on the slider show what the UN's low, medium and high projections give in that year. While a number is set, the *World population* option is hidden, and the address keeps the number as `ppl`, in billions.
 
-It has its own axis in billions, not a second axis on the temperature chart, because with two scales on one plot, the point where the lines cross looks meaningful when it is not.
+Every human emission changes with the number of people. Farm emissions follow it through the population baseline, whatever the baseline option. Every other emission is the scenario's emission per person times the number of people. This covers the greenhouse gases of fossil fuels, industry, waste and land use, through their temperature response. It also covers air pollution, through its forcing and the methane its NOx and VOCs leave in the air. The scenario's own population is first scaled to today's count, so emissions do not jump in the current year. The baseline and the scenario move together, so the warming the levers avoid does not count the people themselves. On the Causes of warming chart, each change is counted under the cause it comes from.
+
+At 0, human emissions stop. The planet warms for a few years, because air pollution no longer cools it. After that, the carbon dioxide already in the air keeps the temperature up. The temperature falls only slowly, as methane fades.
+
+### The population on the temperature chart
+
+World population is drawn as a light area behind the temperature lines, on an axis in billions on the right. It shows world population counted and estimated to 2023: Our World in Data's long-run series, from HYDE 3.3 and Gapminder, to 1949, then WPP 2024's estimates. Then it shows the projection in use, or the people-on-Earth path when one is set. The other projections are not drawn. Their figures are in the table above. The chart's hover gives the population of each year.
 
 ## Diet controls
 

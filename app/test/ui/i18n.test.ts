@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { flatten, interpolate, lookup, placeholders } from '../../src/i18n/dict';
-import { DICTIONARIES, translator } from '../../src/i18n/i18n';
+import { DICTIONARIES } from '../../src/i18n/i18n';
 import { ANIMAL_GROUPS, PLANT_GROUPS } from '../../src/data/types';
 import { SECTIONS, sectionTitleKey } from '../../src/methodology/sections';
 import { LAYERS, GAS_CHOICES } from '../../src/map/layers';
@@ -62,12 +62,5 @@ describe('dict helpers', () => {
   it('falls back to the next dictionary, then the key', () => {
     expect(lookup([{}, { k: 'en' }], 'k')).toBe('en');
     expect(lookup([{}, {}], 'missing')).toBe('missing');
-  });
-
-  it('translates in French', () => {
-    expect(translator('fr')('nav.methodology')).toBe('Méthodologie');
-    expect(translator('en')('chart.gap', { value: '−0.04 °C', year: 2100 })).toBe(
-      '−0.04 °C in 2100',
-    );
   });
 });

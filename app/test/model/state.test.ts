@@ -60,8 +60,8 @@ describe('URL state', () => {
     );
     expect(scenario.shift).toBe(0);
     expect(scenario.groupShifts).toEqual({});
-    expect(scenario.basis).toBe('protein');
-    expect(scenario.rampEnd).toBe(2035);
+    expect(scenario.basis).toBe(BASE_SCENARIO.basis);
+    expect(scenario.rampEnd).toBe(BASE_SCENARIO.rampEnd);
     expect(options).toEqual(DEFAULT_OPTIONS);
   });
   it('starts a ramp no earlier than the year after the current one, as the slider does', () => {
@@ -73,7 +73,7 @@ describe('URL state', () => {
   });
   it('reads the regrowth option by its key, and the default when invalid', () => {
     expect(decodeState('regrow=natural').options.regrowth).toBe('natural');
-    expect(decodeState('regrow=forest').options.regrowth).toBe('none');
+    expect(decodeState('regrow=forest').options.regrowth).toBe(DEFAULT_OPTIONS.regrowth);
     expect(encodeState(BASE_SCENARIO, { ...DEFAULT_OPTIONS, regrowth: 'natural' })).toBe(
       'regrow=natural',
     );

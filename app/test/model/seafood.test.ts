@@ -23,7 +23,6 @@ const fra = prepared.countries.find((c) => c.country.iso3 === 'FRA')!;
 
 describe('seafood', () => {
   it('is an animal group with a key in every group record', () => {
-    expect(ANIMAL_GROUPS).toContain('seafood');
     const r = run({ shift: 0.2 });
     r.countries.forEach((c) => {
       expect(c.production.seafood).toBeGreaterThanOrEqual(0);

@@ -18,7 +18,6 @@ import {
   adoptionOf,
   COUNTED_CAUSES,
   DIET_CAUSE,
-  ALL_FAMILIES,
   FAMILIES,
   FARM_FAMILIES,
   LEVER_CAUSES,
@@ -1163,7 +1162,7 @@ const emissionsPass = (
     causeRecord((c) => (c === causeOfModule(module) ? extra : zeroPath(years)));
   const pathsIn = (band: Band): Record<string, ByCause<GasVector[]>> =>
     Object.fromEntries(
-      ALL_FAMILIES.map((f) => {
+      FAMILIES.map((f) => {
         const own = ownOf(f);
         const extra = own?.part.extraEmissions?.[band];
         return [f, extra && own ? ownPaths(own.module, extra) : farmPaths(f, band)];
@@ -1419,15 +1418,13 @@ export const runPrepared = (
   const worldBase = sumBy(countries, (c) => c.emissions);
   const byFamily = bandRecord((band): Record<string, GasVector[]> =>
     Object.fromEntries(
-      ALL_FAMILIES.map((f) => {
+      FAMILIES.map((f) => {
         const byCause = full.paths[band]?.[f] as ByCause<GasVector[]>;
         return [f, sumPaths(COUNTED_CAUSES.map((c) => byCause[c]))];
       }),
     ),
   );
-  const differenceIn = bandRecord((band) =>
-    sumPaths(ALL_FAMILIES.map((f) => byFamily[band][f] ?? [])),
-  );
+  const differenceIn = bandRecord((band) => sumPaths(FAMILIES.map((f) => byFamily[band][f] ?? [])));
   const baselinePath = years.map((y) => gasVector((g) => worldBase[g] * scale(g, y)));
   const farmDifference = sumPaths(FARM_FAMILIES.map((f) => byFamily.median[f] ?? []));
 
@@ -1480,7 +1477,7 @@ export const runPrepared = (
 
   const causeGas = causeRecord((c) =>
     warmingByGas(
-      sumPaths(ALL_FAMILIES.map((f) => full.paths.median?.[f]?.[c] ?? [])),
+      sumPaths(FAMILIES.map((f) => full.paths.median?.[f]?.[c] ?? [])),
       currentYear,
       climate,
       options.climate,
@@ -1532,7 +1529,7 @@ export const runPrepared = (
     return k < 0 ? 0 : (sharedAt[h]?.[k * causes + c] ?? 0);
   };
   const co2eOfFamily = (family: string, c: number): number => shares.get(family)?.[c * 3 + 2] ?? 0;
-  const listed = ALL_FAMILIES.filter((f) => FAMILIES.includes(f) || shares.has(f));
+  const listed = FAMILIES;
   const perFamily = (f: (family: string) => number): Record<string, number> =>
     Object.fromEntries(listed.map((family) => [family, f(family)]));
   const byCauseOf = (f: (family: string, c: number) => number) =>
@@ -1546,7 +1543,7 @@ export const runPrepared = (
   };
   const totalOf = (r: ByCause<number>) => sum(COUNTED_CAUSES.map((c) => r[c]));
   const causeTotal = (r: Record<string, ByCause<number>>) =>
-    causeRecord((c) => sum(ALL_FAMILIES.map((f) => r[f]?.[c] ?? 0)));
+    causeRecord((c) => sum(FAMILIES.map((f) => r[f]?.[c] ?? 0)));
 
   const result: ScenarioResult = {
     countries,
@@ -1599,12 +1596,6 @@ export const runPrepared = (
   };
   return Object.assign(result, ...world.map((w) => w.part.result ?? {})) as ScenarioResult;
 };
-
-/** Shares the run's baseline cache, so it costs nothing for options a run has seen. */
-export const baselineMedian = (data: ModelData, options: Options, currentYear: number): Series => ({
-  years: range(FIRST_YEAR, END_YEAR),
-  values: baselineTemperature(prepare(data), options, currentYear).median.temperature,
-});
 
 /**
  * Runs a scenario end to end. The scenario-independent part is prepared once per data

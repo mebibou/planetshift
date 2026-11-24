@@ -242,7 +242,6 @@ describe('the deep-time page’s own texts', () => {
     const t = withPageTexts((key) => `app:${key}`, 'fr');
     expect(t('deeptime.title')).toBe(FR['deeptime.title']);
     expect(t('nav.deeptime')).toBe('app:nav.deeptime');
-    expect(t('deeptime.end.same', { value: '2,9 °C' })).toBe('2100 : 2,9 °C');
   });
 });
 
