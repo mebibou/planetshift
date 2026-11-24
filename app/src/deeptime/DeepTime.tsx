@@ -28,6 +28,7 @@ import {
 import { withPageTexts } from './texts';
 import './deeptime.css';
 import { CARD } from '../ui/classes';
+import { Steady } from '../ui/Steady';
 
 const TEXT = 'card-text text-muted';
 const SWITCH = 'flex flex-wrap gap-1 rounded-lg bg-surface-2 p-[3px]';
@@ -171,7 +172,7 @@ const Presets = ({
         aria-pressed={view !== null && sameView(view, PRESET_VIEWS[p])}
         onClick={() => go(p)}
       >
-        {ctx.t(`deeptime.preset.${p}`)}
+        <Steady text={ctx.t(`deeptime.preset.${p}`)} />
       </button>
     ))}
   </div>

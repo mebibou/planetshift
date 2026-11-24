@@ -1,6 +1,7 @@
 import { groupsLevel, withGroupsAt } from '../controls/adoption';
 import { formatPercent } from '../i18n/format';
 import type { Scenario } from '../model/api';
+import { Steady } from './Steady';
 
 export interface QuickPairProps {
   ids: readonly string[];
@@ -43,7 +44,7 @@ export const QuickPair = (props: QuickPairProps) => {
             title={name(value)}
             onClick={() => setScenario((s) => withGroupsAt(s, ids, adoption))}
           >
-            {value}
+            <Steady text={value} />
           </button>
         );
       })}

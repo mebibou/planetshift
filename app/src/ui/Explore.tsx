@@ -22,6 +22,8 @@ import type { RunResult } from '../model/engine';
 import { SidePanel } from './Panel';
 import { Summary } from './Summary';
 import { CARD, LINK_BUTTON, MAP_CARD } from './classes';
+import { ChartLoading } from './ChartLoading';
+import { Info } from './Info';
 import { Segmented } from './Segmented';
 import { useChartDownload } from './Download';
 import { useDrawn } from './useDrawn';
@@ -157,6 +159,12 @@ const ChartSwitches = (props: {
         options={CAUSE_GASES.map((value) => ({ value, label: t(`link.gasChoices.${value}`) }))}
         value={causeGasOf(ui, split)}
         hidden={ui.chart !== 'cause' || !split}
+        info={
+          <Info
+            label={t('link.whyTitle')}
+            text={['intro', 'whyMethane', 'whyNitrous', 'whyCo2'].map((k) => t(`link.${k}`))}
+          />
+        }
         onChange={(g) => ctx.setUi((u) => ({ ...u, causeGas: g }))}
       />
       {props.children}
@@ -223,7 +231,13 @@ const ChartCard = (props: ExploreProps) => {
         hidden={chart !== 'cause'}
       >
         {chart === 'cause' && (
-          <Suspense fallback={<div className="cause-view grid gap-2" aria-busy="true" />}>
+          <Suspense
+            fallback={
+              <div className="cause-view grid gap-2" aria-busy="true">
+                <ChartLoading t={t} />
+              </div>
+            }
+          >
             <CauseView
               t={t}
               locale={ctx.locale}

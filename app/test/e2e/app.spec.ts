@@ -1,3 +1,4 @@
+import { strFromU8, unzipSync } from 'fflate';
 import { expect, test, type Page } from '@playwright/test';
 
 const START = '/?data=fixtures';
@@ -203,7 +204,10 @@ test('the gas switch stacks one gas by cause, kept in the URL and moved by the k
   await expect(legend).toContainText('Other sources and interactions');
   await expect(legend).not.toContainText('Air pollution');
   await expect(legend).not.toContainText('Land use');
-  await expect(page.locator('.cause-view .chart-subtitle')).toContainText('methane');
+  await expect(page.locator('.attribution-chart svg[role="img"]')).toHaveAttribute(
+    'aria-label',
+    /methane/,
+  );
   await noHorizontalScroll(page);
 
   await page.locator('#causegas-ch4').focus();
@@ -516,11 +520,11 @@ test('the chart tabs and the chart values are reachable from the keyboard', asyn
   await open(page, `${START}&shift=50`);
   await page.locator('#chart-tab-temperature').focus();
   await page.keyboard.press('ArrowRight');
-  await expect(page.locator('#chart-tab-avoided')).toBeFocused();
-  await expect(page.locator('#chart-tab-avoided')).toHaveAttribute('aria-selected', 'true');
-  await expect(page).toHaveURL(/chart=avoided/);
-  await page.keyboard.press('End');
   await expect(page.locator('#chart-tab-cause')).toBeFocused();
+  await expect(page.locator('#chart-tab-cause')).toHaveAttribute('aria-selected', 'true');
+  await expect(page).toHaveURL(/chart=cause/);
+  await page.keyboard.press('End');
+  await expect(page.locator('#chart-tab-avoided')).toBeFocused();
   await page.keyboard.press('ArrowRight');
   await expect(page.locator('#chart-tab-temperature')).toBeFocused();
   await expect(page.locator('#chart-panel-temperature')).toBeVisible();
@@ -1168,11 +1172,11 @@ test('the map and the chart download their data as CSV', async ({ page }) => {
   expect(chart.text.startsWith('﻿year,observed_degC,')).toBe(true);
   const scenario = await readDownload(page, () => page.locator('.download-scenario').click());
   expect(JSON.parse(scenario.text)).toMatchObject({ app: 'Planetshift', scenario: { shift: 0.5 } });
-  await page.locator('.download-files summary').click();
-  await expect(page.locator('.file-list a[href="fixtures/climate.json"]')).toBeVisible();
-  await expect(page.locator('.file-list li', { hasText: 'climate.json' })).toContainText(
-    'CC BY-NC-SA 4.0',
-  );
+  const zip = await readDownload(page, () => page.locator('.download-files-zip').click());
+  expect(zip.name).toBe('planetshift-data.zip');
+  const entries = unzipSync(new Uint8Array(zip.bytes));
+  expect(Object.keys(entries)).toContain('climate.json');
+  expect(strFromU8(entries['LICENSE.txt']!)).toContain('climate.json: CC BY-NC-SA 4.0');
   await noHorizontalScroll(page);
 });
 

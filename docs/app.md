@@ -238,11 +238,11 @@ Then come the lever groups, under a small "Levers" heading and a heading per cau
 
 Closing the guided start in any way stores `planetshift.tour` in `localStorage`, so it does not open again in that browser. The read and the write are in a `try`. When storage throws, it opens again on the next visit. `main.tsx` decides before the app starts, because the app rewrites the URL. `?tour=1` opens it whatever is stored, `?tour=0` keeps it closed, and neither is kept in the URL. It opens in the page's language and only on Explore. The end-to-end tests store it as seen before every test except the two tagged `@tour`.
 
-**The chart card** has three tabs: Global temperature, Warming avoided and Causes of warming. They follow the tab pattern, like the map's: the arrow keys, Home and End move between them (`tabKeys` in `src/app/tabs.ts`). The temperature and by-cause tabs also have the start year (1850 or 2000).
+**The chart card** has three tabs: Global temperature, Causes of warming and Warming avoided. They follow the tab pattern, like the map's: the arrow keys, Home and End move between them (`tabKeys` in `src/app/tabs.ts`). The temperature and by-cause tabs also have the start year (1850 or 2000).
 
 The temperature chart's lines are "Without the levers" and "With the levers". It shows totals only, with no cause singled out, as no cause is preferred over another. A "See what causes the warming" link under it opens the Causes of warming tab (`chart=cause`), as the tab does. The temperature chart has an empty `.chart-slot` under it (`TemperatureChart.slot`) for a small chart such as population.
 
-The Causes of warming tab shows the sentence on what the levers avoid of each cause, warming by cause stacked, and, folded, why the gases are kept apart. Its Methodology page is `link.md`.
+The Causes of warming tab shows warming by cause stacked, with what the bands mean in its caption, then the sentence on what the levers avoid of each cause. Why the gases are kept apart is in the (i) beside the Gas switch. Its legend sits where the temperature chart's does, so switching tabs does not move it. Its Methodology page is `link.md`.
 
 A switch over the stacked chart picks what it stacks: *All gases*, *CO₂*, *Methane* or *N₂O* (`causegas` in the URL).
 
@@ -292,7 +292,7 @@ The table pages by 20 rows, with Previous and Next and "Page 2 of 10". It says w
   - the warming avoided, from the current year to 2100
   - the causes of warming with their ranges and the observed temperature under the chosen SSP, then each gas's warming by cause with its range, as `warming_<gas>_<cause>_…`, when the build has it
 - The scenario as JSON: the full URL state (its address and query, the scenario, the options and the interface's choices), with the summary, the licence, how to cite and the sources from `meta.json`.
-- The source data files with their sizes (read when the site is built, `__DATA_FILES__` in `vite.config.ts`) and each file's licence.
+- The source data files as one ZIP (`src/app/zip.ts`), built in the browser from the files it reads, with a `LICENSE.txt` giving each file's licence and how to cite. The panel gives their total size, read when the site is built (`__DATA_FILES__` in `vite.config.ts`). `fflate`, which writes the ZIP, is loaded only when the button is pressed.
 
 One file per tab was chosen over one wide file because the tabs have different years and quantities. The chart card has its own Download button, to the right of the horizon and years filters just above the chart. It opens a menu (`DownloadMenu.tsx`, the menu-button pattern: the down arrow opens it on its first item, the arrows move, Escape, Tab or a click elsewhere close it) with the current tab's data as CSV, and the tab's chart as PNG or SVG. Screen readers hear the button as "Download this chart's data". A button with nothing to save, as when the model could not compute the scenario, says so beside it.
 

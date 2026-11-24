@@ -8,15 +8,16 @@ import type { Range } from '../app/url';
 import { CURRENT_POLICIES, LEVELS, milestones, type Level } from '../app/milestones';
 import {
   addHover,
+  chartNotes,
   drawAxes,
   frame,
-  legendList,
-  onResize,
-  verticalRule,
   type Frame,
   type HoverLink,
   type HoverRow,
+  legendList,
   type Margin,
+  onResize,
+  verticalRule,
 } from './frame';
 import { ensoMarks, gapAt, inRange, zipBand, zipSeries, type EnsoMark } from './series';
 import { drawPopulationArea, peoplePoints, populationRow, withAxis } from './populationArea';
@@ -328,15 +329,13 @@ const layoutOf = (plotEl: HTMLElement, end: number) => {
   };
 };
 
-/** The caption on the Paris levels, and on the policies band and the population when drawn. */
-const milestoneText = (t: T, reaches2100: boolean, population: boolean): string =>
+/** The notes on the Paris levels, and on the policies band and the population when drawn. */
+const milestoneNotes = (t: T, reaches2100: boolean, population: boolean): string[] =>
   [
     t('milestones.caption'),
     reaches2100 ? t('milestones.policies.caption') : '',
     population ? t('levers.population.chart.caption') : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
+  ].filter(Boolean);
 
 /** Hides a legend item, when the legend has it. */
 const showItem = (item: HTMLElement | null, shown: boolean): void => {
@@ -360,9 +359,10 @@ export const temperatureChart = (
   const plotEl = h('div', {
     class: 'chart-plot',
     style: '--plot-h: 360px; --plot-h-narrow: 280px',
+    'data-loading': t('load.loading'),
   });
   const caption = h('p', { class: 'chart-caption' });
-  const milestoneCaption = h('p', { class: 'chart-caption milestone-caption' });
+  const notes = chartNotes(t('chart.notes'), 'milestone-caption');
   const legend = legendList([
     { label: t('chart.observed'), className: 'key-observed', toggle: 'observed' },
     { label: t('chart.baseline'), className: 'key-baseline', toggle: 'baseline' },
@@ -386,7 +386,7 @@ export const temperatureChart = (
     { class: 'chart temperature-chart' },
     legend,
     plotEl,
-    h('figcaption', {}, caption, milestoneCaption),
+    h('figcaption', {}, caption, notes.el),
     slot,
   );
   let last: [ScenarioResult, Range, number, BandSeries | undefined, Enso | undefined] | null = null;
@@ -430,7 +430,7 @@ export const temperatureChart = (
       drawGap(f, x, y, s, end, t('chart.gap', { value: gapValue, year: end }));
     }
     caption.textContent = t('chart.caption', { gap: gapValue, year: end });
-    milestoneCaption.textContent = milestoneText(t, reaches2100, people.length > 0);
+    notes.set(milestoneNotes(t, reaches2100, people.length > 0));
     showItem(legendItem('key-natural'), s.naturalLine.length > 0);
     showItem(legendItem('key-enso'), marks.length > 0);
     showItem(legendItem('key-policies'), reaches2100);

@@ -15,7 +15,8 @@ export const Info = ({
   more,
 }: {
   label: string;
-  text: string;
+  /** One paragraph, or several. */
+  text: string | readonly string[];
   more?: { href: string; text: string };
 }) => {
   const id = useId();
@@ -66,7 +67,13 @@ export const Info = ({
         popover="auto"
         role="tooltip"
       >
-        {text}
+        {typeof text === 'string'
+          ? text
+          : text.map((p) => (
+              <p key={p} className="m-0 mt-1.5 first:mt-0">
+                {p}
+              </p>
+            ))}
         {more && (
           <>
             {' '}

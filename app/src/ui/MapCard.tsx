@@ -34,6 +34,7 @@ import { Icon } from './Icon';
 import { Segmented } from './Segmented';
 import { TableView } from './TableView';
 import { useDrawn } from './useDrawn';
+import { Steady } from './Steady';
 
 export interface MapCardProps {
   t: T;
@@ -236,7 +237,7 @@ const ViewTabs = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui: Ui
           }
         >
           <Icon name={v} />
-          <span>{t(`map.views.${v}`)}</span>
+          <Steady text={t(`map.views.${v}`)} />
         </button>
       ))}
     </div>

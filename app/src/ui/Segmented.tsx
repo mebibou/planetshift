@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Steady } from './Steady';
 
 export interface SegmentedProps<V extends string> {
   name: string;
@@ -61,7 +62,7 @@ export const Segmented = <V extends string>(p: SegmentedProps<V>) => {
             <span
               className={`block rounded-md text-center peer-checked:font-bold peer-checked:text-ink peer-checked:bg-surface peer-checked:ring-1 peer-checked:ring-rule peer-focus-visible:outline-2 peer-focus-visible:outline-offset-1 peer-focus-visible:outline-focus ${s.option}`}
             >
-              {o.label}
+              <Steady text={o.label} />
             </span>
           </label>
         ))}

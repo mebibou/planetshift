@@ -6,7 +6,7 @@ import {
   chartFileName,
   citation,
   DOWNLOAD_LICENCES,
-  fileLicences,
+  licenceText,
   formatBytes,
   saveBlob,
   saveFile,
@@ -17,6 +17,7 @@ import { CHARTS, type ChartTab } from '../app/url';
 import type { Climate, Meta } from '../data/types';
 import type { T } from '../i18n/i18n';
 import type { ScenarioResult } from '../model/api';
+import { dataZip } from '../app/zip';
 import { DownloadMenu } from './DownloadMenu';
 import { Icon } from './Icon';
 import {
@@ -153,22 +154,28 @@ export interface DownloadPanelProps {
   hidden: boolean;
 }
 
+/** One download as a card: what it is on the left, its formats on the right. */
 const Item = ({
   t,
+  title,
   button,
   text,
   licences,
 }: {
   t: T;
+  title: string;
   button: React.ReactNode;
   text: string;
-  licences: Licence[];
+  licences?: Licence[];
 }) => (
-  <li>
-    {button}
-    <p className={`${HINT} max-w-[70ch]`}>
-      {text} <LicenceLinks t={t} licences={licences} />
-    </p>
+  <li className="flex items-center justify-between gap-4 rounded-lg border border-rule bg-surface p-3 max-sm:flex-col max-sm:items-stretch">
+    <div className="min-w-0">
+      <p className="m-0 text-[0.92rem] font-bold">{title}</p>
+      <p className={HINT}>
+        {text} {licences && <LicenceLinks t={t} licences={licences} />}
+      </p>
+    </div>
+    <span className="download-formats flex flex-none flex-wrap gap-1.5">{button}</span>
   </li>
 );
 
@@ -190,14 +197,16 @@ export const DownloadPanel = ({
       id="map-downloads"
       hidden={hidden}
     >
-      <h3 className={CHART_SUBTITLE}>{t('download.title')}</h3>
-      <ul className="download-list m-0 mb-2 grid list-none gap-3 p-0">
+      <h3 className={`${CHART_SUBTITLE} mb-2`}>{t('download.title')}</h3>
+      <ul className="download-list m-0 mb-2 grid list-none gap-2 p-0">
         <Item
           t={t}
+          title={t('download.mapTitle')}
           button={
-            <span className="download-formats inline-flex flex-wrap gap-1.5">
+            <>
               <DownloadButton
-                label={t('download.map')}
+                label="CSV"
+                name={t('download.map')}
                 className="download-map"
                 onClick={() => save(sources.map())}
               />
@@ -217,7 +226,7 @@ export const DownloadPanel = ({
                   }}
                 />
               ))}
-            </span>
+            </>
           }
           text={t('download.mapText')}
           licences={DOWNLOAD_LICENCES.map}
@@ -226,9 +235,11 @@ export const DownloadPanel = ({
           <Item
             key={tab}
             t={t}
+            title={t(`charts.tabs.${tab}`)}
             button={
               <DownloadButton
-                label={t('download.chart', { chart: t(`charts.tabs.${tab}`) })}
+                label="CSV"
+                name={t('download.chart', { chart: t(`charts.tabs.${tab}`) })}
                 className={`download-chart-${tab}`}
                 onClick={() => save(sources.chart(tab))}
               />
@@ -239,9 +250,11 @@ export const DownloadPanel = ({
         ))}
         <Item
           t={t}
+          title={t('download.scenarioTitle')}
           button={
             <DownloadButton
-              label={t('download.scenario')}
+              label="JSON"
+              name={t('download.scenario')}
               className="download-scenario"
               onClick={() => save(sources.scenario())}
             />
@@ -249,24 +262,39 @@ export const DownloadPanel = ({
           text={t('download.scenarioText')}
           licences={DOWNLOAD_LICENCES.scenario}
         />
+        <Item
+          t={t}
+          title={t('download.files')}
+          button={
+            <DownloadButton
+              label="ZIP"
+              name={t('download.filesZip')}
+              className="download-files-zip"
+              onClick={() =>
+                void saveImage(
+                  'planetshift-data.zip',
+                  dataZip(
+                    folder,
+                    files.map((f) => f.name),
+                    licenceText(
+                      files.map((f) => f.name),
+                      citation(meta, location.href),
+                    ),
+                  ),
+                )
+              }
+            />
+          }
+          text={`${t('download.filesText')} ${t('download.filesLicence', {
+            size: formatBytes(
+              locale,
+              files.reduce((sum, f) => sum + f.bytes, 0),
+            ),
+          })}`}
+        />
       </ul>
       <Status text={status} />
-      <p className={HINT}>{t('download.format')}</p>
-      <details className={`${FOLD} download-files`}>
-        <summary className={FOLD_SUMMARY}>{t('download.files')}</summary>
-        <p className={HINT}>{t('download.filesText')}</p>
-        <ul className="file-list m-0 mb-2 grid list-none gap-1.5 p-0 text-[0.88rem]">
-          {files.map((f) => (
-            <li key={f.name} className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <a href={folder + f.name} download={f.name}>
-                {f.name}
-              </a>
-              <span className={`file-size ${SMALL_NOTE}`}>{formatBytes(locale, f.bytes)}</span>
-              <LicenceLinks t={t} licences={fileLicences(f.name)} />
-            </li>
-          ))}
-        </ul>
-      </details>
+      <p className={`${HINT} mb-3`}>{t('download.format')}</p>
       <details className={`${FOLD} download-cite`}>
         <summary className={FOLD_SUMMARY}>{t('download.cite')}</summary>
         <p className={HINT}>{t('download.citeText')}</p>

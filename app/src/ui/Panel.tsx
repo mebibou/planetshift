@@ -227,12 +227,18 @@ export const SidePanel = (props: SidePanelProps) => {
       <p className={`${HINT_TEXT} worth-legend m-0`}>{t('worth.legend', { year: horizon })}</p>
       <section className="levers grid gap-0" aria-labelledby="levers-title">
         <div className="levers-head mt-1.5 flex items-center justify-between gap-2">
-          <h2
-            id="levers-title"
-            className="panel-heading m-0 text-[0.78rem] tracking-[0.06em] text-muted uppercase"
-          >
-            {t('levers.title')}
-          </h2>
+          <span className="inline-flex items-center gap-1.5">
+            <h2
+              id="levers-title"
+              className="panel-heading m-0 text-[0.78rem] tracking-[0.06em] text-muted uppercase"
+            >
+              {t('levers.title')}
+            </h2>
+            <Info
+              label={t('controls.info', { name: t('levers.title') })}
+              text={t('levers.intro')}
+            />
+          </span>
           <span className="quick-all inline-flex items-center gap-1.5">
             <span className="quick-label text-[0.72rem] text-muted" aria-hidden="true">
               {t('quick.allLabel')}
@@ -247,7 +253,6 @@ export const SidePanel = (props: SidePanelProps) => {
             />
           </span>
         </div>
-        <p className={`${HINT_TEXT} mx-0 mt-0.5 mb-1.5`}>{t('levers.intro')}</p>
         <div className="cause-sections">
           {order.map(({ cause, groups }) => (
             <Cause key={cause} props={props} cause={cause} ids={groups} size={sizes[cause]} />

@@ -256,6 +256,7 @@
     "emptyHint": "Déplacez un levier ou changez l'alimentation dans le panneau."
   },
   "chart": {
+    "notes": "Comment lire ce graphique",
     "title": "Température mondiale jusqu'en {year}",
     "label": "Température mondiale de 1850 à {year} : observée, sans les leviers et avec",
     "unit": "°C au-dessus de 1850–1900",
@@ -312,7 +313,6 @@
   "link": {
     "scenario": "Avec les leviers choisis, le monde serait plus frais de {avoided} en {year} que sans eux ({ssp}) : {parts}.",
     "intro": "L'essentiel du réchauffement vient des combustibles fossiles. L'agriculture y contribue autrement, surtout par le méthane des bovins et des rizières, et le protoxyde d'azote des engrais et des effluents. Ces gaz retiennent bien plus de chaleur que le CO₂ tant qu'ils durent.",
-    "attributionTitle": "Réchauffement par cause depuis {from}",
     "attributionText": "Chaque bande est le réchauffement dû à une cause ou, sous zéro, le refroidissement. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause.",
     "attributionCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui. Chaque cause est le réchauffement qu'ajoutent ses émissions. La pollution de l'air refroidit : ses particules renvoient la lumière du soleil et éclaircissent les nuages. Les leviers de l'énergie, du chauffage et de l'industrie réduisent aussi la pollution de l'air des combustibles qu'ils ne brûlent plus : son refroidissement diminue quand ils agissent. Ce que la référence ajoute au scénario va dans la cause dont il relève : les émissions agricoles qui suivent la population, la croissance des centres de données, le carburant plus propre des navires, le pergélisol et le nombre d'humains. L'écart entre la température du scénario et la somme des causes va aussi dans Autres émissions humaines, pour que l'empilement rejoigne la courbe sans les leviers.",
     "attributionLabel": "Graphique empilé du réchauffement par cause de {from} à {year}, avec la température observée",
@@ -338,7 +338,6 @@
       "ch4": "méthane",
       "n2o": "N₂O"
     },
-    "gasTitle": "Réchauffement dû au {gas} par cause depuis {from}",
     "gasText": "Chaque bande est le réchauffement dû aux émissions de ce gaz par une cause. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause. La pollution de l'air, les traînées des avions et les facteurs naturels ne sont pas des gaz à effet de serre : ils n'apparaissent que sous Tous les gaz.",
     "gasCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui. Chaque cause est le réchauffement qu'ajoutent ses émissions de ce gaz. Les autres sources et interactions sont le reste du réchauffement dû au gaz.",
     "gasOther": "Autres sources et interactions",
@@ -438,6 +437,7 @@
     "chartButton": "Télécharger les données du graphique",
     "title": "Télécharger les données",
     "map": "Cette carte en CSV",
+    "mapTitle": "Cette carte",
     "mapText": "Chaque pays avec les valeurs de la couche aujourd’hui et avec les leviers, la variation, l’unité et, pour la production et les émissions, la source la moins précise.",
     "chart": "{chart} en CSV",
     "chartText": {
@@ -446,10 +446,13 @@
       "cause": "Chaque année de 1850 à 2100 selon le scénario choisi : réchauffement par cause avec sa fourchette, température observée et émissions agricoles par gaz."
     },
     "scenario": "Scénario et réglages en JSON",
+    "scenarioTitle": "Scénario et réglages",
     "scenarioText": "Tous les réglages de cette page (les mêmes que son adresse), les chiffres du résumé, la licence et la façon de citer.",
     "format": "Les fichiers CSV sont en UTF-8 avec une marque d’ordre des octets, séparés par des virgules. Ils ont des noms de colonnes en anglais et des nombres bruts (un point pour les décimales, sans séparateur de milliers), pour que tableurs et scripts les lisent de la même façon.",
     "files": "Fichiers de données source",
     "filesText": "Les fichiers JSON que lit la page, construits par le pipeline à partir des sources listées sur la page Méthodologie.",
+    "filesLicence": "LICENSE.txt, dans le ZIP, donne la licence de chaque fichier. Décompressés : {size}.",
+    "filesZip": "Les fichiers de données sources en ZIP",
     "cite": "Comment citer",
     "citeText": "Citez Planetshift et les sources d’origine :",
     "licence": "Licence :",

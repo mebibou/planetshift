@@ -14,15 +14,16 @@ import type { T } from '../i18n/i18n';
 import { formatNumber, formatTemperature } from '../i18n/format';
 import {
   addHover,
+  chartNotes,
   drawAxes,
   frame,
+  type Frame,
+  type HoverRow,
   legendList,
+  type Margin,
   offIn,
   onResize,
   verticalRule,
-  type Frame,
-  type HoverRow,
-  type Margin,
 } from './frame';
 import {
   attributionRows,
@@ -295,15 +296,29 @@ const hoverRows =
  * After today each cause's band is what is left once the levers act; the bands without the
  * levers are drawn as faint outlines, so the reduction shows.
  */
+/** What the bands mean, for every cause or for one gas, and the notes on how they are worked out. */
+const captionOf = (t: T, gas: CauseGas) =>
+  gas === 'all'
+    ? { lead: t('link.attributionText'), notes: t('link.attributionCaption') }
+    : { lead: t('link.gasText'), notes: t('link.gasCaption') };
+
 export const attributionChart = (t: T, locale: string, currentYear: number): AttributionChart => {
-  const plotEl = h('div', { class: 'chart-plot' });
+  const plotEl = h('div', {
+    class: 'chart-plot',
+    style: '--plot-h: 360px; --plot-h-narrow: 280px',
+    'data-loading': t('load.loading'),
+  });
   const legendEl = h('div', { class: 'legend-slot' });
-  const caption = h('figcaption', {}, t('link.attributionCaption'));
+  const lead = h('p', { class: 'chart-caption' });
+  const notes = chartNotes(t('chart.notes'));
+  const caption = h('figcaption', {}, lead, notes.el);
   const el = h('figure', { class: 'chart attribution-chart' }, legendEl, plotEl, caption);
   let last: AttributionView | null = null;
   const draw = (all: AttributionView) => {
     const levers = actsOn(all.avoided);
-    caption.textContent = t(all.gas === 'all' ? 'link.attributionCaption' : 'link.gasCaption');
+    const texts = captionOf(t, all.gas);
+    lead.textContent = texts.lead;
+    notes.set([texts.notes]);
     const off = offIn(el);
     legendEl.replaceChildren(legendList(legendKeys(t, all, levers), render, off));
     const view = shownOf(all, off);
