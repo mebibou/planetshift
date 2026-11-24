@@ -131,11 +131,11 @@ The two scopes are defined on the [Emissions per tonne of food](#method-emission
 
 | Gas, at the farm gate | World total in the model | Main sources |
 | --- | --- | --- |
-| Methane | 138 Mt | 71% enteric fermentation (98 Mt), 16% rice (22 Mt), 7% manure management (9 Mt), 5% animals not raised for food (6 Mt), 2% crop residues |
-| Nitrous oxide | 8.0 Mt | 46% organic fertiliser, that is manure on pasture and on fields (3.7 Mt), 36% synthetic fertiliser (2.9 Mt), 8% residues, 6% manure management, 3% other, 2% animals not raised for food |
-| CO₂ | 139 Mt | urea (101 Mt) and, in other, liming (38 Mt); the fuel burnt on farms counts from cradle to farm gate |
+| Methane | 138 Mt | 71% enteric fermentation (98 Mt), 15% rice (21 Mt), 7% manure management (9 Mt), 5% animals not raised for food (6 Mt), 2% crop residues |
+| Nitrous oxide | 8.4 Mt | 48% organic fertiliser, that is manure on pasture and on fields (4.0 Mt), 35% synthetic fertiliser (2.9 Mt), 7% residues, 5% manure management, 3% other, 2% animals not raised for food |
+| CO₂ | 152 Mt | urea (117 Mt) and, in other, liming (35 Mt); the fuel burnt on farms counts from cradle to farm gate |
 
-FAOSTAT's totals for 2024 are 106, 25 and 10 Mt for the first three sources of methane. From cradle to farm gate, CO₂ rises to 1,688 Mt, with fuel at 575 Mt (burning it on farms and making it), electricity at 332 Mt, and the making of inputs at 670 Mt.
+FAOSTAT's totals for 2024 are 106, 25 and 10 Mt for the first three sources of methane. From cradle to farm gate, CO₂ rises to 1,881 Mt, with fuel at 587 Mt (burning it on farms and making it), electricity at 332 Mt, and the making of inputs at 836 Mt.
 
 ### How each tier is split
 

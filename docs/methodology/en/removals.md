@@ -47,7 +47,7 @@ Trees on farms (agroforestry) means planting trees in fields of crops (silvoarab
 
 Cardinael et al. (2018) synthesised 542 observations into rates by system and climate. Averaged over silvoarable systems and silvopasture, trees and soil take up about 8.6 t of CO₂ per hectare a year in temperate climates. In the moist tropics, where the synthesis has silvoarable systems only, they take up 18.7 t; its means for the whole tropics rest mostly on dry Asian plots. Those rates are for the plots studied, which have a median of 1250 trees per hectare and a median age of 8 to 11 years, and grow fast. Systems adopted on a large scale have fewer trees. The median is therefore half the synthesis' mean. The low is a quarter of it, and the high is the mean itself. In dry climates the rate is 0.7 times the moist rate, the IPCC's ratio of tree growth in the dry tropics to the moist tropics.
 
-Planetshift takes 5% of cropland and pasture as a realistic maximum. On about 4.7 billion hectares of farmland, it gives about 1.4 Gt of CO₂ a year. This lies between the cost-effective and the technical potentials of Roe et al. (2021) and of the IPCC's Sixth Assessment Report. For agroforestry, the IPCC report gives 0.8 (0.4–1.1) Gt CO₂-equivalent a year at up to \$100 a tonne, and 4.1 (0.3–9.4) technically.
+Planetshift takes 5% of cropland and pasture as a realistic maximum. On about 4.7 billion hectares of farmland, that comes to about 1.3 Gt of CO₂ a year. This lies between the cost-effective and the technical potentials of Roe et al. (2021) and of the IPCC's Sixth Assessment Report. For agroforestry, the IPCC report gives 0.8 (0.4–1.1) Gt CO₂-equivalent a year at up to \$100 a tonne, and 4.1 (0.3–9.4) technically.
 
 ### Biochar
 

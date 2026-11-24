@@ -1,6 +1,6 @@
 # Émissions par tonne d'aliment
 
-Pour traduire un changement de production en changement d'émissions, Planetshift doit savoir ce qu'émet chaque aliment. Pour chaque pays et chaque produit alimentaire, il connaît les kilogrammes de dioxyde de carbone (CO₂), de méthane (CH₄) et de protoxyde d'azote (N₂O) émis par tonne produite : c'est l'intensité d'émission du produit. Les estimations de FAOSTAT donnent les deux tiers des émissions agricoles mondiales du modèle. HESTIA en donne un cinquième, et les moyennes publiées et les valeurs de substitution donnent le reste. Additionnées sur le monde, elles sont proches des totaux de FAOSTAT : 138,1 Mt de méthane par an, contre 142,4 Mt.
+Pour traduire un changement de production en changement d'émissions, Planetshift doit savoir ce qu'émet chaque aliment. Pour chaque pays et chaque produit alimentaire, il connaît les kilogrammes de dioxyde de carbone (CO₂), de méthane (CH₄) et de protoxyde d'azote (N₂O) émis par tonne produite : c'est l'intensité d'émission du produit. Les estimations de FAOSTAT donnent les deux tiers des émissions agricoles mondiales du modèle. HESTIA en donne un cinquième, et les moyennes publiées et les valeurs de substitution donnent le reste. Additionnées sur le monde, elles sont proches des totaux de FAOSTAT : 137,7 Mt de méthane par an, contre 142,4 Mt.
 
 Les trois gaz restent séparés jusqu'au modèle climatique.
 
@@ -38,28 +38,28 @@ Chaque pays du modèle a une valeur pour chaque produit et pour les deux périm�
 
 Le tableau compte les cases pays × produit du périmètre à la ferme que remplit chaque niveau, par groupe, pour les 187 pays et 90 produits. Le périmètre du berceau à la sortie de ferme est proche.
 
-Seuls les poissons et fruits de mer ont besoin du niveau 6 : 278 de leurs 1 504 cases. Ce sont presque toutes des pays sans littoral qui importent tout leur poisson. Leur bilan contient un produit que FishStat ne leur attribue pas (voir [Poissons et fruits de mer](#method-seafood)). Pour tous les autres produits, les moyennes mondiales publiées du niveau 4 couvrent ce qui n'a pas de substitut.
+Seuls les poissons et fruits de mer ont besoin du niveau 6 : 272 de leurs 1 496 cases. Ce sont presque toutes des pays sans littoral qui importent tout leur poisson. Leur bilan contient un produit que FishStat ne liste pas pour eux (voir [Poissons et fruits de mer](#method-seafood)). Pour tous les autres produits, les moyennes mondiales publiées du niveau 4 couvrent ce qui n'a pas de substitut.
 
 | Groupe | 1 | 2 | 3 | 4 | 5 | 6 |
 | --- | --- | --- | --- | --- | --- | --- |
-| céréales | 44 | 347 | 439 | 354 | 320 | 0 |
-| produits laitiers | 0 | 0 | 169 | 19 | 376 | 0 |
-| œufs | 0 | 0 | 172 | 16 | 0 | 0 |
-| fruits | 31 | 363 | 727 | 947 | 0 | 0 |
-| fruits à coque | 3 | 0 | 100 | 85 | 0 | 0 |
-| oléagineux | 39 | 722 | 388 | 1225 | 1950 | 0 |
-| autres végétaux | 0 | 0 | 155 | 0 | 1349 | 0 |
-| viande porcine | 0 | 0 | 286 | 45 | 45 | 0 |
-| volaille | 0 | 0 | 168 | 20 | 0 | 0 |
-| légumineuses | 16 | 0 | 294 | 254 | 0 | 0 |
-| riz | 11 | 0 | 95 | 82 | 0 | 0 |
-| racines et tubercules | 8 | 182 | 282 | 110 | 358 | 0 |
-| viande de ruminants | 0 | 0 | 542 | 67 | 143 | 0 |
-| poissons et fruits de mer | 0 | 0 | 0 | 1018 | 208 | 278 |
-| café, cacao et thé | 8 | 0 | 120 | 436 | 0 | 0 |
-| plantes sucrières | 12 | 364 | 0 | 188 | 376 | 0 |
-| légumes | 12 | 0 | 451 | 101 | 0 | 0 |
-| Total | 184 | 1978 | 4388 | 4967 | 5125 | 278 |
+| céréales | 69 | 328 | 431 | 351 | 317 | 0 |
+| produits laitiers | 0 | 0 | 171 | 16 | 374 | 0 |
+| œufs | 2 | 0 | 170 | 15 | 0 | 0 |
+| fruits | 37 | 358 | 650 | 1012 | 0 | 0 |
+| fruits à coque | 4 | 183 | 0 | 0 | 0 | 0 |
+| oléagineux | 50 | 891 | 327 | 1215 | 1818 | 0 |
+| autres végétaux | 0 | 0 | 154 | 0 | 1342 | 0 |
+| viande porcine | 0 | 0 | 285 | 47 | 42 | 0 |
+| volaille | 0 | 0 | 167 | 20 | 0 | 0 |
+| légumineuses | 28 | 0 | 287 | 246 | 0 | 0 |
+| riz | 13 | 174 | 0 | 0 | 0 | 0 |
+| racines et tubercules | 16 | 177 | 286 | 110 | 346 | 0 |
+| viande de ruminants | 0 | 0 | 542 | 64 | 142 | 0 |
+| poissons et fruits de mer | 0 | 0 | 0 | 1014 | 210 | 272 |
+| café, cacao et thé | 9 | 0 | 123 | 429 | 0 | 0 |
+| plantes sucrières | 14 | 360 | 0 | 187 | 374 | 0 |
+| légumes | 19 | 180 | 271 | 91 | 0 | 0 |
+| Total | 261 | 2651 | 3864 | 4817 | 4965 | 272 |
 
 Pondérés par les émissions plutôt que par les cases, FAOSTAT (niveau 3) donne les deux tiers des émissions mondiales à la ferme du modèle, HESTIA (niveaux 1 et 2) un cinquième, et les moyennes publiées et les substituts le reste. Les niveaux 4 et 5 remplissent surtout des produits qu'un pays ne produit pas, et des produits transformés.
 
@@ -107,7 +107,7 @@ Ce périmètre ajoute trois sources de FAOSTAT :
 
 Les émissions de chaque produit sont divisées par sa production dans les bilans alimentaires : par tonne de riz usiné, d'équivalent lait entier ou de carcasse.
 
-Certaines intensités dépassent 20 fois la médiane mondiale du produit pondérée par la production (en équivalent CO₂). Une telle valeur signale un décalage entre les émissions de FAOSTAT et la production du bilan, le plus souvent une culture à grande surface et à faible production enregistrée. Elle n'est pas utilisée, et la case passe au niveau suivant. Cela concerne 93 valeurs sur environ 5 600, surtout le manioc, les ignames, les bananes plantain, le cacao et les « autres viandes ».
+Certaines intensités dépassent 20 fois la médiane mondiale du produit pondérée par la production (en équivalent CO₂). Une telle valeur signale un décalage entre les émissions de FAOSTAT et la production du bilan. Les émissions sont rapportées à une faible production enregistrée. La valeur n'est pas utilisée, et la case passe au niveau suivant. Cela concerne 73 valeurs sur environ 5 600, surtout les « autres viandes » et la viande porcine.
 
 ## Les produits transformés comptés une seule fois
 
@@ -206,12 +206,12 @@ Le seuil change la base, mais à peine l'effet d'un changement de régime. Un tr
 
 | Seuil de taux d'exploitation | Base hors alimentation, Mt CO₂e | Inde | Niger | Éthiopie | Mali | Changement complet : émissions évitées, Gt CO₂e | Changement complet : réchauffement évité en 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 6,7 % (Afrique australe, retenu) | 211 | 113 | 18,1 | 6,9 | 1,1 | 5,12 | 0,271 |
-| 9 % (médiane) | 245 | 113 | 19,4 | 26,0 | 4,0 | 5,08 | 0,268 |
-| 9,9 % (moyenne) | 257 | 113 | 19,8 | 31,1 | 5,1 | 5,07 | 0,267 |
-| 12 % (systèmes pastoraux) | 285 | 113 | 20,4 | 39,9 | 7,1 | 5,04 | 0,266 |
+| 6,7 % (Afrique australe, retenu) | 211 | 113 | 18,1 | 6,9 | 1,1 | 5,17 | 0,281 |
+| 9 % (médiane) | 245 | 113 | 19,4 | 26,0 | 4,0 | 5,12 | 0,278 |
+| 9,9 % (moyenne) | 257 | 113 | 19,8 | 31,1 | 5,1 | 5,11 | 0,277 |
+| 12 % (systèmes pastoraux) | 285 | 113 | 20,4 | 39,9 | 7,1 | 5,08 | 0,275 |
 
-Un demi-changement évite la moitié (de 2,51 à 2,56 Gt CO₂e, de 0,133 à 0,135 °C). La fourchette probable que montre l'application ne couvre que la réponse du climat, pas ce choix.
+Un demi-changement évite la moitié (de 2,53 à 2,58 Gt CO₂e, de 0,137 à 0,140 °C). La fourchette probable que montre l'application ne couvre que la réponse du climat, pas ce choix.
 
 ### Les limites de la règle
 
@@ -293,17 +293,17 @@ Un test recalcule les émissions mondiales à partir des fichiers produits, et l
 
 | | Planetshift, test | FAOSTAT | Tolérance | Planetshift avec les tourteaux, comme les compte l'appli |
 | --- | --- | --- | --- | --- |
-| À la ferme, CH₄ (Mt) | 138,1 | 142,4 | 10 % | 138,4 |
-| À la ferme, N₂O (Mt) | 8,01 | 7,32 | 20 % | 8,12 |
-| Du berceau à la sortie de ferme, CH₄ (Mt) | 140,6 | 142,9 | 10 % | 141,1 |
-| Du berceau à la sortie de ferme, N₂O (Mt) | 8,14 | 7,61 | 20 % | 8,26 |
-| Du berceau à la sortie de ferme, CO₂ (Mt) | 1 688 | 1 322 | 50 % | 1 741 |
+| À la ferme, CH₄ (Mt) | 137,7 | 142,4 | 10 % | 137,8 |
+| À la ferme, N₂O (Mt) | 8,39 | 7,32 | 20 % | 8,53 |
+| Du berceau à la sortie de ferme, CH₄ (Mt) | 142,0 | 142,9 | 10 % | 142,4 |
+| Du berceau à la sortie de ferme, N₂O (Mt) | 8,71 | 7,61 | 20 % | 8,86 |
+| Du berceau à la sortie de ferme, CO₂ (Mt) | 1 881 | 1 322 | 50 % | 1 941 |
 
 ### Le calcul de la vérification
 
 `pipeline/tests/test_validation.py` somme intensité × (production − transformation) sur chaque pays et chaque produit, et ajoute les animaux qui ne sont pas élevés pour l'alimentation.
 
-Le test laisse de côté les émissions des tourteaux, que le modèle ajoute aux émissions agricoles de chaque pays (`oilcake` dans `intensities.json`, voir *Les huiles et leur tourteau* plus haut) : 0,14 Mt de méthane, 0,10 Mt de N₂O et 20 Mt de CO₂ par an à la ferme, et 0,29 Mt, 0,11 Mt et 54 Mt du berceau à la sortie de ferme. La dernière colonne du tableau les ajoute. Elle donne les émissions mondiales de l'année de référence dans un calcul du modèle sans levier. Sans les tourteaux, ces totaux sont à moins de 0,2 % de ceux du test.
+Le test laisse de côté les émissions des tourteaux, que le modèle ajoute aux émissions agricoles de chaque pays (`oilcake` dans `intensities.json`, voir *Les huiles et leur tourteau* plus haut) : 0,16 Mt de méthane, 0,14 Mt de N₂O et 8,5 Mt de CO₂ par an à la ferme, et 0,35 Mt, 0,15 Mt et 60 Mt du berceau à la sortie de ferme. La dernière colonne du tableau les ajoute. Cette colonne donne les émissions mondiales de l'année de référence dans un calcul du modèle sans levier. Sans les tourteaux, ces totaux sont à moins de 0,1 % de ceux du test.
 
 À partir des seules données de FAOSTAT (niveau 3 partout, avant la fusion des autres niveaux), la répartition retrouve 99 % du méthane à la ferme de FAOSTAT et 97 % de son N₂O, avec les animaux qui ne sont pas élevés pour l'alimentation. Ce qui manque, ce sont les cultures non alimentaires et les pays hors du modèle. Le mélange des niveaux déplace les totaux de quelques pour cent dans un sens ou dans l'autre, car HESTIA et les ACV publiées utilisent d'autres méthodes. C'est le CO₂ qui diffère le plus, parce que les périmètres de HESTIA comptent du CO₂ (urée, chaux, machines) que FAOSTAT classe ailleurs.
 
@@ -313,15 +313,15 @@ Le méthane à la ferme reste dans les bilans publiés. La fermentation entériq
 
 Le total à la ferme de la FAO pour 2023 est de 8,1 Gt d'équivalent CO₂ (FAOSTAT Analytical Brief 115). Il comprend les sols organiques drainés, que Planetshift laisse de côté, et l'énergie de la ferme, carburant et électricité, que Planetshift ne compte que du berceau à la sortie de ferme.
 
-Le N₂O agricole direct était de 6,1 Mt en 2020 (3,9 Tg N, Tian et al., 2024). Les 8,0 Mt de Planetshift comprennent aussi les émissions indirectes, comme le total de FAOSTAT.
+Le N₂O agricole direct était de 6,1 Mt en 2020 (3,9 Tg N, Tian et al., 2024). Les 8,4 Mt de Planetshift comprennent aussi les émissions indirectes, comme le total de FAOSTAT.
 
 ### Le méthane du riz
 
-Le méthane du riz est de 22,6 Mt dans le modèle, contre 25,3 Mt dans FAOSTAT pour 2024 et 32 (25–37) Tg dans le Global Methane Budget. L'essentiel de l'écart vient de l'Inde.
+Le méthane du riz est de 20,8 Mt dans le modèle, contre 25,3 Mt dans FAOSTAT pour 2024 et 32 (25–37) Tg dans le Global Methane Budget. L'essentiel de l'écart vient de l'Inde.
 
 L'intensité de l'Inde est celle de HESTIA (niveau 1) : 16,7 kg de méthane dû à l'inondation par tonne de paddy, et 17,1 kg avec le reste. Celle de FAOSTAT est de 24,5 kg (5,33 Mt pour 217,9 Mt de paddy). Les deux sont par tonne de paddy, l'unité qu'utilisent les bilans pour le riz : l'écart n'est donc pas une erreur de conversion. Par hectare, HESTIA donne environ 72 kg de méthane et FAOSTAT environ 106.
 
-Le modèle de HESTIA applique l'affinement de 2019 du GIEC aux régimes hydriques et aux amendements de ses données sur le riz indien. FAOSTAT applique la méthode de niveau 1 du GIEC avec ses propres hypothèses sur les régimes hydriques. La différence tient à la méthode : la valeur de HESTIA est donc gardée, comme le niveau le mieux documenté. Avec l'intensité de FAOSTAT pour l'Inde, le total mondial serait d'environ 24,1 Mt.
+Le modèle de HESTIA applique l'affinement de 2019 du GIEC aux régimes hydriques et aux amendements de ses données sur le riz indien. FAOSTAT applique la méthode de niveau 1 du GIEC avec ses propres hypothèses sur les régimes hydriques. La différence tient à la méthode : le modèle garde donc la valeur de HESTIA, qui est mieux documentée. Avec l'intensité de FAOSTAT pour l'Inde, le total mondial serait d'environ 22,5 Mt.
 
 ### Par kilogramme, face à Poore et Nemecek
 
@@ -330,16 +330,16 @@ Our World in Data présente les émissions par kilogramme d'aliment de Poore et 
 | Produit | Planetshift | Poore et Nemecek, étape de la ferme |
 | --- | --- | --- |
 | Bœuf | 24,6 | 21,9 (troupeau laitier) à 56,2 (troupeau allaitant) |
-| Viande ovine et caprine | 21,4 | 27,0 |
+| Viande ovine et caprine | 21,2 | 27,0 |
 | Viande de porc | 1,68 | 2,48 |
 | Volaille | 0,87 | 0,93 |
-| Œufs | 0,82 | 1,32 |
-| Lait | 1,19 | 1,51 |
-| Riz | 1,07 par kg de paddy, 1,6 par kg de riz blanchi | 3,55 |
-| Blé | 0,46 | 0,82 |
-| Maïs | 0,38 | 0,72 |
+| Œufs | 0,77 | 1,32 |
+| Lait | 1,18 | 1,51 |
+| Riz | 1,17 par kg de paddy, 1,8 par kg de riz blanchi | 3,55 |
+| Blé | 0,49 | 0,82 |
+| Maïs | 0,37 | 0,72 |
 | Pommes de terre | 0,13 | 0,19 |
-| Pois | 0,46 | 0,72 |
+| Pois | 0,40 | 0,72 |
 
 Planetshift est plus bas pour chaque produit, d'un tiers à la moitié pour la plupart, et le bœuf se situe entre leurs deux troupeaux. Trois différences l'expliquent pour l'essentiel. Planetshift pondère le méthane et le N₂O avec les facteurs de l'AR6 (27 et 273), Poore et Nemecek avec ceux de l'AR5 avec rétroactions climat-carbone (34 et 298). Leurs données sont une méta-analyse d'études des années 2010 environ, celles de Planetshift viennent de la méthode de niveau 1 du GIEC de FAOSTAT et de HESTIA. Et les unités diffèrent : la viande de Planetshift est en poids de carcasse. Le riz est le plus éloigné, pour les raisons données plus haut et parce que leurs émissions des rizières viennent de mesures au champ.
 

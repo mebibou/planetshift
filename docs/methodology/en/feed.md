@@ -54,7 +54,7 @@ production × concentrate per tonne × the class's share of the ration
 
 Which value of concentrate per tonne applies depends on the country's income level. A feed item then goes to the groups in proportion to the demand for its class. Items in a class that no ration includes (nuts, spices and meat, for instance) use the species split.
 
-These values give world totals of about 1.2 billion tonnes of concentrate feed. That is the same order of magnitude as the world's compound feed output. Their split between species is close to method 1's.
+These values give a world total of about 1.3 billion tonnes of concentrate feed. That is the same order of magnitude as the world's compound feed output. Its split between species is close to method 1's.
 
 ## Seafood
 
