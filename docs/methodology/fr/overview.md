@@ -42,7 +42,7 @@ En dessous se trouve la carte de l'alimentation et de l'agriculture. Pour chaque
 
 Chaque levier est une part d'adoption, de 0 à 100 %. Il monte progressivement de cette année jusqu'à l'année que l'on choisit en haut du panneau (2035 par défaut), puis reste à ce niveau jusqu'en 2100.
 
-- Les leviers d'énergie et de transport réduisent des parties du CO₂ fossile du scénario : voitures et camions électriques, moins d'avion, carburant d'aviation propre, transport maritime propre, électricité renouvelable et centres de données à l'énergie propre (voir [Énergie et transport](#method-sectors)).
+- Les leviers d'énergie et de transport réduisent des parties du CO₂ fossile du scénario : voitures et camions électriques, moins d'avion, carburant d'aviation propre, transport maritime propre et électricité renouvelable, qui décarbone aussi la demande supplémentaire des centres de données de l'IA (voir [Énergie et transport](#method-sectors)).
 - Les leviers des bâtiments et de l'industrie réduisent le CO₂ fossile direct du chauffage, de l'acier et du ciment (voir [Bâtiments et industrie](#method-industry)).
 - Les pratiques agricoles, la baisse du gaspillage alimentaire, la fin de la déforestation et le carbone stocké dans les terres agricoles agissent sur l'agriculture et les terres (voir [Leviers](#method-levers)).
 

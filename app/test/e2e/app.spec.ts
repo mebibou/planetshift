@@ -675,7 +675,6 @@ test('the energy fold: each slider and adopt all change the summary and the URL'
     ['cleanAviationFuel', 'saf'],
     ['cleanShipping', 'cs'],
     ['renewableElectricity', 're'],
-    ['cleanDataCentres', 'cdc'],
   ];
   for (const [lever, key] of keys) {
     await test.step(lever, async () => {
@@ -687,9 +686,9 @@ test('the energy fold: each slider and adopt all change the summary and the URL'
     });
   }
   await fold.locator('button[data-action="reset"]').click();
-  await expect(page).not.toHaveURL(/[?&](ev|et|fl|saf|cs|re|cdc)=/);
+  await expect(page).not.toHaveURL(/[?&](ev|et|fl|saf|cs|re)=/);
   await fold.locator('button[data-action="max"]').click();
-  await expect(page).toHaveURL(/ev=100&et=100&fl=100&saf=100&cs=100&re=100&cdc=100/);
+  await expect(page).toHaveURL(/ev=100&et=100&fl=100&saf=100&cs=100&re=100/);
   await expect(page.locator('.breakdown-row')).toHaveCount(0);
   await openDiet(page);
   await page.locator('#shift').fill('30');
@@ -848,7 +847,7 @@ test('the panel is in groups, all closed, under their causes, with the time sett
   ).toHaveCount(1);
   const meta = (id: string) => page.locator(`details[data-group="${id}"] .group-meta`);
   await expect(meta('diet')).toHaveText('No shift yet');
-  await expect(meta('levers-practices')).toHaveText('None of 7 adopted');
+  await expect(meta('levers-practices')).toHaveText('None of 6 adopted');
   await expect(meta('options')).toHaveText('All at their defaults');
   await openDiet(page);
   await page.locator('#shift').fill('40');
@@ -858,7 +857,7 @@ test('the panel is in groups, all closed, under their causes, with the time sett
   await page.keyboard.press('Enter');
   await expect(practices).toHaveAttribute('open', '');
   await page.locator('#lever-feedAdditives').fill('50');
-  await expect(meta('levers-practices')).toHaveText('1 of 7 adopted');
+  await expect(meta('levers-practices')).toHaveText('1 of 6 adopted');
   await practices.locator('summary').click();
   await expect(practices).not.toHaveAttribute('open');
   await expect(meta('levers-practices')).toBeVisible();
@@ -1205,10 +1204,10 @@ test('a group’s 0% / 100% pair sets its levers and the URL without opening the
   expect(await pressed(page, 'energy')).toBe('zero');
   const before = await summaryText(page);
   await quick(page, 'energy', 'full').click();
-  await expect(page).toHaveURL(/ev=100&et=100&fl=100&saf=100&cs=100&re=100&cdc=100/);
+  await expect(page).toHaveURL(/ev=100&et=100&fl=100&saf=100&cs=100&re=100/);
   await expect(fold).not.toHaveAttribute('open');
   expect(new Set(await sliderValues(page, 'levers-energy'))).toEqual(new Set(['100']));
-  await expect(fold.locator('.group-meta')).toHaveText('7 of 7 adopted');
+  await expect(fold.locator('.group-meta')).toHaveText('6 of 6 adopted');
   expect(await pressed(page, 'energy')).toBe('full');
   expect(await pressed(page, 'fossilIndustry')).toBe('mixed');
   await expect.poll(() => summaryText(page)).not.toBe(before);
@@ -1216,7 +1215,7 @@ test('a group’s 0% / 100% pair sets its levers and the URL without opening the
   await page.locator('#lever-flyLess').fill('50');
   await expect.poll(() => pressed(page, 'energy')).toBe('mixed');
   await quick(page, 'energy', 'zero').click();
-  await expect(page).not.toHaveURL(/[?&](ev|et|fl|saf|cs|re|cdc)=/);
+  await expect(page).not.toHaveURL(/[?&](ev|et|fl|saf|cs|re)=/);
   await expect(fold).toHaveAttribute('open', '');
   await expect(page.locator('#lever-flyLess')).toHaveValue('0');
   expect(await pressed(page, 'energy')).toBe('zero');

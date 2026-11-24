@@ -33,7 +33,6 @@ const KEYS: Record<EnergyLever, string> = {
   cleanAviationFuel: 'saf',
   cleanShipping: 'cs',
   renewableElectricity: 're',
-  cleanDataCentres: 'cdc',
 };
 const LEVERS = ENERGY_LEVERS.map((id) => lever(ID, id, KEYS[id]));
 

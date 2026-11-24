@@ -7,7 +7,6 @@ const PRACTICES = [
   'manureManagement',
   'riceWater',
   'nitrogenEfficiency',
-  'nitrificationInhibitors',
   'farmEnergy',
 ];
 const WASTE = ['foodWaste', 'supplyLosses'];
@@ -19,7 +18,6 @@ const ENERGY = [
   'cleanAviationFuel',
   'cleanShipping',
   'renewableElectricity',
-  'cleanDataCentres',
 ];
 export const GOLDEN_LEVERS = [...PRACTICES, ...WASTE, 'deforestation', ...REMOVALS, ...ENERGY];
 /** Recorded on their own, so the settings above keep their results. */
@@ -61,7 +59,6 @@ const MIXED: Partial<Scenario> = {
     coverCrops: 0.5,
     electricCars: 0.5,
     flyLess: 0.5,
-    cleanDataCentres: 0.5,
   },
 };
 

@@ -25,11 +25,7 @@
   },
   "renewableElectricity": {
     "title": "Électricité renouvelable",
-    "description": "L'éolien, le solaire et les autres sources propres remplacent le charbon et le gaz : le CO₂ par kWh du réseau baisse, et les véhicules électriques et les centres de données économisent plus."
-  },
-  "cleanDataCentres": {
-    "title": "Centres de données à l'énergie propre",
-    "description": "L'électricité supplémentaire des centres de données de l'IA vient de sources propres ; n'agit que si cette demande est comptée (Options)."
+    "description": "L'éolien, le solaire et les autres sources propres remplacent le charbon et le gaz : le CO₂ par kWh du réseau baisse, les véhicules électriques économisent plus, et la demande supplémentaire des centres de données de l'IA devient propre quand elle est comptée (Options)."
   },
   "options": {
     "dataCentres": {

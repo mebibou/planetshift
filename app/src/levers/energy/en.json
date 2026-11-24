@@ -25,11 +25,7 @@
   },
   "renewableElectricity": {
     "title": "Renewable electricity",
-    "description": "Wind, solar and other clean power replace coal and gas: the grid's CO₂ per kWh falls, so electric vehicles and data centres save more."
-  },
-  "cleanDataCentres": {
-    "title": "Data centres on clean power",
-    "description": "The extra electricity of AI data centres comes from clean sources; it acts only when that demand is counted (Options)."
+    "description": "Wind, solar and other clean power replace coal and gas: the grid's CO₂ per kWh falls, so electric vehicles save more, and AI data centres' extra demand runs clean when it is counted (Options)."
   },
   "options": {
     "dataCentres": {

@@ -1,6 +1,6 @@
 # Au-delà de la ferme : transport, électricité et centres de données
 
-L'alimentation n'est qu'une partie du problème climatique. Brûler du charbon, du pétrole et du gaz pour produire de l'électricité et se déplacer en est la plus grande. Pour que les leviers de l'alimentation et de l'agriculture puissent être comparés à d'autres actions, Planetshift propose sept leviers sur les véhicules routiers, l'aviation, le transport maritime, l'électricité et les centres de données. Les sept au maximum, de 2026 à 2035, évitent 0,263 °C de réchauffement en 2050 et 0,646 °C en 2100 (médiane, SSP2-4.5), une fois comptés le méthane et la pollution de l'air qui accompagnent le combustible.
+L'alimentation n'est qu'une partie du problème climatique. Brûler du charbon, du pétrole et du gaz pour produire de l'électricité et se déplacer en est la plus grande. Pour que les leviers de l'alimentation et de l'agriculture puissent être comparés à d'autres actions, Planetshift propose six leviers sur les véhicules routiers, l'aviation, le transport maritime et l'électricité, qui atteint aussi les centres de données. Les six au maximum, de 2026 à 2035, évitent 0,263 °C de réchauffement en 2050 et 0,646 °C en 2100 (médiane, SSP2-4.5), une fois comptés le méthane et la pollution de l'air qui accompagnent le combustible.
 
 ## Ce que ces leviers comptent
 
@@ -118,13 +118,13 @@ Les scénarios ont été construits vers 2016, avant que cette croissance ne soi
 
 `dataCentresTwh` ne compte donc comme demande supplémentaire que la croissance au-delà des 415 TWh de 2024. Dans le cas de base, elle vaut 0 en 2024, 530 TWh en 2030 et 785 TWh à partir de 2035. Headwinds donne 155 TWh en 2030 et 285 TWh à partir de 2035, et Lift-Off 701 et 1 285 TWh. Entre les années de l'AIE, les valeurs suivent des droites. Elles restent constantes après 2035, où l'AIE s'arrête.
 
-Le CO₂ de cette demande est son électricité multipliée par l'intensité du réseau de chaque scénario. Il diminue à mesure que le réseau se décarbone, et le levier « Électricité renouvelable » le réduit aussi. Le levier « Centres de données à l'énergie propre » fait passer une part de cette demande supplémentaire sur une électricité propre.
+Le CO₂ de cette demande est son électricité multipliée par l'intensité du réseau de chaque scénario. Il diminue à mesure que le réseau se décarbone, et le levier « Électricité renouvelable » le décarbone avec le reste du réseau.
 
 Les émissions de la construction des centres de données et de la fabrication de leurs puces ne sont pas comprises. Les estimations publiées portent sur des sites ou des entreprises isolés, et il n'existe pas de chiffre mondial par TWh sur lequel s'appuyer.
 
 ## Dans l'application
 
-Le volet **Énergie et transport** de la section Leviers compte sept curseurs. Chacun donne la part adoptée. Comme pour tous les leviers, chacun monte de l'année en cours jusqu'à l'année réglée par *Tous les leviers en place en*. Le bouton *Tout adopter en entier* du volet règle les sept à 100 %.
+Le volet **Énergie et transport** de la section Leviers compte six curseurs. Chacun donne la part adoptée. Comme pour tous les leviers, chacun monte de l'année en cours jusqu'à l'année réglée par *Tous les leviers en place en*. Le bouton *Tout adopter en entier* du volet règle les six à 100 %.
 
 Dans la répartition par levier du résumé, ces leviers forment à eux seuls le groupe *Énergie et transport*. Leur effet est réparti entre deux causes :
 
@@ -137,12 +137,11 @@ Son CO₂ et son méthane sont dans les émissions évitées. Les forçages ne s
 
 Le code est `app/src/levers/energy/model.ts`, un module de levier appelé par `run.ts`. Chaque année $y$, on prend chaque adoption $a$ déjà rapportée à la montée en charge, et $g$ l'intensité du réseau dans le scénario choisi :
 
-- Électricité renouvelable (`re`) retire $a \times$ le CO₂ de l'électricité. Le réseau restant a l'intensité $g' = g\,(1 - a)$.
+- Électricité renouvelable (`re`) retire $a \times$ le CO₂ de l'électricité. Le réseau restant a l'intensité $g' = g\,(1 - a)$. Avec l'option *Centres de données de l'IA* à sa valeur par défaut, *Croissance ajoutée (AIE)* (`dc=iea`), il décarbone aussi la demande supplémentaire des centres de données : ses émissions passent de ses kWh × $g$ dans la référence à ses kWh × $g'$ dans le scénario. Avec *Comme dans le scénario* (`dc=ssp`), il n'y a pas de demande supplémentaire à décarboner.
 - Voitures électriques (`ev`) et Camions électriques (`et`) économisent $a \times \text{CO}_2\text{ routier des passagers (ou des marchandises)} \times (1 - k\,g')$, avec $k$ = `evKwhPerKgCo2`.
 - Moins d'avion (`fl`) et Carburant d'aviation propre (`saf`) réduisent le CO₂ de l'aviation de $1 - (1 - a_{\text{fly}})(1 - a_{\text{fuel}})$. Moins d'avion réduit aussi le forçage de l'aviation hors CO₂ de $n \times a_{\text{fly}} \times \text{CO}_2\text{ de l'aviation}$, avec $n$ = `aviationNonCo2`.
 - Transport maritime propre (`cs`) retire $a \times$ le CO₂ du transport maritime.
 - La variation de CO₂ de chaque secteur entraîne ses co-émissions (ci-dessous). L'électricité consommée compte dans la variation du secteur électrique. Le méthane rejoint le CO₂ dans les émissions. La variation de la pollution de l'air donne un forçage et une variation de méthane propres, tous deux comptés sous *pollution de l'air*.
-- Centres de données à l'énergie propre (`cdc`) dépend de l'option *Centres de données de l'IA*. À sa valeur par défaut, *Croissance ajoutée (AIE)* (`dc=iea`), les émissions de la demande supplémentaire passent de ses kWh × $g$ dans la référence à ses kWh × $g'\,(1 - a)$ dans le scénario. Avec *Comme dans le scénario* (`dc=ssp`), il n'y a pas de demande supplémentaire, et le levier n'a rien sur quoi agir.
 
 Les variations de CO₂ et de méthane sont convoluées avec leurs courbes d'AGTP. Une courbe d'AGTP donne le réchauffement, année par année, après l'émission d'un kilogramme d'un gaz (voir la [page sur la température](#method-climate)). Les variations de forçage sont convoluées avec `forcingResponse`. Toutes s'ajoutent à la variation du réchauffement.
 
@@ -158,7 +157,7 @@ La réponse est linéaire autour du scénario. Cela tient bien pour de petites v
 
 ## Le méthane et la pollution de l'air qui accompagnent le combustible
 
-Brûler du charbon, du pétrole et du gaz émet plus que du CO₂. Un levier qui réduit le combustible réduit toutes ces émissions avec le CO₂. Le compter augmente le réchauffement qu'évitent les leviers d'énergie. Les sept au maximum évitent 0,263 °C en 2050 en le comptant, contre 0,205 °C pour le CO₂ seul. De tous les leviers d'énergie, de chauffage et d'industrie, seuls l'acier et le ciment propres, sur la page [Bâtiments et industrie](#method-industry), évitent moins en le comptant (0,016 °C au lieu de 0,025 en 2050).
+Brûler du charbon, du pétrole et du gaz émet plus que du CO₂. Un levier qui réduit le combustible réduit toutes ces émissions avec le CO₂. Le compter augmente le réchauffement qu'évitent les leviers d'énergie. Les six au maximum évitent 0,263 °C en 2050 en le comptant, contre 0,205 °C pour le CO₂ seul. De tous les leviers d'énergie, de chauffage et d'industrie, seuls l'acier et le ciment propres, sur la page [Bâtiments et industrie](#method-industry), évitent moins en le comptant (0,016 °C au lieu de 0,025 en 2050).
 
 Ce qui accompagne le combustible :
 
@@ -330,9 +329,8 @@ Réchauffement évité en °C, médiane (fourchette probable). Chaque levier est
 | Carburant d'aviation propre | 0,009 (0,007–0,012) | 0,015 (0,010–0,022) | 0,042 (0,029–0,057) | 0,059 (0,038–0,087) |
 | Transport maritime propre | 0,006 (0,004–0,008) | 0,008 (0,005–0,013) | 0,021 (0,014–0,028) | 0,029 (0,019–0,043) |
 | Électricité renouvelable | 0,096 (0,070–0,128) | 0,105 (0,057–0,192) | 0,234 (0,157–0,331) | 0,279 (0,184–0,416) |
-| Centres de données à l'énergie propre | 0,002 (0,000–0,004) | 0,002 (0,000–0,005) | 0,003 (0,001–0,008) | 0,004 (0,001–0,009) |
-| Les sept | 0,205 (0,129–0,323) | 0,263 (0,090–0,532) | 0,512 (0,316–0,811) | 0,646 (0,335–1,092) |
-| Les sept avec chauffage propre, acier et ciment propres | 0,257 (0,161–0,398) | 0,314 (0,110–0,643) | 0,692 (0,425–1,079) | 0,851 (0,453–1,426) |
+| Les six | 0,205 (0,129–0,323) | 0,263 (0,090–0,532) | 0,512 (0,316–0,810) | 0,646 (0,335–1,091) |
+| Les six avec chauffage propre, acier et ciment propres | 0,257 (0,161–0,398) | 0,314 (0,110–0,643) | 0,692 (0,425–1,079) | 0,851 (0,453–1,426) |
 
 Avec tous les leviers d'énergie, de chauffage et d'industrie au maximum, deux effets s'annulent à peu près au début. L'approvisionnement et le méthane du combustible ne sont plus émis, ce qui est un gain. Le refroidissement que masquait la pollution est perdu. Ensuite, les gains sont plus grands (médiane, °C, SSP2-4.5) :
 

@@ -34,12 +34,12 @@ Après aujourd'hui, le graphique Causes du réchauffement retire la part de chaq
 
 ## Les groupes de leviers
 
-**Pratiques agricoles** (voir [Pratiques agricoles](#method-practices)). Sept pratiques réduisent chacune une partie d'une ou plusieurs sources des émissions d'un produit :
+**Pratiques agricoles** (voir [Pratiques agricoles](#method-practices)). Six pratiques réduisent chacune une partie d'une ou plusieurs sources des émissions d'un produit :
 
 - les additifs alimentaires et la sélection agissent sur le méthane entérique des bovins, le méthane que les bovins rejettent en digérant ;
 - la gestion des effluents agit sur le méthane et le protoxyde d'azote du fumier stocké ;
 - les rizières drainées agissent sur le méthane du riz ;
-- « moins d'azote, mieux employé » et les inhibiteurs agissent sur le protoxyde d'azote des engrais ;
+- « moins d'azote, mieux employé », inhibiteurs compris, agit sur le protoxyde d'azote des engrais ;
 - l'énergie propre agit sur le CO₂ des carburants.
 
 Pour un pays, un produit et un gaz, la part des émissions supprimée est une somme sur les sources : la part de la source dans ce gaz (`breakdown.json`) multipliée par la part supprimée de cette source. Une pratique supprime adoption × la part applicable dans le pays × la réduction. Une pratique limitée à certains groupes d'aliments n'agit que sur ces groupes. Les additifs, par exemple, n'agissent que sur les bovins. Les pratiques réduisent les émissions de la production après le changement de régime. Leur effet est donc leur réduction sur la production actuelle, plus leur réduction sur la production que le changement de régime modifie.
@@ -55,14 +55,13 @@ Moins d'offre demande moins de production, qui occupe moins de terres et émet m
 
 **Carbone dans les terres agricoles** (voir [Carbone stocké dans les terres agricoles](#method-removals)). Les couverts végétaux, les arbres dans les fermes, le biochar et la poudre de roche stockent du CO₂. La quantité stockée est adoption × la plus grande part des terres que la pratique peut atteindre (`maxShare`) × les hectares de cultures, de prairies ou des deux une fois le changement complet × le taux du pays. Chaque hectare stocke du carbone pendant `years` ans à partir de l'année où la pratique y commence. Les couverts et les arbres saturent après 20 ans. Le biochar et la poudre de roche continuent de stocker du carbone jusqu'en 2100.
 
-**Énergie et transport** (voir [Énergie et transport](#method-sectors)). Sept leviers agissent sur le CO₂ fossile du scénario choisi dans *Autres options* :
+**Énergie et transport** (voir [Énergie et transport](#method-sectors)). Six leviers agissent sur le CO₂ fossile du scénario choisi dans *Autres options* :
 
 - voitures électriques et camions électriques : leur CO₂ d'échappement, moins l'électricité qu'ils tirent du réseau ;
 - moins d'avion : le CO₂ de l'aviation et son forçage hors CO₂ ;
 - carburant d'aviation propre : le CO₂ de l'aviation seulement ;
 - transport maritime propre ;
-- électricité renouvelable : le CO₂ du secteur électrique, et avec lui l'intensité du réseau dont dépendent les véhicules électriques et les centres de données ;
-- centres de données à l'énergie propre : la demande supplémentaire des centres de données de l'IA, quand on la compte dans *Autres options*.
+- électricité renouvelable : le CO₂ du secteur électrique, et avec lui l'intensité du réseau dont dépendent les véhicules électriques et les centres de données, y compris la demande supplémentaire des centres de données de l'IA quand on la compte dans *Autres options*.
 
 Leur variation de CO₂ est traduite en température avec la courbe du CO₂. La variation du forçage de l'aviation hors CO₂ est traduite avec la réponse de la température au forçage. Réduire le combustible réduit aussi le méthane qui fuit pendant sa production et la pollution de l'air que produit sa combustion. Ces leviers agissent donc aussi sur la pollution de l'air. Celle-ci refroidit la planète et masque une partie du réchauffement : moins de pollution masque moins de réchauffement. Cela ajoute du réchauffement les premières décennies, et le méthane économisé le compense à peu près.
 

@@ -47,7 +47,6 @@ export const PRACTICES = [
   'manureManagement',
   'riceWater',
   'nitrogenEfficiency',
-  'nitrificationInhibitors',
   'farmEnergy',
 ] as const;
 export type PracticeId = (typeof PRACTICES)[number];

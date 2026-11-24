@@ -1,6 +1,6 @@
 # Farm practices
 
-Besides changing what people eat, you can cut emissions where food is grown. Planetshift lets you apply seven farm practices. For each one, this page gives what farmers do, what it cuts and by how much, and where it can be adopted. Adopted in full wherever they apply, the seven together avoid about 0.9 billion tonnes of CO₂-equivalent a year. That is between the IPCC's estimate at a cost of up to \$100 per tonne and its estimate of what is technically possible (see *All practices together* below).
+Besides changing what people eat, you can cut emissions where food is grown. Planetshift lets you apply six farm practices. For each one, this page gives what farmers do, what it cuts and by how much, and where it can be adopted. Adopted in full wherever they apply, the six together avoid about 0.7 billion tonnes of CO₂-equivalent a year at the farm gate, and 1.0 billion from cradle to farm gate. That is between the IPCC's estimate at a cost of up to \$100 per tonne and its estimate of what is technically possible (see *All practices together* below).
 
 ## How a practice is described
 
@@ -78,9 +78,9 @@ The cut a practice makes in a country is the adoption you set × the applicable 
 
 ## Less nitrogen, better used
 
-**What farmers do.** They give crops the nitrogen they need and no more. The measures include soil and plant testing, the right rate, split applications at the right time, placement near the roots, enhanced-efficiency fertilisers, and legumes in the rotation.
+**What farmers do.** They give crops the nitrogen they need and no more. The measures include soil and plant testing, the right rate, split applications at the right time, placement near the roots, enhanced-efficiency fertilisers, nitrification inhibitors, and legumes in the rotation. An inhibitor (DCD, DMPP, nitrapyrin) added to the fertiliser slows the turning of ammonium into nitrate, from which N₂O is made.
 
-**What it cuts.** N₂O from synthetic fertiliser on the field, CO₂ from urea, and the emissions of making the fertiliser that is no longer bought. A synthesis of 1,521 field observations finds that eleven such measures together cut fertiliser use by 21% and nitrogen losses by 32% at equal or higher yields. Where nitrogen is in excess, N₂O falls faster than the rate, as its response to nitrogen is not linear. Planetshift uses 25% (12–35%).
+**What it cuts.** N₂O from synthetic fertiliser on the field, CO₂ from urea, and the emissions of making the fertiliser that is no longer bought. A synthesis of 1,521 field observations finds that eleven such measures together cut fertiliser use by 21% and nitrogen losses by 32% at equal or higher yields. Where nitrogen is in excess, N₂O falls faster than the rate, as its response to nitrogen is not linear. Inhibitors on top cut direct N₂O by 0.2–4.5 kg of N₂O-N per hectare (8–57%), but they raise ammonia losses by 3–65%, and the ammonia later adds indirect N₂O. Counting it, their net effect ranges from a cut of 4.5 to a rise of 0.5 kg of N₂O-N per hectare (Lam et al. 2017). They therefore widen only the high end. Planetshift uses 25% (12–40%).
 
 **Where it applies.** Where more nitrogen is spread than crops take up:
 
@@ -88,17 +88,7 @@ The cut a practice makes in a country is the adoption you set × the applicable 
 - 60% in upper-middle-income, 50% in high-income and lower-middle-income countries;
 - 20% in low-income countries and in western, eastern and middle Africa, where soils get too little nitrogen and better yields need more.
 
-**Caveats.** The making of inputs in `breakdown.json` also holds pesticides, machinery and plastics, which the practice does not reduce. Applying the same cut to all of it overstates the effect a little. Nitrogen efficiency and nitrification inhibitors act on the same N₂O, so their combined effect is less than their sum.
-
-## Nitrification inhibitors
-
-**What farmers do.** They buy fertiliser coated with a nitrification inhibitor (DCD, DMPP, nitrapyrin). The inhibitor slows the turning of ammonium into nitrate, from which N₂O is made.
-
-**What it cuts.** N₂O from synthetic fertiliser. A meta-analysis finds inhibitors cut direct N₂O by 38% on average. Another review finds 8–57% across studies, but more ammonia volatilises, and the ammonia later adds indirect N₂O. Indirect N₂O, about a fifth of fertiliser N₂O, is barely reduced. Planetshift uses 30% (10–45%).
-
-**Where it applies.** Wherever the treated fertiliser can be bought and afforded: 60% of the targeted emissions in high-income countries, 50% in upper-middle-income, 30% in lower-middle-income and 10% in low-income countries.
-
-**Caveats.** Residues of DCD were found in milk in New Zealand in 2013, which stopped its use there. The inhibitors cost more than the fertiliser saved in most places, and work less in warm, dry soils.
+**Caveats.** The making of inputs in `breakdown.json` also holds pesticides, machinery and plastics, which the practice does not reduce. Applying the same cut to all of it overstates the effect a little. Residues of the inhibitor DCD were found in milk in New Zealand in 2013, which stopped its use there. Inhibitors cost more than the fertiliser saved in most places, and work less in warm, dry soils.
 
 ## Clean farm energy
 
@@ -118,7 +108,7 @@ The cut a practice makes in a country is the adoption you set × the applicable 
 
 ## All practices together
 
-With every practice adopted in full, wherever it applies, the model avoids about 0.9 billion tonnes of CO₂-equivalent a year (GWP100). The IPCC's sixth assessment (Working Group III, chapter 7, Table 7.3) puts the potential of reducing agriculture's methane and nitrous oxide at 0.6 (0.3–1.3) billion tonnes a year at up to \$100 per tonne of CO₂-equivalent. It puts the technical potential at 1.7 billion tonnes. Planetshift's full adoption lies between the two.
+With every practice adopted in full, wherever it applies, the model avoids about 0.7 billion tonnes of CO₂-equivalent a year (GWP100) at the farm gate, and 1.0 billion from cradle to farm gate, where clean farm energy and the making of fertiliser count. The IPCC's sixth assessment (Working Group III, chapter 7, Table 7.3) puts the potential of reducing agriculture's methane and nitrous oxide at 0.6 (0.3–1.3) billion tonnes a year at up to \$100 per tonne of CO₂-equivalent. It puts the technical potential at 1.7 billion tonnes. Planetshift's full adoption lies between the two.
 
 ## How emissions are split by source
 
@@ -173,7 +163,7 @@ If a gas still has no split, it takes the first split found in this order:
 
 - One reduction per practice applies to every source and gas it targets. The N₂O increase of drained paddies is netted into the methane cut in CO₂-equivalents over 100 years.
 - Applicable shares are judgements from the farming systems of each income group and region, with a value of its own for the countries named above. A country takes its own value, else its region's, else its income group's (World Bank), else the world's.
-- Practices acting on the same source (feed additives with breeding and feed; nitrogen efficiency with nitrification inhibitors) should be combined multiplicatively, not added.
+- Practices acting on the same source (feed additives with breeding and feed) should be combined multiplicatively, not added.
 - Manure left on pasture and manure applied to soils count as organic fertiliser, not manure, so manure management does not reach them.
 - The making of inputs is one source, so nitrogen efficiency also cuts the making of pesticides and machinery.
 - Literature and proxy intensities take the FAOSTAT split of their item. A processed item takes its primary items' split. Items without any split are counted as "other".
@@ -191,7 +181,6 @@ If a gas still has no split, it takes the first split found in this order:
 - Gu, B. et al. (2023). Cost-effective mitigation of nitrogen pollution from global croplands. Nature 613, 77–84: <https://doi.org/10.1038/s41586-022-05481-8>.
 - Shcherbak, I., Millar, N., Robertson, G. P. (2014). Global metaanalysis of the nonlinear response of soil nitrous oxide (N₂O) emissions to fertilizer nitrogen. PNAS 111, 9199–9204: <https://doi.org/10.1073/pnas.1322434111>.
 - Nabuurs, G.-J. et al. (2022). Agriculture, Forestry and Other Land Uses (AFOLU). In IPCC AR6, Working Group III, chapter 7 (Table 7.3, mitigation potentials by measure): <https://doi.org/10.1017/9781009157926.009>.
-- Akiyama, H., Yan, X., Yagi, K. (2010). Evaluation of effectiveness of enhanced-efficiency fertilizers as mitigation options for N₂O and NO emissions from agricultural soils: meta-analysis. Global Change Biology 16, 1837–1846: <https://doi.org/10.1111/j.1365-2486.2009.02031.x>.
 - Lam, S. K. et al. (2017). Using nitrification inhibitors to mitigate agricultural N₂O emission: a double-edged sword? Global Change Biology 23, 485–489: <https://doi.org/10.1111/gcb.13338>.
 - FAO (2011). Energy-smart food for people and climate. Issue paper: <https://www.fao.org/3/i2454e/i2454e.pdf>.
 - FAOSTAT, Emissions from Crops, Emissions from Livestock and Emissions totals: <https://www.fao.org/faostat/en/#data/GT>, CC BY 4.0.

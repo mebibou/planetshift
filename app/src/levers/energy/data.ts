@@ -132,7 +132,6 @@ export const ENERGY_LEVERS = [
   'cleanAviationFuel',
   'cleanShipping',
   'renewableElectricity',
-  'cleanDataCentres',
 ] as const;
 export type EnergyLever = (typeof ENERGY_LEVERS)[number];
 

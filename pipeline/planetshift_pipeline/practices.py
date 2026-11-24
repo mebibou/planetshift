@@ -24,7 +24,6 @@ PRACTICES = (
     "manureManagement",
     "riceWater",
     "nitrogenEfficiency",
-    "nitrificationInhibitors",
     "farmEnergy",
 )
 URL = re.compile(r"https://[^\s,\"]+")
@@ -100,13 +99,6 @@ SOURCES = [
         "version": "2022",
         "url": "https://doi.org/10.1017/9781009157926.009",
         "licence": "IPCC copyright, free to read",
-    },
-    {
-        "id": "akiyama-2010-inhibitors",
-        "name": "Akiyama et al. (2010), enhanced-efficiency fertilizers and N2O: meta-analysis",
-        "version": "Glob Change Biol 16(6)",
-        "url": "https://doi.org/10.1111/j.1365-2486.2009.02031.x",
-        "licence": "Wiley, subscription",
     },
     {
         "id": "lam-2017-inhibitors",

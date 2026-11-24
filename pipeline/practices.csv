@@ -73,7 +73,7 @@ nitrogenEfficiency,sources,,syntheticFertiliser;inputsManufacture,"less nitrogen
 nitrogenEfficiency,gases,,n2o;co2;ch4,"N2O from the field and from nitric acid plants, CO2 of urea and of making ammonia, methane of the gas used",
 nitrogenEfficiency,reduction,median,0.25,"eleven measures (rate, timing, placement, enhanced fertilisers, rotations) cut fertiliser use by 21% and nitrogen losses by 32% at equal or higher yields","Gu et al. 2023, Cost-effective mitigation of nitrogen pollution from global croplands, Nature, https://doi.org/10.1038/s41586-022-05481-8"
 nitrogenEfficiency,reduction,low,0.12,rate and timing alone,Gu et al. 2023 https://doi.org/10.1038/s41586-022-05481-8
-nitrogenEfficiency,reduction,high,0.35,"N2O falls faster than the rate where nitrogen is in excess, as its response to nitrogen is not linear","Shcherbak et al. 2014, Global metaanalysis of the nonlinear response of soil nitrous oxide (N2O) emissions to fertilizer nitrogen, PNAS, https://doi.org/10.1073/pnas.1322434111"
+nitrogenEfficiency,reduction,high,0.40,"N2O falls faster than the rate where nitrogen is in excess, as its response to nitrogen is not linear; nitrification inhibitors on top cut direct N2O by 0.2-4.5 kg N2O-N/ha, but the ammonia they add makes their net effect -4.5 to +0.5 kg, so they widen the high end only","Shcherbak et al. 2014, Global metaanalysis of the nonlinear response of soil nitrous oxide (N2O) emissions to fertilizer nitrogen, PNAS, https://doi.org/10.1073/pnas.1322434111 and Lam et al. 2017, Using nitrification inhibitors to mitigate agricultural N2O emission: a double-edged sword?, Glob Change Biol, https://doi.org/10.1111/gcb.13338"
 nitrogenEfficiency,applicable,World,0.50,the share of synthetic nitrogen spread beyond what crops take up and that better practice can avoid,"IPCC AR6 WGIII ch. 7, https://doi.org/10.1017/9781009157926.009"
 nitrogenEfficiency,applicable,income:High income,0.50,surpluses have fallen but remain,
 nitrogenEfficiency,applicable,income:Upper middle income,0.60,large nitrogen surpluses,
@@ -84,16 +84,6 @@ nitrogenEfficiency,applicable,region:Eastern Africa,0.20,nitrogen is short rathe
 nitrogenEfficiency,applicable,region:Middle Africa,0.20,nitrogen is short rather than in excess,
 nitrogenEfficiency,applicable,CHN,0.80,the largest surpluses in the world,
 nitrogenEfficiency,applicable,IND,0.70,"large surpluses on rice and wheat, subsidised urea",
-nitrificationInhibitors,sources,,syntheticFertiliser,an inhibitor added to the fertiliser slows its turning into nitrate,
-nitrificationInhibitors,gases,,n2o,the soil N2O of fertiliser,
-nitrificationInhibitors,reduction,median,0.30,"inhibitors cut direct N2O by 38% on average; more ammonia volatilises, adding indirect N2O, and indirect N2O is about a fifth of fertiliser N2O","Akiyama et al. 2010, Evaluation of effectiveness of enhanced-efficiency fertilizers as mitigation options for N2O and NO emissions from agricultural soils: meta-analysis, Glob Change Biol, https://doi.org/10.1111/j.1365-2486.2009.02031.x"
-nitrificationInhibitors,reduction,low,0.10,"direct N2O falls by 8-57% across studies, and the ammonia lost can offset part of it","Lam et al. 2017, Using nitrification inhibitors to mitigate agricultural N2O emission: a double-edged sword?, Glob Change Biol, https://doi.org/10.1111/gcb.13338"
-nitrificationInhibitors,reduction,high,0.45,the best results with DMPP on wet soils,Akiyama et al. 2010 https://doi.org/10.1111/j.1365-2486.2009.02031.x
-nitrificationInhibitors,applicable,World,0.40,"the fertiliser that farmers could buy treated, given its price and supply",
-nitrificationInhibitors,applicable,income:High income,0.60,available and partly used already,
-nitrificationInhibitors,applicable,income:Upper middle income,0.50,available on the main crops,
-nitrificationInhibitors,applicable,income:Lower middle income,0.30,costly next to subsidised urea,
-nitrificationInhibitors,applicable,income:Low income,0.10,hard to find and little fertiliser used,
 farmEnergy,sources,,fuel,"fuel burnt on the farm and its making; the electricity farms use is the grid's, which Renewable electricity cleans",
 farmEnergy,gases,,co2,the CO2 of fuel,
 farmEnergy,reduction,median,0.50,"efficient engines and buildings, pumps and heating moved to electricity, and some biofuel in tractors","FAO 2011, Energy-smart food for people and climate, https://www.fao.org/3/i2454e/i2454e.pdf"

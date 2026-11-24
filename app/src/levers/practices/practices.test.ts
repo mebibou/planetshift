@@ -10,6 +10,7 @@ import {
   w2050,
 } from '../../../test/levers';
 import { groupIndicesOf } from '../../model/prepare';
+import { decodeState } from '../../model/state';
 import {
   gasSplitOf,
   intensityCuts,
@@ -25,7 +26,6 @@ const GASES_CUT: Record<PracticeId, Gas[]> = {
   manureManagement: ['ch4', 'n2o'],
   riceWater: ['ch4'],
   nitrogenEfficiency: ['n2o'],
-  nitrificationInhibitors: ['n2o'],
   farmEnergy: ['co2'],
 };
 
@@ -119,5 +119,8 @@ describe('practices', () => {
   it('show in each country’s change in emissions', () => {
     const r = lever('feedAdditives');
     r.countries.forEach((c) => expect(c.emissionsChange.ch4).toBeLessThan(0));
+  });
+  it('ignore the nitrification inhibitors of an old URL, now part of nitrogen efficiency', () => {
+    expect(decodeState('ne=50&ni=100').scenario.levers).toEqual({ nitrogenEfficiency: 0.5 });
   });
 });

@@ -34,12 +34,12 @@ After today, the Causes of warming chart takes each cause's part off that cause'
 
 ## The lever groups
 
-**Farm practices** (see [Farm practices](#method-practices)). Seven practices each cut part of one or more sources of an item's emissions:
+**Farm practices** (see [Farm practices](#method-practices)). Six practices each cut part of one or more sources of an item's emissions:
 
 - feed additives and breeding act on cattle's enteric methane, the methane cattle breathe out as they digest;
 - manure management acts on the methane and nitrous oxide of stored manure;
 - drained paddies act on rice methane;
-- nitrogen efficiency and inhibitors act on the nitrous oxide of fertilisers;
+- nitrogen efficiency, inhibitors included, acts on the nitrous oxide of fertilisers;
 - clean energy acts on the CO₂ of fuel.
 
 For a country, item and gas, the share of the emissions removed is a sum over sources: the source's share of the gas (`breakdown.json`) times the share removed from that source. A practice removes adoption × the applicable share in the country × the reduction. A practice limited to some food groups acts on those groups only. Feed additives, for example, act on cattle only. Practices cut the emissions of production after the shift. Their effect is therefore their cut on today's production, plus their cut on the production the shift changes.
@@ -55,14 +55,13 @@ Less supply needs less production, which uses less land and emits less. The chan
 
 **Carbon in farmland** (see [Carbon stored in farmland](#method-removals)). Cover crops, trees on farms, biochar and rock dust store CO₂. The amount stored is adoption × the largest share of the land the practice can reach (`maxShare`) × the hectares of cropland, pasture or both once the shift is complete × the country's rate. Each hectare stores carbon for `years` years from the year the practice starts on it. Cover crops and trees saturate after 20 years. Biochar and rock dust keep storing carbon until 2100.
 
-**Energy and transport** (see [Energy and transport](#method-sectors)). Seven levers act on the fossil CO₂ of the scenario chosen under *Other options*:
+**Energy and transport** (see [Energy and transport](#method-sectors)). Six levers act on the fossil CO₂ of the scenario chosen under *Other options*:
 
 - electric cars and electric trucks: their tailpipe CO₂, less the electricity they draw on the grid;
 - less flying: aviation's CO₂ and its non-CO₂ forcing;
 - clean aviation fuel: aviation's CO₂ only;
 - clean shipping;
-- renewable electricity: the electricity sector's CO₂, and with it the grid's intensity that electric vehicles and data centres draw on;
-- data centres on clean power: the extra demand of AI data centres, when it is counted under *Other options*.
+- renewable electricity: the electricity sector's CO₂, and with it the grid's intensity that electric vehicles and data centres draw on, including the extra demand of AI data centres when it is counted under *Other options*.
 
 Their CO₂ change is turned into temperature with the CO₂ curve. The change in aviation's non-CO₂ forcing is turned into temperature with the temperature response to forcing. Cutting the fuel also cuts the methane leaked while producing it and the air pollution from burning it. So these levers act on air pollution too. Air pollution cools the planet and masks part of the warming, so less of it masks less warming. This adds warming in the first decades, and the methane saved about offsets it.
 
