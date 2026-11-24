@@ -6,6 +6,7 @@ import {
   csvCell,
   csvNumber,
   fileLicences,
+  licenceText,
   layerSlug,
   mapCsv,
   MAP_HEADER,
@@ -15,6 +16,8 @@ import {
   unitOf,
 } from '../../src/app/download';
 import { DEFAULT_UI } from '../../src/app/url';
+import { zipBlob } from '../../src/app/zip';
+import { strFromU8, unzipSync } from 'fflate';
 import type { Climate, Meta } from '../../src/data/types';
 import type { LayerSpec } from '../../src/map/layers';
 import { DEFAULT_OPTIONS, type Scenario, type ScenarioResult } from '../../src/model/api';
@@ -277,5 +280,24 @@ describe('scenario json and licences', () => {
     expect(names('population.json')).toEqual(['CC BY 3.0 IGO', 'CC BY 4.0']);
     expect(names('supply.json')).toEqual(['CC BY 4.0']);
     expect(names('waste.json')).toEqual(['UN terms of use']);
+  });
+});
+
+describe('the data files as a ZIP', () => {
+  it('lists each file with its licences, then how to cite', () => {
+    const text = licenceText(['climate.json', 'population.json'], 'Planetshift (2026).');
+    expect(text).toContain(
+      'climate.json: CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)',
+    );
+    expect(text).toContain('population.json: CC BY 3.0 IGO (');
+    expect(text).toContain(') and CC BY 4.0 (');
+    expect(text.trimEnd().split('\n').at(-1)).toBe('How to cite: Planetshift (2026).');
+  });
+
+  it('holds every file as it was given', async () => {
+    const blob = await zipBlob({ 'a.json': '{"é":1}', 'LICENSE.txt': 'x' });
+    const entries = unzipSync(new Uint8Array(await blob.arrayBuffer()));
+    expect(Object.keys(entries)).toEqual(['a.json', 'LICENSE.txt']);
+    expect(strFromU8(entries['a.json']!)).toBe('{"é":1}');
   });
 });

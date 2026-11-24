@@ -1,6 +1,7 @@
 import { axisBottom, axisLeft, pointer, select, type ScaleLinear, type Selection } from 'd3';
 import { h } from '../app/dom';
 import { placeTooltip } from '../app/place';
+import { SUMMARY } from '../ui/classes';
 
 export interface Margin {
   top: number;
@@ -356,4 +357,22 @@ export const legendList = (
     }
   });
   return list;
+};
+
+/** A text cut into its sentences, each kept whole with its full stop. */
+export const sentences = (text: string): string[] =>
+  text.split(/(?<=[.!?])\s+(?=\p{Lu})/u).filter(Boolean);
+
+/** The notes under a chart, folded, one sentence a line: `set` replaces them. */
+export const chartNotes = (summary: string, className = '') => {
+  const list = h('ul', { class: `m-0 mt-1.5 grid list-disc gap-1 pl-5 ${className}` });
+  const el = h(
+    'details',
+    { class: 'chart-notes mt-1.5 text-[0.88rem] leading-normal text-muted' },
+    h('summary', { class: `${SUMMARY} w-fit items-center gap-2 font-bold text-ink` }, summary),
+    list,
+  );
+  const set = (texts: readonly string[]) =>
+    list.replaceChildren(...texts.flatMap(sentences).map((s) => h('li', {}, s)));
+  return { el, set };
 };

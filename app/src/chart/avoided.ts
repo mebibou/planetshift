@@ -30,6 +30,7 @@ export const avoidedChart = (t: T, locale: string, currentYear: number): Avoided
   const plotEl = h('div', {
     class: 'chart-plot',
     style: '--plot-h: 340px; --plot-h-narrow: 260px',
+    'data-loading': t('load.loading'),
   });
   const el = h(
     'figure',

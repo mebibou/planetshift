@@ -55,12 +55,3 @@ export const scenarioText = (
       })
     : '';
 };
-
-/** The stacked chart's title and text, for every cause or for one gas. */
-export const titleTexts = (t: T, shown: CauseGas, from: number) =>
-  shown === 'all'
-    ? { title: t('link.attributionTitle', { from }), text: t('link.attributionText') }
-    : {
-        title: t('link.gasTitle', { gas: t(`link.gasNames.${shown}`), from }),
-        text: t('link.gasText'),
-      };

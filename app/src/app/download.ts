@@ -304,6 +304,22 @@ export const fileLicences = (file: string): Licence[] => {
           : pick('ccBy');
 };
 
+/** LICENSE.txt of the data files' ZIP: each file with its licences, then how to cite. */
+export const licenceText = (files: readonly string[], cite: string): string =>
+  [
+    'Planetshift source data files',
+    '',
+    ...files.map(
+      (f) =>
+        `${f}: ${fileLicences(f)
+          .map((l) => `${l.name} (${l.url})`)
+          .join(' and ')}`,
+    ),
+    '',
+    `How to cite: ${cite}`,
+    '',
+  ].join('\n');
+
 /** What each download is derived from: the temperatures come from climate.json. */
 export const DOWNLOAD_LICENCES = {
   map: pick('ccBy'),

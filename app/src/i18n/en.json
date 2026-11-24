@@ -256,6 +256,7 @@
     "emptyHint": "Move a lever or shift the diet in the panel."
   },
   "chart": {
+    "notes": "How to read this chart",
     "title": "Global temperature to {year}",
     "label": "Global temperature from 1850 to {year}: observed, without the levers and with them",
     "unit": "°C above 1850–1900",
@@ -312,7 +313,6 @@
   "link": {
     "scenario": "With the levers chosen, the world would be {avoided} cooler in {year} than without them ({ssp}): {parts}.",
     "intro": "Most warming comes from burning fossil fuels. Farming adds to it in a different way, mostly through methane from cattle and rice paddies, and nitrous oxide from fertiliser and manure. These gases trap far more heat than CO₂ while they last.",
-    "attributionTitle": "Warming by cause since {from}",
     "attributionText": "Each band is the warming from one cause, or, below zero, the cooling. After today, each band is what is left once the levers chosen act on its cause.",
     "attributionCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today. Each cause is the warming its emissions add. Air pollution cools: its particles reflect sunlight and brighten clouds. The energy, heating and industry levers also cut the air pollution of the fuel they no longer burn, so its cooling shrinks when they act. What the baseline adds to the scenario goes into the cause it belongs to: farm emissions that follow the population, the data centres' growth, ships' cleaner fuel, permafrost and the people on Earth. The gap between the scenario's temperature and the sum of the causes also goes into Other human emissions, so the stack meets the line without the levers.",
     "attributionLabel": "Stacked chart of warming by cause from {from} to {year}, with observed temperature",
@@ -338,7 +338,6 @@
       "ch4": "methane",
       "n2o": "N₂O"
     },
-    "gasTitle": "Warming from {gas} by cause since {from}",
     "gasText": "Each band is the warming from one cause's emissions of this gas. After today, each band is what is left once the levers chosen act on its cause. Air pollution, aviation's contrails and the natural factors are not greenhouse gases: they show under All gases only.",
     "gasCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today. Each cause is the warming its emissions of this gas add. The other sources and interactions are the rest of the gas's warming.",
     "gasOther": "Other sources and interactions",
@@ -438,6 +437,7 @@
     "chartButton": "Download this chart’s data",
     "title": "Download the data",
     "map": "This map as CSV",
+    "mapTitle": "This map",
     "mapText": "Every country with the layer’s values today and with the levers, the change, the unit and, for production and emissions, the least precise source.",
     "chart": "{chart} as CSV",
     "chartText": {
@@ -446,10 +446,13 @@
       "cause": "Each year from 1850 to 2100 under the chosen scenario: warming by cause with its range, observed temperature and farm emissions by gas."
     },
     "scenario": "Scenario and settings as JSON",
+    "scenarioTitle": "Scenario and settings",
     "scenarioText": "Every setting of this page (the same as its address), the summary’s figures, the licence and how to cite.",
     "format": "CSV files are UTF-8 with a byte order mark, comma-separated. They use English column names and plain numbers (a point for decimals, no thousands separator), so that spreadsheets and scripts read them alike.",
     "files": "Source data files",
     "filesText": "The JSON files the page reads, built by the pipeline from the sources listed on the Methodology page.",
+    "filesLicence": "LICENSE.txt, inside the ZIP, gives each file’s licence. Unzipped: {size}.",
+    "filesZip": "The source data files as ZIP",
     "cite": "How to cite",
     "citeText": "Credit Planetshift and the original sources:",
     "licence": "Licence:",

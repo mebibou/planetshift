@@ -401,10 +401,29 @@
   &:empty {
     min-height: var(--plot-h);
   }
+  /* Until then, the chart's frame says it is loading. */
+  &:empty::after {
+    content: attr(data-loading);
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    border: 1px dashed var(--rule);
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+}
+/* The causes chart's legend is drawn with its data: about its height until then. */
+.legend-slot:empty {
+  min-height: 52px;
 }
 @media (max-width: 600px) {
   .chart-plot:empty {
     min-height: var(--plot-h-narrow);
+  }
+  .legend-slot:empty {
+    min-height: 122px;
   }
 }
 .chart-svg {
@@ -415,7 +434,7 @@
 }
 .chart figcaption,
 .chart-caption {
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   color: var(--muted);
   margin: 6px 0 0;
 }
@@ -806,9 +825,6 @@
   width: 8px;
   background: color-mix(in srgb, var(--policies) 55%, transparent);
   box-shadow: inset 0 0 0 1px var(--policies);
-}
-.milestone-caption {
-  margin-top: 4px;
 }
 .chart-slot:empty {
   display: none;
