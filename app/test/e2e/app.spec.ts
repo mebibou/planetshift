@@ -11,6 +11,7 @@ const OPTIONS: Record<string, string[]> = {
   climate: ['fair', 'ar6'],
   ssp: ['ssp245', 'ssp126', 'ssp370'],
   regrowth: ['none', 'natural'],
+  deadfall: ['off', 'on'],
   dataCentres: ['iea', 'ssp'],
   permafrost: ['on', 'off'],
   population: ['medium', 'low', 'high'],

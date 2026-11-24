@@ -184,6 +184,10 @@ export const syntheticData = (nCountries = 180, nItems = 100): ModelData => {
         },
       ]),
     ) as ModelData['removals'],
+    deadfall: {
+      ...fixture.deadfall,
+      kgCo2PerTonne: Object.fromEntries(countries.map((c) => [c.iso3, { 2763: rnd() * 100 }])),
+    },
     sectors: fixture.sectors,
     population: fixture.population,
     industry: fixture.industry,

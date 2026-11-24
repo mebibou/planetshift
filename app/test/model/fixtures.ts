@@ -13,6 +13,7 @@ import practices from '../../public/fixtures/practices.json';
 import waste from '../../public/fixtures/waste.json';
 import deforestation from '../../public/fixtures/deforestation.json';
 import removals from '../../public/fixtures/removals.json';
+import deadfall from '../../public/fixtures/deadfall.json';
 import sectors from '../../public/fixtures/sectors.json';
 import population from '../../public/fixtures/population.json';
 import industry from '../../public/fixtures/industry.json';
@@ -35,6 +36,7 @@ export const loadFixtures = (): ModelData =>
     waste,
     deforestation,
     removals,
+    deadfall,
     sectors,
     population,
     industry,

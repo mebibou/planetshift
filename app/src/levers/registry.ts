@@ -4,6 +4,7 @@
 import { DEPARTURES } from '../config';
 import type { Cause, CountedCause, LeverCause, ModelData } from '../data/types';
 import type { Levers } from '../model/api';
+import { deadfallSpec as deadfall } from './deadfall/spec';
 import { deforestationSpec as deforestation } from './deforestation/spec';
 import { energySpec as energy } from './energy/spec';
 import { industrySpec as industry } from './industry/spec';
@@ -31,6 +32,7 @@ export const MODULES: readonly LeverSpec[] = [
   practices,
   deforestation,
   regrowth,
+  deadfall,
   removals,
   energy,
   industry,

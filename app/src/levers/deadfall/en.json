@@ -1,0 +1,10 @@
+{
+  "options": {
+    "deadfall": {
+      "label": "Uncaught large fish",
+      "hint": "A tuna, mackerel or shark that dies uncaught sinks, and part of its carbon stays in the deep ocean for centuries. When this carbon is counted, catching fewer of them stores it. The storage builds up over about ten years as their stocks recover. It is under 1% of seafood's emissions.",
+      "off": "Not counted",
+      "on": "Counted"
+    }
+  }
+}

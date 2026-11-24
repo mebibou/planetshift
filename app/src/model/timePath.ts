@@ -60,3 +60,21 @@ export const tabulate = (scale: Scale, years: readonly number[]): Scale => {
       : scale(gas, year);
   };
 };
+
+/**
+ * A share that builds up behind `share` with a first-order lag of `timeConstant` years: each
+ * year's rise in it counts only 1 − e^(−t / timeConstant) of itself t years on.
+ */
+export const builtUp = (
+  share: (year: number) => number,
+  years: readonly number[],
+  timeConstant: number,
+): ((year: number) => number) => {
+  const rises = years.map((y) => share(y) - share(y - 1));
+  const lag = (t: number) => 1 - Math.exp(-t / timeConstant);
+  const values = years.map((_, i) =>
+    rises.slice(0, i + 1).reduce((acc, r, k) => acc + r * lag(i - k), 0),
+  );
+  const first = years[0] ?? 0;
+  return (year) => values[year - first] ?? 0;
+};

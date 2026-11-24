@@ -75,7 +75,7 @@ Each lever's adoption is a percentage under the key its module declares. A lever
 | `energy` | `ev` electric cars, `et` electric trucks, `fl` less flying, `saf` clean aviation fuel, `cs` clean shipping, `re` renewable electricity |
 | `industry` | `ch` clean heating, `ci` clean industry |
 
-Each option follows under its key, and is left out at its default: `scope`, `feed`, `base`, `loc`, `temp`, `clim`, `ssp`, and the modules' `pop`, `regrow`, `dc` and `pf`.
+Each option follows under its key, and is left out at its default: `scope`, `feed`, `base`, `loc`, `temp`, `clim`, `ssp`, and the modules' `pop`, `regrow`, `deadfall`, `dc` and `pf`.
 
 The interface adds its own keys when they differ from their defaults (`src/app/url.ts`):
 
@@ -160,7 +160,7 @@ The core run (`src/model/run.ts`) calls the hooks at fixed points. Each hook is 
 | `demand` | after the diet shift | What people use once the diet has shifted (less food wasted), per country |
 | `supplyChain` | with `demand` | The supply each tonne of use needs, and the losses avoided. A module with either is a production step. It runs on top of the diet and the steps before it, and its family gets the difference in farm emissions |
 | `intensity` | per country and band | The share of each item's intensity of each gas removed, applied to the production with every step (farm practices) |
-| `country` | per country, after production and land | CO₂ a year by family (a constant stream, such as clearing following each step), and its own fields of the country's result |
+| `country` | per country, after production and land | CO₂ a year by family (a constant stream, such as clearing following each step), CO₂ a year by family that builds up behind each step with a time constant (`buildUp`, the carbon of uncaught fish as stocks recover), and its own fields of the country's result. A stream counts in the module's cause, farming included |
 | `world` | once, with every country's result | `extraEmissions`: its family's emissions each year by band, such as uptake or fossil CO₂. `extraWarming`: warming from forcing that is not an emission, such as contrails. `warmingByCause`: warming it counts in a cause other than its own, such as the energy and industry levers' air pollution, under `airPollution`. Also its fields of the summary, and its own fields of the result (`result`, such as the world population the temperature chart draws), declared on `ScenarioResult` with `declare module` |
 | `baseline` | in registry order, on the baseline temperature so far | Warming it adds to the baseline (data centres, the 2020 shipping rule, the permafrost release), and what it keeps for `feedback` |
 | `feedback` | after every family's change in temperature | The warming that change causes in turn (permafrost). It is shared out between the families, and between the causes, in proportion to the size of their warming |
