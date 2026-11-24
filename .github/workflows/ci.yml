@@ -50,8 +50,17 @@ jobs:
         working-directory: app
         continue-on-error: true
 
+  # In Playwright's image, which has Chromium and its system libraries: no install step. The tests
+  # run on the built and pre-rendered site, which is what main publishes; desktop and phone run
+  # side by side, each building the site.
   e2e:
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [desktop, phone]
+    name: e2e (${{ matrix.project }})
     runs-on: ubuntu-latest
+    container: &playwright mcr.microsoft.com/playwright:v1.65.1-noble
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -61,41 +70,26 @@ jobs:
           cache-dependency-path: app/package-lock.json
       - run: npm ci
         working-directory: app
-      - run: npx playwright install --with-deps chromium
+      - name: Image matches the locked Playwright
+        run: test "v$(node -p "require('@playwright/test/package.json').version")-noble" = "${IMAGE##*:}"
         working-directory: app
-      - run: npx playwright test
+        env:
+          IMAGE: *playwright
+      - run: npx playwright test --project=${{ matrix.project }}
         working-directory: app
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.project }}
           path: app/playwright-report
-
-  build:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [pipeline, app, e2e]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: app/package-lock.json
-      - run: npm ci
-        working-directory: app
-      - run: npm run build
-        working-directory: app
-      - run: npx playwright install --with-deps chromium
-        working-directory: app
-      - run: npm run prerender
-        working-directory: app
-      - uses: actions/upload-pages-artifact@v3
+      - if: matrix.project == 'desktop' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
         with:
           path: app/dist
 
   deploy:
-    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [pipeline, app, e2e]
     runs-on: ubuntu-latest
     permissions:
       pages: write
