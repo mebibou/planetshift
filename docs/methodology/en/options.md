@@ -112,7 +112,7 @@ A value the page does not recognise falls back to its default.
 - The SSP2 baseline always follows SSP2-4.5's agricultural emissions, whatever the rest of the world's emissions chosen for the temperature.
 - The AR6 fallback has no range. The range shown with it is zero, not unknown.
 - Data centres' growth is added by default. It is already happening, and the scenarios, made around 2016, did not foresee it, so the baseline is more realistic with it. Switching it off reproduces the published scenario temperatures.
-- Permafrost is on by default: most of the models behind the published scenario temperatures leave it out, so they miss a warming AR6 assesses. Switched off, the baseline matches those temperatures. One pass of the feedback is computed. The further release that this feedback's own warming would cause is not.
+- Permafrost is on by default. Most of the models behind the published scenario temperatures leave it out, so those temperatures miss a warming that AR6 assesses. Switched off, the baseline matches them. One pass of the feedback is computed. The further release that this feedback's own warming would cause is not.
 - World population follows the UN's medium projection by default, which is what each country's population already carries. The low and high projections are the UN's own, not the SSPs', so that the population can be chosen apart from the scenario world.
 - Regrowth is off by default. Whether freed land is left to grow back is a choice about land, beyond the diet, and its uptake is less certain than the farm emissions. With the AR6 fallback, the range shown with regrowth on comes from the regrowth rates alone.
 

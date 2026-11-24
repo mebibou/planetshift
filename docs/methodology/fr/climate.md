@@ -276,8 +276,8 @@ La rétroaction ajoute environ 0,02 °C à la référence en 2050 et 0,05 °C en
 La médiane est faible pour quatre raisons :
 
 - L'essentiel est libéré après 2100. Le carbone du pergélisol dégèle et se décompose sur des siècles, et le modèle s'arrête en 2100. La rétroaction continue de croître ensuite, même si les émissions s'arrêtent.
-- Seul le réchauffement encore à venir compte. Ce qui a été libéré avant aujourd'hui est dans les observations, si bien que le carbone compté est celui des 18 PgC par °C de l'AR6 multipliés par environ 1,4 °C de réchauffement supplémentaire : environ 27 PgC d'ici 2100 sur SSP2-4.5, quelque 100 Gt de CO₂, environ deux ans et demi des émissions fossiles actuelles.
-- Le dégel brutal (effondrement du sol, lacs thermokarstiques) n'est pas dans le chiffre central de l'AR6, ni donc dans le modèle. Certaines études trouvent qu'il pourrait à peu près doubler ce qui est libéré.
+- Seul le réchauffement encore à venir compte, car ce qui a été libéré avant aujourd'hui est dans les observations. Cela donne les 27 PgC ci-dessus, environ 100 Gt de CO₂, soit deux ans et demi des émissions fossiles de CO₂ actuelles.
+- Le dégel brutal (effondrement du sol, lacs thermokarstiques) manque à la plupart des modèles derrière le chiffre de l'AR6, et donc au modèle aussi. Il pourrait ajouter beaucoup à ce qui est libéré.
 - La rétroaction est calculée en un seul passage : le dégel supplémentaire que causerait son propre réchauffement est laissé de côté. Il ajouterait quelques pour cent.
 
 ### Pourquoi c'est une option

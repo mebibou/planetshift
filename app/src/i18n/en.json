@@ -196,7 +196,7 @@
       "change": "{what}: change once the levers are fully in place",
       "quality": "Least precise source of emission data used",
       "deforestation": "Forest cleared for farming with the levers, a year",
-      "landCo2": "Net CO₂ from land-use change with the levers, a year (measured {from}–{to})",
+      "landCo2": "Net CO₂ from land-use change with the levers, a year (today's: mean of {from}–{to})",
       "landShare": "Share of the land farmed (cropland and pasture) with the levers"
     },
     "notes": {
@@ -206,7 +206,7 @@
       "change": "Each country's output changes by the same share as world demand for each food. Exporters change along with the countries that buy from them.",
       "quality": "Neighbouring countries can differ only because their figures come from different sources.",
       "deforestation": "Forest cleared for crops and pasture in each country once the levers are fully in place, in hectares a year. The tooltip gives today's clearing, the change and the CO₂ it releases.",
-      "landCo2": "Each country's net CO₂ from all land-use change: forest cleared for any reason, peat drained and other changes, less forest regrowing on abandoned land. Blue countries take up more than they release. Today's is the mean of the Global Carbon Budget's three bookkeeping models over the years shown. The levers change two parts of it: the forest cleared for farming (the Deforestation layer shows its area) and, with Freed farmland set to Grows back in the options, the CO₂ that freed farmland takes up as it grows back. The rest of each country's land-use CO₂ stays as it is."
+      "landCo2": "Each country's net CO₂ from all land-use change: forest cleared for any reason, peat drained and other changes, less forest regrowing on abandoned land. Blue countries take up more than they release. Today's figure is the mean of the Global Carbon Budget's three bookkeeping models over the years shown. The levers change two parts of it. One is the forest cleared for farming (the Deforestation layer shows its area). The other is the CO₂ that freed farmland takes up as it grows back, when Freed farmland is set to Grows back in the options. The rest of each country's land-use CO₂ stays as it is."
     },
     "tooltip": {
       "noData": "No data for this country",
@@ -312,7 +312,7 @@
     "intro": "Most warming comes from burning fossil fuels. Farming adds to it in a different way, mostly through methane from cattle and rice paddies, and nitrous oxide from fertiliser and manure. These gases trap far more heat than CO₂ while they last.",
     "attributionTitle": "Warming by cause since {from}",
     "attributionText": "Each band is the warming from one cause, or, below zero, the cooling. After today, each band is what is left once the levers chosen act on its cause. The dashed outlines are the bands without the levers. The line is the measured temperature.",
-    "attributionCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today. Each cause is the warming its emissions add. Air pollution cools: its particles reflect sunlight and brighten clouds. The energy, heating and industry levers also cut the air pollution of the fuel they no longer burn, so its cooling shrinks when they act. What the baseline adds to the scenario (farm emissions following the population, permafrost, the data centres beyond the scenario, the people on Earth) is added to its cause, and Other human emissions also holds what still sets the scenario's temperature apart from the causes, so the stack meets the line without the levers.",
+    "attributionCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today. Each cause is the warming its emissions add. Air pollution cools: its particles reflect sunlight and brighten clouds. The energy, heating and industry levers also cut the air pollution of the fuel they no longer burn, so its cooling shrinks when they act. What the baseline adds to the scenario goes into the cause it belongs to: farm emissions that follow the population, the data centres' growth, ships' cleaner fuel, permafrost and the people on Earth. The gap between the scenario's temperature and the sum of the causes also goes into Other human emissions, so the stack meets the line without the levers.",
     "attributionLabel": "Stacked chart of warming by cause from {from} to {year}, with observed temperature",
     "projection": "Projection",
     "causes": {

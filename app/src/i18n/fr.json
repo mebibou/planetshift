@@ -196,7 +196,7 @@
       "change": "{what} : variation une fois les leviers en place",
       "quality": "Source la moins précise des données d'émission utilisées",
       "deforestation": "Forêt défrichée pour l'agriculture avec les leviers, par an",
-      "landCo2": "CO₂ net du changement d'usage des terres avec les leviers, par an (mesuré {from}–{to})",
+      "landCo2": "CO₂ net du changement d'usage des terres avec les leviers, par an (aujourd'hui : moyenne {from}–{to})",
       "landShare": "Part des terres cultivées ou pâturées avec les leviers"
     },
     "notes": {
@@ -206,7 +206,7 @@
       "change": "La production de chaque pays varie comme la demande mondiale de chaque aliment. Les exportateurs suivent les pays qui leur achètent.",
       "quality": "Des pays voisins peuvent différer simplement parce que leurs chiffres viennent de sources différentes.",
       "deforestation": "Forêt défrichée pour les cultures et les pâturages dans chaque pays, une fois les leviers pleinement en place, en hectares par an. L'infobulle donne le défrichement d'aujourd'hui, la variation et le CO₂ qu'il libère.",
-      "landCo2": "Le CO₂ net de tout changement d'usage des terres dans chaque pays : forêts défrichées pour quelque raison que ce soit, tourbières drainées et autres changements, moins la forêt qui repousse sur les terres abandonnées. Les pays en bleu absorbent plus qu'ils n'émettent. Celui d'aujourd'hui est la moyenne des trois modèles de comptabilité du Global Carbon Budget sur les années indiquées. Les leviers en changent deux parts : la forêt défrichée pour l'agriculture (la couche Déforestation en montre la surface) et, avec Terres libérées sur Végétation spontanée dans les options, le CO₂ que les terres agricoles libérées absorbent en repoussant. Le reste du CO₂ des terres de chaque pays ne change pas."
+      "landCo2": "Le CO₂ net de tout changement d'usage des terres dans chaque pays : forêts défrichées pour quelque raison que ce soit, tourbières drainées et autres changements, moins la forêt qui repousse sur les terres abandonnées. Les pays en bleu absorbent plus qu'ils n'émettent. Le chiffre d'aujourd'hui est la moyenne des trois modèles de comptabilité du Global Carbon Budget sur les années indiquées. Les leviers en changent deux parts. L'une est la forêt défrichée pour l'agriculture (la couche Déforestation en montre la surface). L'autre est le CO₂ que les terres agricoles libérées absorbent en repoussant, quand Terres libérées est sur Végétation spontanée dans les options. Le reste du CO₂ des terres de chaque pays ne change pas."
     },
     "tooltip": {
       "noData": "Pas de données pour ce pays",
@@ -312,7 +312,7 @@
     "intro": "L'essentiel du réchauffement vient des combustibles fossiles. L'agriculture y contribue autrement, surtout par le méthane des bovins et des rizières, et le protoxyde d'azote des engrais et des effluents. Ces gaz retiennent bien plus de chaleur que le CO₂ tant qu'ils durent.",
     "attributionTitle": "Réchauffement par cause depuis {from}",
     "attributionText": "Chaque bande est le réchauffement dû à une cause ou, sous zéro, le refroidissement. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause. Les contours en pointillés sont les bandes sans les leviers. La ligne est la température mesurée.",
-    "attributionCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui. Chaque cause est le réchauffement qu'ajoutent ses émissions. La pollution de l'air refroidit : ses particules renvoient la lumière du soleil et éclaircissent les nuages. Les leviers de l'énergie, du chauffage et de l'industrie réduisent aussi la pollution de l'air des combustibles qu'ils ne brûlent plus : son refroidissement diminue quand ils agissent. Ce que la référence ajoute au scénario (émissions agricoles qui suivent la population, pergélisol, centres de données au-delà du scénario, nombre d'humains) est ajouté à sa cause, et Autres émissions humaines contient aussi ce qui sépare encore la température du scénario des causes, pour que l'empilement rejoigne la courbe sans les leviers.",
+    "attributionCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui. Chaque cause est le réchauffement qu'ajoutent ses émissions. La pollution de l'air refroidit : ses particules renvoient la lumière du soleil et éclaircissent les nuages. Les leviers de l'énergie, du chauffage et de l'industrie réduisent aussi la pollution de l'air des combustibles qu'ils ne brûlent plus : son refroidissement diminue quand ils agissent. Ce que la référence ajoute au scénario va dans la cause dont il relève : les émissions agricoles qui suivent la population, la croissance des centres de données, le carburant plus propre des navires, le pergélisol et le nombre d'humains. L'écart entre la température du scénario et la somme des causes va aussi dans Autres émissions humaines, pour que l'empilement rejoigne la courbe sans les leviers.",
     "attributionLabel": "Graphique empilé du réchauffement par cause de {from} à {year}, avec la température observée",
     "projection": "Projection",
     "causes": {
