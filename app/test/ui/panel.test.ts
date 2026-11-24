@@ -20,6 +20,6 @@ describe('the panel groups’ summary lines', () => {
     const practices = PANEL_MODULES.find((m) => m.id === 'practices');
     expect(practices && adoptedCount({ feedAdditives: 0.2, riceWater: 0 }, practices)).toBe(1);
     expect(changedOptions(DEFAULT_OPTIONS)).toBe(0);
-    expect(changedOptions({ ...DEFAULT_OPTIONS, ssp: 'ssp126', permafrost: 'on' })).toBe(2);
+    expect(changedOptions({ ...DEFAULT_OPTIONS, ssp: 'ssp126', permafrost: 'off' })).toBe(2);
   });
 });

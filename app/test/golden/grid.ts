@@ -73,7 +73,7 @@ const OPTION_CASES: [string, Partial<Options>][] = [
   ['ssp370', { ssp: 'ssp370' }],
   ['regrowth', { regrowth: 'natural' }],
   ['dcSsp', { dataCentres: 'ssp' }],
-  ['permafrost', { permafrost: 'on' }],
+  ['permafrostOff', { permafrost: 'off' }],
   ['popLow', { population: 'low' }],
   ['popHigh', { population: 'high' }],
 ];
@@ -114,7 +114,7 @@ export const GRID: Setting[] = [
   ...OPTION_CASES.map(([id, options]) => setting(`mixed+${id}`, MIXED, options)),
   ...SCENARIO_CASES.map(([id, s]) => setting(`mixed+${id}`, { ...MIXED, ...s })),
   ...OPTION_CASES.map(([id, options]) => setting(`shift50+${id}`, { shift: 0.5 }, options)),
-  setting('permafrostAlone', {}, { permafrost: 'on' }),
+  setting('permafrostOffAlone', {}, { permafrost: 'off' }),
   setting('dcSspAlone', {}, { dataCentres: 'ssp' }),
   setting('regrowthAlone', { shift: 0.4 }, { regrowth: 'natural' }),
   setting('popLowAlone', {}, { population: 'low' }),
@@ -152,7 +152,7 @@ export const PLAIN_GRID: Setting[] = [
     ),
   ),
   setting('shift100', { shift: 1 }),
-  setting('permafrostAlone', {}, { permafrost: 'on' }),
+  setting('permafrostOffAlone', {}, { permafrost: 'off' }),
   setting(
     'everythingAllOptions',
     { shift: 0.5, levers: all(GOLDEN_LEVERS, 0.7) },

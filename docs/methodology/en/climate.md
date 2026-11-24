@@ -230,7 +230,7 @@ Since February 2026, NOAA's official index is the Relative ONI, which subtracts 
 
 The ground of the Arctic and of high mountains holds about twice as much carbon as the air. It is frozen in soil that has not thawed for thousands of years. As the world warms, more of it thaws and microbes break down the organic matter. The carbon comes out as CO₂ and, where the soil is waterlogged, as methane. More warming means more release, which means more warming: a feedback.
 
-Planetshift offers this feedback as an option, off by default. When it is on, the future is warmer without any lever, and the warming the levers avoid is slightly larger, because less warming means less thaw.
+Planetshift offers this feedback as an option, on by default. When it is on, the future is warmer without any lever, and the warming the levers avoid is slightly larger, because less warming means less thaw.
 
 ### The figures from AR6
 
@@ -251,7 +251,7 @@ The 2.8 is not methane's carbon. Read that way, the methane would be ten times t
 
 ### How the model uses it
 
-The feedback is the *Permafrost* switch under *Other options*, off by default (`pf=on` in the address). When it is on, the model (`app/src/levers/permafrost/`, a lever module called by `run.ts`) runs it twice: once on the scenario's baseline temperature, and once on the temperature with the levers applied.
+The feedback is the *Permafrost* switch under *Other options*, on by default (`pf=off` in the address turns it off). When it is on, the model (`app/src/levers/permafrost/`, a lever module called by `run.ts`) runs it twice: once on the scenario's baseline temperature, and once on the temperature with the levers applied.
 
 1. Each year, the rise in temperature since the year before commits `kgCPerDegree` × that rise of carbon. This carbon is released evenly over the next `releaseYears` years. Summing over the past gives each year's release. A fall in temperature commits nothing back, because thawed carbon does not refreeze. Only the release from the current year on is counted, but it includes what the warming of the 20 years before commits. The release before today is in the observed record FaIR is constrained on.
 2. Of each year's release, `ch4Share` is methane (kg C × 16/12 kg CH₄) and the rest is CO₂ (kg C × 44/12 kg CO₂).
@@ -267,7 +267,18 @@ Spreading a degree's release over 20 years means the carbon released by a given 
 
 That lag of about a decade is a simplification. In reality, thaw goes on for centuries after the warming, and AR6 notes that much of the release committed this century comes after 2100.
 
-With the 20-year spread, the release from 2026 to 2100 on SSP2-4.5 is about 27 PgC. This is close to AR6's 18 PgC per °C times the warming still to come (about 1.3 °C). Spreading over 50 or 100 years changes the 2050 effect by less than 0.01 °C, because a longer spread also brings in older warming. The rule may front-load the release a little: observation-based budgets put today's permafrost region close to neutral.
+With the 20-year spread, the release from 2026 to 2100 on SSP2-4.5 is about 27 PgC. This is close to AR6's 18 PgC per °C times the warming still to come (about 1.4 °C). Spreading over 50 or 100 years changes the 2050 effect by less than 0.01 °C, because a longer spread also brings in older warming. The rule may front-load the release a little: observation-based budgets put today's permafrost region close to neutral.
+
+### Why it adds little by 2100
+
+The feedback adds about 0.02 °C to the baseline in 2050 and 0.05 °C in 2100 on SSP2-4.5 (medians). In 2100 it adds 0.03 °C on SSP1-2.6 and 0.07 °C on SSP3-7.0, where there is more warming to thaw the ground. The range is wide: in 2100 on SSP2-4.5 it runs from under 0.01 °C to 0.25 °C, as the high end pairs AR6's largest release per degree with the warmest climate response.
+
+The median is small for four reasons:
+
+- Most of the release comes after 2100. Permafrost carbon thaws and decomposes over centuries, and the model stops in 2100. The feedback grows after that, even if emissions stop.
+- Only the warming still to come counts. The release before today is in the observed record, so the carbon counted is AR6's 18 PgC per °C times about 1.4 °C of further warming: about 27 PgC by 2100 on SSP2-4.5, some 100 Gt of CO₂, about two and a half years of today's fossil emissions.
+- Abrupt thaw (collapsing ground, thermokarst lakes) is not in AR6's central figure, and so not in the model. Some studies find that it could roughly double the release.
+- The feedback is computed in one pass: the further thaw its own warming would cause is left out. That would add a few percent.
 
 ### Why it is a switch
 
@@ -285,7 +296,7 @@ Each departure is a named switch in `planetshift.config.json`, the file a fork o
 | --- | --- | --- | --- |
 | Where NOx is emitted (`noxMethane`) | the chemistry models' own methane per kg of NOx on land and at sea (Hoor et al. 2009), carried by FaIR's change with the scenario; a fork can also share FaIR's coefficient between land and sea by their ratio, its world total kept (`hoor`) | one coefficient for every source | [Energy and transport](#method-sectors), [Limitations](#method-limitations) |
 | Aviation's non-CO₂ effects (`aviationNonCo2`) | Lee et al. (2021)'s forcing, contrails included, cut by less flying | aviation's own NOx, SO₂ and soot through FaIR's coefficients; FaIR has no contrails | [Energy and transport](#method-sectors) |
-| Permafrost (`permafrost`) | offered as an option, off by default | the option and its module left out | Permafrost, above |
+| Permafrost (`permafrost`) | offered as an option, on by default | the option and its module left out | Permafrost, above |
 | The 2020 shipping sulphur rule (`shippingSulphur2020`) | its published forcing, 0.12 (0.08–0.14) W/m² from 2020, added to the baseline | the scenarios' own ships' SO₂ through FaIR's world-wide aerosol response | Why 2023 and 2024 were so warm, above |
 
 ### What changes with plain FaIR
@@ -308,7 +319,7 @@ Without the shipping rule, the baseline is 0.037 °C cooler in 2024 and 0.067 °
 - A year's emissions are spread evenly over the year. A calendar year's temperature is the mean of FaIR's values at its two ends.
 - Observed series are re-baselined to their own 1850–1900 mean. HadCRUT5's current year is left out until it is complete.
 - The natural forcing and the scenarios' aerosol emissions are used as published. The 2020 shipping rule adds 0.12 (0.08–0.14) W/m² from 2020 outside FaIR's ensemble, following each scenario's shipping fuel, to the baseline and the scenario alike (see "Why 2023 and 2024 were so warm").
-- Permafrost releases 18.3 (3.2–41.7) PgC per °C of warming, 1.6% of it as methane, each degree's release spread over 20 years, and nothing back when the temperature falls. The feedback is off unless the switch is on.
+- Permafrost releases 18.3 (3.2–41.7) PgC per °C of warming, 1.6% of it as methane, each degree's release spread over 20 years, and nothing back when the temperature falls. The feedback is on unless the switch is off.
 
 ## Sources
 

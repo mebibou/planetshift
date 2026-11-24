@@ -21,7 +21,7 @@ Each choice below is set in the panel and has a default and one or more alternat
 | Rest of the world's emissions | middle, SSP2-4.5 (`ssp245`) | low, SSP1-2.6 (`ssp126`); high, SSP3-7.0 (`ssp370`) |
 | Freed farmland | left as it is (`none`) | grows back (`natural`) |
 | AI data centres | growth added, IEA (`iea`) | as in the scenario (`ssp`) |
-| Permafrost | left out (`off`) | thaws (`on`) |
+| Permafrost | thaws (`on`) | left out (`off`) |
 | World population | UN medium projection (`medium`) | UN low (`low`), UN high (`high`) |
 | All levers fully in place by | 2035 | any year from 2025 to 2050 |
 
@@ -166,7 +166,7 @@ The URL keys of the options, the diet controls and the levers are listed under [
 - **The band covers only the climate response**, not the uncertainty in intensities, diets or feed, so the real range is wider. See [Climate](#method-climate).
 - **Scenario temperatures are FaIR's 841 members on RCMIP v5.1.0 emissions**, history included, relative to 1850–1900. SSP2-4.5 is the default. See [Climate](#method-climate).
 - **With the population baseline, a correction is added to the SSP's temperature**: the warming from the gap between population-scaled agricultural emissions and the SSP's own agricultural path. The baseline curve then matches its emissions. See [The shift](#method-shift).
-- **Permafrost is off by default.** Switched on, it releases 18.3 (3.2–41.7) PgC per °C of warming over 20 years, 1.6% of it as methane (AR6's 2.8 PgCeq of methane feedback is about 0.28 PgC of methane). It is computed from the baseline temperature and from the scenario's. The carbon released is not taken back up when the temperature falls, and it is computed in one pass only. See [Climate](#method-climate).
+- **Permafrost is on by default.** It releases 18.3 (3.2–41.7) PgC per °C of warming over 20 years, 1.6% of it as methane (AR6's 2.8 PgCeq of methane feedback is about 0.28 PgC of methane). It is computed from the baseline temperature and from the scenario's. The carbon released is not taken back up when the temperature falls, and it is computed in one pass only. See [Climate](#method-climate).
 - **Observed temperature is HadCRUT5 by default, Berkeley Earth as the alternative**, each re-baselined to its own 1850–1900 mean. HadCRUT5's current year is left out until complete. See [Climate](#method-climate).
 
 ## Causes of warming

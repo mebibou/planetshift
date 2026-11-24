@@ -46,7 +46,8 @@ describe('the breakdown by family', () => {
     FAMILIES.forEach((f) => expect(s.byFamily.avoidedWarming2100[f], f).toBeGreaterThan(0));
   });
   it('equals the Shapley values of full runs with each family on or off', () => {
-    const on = everything;
+    // The permafrost feedback is shared out by each family's warming, not by Shapley values.
+    const on = run({ shift: 0.5, levers: LEVERS_ON }, { regrowth: 'natural', permafrost: 'off' });
     const scenario = { shift: 0.5, levers: LEVERS_ON };
     const families = FAMILIES.filter((f) => Math.abs(on.summary.byFamily.avoidedCo2e[f] ?? 0) > 0);
     const offIn = (family: string, s: Partial<Scenario>, o: Partial<Options>) =>
@@ -71,7 +72,7 @@ describe('the breakdown by family', () => {
         .filter((f) => !coalition.includes(f))
         .reduce<[Partial<Scenario>, Partial<Options>]>(
           ([s1, o1], f) => offIn(f, s1, o1) as [Partial<Scenario>, Partial<Options>],
-          [scenario, { regrowth: 'natural' }],
+          [scenario, { regrowth: 'natural', permafrost: 'off' }],
         );
       const r = run(s, o).summary;
       return [r.avoidedWarming2050.median, r.avoidedWarming2100.median, r.avoidedCo2e];

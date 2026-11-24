@@ -21,7 +21,7 @@ Chaque choix ci-dessous se règle dans le panneau et a une valeur par défaut et
 | Émissions du reste du monde | moyen, SSP2-4.5 (`ssp245`) | bas, SSP1-2.6 (`ssp126`) ; haut, SSP3-7.0 (`ssp370`) |
 | Terres libérées | laissées en l'état (`none`) | végétation spontanée (`natural`) |
 | Centres de données de l'IA | croissance ajoutée (AIE) (`iea`) | comme dans le scénario (`ssp`) |
-| Pergélisol | non compté (`off`) | dégèle (`on`) |
+| Pergélisol | dégèle (`on`) | non compté (`off`) |
 | Population mondiale | projection moyenne de l'ONU (`medium`) | basse de l'ONU (`low`), haute de l'ONU (`high`) |
 | Tous les leviers en place en | 2035 | toute année de 2025 à 2050 |
 
@@ -166,7 +166,7 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 - **La bande ne couvre que la réponse du climat**, et non l'incertitude sur les intensités, les régimes ou l'alimentation animale : la fourchette réelle est plus large. Voir [Climat](#method-climate).
 - **Les températures des scénarios sont celles des 841 membres de FaIR sur les émissions RCMIP v5.1.0**, historique compris, par rapport à 1850–1900. SSP2-4.5 est le scénario par défaut. Voir [Climat](#method-climate).
 - **Avec la référence population, une correction est ajoutée à la température du SSP** : le réchauffement dû à l'écart entre les émissions agricoles mises à l'échelle de la population et la trajectoire agricole propre au SSP. La courbe de référence correspond alors à ses émissions. Voir [Le changement](#method-shift).
-- **Le pergélisol est désactivé par défaut.** Activé, il libère 18,3 (3,2–41,7) PgC par °C de réchauffement sur 20 ans, dont 1,6 % sous forme de méthane (les 2,8 PgCeq de rétroaction du méthane de l'AR6 font environ 0,28 PgC de méthane). Ce dégel est calculé à partir de la température de référence et de celle du scénario. Le carbone libéré n'est pas réabsorbé quand la température baisse, et le calcul se fait en un seul passage. Voir [Climat](#method-climate).
+- **Le pergélisol est activé par défaut.** Il libère 18,3 (3,2–41,7) PgC par °C de réchauffement sur 20 ans, dont 1,6 % sous forme de méthane (les 2,8 PgCeq de rétroaction du méthane de l'AR6 font environ 0,28 PgC de méthane). Ce dégel est calculé à partir de la température de référence et de celle du scénario. Le carbone libéré n'est pas réabsorbé quand la température baisse, et le calcul se fait en un seul passage. Voir [Climat](#method-climate).
 - **La température observée est HadCRUT5 par défaut, Berkeley Earth en alternative**, chacune ramenée à sa propre moyenne de 1850–1900. L'année en cours de HadCRUT5 est laissée de côté tant qu'elle n'est pas complète. Voir [Climat](#method-climate).
 
 ## Causes du réchauffement

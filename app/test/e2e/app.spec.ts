@@ -11,7 +11,7 @@ const OPTIONS: Record<string, string[]> = {
   ssp: ['ssp245', 'ssp126', 'ssp370'],
   regrowth: ['none', 'natural'],
   dataCentres: ['iea', 'ssp'],
-  permafrost: ['off', 'on'],
+  permafrost: ['on', 'off'],
   population: ['medium', 'low', 'high'],
 };
 
@@ -174,7 +174,7 @@ test('Causes of warming shows the headline and the stacked warming chart', async
   await expect(page).toHaveURL(/chart=cause/);
   await expect(page.locator('#chart-panel-cause')).toBeVisible();
   await expect(page.locator('#chart-panel-temperature')).toBeHidden();
-  await expect(page.locator('.attribution-chart path.stack')).toHaveCount(6);
+  await expect(page.locator('.attribution-chart path.stack')).toHaveCount(7);
   await expect(page.locator('.attribution-chart .observed-line')).toHaveCount(1);
   await expect(page.locator('.attribution-chart .chart-legend')).toContainText(
     'Air pollution (cooling)',
@@ -199,7 +199,7 @@ test('the gas switch stacks one gas by cause, kept in the URL and moved by the k
   await expect(gasSwitch).toContainText('Methane');
   await page.locator('label[for="causegas-ch4"]').click();
   await expect(page).toHaveURL(/causegas=ch4/);
-  await expect(page.locator('.attribution-chart path.stack')).toHaveCount(3);
+  await expect(page.locator('.attribution-chart path.stack')).toHaveCount(4);
   await expect(page.locator('.attribution-chart .observed-line')).toHaveCount(0);
   await expect(legend).toContainText('Other sources and interactions');
   await expect(legend).not.toContainText('Air pollution');
@@ -213,12 +213,12 @@ test('the gas switch stacks one gas by cause, kept in the URL and moved by the k
   await page.keyboard.press('ArrowLeft');
   await page.keyboard.press('ArrowLeft');
   await expect(page).toHaveURL(/causegas=co2/);
-  await expect(page.locator('.attribution-chart path.stack')).toHaveCount(4);
+  await expect(page.locator('.attribution-chart path.stack')).toHaveCount(5);
   await expect(legend).toContainText('Land use');
 
   await page.reload();
   await expect(page.locator('#causegas-co2')).toBeChecked();
-  await expect(page.locator('.attribution-chart path.stack')).toHaveCount(4);
+  await expect(page.locator('.attribution-chart path.stack')).toHaveCount(5);
 });
 
 test('a lever shrinks its cause in the gas it cuts, with and without in the hover', async ({
@@ -288,7 +288,7 @@ test('an old link to The link opens Explore on the chart by cause', async ({ pag
     'page',
   );
   await expect(page.locator('#chart-tab-cause')).toHaveAttribute('aria-selected', 'true');
-  await expect(page.locator('.attribution-chart path.stack')).toHaveCount(6);
+  await expect(page.locator('.attribution-chart path.stack')).toHaveCount(7);
 });
 
 test('Methodology renders its sections with a table of contents', async ({ page }) => {
@@ -732,10 +732,10 @@ test('the data-centre and permafrost options move the baseline', async ({ page }
   // The axis rescales with the curve, so compare the drawn path, not its end in pixels.
   const baseline = () => page.locator('.temperature-chart .baseline-line').getAttribute('d');
   const start = await baseline();
-  await page.locator('label[for="option-permafrost-on"]').click();
-  await expect(page).toHaveURL(/pf=on/);
-  await expect.poll(baseline).not.toBe(start);
   await page.locator('label[for="option-permafrost-off"]').click();
+  await expect(page).toHaveURL(/pf=off/);
+  await expect.poll(baseline).not.toBe(start);
+  await page.locator('label[for="option-permafrost-on"]').click();
   await expect(page).not.toHaveURL(/pf=/);
   await expect.poll(baseline).toBe(start);
   await page.locator('label[for="option-dataCentres-ssp"]').click();

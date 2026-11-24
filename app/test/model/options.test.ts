@@ -52,8 +52,9 @@ describe('options', () => {
     expect(last(had.observed)).toBeNull();
   });
   it('climate: FaIR has a range, the AR6 fallback a single curve', () => {
-    const fair = run({ climate: 'fair' }).summary.avoidedWarming2050;
-    const ar6 = run({ climate: 'ar6' }).summary.avoidedWarming2050;
+    // Permafrost's release has a range of its own, so it is off to see the climate's alone.
+    const fair = run({ climate: 'fair', permafrost: 'off' }).summary.avoidedWarming2050;
+    const ar6 = run({ climate: 'ar6', permafrost: 'off' }).summary.avoidedWarming2050;
     expect(fair.p95).toBeGreaterThan(fair.p05);
     expect(ar6.p05).toBe(ar6.median);
     expect(ar6.p95).toBe(ar6.median);

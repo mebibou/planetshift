@@ -230,7 +230,7 @@ Depuis février 2026, l'indice officiel de la NOAA est l'ONI relatif, qui retran
 
 Le sol de l'Arctique et des hautes montagnes contient environ deux fois plus de carbone que l'atmosphère. Ce carbone est gelé dans une terre qui n'a pas dégelé depuis des milliers d'années. À mesure que le monde se réchauffe, une plus grande partie dégèle, et des microbes décomposent la matière organique. Le carbone s'échappe sous forme de CO₂ et, là où le sol est gorgé d'eau, de méthane. Plus de réchauffement signifie plus de rejets, donc plus de réchauffement : c'est une rétroaction.
 
-Planetshift propose cette rétroaction en option, désactivée par défaut. Quand elle est activée, l'avenir est plus chaud sans aucun levier, et le réchauffement évité par les leviers est un peu plus grand, car moins de réchauffement signifie moins de dégel.
+Planetshift propose cette rétroaction en option, activée par défaut. Quand elle est activée, l'avenir est plus chaud sans aucun levier, et le réchauffement évité par les leviers est un peu plus grand, car moins de réchauffement signifie moins de dégel.
 
 ### Les chiffres de l'AR6
 
@@ -251,7 +251,7 @@ Les 2,8 ne sont pas le carbone du méthane. Lus ainsi, le méthane serait dix fo
 
 ### Comment le modèle l'utilise
 
-La rétroaction est l'option *Pergélisol* de *Autres options*, désactivée par défaut (`pf=on` dans l'adresse). Quand elle est activée, le modèle (`app/src/levers/permafrost/`, un module de levier appelé par `run.ts`) la calcule deux fois : une fois sur la température de référence du scénario, et une fois sur la température avec les leviers.
+La rétroaction est l'option *Pergélisol* de *Autres options*, activée par défaut (`pf=off` dans l'adresse la désactive). Quand elle est activée, le modèle (`app/src/levers/permafrost/`, un module de levier appelé par `run.ts`) la calcule deux fois : une fois sur la température de référence du scénario, et une fois sur la température avec les leviers.
 
 1. Chaque année, la hausse de température depuis l'année précédente engage `kgCPerDegree` × cette hausse de carbone. Ce carbone est libéré uniformément sur les `releaseYears` années suivantes. La somme sur le passé donne ce qui est libéré chaque année. Une baisse de température ne restitue rien, car le carbone dégelé ne regèle pas. Seul ce qui est libéré à partir de l'année en cours est compté, mais cela comprend ce qu'engage le réchauffement des 20 années précédentes. Ce qui a été libéré avant aujourd'hui figure dans les observations sur lesquelles FaIR est contraint.
 2. De ce qui est libéré chaque année, la part `ch4Share` est du méthane (kg C × 16/12 kg CH₄) et le reste du CO₂ (kg C × 44/12 kg CO₂).
@@ -267,7 +267,18 @@ La température de référence est la température du scénario selon FaIR (`sce
 
 Ce décalage d'environ une décennie est une simplification. En réalité, le dégel se poursuit pendant des siècles après le réchauffement, et l'AR6 note qu'une grande partie de ce qu'engage ce siècle sera libérée après 2100.
 
-Avec l'étalement sur 20 ans, ce qui est libéré de 2026 à 2100 sur SSP2-4.5 est d'environ 27 PgC. C'est proche des 18 PgC par °C de l'AR6 multipliés par le réchauffement encore à venir (environ 1,3 °C). Étaler sur 50 ou 100 ans change l'effet en 2050 de moins de 0,01 °C, parce qu'un étalement plus long fait aussi entrer un réchauffement plus ancien. La règle avance peut-être un peu ce qui est libéré : les bilans fondés sur les observations placent aujourd'hui la région du pergélisol près de l'équilibre.
+Avec l'étalement sur 20 ans, ce qui est libéré de 2026 à 2100 sur SSP2-4.5 est d'environ 27 PgC. C'est proche des 18 PgC par °C de l'AR6 multipliés par le réchauffement encore à venir (environ 1,4 °C). Étaler sur 50 ou 100 ans change l'effet en 2050 de moins de 0,01 °C, parce qu'un étalement plus long fait aussi entrer un réchauffement plus ancien. La règle avance peut-être un peu ce qui est libéré : les bilans fondés sur les observations placent aujourd'hui la région du pergélisol près de l'équilibre.
+
+### Pourquoi il ajoute peu d'ici 2100
+
+La rétroaction ajoute environ 0,02 °C à la référence en 2050 et 0,05 °C en 2100 sur SSP2-4.5 (médianes). En 2100, elle ajoute 0,03 °C sur SSP1-2.6 et 0,07 °C sur SSP3-7.0, où le réchauffement qui fait dégeler le sol est plus grand. La fourchette est large : en 2100 sur SSP2-4.5, elle va de moins de 0,01 °C à 0,25 °C, car son haut associe la plus forte libération par degré de l'AR6 à la réponse du climat la plus chaude.
+
+La médiane est faible pour quatre raisons :
+
+- L'essentiel est libéré après 2100. Le carbone du pergélisol dégèle et se décompose sur des siècles, et le modèle s'arrête en 2100. La rétroaction continue de croître ensuite, même si les émissions s'arrêtent.
+- Seul le réchauffement encore à venir compte. Ce qui a été libéré avant aujourd'hui est dans les observations, si bien que le carbone compté est celui des 18 PgC par °C de l'AR6 multipliés par environ 1,4 °C de réchauffement supplémentaire : environ 27 PgC d'ici 2100 sur SSP2-4.5, quelque 100 Gt de CO₂, environ deux ans et demi des émissions fossiles actuelles.
+- Le dégel brutal (effondrement du sol, lacs thermokarstiques) n'est pas dans le chiffre central de l'AR6, ni donc dans le modèle. Certaines études trouvent qu'il pourrait à peu près doubler ce qui est libéré.
+- La rétroaction est calculée en un seul passage : le dégel supplémentaire que causerait son propre réchauffement est laissé de côté. Il ajouterait quelques pour cent.
 
 ### Pourquoi c'est une option
 
@@ -285,7 +296,7 @@ Chaque écart est un interrupteur nommé de `planetshift.config.json`, le fichie
 | --- | --- | --- | --- |
 | Où les NOx sont émis (`noxMethane`) | le méthane par kg de NOx des modèles de chimie eux-mêmes, sur terre et en mer (Hoor et al. 2009), porté par l'évolution de FaIR avec le scénario ; une copie peut aussi partager le coefficient de FaIR entre terre et mer selon leur rapport, son total mondial conservé (`hoor`) | un seul coefficient pour toutes les sources | [Énergie et transports](#method-sectors), [Limites](#method-limitations) |
 | Les effets de l'aviation hors CO₂ (`aviationNonCo2`) | le forçage de Lee et al. (2021), traînées comprises, réduit par moins d'avion | les NOx, le SO₂ et la suie propres à l'aviation par les coefficients de FaIR ; FaIR n'a pas de traînées | [Énergie et transports](#method-sectors) |
-| Pergélisol (`permafrost`) | proposé comme option, désactivée par défaut | l'option et son module retirés | Pergélisol, plus haut |
+| Pergélisol (`permafrost`) | proposé comme option, activée par défaut | l'option et son module retirés | Pergélisol, plus haut |
 | La règle de 2020 sur le soufre des navires (`shippingSulphur2020`) | son forçage publié, 0,12 (0,08–0,14) W/m² à partir de 2020, ajouté à la référence | le SO₂ des navires des scénarios, par la réponse mondiale des aérosols de FaIR | Pourquoi 2023 et 2024 ont été si chaudes, plus haut |
 
 ### Ce qui change avec FaIR tel quel
@@ -308,7 +319,7 @@ Sans la règle sur le transport maritime, la référence est plus fraîche de 0,
 - Les émissions d'une année sont réparties uniformément sur l'année. La température d'une année civile est la moyenne des valeurs de FaIR à ses deux extrémités.
 - Les séries observées sont ramenées à leur propre moyenne de 1850–1900. L'année en cours de HadCRUT5 est laissée de côté tant qu'elle n'est pas complète.
 - Le forçage naturel et les émissions d'aérosols des scénarios sont utilisés tels que publiés. La règle de 2020 sur le transport maritime ajoute 0,12 (0,08–0,14) W/m² à partir de 2020 hors de l'ensemble de FaIR, en suivant le carburant des navires de chaque scénario, à la référence comme au scénario (voir « Pourquoi 2023 et 2024 ont été si chaudes »).
-- Le pergélisol libère 18,3 (3,2–41,7) PgC par °C de réchauffement, dont 1,6 % sous forme de méthane, ce que libère chaque degré étant étalé sur 20 ans, sans rien restituer quand la température baisse. La rétroaction est désactivée sauf si l'option est activée.
+- Le pergélisol libère 18,3 (3,2–41,7) PgC par °C de réchauffement, dont 1,6 % sous forme de méthane, ce que libère chaque degré étant étalé sur 20 ans, sans rien restituer quand la température baisse. La rétroaction est activée sauf si l'option est désactivée.
 
 ## Sources
 
