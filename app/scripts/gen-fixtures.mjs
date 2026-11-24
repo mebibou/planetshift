@@ -1248,3 +1248,47 @@ write('industry.json', {
   cementProcessCo2: { year: 2023, kg: 1.549e12 },
   source: 'Planetshift test fixture: industry.md values, straight lines between them',
 });
+
+// A few points of each deep-time series, already on 1850–1900 (synthetic shapes).
+const MA = (m) => Math.round(1950 - m * 1e6);
+const stages = [
+  [486.85, 443.8, 20],
+  [443.8, 252, 12],
+  [252, 66, 15],
+  [66, 2.58, 8],
+  [2.58, 0.0117, -2],
+  [0.0117, 0, -0.5],
+];
+const lgmrYears = Array.from({ length: 12 }, (_, i) => 1950 - 22_100 + i * 2000);
+const deglaciation = (y, at) => r(at + (7 * (y + 20_000)) / 22_000, 2);
+const centuries = years(0, 18);
+write('deeptime.json', {
+  baseline: '1850-1900',
+  offsets: { phanda: -14.46, cenozoic: 0.36, lgmr: -13.49, pages2k: 0.37 },
+  phanda: {
+    from: stages.map(([a]) => MA(a)),
+    to: stages.map(([, b]) => MA(b)),
+    p05: stages.map(([, , v]) => v - 3),
+    p16: stages.map(([, , v]) => v - 1.5),
+    p50: stages.map(([, , v]) => v),
+    p84: stages.map(([, , v]) => v + 1.5),
+    p95: stages.map(([, , v]) => v + 3),
+  },
+  cenozoic: {
+    years: [MA(33), MA(15), MA(3), MA(0.5), MA(0.03)],
+    median: [4, 4.5, 1, -3, -5],
+  },
+  lgmr: {
+    years: [...lgmrYears, 1850],
+    mean: [...lgmrYears.map((y) => deglaciation(y, -7)), 0],
+    p05: [...lgmrYears.map((y) => deglaciation(y, -7.6)), -0.3],
+    p95: [...lgmrYears.map((y) => deglaciation(y, -6.4)), 0.3],
+  },
+  pages2k: {
+    years: centuries.map((i) => 5 + i * 100),
+    median: centuries.map((i) => r(-0.1 + 0.05 * Math.sin(i), 2)),
+    p05: centuries.map((i) => r(-0.3 + 0.05 * Math.sin(i), 2)),
+    p95: centuries.map((i) => r(0.1 + 0.05 * Math.sin(i), 2)),
+  },
+  extinctionThreshold: { warming: 5.2, degreesPerMyr: 10, source: 'Song et al. (2021)' },
+});

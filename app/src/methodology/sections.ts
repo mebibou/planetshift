@@ -2,7 +2,16 @@ import { MODULE_PAGES } from '../levers/registry';
 
 /** The core's pages before the lever modules' pages, and after them. */
 const HEAD = ['overview', 'data', 'shift', 'feed', 'emissions', 'seafood', 'land', 'levers'];
-const TAIL = ['hestia', 'literature', 'climate', 'link', 'options', 'assumptions', 'limitations'];
+const TAIL = [
+  'hestia',
+  'literature',
+  'climate',
+  'link',
+  'deeptime',
+  'options',
+  'assumptions',
+  'limitations',
+];
 
 /**
  * The order of the Methodology page: one markdown file per section in docs/methodology/<lang>/,

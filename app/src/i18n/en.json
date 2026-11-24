@@ -17,7 +17,8 @@
   },
   "nav": {
     "explore": "Explore",
-    "methodology": "Methodology"
+    "methodology": "Methodology",
+    "deeptime": "Deep time"
   },
   "footer": {
     "text": "Diets and production from FAOSTAT Food Balance Sheets ({year}); emission intensities from HESTIA, FAOSTAT and published life-cycle studies; fish from FAO FishStat and published studies; farmland from FAOSTAT; deforestation from DeDuCE; transport and electricity from the SSP scenarios, Ember and the IEA; warming from FaIR. Land-use change is counted only as the change in forest clearing and as optional regrowth on freed land.",
@@ -370,6 +371,7 @@
       "literature": "Published LCA data",
       "climate": "Climate",
       "link": "Causes of warming",
+      "deeptime": "Deep time",
       "options": "Options",
       "assumptions": "Assumptions",
       "limitations": "Limitations"

@@ -1,0 +1,131 @@
+{
+  "title": "Temperature through deep time",
+  "prototype": "Prototype",
+  "intro": "Earth's surface temperature over the last 485 million years, ending with this scenario to 2100. Zoom with the wheel or a pinch, drag to move, or pick a time span.",
+  "context": "Earth has been much warmer than today for millions of years at a time, with other continents, little or no ice, seas tens of metres higher, and no people. What is new is the speed. Today's warming is far faster than any change these records can show. It affects eight billion people, who depend on farming that developed in the steady climate of the last 10,000 years.",
+  "presets": "Time span",
+  "preset": {
+    "phanerozoic": "485 Myr",
+    "cenozoic": "66 Myr",
+    "glacial": "24,000 years",
+    "commonEra": "2,000 years",
+    "industrial": "1850–2100"
+  },
+  "move": "Move and zoom",
+  "panLeft": "Earlier",
+  "panLeftIcon": "←",
+  "panRight": "Later",
+  "panRightIcon": "→",
+  "zoomIn": "Zoom in",
+  "zoomInIcon": "+",
+  "zoomOut": "Zoom out",
+  "zoomOutIcon": "−",
+  "keys": "Temperature through deep time. The left and right arrows move earlier or later. The up and down arrows zoom in and out.",
+  "chartLabel": "Warming relative to 1850–1900, from {from} to {to}",
+  "ago": {
+    "myr": "{n} million years ago",
+    "kyr": "{n} thousand years ago"
+  },
+  "bce": "{year} BCE",
+  "axis": {
+    "myr": "Millions of years ago",
+    "kyr": "Thousands of years ago",
+    "year": "Year"
+  },
+  "yAxis": "°C relative to 1850–1900",
+  "paris": "{level} °C · Paris",
+  "end": {
+    "baseline": "2100: {value} without the levers",
+    "scenario": "{value} with the levers",
+    "same": "2100: {value}"
+  },
+  "series": {
+    "phanda": "PhanDA, stage means (5–95%)",
+    "cenozoic": "CENOGRID as global temperature (IPCC AR6)",
+    "lgmr": "LGMR, 200-year means (5–95%)",
+    "pages2k": "PAGES 2k, 10-year means (5–95%)",
+    "observed": "Observed",
+    "baseline": "Without the levers",
+    "scenario": "With the levers"
+  },
+  "caption": "Each series is as detailed as its records allow. The time axis is stretched towards the present: within any span, a year at the right edge takes up to three times the room of a year at the left.",
+  "eventsTitle": "Markers",
+  "markersHint": "Pick one to zoom the timeline to it.",
+  "events": {
+    "ordovician": {
+      "short": "End-Ordovician",
+      "note": "About 445 million years ago: the first of the five mass extinctions, during a short glaciation."
+    },
+    "devonian": {
+      "short": "Late Devonian",
+      "note": "About 372 million years ago: the second mass extinction, in pulses, with ocean oxygen loss."
+    },
+    "permian": {
+      "short": "End-Permian",
+      "note": "About 252 million years ago: the largest, with vast volcanic CO₂ and strong warming."
+    },
+    "triassic": {
+      "short": "End-Triassic",
+      "note": "About 201 million years ago: with volcanic CO₂ as the Atlantic began to open."
+    },
+    "cretaceous": {
+      "short": "End-Cretaceous",
+      "note": "66 million years ago: an asteroid impact ended the non-bird dinosaurs."
+    },
+    "petm": {
+      "short": "PETM",
+      "note": "About 56 million years ago: the Palaeocene–Eocene Thermal Maximum, a burst of warming as a large amount of carbon entered the air within thousands of years."
+    },
+    "lgm": {
+      "short": "Last glacial maximum",
+      "note": "About 21,000 years ago: ice sheets over North America and northern Europe. LGMR puts that time about 7 °C colder than 1850–1900."
+    },
+    "agriculture": {
+      "short": "First farming",
+      "note": "About 11,500 years ago: farming begins in south-west Asia, as the climate warms and steadies."
+    },
+    "industrial": {
+      "short": "1850",
+      "note": "The industrial era: coal, then oil and gas. 1850–1900 is the baseline of every series here."
+    }
+  },
+  "extinctions": "The five mass extinctions came with large changes in climate and the carbon cycle. Song et al. (2021) link major marine mass extinctions to warming of more than 5.2 °C, at more than 10 °C per million years. These figures are thresholds, not dates. Researchers debate whether a sixth has begun. No source gives a date for it.",
+  "scenario": {
+    "title": "This scenario in 2100",
+    "text": "From Explore's settings, with the rest of the world on {ssp}: {without} without the levers and {with} with them, relative to 1850–1900.",
+    "none": "From Explore's settings, with the rest of the world on {ssp}: {value} relative to 1850–1900. No lever is set in Explore, so there is no second line.",
+    "scale": "The difference the levers make shows in the 1850–2100 and 2,000-year spans. Over longer spans, it is too small to see on the chart. At deep-time scales, what matters is how fast the warming comes, not where it ends."
+  },
+  "rates": {
+    "title": "How fast: °C per century",
+    "value": "{value} °C per century",
+    "slower": "{times} times slower than the last 50 years",
+    "threshold": "Warming linked to major marine mass extinctions (Song et al. 2021: over 10 °C per million years)",
+    "holocene": "Holocene, 9,000 years ago to 1850 (LGMR)",
+    "deglacialMean": "End of the last ice age, 18,000 to 11,000 years ago (LGMR)",
+    "deglacialFastest": "Fastest 1,000 years at the end of the ice age (LGMR)",
+    "observed": "Observed, last 50 years (trend)",
+    "projected": "This scenario without the levers, {from}–2100",
+    "note": "Past rates are averages over a thousand years or more. A short spike within them would not show. Even so, the fastest change in LGMR's 24,000 years is many times slower than today's."
+  },
+  "offsets": {
+    "title": "How the series share one baseline",
+    "phanda": "PhanDA (Judd et al. 2024, CC BY 4.0) gives absolute temperatures. Planetshift adds {offset} °C, so that its Holocene mean equals LGMR's.",
+    "cenozoic": "IPCC AR6 Cross-Chapter Box 2.1 turns CENOGRID (Westerhold et al. 2020) into global temperature using the formulas of Hansen et al. (2013) (CC BY 4.0). AR6 added {offset} °C to go from 1961–1990 to 1850–1900. AR6's published data stops 33.5 million years ago, so Planetshift applies the same formula to CENOGRID's own data back to 66 million years ago, including the PETM.",
+    "lgmr": "LGMR (Osman et al. 2021, NOAA NCEI, CC0) gives absolute temperatures. Planetshift adds {offset} °C, so that its last 200 years (1750–1950) stand for 1850–1900.",
+    "pages2k": "PAGES 2k (2019), as in IPCC AR6 Figure 2.11a (CC BY 4.0), 1–1849. AR6 added {offset} °C.",
+    "recent": "Observed and projected: Explore's own series, already relative to 1850–1900.",
+    "disagree": "Where PhanDA and the CENOGRID series overlap, a PhanDA stage and the CENOGRID series averaged over it differ by up to about 7 °C. The largest difference is in the Miocene, 23 to 5 million years ago. They come from different methods, and both are uncertain.",
+    "resolution": "PhanDA's points are averages over geological stages, from 11,700 years to 21.6 million years long. A spike like today's would not appear inside a single stage, so the curve cannot show that nothing like today's spike happened before."
+  },
+  "failed": "The deep-time data could not be loaded.",
+  "hover": {
+    "value": "{value} °C",
+    "range": "{value} °C ({lo} to {hi})"
+  },
+  "table": {
+    "show": "Show the data as a table",
+    "caption": "Warming relative to 1850–1900 at twelve points across the window shown, with the 5–95% range where the series has one.",
+    "when": "When"
+  }
+}

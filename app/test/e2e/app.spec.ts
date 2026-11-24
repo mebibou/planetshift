@@ -1360,13 +1360,14 @@ test('the model runs in a Worker', async ({ page }) => {
   await expect(page.locator('.run-error').first()).toBeHidden();
 });
 
-test('the footer links to the licences and the source, and a link’s language wins', async ({
+test('the footer links to the licences, the source and the deep-time page, and a link’s language wins', async ({
   page,
 }) => {
   await open(page);
   const links = page.locator('.footer-links a');
-  await expect(links).toHaveCount(3);
-  await expect(links.last()).toHaveAttribute('href', /github\.com\/.+\/planetshift$/);
+  await expect(links).toHaveCount(4);
+  await expect(links.nth(2)).toHaveAttribute('href', /github\.com\/.+\/planetshift$/);
+  await expect(links.last()).toHaveAttribute('href', '?view=deeptime');
   await page.evaluate(() => localStorage.setItem('planetshift.lang', 'en'));
   await open(page, `${START}&lang=fr`);
   await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
@@ -1557,4 +1558,37 @@ test('behind ?popctl=lever, education and voluntary family planning is a lever',
     'low projection',
   );
   await noHorizontalScroll(page);
+});
+
+test('the deep-time prototype opens from the footer, and each preset sets the axis', async ({
+  page,
+}) => {
+  await open(page);
+  const link = page.locator('.site-footer a[data-view="deeptime"]');
+  await link.click();
+  await expect(page).toHaveURL(/view=deeptime/);
+  await expect(link).toHaveAttribute('aria-current', 'page');
+  await expect(page.locator('.site-nav a[data-view="deeptime"]')).toHaveCount(0);
+  const plot = page.locator('.deeptime-plot');
+  const title = plot.locator('.deeptime-axis-title');
+  await expect(plot.locator('[data-series="lgmr"]')).toBeAttached();
+  await expect(plot.locator('[data-series="observed"]')).toBeAttached();
+  const presets: [string, string][] = [
+    ['cenozoic', 'Millions of years ago'],
+    ['glacial', 'Thousands of years ago'],
+    ['commonEra', 'Year'],
+    ['industrial', 'Year'],
+    ['phanerozoic', 'Millions of years ago'],
+  ];
+  for (const [preset, label] of presets) {
+    const button = page.locator(`.deeptime-presets [data-preset="${preset}"]`);
+    await button.click();
+    await expect(button).toHaveAttribute('aria-pressed', 'true');
+    await expect(title).toHaveText(label);
+  }
+  await plot.focus();
+  await page.keyboard.press('ArrowUp');
+  await expect(page.locator('.deeptime-presets [aria-pressed="true"]')).toHaveCount(0);
+  await expect(page.locator('.deeptime-rates [data-rate="observed"]')).toBeVisible();
+  await expect(page.locator('.deeptime-offsets [data-offset="phanda"]')).toContainText('−14.46');
 });

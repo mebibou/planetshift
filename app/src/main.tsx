@@ -61,7 +61,11 @@ const Failure = ({ title, lines }: { title: string; lines: string[] }) => (
 );
 
 /** Whether the view the reader asked for needs the model's data before it can show anything. */
-const NEEDS_DATA: Record<View, boolean> = { explore: true, methodology: false };
+const NEEDS_DATA: Record<View, boolean> = {
+  explore: true,
+  methodology: false,
+  deeptime: true,
+};
 
 /** What must be loaded before the view can show: the data, or the Methodology's pages. */
 const viewReady = (view: View, data: Promise<Loaded>): Promise<unknown> =>

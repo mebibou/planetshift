@@ -44,6 +44,7 @@ Add `?data=fixtures` to the URL to run on the small fixtures in `app/public/fixt
 | `src/map/` | The choropleth (`choropleth.ts`, D3), and the map card's pure parts: layer values, colour thresholds, legend bins, tooltip rows, intensity sources, and the table's rows, sorting, search and pages (`table.ts`). |
 | `src/chart/` | The temperature chart, with the population chart under it on the same years (`population.ts`). The warming-avoided chart. The stacked warming-by-cause chart of the Causes of warming tab (`attribution.ts`, with its texts in `cause.ts`). Shared axes and hover. D3 draws each chart, and React updates it. |
 | `src/i18n/` | `en.json` and `fr.json`, the translator (which merges each module's texts under `levers.<id>`) and number formatting. |
+| `src/deeptime/` | The deep-time prototype, behind `?view=deeptime`: a zoomable timeline of warming from 485 million years ago to 2100 that ends with Explore's own series. `scale.ts` holds the axis (a log scale of the years before 2100, shifted by half the window's span) and the zoom, pan and preset maths. `series.ts` merges `deeptime.json` with the run's temperature and computes the rates of change. `chart.ts` draws the D3 chart and handles its wheel, drag, pinch and keys. `DeepTime.tsx` is the page. The page and `deeptime.json` load only when the view opens. |
 | `src/methodology/` | The Methodology page. `sections.ts` fixes the order of the markdown files in `docs/methodology/<lang>/`: the core's pages, with the modules' pages after the Levers page. `Methodology.tsx` draws them, with their formulas typeset by KaTeX (`markdown.ts`). Their contents sit in a sticky column beside them that marks the section and heading being read. At 760 px and below, the contents are behind a sticky "On this page" bar instead. Its button opens the list, which closes when a link is picked or on Escape. |
 | `test/model/` | Vitest tests of the core model, on the fixtures and, when built, the real data. |
 | `test/golden/` | The golden results: `runScenario` on a grid of settings, on the fixtures and the real data, and the URL state. Every change must leave them equal unless it means to change a result. `npm run golden` records them anew. |
@@ -80,7 +81,7 @@ The interface adds its own keys when they differ from their defaults (`src/app/u
 
 | Key | Values | Default |
 | --- | --- | --- |
-| `view` | `explore`, `methodology` | `explore` |
+| `view` | `explore`, `methodology`, `deeptime` (a prototype, linked from the footer, not from the header's navigation) | `explore` |
 | `layer` | `production`, `emissions`, `land`, `deforestation`, `landCo2`, `change`, `quality` | `change` |
 | `change` | `production`, `emissions`, `land` | `emissions` |
 | `group` | `all` or a food group | `all` |

@@ -15,6 +15,7 @@ import { applyTheme, readStoredTheme, storeTheme, toggled } from './theme';
 import { parseUi, type UiState, type View } from './url';
 
 const Methodology = lazy(() => import('../methodology/Methodology'));
+const DeepTime = lazy(() => import('../deeptime/DeepTime'));
 
 /** Every lever in full: what loads every deferred file. */
 const ALL_LEVERS: Levers = Object.fromEntries(LEVER_IDS.map((id) => [id, 1]));
@@ -133,6 +134,45 @@ const Loading = ({ t }: { t: (key: string) => string }) => (
   </p>
 );
 
+interface CurrentViewProps {
+  state: AppState;
+  ctx: ViewContext | null;
+  data: Loaded['data'] | null;
+  result: RunResult | null | undefined;
+  failures: number;
+  t: (key: string) => string;
+}
+
+/** The view the state names: Methodology needs no data, the others wait for it. */
+const CurrentView = ({ state, ctx, data, result, failures, t }: CurrentViewProps) => {
+  const loading = <Loading t={t} />;
+  const view = state.ui.view;
+  if (view === 'methodology') {
+    return (
+      <Suspense fallback={loading}>
+        <Methodology t={t} lang={state.lang} />
+      </Suspense>
+    );
+  }
+  if (!ctx || !data) {
+    return loading;
+  }
+  return view === 'deeptime' ? (
+    <Suspense fallback={loading}>
+      <DeepTime key={state.lang} ctx={ctx} result={result} />
+    </Suspense>
+  ) : (
+    <Explore
+      key={state.lang}
+      ctx={ctx}
+      state={state}
+      result={result}
+      data={data}
+      failures={failures}
+    />
+  );
+};
+
 export const App = ({ initial, loaded: first, currentYear }: AppProps) => {
   const [state, setState] = useState(initial);
   const { setScenario, setOptions, setUi } = useSetters(setState);
@@ -203,22 +243,14 @@ export const App = ({ initial, loaded: first, currentYear }: AppProps) => {
         toggleTheme={toggleTheme}
       />
       <main id="main" tabIndex={-1} ref={main} data-ready={result === undefined ? undefined : ''}>
-        {state.ui.view === 'methodology' ? (
-          <Suspense fallback={<Loading t={t} />}>
-            <Methodology t={t} lang={state.lang} />
-          </Suspense>
-        ) : loaded && ctx ? (
-          <Explore
-            key={state.lang}
-            ctx={ctx}
-            state={state}
-            result={result}
-            data={loaded.data}
-            failures={failures}
-          />
-        ) : (
-          <Loading t={t} />
-        )}
+        <CurrentView
+          state={state}
+          ctx={ctx}
+          data={loaded?.data ?? null}
+          result={result}
+          failures={failures}
+          t={t}
+        />
       </main>
       <footer className="site-footer">
         {loaded && <p>{t('footer.text', { year: loaded.data.meta.baseYear })}</p>}
@@ -227,6 +259,18 @@ export const App = ({ initial, loaded: first, currentYear }: AppProps) => {
           <a href={CODE_LICENCE}>{t('footer.code')}</a>
           <a href={DATA_LICENCES}>{t('footer.data')}</a>
           <a href={REPOSITORY}>{t('footer.source')}</a>
+          {/* The deep-time prototype is linked from here only, not from the navigation. */}
+          <a
+            href="?view=deeptime"
+            data-view="deeptime"
+            aria-current={state.ui.view === 'deeptime' ? 'page' : undefined}
+            onClick={(e) => {
+              e.preventDefault();
+              go('deeptime');
+            }}
+          >
+            {t('nav.deeptime')}
+          </a>
         </p>
       </footer>
     </>

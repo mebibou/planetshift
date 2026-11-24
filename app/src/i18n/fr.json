@@ -17,7 +17,8 @@
   },
   "nav": {
     "explore": "Explorer",
-    "methodology": "Méthodologie"
+    "methodology": "Méthodologie",
+    "deeptime": "Temps géologiques"
   },
   "footer": {
     "text": "Régimes et production : bilans alimentaires de FAOSTAT ({year}) ; intensités d'émission : HESTIA, FAOSTAT et analyses de cycle de vie publiées ; poisson : FishStat de la FAO et études publiées ; surfaces agricoles : FAOSTAT ; déforestation : DeDuCE ; transport et électricité : scénarios SSP, Ember et AIE ; réchauffement : FaIR. Le changement d'usage des terres n'entre que par la variation du défrichement et par la repousse, en option, sur les terres libérées.",
@@ -370,6 +371,7 @@
       "literature": "Données ACV publiées",
       "climate": "Climat",
       "link": "Causes du réchauffement",
+      "deeptime": "Temps géologiques",
       "options": "Options",
       "assumptions": "Hypothèses",
       "limitations": "Limites"
