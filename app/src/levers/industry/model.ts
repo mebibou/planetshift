@@ -44,7 +44,7 @@ export type IndustrySource = 'buildings' | 'industry' | 'electricity';
 
 /**
  * Change in fossil CO₂ in a year by the sector that emits it, kg (negative when avoided): heat
- * pumps save buildings' CO₂ and clean steel and cement save their part of industry's, and both
+ * pumps save buildings' CO₂ and clean steel, cement and chemicals save their part of industry's, and both
  * draw electricity on the grid left after renewable electricity.
  */
 export const industryCo2BySource = (

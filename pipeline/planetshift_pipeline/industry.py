@@ -42,6 +42,11 @@ CEMENT_PROCESS_SHARE = 0.6
 # Iron and steel's direct CO₂, 2.6 Gt a year (IEA 2020, Iron and Steel Technology Roadmap, 2019
 # data), taken for 2022.
 STEEL_2022 = 2.6 * KG_PER_GT
+# Primary chemicals' direct CO₂, about 935 Mt in 2022, 45% of it from ammonia (IEA, Tracking
+# Clean Energy Progress, chemicals). Ammonia is left out: its CO₂ is that of making fertiliser,
+# which the nitrogen-efficiency practice cuts on the farm side.
+PRIMARY_CHEMICALS_2022 = 0.935 * KG_PER_GT
+AMMONIA_SHARE = 0.45
 
 # Fossil CO₂ per kWh of fuel (IPCC 2006 Guidelines, vol. 2, table 1.4: natural gas 56.1 and
 # gas/diesel oil 74.1 t CO₂ per TJ) and the heat pump replacing a boiler: kWh of electricity per
@@ -67,7 +72,13 @@ HEAT_PUMP = {
 # and carbon capture together, 60–95%, 80% at the median (GCCA 2021, Concrete Future roadmap;
 # IPCC AR6 WGIII ch. 11). Capture and compression draw about 0.1–0.3 MWh per tonne of CO₂
 # avoided (CEMCAP 2019); electric kilns for the fuel part reach about 1 kWh/kg of all the CO₂
-# avoided.
+# avoided. Chemicals (methanol and high-value chemicals): the IEA's Net Zero roadmap makes 93% of
+# primary chemicals near zero emission by 2050, 56% of production with CCUS and 28% with
+# electrolytic hydrogen (IEA 2023, Primary chemicals), the high cut and a two-to-one mix; the
+# median and low cuts are Planetshift's judgement. Electrolytic hydrogen and captured carbon
+# draw more than 18.1 PWh to cut 3.5 Gt CO₂e (Kätelhön et al. 2019, abstract), 5.2 kWh/kg, the
+# high end; capture alone 0.1-0.3 MWh per tonne avoided as for cement (CEMCAP 2019, not checked
+# for chemicals), the low end; the median weighs them two to one.
 PARTS = {
     "steel": {
         "cut": {"median": 0.9, "low": 0.75, "high": 0.95},
@@ -77,12 +88,17 @@ PARTS = {
         "cut": {"median": 0.8, "low": 0.6, "high": 0.95},
         "kwhPerKgCo2": {"median": 0.25, "low": 0.1, "high": 1.0},
     },
+    "chemicals": {
+        "cut": {"median": 0.8, "low": 0.6, "high": 0.93},
+        "kwhPerKgCo2": {"median": 1.9, "low": 0.1, "high": 5.2},
+    },
 }
 
 SOURCE = (
     "RCMIP v5.1.0 harmonised to IEA Tracking Clean Energy Progress 2023; Global Carbon Budget "
-    "cement process CO₂ (Andrew, v260830); heat-pump, steel and cement factors from the IEA, "
-    "IPCC and published roadmaps"
+    "cement process CO₂ (Andrew, v260830); heat-pump, steel, cement and chemicals factors from "
+    "the IEA, "
+    "IPCC, published roadmaps and studies"
 )
 
 # RCMIP is listed by the climate section.
@@ -97,7 +113,7 @@ SOURCES = [
     {
         "id": "iea-tracking-buildings-industry",
         "name": "IEA, Tracking Clean Energy Progress 2023: buildings, industry, iron and steel, "
-        "cement",
+        "cement, chemicals",
         "version": "2023",
         "url": "https://www.iea.org/reports/tracking-clean-energy-progress-2023",
         "licence": "CC BY 4.0",
@@ -108,6 +124,21 @@ SOURCES = [
         "version": "2022",
         "url": "https://www.iea.org/reports/the-future-of-heat-pumps",
         "licence": "CC BY 4.0",
+    },
+    {
+        "id": "iea-primary-chemicals",
+        "name": "IEA, Net Zero Roadmap: Primary chemicals",
+        "version": "2023",
+        "url": "https://www.iea.org/reports/primary-chemicals",
+        "licence": "CC BY 4.0",
+    },
+    {
+        "id": "katelhon-2019-ccu",
+        "name": "Kätelhön et al. (2019), climate change mitigation potential of carbon capture "
+        "and utilization in the chemical industry",
+        "version": "PNAS 116(23)",
+        "url": "https://doi.org/10.1073/pnas.1821029116",
+        "licence": "PNAS, free to read",
     },
 ]
 
@@ -142,11 +173,12 @@ def cement_process(cement: pd.DataFrame, year: int) -> float:
 
 def shares(cement_process_kg: float) -> dict[str, float]:
     """Each part's share of industry's direct CO₂: cement's from its process CO₂ and the process
-    share of a plant's emissions, steel's from the IEA."""
+    share of a plant's emissions, steel's and chemicals' (ammonia left out) from the IEA."""
     industry = INVENTORY["industry"]
     return {
         "steel": STEEL_2022 / industry,
         "cement": cement_process_kg / CEMENT_PROCESS_SHARE / industry,
+        "chemicals": PRIMARY_CHEMICALS_2022 * (1 - AMMONIA_SHARE) / industry,
     }
 
 
@@ -208,7 +240,8 @@ def summary(doc: dict) -> list[str]:
     p = doc["industryParts"]
     lines.append(
         f"cement process {doc['cementProcessCo2']['kg'] / KG_PER_GT:.3f} Gt; shares steel "
-        f"{p['steel']['share']:.3f} cement {p['cement']['share']:.3f}; heat pump kWh/kg "
+        f"{p['steel']['share']:.3f} cement {p['cement']['share']:.3f} chemicals "
+        f"{p['chemicals']['share']:.3f}; heat pump kWh/kg "
         f"{doc['heatPumpKwhPerKgCo2']}"
     )
     return lines

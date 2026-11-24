@@ -88,7 +88,7 @@ La réduction qu'une pratique fait dans un pays est l'adoption choisie × la par
 - 60 % dans les pays à revenu intermédiaire de la tranche supérieure, 50 % dans les pays à revenu élevé et dans ceux de la tranche inférieure ;
 - 20 % dans les pays à faible revenu et en Afrique de l'Ouest, de l'Est et centrale, où les sols reçoivent trop peu d'azote et où de meilleurs rendements en demandent plus.
 
-**Limites.** La fabrication des intrants de `breakdown.json` comprend aussi les pesticides, les machines et les plastiques, que la pratique ne réduit pas. Appliquer la même réduction à l'ensemble surestime un peu l'effet. Des résidus de l'inhibiteur DCD ont été trouvés dans le lait en Nouvelle-Zélande en 2013, ce qui y a arrêté son usage. Les inhibiteurs coûtent plus que l'engrais économisé dans la plupart des endroits, et agissent moins dans les sols chauds et secs.
+**Limites.** La fabrication des intrants de `breakdown.json` comprend aussi les pesticides, les machines et les plastiques, que la pratique ne réduit pas. Appliquer la même réduction à l'ensemble surestime un peu l'effet. L'ammoniac, dont sont faits les engrais azotés, est laissé hors de l'industrie propre (voir [Bâtiments et industrie](#method-industry)) : la fabrication des engrais n'est donc réduite qu'ici, dans le périmètre du berceau à la sortie de ferme. Des résidus de l'inhibiteur DCD ont été trouvés dans le lait en Nouvelle-Zélande en 2013, ce qui y a arrêté son usage. Les inhibiteurs coûtent plus que l'engrais économisé dans la plupart des endroits, et agissent moins dans les sols chauds et secs.
 
 ## Énergie propre à la ferme
 

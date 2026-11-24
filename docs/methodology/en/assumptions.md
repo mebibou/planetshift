@@ -150,9 +150,9 @@ The URL keys of the options, the diet controls and the levers are listed under [
 
 ## Buildings and industry
 
-- **Buildings' and industry's direct CO₂ are part of each SSP's fossil CO₂, scaled to 2023**: 3.0 and 9.0 Gt CO₂ (IEA). Steel is 28.9% and cement 28.7% of industry's, in every year and scenario. See [Buildings and industry](#method-industry).
+- **Buildings' and industry's direct CO₂ are part of each SSP's fossil CO₂, scaled to 2023**: 3.0 and 9.0 Gt CO₂ (IEA). Steel is 28.9%, cement 28.7% and chemicals without ammonia 5.7% of industry's, in every year and scenario. Ammonia's CO₂ is cut only by nitrogen efficiency, on the farm side. See [Buildings and industry](#method-industry).
 - **A heat pump saves the boiler's CO₂ × (1 − 1.49 kWh per kg avoided × the grid's intensity after renewable electricity).** See [Buildings and industry](#method-industry).
-- **Clean steel and cement cut 90% and 80% of their direct CO₂ at full adoption**, less 1.5 and 0.25 kWh of electricity per kg avoided on the same grid. Making the equipment is not counted. See [Buildings and industry](#method-industry).
+- **Clean industry cuts 90%, 80% and 80% of steel's, cement's and chemicals' direct CO₂ at full adoption**, less 1.5, 0.25 and 1.9 kWh of electricity per kg avoided on the same grid. Making the equipment is not counted. See [Buildings and industry](#method-industry).
 
 ## Climate
 
@@ -207,6 +207,7 @@ The other sources are CC BY 4.0, public domain, the Open Government Licence, Apa
 - Shipping's 0.85 Gt, read only where others quote the IEA, and the road split of 60% passengers and 40% freight, which the IEA's shares bound (over 60% for cars and vans, about a third for trucks) without giving vans'. See [Energy and transport](#method-sectors).
 - An electric car's 0.15–0.22 kWh/km. See [Energy and transport](#method-sectors).
 - Steel's and cement's cuts at full adoption (90%, 80%) and cement's electricity per kg avoided, and buildings' 3.0 Gt of direct CO₂, read only in a search summary of the IEA's page. See [Buildings and industry](#method-industry).
+- Chemicals' median and low cuts (80%, 60%), a judgement, and their capture route's 0.1 kWh/kg, taken from cement kilns. See [Buildings and industry](#method-industry).
 
 ### HESTIA has no animal products yet
 

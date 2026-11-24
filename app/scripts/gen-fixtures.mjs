@@ -1175,6 +1175,11 @@ write('industry.json', {
       cut: { median: 0.8, low: 0.6, high: 0.95 },
       kwhPerKgCo2: { median: 0.25, low: 0.1, high: 1.0 },
     },
+    chemicals: {
+      share: 0.057,
+      cut: { median: 0.8, low: 0.6, high: 0.93 },
+      kwhPerKgCo2: { median: 1.9, low: 0.1, high: 5.2 },
+    },
   },
   cementProcessCo2: { year: 2023, kg: 1.549e12 },
   source: 'Planetshift test fixture: industry.md values, straight lines between them',

@@ -52,6 +52,12 @@ def test_cement_share_comes_from_its_process_co2():
     assert I.shares(process)["cement"] == pytest.approx(1 / 0.6 / 9)
 
 
+def test_chemicals_share_leaves_ammonia_to_the_farm_side():
+    share = I.shares(1e12)["chemicals"]
+    assert share == pytest.approx(0.935 * 0.55 / 9)
+    assert share < 0.935 / 9
+
+
 def test_a_heat_pump_needs_about_one_and_a_half_kwh_per_kg_avoided():
     kwh = {k: I.heat_pump_kwh(c) for k, c in I.HEAT_PUMP.items()}
     assert kwh["median"] == pytest.approx(1.49, abs=0.01)
@@ -84,6 +90,7 @@ def test_the_built_document_meets_the_recent_totals():
     steel, cement = (parts[p]["share"] * 9.0 for p in ("steel", "cement"))
     assert 2.4 < steel < 3.0
     assert 2.2 < cement < 2.8
-    assert parts["steel"]["share"] + parts["cement"]["share"] < 0.7
+    assert 0.4 < parts["chemicals"]["share"] * 9.0 < 0.6
+    assert sum(p["share"] for p in parts.values()) < 0.7
     ssp126, ssp370 = (doc["co2"][s]["industry"]["values"] for s in ("ssp126", "ssp370"))
     assert ssp126[-1] < ssp126[0] < ssp370[-1]
