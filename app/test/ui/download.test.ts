@@ -105,6 +105,7 @@ describe('map csv', () => {
     expect(unitOf('land', spec())).toBe('ha');
     expect(unitOf('deforestation', spec())).toBe('ha');
     expect(unitOf('landShare', spec())).toBe('share of land area');
+    expect(unitOf('landCo2', spec())).toBe('kg CO2');
   });
 
   it('names the scenario by its shift, year, foods and levers', () => {

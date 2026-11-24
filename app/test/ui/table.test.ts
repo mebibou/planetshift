@@ -80,6 +80,19 @@ describe('table rows', () => {
     expect(r?.change).toBeNull();
   });
 
+  it('lists only the countries with land-use data, in one column', () => {
+    const rows = tableRows(
+      [countryResult(), countryResult({ iso3: 'USA' })],
+      spec({ layer: 'landCo2' }),
+      namesOf,
+      () => null,
+      new Map([['FRA', -2e9]]),
+    );
+    expect(rows.map((r) => [r.iso3, r.before, r.tier])).toEqual([['FRA', -2e9, null]]);
+    expect(columnsOf(spec({ layer: 'landCo2' }))).toEqual(['name', 'before']);
+    expect(defaultSort(spec({ layer: 'landCo2' })).column).toBe('before');
+  });
+
   it('shows the columns each layer has, sorted by what the map colours', () => {
     expect(columnsOf(spec())).toEqual(['name', 'before', 'after', 'change', 'tier']);
     expect(columnsOf(spec({ layer: 'land' }))).toEqual(['name', 'before', 'after', 'change']);

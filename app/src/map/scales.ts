@@ -1,4 +1,5 @@
 import { scaleThreshold } from 'd3';
+import type { ScaleKind } from './colours';
 
 /** The power of ten a value is rounded to, to keep `digits` significant figures. */
 const magnitudeOf = (x: number, digits: number): number =>
@@ -35,22 +36,23 @@ export const logThresholds = (min: number, max: number, n: number): number[] => 
  */
 export const CHANGE_THRESHOLDS = [-0.4, -0.15, -0.02, 0.02, 0.15, 0.4];
 
+/** Net CO₂, kg a year: sinks and sources by ±1, 10 and 100 Mt, the middle bin about nothing. */
+export const NET_THRESHOLDS = [-1e11, -1e10, -1e9, 1e9, 1e10, 1e11];
+
 export const QUALITY_THRESHOLDS = [1.5, 2.5, 3.5, 4.5, 5.5];
 
 /** The share of a country's land that is farmed: fixed bins, the same for every scenario. */
 export const LAND_SHARE_THRESHOLDS = [0.05, 0.1, 0.2, 0.3, 0.45, 0.6];
 
-export const thresholdsFor = (
-  kind: 'sequential' | 'diverging' | 'quality',
-  values: number[],
-  bins: number,
-): number[] => {
+export const thresholdsFor = (kind: ScaleKind, values: number[], bins: number): number[] => {
   const positive = values.filter((v) => v > 0);
   return kind === 'quality'
     ? QUALITY_THRESHOLDS
-    : kind === 'diverging'
-      ? CHANGE_THRESHOLDS
-      : logThresholds(Math.min(...positive), Math.max(...positive), bins);
+    : kind === 'net'
+      ? NET_THRESHOLDS
+      : kind === 'diverging'
+        ? CHANGE_THRESHOLDS
+        : logThresholds(Math.min(...positive), Math.max(...positive), bins);
 };
 
 export const colourScale = (thresholds: number[], colours: string[]) =>

@@ -6,6 +6,7 @@ import {
   groupValue,
   layerValue,
   layerValues,
+  landUseCo2,
   measureOf,
   relativeChange,
   type LayerSpec,
@@ -96,5 +97,26 @@ describe('layers', () => {
     });
     expect(layerValue(c, spec({ layer: 'deforestation' }))).toBe(3e9);
     expect(layerValue(countryResult(), spec({ layer: 'deforestation' }))).toBeNull();
+  });
+
+  it('gives net land-use CO₂ in kg, sinks below zero, the same with any lever', () => {
+    const landUse = landUseCo2({
+      byCountry: { FRA: -2e6, BRA: 1.4e9 },
+      world: 5e9,
+      years: [2015, 2024],
+      source: '',
+    });
+    const c = countryResult({ deforestationCo2: 5e9, deforestationChange: -2e9 });
+    expect(measureOf(spec({ layer: 'landCo2' }))).toBe('landCo2');
+    expect(layerValue(c, spec({ layer: 'landCo2' }), landUse)).toBe(-2e9);
+    expect(beforeAfter(c, spec({ layer: 'landCo2' }), landUse)).toEqual({
+      kind: 'landCo2',
+      before: -2e9,
+      after: -2e9,
+    });
+    expect(
+      layerValue(countryResult({ iso3: 'USA' }), spec({ layer: 'landCo2' }), landUse),
+    ).toBeNull();
+    expect(landUseCo2(undefined).size).toBe(0);
   });
 });

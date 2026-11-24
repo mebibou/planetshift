@@ -195,6 +195,18 @@ Le tableau montre ce que change la compensation, sur les données réelles avec 
 
 Avec le changement complet, 12 pays cultivent au total plus de terres qu'avant, 44 Mha ensemble. Avec la substitution du poisson, 105 pays, 18 Mha ensemble. Sans la repousse, rien ne change.
 
+## Le CO₂ de l'usage des terres par pays
+
+La couche CO₂ des terres de la carte, à côté de la part des terres cultivées de la couche Usage des terres, donne le CO₂ net de tout changement d'usage des terres dans chaque pays : forêts défrichées pour quelque raison que ce soit, tourbières drainées et autres changements, moins l'absorption de la forêt qui repousse sur les terres abandonnées. C'est l'estimation nationale du Global Carbon Budget 2025, la moyenne de ses trois modèles de comptabilité (BLUE, OSCAR et LUCE), sur 2015–2024. Le total mondial est de 5,03 Gt de CO₂ par an, les 5,0 ± 2,6 Gt que le Global Carbon Budget donne pour cette décennie ; les trois modèles donnent 5,75, 4,73 et 4,60.
+
+Les pays du modèle en portent 5,01 Gt : 5,41 Gt pour les 131 pays qui émettent plus qu'ils n'absorbent et −0,39 Gt pour les 46 puits nets. Le Brésil vient en tête (1,42 Gt), puis l'Indonésie (0,84), la République démocratique du Congo (0,61) et la Russie (0,35). La Chine est le plus grand puits (−0,19 Gt), avec l'Inde (−0,07) et la France (−0,03). Le fichier n'a pas de chiffre pour les Bermudes, Hong Kong, Macao, la Nouvelle-Calédonie, la Polynésie française et Taïwan, que la carte montre sans données ; le reste du total mondial, un peu de terres que la source n'attribue à aucun pays, reste dans `world`.
+
+Le CO₂ du défrichement pour l'agriculture en est une partie (la couche Déforestation en montre la surface) : le défrichement de DeDuCE pour les aliments du modèle, environ 2,0 Gt (voir [Déforestation](#method-deforestation)), à peu près 40 % du total net. Le reste (défrichement pour le bois, les mines ou les villes, drainage des tourbières, autres changements d'usage, moins la repousse) figure dans la bande Usage des terres du graphique des causes comme une seule série mondiale, le CO₂ de l'usage des terres de RCMIP (voir [Causes du réchauffement climatique](#method-link)), et sur cette couche par pays. Le modèle ne change que le défrichement pour l'agriculture, par le changement de régime et le levier déforestation, et ce que stockent les terres libérées ou cultivées, par la repousse et les leviers du carbone des terres agricoles. La couche est donc la même quels que soient les leviers, et sa note le dit ; son infobulle donne à côté le défrichement pour l'agriculture, avant et après les leviers. Les deux estimations ne sont pas soustraites pays par pays : DeDuCE amortit chaque défrichement sur cinq ans et laisse de côté le drainage des tourbières, et les modèles de comptabilité comptent la repousse, si bien que le défrichement d'un pays peut dépasser son CO₂ net de l'usage des terres.
+
+Les totaux UTCATF des inventaires nationaux n'ont pas été utilisés : ils comptent l'absorption des forêts gérées et ne mesurent donc pas le changement d'usage des terres (voir [Causes du réchauffement climatique](#method-link)).
+
+`pipeline/planetshift_pipeline/landuse.py` lit la feuille de chaque modèle et vérifie que ses pays et les colonnes qu'aucun pays ne porte s'additionnent à son total mondial, chaque année (à 0,1 % près ; ils le font à 10⁻⁷ près). Les noms de pays sont associés aux codes ISO3 par les noms anglais de FAOSTAT, puis par `pipeline/landuse_names.csv`.
+
 ## Vérifications
 
 `pipeline/tests/test_land_validation.py` compare le `land.json` construit avec FAOSTAT et la littérature :
@@ -242,3 +254,4 @@ Les données d'utilisation des terres de FAOSTAT que lit le pipeline donnent 1,5
 - FAO (2000). Technical Conversion Factors for Agricultural Commodities (huile et tourteau par tonne d'oléagineux trituré) : <https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology-systems/technical-conversion-factors-for-agricultural-commodities/en/>.
 - FAO (2025). Land statistics 2001–2023: global, regional and country trends. FAOSTAT Analytical Brief 107 : <https://doi.org/10.4060/cd5765en>.
 - FAO (2023). Land statistics and indicators 2000–2021. FAOSTAT Analytical Brief 71 (prairies 3,2 et terres agricoles 4,8 milliards d'hectares en 2021, sur une version antérieure).
+- Global Carbon Project (2025). Supplemental data of Global Carbon Budget 2025, National Land Use Change Carbon Emissions 2025 v1.0 (BLUE, OSCAR et LUCE) : <https://doi.org/10.18160/GCP-2025>, CC BY 4.0. Friedlingstein, P. et al. (2026). Global Carbon Budget 2025. Earth Syst. Sci. Data 18, 3211–3288.

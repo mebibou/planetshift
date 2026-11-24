@@ -1,6 +1,6 @@
 import type { Tier } from '../data/types';
 import type { CountryResult } from '../model/api';
-import { beforeAfter, measureOf, relativeChange, type LayerSpec } from './layers';
+import { beforeAfter, measureOf, relativeChange, type LandUseCo2, type LayerSpec } from './layers';
 import type { TierSource } from './sources';
 
 /** One country of the table view and of the map's CSV: the layer's values before and after. */
@@ -30,17 +30,26 @@ export interface Sort {
 export const hasTier = (spec: LayerSpec): boolean =>
   spec.layer === 'quality' || ['production', 'emissions'].includes(measureOf(spec));
 
-/** The columns a layer shows: data quality is only its tier and source. */
+/** The columns a layer shows: data quality is only its tier and source, land-use CO₂ one value. */
 export const columnsOf = (spec: LayerSpec): Column[] =>
   spec.layer === 'quality'
     ? ['name', 'tier']
-    : hasTier(spec)
-      ? [...COLUMNS]
-      : ['name', 'before', 'after', 'change'];
+    : spec.layer === 'landCo2'
+      ? ['name', 'before']
+      : hasTier(spec)
+        ? [...COLUMNS]
+        : ['name', 'before', 'after', 'change'];
 
 /** The order the table opens in: the column the map colours by, largest first. */
 export const defaultSort = (spec: LayerSpec): Sort => ({
-  column: spec.layer === 'quality' ? 'tier' : spec.layer === 'change' ? 'change' : 'after',
+  column:
+    spec.layer === 'quality'
+      ? 'tier'
+      : spec.layer === 'change'
+        ? 'change'
+        : spec.layer === 'landCo2'
+          ? 'before'
+          : 'after',
   direction: 'descending',
 });
 
@@ -55,18 +64,21 @@ export const tableRows = (
   spec: LayerSpec,
   namesOf: (iso3: string) => { name: string; names: string[] },
   worstOf: (c: CountryResult) => TierSource | null,
+  landUse: LandUseCo2 = new Map(),
 ): TableRow[] =>
-  countries.map((c) => {
-    const ba = beforeAfter(c, spec);
-    return {
-      iso3: c.iso3,
-      ...namesOf(c.iso3),
-      before: ba.before,
-      after: ba.after,
-      change: relativeChange(ba),
-      ...(hasTier(spec) ? tierOf(c, worstOf(c)) : { tier: null, source: null }),
-    };
-  });
+  countries
+    .filter((c) => spec.layer !== 'landCo2' || landUse.has(c.iso3))
+    .map((c) => {
+      const ba = beforeAfter(c, spec, landUse);
+      return {
+        iso3: c.iso3,
+        ...namesOf(c.iso3),
+        before: ba.before,
+        after: ba.after,
+        change: relativeChange(ba),
+        ...(hasTier(spec) ? tierOf(c, worstOf(c)) : { tier: null, source: null }),
+      };
+    });
 
 /** Lower case without accents, so "cote" finds Côte d'Ivoire. */
 export const fold = (text: string): string =>
