@@ -6,6 +6,7 @@ import {
   groupValue,
   layerValue,
   layerValues,
+  landCo2Change,
   landUseCo2,
   measureOf,
   relativeChange,
@@ -99,7 +100,7 @@ describe('layers', () => {
     expect(layerValue(countryResult(), spec({ layer: 'deforestation' }))).toBeNull();
   });
 
-  it('gives net land-use CO₂ in kg, sinks below zero, the same with any lever', () => {
+  it('gives net land-use CO₂ in kg, sinks below zero, less the clearing and regrowth the levers change', () => {
     const landUse = landUseCo2({
       byCountry: { FRA: -2e6, BRA: 1.4e9 },
       world: 5e9,
@@ -108,12 +109,15 @@ describe('layers', () => {
     });
     const c = countryResult({ deforestationCo2: 5e9, deforestationChange: -2e9 });
     expect(measureOf(spec({ layer: 'landCo2' }))).toBe('landCo2');
-    expect(layerValue(c, spec({ layer: 'landCo2' }), landUse)).toBe(-2e9);
+    expect(layerValue(c, spec({ layer: 'landCo2' }), landUse)).toBe(-4e9);
     expect(beforeAfter(c, spec({ layer: 'landCo2' }), landUse)).toEqual({
       kind: 'landCo2',
       before: -2e9,
-      after: -2e9,
+      after: -4e9,
     });
+    const regrowing = countryResult({ deforestationChange: -2e9, regrowthCo2: 1e9 });
+    expect(landCo2Change(regrowing)).toBe(-3e9);
+    expect(landCo2Change(countryResult())).toBe(0);
     expect(
       layerValue(countryResult({ iso3: 'USA' }), spec({ layer: 'landCo2' }), landUse),
     ).toBeNull();

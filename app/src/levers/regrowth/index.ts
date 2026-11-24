@@ -2,7 +2,7 @@ import { bandRecord } from '../../model/bands';
 import { netFreedHa, uptakeAsEmissions } from '../../model/land';
 import type { LeverModule } from '../types';
 import { regrowthSpec } from './spec';
-import { regrowthPaths } from './model';
+import { fullUptake, regrowthPaths } from './model';
 
 /** 'natural': freed farmland takes up CO₂ as vegetation grows back on it. */
 export type Regrowth = 'none' | 'natural';
@@ -10,6 +10,10 @@ export type Regrowth = 'none' | 'natural';
 declare module '../../model/api' {
   interface Options {
     regrowth: Regrowth;
+  }
+  interface CountryResult {
+    /** CO₂ the country's freed farmland takes up as it regrows, net, kg a year; regrowth on only. */
+    regrowthCo2?: number;
   }
   interface Summary {
     /**
@@ -25,6 +29,18 @@ declare module '../../model/api' {
 export const regrowth: LeverModule = {
   ...regrowthSpec,
   hooks: {
+    country: ({ prepared, options }) =>
+      options.regrowth === 'natural'
+        ? ({ pc, landChange }) => ({
+            result: {
+              regrowthCo2: fullUptake(
+                [{ iso3: pc.country.iso3, ha: netFreedHa(landChange) }],
+                prepared.data.land,
+                'median',
+              ),
+            },
+          })
+        : null,
     world: ({ prepared, options }, { countries, years, shareAt, completeIndex }) => {
       const paths = regrowthPaths(
         options.regrowth === 'natural',

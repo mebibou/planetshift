@@ -109,11 +109,18 @@ const MEASURE_TOOLTIPS: Record<
   },
   landCo2: {
     what: (t) => t('map.tooltip.landCo2'),
-    extra: (c, t, locale) => ({ rows: [clearingCo2Row(c, t, locale, 'map.tooltip.clearing')] }),
+    extra: (c, t, locale) => ({
+      rows: [
+        clearingCo2Row(c, t, locale, 'map.tooltip.clearing'),
+        ...(c.regrowthCo2 === undefined
+          ? []
+          : [[t('map.tooltip.regrowth'), formatMass(locale, c.regrowthCo2)] as [string, string]]),
+      ],
+    }),
   },
 };
 
-/** Net land-use CO₂, which no lever changes, beside the clearing for farming the levers do. */
+/** Net land-use CO₂ today and with the levers, then the parts the levers change. */
 const landCo2Tooltip = (
   name: string,
   c: CountryResult | undefined,
@@ -123,11 +130,16 @@ const landCo2Tooltip = (
   locale: string,
 ): TooltipModel => {
   const own = MEASURE_TOOLTIPS.landCo2;
-  const net = c && landUse.get(c.iso3);
-  return c && net !== undefined
+  const ba = c && landUse.has(c.iso3) ? beforeAfter(c, spec, landUse) : null;
+  return c && ba
     ? {
         title: name,
-        rows: [[own.what(t, spec), formatMass(locale, net)], ...own.extra(c, t, locale, null).rows],
+        rows: [
+          [own.what(t, spec), ''],
+          [t('map.tooltip.before'), formatMass(locale, ba.before)],
+          [t('map.tooltip.after'), formatMass(locale, ba.after)],
+          ...own.extra(c, t, locale, null).rows,
+        ],
       }
     : noData(name, t);
 };

@@ -35,21 +35,14 @@ export const columnsOf = (spec: LayerSpec): Column[] =>
   spec.layer === 'quality'
     ? ['name', 'tier']
     : spec.layer === 'landCo2'
-      ? ['name', 'before']
+      ? ['name', 'before', 'after']
       : hasTier(spec)
         ? [...COLUMNS]
         : ['name', 'before', 'after', 'change'];
 
 /** The order the table opens in: the column the map colours by, largest first. */
 export const defaultSort = (spec: LayerSpec): Sort => ({
-  column:
-    spec.layer === 'quality'
-      ? 'tier'
-      : spec.layer === 'change'
-        ? 'change'
-        : spec.layer === 'landCo2'
-          ? 'before'
-          : 'after',
+  column: spec.layer === 'quality' ? 'tier' : spec.layer === 'change' ? 'change' : 'after',
   direction: 'descending',
 });
 

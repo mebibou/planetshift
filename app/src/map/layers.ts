@@ -29,7 +29,7 @@ export interface LayerSpec {
   gas: GasChoice;
 }
 
-/** Each country's net land-use CO₂, kg a year; no lever changes it. */
+/** Each country's measured net land-use CO₂, kg a year. */
 export type LandUseCo2 = ReadonlyMap<string, number>;
 
 export const landUseCo2 = (file: LandUse | undefined): LandUseCo2 =>
@@ -74,6 +74,10 @@ const clearing = (c: CountryResult): [number, number] => [
   c.deforestationHaChange ?? 0,
 ];
 
+/** The levers' change in a country's land-use CO₂, kg a year. */
+export const landCo2Change = (c: CountryResult): number =>
+  (c.deforestationChange ?? 0) - (c.regrowthCo2 ?? 0);
+
 /** Farmland as a share of the country's land area, and its change; none without the area. */
 const landShare = (c: CountryResult): [number, number] =>
   c.landArea > 0 ? [farmland(c.land) / c.landArea, farmland(c.landChange) / c.landArea] : [0, 0];
@@ -90,7 +94,7 @@ const MEASURES: Record<
   deforestation: clearing,
   land: (c) => [farmland(c.land), farmland(c.landChange)],
   landShare,
-  landCo2: (c, _, landUse) => [landUse.get(c.iso3) ?? 0, 0],
+  landCo2: (c, _, landUse) => [landUse.get(c.iso3) ?? 0, landCo2Change(c)],
 };
 
 export const beforeAfter = (
@@ -114,7 +118,7 @@ const positiveAfter: Value = (_, ba) => (ba.after > 0 ? ba.after : null);
 const VALUES: Partial<Record<Layer, Value>> = {
   quality: (c) => c.worstTier,
   change: (_, ba) => relativeChange(ba),
-  landCo2: (c, _, landUse) => landUse.get(c.iso3) ?? null,
+  landCo2: (c, ba, landUse) => (landUse.has(c.iso3) ? ba.after : null),
 };
 
 /** The number the map colours a country by, or null for no data. */
@@ -122,7 +126,8 @@ export const layerValue = (
   c: CountryResult,
   spec: LayerSpec,
   landUse: LandUseCo2 = new Map(),
-): number | null => (VALUES[spec.layer] ?? positiveAfter)(c, beforeAfter(c, spec), landUse);
+): number | null =>
+  (VALUES[spec.layer] ?? positiveAfter)(c, beforeAfter(c, spec, landUse), landUse);
 
 export const layerValues = (
   countries: CountryResult[],

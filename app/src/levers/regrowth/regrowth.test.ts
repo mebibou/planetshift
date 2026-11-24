@@ -67,4 +67,15 @@ describe('net uptake of freed and newly used land', () => {
       ),
     );
   });
+
+  it('gives each country its own uptake, adding up to the world’s, and none with regrowth off', () => {
+    const shift = { shift: 0.5 };
+    const natural = run(shift, { regrowth: 'natural' });
+    const total = natural.countries.reduce((a, c) => a + (c.regrowthCo2 ?? 0), 0);
+    expect(total).toBeGreaterThan(0);
+    expect(total).toBeCloseTo(natural.summary.regrowthCo2.median, 0);
+    expect(
+      run(shift, { regrowth: 'none' }).countries.every((c) => c.regrowthCo2 === undefined),
+    ).toBe(true);
+  });
 });

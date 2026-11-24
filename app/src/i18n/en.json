@@ -196,7 +196,7 @@
       "change": "{what}: change once the levers are fully in place",
       "quality": "Least precise source of emission data used",
       "deforestation": "Forest cleared for farming with the levers, a year",
-      "landCo2": "Net CO₂ from land-use change, a year ({from}–{to})",
+      "landCo2": "Net CO₂ from land-use change with the levers, a year (measured {from}–{to})",
       "landShare": "Share of the land farmed (cropland and pasture) with the levers"
     },
     "notes": {
@@ -206,7 +206,7 @@
       "change": "Each country's output changes by the same share as world demand for each food. Exporters change along with the countries that buy from them.",
       "quality": "Neighbouring countries can differ only because their figures come from different sources.",
       "deforestation": "Forest cleared for crops and pasture in each country once the levers are fully in place, in hectares a year. The tooltip gives today's clearing, the change and the CO₂ it releases.",
-      "landCo2": "Each country's net CO₂ from all land-use change: forest cleared for any reason, peat drained and other changes, less forest regrowing on abandoned land. Blue countries take up more than they release. The mean of the Global Carbon Budget's three bookkeeping models; no lever changes it. The levers change only the part cleared for farming (in the tooltip; the Deforestation layer shows its area) and what freed or farmed land stores."
+      "landCo2": "Each country's net CO₂ from all land-use change: forest cleared for any reason, peat drained and other changes, less forest regrowing on abandoned land. Blue countries take up more than they release. Today's is the mean of the Global Carbon Budget's three bookkeeping models over the years shown. The levers change two parts of it: the forest cleared for farming (the Deforestation layer shows its area) and, with Freed farmland set to Grows back in the options, the CO₂ that freed farmland takes up as it grows back. The rest of each country's land-use CO₂ stays as it is."
     },
     "tooltip": {
       "noData": "No data for this country",
@@ -223,6 +223,7 @@
       "deforestation": "Forest cleared for farming, a year",
       "landCo2": "Net CO₂ from land-use change, a year",
       "clearing": "Of which clearing for farming, with the levers",
+      "regrowth": "Taken up by freed farmland regrowing, a year",
       "deforestationCo2": "CO₂ from the clearing, a year",
       "landShare": "Share of the land farmed"
     },

@@ -1016,19 +1016,21 @@ test('the deforestation layer shows the forest cleared, with its CO₂ in the to
   await expect(tooltip).not.toContainText('Least precise source');
 });
 
-test('the land-use CO₂ layer shows net CO₂, sinks included, the same with any lever', async ({
+test('the land-use CO₂ layer shows net CO₂, sinks included, and what the levers change', async ({
   page,
 }) => {
-  await open(page, `${START}&shift=50`);
+  await open(page, `${START}&shift=50&df=100`);
   await page.locator('label[for="layer-landCo2"]').click();
   await expect(page).toHaveURL(/layer=landCo2/);
   await expect(page.locator('.legend-title')).toContainText('land-use change');
   await expect(page.locator('.legend li').first()).toContainText('−100 Mt');
-  await expect(page.locator('.map-note')).toContainText('no lever changes it');
+  await expect(page.locator('.map-note')).toContainText('The levers change two parts of it');
   await expect(page.locator('path.country[data-iso3="USA"]')).not.toHaveClass(/has-data/);
   await page.locator('path.country[data-iso3="IND"]').click();
   const tooltip = page.locator('.map-frame .tooltip');
+  await expect(tooltip).toContainText('Today');
   await expect(tooltip).toContainText('−50 Mt');
+  await expect(tooltip).toContainText('With the levers');
   await expect(tooltip).toContainText('Of which clearing for farming');
   await expect(tooltip).not.toContainText('Least precise source');
 });
