@@ -18,17 +18,16 @@ export const shippingSulphur: LeverModule = {
       const { climate, sectors } = prepared.data;
       const s = climate.shippingSulphur2020;
       const response = forcingResponseOf(sectors, band);
-      return {
-        warming:
-          s && response.length > 0 && departs(prepared.data, 'shippingSulphur2020')
-            ? convolve(
-                shippingForcing(s, options.ssp, band, END_YEAR),
-                s.years[0] as number,
-                response,
-                tYears,
-              )
-            : null,
-      };
+      const warming =
+        s && response.length > 0 && departs(prepared.data, 'shippingSulphur2020')
+          ? convolve(
+              shippingForcing(s, options.ssp, band, END_YEAR),
+              s.years[0] as number,
+              response,
+              tYears,
+            )
+          : null;
+      return { warming, byCause: warming && { byCause: { airPollution: warming }, byGas: {} } };
     },
   },
 };

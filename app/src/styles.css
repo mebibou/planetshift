@@ -27,6 +27,7 @@
   --cause-other: #6250d6;
   --cause-airPollution: #eda100;
   --cause-natural: #e87ba4;
+  --cause-permafrost: #8a6a4b;
 
   --seq-production-1: #edf8e9;
   --seq-production-2: #c7e9c0;
@@ -113,8 +114,10 @@
     --cause-other: #9085e9;
     --cause-airPollution: #c98500;
     --cause-natural: #d55181;
+    --cause-permafrost: #b08a64;
     --cause-airPollution: #c98500;
     --cause-natural: #d55181;
+    --cause-permafrost: #b08a64;
     --seq-production-1: #d0e9d3;
     --seq-production-2: #a9d4ae;
     --seq-production-3: #81c08a;
@@ -1440,6 +1443,9 @@ input[type='range']:disabled {
 .key-cause-natural {
   background: var(--cause-natural);
 }
+.key-cause-permafrost {
+  background: var(--cause-permafrost);
+}
 .key-outline {
   background: transparent;
   border: 1.5px dashed var(--ink);
@@ -1541,6 +1547,9 @@ input[type='range']:disabled {
 }
 .cause-natural {
   fill: var(--cause-natural);
+}
+.cause-permafrost {
+  fill: var(--cause-permafrost);
 }
 .stack-outline {
   fill: none;

@@ -88,19 +88,14 @@ describe('people on Earth in the model', () => {
     expect(delta(2100)).toBeLessThan(delta(PEOPLE_YEAR));
   });
 
-  it('splits the change in the baseline by cause, adding up to the change in its line', () => {
+  it('takes fewer people off farming and air pollution', () => {
     const none = run({}, { people: 0 });
     const base = run();
     const i = 2100 - (none.temperature.years[0] as number);
-    const change = none.temperature.baselineChange!;
-    const parts = Object.values(change.byCause).map((v) => v[i] as number);
-    expect(parts.reduce((a, v) => a + v, 0)).toBeCloseTo(
-      baselineIn(none, 2100) - baselineIn(base, 2100),
-      9,
-    );
-    expect(change.byCause.agriculture![i]).toBeLessThan(0);
-    expect(change.byCause.airPollution![i]).toBeGreaterThan(0);
-    expect(base.temperature.baselineChange).toBeUndefined();
+    const change = (r: ScenarioResult, c: 'agriculture' | 'airPollution') =>
+      r.temperature.baselineChange!.byCause[c]![i] as number;
+    expect(change(none, 'agriculture')).toBeLessThan(change(base, 'agriculture'));
+    expect(change(none, 'airPollution')).toBeGreaterThan(change(base, 'airPollution'));
   });
 
   it('orders the warming by the number of people, and more people than the medium warm more', () => {

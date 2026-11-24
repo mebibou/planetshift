@@ -74,6 +74,7 @@ export const CAUSES: readonly Cause[] = [
   'fossilIndustry',
   'agriculture',
   'landUse',
+  'permafrost',
   'other',
   'natural',
   'airPollution',
@@ -109,13 +110,25 @@ const shiftBand = (s: BandSeries, index: Map<number, number>, change: readonly n
   };
 };
 
-/** The attribution with what the baseline changes in each cause added (the people on Earth). */
+/** A band of zeros on `years`, for a cause only the baseline adds (permafrost). */
+const zeroBand = (years: number[]): BandSeries => {
+  const zeros = years.map(() => 0);
+  return { years, median: zeros, p05: zeros, p95: zeros };
+};
+
+/**
+ * The attribution with what the baseline adds to each cause, a cause only the baseline has
+ * included, so the stack meets the line without the levers.
+ */
 export const shiftedBy = (attribution: Attribution, change: CauseChange | null): Attribution => {
   const index = new Map(change?.years.map((y, i) => [y, i]));
+  const zero = zeroBand(Object.values(attribution)[0]?.years ?? []);
+  const causes = CAUSES.filter((c) => attribution[c] ?? change?.byCause[c]);
   return change
     ? (Object.fromEntries(
-        (Object.entries(attribution) as [Cause, BandSeries][]).map(([c, s]) => {
+        causes.map((c) => {
           const own = change.byCause[c];
+          const s = attribution[c] ?? zero;
           return [c, own ? shiftBand(s, index, own) : s];
         }),
       ) as Attribution)
@@ -135,6 +148,14 @@ export const changeOf = (
       }
     : null;
 };
+
+/** A gas choice's attribution with what the baseline adds to each cause, from a run. */
+export const attributionFor = (
+  climate: Climate,
+  ssp: Ssp,
+  gas: CauseGas,
+  temperature: { years: number[]; baselineChange?: CauseWarming } | undefined,
+): Attribution => shiftedBy(attributionOf(climate, ssp, gas), changeOf(temperature, gas));
 
 /** The causes a build has: one made before air pollution and the natural factors were split has neither. */
 export const causesIn = (attribution: Attribution): Cause[] =>

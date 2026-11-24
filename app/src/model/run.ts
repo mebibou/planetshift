@@ -2,6 +2,8 @@ import {
   ANIMAL_GROUPS,
   GASES,
   type AnimalGroup,
+  type Climate,
+  type Ssp,
   type CauseWarming,
   type Gas,
   type GasVector,
@@ -878,60 +880,44 @@ const modulesByCause = (band: BaselineBand, tYears: readonly number[]): CauseWar
   ),
 });
 
-/** `a` less `b`, key by key, for the keys of either. */
-const differenceByKey = <K extends string>(
-  a: Partial<Record<K, number[]>>,
-  b: Partial<Record<K, number[]>>,
-  tYears: readonly number[],
-): Partial<Record<K, number[]>> =>
-  Object.fromEntries(
-    [...new Set([...Object.keys(a), ...Object.keys(b)])].map((k) => [
-      k,
-      subtract(a[k as K] ?? zerosOn(tYears), b[k as K] ?? zerosOn(tYears)),
-    ]),
-  ) as Partial<Record<K, number[]>>;
+/** The SSP's attribution added up over its causes, median, on `tYears`. */
+const attributionTotal = (climate: Climate, ssp: Ssp, tYears: readonly number[]): number[] =>
+  Object.values(climate.attribution[ssp]).reduce<number[]>(
+    (acc, b) =>
+      addSeries(
+        acc,
+        tYears.map((y) => valueAt(b.years, b.median, y)),
+      ),
+    zerosOn(tYears),
+  );
 
 /**
- * The change from one baseline to another in median warming, by cause and each gas's by cause:
- * farming through the population baseline, the rest as the modules split it, and what is left
- * over (the permafrost's answer to the warming) in `other`.
+ * What the baseline adds to the SSP's attribution in median warming, by cause and each gas's by
+ * cause: farming through the population baseline, the rest as the modules split it, and in
+ * `other` whatever still parts the attribution from the baseline line, so that the causes add
+ * up to it.
  */
-const baselineDifference = (
-  chosen: BaselineBand,
-  own: BaselineBand,
-  tYears: readonly number[],
-): CauseWarming => {
-  const farm = gasRecord((g) => subtract(chosen.farm[g], own.farm[g]));
-  const [a, b] = [modulesByCause(chosen, tYears), modulesByCause(own, tYears)];
-  const byCause = {
-    ...differenceByKey(a.byCause, b.byCause, tYears),
-    agriculture: sumOfGases(farm),
-  };
-  const counted = Object.values(byCause).reduce((acc, v) => addSeries(acc, v), zerosOn(tYears));
-  const rest = subtract(subtract(chosen.temperature, own.temperature), counted);
-  return {
-    byCause: { ...byCause, other: addSeries(byCause.other ?? zerosOn(tYears), rest) },
-    byGas: gasRecord((g) => ({
-      ...differenceByKey(a.byGas[g] ?? {}, b.byGas[g] ?? {}, tYears),
-      agriculture: farm[g],
-    })),
-  };
-};
-
-/** What the people chosen change in the baseline's warming by cause; none without them. */
-const peopleChange = (
+const baselineByCause = (
   prepared: Prepared,
   options: Options,
   currentYear: number,
-): CauseWarming | null => {
-  const without: Options = { ...options, people: undefined, peopleYear: undefined };
-  return options.people === undefined
-    ? null
-    : baselineDifference(
-        baselineTemperature(prepared, options, currentYear).median,
-        baselineTemperature(prepared, without, currentYear).median,
-        range(FIRST_YEAR, END_YEAR),
-      );
+): CauseWarming => {
+  const tYears = range(FIRST_YEAR, END_YEAR);
+  const band = baselineTemperature(prepared, options, currentYear).median;
+  const modules = modulesByCause(band, tYears);
+  const byCause = { ...modules.byCause, agriculture: sumOfGases(band.farm) };
+  const counted = Object.values(byCause).reduce(
+    (acc, v) => addSeries(acc, v),
+    attributionTotal(prepared.data.climate, options.ssp, tYears),
+  );
+  const rest = subtract(band.temperature, counted);
+  return {
+    byCause: { ...byCause, other: addSeries(byCause.other ?? zerosOn(tYears), rest) },
+    byGas: gasRecord((g) => ({
+      ...(modules.byGas[g] ?? {}),
+      agriculture: [...band.farm[g]],
+    })),
+  };
 };
 
 /** Warming avoided each year from the warming change of each band, its range ordered low to high. */
@@ -1446,7 +1432,7 @@ export const runPrepared = (
   const farmDifference = sumPaths(FARM_FAMILIES.map((f) => byFamily.median[f] ?? []));
 
   const base = baselineTemperature(prepared, options, currentYear);
-  const change = peopleChange(prepared, options, currentYear);
+  const change = baselineByCause(prepared, options, currentYear);
   const extraWarming = bandRecord((band) =>
     sumSeries(
       world.flatMap((w) => [
@@ -1575,7 +1561,7 @@ export const runPrepared = (
       avoided: avoidedBand(delta),
       avoidedByCause,
       avoidedByGas,
-      ...(change && { baselineChange: change }),
+      baselineChange: change,
     },
     summary: Object.assign(
       {

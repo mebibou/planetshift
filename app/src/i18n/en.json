@@ -312,7 +312,7 @@
     "intro": "Most warming comes from burning fossil fuels. Farming adds to it in a different way, mostly through methane from cattle and rice paddies, and nitrous oxide from fertiliser and manure. These gases trap far more heat than CO₂ while they last.",
     "attributionTitle": "Warming by cause since {from}",
     "attributionText": "Each band is the warming from one cause, or, below zero, the cooling. After today, each band is what is left once the levers chosen act on its cause. The dashed outlines are the bands without the levers. The line is the measured temperature.",
-    "attributionCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today. Each cause is the warming its emissions add. Air pollution cools: its particles reflect sunlight and brighten clouds. The energy, heating and industry levers also cut the air pollution of the fuel they no longer burn, so its cooling shrinks when they act.",
+    "attributionCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today. Each cause is the warming its emissions add. Air pollution cools: its particles reflect sunlight and brighten clouds. The energy, heating and industry levers also cut the air pollution of the fuel they no longer burn, so its cooling shrinks when they act. What the baseline adds to the scenario (farm emissions following the population, permafrost, the data centres beyond the scenario, the people on Earth) is added to its cause, and Other human emissions also holds what still sets the scenario's temperature apart from the causes, so the stack meets the line without the levers.",
     "attributionLabel": "Stacked chart of warming by cause from {from} to {year}, with observed temperature",
     "projection": "Projection",
     "causes": {
@@ -321,7 +321,8 @@
       "landUse": "Land use",
       "other": "Other human emissions",
       "airPollution": "Air pollution (cooling)",
-      "natural": "Natural factors (sun and volcanoes)"
+      "natural": "Natural factors (sun and volcanoes)",
+      "permafrost": "Permafrost thawing"
     },
     "gas": "Gas",
     "gasChoices": {
@@ -348,6 +349,8 @@
     "separator": "; ",
     "withoutLevers": "Without the levers",
     "withoutValue": "{value} ({without} without the levers)",
+    "totalProjected": "Projected warming",
+    "totalModelled": "Modelled warming",
     "parts": "What each cause adds or takes away: {parts}."
   },
   "methodology": {

@@ -266,7 +266,3 @@ export const peopleWarmingByCause = (
     ),
   };
 };
-
-/** The sum of warming by cause. */
-export const totalWarming = (w: CauseWarming, tYears: readonly number[]): number[] =>
-  Object.values(w.byCause).reduce<number[]>((acc, s) => addSeries(acc, s), zerosOn(tYears));

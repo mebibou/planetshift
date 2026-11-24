@@ -1,12 +1,13 @@
 import {
   GASES,
+  type CauseWarming,
   type Climate,
   type ClimateMethod,
   type Gas,
   type GasVector,
   type Ssp,
 } from '../data/types';
-import { END_YEAR, range, sum, valueAt } from './util';
+import { addSeries, END_YEAR, range, sum, valueAt, zerosOn } from './util';
 
 export type Band = 'median' | 'p05' | 'p95';
 export const BANDS: readonly Band[] = ['median', 'p05', 'p95'];
@@ -109,3 +110,7 @@ export const populationAdjustmentEmissions = (
         }),
       ) as GasVector,
   );
+
+/** The sum of warming by cause. */
+export const totalWarming = (w: CauseWarming, tYears: readonly number[]): number[] =>
+  Object.values(w.byCause).reduce<number[]>((acc, s) => addSeries(acc, s), zerosOn(tYears));

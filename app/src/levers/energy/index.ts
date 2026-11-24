@@ -1,13 +1,14 @@
 import { departuresOf } from '../../config';
 import { bandRecord } from '../../model/bands';
-import { convolve, warmingFrom } from '../../model/climate';
-import { addSeries, END_YEAR, range, zerosOn } from '../../model/util';
+import { convolve, sumOfGases, totalWarming, warmingByGas } from '../../model/climate';
+import { END_YEAR, range, zerosOn } from '../../model/util';
 import { anyAdopted, lever } from '../define';
 import type { LeverModule } from '../types';
 import { energySpec } from './spec';
 import type { Options } from '../../model/api';
 import type { Prepared } from '../../model/prepare';
 import type { Band } from '../../model/climate';
+import { GASES, type CauseWarming } from '../../data/types';
 import {
   airPollutionPaths,
   airPollutionWarming,
@@ -49,7 +50,7 @@ const dataCentreWarming = (
   band: Band,
   tYears: readonly number[],
   dcStart: number,
-): number[] => {
+): CauseWarming => {
   const { climate, sectors, coemissions } = prepared.data;
   const years = range(dcStart, END_YEAR);
   const co2 = dataCentreBaseline(sectors, options.ssp, 'iea', years, band);
@@ -57,25 +58,42 @@ const dataCentreWarming = (
     const electricity = { electricity: co2[i] as number };
     return { co2: electricity, change: coChange(coemissions, options.ssp, y, electricity) };
   });
-  return addSeries(
-    warmingFrom(coGases(co2, co), dcStart, climate, options.climate, band, tYears),
-    airPollutionWarming(
-      airPollutionPaths(
-        coemissions,
-        options.ssp,
+  const byGas = warmingByGas(coGases(co2, co), dcStart, climate, options.climate, band, tYears);
+  return {
+    byCause: {
+      fossilIndustry: sumOfGases(byGas),
+      airPollution: airPollutionWarming(
+        airPollutionPaths(
+          coemissions,
+          options.ssp,
+          band,
+          years,
+          co,
+          departuresOf(prepared.data).noxMethane,
+        ),
+        dcStart,
+        forcingResponseOf(sectors, band),
+        climate,
+        options.climate,
         band,
-        years,
-        co,
-        departuresOf(prepared.data).noxMethane,
+        tYears,
       ),
-      dcStart,
-      forcingResponseOf(sectors, band),
-      climate,
-      options.climate,
-      band,
-      tYears,
-    ),
-  );
+    },
+    byGas: Object.fromEntries(GASES.map((g) => [g, { fossilIndustry: byGas[g] }])),
+  };
+};
+
+/** The data centres' demand beyond the SSP's, with the option on and the data there. */
+const dataCentresBeyondSsp = (
+  prepared: Prepared,
+  options: Options,
+  band: Band,
+  tYears: readonly number[],
+): CauseWarming | null => {
+  const dcYears = prepared.data.sectors?.dataCentresTwh?.years ?? [];
+  return options.dataCentres === 'iea' && dcYears.length > 0
+    ? dataCentreWarming(prepared, options, band, tYears, dcYears[0] as number)
+    : null;
 };
 
 /**
@@ -135,12 +153,10 @@ export const energy: LeverModule = {
       };
     },
     baseline: ({ prepared, options, band, tYears }) => {
-      const dcYears = prepared.data.sectors?.dataCentresTwh?.years ?? [];
+      const byCause = dataCentresBeyondSsp(prepared, options, band, tYears);
       return {
-        warming:
-          options.dataCentres === 'iea' && dcYears.length > 0
-            ? dataCentreWarming(prepared, options, band, tYears, dcYears[0] as number)
-            : zerosOn(tYears),
+        warming: byCause ? totalWarming(byCause, tYears) : zerosOn(tYears),
+        byCause,
       };
     },
   },

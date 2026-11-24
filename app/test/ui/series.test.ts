@@ -60,6 +60,7 @@ describe('series', () => {
       fossilIndustry: 0.9,
       agriculture: 0.3,
       landUse: 0.1,
+      permafrost: 0,
       airPollution: -0.6,
       natural: -0.1,
       other: 0.4,
@@ -123,6 +124,12 @@ describe('series', () => {
 
 describe('the baseline’s change by cause', () => {
   const change = { years: [2001, 2002], byCause: { fossilIndustry: [-0.2, -0.3] } };
+
+  it('adds a cause only the baseline has, on the attribution’s years', () => {
+    const shifted = shiftedBy(attribution, { years: [2001], byCause: { permafrost: [0.05] } });
+    expect(shifted.permafrost?.median).toEqual([0, 0.05]);
+    expect(causesIn(shifted)).toContain('permafrost');
+  });
 
   it('moves a cause’s band by the change in its year, and leaves the others', () => {
     const shifted = shiftedBy(attribution, change);

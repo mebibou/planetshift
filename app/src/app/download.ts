@@ -1,6 +1,6 @@
 import { GASES, type BandSeries, type Climate, type Meta, type Series } from '../data/types';
 import type { Options, Scenario, ScenarioResult } from '../model/api';
-import { causesIn, type Attribution } from '../chart/series';
+import { attributionFor, causesIn, type Attribution } from '../chart/series';
 import { measureOf, type LayerSpec, type Measure } from '../map/layers';
 import type { TableRow } from '../map/table';
 import type { ChartTab, UiState } from './url';
@@ -192,21 +192,26 @@ const attributionColumns = (attribution: Attribution, prefix: string) => {
 };
 
 /**
- * Warming by cause (5–95%) and observed temperature under the chosen SSP, then each greenhouse
- * gas's warming by cause when the build has it.
+ * Warming by cause (5–95%) and observed temperature under the chosen SSP, with what the run's
+ * baseline adds to each cause as on the chart, then each greenhouse gas's warming by cause when
+ * the build has it.
  */
 export const causeRows = (
   climate: Climate,
   options: Pick<Options, 'ssp' | 'temperature'>,
+  temperature?: ScenarioResult['temperature'],
 ): { header: string[]; rows: Cell[][] } => {
-  const attribution = climate.attribution[options.ssp];
-  const byGas = climate.attributionByGas?.[options.ssp];
+  const attribution = attributionFor(climate, options.ssp, 'all', temperature);
   const causes = attributionColumns(attribution, '');
-  const gases = byGas ? GASES.map((g) => attributionColumns(byGas[g], `${g}_`)) : [];
+  const gases = climate.attributionByGas
+    ? GASES.map((g) =>
+        attributionColumns(attributionFor(climate, options.ssp, g, temperature), `${g}_`),
+      )
+    : [];
   const observed = seriesAt(climate.observed[options.temperature]);
   return {
     header: ['year', ...causes.header, 'observed_degC', ...gases.flatMap((g) => g.header)],
-    rows: attribution.agriculture.years.map((year) => [
+    rows: (attribution.agriculture?.years ?? []).map((year) => [
       year,
       ...causes.at(year),
       observed(year),
@@ -229,7 +234,7 @@ export const chartCsv = (input: ChartInput): DownloadFile | null => {
   const { tab, result, climate, scenario, options, currentYear } = input;
   const table =
     tab === 'cause'
-      ? causeRows(climate, options)
+      ? causeRows(climate, options, result?.temperature)
       : !result
         ? null
         : tab === 'avoided'
