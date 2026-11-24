@@ -3,6 +3,7 @@ that the intensities rebuilt from the cache are the committed ones. They need th
 sources and the built JSON, and are skipped without them."""
 
 import json
+import re
 
 import pytest
 
@@ -10,7 +11,7 @@ from planetshift_pipeline import intensities as I
 from planetshift_pipeline.build import OUT_DIR, Build
 from planetshift_pipeline.cache import DEFAULT_CACHE
 from planetshift_pipeline.sections import intensities as intensities_section
-from planetshift_pipeline.sources import faostat
+from planetshift_pipeline.sources import faostat, hestia
 
 pytestmark = pytest.mark.network
 
@@ -87,9 +88,22 @@ def test_world_methane_by_source_matches_faostat():
         ), source
 
 
-def test_intensities_rebuilt_from_the_cache_are_the_committed_ones(tmp_path):
+def built_release() -> str | None:
+    """The HESTIA release the committed data was built from, as meta.json records it."""
+    meta = json.loads((OUT_DIR / "meta.json").read_text())
+    version = next((s["version"] for s in meta["sources"] if s["id"] == "hestia-aggregations"), "")
+    found = re.search(r"\((\d{4}-\d{2}-\d{2})\)", version)
+    return found.group(1) if found else None
+
+
+def test_intensities_rebuilt_from_the_cache_are_the_committed_ones(tmp_path, monkeypatch):
     committed = OUT_DIR / "intensities.json"
     if not committed.exists() or not (DEFAULT_CACHE / faostat.FILES["GT"]).exists():
         pytest.skip("intensities.json or the FAOSTAT cache missing")
+    release = built_release()
+    if release is None or not (DEFAULT_CACHE / "hestia" / release).exists():
+        pytest.skip(f"the HESTIA release the data was built from is not cached: {release}")
+    # The release the data was built from, whether or not this run has a token.
+    monkeypatch.setattr(hestia, "RELEASE", release)
     intensities_section.build(Build(DEFAULT_CACHE, tmp_path))
     assert (tmp_path / "intensities.json").read_bytes() == committed.read_bytes()
