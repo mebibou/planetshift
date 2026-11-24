@@ -68,7 +68,7 @@ import { animalUse, feedChange, feedSharesOf, groupProductionChange } from './fe
 import { addLand, countryLand, landChangeOf, NO_LAND, type CakeDemand } from './land';
 import { clipChange, locateAll } from './location';
 import { groupTotals, prepare, type Prepared, type PreparedCountry } from './prepare';
-import { baselineScale, ramp, tabulate, type Scale } from './timePath';
+import { baselineScale, builtUp, ramp, tabulate, type Scale } from './timePath';
 import {
   END_YEAR,
   FIRST_YEAR,
@@ -428,6 +428,14 @@ interface CountryParts {
   /** CO₂ a year as a constant stream, such as clearing, by the cause it counts in and family. */
   co2: ByCause<Readonly<Record<string, number>>>;
   jointCo2: ByCause<Readonly<Record<string, number>>>;
+  /** CO₂ a year that builds up after a change, by the cause it counts in, time constant and family. */
+  builtUp: readonly BuiltUp[];
+}
+
+interface BuiltUp {
+  cause: CountedCause;
+  years: number;
+  co2: Readonly<Record<string, number>>;
 }
 
 /**
@@ -566,6 +574,9 @@ const countryParts = (
         'jointCo2',
       ),
     ),
+    builtUp: extra.flatMap((e, k) =>
+      e.buildUp ? [{ cause: countryHooks[k]?.cause ?? DIET_CAUSE, ...e.buildUp }] : [],
+    ),
   };
 };
 
@@ -613,6 +624,49 @@ const clearingOf = (
   }
   return out;
 };
+
+/** The CO₂ that builds up of a cause summed over the countries, by time constant and family. */
+const builtUpSums = (
+  parts: readonly CountryParts[],
+  cause: CountedCause,
+): { family: string; lag: number; co2: number }[] => {
+  const sums = new Map<string, { family: string; lag: number; co2: number }>();
+  parts.forEach((p) =>
+    p.builtUp
+      .filter((b) => b.cause === cause)
+      .forEach((b) =>
+        Object.entries(b.co2).forEach(([family, v]) => {
+          const key = `${b.years}|${family}`;
+          const s = sums.get(key) ?? { family, lag: b.years, co2: 0 };
+          sums.set(key, { ...s, co2: s.co2 + v });
+        }),
+      ),
+  );
+  return [...sums.values()].filter((s) => s.co2 !== 0);
+};
+
+/** Two paths added, or the one there is. */
+const plusPath = (
+  a: GasVector[] | undefined,
+  b: GasVector[] | undefined,
+): GasVector[] | undefined => (a && b ? sumPaths([a, b]) : (a ?? b));
+
+/**
+ * The CO₂ that builds up of a cause as yearly paths by family: each ramps in like the shift,
+ * behind a lag of its time constant.
+ */
+const builtUpPaths = (
+  parts: readonly CountryParts[],
+  cause: CountedCause,
+  years: readonly number[],
+  scale: Scale,
+  shareAt: (year: number) => number,
+): Record<string, GasVector[]> =>
+  builtUpSums(parts, cause).reduce<Record<string, GasVector[]>>((out, s) => {
+    const share = builtUp(shareAt, years, s.lag);
+    const path = familyPath(NO_FARM, { own: s.co2, joint: 0 }, years, scale, share);
+    return { ...out, [s.family]: plusPath(out[s.family], path) as GasVector[] };
+  }, {});
 
 const isZero = (v: GasVector): boolean => GASES.every((g) => v[g] === 0);
 
@@ -1138,13 +1192,20 @@ const emissionsPass = (
         : (module.hooks.world?.(ctx, w) ?? {}),
   }));
   const ownOf = (family: string) => world.find((w) => w.module.family === family);
-  const clearingPaths = causeRecord((c) =>
-    Object.fromEntries(
+  const clearingPaths = causeRecord((c) => {
+    const lagged = builtUpPaths(parts, c, years, scale, shareAt);
+    const constant = Object.fromEntries(
       Object.entries(clearingOf(parts, c))
         .filter(([, v]) => v.own !== 0 || v.joint !== 0)
         .map(([f, v]) => [f, familyPath(NO_FARM, v, years, scale, shareAt)]),
-    ),
-  );
+    );
+    return Object.fromEntries(
+      [...new Set([...Object.keys(constant), ...Object.keys(lagged)])].map((f) => [
+        f,
+        plusPath(constant[f], lagged[f]) as GasVector[],
+      ]),
+    );
+  });
   /** A family's farm emissions in a band, or none. */
   const farmPath = (f: string, band: Band): GasVector[] => {
     const farm = farmTotal(parts, f, band);
@@ -1152,10 +1213,15 @@ const emissionsPass = (
       ? zeroPath(years)
       : familyPath(farm, NO_CLEARING, years, scale, shareAt);
   };
-  /** A farm family's paths: its farm emissions in farming, its clearing in the other causes. */
+  /**
+   * A farm family's paths: its farm emissions and the streams counted in farming (the carbon of
+   * uncaught fish) in farming, its clearing in the other causes.
+   */
   const farmPaths = (f: string, band: Band): ByCause<GasVector[]> =>
     causeRecord((c) =>
-      c === 'agriculture' ? farmPath(f, band) : (clearingPaths[c][f] ?? zeroPath(years)),
+      c === 'agriculture'
+        ? (plusPath(farmPath(f, band), clearingPaths.agriculture[f]) as GasVector[])
+        : (clearingPaths[c][f] ?? zeroPath(years)),
     );
   /** A family's own emissions, all in the cause it mainly acts on. */
   const ownPaths = (module: LeverModule, extra: GasVector[]): ByCause<GasVector[]> =>
@@ -1248,9 +1314,12 @@ const familyShares = (
     ...chains.map((c) => c.family),
     ...scaling,
   ];
-  const farmModules = MODULES.filter((m) => m.family && m.farm !== false);
+  const farmModules = MODULES.filter((m) => m.farm === true || (m.family && m.farm !== false));
   const dependent = farmModules
-    .filter((m) => !m.hooks.scenarioScale && !production.includes(familyOf(m)) && acts(m, ctx))
+    .filter(
+      (m) =>
+        m.family && !m.hooks.scenarioScale && !production.includes(familyOf(m)) && acts(m, ctx),
+    )
     .map(familyOf);
   const outside = MODULES.filter((m) => m.family && m.farm === false && acts(m, ctx)).map(familyOf);
   const players = [...production, ...dependent, ...outside];

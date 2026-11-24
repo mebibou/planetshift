@@ -25,6 +25,7 @@ describe('URL state', () => {
       climate: 'ar6',
       ssp: 'ssp370',
       regrowth: 'natural',
+      deadfall: 'on',
       dataCentres: 'ssp',
       permafrost: 'on',
       population: 'low',

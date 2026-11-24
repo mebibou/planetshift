@@ -843,6 +843,14 @@ write('removals.json', {
   enhancedWeathering: removal({ World: [1.0, 0.3, 2.0] }, 'cropland', 0.3, 30),
 });
 
+// CO₂ uncaught large pelagic fish would sink to the deep ocean, kg per tonne less of the item
+write('deadfall.json', {
+  kgCo2PerTonne: { FRA: { 2763: 80 }, IND: { 2763: 20 }, USA: { 2763: 20 } },
+  deepWaterShare: 0.44,
+  buildUpYears: 10,
+  source: 'https://doi.org/10.1126/sciadv.abb4848',
+});
+
 // fossil CO₂ of the sectors the energy levers act on, kg a year, straight lines between the
 // values of sectors.md (2023, 2050, 2100); the grid's intensity in kg CO₂ per kWh
 const SECTOR_START = 2023;

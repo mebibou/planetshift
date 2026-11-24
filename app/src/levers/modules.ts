@@ -1,6 +1,7 @@
 // The lever modules with their hooks, which only the model's run reads, so the interface's
 // bundle holds none of their code.
 
+import { deadfall } from './deadfall';
 import { deforestation } from './deforestation';
 import { energy } from './energy';
 import { industry } from './industry';
@@ -20,6 +21,7 @@ const ALL: readonly LeverModule[] = [
   practices,
   deforestation,
   regrowth,
+  deadfall,
   removals,
   energy,
   industry,

@@ -1,0 +1,16 @@
+{
+  "kgCo2PerTonne": {
+    "FRA": {
+      "2763": 80
+    },
+    "IND": {
+      "2763": 20
+    },
+    "USA": {
+      "2763": 20
+    }
+  },
+  "deepWaterShare": 0.44,
+  "buildUpYears": 10,
+  "source": "https://doi.org/10.1126/sciadv.abb4848"
+}

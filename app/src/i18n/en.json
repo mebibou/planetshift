@@ -67,7 +67,7 @@
       "poultryMeat": "Chickens turn feed into meat efficiently, so poultry avoids little warming, mostly that of the crops grown to feed them.",
       "dairy": "Dairy cows belch methane like beef cattle, but a litre of milk carries much less of it than a kilo of beef.",
       "eggs": "Like poultry, eggs avoid little warming, mostly that of the crops grown to feed the hens.",
-      "seafood": "Wild fish emit almost only their boats' fuel, which counts with inputs, the default. With biological processes only (Other options), they emit almost nothing, and the plants that replace them can add a little warming. Fishing's harm to sea life is not counted."
+      "seafood": "Wild fish emit almost only their boats' fuel, which counts with inputs, the default. With biological processes only (Other options), they emit almost nothing, and the plants that replace them can add a little warming. Fishing's harm to sea life is not counted. Counting the carbon that uncaught large fish sink to the deep ocean is an option (Other options), off by default. It is under 1% of seafood's emissions."
     },
     "horizonHint": "The year the charts end at, and the year the summary and the figures beside each lever are read at."
   },

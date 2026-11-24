@@ -1,0 +1,5 @@
+taxon,isscaap_group,sinking_fraction,carbon_share,source
+tuna,"Tunas, bonitos, billfishes",0.605,0.562,"Mariani et al. 2020, fig. S2 (median S_MSY, about 0.6); 0.605 makes the four taxa add up to the 21.8 of 39.9 MtC not sequestered with Fig. 1B's shares"
+billfish,"Tunas, bonitos, billfishes",0.89,0.019,"Mariani et al. 2020, fig. S2 (median S_MSY, read from the chart)"
+mackerel,Miscellaneous pelagic fishes,0.288,0.312,"Mariani et al. 2020, Introduction and fig. S2 (lowest of the range 28.8-94.6%)"
+shark,"Sharks, rays, chimaeras",0.946,0.105,"Mariani et al. 2020, Introduction and fig. S2 (highest of the range 28.8-94.6%)"

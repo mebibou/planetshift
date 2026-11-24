@@ -76,6 +76,7 @@ const OPTION_CASES: [string, Partial<Options>][] = [
   ['permafrostOff', { permafrost: 'off' }],
   ['popLow', { population: 'low' }],
   ['popHigh', { population: 'high' }],
+  ['deadfall', { deadfall: 'on' }],
 ];
 
 const SCENARIO_CASES: [string, Partial<Scenario>][] = [
@@ -118,6 +119,7 @@ export const GRID: Setting[] = [
   setting('dcSspAlone', {}, { dataCentres: 'ssp' }),
   setting('regrowthAlone', { shift: 0.4 }, { regrowth: 'natural' }),
   setting('popLowAlone', {}, { population: 'low' }),
+  setting('lessFish+deadfall', { groupShifts: { seafood: 1 } }, { deadfall: 'on' }),
   setting('popHighSsp126', { shift: 0.5 }, { population: 'high', ssp: 'ssp126' }),
   ...INDUSTRY.flatMap((id) =>
     [0.5, 1].map((a) => setting(`${id}@${a * 100}`, { levers: { [id]: a } })),
@@ -175,4 +177,6 @@ export const QUERIES = [
   'pop=low',
   'pop=high&base=ssp2',
   'pop=x',
+  'deadfall=on',
+  'deadfall=x',
 ];

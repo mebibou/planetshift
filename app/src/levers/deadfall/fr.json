@@ -1,0 +1,10 @@
+{
+  "options": {
+    "deadfall": {
+      "label": "Grands poissons non pêchés",
+      "hint": "Un thon, un maquereau ou un requin qui meurt sans être pêché coule, et une part de son carbone reste des siècles dans l'océan profond. Quand ce carbone est compté, en pêcher moins le stocke. Le stock s'accumule en une dizaine d'années à mesure que leurs populations se reconstituent. C'est moins de 1 % des émissions des poissons et fruits de mer.",
+      "off": "Non compté",
+      "on": "Compté"
+    }
+  }
+}

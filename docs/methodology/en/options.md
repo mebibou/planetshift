@@ -23,6 +23,7 @@ A few terms used on this page:
 | Observed temperature (`temp`) | HadCRUT5 (`hadcrut5`) | Berkeley Earth (`berkeley`) | Only the observed line on the chart. Years a series does not cover are left blank. |
 | Climate response (`clim`) | FaIR (`fair`) | AR6 tables (`ar6`) | The warming per tonne of each gas. FaIR has a 5–95% range. The AR6 fallback has a single curve, so its range is the median line itself. |
 | Freed farmland (`regrow`) | left as it is (`none`) | grows back (`natural`) | Whether farmland freed by the shift takes up CO₂ as natural vegetation grows back, for 30 years after each hectare is freed. The scenario's CO₂ falls by that uptake, so the warming and the CO₂ avoided grow; methane and nitrous oxide do not change. See [The shift](#method-shift), step 8, and [Land](#method-land). |
+| Uncaught large fish (`deadfall`) | not counted (`off`) | counted (`on`) | Whether tunas, mackerels and sharks left uncaught, when the catch falls, sink part of their carbon to the deep ocean when they die. The storage builds up with a 10-year time constant as stocks recover, and counts as negative CO₂ in farming, credited to the diet and less waste. It is under 1% of seafood's emissions: a full seafood shift stores 1.6 Mt CO₂ a year once built up. See [Fish and seafood](#method-seafood). |
 | AI data centres (`dc`) | growth added, IEA (`iea`) | as in the scenario (`ssp`) | With `iea`, the electricity that data centres use beyond 2024's 415 TWh is added to the future without any lever, at each year's grid intensity. That electricity follows the IEA's *Energy and AI* to 2035 and is held flat after. The baseline temperature rises by a few thousandths of a degree, and the renewable-electricity lever can cut it. With `ssp`, the scenario's electricity is used as published, with no extra demand to cut. See [Energy and transport](#method-sectors). |
 | Permafrost (`pf`) | thaws (`on`) | left out (`off`) | With `on`, each year's rise in temperature releases carbon from thawing permafrost over the next 20 years, as CO₂ and methane. The release is computed on the baseline temperature, which rises, and on the temperature with the levers. The levers' cooling releases less, so the warming avoided grows a little. See [Climate](#method-climate). |
 | Rest of the world's emissions (`ssp`) | middle, SSP2-4.5 (`ssp245`) | low, SSP1-2.6 (`ssp126`); high, SSP3-7.0 (`ssp370`) | The total temperature curve, agriculture's share of it, and, with the population baseline, the adjustment between the two agricultural paths. |
@@ -42,7 +43,7 @@ The option changes the baseline's farm emissions from the base year on, and so i
 
 The diet shift and the farm levers change emissions that are scaled the same way. So what they avoid grows or shrinks with population. A 50% shift avoids 0.140 °C in 2100 with the medium projection, 0.116 °C with the low and 0.170 °C with the high (0.060, 0.057 and 0.062 °C in 2050).
 
-The less-waste lever acts on the same scaled supply. Clearing (deforestation), carbon stored in farmland, natural regrowth and the energy levers are not scaled with population, so they do not change.
+The less-waste lever acts on the same scaled supply. Clearing (deforestation), carbon stored in farmland, natural regrowth, the carbon of uncaught large fish and the energy levers are not scaled with population, so they do not change.
 
 With the *SSP2 path* baseline, farm emissions follow SSP2-4.5's own path, and the population chosen changes nothing.
 
@@ -120,6 +121,7 @@ A value the page does not recognise falls back to its default.
 - Data centres' growth is added by default. It is already happening, and the scenarios, made around 2016, did not foresee it, so the baseline is more realistic with it. Switching it off reproduces the published scenario temperatures.
 - Permafrost is on by default. Most of the models behind the published scenario temperatures leave it out, so those temperatures miss a warming that AR6 assesses. Switched off, the baseline matches them. One pass of the feedback is computed. The further release that this feedback's own warming would cause is not.
 - World population follows the UN's medium projection by default, which is what each country's population already carries. The low and high projections are the UN's own, not the SSPs', so that the population can be chosen apart from the scenario world.
+- Uncaught large fish are off by default. The pathway is small, and depends more on where fish are caught than on how much is eaten; its deep-water share and build-up are assumptions.
 - Regrowth is off by default. Whether freed land is left to grow back is a choice about land, beyond the diet, and its uptake is less certain than the farm emissions. With the AR6 fallback, the range shown with regrowth on comes from the regrowth rates alone.
 
 ## Sources
