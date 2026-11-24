@@ -1,6 +1,6 @@
 # Carbone stocké dans les terres agricoles
 
-L'agriculture peut retirer du CO₂ de l'air autant qu'en émettre. Les plantes font entrer du carbone dans le sol, les arbres le stockent dans leur bois, et certains matériaux épandus sur les champs le stockent. Cette page explique les quatre pratiques que Planetshift propose comme leviers, la quantité de CO₂ que chacune absorbe par hectare, et ce que chacune pourrait stocker dans le monde. Avec chaque pratique sur le plus de terres qu'elle peut atteindre, cela fait environ 0,37 Gt (milliard de tonnes) de CO₂ par an pour les couverts végétaux, 1,3 Gt pour les arbres dans les fermes, 0,63 Gt pour le biochar et 0,16 Gt pour la poudre de roche, qui est expérimentale.
+L'agriculture peut retirer du CO₂ de l'air autant qu'en émettre. Les plantes font entrer du carbone dans le sol, les arbres le stockent dans leur bois, et certains matériaux épandus sur les champs le stockent. Cette page explique les quatre pratiques que Planetshift propose comme leviers, la quantité de CO₂ que chacune absorbe par hectare, et ce que chacune pourrait stocker dans le monde. Avec chaque pratique sur le plus de terres qu'elle peut atteindre, cela fait environ 0,37 Gt (milliard de tonnes) de CO₂ par an pour les couverts végétaux, 1,3 Gt pour les arbres dans les fermes, 0,64 Gt pour le biochar et 0,16 Gt pour la poudre de roche, qui est expérimentale.
 
 ## Comment l'absorption est comptée
 
@@ -20,7 +20,7 @@ L'absorption d'une pratique est son rythme par hectare multiplié par les hectar
 | Biochar | cultures | 1,9 (0,6–4,9) partout | 20 % | 100 (pas de saturation) |
 | Poudre de roche (altération forcée des roches), expérimentale | cultures | 1,5 (0,3–2,7) tropical humide, 1,0 (0,2–1,8) tempéré humide, 0,5 tropical sec, 0,4 tempéré sec | 10 % | 100 (pas de saturation) |
 
-Les cultures du modèle couvrent 1,65 milliard d'hectares : la surface récoltée des cultures alimentaires, avec les terres des tourteaux et les prairies temporaires (voir [Terres](#method-land)).
+Les cultures du modèle couvrent 1,69 milliard d'hectares : la surface récoltée des cultures alimentaires, avec les terres des tourteaux et les prairies temporaires (voir [Terres](#method-land)).
 
 Les pratiques sont de deux sortes :
 
@@ -61,7 +61,7 @@ $$
 
 La fourchette va de 0,5 t d'un charbon mal carbonisé à 2 t d'un charbon produit à haute température. Le rythme ne dépend pas du climat.
 
-À ce rythme, la biomasse durable de Woolf et al. (2010) peut fournir au plus un cinquième des cultures. À ce plafond, le biochar stocke environ 0,63 Gt de CO₂ par an. C'est sous le potentiel du biochar du sixième rapport d'évaluation du GIEC (1,1, de 0,3 à 1,8, Gt d'équivalent CO₂ par an jusqu'à 100 \$ la tonne ; 2,6 techniquement) : une lecture prudente.
+À ce rythme, la biomasse durable de Woolf et al. (2010) peut fournir au plus un cinquième des cultures. À ce plafond, le biochar stocke environ 0,64 Gt de CO₂ par an. C'est sous le potentiel du biochar du sixième rapport d'évaluation du GIEC (1,1, de 0,3 à 1,8, Gt d'équivalent CO₂ par an jusqu'à 100 \$ la tonne ; 2,6 techniquement) : une lecture prudente.
 
 ### Poudre de roche (expérimentale)
 

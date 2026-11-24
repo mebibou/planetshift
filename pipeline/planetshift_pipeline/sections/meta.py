@@ -2,9 +2,10 @@
 every source with its version."""
 
 from datetime import UTC, datetime
+from pathlib import Path
 
 from .. import config
-from ..cache import downloaded_on
+from ..cache import downloaded_on, recorded
 from ..inputs import Build, optional, write
 from ..sources import faostat, naturalearth, worldbank
 
@@ -25,18 +26,21 @@ def build(b: Build, modules: tuple[str, ...]) -> None:
 def sources(b: Build, modules: tuple[str, ...]) -> list[dict]:
     """FAOSTAT, Natural Earth and the World Bank, then the SOURCES of each module named."""
 
-    def faostat_source(domain: str) -> dict:
-        path = b.cache / faostat.FILES[domain]
+    def faostat_source(domain: str, path: Path) -> dict:
         return {
             "id": f"faostat-{domain.lower()}",
             "name": f"FAOSTAT, {faostat.NAMES[domain]}",
-            "version": f"updated {faostat.updated_on(b.cache, domain)}, "
+            "version": f"updated {recorded(path).get('updated', 'unknown')}, "
             f"downloaded {downloaded_on(path) or 'unknown'}",
             "url": faostat.domain_url(domain),
             "licence": faostat.LICENCE,
         }
 
-    own = [faostat_source(d) for d in faostat.NAMES if (b.cache / faostat.FILES[d]).exists()]
+    own = [
+        faostat_source(d, path)
+        for d in faostat.NAMES
+        if (path := faostat.cached_bulk(b.cache, d)) is not None
+    ]
     ne = {
         "id": "natural-earth",
         "name": "Natural Earth, Admin 0 countries, 1:50m",

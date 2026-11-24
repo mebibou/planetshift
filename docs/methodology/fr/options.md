@@ -40,7 +40,7 @@ Avec la référence par défaut, *régime actuel × population*, les émissions 
 
 L'option change les émissions agricoles de la référence à partir de l'année de référence, et donc sa température. Avec SSP2-4.5 et la réponse de FaIR, la référence atteint 2,81 °C en 2100 avec la projection moyenne, 2,74 °C avec la basse et 2,91 °C avec la haute. En 2050, les projections basse et haute sont à moins de 0,01 °C de la moyenne.
 
-Le changement de régime et les leviers agricoles modifient des émissions mises à l'échelle de la même façon. Ce qu'ils évitent grandit ou diminue donc avec la population. Un changement de 50 % évite 0,141 °C en 2100 avec la projection moyenne, 0,116 °C avec la basse et 0,170 °C avec la haute (0,060, 0,057 et 0,062 °C en 2050).
+Le changement de régime et les leviers agricoles modifient des émissions mises à l'échelle de la même façon. Ce qu'ils évitent grandit ou diminue donc avec la population. Un changement de 50 % évite 0,140 °C en 2100 avec la projection moyenne, 0,116 °C avec la basse et 0,170 °C avec la haute (0,060, 0,057 et 0,062 °C en 2050).
 
 Le levier du gaspillage agit sur les mêmes disponibilités mises à l'échelle. Le défrichement (déforestation), le carbone stocké dans les terres agricoles, la repousse naturelle et les leviers d'énergie ne sont pas mis à l'échelle de la population : ils ne changent pas.
 
@@ -52,7 +52,7 @@ La population de chaque pays est celle de FAOSTAT, qui reprend la projection moy
 
 Pour chaque pays, le pipeline divise la population de chaque projection par celle de la projection moyenne en 2025, en 2030 puis tous les dix ans jusqu'en 2100 (`population.json`). L'application multiplie la population propre du pays par ce rapport. Entre ces années, le rapport est interpolé linéairement, à partir de 1 en 2023, la dernière année d'estimations. Un pays sans projection dans les WPP prend le rapport du monde.
 
-Additionnées sur les 188 pays, ces populations donnent les populations mondiales ci-dessous. Le graphique montre le total mondial des WPP eux-mêmes, qui comprend les quelques pays que le modèle laisse de côté.
+Additionnées sur les 187 pays, ces populations donnent les populations mondiales ci-dessous. Le graphique montre le total mondial des WPP eux-mêmes, qui comprend les quelques pays que le modèle laisse de côté.
 
 | Projection de l'ONU (WPP 2024, monde) | 2050 | 2100 | Pic |
 | --- | --- | --- | --- |

@@ -1,6 +1,6 @@
 # Émissions par tonne d'aliment
 
-Pour traduire un changement de production en changement d'émissions, Planetshift doit savoir ce qu'émet chaque aliment. Pour chaque pays et chaque produit alimentaire, il connaît les kilogrammes de dioxyde de carbone (CO₂), de méthane (CH₄) et de protoxyde d'azote (N₂O) émis par tonne produite : c'est l'intensité d'émission du produit. Les estimations de FAOSTAT donnent les deux tiers des émissions agricoles mondiales du modèle. HESTIA en donne un cinquième, et les moyennes publiées et les valeurs de substitution donnent le reste. Additionnées sur le monde, elles sont proches des totaux de FAOSTAT : 138,1 Mt de méthane par an, contre 141,8 Mt.
+Pour traduire un changement de production en changement d'émissions, Planetshift doit savoir ce qu'émet chaque aliment. Pour chaque pays et chaque produit alimentaire, il connaît les kilogrammes de dioxyde de carbone (CO₂), de méthane (CH₄) et de protoxyde d'azote (N₂O) émis par tonne produite : c'est l'intensité d'émission du produit. Les estimations de FAOSTAT donnent les deux tiers des émissions agricoles mondiales du modèle. HESTIA en donne un cinquième, et les moyennes publiées et les valeurs de substitution donnent le reste. Additionnées sur le monde, elles sont proches des totaux de FAOSTAT : 138,1 Mt de méthane par an, contre 142,4 Mt.
 
 Les trois gaz restent séparés jusqu'au modèle climatique.
 
@@ -36,7 +36,7 @@ Chaque pays du modèle a une valeur pour chaque produit et pour les deux périm�
 
 ### Combien de cases chaque niveau remplit
 
-Le tableau compte les cases pays × produit du périmètre à la ferme que remplit chaque niveau, par groupe, pour les 188 pays et 90 produits. Le périmètre du berceau à la sortie de ferme est proche.
+Le tableau compte les cases pays × produit du périmètre à la ferme que remplit chaque niveau, par groupe, pour les 187 pays et 90 produits. Le périmètre du berceau à la sortie de ferme est proche.
 
 Seuls les poissons et fruits de mer ont besoin du niveau 6 : 278 de leurs 1 504 cases. Ce sont presque toutes des pays sans littoral qui importent tout leur poisson. Leur bilan contient un produit que FishStat ne leur attribue pas (voir [Poissons et fruits de mer](#method-seafood)). Pour tous les autres produits, les moyennes mondiales publiées du niveau 4 couvrent ce qui n'a pas de substitut.
 
@@ -65,7 +65,7 @@ Pondérés par les émissions plutôt que par les cases, FAOSTAT (niveau 3) donn
 
 ## Niveau 3 : les émissions de FAOSTAT par produit
 
-FAOSTAT estime les émissions agricoles de chaque pays avec les méthodes de niveau 1 du GIEC, ses méthodes par défaut les plus simples. FAOSTAT liste aussi, pour les mêmes lignes, les inventaires nationaux déclarés par les pays à la CCNUCC. Planetshift lit les estimations propres de FAOSTAT (source « FAO TIER 1 »), pour l'année d'émissions la plus proche de l'année de référence (2023).
+FAOSTAT estime les émissions agricoles de chaque pays avec les méthodes de niveau 1 du GIEC, ses méthodes par défaut les plus simples. FAOSTAT liste aussi, pour les mêmes lignes, les inventaires nationaux déclarés par les pays à la CCNUCC. Planetshift lit les estimations propres de FAOSTAT (source « FAO TIER 1 »), pour l'année d'émissions la plus proche de l'année de référence (2024).
 
 FAOSTAT donne la plupart des émissions par culture ou par espèce animale. Planetshift les répartit entre les produits alimentaires comme suit.
 
@@ -171,7 +171,7 @@ Le carburant et l'électricité ne comptent que dans le périmètre du berceau �
 
 Certains animaux de ferme ne sont pas élevés pour l'alimentation : les bœufs et les buffles gardés pour labourer, les chevaux, les ânes et les mulets gardés pour le travail et le transport, et les bovins gardés pour d'autres raisons, comme la plupart de ceux de l'Inde. Leurs émissions restent dans les émissions agricoles de chaque pays, mais aucun produit ne les porte et aucun levier ne les change. Un changement de 100 % les laisse en place.
 
-Elles sont écrites par pays dans `nonFood` de `intensities.json`. Elles s'élèvent à 211 Mt CO₂e par an l'année de référence, dont 115 Mt en Inde, puis le Niger (15), le Brésil (9), le Mexique (8) et l'Éthiopie (6).
+Elles sont écrites par pays dans `nonFood` de `intensities.json`. Elles s'élèvent à 211 Mt CO₂e par an l'année de référence, dont 113 Mt en Inde, puis le Niger (18), le Brésil (9), le Mexique (8) et l'Éthiopie (7).
 
 ### Comment on les repère
 
@@ -196,9 +196,9 @@ Le modèle prend la plus basse de ces moyennes, les 6,7 % de l'Afrique australe,
 
 Le seuil est un chiffre d'Afrique subsaharienne appliqué à tous les pays. Aucune revue comparable n'a été trouvée pour les autres régions.
 
-L'Inde fait l'essentiel de la base, et ne dépend pas du seuil. FAOSTAT n'enregistre aucun abattage de bovins en Inde : ses 131 millions de bovins non laitiers sont donc tous dans la base, quel que soit le seuil. Le 20e recensement du cheptel de l'Inde compte 192,5 millions de bovins en 2019, dont 74,2 millions de vaches laitières (en lactation ou taries). Il reste 118,3 millions d'autres bovins, dont 47,4 millions de mâles (Department of Animal Husbandry and Dairying, 2019, tableaux 6 et 7). Le recensement ne dit pas à quoi ils servent.
+L'Inde fait l'essentiel de la base, et ne dépend pas du seuil. FAOSTAT n'enregistre aucun abattage de bovins en Inde : ses 128 millions de bovins non laitiers sont donc tous dans la base, quel que soit le seuil. Le 20e recensement du cheptel de l'Inde compte 192,5 millions de bovins en 2019, dont 74,2 millions de vaches laitières (en lactation ou taries). Il reste 118,3 millions d'autres bovins, dont 47,4 millions de mâles (Department of Animal Husbandry and Dairying, 2019, tableaux 6 et 7). Le recensement ne dit pas à quoi ils servent.
 
-Aucune source nationale n'a été trouvée sur le taux d'exploitation des bovins du Niger. FAOSTAT enregistre des exportations nettes de 113 000 têtes pour le Niger en 2023, et de 206 000 pour le Mali. À 9,9 %, ces exportations faisaient passer leur base de 18,7 et 9,1 Mt à 17,2 et 6,5 Mt. Avec le seuil à 6,7 %, elle est de 15,0 et 2,2 Mt.
+Aucune source nationale n'a été trouvée sur le taux d'exploitation des bovins du Niger. FAOSTAT enregistre des exportations nettes de 36 000 têtes pour le Niger en 2024, et de 301 000 pour le Mali. À 9,9 %, ces exportations faisaient passer leur base de 20,2 et 9,0 Mt à 19,8 et 5,1 Mt. Avec le seuil à 6,7 %, elle est de 18,1 et 1,1 Mt.
 
 ### Ce que change le seuil
 
@@ -206,10 +206,10 @@ Le seuil change la base, mais à peine l'effet d'un changement de régime. Un tr
 
 | Seuil de taux d'exploitation | Base hors alimentation, Mt CO₂e | Inde | Niger | Éthiopie | Mali | Changement complet : émissions évitées, Gt CO₂e | Changement complet : réchauffement évité en 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 6,7 % (Afrique australe, retenu) | 211 | 115 | 15,0 | 6,4 | 2,2 | 5,12 | 0,271 |
-| 9 % (médiane) | 242 | 115 | 16,8 | 23,7 | 5,6 | 5,08 | 0,268 |
-| 9,9 % (moyenne) | 255 | 115 | 17,2 | 28,6 | 6,5 | 5,07 | 0,267 |
-| 12 % (systèmes pastoraux) | 281 | 115 | 18,1 | 37,3 | 8,1 | 5,04 | 0,266 |
+| 6,7 % (Afrique australe, retenu) | 211 | 113 | 18,1 | 6,9 | 1,1 | 5,12 | 0,271 |
+| 9 % (médiane) | 245 | 113 | 19,4 | 26,0 | 4,0 | 5,08 | 0,268 |
+| 9,9 % (moyenne) | 257 | 113 | 19,8 | 31,1 | 5,1 | 5,07 | 0,267 |
+| 12 % (systèmes pastoraux) | 285 | 113 | 20,4 | 39,9 | 7,1 | 5,04 | 0,266 |
 
 Un demi-changement évite la moitié (de 2,51 à 2,56 Gt CO₂e, de 0,133 à 0,135 °C). La fourchette probable que montre l'application ne couvre que la réponse du climat, pas ce choix.
 
@@ -289,15 +289,15 @@ Le lait n'a pas de substitut : aucun autre produit n'est un équivalent honnête
 
 ## Vérifications par rapport aux totaux de FAOSTAT
 
-Un test recalcule les émissions mondiales à partir des fichiers produits, et les compare aux totaux mondiaux de FAOSTAT pour les mêmes processus en 2023. Le méthane est à quelques pour cent près. Le N₂O est plus élevé, et c'est le CO₂ qui diffère le plus, pour les raisons données plus bas.
+Un test recalcule les émissions mondiales à partir des fichiers produits, et les compare aux totaux mondiaux de FAOSTAT pour les mêmes processus en 2024. Le méthane est à quelques pour cent près. Le N₂O est plus élevé, et c'est le CO₂ qui diffère le plus, pour les raisons données plus bas.
 
 | | Planetshift, test | FAOSTAT | Tolérance | Planetshift avec les tourteaux, comme les compte l'appli |
 | --- | --- | --- | --- | --- |
-| À la ferme, CH₄ (Mt) | 138,1 | 141,8 | 10 % | 138,4 |
-| À la ferme, N₂O (Mt) | 8,01 | 7,26 | 20 % | 8,12 |
-| Du berceau à la sortie de ferme, CH₄ (Mt) | 140,6 | 142,3 | 10 % | 141,1 |
-| Du berceau à la sortie de ferme, N₂O (Mt) | 8,14 | 7,56 | 20 % | 8,26 |
-| Du berceau à la sortie de ferme, CO₂ (Mt) | 1 688 | 1 348 | 50 % | 1 741 |
+| À la ferme, CH₄ (Mt) | 138,1 | 142,4 | 10 % | 138,4 |
+| À la ferme, N₂O (Mt) | 8,01 | 7,32 | 20 % | 8,12 |
+| Du berceau à la sortie de ferme, CH₄ (Mt) | 140,6 | 142,9 | 10 % | 141,1 |
+| Du berceau à la sortie de ferme, N₂O (Mt) | 8,14 | 7,61 | 20 % | 8,26 |
+| Du berceau à la sortie de ferme, CO₂ (Mt) | 1 688 | 1 322 | 50 % | 1 741 |
 
 ### Le calcul de la vérification
 
@@ -317,9 +317,9 @@ Le N₂O agricole direct était de 6,1 Mt en 2020 (3,9 Tg N, Tian et al., 2024).
 
 ### Le méthane du riz
 
-Le méthane du riz est de 22,6 Mt dans le modèle, contre 24,9 Mt dans FAOSTAT pour 2023 et 32 (25–37) Tg dans le Global Methane Budget. L'essentiel de l'écart vient de l'Inde.
+Le méthane du riz est de 22,6 Mt dans le modèle, contre 25,3 Mt dans FAOSTAT pour 2024 et 32 (25–37) Tg dans le Global Methane Budget. L'essentiel de l'écart vient de l'Inde.
 
-L'intensité de l'Inde est celle de HESTIA (niveau 1) : 16,7 kg de méthane dû à l'inondation par tonne de paddy, et 17,1 kg avec le reste. Celle de FAOSTAT est de 24,6 kg (5,08 Mt pour 206,7 Mt de paddy). Les deux sont par tonne de paddy, l'unité qu'utilisent les bilans pour le riz : l'écart n'est donc pas une erreur de conversion. Par hectare, HESTIA donne environ 72 kg de méthane et FAOSTAT environ 106.
+L'intensité de l'Inde est celle de HESTIA (niveau 1) : 16,7 kg de méthane dû à l'inondation par tonne de paddy, et 17,1 kg avec le reste. Celle de FAOSTAT est de 24,5 kg (5,33 Mt pour 217,9 Mt de paddy). Les deux sont par tonne de paddy, l'unité qu'utilisent les bilans pour le riz : l'écart n'est donc pas une erreur de conversion. Par hectare, HESTIA donne environ 72 kg de méthane et FAOSTAT environ 106.
 
 Le modèle de HESTIA applique l'affinement de 2019 du GIEC aux régimes hydriques et aux amendements de ses données sur le riz indien. FAOSTAT applique la méthode de niveau 1 du GIEC avec ses propres hypothèses sur les régimes hydriques. La différence tient à la méthode : la valeur de HESTIA est donc gardée, comme le niveau le mieux documenté. Avec l'intensité de FAOSTAT pour l'Inde, le total mondial serait d'environ 24,1 Mt.
 
@@ -329,10 +329,10 @@ Our World in Data présente les émissions par kilogramme d'aliment de Poore et 
 
 | Produit | Planetshift | Poore et Nemecek, étape de la ferme |
 | --- | --- | --- |
-| Bœuf | 24,7 | 21,9 (troupeau laitier) à 56,2 (troupeau allaitant) |
+| Bœuf | 24,6 | 21,9 (troupeau laitier) à 56,2 (troupeau allaitant) |
 | Viande ovine et caprine | 21,4 | 27,0 |
-| Viande de porc | 1,70 | 2,48 |
-| Volaille | 0,88 | 0,93 |
+| Viande de porc | 1,68 | 2,48 |
+| Volaille | 0,87 | 0,93 |
 | Œufs | 0,82 | 1,32 |
 | Lait | 1,19 | 1,51 |
 | Riz | 1,07 par kg de paddy, 1,6 par kg de riz blanchi | 3,55 |

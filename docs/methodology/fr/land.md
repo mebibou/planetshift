@@ -4,7 +4,7 @@ Planetshift indique, pays par pays, combien de terres agricoles chaque scénario
 
 ## Les terres agricoles aujourd'hui
 
-L'agriculture utilise environ 4,7 milliards d'hectares, un tiers des terres du monde. Cela fait à peu près 1,6 milliard d'hectares de terres cultivées et 3,1 milliards d'hectares de prairies et pâturages permanents. Ces chiffres viennent des données actuelles d'utilisation des terres de FAOSTAT pour 2023. Our World in Data présente les mêmes données : 36,9 % des terres du monde en 2023 ([graphique](https://ourworldindata.org/grapher/share-of-land-area-used-for-agriculture)).
+L'agriculture utilise environ 4,7 milliards d'hectares, un tiers des terres du monde. Cela fait à peu près 1,6 milliard d'hectares de terres cultivées et 3,1 milliards d'hectares de prairies et pâturages permanents. Ces chiffres viennent des données actuelles d'utilisation des terres de FAOSTAT pour 2024. Our World in Data présente les mêmes données : 36,9 % des terres du monde en 2023 ([graphique](https://ourworldindata.org/grapher/share-of-land-area-used-for-agriculture)).
 
 Les notes antérieures de la FAO donnaient environ 4,8 et 3,2 milliards d'hectares. Elles reposaient sur des versions plus anciennes des mêmes données. Le pipeline lit la surface totale des « prairies et pâturages permanents », pas seulement leur partie cultivée. La différence vient de la révision de la série par FAOSTAT.
 
@@ -18,8 +18,8 @@ Les chiffres sont dans `land.json`. Le code est `pipeline/planetshift_pipeline/l
 
 ## Quelles terres sont comptées
 
-- **Cultures** : la surface récoltée de chaque culture alimentaire des bilans alimentaires (céréales, légumineuses, oléagineux, racines et tubercules, plantes sucrières, fruits, légumes, fruits à coque, café, cacao, thé et épices), d'après les statistiques des cultures de FAOSTAT. La surface récoltée compte un champ deux fois quand il donne deux récoltes dans l'année (cultures multiples). Elle laisse de côté les jachères, les cultures fourragères et les cultures non alimentaires (fibre de coton, tabac, caoutchouc). Les terres cultivées de FAOSTAT mesurent la surface physique, et sont un peu plus grandes pour ces raisons. Les cultures alimentaires du modèle font en tout 1,51 milliard d'hectares en 2023. Pour la même année, FAOSTAT donne 1,42 milliard d'hectares récoltés et 1,58 milliard d'hectares de terres cultivées (voir les vérifications ci-dessous).
-- **Tourteaux** : la part des terres des oléagineux triturés qui va au tourteau donné aux animaux (voir plus bas) : 0,11 milliard d'hectares.
+- **Cultures** : la surface récoltée de chaque culture alimentaire des bilans alimentaires (céréales, légumineuses, oléagineux, racines et tubercules, plantes sucrières, fruits, légumes, fruits à coque, café, cacao, thé et épices), d'après les statistiques des cultures de FAOSTAT. La surface récoltée compte un champ deux fois quand il donne deux récoltes dans l'année (cultures multiples). Elle laisse de côté les jachères, les cultures fourragères et les cultures non alimentaires (fibre de coton, tabac, caoutchouc). Les terres cultivées de FAOSTAT mesurent la surface physique, et sont un peu plus grandes pour ces raisons. Les cultures alimentaires du modèle font en tout 1,55 milliard d'hectares en 2024. Pour la même année, FAOSTAT donne 1,44 milliard d'hectares récoltés et 1,58 milliard d'hectares de terres cultivées (voir les vérifications ci-dessous).
+- **Tourteaux** : la part des terres des oléagineux triturés qui va au tourteau donné aux animaux (voir plus bas) : 0,12 milliard d'hectares.
 - **Fourrage** : les « prairies et pâturages temporaires » de FAOSTAT, c'est-à-dire de l'herbe semée sur des terres arables pour la pâture ou le foin : 0,14 milliard d'hectares. Elles sont comptées comme terres cultivées, et réparties entre les groupes de ruminants comme leurs prairies.
 - **Prairies** : les « prairies et pâturages permanents » de FAOSTAT dans chaque pays : 3,02 milliards d'hectares dans les pays du modèle, sur 3,10 milliards dans le monde. Une grande partie est constituée de parcours : prairies sèches, steppes et broussailles pâturées à faible densité, qui n'ont jamais été des forêts.
 
@@ -33,11 +33,11 @@ Quand un scénario change la production, les terres cultivées changent avec ell
 
 Les prairies changent avec la production des groupes de ruminants. La part des prairies d'un pays attribuée à chaque groupe varie en proportion de la production du groupe. Si un pays produit moitié moins de bœuf, les prairies attribuées au bœuf sont divisées par deux. Les prairies ne descendent jamais sous zéro. Les prairies temporaires changent de la même façon.
 
-**Exemple.** Avec un changement de 50 %, à protéines égales et avec les options par défaut, le monde libère 1,51 milliard d'hectares de ses 3,02 milliards de prairies. Il libère aussi 65 Mha de ses 1,65 milliard d'hectares de terres cultivées, environ 4 %.
+**Exemple.** Avec un changement de 50 %, à protéines égales et avec les options par défaut, le monde libère 1,51 milliard d'hectares de ses 3,02 milliards de prairies. Il libère aussi 65 Mha de ses 1,69 milliard d'hectares de terres cultivées, environ 4 %.
 
 ### Les terres cultivées avec un changement complet vers le végétal
 
-Sans aucun produit animal et à protéines égales, les terres cultivées du modèle baissent de 0,13 milliard d'hectares, 8 % de ses 1,65 milliard. À calories égales, elles baissent de 24 %, et avec le mélange riche en légumineuses de 10 %. Presque toutes les prairies (3,0 milliards d'hectares) sont libérées.
+Sans aucun produit animal et à protéines égales, les terres cultivées du modèle baissent de 0,13 milliard d'hectares, 8 % de ses 1,69 milliard. À calories égales, elles baissent de 24 %, et avec le mélange riche en légumineuses de 11 %. Presque toutes les prairies (3,0 milliards d'hectares) sont libérées.
 
 Poore et Nemecek (2018) trouvent qu'un tel régime réduirait les terres agricoles de 76 % (3,1 milliards d'hectares), « dont une réduction de 19 % des terres arables ».
 
@@ -51,7 +51,7 @@ Trois choix de modélisation transforment une hausse des terres cultivées en ba
 | Remplacement par les seuls végétaux riches en protéines d'aujourd'hui (céréales, riz, légumineuses, fruits à coque, oléagineux) | +141 Mha |
 | Terres des oléagineux partagées entre huile et tourteau selon leur valeur, la part du tourteau libérée avec les animaux | +36 Mha |
 | Prairies temporaires comptées comme fourrage des ruminants, et libérées avec eux | −99 Mha (−6 %) |
-| Les trois choix, comme dans le modèle, où la production alimentaire de chaque groupe animal tombe à zéro et où les animaux non élevés pour l'alimentation restent | −130 Mha (−8 %) |
+| Les trois choix, comme dans le modèle, où la production alimentaire de chaque groupe animal tombe à zéro et où les animaux non élevés pour l'alimentation restent | −129 Mha (−8 %) |
 
 - Augmenter tous les aliments végétaux du même facteur pour remplacer les protéines de la viande ferait monter les fruits de 80 %, les légumes de 74 %, et le sucre, les boissons et les huiles végétales en proportion, alors qu'ils n'apportent presque pas de protéines. Plus d'huile de soja voudrait alors dire plus de champs de soja. Le remplacement par défaut n'ajoute des protéines qu'aux aliments végétaux qu'on mange pour elles (voir [Le changement](#method-shift)). Le restreindre davantage, aux aliments ayant au moins 5 % de protéines, donne environ −2 % avant le fourrage. Mais ce seuil est arbitraire. Il écarte le riz (4,8 %) et les fruits à coque, piliers des protéines végétales dans une grande partie du monde.
 - Si les tourteaux ne portaient aucune terre, les champs de soja cultivés pour le tourteau ne pourraient pas être libérés. Le partage selon la valeur est la pratique habituelle des analyses de cycle de vie. Un partage selon la masse donnerait moins de terres à l'huile et plus au tourteau (l'huile de soja 19 % des terres au lieu de 37 %), et un changement complet en libérerait un peu plus.
@@ -69,13 +69,13 @@ L'écart restant avec les −19 % de Poore et Nemecek a trois causes probables :
 
 Pour chaque pays et chaque culture, le modèle utilise les hectares récoltés par tonne produite. Les cultures des statistiques de production de FAOSTAT sont regroupées en produits des bilans alimentaires avec la même table que pour les émissions (`qcl_items.csv`). Par exemple, le blé va à « Blé et produits », les lentilles et les pois chiches à « Légumineuses, autres », et 15 % d'un champ de coton graine à la graine de coton (le reste est la fibre, hors du modèle).
 
-- Les hectares par tonne sont moyennés sur trois ans autour de l'année de référence, de 2022 à 2024 : les hectares des trois années divisés par leurs tonnes. Ainsi, une sécheresse ou une récolte exceptionnelle en 2023 ne fixe pas la valeur. Seules les années-cultures ayant à la fois une surface et une production sont utilisées.
-- Il est ensuite exprimé par tonne du produit des bilans alimentaires, qui n'est pas toujours la culture telle que récoltée. Les hectares par tonne de la culture sont multipliés par les tonnes de la culture en 2023 et divisés par la production du produit dans le bilan.
+- Les hectares par tonne sont moyennés sur l'année de référence et les années qui l'encadrent que FAOSTAT a publiées, 2023 et 2024 (2025 n'est pas encore paru) : les hectares de ces années divisés par leurs tonnes. Ainsi, une sécheresse ou une récolte exceptionnelle une année donnée ne fixe pas la valeur. Seules les années-cultures ayant à la fois une surface et une production sont utilisées.
+- Il est ensuite exprimé par tonne du produit des bilans alimentaires, qui n'est pas toujours la culture telle que récoltée. Les hectares par tonne de la culture sont multipliés par les tonnes de la culture en 2024 et divisés par la production du produit dans le bilan.
 - Une valeur plus de 20 fois au-dessus ou en dessous de la médiane mondiale du produit, pondérée par la production, révèle un décalage entre les deux domaines de FAOSTAT. Elle n'est pas utilisée, comme pour les émissions.
 
 Un pays peut n'avoir aucune valeur propre pour un produit, parce qu'il ne le cultive pas ou parce que sa valeur a été écartée. Il prend alors la médiane de sa région pondérée par la production, ou celle du monde si sa région n'en a pas. Environ 4 100 valeurs pays-produit sont propres au pays, 3 100 viennent de sa région et 2 300 du monde. Les valeurs empruntées remplissent surtout des produits qu'un pays ne cultive pas, qui ne comptent que si le scénario y déplace de la production.
 
-Quelques valeurs mondiales, pondérées par la production : blé 0,27 ha par tonne, maïs 0,17, riz 0,21 (par tonne de production en équivalent paddy dans le bilan), soja 0,37, pommes de terre 0,045, café 1,0.
+Quelques valeurs mondiales, pondérées par la production : blé 0,28 ha par tonne, maïs 0,17, riz 0,21 (par tonne de production en équivalent paddy dans le bilan), soja 0,37, pommes de terre 0,044, café 1,0.
 
 ### Produits transformés
 
@@ -84,7 +84,7 @@ Les terres des produits transformés suivent la règle des émissions (voir la p
 - Les terres d'une culture primaire sont ses hectares par tonne × (production − transformation).
 - Un produit transformé (huiles végétales, sucre, édulcorants, vin, bière et autres boissons) porte les terres de la culture dont il est tiré. Ce sont les hectares par tonne de son produit primaire divisés par le taux d'extraction, avec les mêmes taux et les mêmes pondérations que pour les émissions.
 
-Une tonne d'huile de soja, tirée d'environ 5,3 tonnes de soja, porte 2,3 ha. Une tonne d'huile de palme porte 0,29 ha, et une tonne de sucre brut 0,12 ha. L'huile de son de riz et l'huile de germe de maïs, sous-produits de la mouture, n'en portent aucune. Le beurre et la crème sont tirés du lait, qui n'utilise pas de terres cultivées propres.
+Une tonne d'huile de soja, tirée d'environ 5,3 tonnes de soja, porte 2,2 ha. Une tonne d'huile de palme porte 0,29 ha, et une tonne de sucre brut 0,12 ha. L'huile de son de riz et l'huile de germe de maïs, sous-produits de la mouture, n'en portent aucune. Le beurre et la crème sont tirés du lait, qui n'utilise pas de terres cultivées propres.
 
 ### Huile et tourteau
 
@@ -108,7 +108,7 @@ Les parts viennent de `pipeline/oilcakes.csv` : les tonnes de tourteau par tonne
 
 L'huile de palme et l'huile d'olive gardent toutes leurs terres, car le tourteau de pressage du fruit du palmier et les grignons d'olive sont rarement donnés aux animaux.
 
-Les terres du tourteau varient avec la production des groupes animaux qui le mangent, pondérée par les parts fourragères de l'oléagineux (`feed.json`). Avec des parts du commerce fixes, les terres du tourteau suivent la variation mondiale de la production de chaque groupe, puisque le tourteau s'échange comme son huile. Quand chaque pays produit son propre changement, elles suivent la variation du pays. Au total, les tourteaux portent 0,11 milliard d'hectares, surtout le tourteau de soja. Les émissions sont partagées de la même façon, et celles du tourteau suivent les animaux comme ses terres (voir la page [Émissions](#method-emissions)).
+Les terres du tourteau varient avec la production des groupes animaux qui le mangent, pondérée par les parts fourragères de l'oléagineux (`feed.json`). Avec des parts du commerce fixes, les terres du tourteau suivent la variation mondiale de la production de chaque groupe, puisque le tourteau s'échange comme son huile. Quand chaque pays produit son propre changement, elles suivent la variation du pays. Au total, les tourteaux portent 0,12 milliard d'hectares, surtout le tourteau de soja. Les émissions sont partagées de la même façon, et celles du tourteau suivent les animaux comme ses terres (voir la page [Émissions](#method-emissions)).
 
 ## Les prairies et les animaux qui les pâturent
 
@@ -122,7 +122,7 @@ Un pays absent des Livestock Patterns (le Nicaragua, actuellement) prend le nomb
 
 ## L'usage des terres sur la carte
 
-La couche *Usage des terres* de la carte donne les terres agricoles comptées ici, cultures et prairies, en part de la superficie des terres de chaque pays (la *Superficie des terres* de FAOSTAT, eaux intérieures exclues). Elle donne cette part aujourd'hui et une fois les leviers pleinement en place. Elle montre la place que prend l'agriculture dans un pays : 80 % de l'Arabie saoudite (surtout des parcours), 73 % de l'Inde, 34 % du Brésil, 6 % du Canada. Les cultures sont comptées en surfaces récoltées : une terre cultivée deux fois par an compte deux fois, ce qui relève la part là où la double culture est courante, comme en Inde. Manger moins de viande la réduit là où des prairies et des cultures fourragères sont libérées. Les classes sont fixes (5 %, 10 %, 20 %, 30 %, 45 %, 60 %), pour qu'un changement de scénario se voie comme un changement de couleur. L'infobulle donne les hectares de cultures et de prairies.
+La couche *Usage des terres* de la carte donne les terres agricoles comptées ici, cultures et prairies, en part de la superficie des terres de chaque pays (la *Superficie des terres* de FAOSTAT, eaux intérieures exclues). Elle donne cette part aujourd'hui et une fois les leviers pleinement en place. Elle montre la place que prend l'agriculture dans un pays : 80 % de l'Arabie saoudite (surtout des parcours), 75 % de l'Inde, 33 % du Brésil, 6 % du Canada. Les cultures sont comptées en surfaces récoltées : une terre cultivée deux fois par an compte deux fois, ce qui relève la part là où la double culture est courante, comme en Inde. Manger moins de viande la réduit là où des prairies et des cultures fourragères sont libérées. Les classes sont fixes (5 %, 10 %, 20 %, 30 %, 45 %, 60 %), pour qu'un changement de scénario se voie comme un changement de couleur. L'infobulle donne les hectares de cultures et de prairies.
 
 ## La repousse : une option, désactivée par défaut
 
@@ -153,7 +153,7 @@ Le rythme par hectare de terres agricoles libérées est alors le rythme de repo
 
 En Irlande, presque toutes les terres agricoles pourraient redevenir forêt, et le rythme central est de 12,5 t CO₂ par hectare et par an. Il est de 10,3 au Brésil et de 6,1 en France. Aux États-Unis, il est de 1,8, car une grande partie des prairies sont des parcours de l'Ouest. Il est de 0,3 au Kazakhstan et de 0,1 en Mongolie, surtout de la steppe.
 
-Les pays absents de la table (54 des 188 du modèle, surtout des petites îles et des déserts) sont complétés ainsi :
+Les pays absents de la table (53 des 187 du modèle, surtout des petites îles et des déserts) sont complétés ainsi :
 
 - Un pays dont moins de 10 % des terres sont boisées (utilisation des terres de FAOSTAT) est considéré comme aride. Il prend le rythme le plus bas de la table, sur au plus ses terres cultivées.
 - Un autre pays absent prend les rythmes du pays le plus bas de sa région dans la table, sur une part de ses terres agricoles allant de rien à la totalité.
@@ -193,7 +193,7 @@ Le tableau montre ce que change la compensation, sur les données réelles avec 
 | Lait végétal pour le lait, avant → net | 1,10 → 1,04 | 0,040 → 0,040 | 0,081 → 0,080 |
 | Moitié du poisson en légumineuses, avant → net | 0,01 → −0,10 | 0,0005 → −0,0003 | 0,0015 → 0,0004 |
 
-Avec le changement complet, 12 pays cultivent au total plus de terres qu'avant, 44 Mha ensemble. Avec la substitution du poisson, 105 pays, 18 Mha ensemble. Sans la repousse, rien ne change.
+Avec le changement complet, 14 pays cultivent au total plus de terres qu'avant, 41 Mha ensemble. Avec la substitution du poisson, 105 pays, 18 Mha ensemble. Sans la repousse, rien ne change.
 
 ## Le CO₂ de l'usage des terres par pays
 
@@ -213,23 +213,23 @@ Les totaux UTCATF des inventaires nationaux n'ont pas été utilisés : ils comp
 
 | | Planetshift | Référence | Tolérance |
 | --- | --- | --- | --- |
-| Terres cultivées des cultures alimentaires avec leurs tourteaux, 2023 (milliards d'ha) | 1,51 | 1,42 récoltés (FAOSTAT, mêmes pays et mêmes cultures) | 10 % |
+| Terres cultivées des cultures alimentaires avec leurs tourteaux, 2024 (milliards d'ha) | 1,55 | 1,44 récoltés (FAOSTAT, mêmes pays et mêmes cultures) | 10 % |
 | Prairies temporaires (milliards d'ha) | 0,14 | 0,14 (FAOSTAT, monde) | 10 % |
 | Prairies (milliards d'ha) | 3,02 | 3,10 (FAOSTAT, monde) | 5 % |
-| Blé, monde (ha par tonne) | 0,27 | de 0,25 à 0,4 | |
+| Blé, monde (ha par tonne) | 0,28 | de 0,25 à 0,4 | |
 | Terres des produits animaux, part des terres agricoles | 77 % | environ 83 %, avec l'aquaculture (Poore et Nemecek, 2018) | de 65 % à 85 % |
 | Repousse si toutes les prairies étaient libérées (milliards de t de CO₂ par an) | 8,4 | environ 11 (régime EAT-Lancet) à 18 (végétalien) dans la végétation, 2020–2050 (Hayek et al., 2021) | |
 
-Les terres cultivées du modèle dépassent de 6 % la surface récoltée des mêmes cultures dans FAOSTAT. Les produits transformés portent les terres de leurs cultures aux taux d'extraction mondiaux. Ces taux ne correspondent pas exactement à la transformation propre de chaque pays, surtout pour les huiles végétales.
+Les terres cultivées du modèle dépassent de 8 % la surface récoltée des mêmes cultures dans FAOSTAT. Les produits transformés portent les terres de leurs cultures aux taux d'extraction mondiaux. Ces taux ne correspondent pas exactement à la transformation propre de chaque pays, surtout pour les huiles végétales.
 
-Les terres utilisées pour les produits animaux sont toutes les prairies, les terres des tourteaux et des prairies temporaires, et, pour chaque culture, ses terres cultivées multipliées par la part mondiale de ses usages qui va à l'alimentation animale. Cela fait 3,0 milliards d'hectares de prairies et 0,58 milliard de cultures fourragères, de tourteaux et de fourrage : 77 % des terres agricoles du modèle. Poore et Nemecek (2018) trouvent que la viande, l'aquaculture, les œufs et les produits laitiers utilisent environ 83 % des terres agricoles. Le modèle ne compte aucune culture fourragère hormis les prairies temporaires : sa part est donc un peu plus basse.
+Les terres utilisées pour les produits animaux sont toutes les prairies, les terres des tourteaux et des prairies temporaires, et, pour chaque culture, ses terres cultivées multipliées par la part mondiale de ses usages qui va à l'alimentation animale. Cela fait 3,0 milliards d'hectares de prairies et 0,60 milliard de cultures fourragères, de tourteaux et de fourrage : 77 % des terres agricoles du modèle. Poore et Nemecek (2018) trouvent que la viande, l'aquaculture, les œufs et les produits laitiers utilisent environ 83 % des terres agricoles. Le modèle ne compte aucune culture fourragère hormis les prairies temporaires : sa part est donc un peu plus basse.
 
-Les données d'utilisation des terres de FAOSTAT que lit le pipeline donnent 1,58 milliard d'hectares de terres cultivées en 2023, en accord avec la note de la FAO sur les statistiques des terres 2001–2023.
+Les données d'utilisation des terres de FAOSTAT que lit le pipeline donnent 1,58 milliard d'hectares de terres cultivées en 2024, en accord avec la note de la FAO sur les statistiques des terres 2001–2023.
 
 ## Hypothèses
 
 - La surface récoltée tient lieu de terres cultivées : un champ récolté deux fois compte deux fois. Les jachères, les cultures non alimentaires et les cultures fourragères autres que les prairies temporaires ne sont pas comptées.
-- Les hectares par tonne sont moyennés sur 2022 à 2024, et exprimés par tonne de la production des bilans alimentaires de l'année de référence.
+- Les hectares par tonne sont moyennés sur 2023 et 2024, et exprimés par tonne de la production des bilans alimentaires de l'année de référence.
 - Un produit transformé porte les terres de la culture dont il est tiré, aux taux d'extraction mondiaux. Les terres d'un oléagineux trituré sont partagées entre son huile et son tourteau selon leur valeur, et la part du tourteau change avec les animaux qui le mangent.
 - Les prairies temporaires sont un fourrage des ruminants, réparti et modifié comme leurs prairies.
 - Les pays empruntent la médiane des hectares par tonne de leur région, puis du monde, pondérée par la production, pour les produits qu'ils ne cultivent pas.

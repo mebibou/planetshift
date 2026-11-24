@@ -17,7 +17,7 @@ Planetshift compte les émissions dans l'un de deux périmètres, choisi dans *A
 
 Les poissons sauvages n'ont donc aucune émission à la ferme. Leur carburant n'apparaît que dans le périmètre du berceau à la sortie de ferme (« Avec les intrants »), le choix par défaut ; « Processus biologiques seulement » dans *Autres options* le laisse de côté. La même règle garde le diesel des tracteurs hors des émissions à la ferme du blé, mais son effet est plus grand pour le poisson. L'aide de *Émissions comptées* dans *Autres options* le dit, tout comme la note du résumé sur ce qui est compté.
 
-Tous les produits de la mer ensemble émettent 66 Mt (millions de tonnes) CO₂e par an à la ferme et 236 Mt CO₂e du berceau à la sortie de ferme, pondérés par la production des bilans alimentaires. Le CO₂e (équivalent CO₂) additionne les gaz en un seul chiffre avec leurs poids à 100 ans (voir [Des émissions à la température](#method-climate)).
+Tous les produits de la mer ensemble émettent 66 Mt (millions de tonnes) CO₂e par an à la ferme et 235 Mt CO₂e du berceau à la sortie de ferme, pondérés par la production des bilans alimentaires. Le CO₂e (équivalent CO₂) additionne les gaz en un seul chiffre avec leurs poids à 100 ans (voir [Des émissions à la température](#method-climate)).
 
 ### Dans l'application
 
@@ -134,7 +134,7 @@ Les deux méthodes de répartition des aliments (voir [Alimentation animale](#me
 
 ### Le poisson donné aux animaux
 
-Les bilans enregistrent le poisson transformé en farine et en huile comme usage fourrager des produits de la pêche : 24 Mt de poisson en 2023, dont 20 Mt de pélagiques. Les produits de la pêche sont donc aussi des produits fourragers. Leur usage fourrager va à environ 90 % à l'aquaculture, 9 % aux porcs et 1 % aux volailles, la répartition de la farine de poisson en 2020 (FAO, SOFIA 2022, d'après l'IFFO : 86 %, 9 % et 1 %, les 4 % restants surtout aux aliments pour animaux de compagnie) :
+Les bilans enregistrent le poisson transformé en farine et en huile comme usage fourrager des produits de la pêche : 23 Mt de poisson en 2024, dont 19 Mt de pélagiques. Les produits de la pêche sont donc aussi des produits fourragers. Leur usage fourrager va à environ 90 % à l'aquaculture, 9 % aux porcs et 1 % aux volailles, la répartition de la farine de poisson en 2020 (FAO, SOFIA 2022, d'après l'IFFO : 86 %, 9 % et 1 %, les 4 % restants surtout aux aliments pour animaux de compagnie) :
 
 - dans la méthode par espèce, comme une répartition propre (`fishmeal` dans `feed_species.csv`) ;
 - dans la méthode de type GLEAM, comme une classe `fish` des rations (0,25 de la ration aquacole, 0,01 de celle des porcs, 0,003 de celle des volailles), qui donne 74 %, 20 % et 6 %.
@@ -143,7 +143,7 @@ Quand on mange moins de poisson d'élevage, on pêche moins de poisson pour le n
 
 ### Ce qui a changé pour les autres groupes
 
-Pour chaque produit fourrager qui existait déjà, dans chaque région et avec les deux méthodes, les cinq groupes d'élevage gardent les mêmes proportions entre eux. Chacune de leurs parts est l'ancienne × (1 − la part des produits de la mer). `tests/test_seafood_built.py` le vérifie par rapport aux dernières données sans produits de la mer, à l'arrondi des parts près (plus grand écart 0,0003). Les parts mondiales des produits de la mer sont de 5,5 % de chaque culture dans la méthode par espèce. Dans celle de type GLEAM, elles sont de 2,6 % du grain et du riz, 5,9 % des légumineuses et 9,1 % du soja.
+Pour chaque produit fourrager qui existait déjà, dans chaque région et avec les deux méthodes, les cinq groupes d'élevage gardent les mêmes proportions entre eux. Chacune de leurs parts est l'ancienne × (1 − la part des produits de la mer). `tests/test_seafood_built.py` le vérifie par rapport aux dernières données sans produits de la mer, à l'arrondi des parts près (plus grand écart 0,0003). Les parts mondiales des produits de la mer sont de 5,5 % de chaque culture dans la méthode par espèce. Dans celle de type GLEAM, elles sont de 2,6 % du grain et du riz, 5,8 % des légumineuses et 9,0 % du soja.
 
 ## Répartition par source et terres
 
@@ -155,8 +155,8 @@ Les produits de la mer n'ont ni prairies ni cultures propres. Les surfaces de le
 
 | Vérification | Planetshift | Valeur publiée |
 | --- | --- | --- |
-| Approvisionnement alimentaire mondial en poissons et fruits de mer, année de référence 2023 | 20,1 kg par personne et par an | 20,7 kg en 2022 (FAO, SOFIA 2024) |
-| Part des produits de la mer dans les protéines animales | 14,2 % | environ 15 % (FAO, SOFIA 2024 ; 17 % dans les éditions antérieures, qui comptaient autrement) |
+| Approvisionnement alimentaire mondial en poissons et fruits de mer, année de référence 2024 | 20,1 kg par personne et par an | 20,7 kg en 2022 (FAO, SOFIA 2024) |
+| Part des produits de la mer dans les protéines animales | 14,1 % | environ 15 % (FAO, SOFIA 2024 ; 17 % dans les éditions antérieures, qui comptaient autrement) |
 | Part des produits de la mer dans toutes les protéines | 6,0 % | environ 6 % (FAO, SOFIA 2024) |
 | Production mondiale de la pêche, FishStat 2023 | 90 Mt | environ 91 Mt en 2022, animaux aquatiques (SOFIA 2024) |
 | Carburant brûlé par la pêche | 39 milliards de litres (captures de 2023) | 40 milliards de litres en 2011 (Parker et al.) |
@@ -165,7 +165,7 @@ Les produits de la mer n'ont ni prairies ni cultures propres. Les surfaces de le
 | Émissions de l'aquaculture avec l'alimentation | alimentation comptée sur les cultures et les poissons | 263 Mt CO₂e en 2017, dont 57 % pour l'alimentation (MacLeod et al.) |
 | Aliments aquacoles composés | environ 69 Mt (consommation de type GLEAM) | 69,4 Mt en 2023 (Tacon et al., 2025) ; environ 50 Mt en 2017 (Tacon, 2020) |
 
-Tous les produits de la mer ensemble, pondérés par la production des bilans, donnent 66 Mt CO₂e par an à la ferme et 236 Mt CO₂e du berceau à la sortie de ferme. Le total de la pêche est à quelques pour cent des émissions de carburant de Parker et al., parce que les captures mondiales n'ont presque pas changé depuis 2011. L'aquaculture ressort plus basse par tonne que la part hors alimentation de MacLeod et al., pour deux raisons : le N₂O est pondéré avec le facteur 273 de l'AR6 au lieu de 298, et les engrais des étangs sont laissés de côté. L'ajout des produits de la mer ne change ni les intensités, l'approvisionnement, les produits et la répartition par source de tous les autres produits, ni `land.json` (`tests/test_seafood_built.py`).
+Tous les produits de la mer ensemble, pondérés par la production des bilans, donnent 66 Mt CO₂e par an à la ferme et 235 Mt CO₂e du berceau à la sortie de ferme. Le total de la pêche est à quelques pour cent des émissions de carburant de Parker et al., parce que les captures mondiales n'ont presque pas changé depuis 2011. L'aquaculture ressort plus basse par tonne que la part hors alimentation de MacLeod et al., pour deux raisons : le N₂O est pondéré avec le facteur 273 de l'AR6 au lieu de 298, et les engrais des étangs sont laissés de côté. L'ajout des produits de la mer ne change ni les intensités, l'approvisionnement, les produits et la répartition par source de tous les autres produits, ni `land.json` (`tests/test_seafood_built.py`).
 
 ## Manger moins de poisson permet-il à l'océan de stocker plus de carbone ?
 
