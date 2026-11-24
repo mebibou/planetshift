@@ -17,7 +17,7 @@ export const DATA_FILES = [
 export type DataFile = (typeof DATA_FILES)[number];
 
 /** Core files the page opens without: a missing one (HTTP 404) is left undefined. */
-export const OPTIONAL_FILES = ['enso', 'landuse'] as const;
+export const OPTIONAL_FILES = ['enso', 'landuse', 'impacts'] as const;
 
 /**
  * The lever modules' files. A missing one (HTTP 404) only leaves its levers without effect, so a

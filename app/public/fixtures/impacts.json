@@ -1,0 +1,252 @@
+{
+  "groups": [
+    {
+      "id": "wgi",
+      "url": "https://example.org/wgi",
+      "jointly": false,
+      "levels": [
+        1,
+        1.5,
+        2,
+        3,
+        4
+      ],
+      "rows": [
+        {
+          "id": "hot10",
+          "unit": "times",
+          "ref": "Synthetic fixture",
+          "mid": [
+            3,
+            4,
+            6,
+            8,
+            10
+          ],
+          "low": [
+            2,
+            3,
+            4,
+            6,
+            8
+          ],
+          "high": [
+            4,
+            5,
+            7,
+            9,
+            11
+          ]
+        },
+        {
+          "id": "hot50",
+          "unit": "times",
+          "ref": "Synthetic fixture",
+          "mid": [
+            5,
+            9,
+            14,
+            27,
+            39
+          ],
+          "low": [
+            2,
+            4,
+            7,
+            15,
+            27
+          ],
+          "high": [
+            6,
+            11,
+            17,
+            31,
+            41
+          ]
+        },
+        {
+          "id": "rain10",
+          "unit": "times",
+          "ref": "Synthetic fixture",
+          "mid": [
+            1.3,
+            1.5,
+            1.7,
+            2.2,
+            2.7
+          ],
+          "low": [
+            1.2,
+            1.4,
+            1.6,
+            1.9,
+            2.3
+          ],
+          "high": [
+            1.4,
+            1.7,
+            2,
+            2.7,
+            3.6
+          ]
+        },
+        {
+          "id": "drought10",
+          "unit": "times",
+          "ref": "Synthetic fixture",
+          "mid": [
+            1.7,
+            2,
+            2.4,
+            3.2,
+            4.1
+          ],
+          "low": [
+            0.7,
+            1,
+            1.3,
+            1.4,
+            1.7
+          ],
+          "high": [
+            4,
+            5,
+            6,
+            8,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wgii",
+      "url": "https://example.org/wgii",
+      "jointly": false,
+      "levels": [
+        1.5,
+        2,
+        3,
+        4,
+        5
+      ],
+      "rows": [
+        {
+          "id": "extinction",
+          "unit": "percent",
+          "ref": "Synthetic fixture",
+          "low": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "high": [
+            14,
+            18,
+            29,
+            39,
+            48
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sr15",
+      "url": "https://example.org/sr15",
+      "jointly": true,
+      "levels": [
+        1.5,
+        2
+      ],
+      "rows": [
+        {
+          "id": "coral",
+          "unit": "percent",
+          "ref": "Synthetic fixture",
+          "low": [
+            70,
+            99
+          ],
+          "high": [
+            90,
+            100
+          ]
+        },
+        {
+          "id": "arctic",
+          "unit": "perCentury",
+          "ref": "Synthetic fixture",
+          "mid": [
+            1,
+            10
+          ]
+        },
+        {
+          "id": "rangeInsects",
+          "unit": "percent",
+          "ref": "Synthetic fixture",
+          "mid": [
+            6,
+            18
+          ]
+        },
+        {
+          "id": "rangePlants",
+          "unit": "percent",
+          "ref": "Synthetic fixture",
+          "mid": [
+            8,
+            16
+          ]
+        },
+        {
+          "id": "rangeVertebrates",
+          "unit": "percent",
+          "ref": "Synthetic fixture",
+          "mid": [
+            4,
+            8
+          ]
+        },
+        {
+          "id": "fishery",
+          "unit": "megatonnes",
+          "ref": "Synthetic fixture",
+          "mid": [
+            1.5,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "heatwave",
+      "url": "https://example.org/heatwave",
+      "jointly": true,
+      "levels": [
+        1.5,
+        2
+      ],
+      "rows": [
+        {
+          "id": "heatwave",
+          "unit": "percent",
+          "ref": "Synthetic fixture",
+          "mid": [
+            14,
+            37
+          ],
+          "low": [
+            9,
+            32
+          ],
+          "high": [
+            18,
+            45
+          ]
+        }
+      ]
+    }
+  ]
+}

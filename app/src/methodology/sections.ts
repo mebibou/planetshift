@@ -7,6 +7,7 @@ const TAIL = [
   'literature',
   'climate',
   'link',
+  'impacts',
   'deeptime',
   'options',
   'assumptions',

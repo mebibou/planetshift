@@ -371,6 +371,7 @@
       "climate": "Climate",
       "link": "Causes of warming",
       "deeptime": "Deep time",
+      "impacts": "What the warming means",
       "options": "Options",
       "assumptions": "Assumptions",
       "limitations": "Limitations"
@@ -431,6 +432,115 @@
     "below": "below {level} even without the levers",
     "peak": "Peak warming with the levers: {value} in {year}.",
     "peakRising": "With the levers, warming is still rising in {year}: {value}."
+  },
+  "impacts": {
+    "title": "What the warming means",
+    "intro": "What the IPCC projects at the warming reached around {year}, averaged over 20 years. Between the levels of warming a source studied, values are interpolated linearly. Beyond them, the card says they were not assessed.",
+    "all": "All impacts, by source",
+    "futures": "{without} without the levers → {with} with them",
+    "futureSame": "{without} without the levers",
+    "impact": "Impact",
+    "baseline": "Without the levers",
+    "scenario": "With the levers",
+    "levels": "Assessed at {levels}",
+    "levelsOnly": "Assessed at {levels} only",
+    "above": "not assessed above {level}",
+    "below": "not assessed below {level}",
+    "atLeast": "≥ {value}",
+    "atLeastNote": "Above {level}, the source gives no value. This impact only grows with warming, so the card shows at least its value at {level}.",
+    "info": "About: {name}",
+    "assessed": "Assessed: {values}.",
+    "atLevel": "{value} at {level}",
+    "separator": "; ",
+    "range": "{name}: {parts}.",
+    "rangeWithout": "{range} without the levers",
+    "rangeWith": "{range} with them",
+    "note": "The ranges in the (i) are the sources' own, not the range of the warming. Economic damages, sea level and ocean acidity are left out.",
+    "more": "How it is read",
+    "units": {
+      "times": "{value}×",
+      "percent": "{value}%",
+      "perCentury": "{value} in 100",
+      "megatonnes": "{value} Mt"
+    },
+    "groups": {
+      "wgi": {
+        "title": "Extremes, times as often as in 1850–1900 (IPCC AR6 WGI)",
+        "range": "IPCC range, 5–95% of the models"
+      },
+      "wgii": {
+        "title": "Species (IPCC AR6 WGII)"
+      },
+      "sr15": {
+        "title": "Ecosystems and fisheries (IPCC SR1.5)"
+      },
+      "heatwave": {
+        "title": "Heatwaves (Dosio et al. 2018)",
+        "range": "The study's range of models"
+      }
+    },
+    "rows": {
+      "hot10": {
+        "label": "Heat extreme once in 10 years",
+        "note": "How many times as often a day as hot as the hottest of a typical 10 years in 1850–1900 comes over land. This is the median of the CMIP6 models.",
+        "short": "Once-in-10-year heat extremes, times as often"
+      },
+      "hot50": {
+        "label": "Heat extreme once in 50 years",
+        "note": "How many times as often a day as hot as the hottest of a typical 50 years in 1850–1900 comes over land. This is the median of the CMIP6 models.",
+        "short": "Once-in-50-year heat extremes, times as often"
+      },
+      "rain10": {
+        "label": "Heavy 1-day rain once in 10 years",
+        "note": "How many times as often the heaviest one-day rain of a typical 10 years in 1850–1900 falls over land. This is the median of the CMIP6 models.",
+        "short": "Heavy 1-day rain, times as often"
+      },
+      "drought10": {
+        "label": "Farm and ecological drought once in 10 years, in drying regions",
+        "note": "How many times as often a soil-moisture drought seen once in 10 years in 1850–1900 comes in the regions that are drying. This is the median of the CMIP6 models.",
+        "short": "Droughts in drying regions, times as often"
+      },
+      "extinction": {
+        "label": "Land species at very high risk of extinction",
+        "note": "The share of the tens of thousands of land species assessed that will likely face a very high risk of extinction (critically endangered, in IUCN terms). The IPCC gives a range, not a central value.",
+        "short": "Land species at very high risk of extinction"
+      },
+      "coral": {
+        "label": "Coral reefs lost, further decline",
+        "note": "The further decline of warm-water coral reefs. The IPCC gives more than 99% at 2 °C, shown as 99–100%.",
+        "short": "Coral reefs lost"
+      },
+      "arctic": {
+        "label": "Summers with an ice-free Arctic, out of 100",
+        "note": "Summers when the Arctic Ocean is free of sea ice: one a century at 1.5 °C, at least one a decade at 2 °C.",
+        "short": "Ice-free Arctic summers"
+      },
+      "rangeInsects": {
+        "label": "Insects losing over half their range",
+        "note": "Of 105,000 species studied, the share of insects projected to lose over half of the range their climate allows.",
+        "short": "Insects losing half their range"
+      },
+      "rangePlants": {
+        "label": "Plants losing over half their range",
+        "note": "Of 105,000 species studied, the share of plants projected to lose over half of the range their climate allows.",
+        "short": "Plants losing half their range"
+      },
+      "rangeVertebrates": {
+        "label": "Vertebrates losing over half their range",
+        "note": "Of 105,000 species studied, the share of vertebrates projected to lose over half of the range their climate allows.",
+        "short": "Vertebrates losing half their range"
+      },
+      "fishery": {
+        "label": "Sea fish catch lost each year",
+        "note": "The world's yearly marine fishery catch lost, in one global fishery model: about 1.5 million tonnes at 1.5 °C, more than 3 million tonnes at 2 °C.",
+        "short": "Sea fish catch lost each year"
+      },
+      "heatwave": {
+        "label": "People exposed to severe heatwaves at least once every 5 years",
+        "note": "The share of the world's people exposed to severe heatwaves at least once every 5 years, from one study (Dosio et al. 2018), not from the IPCC. It uses the same population (SSP3) at both levels.",
+        "short": "People exposed to severe heatwaves"
+      }
+    }
   },
   "download": {
     "button": "Download",
