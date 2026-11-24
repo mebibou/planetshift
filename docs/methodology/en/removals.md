@@ -16,7 +16,7 @@ The uptake of a practice is its rate per hectare times the hectares where it is 
 | Practice | Land | Median (likely range), t CO₂/ha/yr | Most of the land | Years at that rate |
 | --- | --- | --- | --- | --- |
 | Cover crops | cropland | 1.17 (0.6–2.0) in moist climates, 0.45 (0.2–0.8) in dry ones | 25% | 20 |
-| Trees on farms (agroforestry) | cropland and pasture | 9.4 (4.7–18.7) tropical moist, 6.5 tropical dry, 4.3 (2.2–8.7) temperate moist, 3.0 temperate dry | 5% | 20 |
+| Trees on farms (agroforestry) | cropland and pasture | 9.4 (4.7–18.7) tropical moist, 6.5 tropical dry, 4.3 (2.2–8.7) temperate moist, 3.0 temperate dry | 3% | 20 |
 | Biochar | cropland | 1.9 (0.6–4.9) everywhere | 20% | 100 (no saturation) |
 | Rock dust (enhanced weathering), experimental | cropland | 1.5 (0.3–2.7) tropical moist, 1.0 (0.2–1.8) temperate moist, 0.5 tropical dry, 0.4 temperate dry | 10% | 100 (no saturation) |
 
@@ -47,7 +47,7 @@ Trees on farms (agroforestry) means planting trees in fields of crops (silvoarab
 
 Cardinael et al. (2018) synthesised 542 observations into rates by system and climate. Averaged over silvoarable systems and silvopasture, trees and soil take up about 8.6 t of CO₂ per hectare a year in temperate climates. In the moist tropics, where the synthesis has silvoarable systems only, they take up 18.7 t; its means for the whole tropics rest mostly on dry Asian plots. Those rates are for the plots studied, which have a median of 1250 trees per hectare and a median age of 8 to 11 years, and grow fast. Systems adopted on a large scale have fewer trees. The median is therefore half the synthesis' mean. The low is a quarter of it, and the high is the mean itself. In dry climates the rate is 0.7 times the moist rate, the IPCC's ratio of tree growth in the dry tropics to the moist tropics.
 
-Planetshift takes 5% of cropland and pasture as a realistic maximum. On about 4.7 billion hectares of farmland, that comes to about 1.3 Gt of CO₂ a year. This lies between the cost-effective and the technical potentials of Roe et al. (2021) and of the IPCC's Sixth Assessment Report. For agroforestry, the IPCC report gives 0.8 (0.4–1.1) Gt CO₂-equivalent a year at up to \$100 a tonne, and 4.1 (0.3–9.4) technically.
+Planetshift takes 3% of cropland and pasture as a realistic maximum. On about 4.7 billion hectares of farmland, that comes to about 0.8 Gt of CO₂ a year. That is the economic potential the IPCC's Sixth Assessment Report gives for agroforestry: 0.8 (0.4–1.1) Gt CO₂-equivalent a year at up to \$100 a tonne. Its technical potential is 4.1 (0.3–9.4).
 
 ### Biochar
 
@@ -118,7 +118,7 @@ The values, with one line of reasoning for each, are in `pipeline/removals.csv`.
 
 - Rates are per hectare of land where the practice is adopted, in tonnes of CO₂ a year, median and likely range.
 - Cover crops: 0.32 t C/ha/yr in moist climates, a third of that gain in dry ones; at most a quarter of cropland; 20 years.
-- Trees on farms: half the mean of Cardinael et al. (2018) for silvoarable and silvopastoral systems, trees and soil together; dry climates 0.7 of moist; at most 5% of farmland; 20 years.
+- Trees on farms: half the mean of Cardinael et al. (2018) for silvoarable and silvopastoral systems, trees and soil together; dry climates 0.7 of moist; at most 3% of farmland; 20 years.
 - Biochar: 1 t/ha/yr, 0.65 t C/t, 80% kept after a century; at most a fifth of cropland; no saturation.
 - Rock dust, experimental: 1 t CO₂/ha/yr net in moist temperate croplands, between the field trials in Scotland (about 0.2) and the US Corn Belt (1.8 net of logistics), more in the tropics, less in dry croplands; at most a tenth of cropland, for rock supply; no saturation.
 - Each country takes one climate zone, that of most of its cropland.
