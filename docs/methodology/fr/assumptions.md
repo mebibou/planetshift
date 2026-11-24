@@ -150,9 +150,9 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 
 ## Bâtiments et industrie
 
-- **Le CO₂ direct des bâtiments et de l'industrie fait partie du CO₂ fossile de chaque SSP, rapporté à 2023** : 3,0 et 9,0 Gt de CO₂ (AIE). L'acier représente 28,9 % et le ciment 28,7 % de celui de l'industrie, chaque année et dans chaque scénario. Voir [Bâtiments et industrie](#method-industry).
+- **Le CO₂ direct des bâtiments et de l'industrie fait partie du CO₂ fossile de chaque SSP, rapporté à 2023** : 3,0 et 9,0 Gt de CO₂ (AIE). L'acier représente 28,9 %, le ciment 28,7 % et la chimie sans l'ammoniac 5,7 % de celui de l'industrie, chaque année et dans chaque scénario. Le CO₂ de l'ammoniac n'est réduit que par « Moins d'azote, mieux employé », du côté de la ferme. Voir [Bâtiments et industrie](#method-industry).
 - **Une pompe à chaleur économise le CO₂ de la chaudière × (1 − 1,49 kWh par kg évité × l'intensité du réseau après l'électricité renouvelable).** Voir [Bâtiments et industrie](#method-industry).
-- **L'acier et le ciment propres réduisent de 90 % et 80 % leur CO₂ direct à adoption complète**, moins 1,5 et 0,25 kWh d'électricité par kg évité sur le même réseau. La fabrication des équipements n'est pas comptée. Voir [Bâtiments et industrie](#method-industry).
+- **L'industrie propre réduit de 90 %, 80 % et 80 % le CO₂ direct de l'acier, du ciment et de la chimie à adoption complète**, moins 1,5, 0,25 et 1,9 kWh d'électricité par kg évité sur le même réseau. La fabrication des équipements n'est pas comptée. Voir [Bâtiments et industrie](#method-industry).
 
 ## Climat
 
@@ -207,6 +207,7 @@ Les autres sources sont sous CC BY 4.0, dans le domaine public, sous Open Govern
 - Les 0,85 Gt du transport maritime, lues seulement là où d'autres citent l'AIE, et la répartition de la route entre 60 % de passagers et 40 % de marchandises, que les parts de l'AIE encadrent (plus de 60 % pour les voitures et utilitaires, environ un tiers pour les camions) sans donner celle des utilitaires. Voir [Énergie et transports](#method-sectors).
 - Les 0,15–0,22 kWh/km d'une voiture électrique. Voir [Énergie et transports](#method-sectors).
 - Les baisses de l'acier et du ciment à adoption complète (90 %, 80 %) et l'électricité du ciment par kg évité, ainsi que les 3,0 Gt de CO₂ direct des bâtiments, lues seulement dans un résumé de recherche de la page de l'AIE. Voir [Bâtiments et industrie](#method-industry).
+- Les baisses médiane et basse de la chimie (80 %, 60 %), un jugement, et les 0,1 kWh/kg de sa voie par captage, pris des fours de cimenterie. Voir [Bâtiments et industrie](#method-industry).
 
 ### HESTIA n'a pas encore de produits animaux
 

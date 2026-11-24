@@ -59,16 +59,17 @@ describe('industry levers', () => {
     );
   });
 
-  it('clean industry cuts steel’s and cement’s share of industry, less their electricity', () => {
+  it('clean industry cuts steel’s, cement’s and chemicals’ share of industry, less their electricity', () => {
     const r = lever('cleanIndustry');
     const g = grid2035();
     const expected =
       at2035('industry') *
       (0.289 * 0.9 * (1 + supply('industry') - 1.5 * g * (1 + supply('electricity'))) +
-        0.287 * 0.8 * (1 + supply('industry') - 0.25 * g * (1 + supply('electricity'))));
+        0.287 * 0.8 * (1 + supply('industry') - 0.25 * g * (1 + supply('electricity'))) +
+        0.057 * 0.8 * (1 + supply('industry') - 1.9 * g * (1 + supply('electricity'))));
     expect(r.summary.avoided.co2).toBeCloseTo(expected, -6);
     expect(r.summary.avoided.co2).toBeLessThan(
-      0.576 * at2035('industry') * (1 + supply('industry')),
+      0.633 * at2035('industry') * (1 + supply('industry')),
     );
   });
 
@@ -89,7 +90,8 @@ describe('industry levers', () => {
     const clean = bySource(1);
     expect(clean.electricity).toBe(0);
     expect(clean.industry).toBeCloseTo(
-      -(0.289 * 0.9 + 0.287 * 0.8) * industryCo2(data.industry, 'ssp245', 'industry', 2040),
+      -(0.289 * 0.9 + 0.287 * 0.8 + 0.057 * 0.8) *
+        industryCo2(data.industry, 'ssp245', 'industry', 2040),
       0,
     );
     expect(clean.buildings).toBe(-industryCo2(data.industry, 'ssp245', 'buildings', 2040));

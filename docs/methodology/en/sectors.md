@@ -157,7 +157,7 @@ The response is linear around the scenario. This holds well for small changes. I
 
 ## Methane and air pollution that come with the fuel
 
-Burning coal, oil and gas emits more than CO₂. A lever that cuts fuel cuts all of these emissions along with the CO₂. Counting it raises the warming the energy levers avoid. All six in full avoid 0.263 °C in 2050 with it, against 0.205 °C counting CO₂ only. Of all the energy, heating and industry levers, only clean steel and cement, on the [Buildings and industry](#method-industry) page, avoid less when it is counted (0.016 °C instead of 0.025 in 2050).
+Burning coal, oil and gas emits more than CO₂. A lever that cuts fuel cuts all of these emissions along with the CO₂. Counting it raises the warming the energy levers avoid. All six in full avoid 0.263 °C in 2050 with it, against 0.205 °C counting CO₂ only. Of all the energy, heating and industry levers, only clean industry, on the [Buildings and industry](#method-industry) page, avoids less when it is counted (0.017 °C instead of 0.026 in 2050).
 
 What comes with the fuel:
 
@@ -330,16 +330,16 @@ Warming avoided in °C, median (likely range). Each lever is at 100% from 2026 t
 | Clean shipping | 0.006 (0.004–0.008) | 0.008 (0.005–0.013) | 0.021 (0.014–0.028) | 0.029 (0.019–0.043) |
 | Renewable electricity | 0.096 (0.070–0.128) | 0.105 (0.057–0.192) | 0.234 (0.157–0.331) | 0.279 (0.184–0.416) |
 | All six | 0.205 (0.129–0.323) | 0.263 (0.090–0.532) | 0.512 (0.316–0.810) | 0.646 (0.335–1.091) |
-| All six with clean heating, steel and cement | 0.257 (0.161–0.398) | 0.314 (0.110–0.643) | 0.692 (0.425–1.079) | 0.851 (0.453–1.426) |
+| All six with clean heating and clean industry | 0.260 (0.163–0.403) | 0.317 (0.111–0.649) | 0.703 (0.430–1.096) | 0.862 (0.458–1.445) |
 
 With every energy, heating and industry lever in full, two effects roughly cancel at first. The fuel's supply and methane are no longer emitted, which is a gain. The cooling the pollution masked is lost. After that, the gains are larger (median, °C, SSP2-4.5):
 
 | Year | Warming avoided, CO₂ only | Supply CO₂, methane and N₂O gain | Air pollution loss | Warming avoided, with |
 | --- | --- | --- | --- | --- |
 | 2030 | 0.012 | +0.004 | −0.014 | 0.003 |
-| 2040 | 0.129 | +0.064 | −0.067 | 0.126 |
-| 2050 | 0.257 | +0.123 | −0.066 | 0.314 |
-| 2100 | 0.692 | +0.196 | −0.037 | 0.851 |
+| 2040 | 0.131 | +0.064 | −0.068 | 0.127 |
+| 2050 | 0.260 | +0.124 | −0.067 | 0.317 |
+| 2100 | 0.703 | +0.197 | −0.038 | 0.862 |
 
 **The supply's CO₂** makes the largest difference. It adds about a tenth to every oil lever's CO₂, in every year: 0.150 kg per kg for road, 0.153 for aviation and shipping. It adds 8% to the electricity a lever cuts or draws.
 
@@ -349,7 +349,7 @@ With every energy, heating and industry lever in full, two effects roughly cance
 
 **Less flying, clean aviation fuel and clean heating** gain from the start: their fuel's supply outweighs the little SO₂ they cut.
 
-**Clean steel and cement** alone lose: 0.016 instead of 0.025 in 2050. Their plants emit SO₂, and the hydrogen route draws a lot of grid power.
+**Clean industry** alone loses: 0.017 instead of 0.026 in 2050. Its plants emit SO₂, and the hydrogen routes draw a lot of grid power.
 
 **Electric vehicles** gain. Their soot, their NOx's ozone and their fuel's supply stop straight away. The methane their NOx no longer destroys, about a quarter of FaIR's on land, builds up slowly over decades. Electric cars avoid, in 2050 and 2100:
 

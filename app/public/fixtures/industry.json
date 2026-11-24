@@ -1010,6 +1010,19 @@
         "low": 0.1,
         "high": 1
       }
+    },
+    "chemicals": {
+      "share": 0.057,
+      "cut": {
+        "median": 0.8,
+        "low": 0.6,
+        "high": 0.93
+      },
+      "kwhPerKgCo2": {
+        "median": 1.9,
+        "low": 0.1,
+        "high": 5.2
+      }
     }
   },
   "cementProcessCo2": {

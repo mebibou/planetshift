@@ -88,7 +88,7 @@ The cut a practice makes in a country is the adoption you set × the applicable 
 - 60% in upper-middle-income, 50% in high-income and lower-middle-income countries;
 - 20% in low-income countries and in western, eastern and middle Africa, where soils get too little nitrogen and better yields need more.
 
-**Caveats.** The making of inputs in `breakdown.json` also holds pesticides, machinery and plastics, which the practice does not reduce. Applying the same cut to all of it overstates the effect a little. Residues of the inhibitor DCD were found in milk in New Zealand in 2013, which stopped its use there. Inhibitors cost more than the fertiliser saved in most places, and work less in warm, dry soils.
+**Caveats.** The making of inputs in `breakdown.json` also holds pesticides, machinery and plastics, which the practice does not reduce. Applying the same cut to all of it overstates the effect a little. Ammonia, from which nitrogen fertiliser is made, is left out of Clean industry (see [Buildings and industry](#method-industry)), so the making of fertiliser is cut only here, in the cradle-to-farm-gate scope. Residues of the inhibitor DCD were found in milk in New Zealand in 2013, which stopped its use there. Inhibitors cost more than the fertiliser saved in most places, and work less in warm, dry soils.
 
 ## Clean farm energy
 
