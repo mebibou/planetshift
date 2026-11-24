@@ -9,9 +9,18 @@ export const LAYER_COLOURS: Record<Layer, string[]> = {
   emissions: ramp('seq-emissions', 7),
   land: ramp('seq-land', 7),
   deforestation: ramp('seq-deforestation', 7),
+  landCo2: ramp('diverging', 7),
   change: ramp('diverging', 7),
   quality: ramp('tier', 6),
 };
 
-export const scaleKind = (layer: Layer): 'sequential' | 'diverging' | 'quality' =>
-  layer === 'change' ? 'diverging' : layer === 'quality' ? 'quality' : 'sequential';
+export type ScaleKind = 'sequential' | 'diverging' | 'net' | 'quality';
+
+export const scaleKind = (layer: Layer): ScaleKind =>
+  layer === 'change'
+    ? 'diverging'
+    : layer === 'landCo2'
+      ? 'net'
+      : layer === 'quality'
+        ? 'quality'
+        : 'sequential';

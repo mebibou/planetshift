@@ -756,6 +756,14 @@ write('deforestation.json', {
   source: 'https://doi.org/10.5281/zenodo.10633818',
 });
 
+// net CO₂ from all land-use change, tonnes a year; a sink is negative, USA left without data
+write('landuse.json', {
+  byCountry: { BRA: 1.4e9, NGA: 6.0e7, IND: -5.0e7, FRA: -2.0e6 },
+  world: 5.0e9,
+  years: [2015, 2024],
+  source: 'Synthetic fixture',
+});
+
 // carbon stored in farmland, t CO₂ per ha a year
 const removal = (rate, appliesTo, maxShare, years) => ({
   rate: Object.fromEntries(

@@ -276,6 +276,7 @@ export const Explore = (props: ExploreProps) => {
             intensities={data.intensities}
             climate={data.climate}
             meta={data.meta}
+            landUse={data.landuse}
             currentYear={ctx.currentYear}
             folder={dataFolder(location.search)}
             files={__DATA_FILES__[dataFolder(location.search)] ?? []}

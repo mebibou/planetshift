@@ -260,6 +260,14 @@ export interface Enso {
   source: string;
 }
 
+/** landuse.json: net CO₂ from land-use change, t a year, negative for a net sink. */
+export interface LandUse {
+  byCountry: Record<string, number>;
+  world: number;
+  years: [number, number];
+  source: string;
+}
+
 /**
  * All files loaded together: the core's here, each lever module's added by its `data.ts`
  * (app/src/levers/<id>/data.ts), which also describes the file.
@@ -275,6 +283,8 @@ export interface ModelData {
   land: Land;
   /** Optional: a build without it leaves the temperature chart without El Niño marks. */
   enso?: Enso;
+  /** Optional: a build without it leaves the map's land-use CO₂ layer without data. */
+  landuse?: LandUse;
   /** Not a file: the build's departures from FaIR stand for it when it is unset. */
   departures?: Departures;
 }

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   colourScale,
   CHANGE_THRESHOLDS,
+  NET_THRESHOLDS,
   logThresholds,
   niceCeil,
   pickColours,
@@ -48,6 +49,7 @@ describe('scales', () => {
     expect(thresholdsFor('sequential', [], 7)).toEqual([]);
     expect(thresholdsFor('diverging', [-0.2, 0.1], 7)).toEqual(CHANGE_THRESHOLDS);
     expect(thresholdsFor('diverging', [-0.9], 7)).toEqual(CHANGE_THRESHOLDS);
+    expect(thresholdsFor('net', [-3e11, 1e12], 7)).toEqual(NET_THRESHOLDS);
   });
 
   it('maps values to colours by threshold', () => {
@@ -60,6 +62,7 @@ describe('scales', () => {
     expect([1, 2, 3, 4, 5, 6].map((t) => s(t))).toEqual(LAYER_COLOURS.quality);
     expect(scaleKind('quality')).toBe('quality');
     expect(scaleKind('change')).toBe('diverging');
+    expect(scaleKind('landCo2')).toBe('net');
   });
 
   it('spreads colours over fewer bins, keeping both ends', () => {

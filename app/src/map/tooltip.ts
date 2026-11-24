@@ -1,7 +1,14 @@
 import type { CountryResult } from '../model/api';
 import type { T } from '../i18n/i18n';
 import { formatArea, formatMass, formatPercent } from '../i18n/format';
-import { beforeAfter, farmland, relativeChange, type LayerSpec, type Measure } from './layers';
+import {
+  beforeAfter,
+  farmland,
+  relativeChange,
+  type LandUseCo2,
+  type LayerSpec,
+  type Measure,
+} from './layers';
 import { sourceInText, type TierSource } from './sources';
 
 export interface TooltipModel {
@@ -20,6 +27,7 @@ const FORMATS: Record<Measure, (locale: string, v: number) => string> = {
   land: formatArea,
   deforestation: formatArea,
   landShare: formatShare,
+  landCo2: formatMass,
 };
 
 /** A layer's quantity in its unit: tonnes of product, kg of gas, hectares, or a share of land. */
@@ -29,8 +37,13 @@ export const formatMeasure =
     FORMATS[kind](locale, v);
 
 /** The CO₂ the clearing releases, today and with the levers. */
-const clearingCo2Row = (c: CountryResult, t: T, locale: string): [string, string] => [
-  t('map.tooltip.deforestationCo2'),
+const clearingCo2Row = (
+  c: CountryResult,
+  t: T,
+  locale: string,
+  label = 'map.tooltip.deforestationCo2',
+): [string, string] => [
+  t(label),
   t('map.tooltip.beforeAfter', {
     before: formatMass(locale, c.deforestationCo2 ?? 0),
     after: formatMass(locale, (c.deforestationCo2 ?? 0) + (c.deforestationChange ?? 0)),
@@ -94,7 +107,35 @@ const MEASURE_TOOLTIPS: Record<
     what: (t) => t('map.tooltip.land'),
     extra: (c, t, locale) => ({ rows: landRows(c, t, locale) }),
   },
+  landCo2: {
+    what: (t) => t('map.tooltip.landCo2'),
+    extra: (c, t, locale) => ({ rows: [clearingCo2Row(c, t, locale, 'map.tooltip.clearing')] }),
+  },
 };
+
+/** Net land-use CO₂, which no lever changes, beside the clearing for farming the levers do. */
+const landCo2Tooltip = (
+  name: string,
+  c: CountryResult | undefined,
+  landUse: LandUseCo2,
+  spec: LayerSpec,
+  t: T,
+  locale: string,
+): TooltipModel => {
+  const own = MEASURE_TOOLTIPS.landCo2;
+  const net = c && landUse.get(c.iso3);
+  return c && net !== undefined
+    ? {
+        title: name,
+        rows: [[own.what(t, spec), formatMass(locale, net)], ...own.extra(c, t, locale, null).rows],
+      }
+    : noData(name, t);
+};
+
+const noData = (name: string, t: T): TooltipModel => ({
+  title: name,
+  rows: [[t('map.tooltip.noData'), '']],
+});
 
 /** A country's before and after numbers, then the measure's own rows. */
 const countryTooltip = (
@@ -131,7 +172,10 @@ export const tooltipModel = (
   t: T,
   locale: string,
   worst: TierSource | null = null,
+  landUse: LandUseCo2 = new Map(),
 ): TooltipModel =>
-  c
-    ? countryTooltip(name, c, spec, t, locale, worst)
-    : { title: name, rows: [[t('map.tooltip.noData'), '']] };
+  spec.layer === 'landCo2'
+    ? landCo2Tooltip(name, c, landUse, spec, t, locale)
+    : c
+      ? countryTooltip(name, c, spec, t, locale, worst)
+      : noData(name, t);

@@ -363,7 +363,15 @@ test('on a phone the contents open from a bar, reach the last link and close on 
 
 test('the map layers and tooltip work', async ({ page }) => {
   await open(page);
-  for (const layer of ['production', 'emissions', 'land', 'deforestation', 'quality', 'change']) {
+  for (const layer of [
+    'production',
+    'emissions',
+    'land',
+    'deforestation',
+    'landCo2',
+    'quality',
+    'change',
+  ]) {
     await page.locator(`label[for="layer-${layer}"]`).click();
     await expect(page).toHaveURL(
       layer === 'change' ? /^(?!.*layer=)/ : new RegExp(`layer=${layer}`),
@@ -1006,6 +1014,23 @@ test('the deforestation layer shows the forest cleared, with its CO₂ in the to
   await expect(tooltip).toContainText('ha');
   await expect(tooltip).toContainText('CO₂ from the clearing');
   await expect(tooltip).toContainText('Mt');
+  await expect(tooltip).not.toContainText('Least precise source');
+});
+
+test('the land-use CO₂ layer shows net CO₂, sinks included, the same with any lever', async ({
+  page,
+}) => {
+  await open(page, `${START}&shift=50`);
+  await page.locator('label[for="layer-landCo2"]').click();
+  await expect(page).toHaveURL(/layer=landCo2/);
+  await expect(page.locator('.legend-title')).toContainText('land-use change');
+  await expect(page.locator('.legend li').first()).toContainText('−100 Mt');
+  await expect(page.locator('.map-note')).toContainText('no lever changes it');
+  await expect(page.locator('path.country[data-iso3="USA"]')).not.toHaveClass(/has-data/);
+  await page.locator('path.country[data-iso3="IND"]').click();
+  const tooltip = page.locator('.map-frame .tooltip');
+  await expect(tooltip).toContainText('−50 Mt');
+  await expect(tooltip).toContainText('Of which clearing for farming');
   await expect(tooltip).not.toContainText('Least precise source');
 });
 

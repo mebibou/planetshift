@@ -100,6 +100,18 @@ describe('tooltip', () => {
     expect(m.source).toBeUndefined();
   });
 
+  it('shows net land-use CO₂ beside the clearing for farming the levers change', () => {
+    const landUse = new Map([['FRA', -2e9]]);
+    const c = countryResult({ deforestationCo2: 4e8, deforestationChange: -1e8 });
+    const m = tooltipModel('France', c, { ...spec, layer: 'landCo2' }, t, 'en-GB', null, landUse);
+    expect(m.rows.map(([k, v]) => [k, v.replace(/\u00a0/g, ' ')])).toEqual([
+      ['Net CO₂ from land-use change, a year', '−2 Mt'],
+      ['Of which clearing for farming, with the levers', '400 kt → 300 kt'],
+    ]);
+    const none = tooltipModel('France', c, { ...spec, layer: 'landCo2' }, t, 'en-GB');
+    expect(none.rows[0]?.[0]).toBe('No data for this country');
+  });
+
   it('says when a country has no data', () => {
     expect(tooltipModel('Chad', undefined, spec, t, 'en-GB').rows[0]?.[0]).toBe(
       'No data for this country',

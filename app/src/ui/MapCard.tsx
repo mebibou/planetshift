@@ -5,7 +5,7 @@ import { chartCsv, mapCsv, mapFileName, scenarioJson } from '../app/download';
 import { GROUP_CHOICES } from '../app/groups';
 import { tabKeys } from '../app/tabs';
 import { MAP_VIEWS, type UiState } from '../app/url';
-import type { Climate, Country, Intensities, Meta } from '../data/types';
+import type { Climate, Country, Intensities, LandUse, Meta } from '../data/types';
 import { formatPercent } from '../i18n/format';
 import type { T } from '../i18n/i18n';
 import { choropleth } from '../map/choropleth';
@@ -14,8 +14,10 @@ import {
   CHANGE_OF,
   GAS_CHOICES,
   LAYERS,
+  landUseCo2,
   layerValues,
   measureOf,
+  type LandUseCo2,
   type Layer,
   type LayerSpec,
   type Measure,
@@ -41,6 +43,7 @@ export interface MapCardProps {
   intensities: Intensities;
   climate: Climate;
   meta: Meta;
+  landUse?: LandUse | undefined;
   currentYear: number;
   /** The folder the data was read from, and its files with their sizes. */
   folder: string;
@@ -71,16 +74,17 @@ const paletteOf = (layer: Layer, values: ReadonlyMap<string, number | null>) => 
 type Palette = ReturnType<typeof paletteOf>;
 
 /** What each measure shows, for the legend's title. */
-const MEASURE_TITLES: Record<Measure, (t: T, ui: UiState) => string> = {
+const MEASURE_TITLES: Record<Measure, (t: T, ui: UiState, years: readonly number[]) => string> = {
   production: (t, ui) => t('map.legend.production', { group: t(`groups.${ui.group}`) }),
   emissions: (t, ui) => t('map.legend.emissions', { gas: t(`gases.${ui.gas}`) }),
   deforestation: (t) => t('map.legend.deforestation'),
   landShare: (t) => t('map.legend.landShare'),
   land: (t) => t('map.legend.land'),
+  landCo2: (t, _, [from, to]) => t('map.legend.landCo2', { from: from ?? '', to: to ?? '' }),
 };
 
-const legendTitleOf = (t: T, ui: UiState): string => {
-  const what = MEASURE_TITLES[measureOf(ui)](t, ui);
+const legendTitleOf = (t: T, ui: UiState, years: readonly number[]): string => {
+  const what = MEASURE_TITLES[measureOf(ui)](t, ui, years);
   return ui.layer === 'change'
     ? t('map.legend.change', { what })
     : ui.layer === 'quality'
@@ -121,7 +125,10 @@ const Legend = ({
 };
 
 /** Each country's row of the table, its name in `nameOf`'s language. */
-const useRows = (props: MapCardProps): ((nameOf: Map<string, string>) => TableRow[]) => {
+const useRows = (
+  props: MapCardProps,
+  landUse: LandUseCo2,
+): ((nameOf: Map<string, string>) => TableRow[]) => {
   const { countries, intensities, result, state } = props;
   const allNames = useMemo(
     () => new Map(countries.map((c) => [c.iso3, [c.name.en, c.name.fr, c.iso3]])),
@@ -133,6 +140,7 @@ const useRows = (props: MapCardProps): ((nameOf: Map<string, string>) => TableRo
       state.ui,
       (iso3) => ({ name: nameOf.get(iso3) ?? iso3, names: allNames.get(iso3) ?? [iso3] }),
       (c) => worstSource(intensities, c.iso3, state.options.scope),
+      landUse,
     );
 };
 
@@ -168,12 +176,15 @@ const sourcesOf = (
 };
 
 /** Paints the map from the result and the layer chosen, each time either changes. */
-const usePaint = (props: MapCardProps, names: Map<string, string>) => {
+const usePaint = (props: MapCardProps, names: Map<string, string>, landUse: LandUseCo2) => {
   const { t, locale, world, intensities, result, state } = props;
   const [map, mapRef] = useDrawn(() => choropleth(world, t('map.label')));
   const { ui } = state;
   const scope = state.options.scope;
-  const values = useMemo(() => layerValues(result?.countries ?? [], ui), [result, ui]);
+  const values = useMemo(
+    () => layerValues(result?.countries ?? [], ui, landUse),
+    [result, ui, landUse],
+  );
   const palette = useMemo(() => paletteOf(ui.layer, values), [ui.layer, values]);
   useEffect(() => {
     const byIso = new Map((result?.countries ?? []).map((c) => [c.iso3, c]));
@@ -190,9 +201,10 @@ const usePaint = (props: MapCardProps, names: Map<string, string>) => {
           t,
           locale,
           worstSource(intensities, iso3, scope),
+          landUse,
         ),
     });
-  }, [map, result, ui, values, palette, names, t, locale, intensities, scope]);
+  }, [map, result, ui, values, palette, names, t, locale, intensities, scope, landUse]);
   return { mapRef, palette };
 };
 
@@ -287,9 +299,10 @@ export const MapCard = (props: MapCardProps) => {
   );
   const [downloading, setDownloading] = useState(false);
   const card = useRef<HTMLElement>(null);
-  const rowsOf = useRows(props);
-  const { mapRef, palette } = usePaint(props, names);
-  const legendTitle = legendTitleOf(t, ui);
+  const landUse = useMemo(() => landUseCo2(props.landUse), [props.landUse]);
+  const rowsOf = useRows(props, landUse);
+  const { mapRef, palette } = usePaint(props, names, landUse);
+  const legendTitle = legendTitleOf(t, ui, props.landUse?.years ?? []);
   return (
     <section ref={card} className="card map-card" aria-labelledby="map-title">
       <h2 id="map-title" className="visually-hidden">

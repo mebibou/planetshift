@@ -81,7 +81,7 @@ The interface adds its own keys when they differ from their defaults (`src/app/u
 | Key | Values | Default |
 | --- | --- | --- |
 | `view` | `explore`, `methodology` | `explore` |
-| `layer` | `production`, `emissions`, `land`, `deforestation`, `change`, `quality` | `change` |
+| `layer` | `production`, `emissions`, `land`, `deforestation`, `landCo2`, `change`, `quality` | `change` |
 | `change` | `production`, `emissions`, `land` | `emissions` |
 | `group` | `all` or a food group | `all` |
 | `gas` | `co2e`, `co2`, `ch4`, `n2o` | `co2e` |
@@ -107,7 +107,7 @@ A link to a Methodology section, such as `?view=methodology#method-climate`, ope
 
 Every colour is a custom property in `src/styles.css`. It is defined for the light theme on `:root`, and again for the dark theme, under `prefers-color-scheme: dark` and under `[data-theme='dark']`, which the toggle sets. Charts and the map use them through CSS classes or `var(--…)` fills, so a theme change needs no redraw.
 
-The map's scales are single-hue sequential ramps, based on ColorBrewer: green for production, orange for emissions, brown for farmland, red-purple for deforestation and purple for data quality. Change uses a blue–grey–red diverging scale. In both themes darker means more, and a larger change is a deeper colour. The dark theme's ramps run from light to deep like the light theme's. They are made in OKLCH with even steps of lightness. The deepest step stops short of the page's background, so the largest values still stand out.
+The map's scales are single-hue sequential ramps, based on ColorBrewer: green for production, orange for emissions, brown for farmland, red-purple for deforestation and purple for data quality. Change uses a blue–grey–red diverging scale, and so does net land-use CO₂ (sinks blue, sources red, fixed bins at ±1, 10 and 100 Mt). In both themes darker means more, and a larger change is a deeper colour. The dark theme's ramps run from light to deep like the light theme's. They are made in OKLCH with even steps of lightness. The deepest step stops short of the page's background, so the largest values still stand out.
 
 The chart series and the causes pass the colour-blindness checks of the dataviz palette validator for neighbouring bands, in both themes. In stacking order, the causes are fossil fuels and industry in blue, farming in aqua, land use in orange, other human emissions in violet, natural factors in pink and air pollution in yellow. The summary's breakdown uses the same cause colours.
 
@@ -311,6 +311,8 @@ The CSV files are a stable machine format, whatever the page's language:
 Files are saved through a `Blob` and a temporary link with `download`. The builders are pure and tested in `test/ui/download.test.ts`.
 
 **The deforestation layer** colours each country by the forest area cleared for farming with the shift and the levers, in hectares a year (`deforestationHa`). It is not relative to anything. Its tooltip gives today's clearing, the clearing after, the change, and the CO₂ the clearing releases today and after. A country without clearing is shown with the countries without data ("No clearing or no data"). The layer reads the deforestation module's `deforestationCo2` and `deforestationChange`. This is the one place outside a module where the map names a lever's fields.
+
+**The land-use CO₂ layer** (`landCo2`) colours each country by its net CO₂ from all land-use change in `landuse.json`, in tonnes a year: forest cleared for any reason, peat drained and other changes, less regrowth, so a net sink is negative. No lever or shift changes it, as the model changes only clearing for farming and what freed or farmed land stores; the note says so, and the tooltip gives the net CO₂ beside the CO₂ of the deforestation module's clearing for farming, before and after the levers. The table shows its one value, under Today, for the countries the file has. Without `landuse.json` the layer has no data. It is not the Land use layer (`land`), which shows the share of each country's land that is farmed.
 
 ## Assumptions in the interface
 

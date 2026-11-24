@@ -66,18 +66,16 @@ export const layerSlug = (spec: LayerSpec): string => {
     .join('-');
 };
 
-export const unitOf = (measure: Measure, spec: LayerSpec): string =>
-  measure === 'production'
-    ? 't'
-    : measure === 'land'
-      ? 'ha'
-      : measure === 'landShare'
-        ? 'share of land area'
-        : measure === 'deforestation'
-          ? 'ha'
-          : spec.gas === 'co2e'
-            ? 'kg CO2e (GWP100)'
-            : `kg ${spec.gas.toUpperCase()}`;
+const UNITS: Record<Measure, (spec: LayerSpec) => string> = {
+  production: () => 't',
+  land: () => 'ha',
+  landShare: () => 'share of land area',
+  deforestation: () => 'ha',
+  landCo2: () => 'kg CO2',
+  emissions: (spec) => (spec.gas === 'co2e' ? 'kg CO2e (GWP100)' : `kg ${spec.gas.toUpperCase()}`),
+};
+
+export const unitOf = (measure: Measure, spec: LayerSpec): string => UNITS[measure](spec);
 
 export const MAP_HEADER = [
   'iso3',

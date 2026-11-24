@@ -195,6 +195,18 @@ The table shows what netting changes, on the real data with FaIR and SSP2-4.5 (s
 
 Under the full shift, 12 countries farm more land overall than before, 44 Mha together. Under the fish swap, 105 countries do, 18 Mha together. With regrowth off, nothing changes.
 
+## Land-use CO₂ by country
+
+The map's Land-use CO₂ layer, beside the Land use layer's share of land farmed, gives each country's net CO₂ from all land-use change: forest cleared for any reason, peat drained and other changes, less the uptake of forest regrowing on abandoned land. It is the Global Carbon Budget 2025's national estimate, the mean of its three bookkeeping models (BLUE, OSCAR and LUCE), averaged over 2015–2024. The world's comes to 5.03 Gt of CO₂ a year, the 5.0 ± 2.6 Gt the Global Carbon Budget gives for that decade; the three models give 5.75, 4.73 and 4.60.
+
+The countries of the model hold 5.01 Gt: 5.41 Gt from the 131 countries that release more than they take up and −0.39 Gt from the 46 net sinks. Brazil comes first (1.42 Gt), then Indonesia (0.84), the Democratic Republic of the Congo (0.61) and Russia (0.35). China is the largest sink (−0.19 Gt), with India (−0.07) and France (−0.03). The file has no figure for Bermuda, Hong Kong, Macao, New Caledonia, French Polynesia and Taiwan, which the map shows without data; the rest of the world total, a little land the source assigns to no country, stays in `world`.
+
+The CO₂ of clearing for farming is a part of it (the Deforestation layer shows its area): DeDuCE's clearing for the foods in the model, about 2.0 Gt (see [Deforestation](#method-deforestation)), roughly 40% of the net total. The rest (clearing for timber, mining or towns, peat drainage, other land-use change, less regrowth) is in the Land use band of the causes chart as one world series, RCMIP's land-use CO₂ (see [Causes of global warming](#method-link)), and on this layer by country. The model changes only the clearing for farming, through the shift and the deforestation lever, and what freed or farmed land stores, through regrowth and the carbon-in-farmland levers. So the layer is the same under any lever, and its note says so; its tooltip gives the clearing for farming beside it, before and after the levers. The two estimates are not subtracted country by country: DeDuCE amortises each clearing over five years and leaves peat drainage out, and the bookkeeping models count regrowth, so a country's clearing can be larger than its net land-use CO₂.
+
+The national inventories' LULUCF totals were not used: they count the uptake of managed forests, so they do not measure land-use change (see [Causes of global warming](#method-link)).
+
+`pipeline/planetshift_pipeline/landuse.py` reads each model's sheet and checks that its countries and the columns no country holds add up to its world total, every year (within 0.1%; they do within 10⁻⁷). Country names are matched to ISO3 codes by FAOSTAT's English names, then by `pipeline/landuse_names.csv`.
+
 ## Checks
 
 `pipeline/tests/test_land_validation.py` compares the built `land.json` with FAOSTAT and the literature:
@@ -242,3 +254,4 @@ The FAOSTAT land-use data the pipeline reads give 1.58 billion hectares of cropl
 - FAO (2000). Technical Conversion Factors for Agricultural Commodities (oil and cake per tonne of oilseed crushed): <https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology-systems/technical-conversion-factors-for-agricultural-commodities/en/>.
 - FAO (2025). Land statistics 2001–2023: global, regional and country trends. FAOSTAT Analytical Brief 107: <https://doi.org/10.4060/cd5765en>.
 - FAO (2023). Land statistics and indicators 2000–2021. FAOSTAT Analytical Brief 71 (pasture 3.2 and farmland 4.8 billion hectares in 2021, on an earlier release).
+- Global Carbon Project (2025). Supplemental data of Global Carbon Budget 2025, National Land Use Change Carbon Emissions 2025 v1.0 (BLUE, OSCAR and LUCE): <https://doi.org/10.18160/GCP-2025>, CC BY 4.0. Friedlingstein, P. et al. (2026). Global Carbon Budget 2025. Earth Syst. Sci. Data 18, 3211–3288.
