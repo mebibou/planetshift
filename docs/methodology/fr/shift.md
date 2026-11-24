@@ -57,7 +57,7 @@ Quand un pays ne mange aucun des produits d'une part du mélange, cette part sui
 
 ### Pourquoi le mélange par défaut se limite aux aliments riches en protéines
 
-Un mélange qui augmenterait tous les aliments végétaux de la même façon ferait monter les fruits de 80 %, les légumes de 74 %, et le sucre, la bière et les huiles végétales en proportion pour remplacer les protéines de la viande, alors qu'ils n'apportent presque pas de protéines. Les terres cultivées augmenteraient d'un quart avec un changement complet vers le végétal, contre une baisse d'un cinquième chez Poore et Nemecek (2018).
+Un mélange qui augmenterait tous les aliments végétaux du même facteur ferait monter les fruits de 88 % et les légumes de 74 % pour remplacer les protéines de la viande. Le sucre, la bière et les huiles végétales augmenteraient en proportion, alors qu'ils n'apportent presque pas de protéines. Les terres cultivées augmenteraient de près d'un quart avec un changement complet vers le végétal, contre une baisse d'un cinquième chez Poore et Nemecek (2018).
 
 Le remplacement se limite donc aux aliments qu'on mange pour leurs protéines, et les terres des tourteaux et du fourrage sont comptées (voir [Terres](#method-land)). Ensemble, ces deux choix transforment cette hausse en une baisse de 8 % à protéines égales et de 24 % à calories égales.
 

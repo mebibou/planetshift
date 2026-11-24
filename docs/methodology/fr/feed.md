@@ -54,7 +54,7 @@ production × concentrés par tonne × part de la classe dans la ration
 
 La valeur des concentrés par tonne dépend du niveau de revenu du pays. Un produit va ensuite aux groupes en proportion de la demande pour sa classe. Les produits d'une classe qu'aucune ration ne contient (fruits à coque, épices et viande, par exemple) suivent la répartition par espèce.
 
-Ces valeurs donnent des totaux mondiaux d'environ 1,2 milliard de tonnes d'aliments concentrés. C'est le même ordre de grandeur que la production mondiale d'aliments composés. Leur répartition entre espèces est proche de celle de la méthode 1.
+Ces valeurs donnent un total mondial d'environ 1,3 milliard de tonnes d'aliments concentrés. C'est le même ordre de grandeur que la production mondiale d'aliments composés. Leur répartition entre espèces est proche de celle de la méthode 1.
 
 ## Poissons et fruits de mer
 

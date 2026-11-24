@@ -47,13 +47,12 @@ Three modelling choices turn a rise in cropland into a fall. Each was tested on 
 
 | Change | Cropland under a full shift, protein kept |
 | --- | --- |
-| Every plant food scaled up alike, the oil carrying all its oilseed's land, no fodder | +378 Mha (+25%) |
-| Replacement by today's protein-rich plant foods only (cereals, rice, pulses, nuts, oilseeds) | +141 Mha |
-| Oilseed land shared between oil and cake by value, the cake's part freed with the animals | +36 Mha |
-| Temporary meadows counted as fodder for ruminants, and freed with them | −99 Mha (−6%) |
-| All three, as in the model, with every animal group's food production taken to zero and the animals not raised for food kept | −129 Mha (−8%) |
+| Every plant food scaled up by the same factor, the oil carrying all its oilseed's land, no fodder | +361 Mha (+23%) |
+| Replacement by today's protein-rich plant foods only (cereals, rice, pulses, nuts, oilseeds) | +122 Mha |
+| Oilseed land shared between oil and cake by value, the cake's part freed with the animals | +6 Mha |
+| Temporary meadows counted as fodder for ruminants, and freed with them. With all three, this is the model: every animal group's food production at zero, the animals not raised for food kept | −129 Mha (−8%) |
 
-- Scaling every plant food by the same factor to replace meat's protein would raise fruit by 80%, vegetables by 74%, and sugar, drinks and vegetable oils in proportion, although they bring almost no protein. More soybean oil would then mean more soybean fields. The default adds protein only to the plant foods eaten for it (see [The shift](#method-shift)). Restricting it further, to foods with at least 5% protein, gives about −2% before fodder. But that threshold is arbitrary. It drops rice (4.8%) and nuts, which are staples of plant protein in much of the world.
+- Scaling every plant food by the same factor to replace meat's protein would raise fruit by 88%, vegetables by 74%, and sugar, drinks and vegetable oils in proportion, although they bring almost no protein. More soybean oil would then mean more soybean fields. The default adds protein only to the plant foods eaten for it (see [The shift](#method-shift)). Restricting it further, to foods with at least 5% protein, gives about −2% before fodder. But that threshold is arbitrary. It drops rice (4.8%) and nuts, which are staples of plant protein in much of the world.
 - If the oilcakes carried no land, the soybean fields grown for meal could not be freed. Sharing by value is the usual practice in life-cycle studies. Sharing by mass would give the oil less land and the cake more (soybean oil 19% of the land instead of 37%), and a full shift would free a little more.
 - Fodder crops on arable land are counted through temporary meadows, the only fodder crop FAOSTAT still reports by area.
 
@@ -187,13 +186,13 @@ The table shows what netting changes, on the real data with FaIR, SSP2-4.5 and b
 
 | Scenario, regrowth on | Net uptake when complete (Gt CO₂ a year) | Avoided in 2050 (°C) | Avoided in 2100 (°C) |
 | --- | --- | --- | --- |
-| Full shift, before | 9.25 | 0.182 | 0.367 (0.194–0.765) |
-| Full shift, netted | 8.88 | 0.180 | 0.363 (0.194–0.750) |
-| Half shift, before → netted | 4.63 → 4.44 | 0.091 → 0.090 | 0.183 → 0.181 |
-| Dairy to plant milk, before → netted | 1.10 → 1.04 | 0.040 → 0.040 | 0.081 → 0.080 |
-| Half the fish to legumes, before → netted | 0.01 → −0.10 | 0.0005 → −0.0003 | 0.0015 → 0.0004 |
+| Full shift, before | 9.20 | 0.186 | 0.379 (0.196–0.836) |
+| Full shift, netted | 8.86 | 0.184 | 0.376 (0.196–0.822) |
+| Half shift, before → netted | 4.60 → 4.43 | 0.093 → 0.092 | 0.189 → 0.188 |
+| Dairy to plant milk, before → netted | 1.11 → 1.03 | 0.041 → 0.040 | 0.083 → 0.082 |
+| Half the fish to legumes, before → netted | 0.01 → −0.09 | 0.0006 → −0.0002 | 0.0017 → 0.0006 |
 
-Under the full shift, 14 countries farm more land overall than before, 41 Mha together. Under the fish swap, 105 countries do, 18 Mha together. With regrowth off, nothing changes.
+Under the full shift, 14 countries farm more land overall than before, 41 Mha together. Under the fish swap, 103 countries farm more land than before, 18 Mha together. With regrowth off, nothing changes.
 
 ## Land-use CO₂ by country
 

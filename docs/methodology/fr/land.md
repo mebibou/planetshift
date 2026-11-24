@@ -47,13 +47,12 @@ Trois choix de modélisation transforment une hausse des terres cultivées en ba
 
 | Changement | Terres cultivées avec un changement complet, à protéines égales |
 | --- | --- |
-| Tous les aliments végétaux augmentés de la même façon, l'huile portant toutes les terres de son oléagineux, pas de fourrage | +378 Mha (+25 %) |
-| Remplacement par les seuls végétaux riches en protéines d'aujourd'hui (céréales, riz, légumineuses, fruits à coque, oléagineux) | +141 Mha |
-| Terres des oléagineux partagées entre huile et tourteau selon leur valeur, la part du tourteau libérée avec les animaux | +36 Mha |
-| Prairies temporaires comptées comme fourrage des ruminants, et libérées avec eux | −99 Mha (−6 %) |
-| Les trois choix, comme dans le modèle, où la production alimentaire de chaque groupe animal tombe à zéro et où les animaux non élevés pour l'alimentation restent | −129 Mha (−8 %) |
+| Tous les aliments végétaux augmentés du même facteur, l'huile portant toutes les terres de son oléagineux, pas de fourrage | +361 Mha (+23 %) |
+| Remplacement par les seuls végétaux riches en protéines d'aujourd'hui (céréales, riz, légumineuses, fruits à coque, oléagineux) | +122 Mha |
+| Terres des oléagineux partagées entre huile et tourteau selon leur valeur, la part du tourteau libérée avec les animaux | +6 Mha |
+| Prairies temporaires comptées comme fourrage des ruminants, et libérées avec eux. Avec les trois choix, c'est le modèle : la production alimentaire de chaque groupe animal à zéro, les animaux non élevés pour l'alimentation gardés | −129 Mha (−8 %) |
 
-- Augmenter tous les aliments végétaux du même facteur pour remplacer les protéines de la viande ferait monter les fruits de 80 %, les légumes de 74 %, et le sucre, les boissons et les huiles végétales en proportion, alors qu'ils n'apportent presque pas de protéines. Plus d'huile de soja voudrait alors dire plus de champs de soja. Le remplacement par défaut n'ajoute des protéines qu'aux aliments végétaux qu'on mange pour elles (voir [Le changement](#method-shift)). Le restreindre davantage, aux aliments ayant au moins 5 % de protéines, donne environ −2 % avant le fourrage. Mais ce seuil est arbitraire. Il écarte le riz (4,8 %) et les fruits à coque, piliers des protéines végétales dans une grande partie du monde.
+- Augmenter tous les aliments végétaux du même facteur pour remplacer les protéines de la viande ferait monter les fruits de 88 %, les légumes de 74 %, et le sucre, les boissons et les huiles végétales en proportion, alors qu'ils n'apportent presque pas de protéines. Plus d'huile de soja voudrait alors dire plus de champs de soja. Le remplacement par défaut n'ajoute des protéines qu'aux aliments végétaux qu'on mange pour elles (voir [Le changement](#method-shift)). Le restreindre davantage, aux aliments ayant au moins 5 % de protéines, donne environ −2 % avant le fourrage. Mais ce seuil est arbitraire. Il écarte le riz (4,8 %) et les fruits à coque, piliers des protéines végétales dans une grande partie du monde.
 - Si les tourteaux ne portaient aucune terre, les champs de soja cultivés pour le tourteau ne pourraient pas être libérés. Le partage selon la valeur est la pratique habituelle des analyses de cycle de vie. Un partage selon la masse donnerait moins de terres à l'huile et plus au tourteau (l'huile de soja 19 % des terres au lieu de 37 %), et un changement complet en libérerait un peu plus.
 - Les cultures fourragères sur terres arables sont comptées par les prairies temporaires, la seule culture fourragère que FAOSTAT déclare encore en surface.
 
@@ -187,13 +186,13 @@ Le tableau montre ce que change la compensation, sur les données réelles avec 
 
 | Scénario, repousse activée | Absorption nette une fois complet (Gt de CO₂ par an) | Évité en 2050 (°C) | Évité en 2100 (°C) |
 | --- | --- | --- | --- |
-| Changement complet, avant | 9,25 | 0,182 | 0,367 (0,194–0,765) |
-| Changement complet, net | 8,88 | 0,180 | 0,363 (0,194–0,750) |
-| Moitié du changement, avant → net | 4,63 → 4,44 | 0,091 → 0,090 | 0,183 → 0,181 |
-| Lait végétal pour le lait, avant → net | 1,10 → 1,04 | 0,040 → 0,040 | 0,081 → 0,080 |
-| Moitié du poisson en légumineuses, avant → net | 0,01 → −0,10 | 0,0005 → −0,0003 | 0,0015 → 0,0004 |
+| Changement complet, avant | 9,20 | 0,186 | 0,379 (0,196–0,836) |
+| Changement complet, net | 8,86 | 0,184 | 0,376 (0,196–0,822) |
+| Moitié du changement, avant → net | 4,60 → 4,43 | 0,093 → 0,092 | 0,189 → 0,188 |
+| Lait végétal pour le lait, avant → net | 1,11 → 1,03 | 0,041 → 0,040 | 0,083 → 0,082 |
+| Moitié du poisson en légumineuses, avant → net | 0,01 → −0,09 | 0,0006 → −0,0002 | 0,0017 → 0,0006 |
 
-Avec le changement complet, 14 pays cultivent au total plus de terres qu'avant, 41 Mha ensemble. Avec la substitution du poisson, 105 pays, 18 Mha ensemble. Sans la repousse, rien ne change.
+Avec le changement complet, 14 pays cultivent au total plus de terres qu'avant, 41 Mha ensemble. Avec la substitution du poisson, 103 pays cultivent plus de terres qu'avant, 18 Mha ensemble. Sans la repousse, rien ne change.
 
 ## Le CO₂ de l'usage des terres par pays
 

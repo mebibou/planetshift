@@ -57,7 +57,7 @@ When a country eats none of the items in a part of the mix, that part follows th
 
 ### Why the default mix keeps to protein-rich foods
 
-A mix that scaled every plant food alike would raise fruit by 80%, vegetables by 74%, and sugar, beer and vegetable oils in proportion to replace the protein of meat, although they bring almost no protein. Cropland would rise by a quarter under a full plant-based shift, against a fall of a fifth in Poore and Nemecek (2018).
+A mix that scaled every plant food by the same factor would raise fruit by 88% and vegetables by 74% to replace the protein of meat. Sugar, beer and vegetable oils would rise in proportion, although they bring almost no protein. Cropland would rise by nearly a quarter under a full plant-based shift, against a fall of a fifth in Poore and Nemecek (2018).
 
 So the replacement keeps to the foods people eat for protein, and the land of oilcakes and fodder is counted (see [Land](#method-land)). Together, these turn that rise into a fall of 8% with protein kept and 24% with calories kept.
 

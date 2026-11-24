@@ -131,11 +131,11 @@ Les deux périmètres sont définis sur la page [Émissions par tonne d'aliment]
 
 | Gaz, à la ferme | Total mondial du modèle | Principales sources |
 | --- | --- | --- |
-| Méthane | 138 Mt | 71 % fermentation entérique (98 Mt), 16 % rizières (22 Mt), 7 % gestion des effluents (9 Mt), 5 % animaux non élevés pour l'alimentation (6 Mt), 2 % résidus de culture |
-| Protoxyde d'azote | 8,0 Mt | 46 % engrais organiques, c'est-à-dire les effluents au pâturage et sur les champs (3,7 Mt), 36 % engrais de synthèse (2,9 Mt), 8 % résidus, 6 % gestion des effluents, 3 % autres, 2 % animaux non élevés pour l'alimentation |
-| CO₂ | 139 Mt | l'urée (101 Mt) et, dans les autres, le chaulage (38 Mt) ; le carburant brûlé sur les fermes est compté du berceau à la sortie de ferme |
+| Méthane | 138 Mt | 71 % fermentation entérique (98 Mt), 15 % rizières (21 Mt), 7 % gestion des effluents (9 Mt), 5 % animaux non élevés pour l'alimentation (6 Mt), 2 % résidus de culture |
+| Protoxyde d'azote | 8,4 Mt | 48 % engrais organiques, c'est-à-dire les effluents au pâturage et sur les champs (4,0 Mt), 35 % engrais de synthèse (2,9 Mt), 7 % résidus, 5 % gestion des effluents, 3 % autres, 2 % animaux non élevés pour l'alimentation |
+| CO₂ | 152 Mt | l'urée (117 Mt) et, dans les autres, le chaulage (35 Mt) ; le carburant brûlé sur les fermes est compté du berceau à la sortie de ferme |
 
-Les totaux de FAOSTAT pour 2024 sont de 106, 25 et 10 Mt pour les trois premières sources de méthane. Du berceau à la sortie de ferme, le CO₂ monte à 1 688 Mt, dont 575 Mt pour le carburant (sa combustion sur les fermes et sa production), 332 Mt pour l'électricité, et 670 Mt pour la fabrication des intrants.
+Les totaux de FAOSTAT pour 2024 sont de 106, 25 et 10 Mt pour les trois premières sources de méthane. Du berceau à la sortie de ferme, le CO₂ monte à 1 881 Mt, dont 587 Mt pour le carburant (sa combustion sur les fermes et sa production), 332 Mt pour l'électricité, et 836 Mt pour la fabrication des intrants.
 
 ### Comment chaque niveau est réparti
 

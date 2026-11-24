@@ -1,6 +1,6 @@
 # Emissions per tonne of food
 
-To turn a change in production into a change in emissions, Planetshift needs to know how much each food emits. For every country and every food item, it holds the kilograms of carbon dioxide (CO₂), methane (CH₄) and nitrous oxide (N₂O) emitted per tonne produced: the item's emission intensity. FAOSTAT's estimates give two thirds of the world's farm emissions in the model. HESTIA gives a fifth, and published averages and stand-in values give the rest. Added up over the world, they come close to FAOSTAT's totals: 138.1 Mt of methane a year against 142.4 Mt.
+To turn a change in production into a change in emissions, Planetshift needs to know how much each food emits. For every country and every food item, it holds the kilograms of carbon dioxide (CO₂), methane (CH₄) and nitrous oxide (N₂O) emitted per tonne produced: the item's emission intensity. FAOSTAT's estimates give two thirds of the world's farm emissions in the model. HESTIA gives a fifth, and published averages and stand-in values give the rest. Added up over the world, they come close to FAOSTAT's totals: 137.7 Mt of methane a year against 142.4 Mt.
 
 The three gases are kept separate all the way to the climate model.
 
@@ -38,28 +38,28 @@ Every country in the model has a value for every item and both scopes, including
 
 The table counts the farm-gate country × item cells that each tier fills, by group, for the 187 countries and 90 items. The cradle-to-farm-gate scope is close.
 
-Only seafood needs tier 6: 278 of its 1,504 cells. Almost all are landlocked countries that import all their fish. Their balance lists an item that FishStat does not give them (see [Fish and seafood](#method-seafood)). For every other item, the published world averages of tier 4 cover what has no proxy.
+Only seafood needs tier 6: 272 of its 1,496 cells. Almost all are landlocked countries that import all their fish. Their balance lists an item that FishStat does not list for them (see [Fish and seafood](#method-seafood)). For every other item, the published world averages of tier 4 cover the cells that have no proxy.
 
 | Group | 1 | 2 | 3 | 4 | 5 | 6 |
 | --- | --- | --- | --- | --- | --- | --- |
-| cereals | 44 | 347 | 439 | 354 | 320 | 0 |
-| dairy | 0 | 0 | 169 | 19 | 376 | 0 |
-| eggs | 0 | 0 | 172 | 16 | 0 | 0 |
-| fruit | 31 | 363 | 727 | 947 | 0 | 0 |
-| nuts | 3 | 0 | 100 | 85 | 0 | 0 |
-| oilCrops | 39 | 722 | 388 | 1225 | 1950 | 0 |
-| otherPlant | 0 | 0 | 155 | 0 | 1349 | 0 |
-| pigMeat | 0 | 0 | 286 | 45 | 45 | 0 |
-| poultryMeat | 0 | 0 | 168 | 20 | 0 | 0 |
-| pulses | 16 | 0 | 294 | 254 | 0 | 0 |
-| rice | 11 | 0 | 95 | 82 | 0 | 0 |
-| rootsTubers | 8 | 182 | 282 | 110 | 358 | 0 |
-| ruminantMeat | 0 | 0 | 542 | 67 | 143 | 0 |
-| seafood | 0 | 0 | 0 | 1018 | 208 | 278 |
-| stimulants | 8 | 0 | 120 | 436 | 0 | 0 |
-| sugarCrops | 12 | 364 | 0 | 188 | 376 | 0 |
-| vegetables | 12 | 0 | 451 | 101 | 0 | 0 |
-| All | 184 | 1978 | 4388 | 4967 | 5125 | 278 |
+| cereals | 69 | 328 | 431 | 351 | 317 | 0 |
+| dairy | 0 | 0 | 171 | 16 | 374 | 0 |
+| eggs | 2 | 0 | 170 | 15 | 0 | 0 |
+| fruit | 37 | 358 | 650 | 1012 | 0 | 0 |
+| nuts | 4 | 183 | 0 | 0 | 0 | 0 |
+| oilCrops | 50 | 891 | 327 | 1215 | 1818 | 0 |
+| otherPlant | 0 | 0 | 154 | 0 | 1342 | 0 |
+| pigMeat | 0 | 0 | 285 | 47 | 42 | 0 |
+| poultryMeat | 0 | 0 | 167 | 20 | 0 | 0 |
+| pulses | 28 | 0 | 287 | 246 | 0 | 0 |
+| rice | 13 | 174 | 0 | 0 | 0 | 0 |
+| rootsTubers | 16 | 177 | 286 | 110 | 346 | 0 |
+| ruminantMeat | 0 | 0 | 542 | 64 | 142 | 0 |
+| seafood | 0 | 0 | 0 | 1014 | 210 | 272 |
+| stimulants | 9 | 0 | 123 | 429 | 0 | 0 |
+| sugarCrops | 14 | 360 | 0 | 187 | 374 | 0 |
+| vegetables | 19 | 180 | 271 | 91 | 0 | 0 |
+| All | 261 | 2651 | 3864 | 4817 | 4965 | 272 |
 
 Weighted by emissions rather than cells, FAOSTAT (tier 3) gives two thirds of the world's farm-gate emissions in the model, HESTIA (tiers 1 and 2) a fifth, and published averages and proxies the rest. Tiers 4 and 5 fill mostly items that a country does not produce, and processed products.
 
@@ -107,7 +107,7 @@ This scope adds three FAOSTAT sources:
 
 The emissions of each item are divided by its production in the Food Balance Sheets: per tonne of milled rice, of whole-milk equivalent, or of carcass.
 
-Some intensities are more than 20 times the item's production-weighted world median (in CO₂-equivalent). Such a value points to a mismatch between FAOSTAT's emissions and the balance's production, usually a crop with a large area and a small recorded output. It is not used, and the cell falls to the next tier. This applies to 93 of about 5,600 values, mostly cassava, yams, plantains, cocoa and "other meat".
+Some intensities are more than 20 times the item's production-weighted world median (in CO₂-equivalent). Such a value points to a mismatch between FAOSTAT's emissions and the balance's production. The emissions are counted against a small recorded output. The value is not used, and the cell falls to the next tier. This applies to 73 of about 5,600 values, mostly "other meat" and pig meat.
 
 ## Processed products are counted once
 
@@ -206,12 +206,12 @@ The threshold moves the baseline, but it hardly moves the effect of a shift. A h
 
 | Offtake threshold | Non-food baseline, Mt CO₂e | India | Niger | Ethiopia | Mali | Full shift: emissions avoided, Gt CO₂e | Full shift: warming avoided in 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 6.7% (southern Africa, used) | 211 | 113 | 18.1 | 6.9 | 1.1 | 5.12 | 0.271 |
-| 9% (median) | 245 | 113 | 19.4 | 26.0 | 4.0 | 5.08 | 0.268 |
-| 9.9% (mean) | 257 | 113 | 19.8 | 31.1 | 5.1 | 5.07 | 0.267 |
-| 12% (pastoral systems) | 285 | 113 | 20.4 | 39.9 | 7.1 | 5.04 | 0.266 |
+| 6.7% (southern Africa, used) | 211 | 113 | 18.1 | 6.9 | 1.1 | 5.17 | 0.281 |
+| 9% (median) | 245 | 113 | 19.4 | 26.0 | 4.0 | 5.12 | 0.278 |
+| 9.9% (mean) | 257 | 113 | 19.8 | 31.1 | 5.1 | 5.11 | 0.277 |
+| 12% (pastoral systems) | 285 | 113 | 20.4 | 39.9 | 7.1 | 5.08 | 0.275 |
 
-A half shift avoids half as much (2.51 to 2.56 Gt CO₂e, 0.133 to 0.135 °C). The likely range that the app shows covers only the climate response, not this choice.
+A half shift avoids half as much (2.53 to 2.58 Gt CO₂e, 0.137 to 0.140 °C). The likely range that the app shows covers only the climate response, not this choice.
 
 ### Limits of the rule
 
@@ -293,17 +293,17 @@ A test recomputes world emissions from the built files and compares them with FA
 
 | | Planetshift, test | FAOSTAT | Tolerance | Planetshift with the oilcakes, as the app counts |
 | --- | --- | --- | --- | --- |
-| Farm gate, CH₄ (Mt) | 138.1 | 142.4 | 10% | 138.4 |
-| Farm gate, N₂O (Mt) | 8.01 | 7.32 | 20% | 8.12 |
-| Cradle to farm gate, CH₄ (Mt) | 140.6 | 142.9 | 10% | 141.1 |
-| Cradle to farm gate, N₂O (Mt) | 8.14 | 7.61 | 20% | 8.26 |
-| Cradle to farm gate, CO₂ (Mt) | 1,688 | 1,322 | 50% | 1,741 |
+| Farm gate, CH₄ (Mt) | 137.7 | 142.4 | 10% | 137.8 |
+| Farm gate, N₂O (Mt) | 8.39 | 7.32 | 20% | 8.53 |
+| Cradle to farm gate, CH₄ (Mt) | 142.0 | 142.9 | 10% | 142.4 |
+| Cradle to farm gate, N₂O (Mt) | 8.71 | 7.61 | 20% | 8.86 |
+| Cradle to farm gate, CO₂ (Mt) | 1,881 | 1,322 | 50% | 1,941 |
 
 ### How the check is computed
 
 `pipeline/tests/test_validation.py` sums intensity × (production − processing) over every country and item, and adds the animals not raised for food.
 
-The test leaves out the oilcakes' emissions, which the model adds to each country's farm emissions (`oilcake` in `intensities.json`, see *Oils and their cake* above): 0.14 Mt of methane, 0.10 Mt of N₂O and 20 Mt of CO₂ a year at the farm gate, and 0.29 Mt, 0.11 Mt and 54 Mt from cradle to farm gate. The last column of the table adds them. It gives the world's emissions in the base year in a run of the model with no lever. Without the oilcakes, these totals are within 0.2% of the test's.
+The test leaves out the oilcakes' emissions, which the model adds to each country's farm emissions (`oilcake` in `intensities.json`, see *Oils and their cake* above): 0.16 Mt of methane, 0.14 Mt of N₂O and 8.5 Mt of CO₂ a year at the farm gate, and 0.35 Mt, 0.15 Mt and 60 Mt from cradle to farm gate. The last column of the table adds them. That column gives the world's emissions in the base year in a run of the model with no lever. Without the oilcakes, these totals are within 0.1% of the test's.
 
 From FAOSTAT's data alone (tier 3 everywhere, before the other tiers are merged), the allocation recovers 99% of FAOSTAT's farm-gate methane and 97% of its N₂O, with the animals not raised for food. What is missing is non-food crops and countries outside the model. The mixed tiers move the totals a few percent either way, because HESTIA and published LCA studies use other methods. CO₂ differs most because HESTIA's scopes count some CO₂ (urea, lime, machinery) that FAOSTAT files elsewhere.
 
@@ -313,15 +313,15 @@ Farm-gate methane is within the published budgets. Enteric fermentation and manu
 
 FAO's farm-gate total for 2023 is 8.1 Gt CO₂-equivalent (FAOSTAT Analytical Brief 115). It includes drained organic soils, which Planetshift leaves out, and the farm's energy use, fuel and electricity, which Planetshift counts from cradle to farm gate only.
 
-Direct agricultural N₂O was 6.1 Mt in 2020 (3.9 Tg N, Tian et al., 2024). Planetshift's 8.0 Mt also holds indirect emissions, as FAOSTAT's does.
+Direct agricultural N₂O was 6.1 Mt in 2020 (3.9 Tg N, Tian et al., 2024). Planetshift's 8.4 Mt also includes indirect emissions, as FAOSTAT's figure does.
 
 ### Rice methane
 
-Rice methane is 22.6 Mt in the model, against 25.3 Mt in FAOSTAT for 2024 and 32 (25–37) Tg in the Global Methane Budget. Most of the gap is India.
+Rice methane is 20.8 Mt in the model, against 25.3 Mt in FAOSTAT for 2024 and 32 (25–37) Tg in the Global Methane Budget. Most of the gap is India.
 
 India's intensity is HESTIA's (tier 1): 16.7 kg of methane from flooding per tonne of paddy, and 17.1 kg with the rest. FAOSTAT's is 24.5 kg (5.33 Mt over 217.9 Mt of paddy). Both are per tonne of paddy, the unit the balance uses for rice, so the gap is not a conversion error. Per hectare, HESTIA gives about 72 kg of methane and FAOSTAT about 106.
 
-HESTIA's model applies the IPCC's 2019 Refinement to the water regimes and amendments of its Indian rice data. FAOSTAT applies the IPCC's Tier 1 method with its own assumptions on water regimes. The difference is one of method, so the HESTIA value is kept as the better-documented tier. With FAOSTAT's intensity for India, the world total would be about 24.1 Mt.
+HESTIA's model applies the IPCC's 2019 Refinement to the water regimes and amendments of its Indian rice data. FAOSTAT applies the IPCC's Tier 1 method with its own assumptions on water regimes. The difference is one of method, so the model keeps the HESTIA value, which is better documented. With FAOSTAT's intensity for India, the world total would be about 22.5 Mt.
 
 ### Per kilogram, against Poore and Nemecek
 
@@ -330,16 +330,16 @@ Our World in Data shows Poore and Nemecek's (2018) emissions per kilogram of foo
 | Item | Planetshift | Poore and Nemecek, farm stage |
 | --- | --- | --- |
 | Beef | 24.6 | 21.9 (dairy herd) to 56.2 (beef herd) |
-| Sheep and goat meat | 21.4 | 27.0 |
+| Sheep and goat meat | 21.2 | 27.0 |
 | Pig meat | 1.68 | 2.48 |
 | Poultry meat | 0.87 | 0.93 |
-| Eggs | 0.82 | 1.32 |
-| Milk | 1.19 | 1.51 |
-| Rice | 1.07 per kg of paddy, 1.6 per kg milled | 3.55 |
-| Wheat | 0.46 | 0.82 |
-| Maize | 0.38 | 0.72 |
+| Eggs | 0.77 | 1.32 |
+| Milk | 1.18 | 1.51 |
+| Rice | 1.17 per kg of paddy, 1.8 per kg milled | 3.55 |
+| Wheat | 0.49 | 0.82 |
+| Maize | 0.37 | 0.72 |
 | Potatoes | 0.13 | 0.19 |
-| Peas | 0.46 | 0.72 |
+| Peas | 0.40 | 0.72 |
 
 Planetshift is lower for every item, by a third to a half for most, and beef lies between their two herds. Three differences explain most of it. Planetshift weighs methane and N₂O with AR6's factors (27 and 273), and Poore and Nemecek with AR5's with climate-carbon feedbacks (34 and 298). Their data are a meta-analysis of studies from around 2010, and Planetshift's come from FAOSTAT's IPCC Tier 1 method and HESTIA. And the units differ: Planetshift's meat is in carcass weight. Rice is furthest apart, for the reasons above and because their paddy emissions come from field measurements.
 
