@@ -23,12 +23,15 @@ const TOUR = '@tour';
 test.beforeEach(async ({ page }, testInfo) => {
   errors = [];
   // The guided start opens on a first visit; every test but its own starts as a returning reader.
-  if (!testInfo.tags.includes(TOUR))
+  if (!testInfo.tags.includes(TOUR)) {
     await page.context().addInitScript(() => localStorage.setItem('planetshift.tour', 'seen'));
+  }
   // The Lato font comes from Google Fonts with display=swap: offline, the page falls back to the
   // system font, so a failed font request is not an error of the app.
   page.on('console', (m) => {
-    if (m.type() === 'error' && !FONT_HOSTS.test(m.location().url)) errors.push(m.text());
+    if (m.type() === 'error' && !FONT_HOSTS.test(m.location().url)) {
+      errors.push(m.text());
+    }
   });
   page.on('pageerror', (e) => errors.push(e.message));
 });
@@ -47,7 +50,9 @@ const open = async (page: Page, url = START) => {
 /** Opens the Diet group, closed at first like every group, to reach its controls. */
 const openDiet = async (page: Page) => {
   const diet = page.locator('details[data-group="diet"]');
-  if ((await diet.getAttribute('open')) === null) await diet.locator('> summary').click();
+  if ((await diet.getAttribute('open')) === null) {
+    await diet.locator('> summary').click();
+  }
 };
 
 const summaryText = async (page: Page) =>
@@ -77,8 +82,9 @@ test('draws a path for every fixture country', async ({ page, request }) => {
     iso3: string;
   }[];
   await open(page);
-  for (const c of countries)
+  for (const c of countries) {
     await expect(page.locator(`path.country[data-iso3="${c.iso3}"]`)).toHaveCount(1);
+  }
   await expect(page.locator('path.country.has-data')).toHaveCount(countries.length);
 });
 
@@ -294,7 +300,9 @@ test('Methodology renders its sections with a table of contents', async ({ page 
   expect(count).toBeGreaterThanOrEqual(2);
   await expect(page.locator('.toc-item > a')).toHaveCount(count);
   await expect(sections.first()).toHaveAttribute('data-section', 'overview');
-  if (await page.locator('.toc-toggle').isVisible()) await page.locator('.toc-toggle').click();
+  if (await page.locator('.toc-toggle').isVisible()) {
+    await page.locator('.toc-toggle').click();
+  }
   await page.locator('.toc-item > a').last().click();
   await expect(page).toHaveURL(/#method-/);
   await noHorizontalScroll(page);
@@ -314,7 +322,9 @@ test('a link to a Methodology section opens on its heading, below the header', a
     .toBeGreaterThanOrEqual(await below());
   await page.locator('.site-nav a[data-view="explore"]').click();
   await page.locator('.site-nav a[data-view="methodology"]').click();
-  if (await page.locator('.toc-toggle').isVisible()) await page.locator('.toc-toggle').click();
+  if (await page.locator('.toc-toggle').isVisible()) {
+    await page.locator('.toc-toggle').click();
+  }
   await page.locator('.toc-item > a[href="#method-options"]').click();
   await expect(page).toHaveURL(/view=methodology&data=fixtures#method-options$/);
   const options = page.locator('#method-options > :first-child');
@@ -373,7 +383,9 @@ test('a tap pins the map tooltip inside the frame and a tap outside dismisses it
   await open(page);
   const tooltip = page.locator('.map-frame .tooltip');
   for (const country of await page.locator('path.country.has-data').all()) {
-    if (!(await country.isVisible())) continue;
+    if (!(await country.isVisible())) {
+      continue;
+    }
     await country.tap();
     await expect(tooltip).toBeVisible();
     const [tip, frame] = [
@@ -620,8 +632,9 @@ test('the Levers section opens and each family’s slider changes the summary an
     });
   }
   await expect(page.locator('.lever-breakdown')).toBeVisible();
-  for (const [family] of LEVER_FAMILIES)
+  for (const [family] of LEVER_FAMILIES) {
     await expect(page.locator(`.breakdown-row[data-family="${family}"]`).first()).toBeVisible();
+  }
   await expect(page.locator('.breakdown-cause').first()).toHaveAttribute(
     'data-cause',
     'fossilIndustry',
@@ -801,8 +814,9 @@ test('the panel is in groups, all closed, under their causes, with the time sett
     ...['practices', 'waste', 'deforestation', 'removals', 'energy', 'industry'].map(
       (m) => `levers-${m}`,
     ),
-  ])
+  ]) {
     await expect(page.locator(`details[data-group="${id}"]`)).not.toHaveAttribute('open');
+  }
   await expect(page.locator('details[data-group="options"]')).not.toHaveAttribute('open');
   const time = page.locator('.panel > *').first();
   await expect(time).toHaveClass('time-settings');
@@ -969,8 +983,11 @@ test('the chart opens the page and comes before the controls in the reading orde
     ),
   ).toBe(4);
   const panel = await box('.panel');
-  if (page.viewportSize()!.width <= 860) expect(panel.top).toBeGreaterThanOrEqual(chart.bottom);
-  else expect(panel.top).toBeLessThan(chart.bottom);
+  if (page.viewportSize()!.width <= 860) {
+    expect(panel.top).toBeGreaterThanOrEqual(chart.bottom);
+  } else {
+    expect(panel.top).toBeLessThan(chart.bottom);
+  }
 });
 
 test('the deforestation layer shows the forest cleared, with its CO₂ in the tooltip', async ({
@@ -1043,7 +1060,9 @@ const readDownload = async (page: Page, click: () => Promise<void>) => {
   const [download] = await Promise.all([page.waitForEvent('download'), click()]);
   const stream = await download.createReadStream();
   const chunks: Buffer[] = [];
-  for await (const chunk of stream) chunks.push(chunk as Buffer);
+  for await (const chunk of stream) {
+    chunks.push(chunk as Buffer);
+  }
   const bytes = Buffer.concat(chunks);
   return { name: download.suggestedFilename(), text: bytes.toString('utf8'), bytes };
 };
@@ -1210,18 +1229,21 @@ test('a cause’s pair sets every group under it, and the all-levers pair every 
   );
   await quick(page, 'agriculture', 'full').click();
   await expect(page).toHaveURL(/shift=100/);
-  for (const scope of ['diet', 'practices', 'waste', 'agriculture'])
+  for (const scope of ['diet', 'practices', 'waste', 'agriculture']) {
     expect(await pressed(page, scope)).toBe('full');
-  for (const scope of ['energy', 'deforestation', 'fossilIndustry', 'landUse'])
+  }
+  for (const scope of ['energy', 'deforestation', 'fossilIndustry', 'landUse']) {
     expect(await pressed(page, scope)).toBe('zero');
+  }
   expect(await pressed(page, 'all')).toBe('mixed');
   await expect(page.locator('.panel details.group[open]')).toHaveCount(0);
 
   await expect(quick(page, 'all', 'full')).toHaveAccessibleName('Set all levers to 100%');
   await quick(page, 'all', 'full').click();
   await expect(page).toHaveURL(/ev=100/);
-  for (const scope of ['all', 'fossilIndustry', 'agriculture', 'landUse', 'removals', 'industry'])
+  for (const scope of ['all', 'fossilIndustry', 'agriculture', 'landUse', 'removals', 'industry']) {
     expect(await pressed(page, scope)).toBe('full');
+  }
   await page.waitForTimeout(1000);
   expect(await order()).toEqual(before);
   await quick(page, 'all', 'zero').click();

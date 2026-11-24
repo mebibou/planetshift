@@ -22,7 +22,7 @@ const Tour = lazy(() => import('./ui/Tour').then((m) => ({ default: m.Tour })));
 const entry = parseEntry(
   document.querySelector('meta[name="planetshift:entry"]')?.getAttribute('content'),
 );
-if (entry)
+if (entry) {
   history.replaceState(
     null,
     '',
@@ -30,6 +30,7 @@ if (entry)
       withEntryView(location.search, entry) +
       location.hash,
   );
+}
 
 const element = document.getElementById('app');
 /** The pre-rendered page stays on screen until the app has drawn its own. */
@@ -78,12 +79,13 @@ if (element) {
     theme: effectiveTheme(readStoredTheme(), prefersDark()),
   };
   // A snapshot of another view (Explore's, served for `/?view=methodology`) would mislead.
-  if (!prerendered || entry?.view !== initial.ui.view)
+  if (!prerendered || entry?.view !== initial.ui.view) {
     root.render(
       <p className="loading" role="status">
         {t('load.loading')}
       </p>,
     );
+  }
   const app = (loaded: Loaded | null) =>
     root.render(
       <StartError
@@ -110,7 +112,9 @@ if (element) {
   data.then(
     (loaded) => {
       current = loaded;
-      if (shown) app(loaded);
+      if (shown) {
+        app(loaded);
+      }
     },
     (e: unknown) =>
       root.render(

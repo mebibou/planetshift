@@ -9,5 +9,5 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
   reactHooks.configs.flat['recommended-latest'],
-  { rules: { complexity: ['error', 6] } },
+  { rules: { complexity: ['error', 6], curly: ['error', 'all'] } },
 );

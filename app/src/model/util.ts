@@ -43,13 +43,19 @@ export const mapVector = (v: ItemVector, f: (value: number, index: number) => nu
 export const addVectors = (first: ItemVector, ...rest: readonly ItemVector[]): ItemVector => {
   const out = Float64Array.from(first);
   const n = out.length;
-  for (const v of rest) for (let i = 0; i < n; i++) out[i] = (out[i] as number) + (v[i] as number);
+  for (const v of rest) {
+    for (let i = 0; i < n; i++) {
+      out[i] = (out[i] as number) + (v[i] as number);
+    }
+  }
   return out;
 };
 
 export const dot = (a: ItemVector, b: ItemVector): number => {
   let acc = 0;
-  for (let i = 0; i < a.length; i++) acc += (a[i] as number) * (b[i] as number);
+  for (let i = 0; i < a.length; i++) {
+    acc += (a[i] as number) * (b[i] as number);
+  }
   return acc;
 };
 
@@ -107,7 +113,9 @@ export const valueAt = (
 
 /** The value kept in `map` for `key`, computed and kept the first time it is asked for. */
 export const cachedIn = <K extends object, V>(map: WeakMap<K, V>, key: K, compute: () => V): V => {
-  if (!map.has(key)) map.set(key, compute());
+  if (!map.has(key)) {
+    map.set(key, compute());
+  }
   return map.get(key) as V;
 };
 
@@ -116,10 +124,14 @@ export const memoPer = <O extends object, V>() => {
   const store = new WeakMap<O, Map<string, V>>();
   return (owner: O, key: string, compute: () => V): V => {
     const byKey = store.get(owner) ?? new Map<string, V>();
-    if (!store.has(owner)) store.set(owner, byKey);
+    if (!store.has(owner)) {
+      store.set(owner, byKey);
+    }
     const found = byKey.get(key);
     const value = found !== undefined ? found : compute();
-    if (found === undefined) byKey.set(key, value);
+    if (found === undefined) {
+      byKey.set(key, value);
+    }
     return value;
   };
 };
@@ -165,7 +177,9 @@ export const memoLatest = <O extends object, V>() => {
     const found = store.get(owner);
     const hit = found !== undefined && found.key === key;
     const value = hit ? found.value : compute();
-    if (!hit) store.set(owner, { key, value });
+    if (!hit) {
+      store.set(owner, { key, value });
+    }
     return value;
   };
 };

@@ -97,8 +97,11 @@ export const browserIdle: Idle = (task, delayMs) => {
   }, delayMs);
   return () => {
     clearTimeout(timer);
-    if (idle && typeof cancelIdleCallback === 'function') cancelIdleCallback(idle);
-    else clearTimeout(idle);
+    if (idle && typeof cancelIdleCallback === 'function') {
+      cancelIdleCallback(idle);
+    } else {
+      clearTimeout(idle);
+    }
   };
 };
 
@@ -136,7 +139,9 @@ export const worthCache = (deps: WorthCacheDeps): WorthCache => {
     );
   const remember = (key: string, v: Worth | null) => {
     cache.set(key, v);
-    if (cache.size > limit) cache.delete(cache.keys().next().value as string);
+    if (cache.size > limit) {
+      cache.delete(cache.keys().next().value as string);
+    }
   };
   let busy = false;
   let stopped = false;
@@ -149,7 +154,9 @@ export const worthCache = (deps: WorthCacheDeps): WorthCache => {
         busy = false;
         remember(next.key, v);
         onChange(values());
-        if (!stopped && missing()) cancel = idle(step, 0);
+        if (!stopped && missing()) {
+          cancel = idle(step, 0);
+        }
       });
     }
   };
@@ -161,8 +168,12 @@ export const worthCache = (deps: WorthCacheDeps): WorthCache => {
         keyed.length === current.length && keyed.every((j, i) => j.key === current[i]?.key);
       current = keyed;
       cancel();
-      if (!same) onChange(values());
-      if (missing()) cancel = idle(step, quietMs);
+      if (!same) {
+        onChange(values());
+      }
+      if (missing()) {
+        cancel = idle(step, quietMs);
+      }
     },
     values,
     stop: () => {

@@ -32,7 +32,9 @@ const switchesOf = (schema: ConfigSchema): Record<string, SwitchSchema> =>
  */
 /** Throws with every problem found, so a fork's build fails rather than guess. */
 const failOn = (errors: string[]): void => {
-  if (errors.length > 0) throw new Error(`planetshift.config.json: ${errors.join('; ')}`);
+  if (errors.length > 0) {
+    throw new Error(`planetshift.config.json: ${errors.join('; ')}`);
+  }
 };
 
 /** The config's departures, checked to be an object. */

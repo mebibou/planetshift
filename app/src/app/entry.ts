@@ -28,7 +28,9 @@ export const parseEntry = (content: string | null | undefined): Entry | null => 
 /** The query with the entry's view added when the query names none. */
 export const withEntryView = (search: string, entry: Entry | null): string => {
   const params = new URLSearchParams(search);
-  if (entry && !params.has('view') && entry.view !== 'explore') params.set('view', entry.view);
+  if (entry && !params.has('view') && entry.view !== 'explore') {
+    params.set('view', entry.view);
+  }
   const query = params.toString();
   return query ? `?${query}` : '';
 };

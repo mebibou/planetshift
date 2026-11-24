@@ -168,7 +168,9 @@ const capture = async (browser, origin, site, page) => {
 
 const source = await readFile(join(dist, 'index.html'), 'utf8');
 const site = /<link rel="canonical" href="([^"]+)"/.exec(source)?.[1];
-if (!site) throw new Error('index.html has no canonical link to take the site URL from');
+if (!site) {
+  throw new Error('index.html has no canonical link to take the site URL from');
+}
 
 const server = await preview({
   build: { outDir: dist },

@@ -80,8 +80,9 @@ const usePanelOrder = (
     values,
     key,
   }));
-  if (ordered.values !== values || ordered.key !== key)
+  if (ordered.values !== values || ordered.key !== key) {
     setOrdered(nextOrder(ordered, sizes, values, horizon, key));
+  }
   return ordered.order;
 };
 

@@ -67,7 +67,9 @@ export const choropleth = (world: Topology, label: string): Choropleth => {
   let pinned = false;
   let press: { id: number; x: number; y: number } | null = null;
   const outside = (e: Event) => {
-    if (!el.contains(e.target as Node)) hide();
+    if (!el.contains(e.target as Node)) {
+      hide();
+    }
   };
   const hide = () => {
     pinned = false;
@@ -77,13 +79,18 @@ export const choropleth = (world: Topology, label: string): Choropleth => {
   };
   const show = (e: PointerEvent, pin: boolean) => {
     const iso3 = (e.target as Element).getAttribute?.('data-iso3');
-    if (iso3 && current) showAt(e, pin, current.tooltipOf(iso3));
-    else hide();
+    if (iso3 && current) {
+      showAt(e, pin, current.tooltipOf(iso3));
+    } else {
+      hide();
+    }
   };
   const showAt = (e: PointerEvent, pin: boolean, model: TooltipModel) => {
     pinned = pin;
     tooltip.classList.toggle('pinned', pin);
-    if (pin) document.addEventListener('pointerdown', outside);
+    if (pin) {
+      document.addEventListener('pointerdown', outside);
+    }
     tooltip.replaceChildren(...tooltipContent(model));
     tooltip.hidden = false;
     const box = el.getBoundingClientRect();
@@ -98,7 +105,9 @@ export const choropleth = (world: Topology, label: string): Choropleth => {
     tooltip.style.top = `${top}px`;
   };
   map.addEventListener('pointermove', (e) => {
-    if (e.pointerType !== 'touch' && !pinned) show(e, false);
+    if (e.pointerType !== 'touch' && !pinned) {
+      show(e, false);
+    }
   });
   map.addEventListener('pointerdown', (e) => {
     press = { id: e.pointerId, x: e.clientX, y: e.clientY };
@@ -107,16 +116,22 @@ export const choropleth = (world: Topology, label: string): Choropleth => {
     const still =
       press?.id === e.pointerId && Math.hypot(e.clientX - press.x, e.clientY - press.y) < 10;
     press = null;
-    if (still) show(e, true);
+    if (still) {
+      show(e, true);
+    }
   });
   map.addEventListener('pointercancel', () => {
     press = null;
   });
   map.addEventListener('pointerleave', () => {
-    if (!pinned) hide();
+    if (!pinned) {
+      hide();
+    }
   });
   el.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') hide();
+    if (e.key === 'Escape') {
+      hide();
+    }
   });
   return {
     el,

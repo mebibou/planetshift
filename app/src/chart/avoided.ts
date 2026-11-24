@@ -58,7 +58,9 @@ export const avoidedChart = (t: T, locale: string, currentYear: number): Avoided
       .attr('x', -MARGIN.left + 4)
       .attr('y', -10)
       .text(t('avoidedChart.unit'));
-    if (end > 2050) verticalRule(f, x(2050), '2050');
+    if (end > 2050) {
+      verticalRule(f, x(2050), '2050');
+    }
     f.plot
       .append('path')
       .datum(band)
@@ -100,7 +102,9 @@ export const avoidedChart = (t: T, locale: string, currentYear: number): Avoided
     );
   };
   const render = () => {
-    if (last) draw(last);
+    if (last) {
+      draw(last);
+    }
   };
   onResize(plotEl, render);
   return {

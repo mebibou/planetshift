@@ -118,7 +118,9 @@ const keepMarkedInView = (nav: HTMLElement, list: HTMLElement) => {
   const marked = list.querySelector<HTMLElement>('[aria-current]');
   const b = nav.getBoundingClientRect();
   const r = marked?.getBoundingClientRect();
-  if (r && (r.top < b.top || r.bottom > b.bottom)) nav.scrollTop += r.top - b.top - b.height / 3;
+  if (r && (r.top < b.top || r.bottom > b.bottom)) {
+    nav.scrollTop += r.top - b.top - b.height / 3;
+  }
 };
 
 const TocEntry = ({ section, on, sub }: { section: Section; on: boolean; sub: number }) => (
@@ -157,7 +159,9 @@ const Toc = ({ t, sections }: { t: T; sections: readonly Section[] }) => {
   useEffect(() => {
     const l = list.current;
     // The list scrolls on its own only when open on a phone, where the reader is browsing it.
-    if (nav.current && l && l.scrollHeight <= l.clientHeight) keepMarkedInView(nav.current, l);
+    if (nav.current && l && l.scrollHeight <= l.clientHeight) {
+      keepMarkedInView(nav.current, l);
+    }
   }, [active, sub]);
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Escape' && open) {

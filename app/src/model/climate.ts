@@ -29,7 +29,9 @@ const convolveAt = (
   let acc = 0;
   for (let k = 0; k < end; k++) {
     const e = emissions[k] as number;
-    if (e !== 0) acc += e * (agtp[Math.min(h - k, last)] as number);
+    if (e !== 0) {
+      acc += e * (agtp[Math.min(h - k, last)] as number);
+    }
   }
   return acc;
 };

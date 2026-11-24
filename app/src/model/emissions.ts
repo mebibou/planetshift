@@ -92,8 +92,9 @@ export const cutEmissions = (
     const k = intensities.kgPerTonne[g];
     const c = cuts[g];
     let a = 0;
-    for (let i = 0; i < tonnes.length; i++)
+    for (let i = 0; i < tonnes.length; i++) {
       a += (tonnes[i] as number) * (k[i] as number) * (c[i] as number);
+    }
     return -a;
   });
 

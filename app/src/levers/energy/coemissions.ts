@@ -47,9 +47,11 @@ const coChangeOf = (
   const sectors = (Object.keys(co2) as CoSector[]).filter((s) => co2[s] !== 0 && ratios[s]);
   return recordFrom(CO_SPECIES, (species) => {
     let total = 0;
-    for (const s of sectors)
-      if (species !== 'nox' || !keepsNox.includes(s))
+    for (const s of sectors) {
+      if (species !== 'nox' || !keepsNox.includes(s)) {
         total += (co2[s] as number) * dataValueAt(co.years, ratios[s][species], year);
+      }
+    }
     return total;
   });
 };

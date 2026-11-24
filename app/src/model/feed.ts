@@ -76,8 +76,9 @@ export const feedChange = (
   const out = new Float64Array(pc.feed.length);
   for (const i of fedItems(pc)) {
     let a = 0;
-    for (let g = 0; g < split.length; g++)
+    for (let g = 0; g < split.length; g++) {
       a += ((split[g] as ItemVector)[i] as number) * (change[g] as number);
+    }
     out[i] = a;
   }
   return out;

@@ -168,7 +168,9 @@ export const addHover = (
     .style('display', 'none');
   const [lo, hi] = x.domain() as [number, number];
   const outside = (e: Event) => {
-    if (!container.contains(e.target as Node)) clear();
+    if (!container.contains(e.target as Node)) {
+      clear();
+    }
   };
   const hide = () => {
     line.style('display', 'none');
@@ -229,8 +231,11 @@ export const addHover = (
       point(clamp(Math.round(x.invert(px))));
     })
     .on('pointerleave', (event: PointerEvent) => {
-      if (event.pointerType === 'touch') document.addEventListener('pointerdown', outside);
-      else if (document.activeElement !== container) clear();
+      if (event.pointerType === 'touch') {
+        document.addEventListener('pointerdown', outside);
+      } else if (document.activeElement !== container) {
+        clear();
+      }
     });
   const focused = () => Number(container.dataset.year ?? hi);
   container.tabIndex = 0;
@@ -238,12 +243,16 @@ export const addHover = (
   container.setAttribute('aria-label', `${f.svg.attr('aria-label')}. ${keys}`);
   container.onfocus = () => {
     delete container.dataset.dismissed;
-    if (container.matches(':focus-visible')) point(clamp(focused()));
+    if (container.matches(':focus-visible')) {
+      point(clamp(focused()));
+    }
   };
   container.onblur = clear;
   container.onkeydown = (e) => {
     const year = yearForKey(e.key, lo, hi, focused(), clamp);
-    if (e.key === 'Escape') dismiss();
+    if (e.key === 'Escape') {
+      dismiss();
+    }
     if (year !== null) {
       e.preventDefault();
       delete container.dataset.dismissed;
@@ -255,20 +264,22 @@ export const addHover = (
     container.dataset.dismissed = '';
     clear();
   };
-  if (document.activeElement === container && !('dismissed' in container.dataset))
+  if (document.activeElement === container && !('dismissed' in container.dataset)) {
     showYear(clamp(focused()));
+  }
 };
 
 /** Re-renders when the container's width changes. */
 export const onResize = (el: HTMLElement, render: () => void): void => {
   let width = el.clientWidth;
-  if (typeof ResizeObserver !== 'undefined')
+  if (typeof ResizeObserver !== 'undefined') {
     new ResizeObserver(() => {
       if (el.clientWidth !== width) {
         width = el.clientWidth;
         render();
       }
     }).observe(el);
+  }
 };
 
 export const legendList = (items: { label: string; className: string }[]): HTMLElement =>

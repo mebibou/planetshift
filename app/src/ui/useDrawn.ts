@@ -7,7 +7,9 @@ export const useDrawn = <V extends { el: Element }>(
   const [drawn] = useState(make);
   const ref = useCallback(
     (node: HTMLElement | null) => {
-      if (node && node.firstChild !== drawn.el) node.replaceChildren(drawn.el);
+      if (node && node.firstChild !== drawn.el) {
+        node.replaceChildren(drawn.el);
+      }
     },
     [drawn],
   );
