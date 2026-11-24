@@ -16,7 +16,7 @@ Chaque agrégation est une ImpactAssessment, la fiche de HESTIA qui décrit les 
 
 ### Les versions
 
-HESTIA publie ses données par versions. Une version est réservée aux utilisateurs en accès prioritaire pendant ses 182 premiers jours, puis devient publique. Planetshift fixe la plus récente version publique, v1.2 (2026-04-30), dans `RELEASE`. Une nouvelle version ne change donc les chiffres que si quelqu'un change cette constante.
+HESTIA publie ses données par versions. Une version est réservée aux utilisateurs en accès prioritaire pendant ses 182 premiers jours, puis devient publique. Les données de Planetshift sont construites à partir de la version v1.3 (2026-11-17), réservée aux utilisateurs en accès prioritaire jusqu'au 2027-05-18. Le pipeline la lit avec un jeton d'API HESTIA, dans `HESTIA_API_TOKEN`. Sans jeton, il lit la plus récente version publique, v1.2 (2026-04-30). Les deux versions sont fixées dans `sources/hestia.py` : une nouvelle version ne change les chiffres que si quelqu'un les change. Les chiffres publiés ici sont des moyennes par pays et par produit tirées de v1.3, pas les enregistrements de HESTIA eux-mêmes.
 
 ### Ce qui est compté
 
@@ -24,7 +24,7 @@ Planetshift garde trois gaz : le dioxyde de carbone (CO₂), le méthane (CH₄)
 
 ### La couverture en bref
 
-Avec la version v1.2, 37 produits des bilans ont une valeur HESTIA, dans 47 pays et pour le Monde. HESTIA n'a pas encore publié d'agrégations de produits animaux. La viande, le lait et les œufs, les huiles végétales, le sucre et quelques cultures prennent donc leurs intensités dans les autres niveaux. La liste complète est sous *La couverture en détail*, plus bas.
+Avec la version v1.3, 39 produits des bilans ont une valeur HESTIA, dans 61 pays et pour le Monde. Les œufs sont le seul produit animal avec une agrégation validée, pour le Canada et les États-Unis. La viande et le lait, les huiles végétales, le sucre et quelques cultures prennent donc leurs intensités dans les autres niveaux. La liste complète est sous *La couverture en détail*, plus bas.
 
 ## Comment Planetshift lit les agrégations
 
@@ -58,7 +58,8 @@ intensité par kg du produit HESTIA × `kg_product_per_kg_item` × 1000
 
 Les facteurs ont été vérifiés par rapport aux bilans eux-mêmes (production mondiale 2022) :
 
-- Riz : les bilans actuels comptent le riz et ses produits en paddy (788,8 Mt en 2022, à peu près la production de paddy). Le riz paddy (`riceGrainInHuskFlooded`) est utilisé avec un facteur de 1.
+- Riz : les bilans actuels comptent le riz et ses produits en paddy (788,8 Mt en 2022, à peu près la production de paddy). Le riz paddy (`riceGrainInHuskFlooded`) est utilisé avec un facteur de 1. Le paddy pluvial (`riceGrainInHuskUpland`) vient en second : il n'est utilisé que là où un pays n'a pas d'agrégation de riz inondé.
+- Thé (code 2635 des bilans) : compté en thé préparé, si bien que les thés secs (`blackTeaDry`, `greenTeaDry`, `oolongTeaDry`) ont un facteur de 1. La feuille de thé fraîche (`teaLeaf`) n'est pas associée, car il faudrait un rapport entre feuille et thé préparé.
 - Arachides (code FBS 2552) : comptées en coque (55,1 Mt) ; `peanutInShell` a donc un facteur de 1.
 - Palmistes (2562) : leur production égale la récolte de fruits du palmier à huile (408,9 Mt) ; `oilPalmFruit` est donc utilisé avec un facteur de 1.
 - Avoine : FAOSTAT compte l'avoine vêtue. L'avoine décortiquée (`oatGrain`) est un repli à 0,7 kg de gruau par kg d'avoine vêtue. Le gruau porte toutes les émissions.
@@ -101,13 +102,13 @@ La règle s'applique ligne par ligne : aucune approximation n'est nécessaire. C
 
 ## La couverture en détail
 
-Avec la version v1.2 (exécution du 2026-11-21), il y a 380 agrégations validées. 236 sont téléchargées (la période la plus récente de chaque produit et zone pris en compte). Elles donnent 37 produits des bilans, 47 pays et le Monde :
+Avec la version v1.3 (exécution du 2026-11-24), il y a 649 agrégations validées. 327 sont téléchargées (la période la plus récente de chaque produit et zone pris en compte). Elles donnent 39 produits des bilans, 61 pays et le Monde :
 
-- niveau 1 (pays) : 184 cases produit × pays par périmètre ;
-- niveau 2 (Monde) : 11 produits : blé, maïs, pommes de terre, canne à sucre, betterave sucrière, arachides, soja, colza et moutarde, olives, bananes, raisin ;
+- niveau 1 (pays) : 261 cases produit × pays par périmètre ;
+- niveau 2 (Monde) : 15 produits : blé, maïs, riz, pommes de terre, canne à sucre, betterave sucrière, fruits à coque, arachides, soja, graines de tournesol, colza et moutarde, olives, autres légumes, raisin, autres fruits ;
 - aucune agrégation régionale.
 
-HESTIA n'a pas encore publié d'agrégations de produits animaux. Sa documentation indique qu'elles sont en cours de développement. L'index en contient des non validées, qui ne sont pas utilisées. La viande bovine, la viande de mouton et de chèvre, la viande porcine, la volaille, le lait et les œufs n'ont donc pas de ligne HESTIA, bien que la table les associe déjà pour une version future. Les huiles végétales, le sucre, le thé, les ignames, les bananes plantain, les ananas et les dattes n'ont pas de ligne HESTIA non plus.
+Les œufs sont le seul produit animal avec une agrégation validée, pour le Canada et les États-Unis. La viande bovine, la viande de mouton et de chèvre, la viande porcine, la volaille et le lait n'ont pas de ligne HESTIA, bien que la table les associe déjà pour une version future. Les huiles végétales, le sucre, les patates douces, les plantains, les ananas et les dattes n'ont pas de ligne HESTIA non plus. v1.3 a des agrégations validées d'huiles de colza et de tournesol raffinées et de sucre de canne brut, mais la table ne les associe pas : le modèle tire les huiles et le sucre de leurs cultures (voir [Émissions](#method-emissions)), et une valeur directe court-circuiterait ce calcul. v1.3 n'en a aucune pour les patates douces, que v1.2 avait. La table laisse aussi de côté les sous-produits de v1.3 (brisures de riz, son de blé), les semences, l'ensilage et les poulettes, qui ne sont pas des produits des bilans, ses algues, pour lesquelles le modèle n'a pas de produit, ses ormeaux et bivalves, car les produits de la mer ont leur propre méthode, et les capsules de coton, dont il faudrait partager les émissions entre fibre et graine.
 
 ### Quelques valeurs
 
@@ -115,22 +116,22 @@ Le tableau donne des valeurs du berceau à la sortie de ferme, en kg par tonne d
 
 | Produit | Zone | CO₂ | CH₄ | N₂O | CO₂e |
 | --- | --- | --- | --- | --- | --- |
-| Blé | Monde | 230 | 1,0 | 0,75 | 488 |
-| Blé | France | 143 | 0,66 | 0,88 | 427 |
-| Maïs | Monde | 176 | 0,81 | 0,61 | 385 |
-| Riz (paddy) | Inde | 136 | 17,6 | 0,13 | 772 |
-| Riz (paddy) | Chine | 243 | 26,6 | 0,40 | 1265 |
-| Soja | Monde | 216 | 1,6 | 0,41 | 391 |
+| Blé | Monde | 258 | 1,3 | 0,77 | 532 |
+| Blé | France | 144 | 1,7 | 1,0 | 500 |
+| Maïs | Monde | 173 | 0,84 | 0,64 | 391 |
+| Riz (paddy) | Inde | 209 | 18,6 | 0,31 | 933 |
+| Riz (paddy) | Chine | 239 | 26,8 | 0,41 | 1272 |
+| Soja | Monde | 212 | 1,7 | 0,42 | 395 |
 
 ### Comparaison avec d'autres sources
 
 Poore & Nemecek (2018) donnent, pour l'étape agricole sans changement d'usage des terres, environ 850 kg CO₂e par tonne de blé, 475 pour le maïs et 2 370 par tonne de riz paddy. Les valeurs de HESTIA sont plus basses. L'écart n'a pas été étudié.
 
-Pour le méthane du riz, les émissions de la riziculture de FAOSTAT en 2022 divisées par la production de paddy donnent environ 25 kg par tonne en Chine (HESTIA : 26,6), 25 en Inde (HESTIA : 17,6) et 31 pour le monde.
+Pour le méthane du riz, les émissions de la riziculture de FAOSTAT en 2022 divisées par la production de paddy donnent environ 25 kg par tonne en Chine (HESTIA : 26,8), 25 en Inde (HESTIA : 18,6) et 31 pour le monde.
 
 ## Hypothèses
 
-- La plus récente version publique (v1.2) est utilisée, et fixée. La version v1.3 reste réservée jusqu'au 2027-05-18.
+- La version v1.3 est utilisée, et fixée, lue avec un jeton d'accès prioritaire. Elle est réservée jusqu'au 2027-05-18 ; sans jeton, le pipeline lit v1.2.
 - Seules les agrégations validées sont utilisées.
 - La période la plus récente de chaque produit et zone est utilisée, quelle que soit sa durée (2010–2026 pour toutes les lignes gardées).
 - Les produits qui partagent un produit des bilans sont moyennés sans pondération. Seuls les produits de meilleure priorité disponibles dans la zone sont moyennés.
