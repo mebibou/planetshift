@@ -100,11 +100,24 @@ def domain_url(domain: str) -> str:
     return f"https://www.fao.org/faostat/en/#data/{domain.removesuffix('_FR')}"
 
 
+def release_name(file: str, updated: str) -> str:
+    """A bulk file's cached name, keyed by FAOSTAT's update date of its domain."""
+    stem, dot, ext = file.rpartition(".")
+    return f"{stem}_{updated}{dot}{ext}" if updated else file
+
+
+def cached_bulk(cache_dir: Path, domain: str) -> Path | None:
+    """The cached bulk file of the release FAOSTAT lists today, if the build has fetched it."""
+    path = cache_dir / release_name(FILES[domain], listed_update(cache_dir, domain))
+    return path if path.exists() else None
+
+
 def bulk_path(cache_dir: Path, domain: str) -> Path:
-    """The cached bulk file, with FAOSTAT's update date of the domain in its sidecar."""
-    path = fetched(cache_dir, BULK + FILES[domain])
+    """The cached bulk file of the release FAOSTAT lists today: a new release is a new file."""
+    updated = listed_update(cache_dir, domain)
+    path = fetched(cache_dir, BULK + FILES[domain], release_name(FILES[domain], updated))
     if "updated" not in recorded(path):
-        record(path, updated=listed_update(cache_dir, domain))
+        record(path, updated=updated)
     return path
 
 

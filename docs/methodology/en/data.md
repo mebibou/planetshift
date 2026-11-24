@@ -1,6 +1,6 @@
 # Data: food balances, countries and groups
 
-Planetshift's data on what each country produces, trades and eats comes from the Food Balance Sheets of FAOSTAT, the statistics service of the UN Food and Agriculture Organization (FAO). The model starts from the year **2023** and covers **188 countries**. The sections below say which countries are in, how foods are grouped, what is left out, and how to download the data.
+Planetshift's data on what each country produces, trades and eats comes from the Food Balance Sheets of FAOSTAT, the statistics service of the UN Food and Agriculture Organization (FAO). The model starts from the year **2024** and covers **187 countries**. The sections below say which countries are in, how foods are grouped, what is left out, and how to download the data.
 
 ## The Food Balance Sheets
 
@@ -24,13 +24,13 @@ Each tonne must be counted once. So the emissions of a primary item are counted 
 
 ## The base year
 
-The base year is the latest year whose balances cover at least 95% as many countries as the best-covered year. With the current download it is **2023**, the latest year published.
+The base year is the latest year whose balances cover at least 95% as many countries as the best-covered year. With the current download it is **2024**, the latest year published.
 
 Kcal and protein per tonne of each item are worked out for the base year. They are FAOSTAT's world food supply of kcal and of protein for that item, divided by its world food supply in tonnes.
 
 ## Countries
 
-The model has **188 countries**. They are the single countries and territories of FAOSTAT that have a food balance, with a few areas removed so that nothing is counted twice.
+The model has **187 countries**. They are the single countries and territories of FAOSTAT that have a food balance, with a few areas removed so that nothing is counted twice.
 
 ### Which areas are kept
 
@@ -51,10 +51,10 @@ FAOSTAT lists single countries and territories with area codes below 5000. It li
 
 Some countries have no balance for the base year in this release. Rather than leave them blank, Planetshift takes their latest balance. It scales every quantity by their population growth since then. Their diet per person stays as it was in that balance:
 
-- from the current series: Cuba (2019) and the Democratic People's Republic of Korea (2018);
-- from the historic series, which ends in 2013: Japan, Sudan, Mali, Chad, Benin, Togo, the Central African Republic, Brunei Darussalam, Dominica and Bermuda. Two items changed codes between the series (rice 2805 to 2807, groundnuts 2556 to 2552) and are renamed.
+- from the current series: Cuba (2019), the Democratic People's Republic of Korea (2018) and Nicaragua (2022);
+- from the historic series, which ends in 2013: the Central African Republic, Brunei Darussalam and Bermuda. Two items changed codes between the series (rice 2805 to 2807, groundnuts 2556 to 2552) and are renamed.
 
-Countries without any balance are not in the model. Among them are Somalia, Burundi, South Sudan, Singapore, Palestine and Eritrea, and small territories. With these rules the model has **188 countries**.
+Countries without any balance are not in the model. Among them are Somalia, Burundi, South Sudan, Singapore, Palestine, Eritrea and Seychelles, and small territories. With these rules the model has **187 countries**.
 
 ## Item groups
 
@@ -78,8 +78,8 @@ A test checks that every FBS item with a world production above 100 kt has a row
 ## Assumptions
 
 - The base-year balance stands for today's food system. The shift model scales it with population.
-- The model's 188 countries hold 8.02 billion people in 2023 and 10.00 billion in 2100 in FAOSTAT's population (World Population Prospects). That is 98–99% of WPP 2024's world totals (8.09 and 10.18 billion).
-- Countries missing from the base year keep the diet per person of their latest balance, up to ten years older, scaled by population. The historic series uses a different methodology from the current one.
+- The model's 187 countries hold 8.09 billion people in 2024 and 10.00 billion in 2100 in FAOSTAT's population (World Population Prospects). That is 98–99% of WPP 2024's world totals (8.16 and 10.18 billion).
+- Countries missing from the base year keep the diet per person of their latest balance, up to eleven years older, scaled by population. The historic series uses a different methodology from the current one.
 - `other` closes each item's balance. Stock changes and statistical residuals are therefore kept rather than spread over the other uses.
 - A country's M49 sub-region is its region for regional averages.
 - Offal and animal fats belong to one animal group each, although they come from several species.

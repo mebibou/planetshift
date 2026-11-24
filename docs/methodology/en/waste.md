@@ -6,7 +6,7 @@ Some of the food farms grow is never eaten. Wasting less of it means farms need 
 
 The two are counted in different places, and the lever can act on each.
 
-- **Losses** happen in the supply chain before food reaches shops: on the farm after harvest, in storage, transport and processing. The Food Balance Sheets record some of them, as each item's `losses` in `supply.json` (see [Data](#method-data)). The model holds these as a fixed share of each item's domestic supply (see [How a shift becomes production changes](#method-shift), step 4). They leave out processing and are 5.4% of production worldwide. FAO's Food Loss Percentage (SDG indicator 12.3.1(a)) counts every step from harvest up to shops. It is 13.3% of food produced worldwide in 2023, and by group 8.4% for cereals and pulses, 25.4% for fruit and vegetables, 12.3% for roots and tubers and 14% for animal products. The lever cuts FAO's losses: `waste.json` gives each country its sub-region's share, by group of items.
+- **Losses** happen in the supply chain before food reaches shops: on the farm after harvest, in storage, transport and processing. The Food Balance Sheets record some of them, as each item's `losses` in `supply.json` (see [Data](#method-data)). The model holds these as a fixed share of each item's domestic supply (see [How a shift becomes production changes](#method-shift), step 4). They leave out processing and are 5.3% of production worldwide. FAO's Food Loss Percentage (SDG indicator 12.3.1(a)) counts every step from harvest up to shops. It is 13.3% of food produced worldwide in 2023, and by group 8.4% for cereals and pulses, 25.4% for fruit and vegetables, 12.3% for roots and tubers and 14% for animal products. The lever cuts FAO's losses: `waste.json` gives each country its sub-region's share, by group of items.
 - **Waste** happens after food reaches shops: in retail, in food service (restaurants, canteens, hotels) and in households. The Food Balance Sheets do not separate it. It is inside each item's `food`, which is the food available to consumers, not what they eat. `waste.json` gives it per country, in kg per person per year, in three sectors.
 
 ## How the lever works
@@ -72,7 +72,7 @@ The report estimates 1.05 billion tonnes of food wasted in 2022, 132 kg per pers
 
 ### How confident the estimates are
 
-Confidence varies by sector. 160 countries have their own estimate outside Eurostat. Among them, the household estimate has high or medium confidence in 65 countries and very low confidence in 19. The food service and retail estimates have very low confidence in about 135 countries, because they are extrapolated from a few measured countries.
+Confidence varies by sector. 159 countries have their own estimate outside Eurostat. Among them, the household estimate has high or medium confidence in 64 countries and very low confidence in 19. The food service and retail estimates have very low confidence in about 135 countries, because they are extrapolated from a few measured countries.
 
 Every country in `countries.json` except one has its own estimate. Taiwan, which the UN database does not list, takes the median of its region (Eastern Asia), sector by sector. Any country missing in a later release is filled the same way, from its M49 sub-region (`Country.region`). When its region has no estimate, it takes the world's median.
 
@@ -88,11 +88,11 @@ The Index counts food and the inedible parts that go with it: bones, peels, shel
 
 The household share for high-income countries follows the United Kingdom's measurements, where 74% of household food waste is edible (WRAP, 2021/22: 4.7 of 6.4 million tonnes). Other high-income countries measure less: 77% in Switzerland, but 54% in Israel, 49% in New Zealand and 33% in Japan (UNEP, 2024, Table 19). In lower-income countries more food is bought raw and prepared at home, so a larger part of household waste is peels, husks and bones. The only measurements outside high-income countries find 31% in Brazil, 34% in Indonesia (UNEP, 2024, Table 19) and 39% in Rio de Janeiro (Box 2), so the share is 0.35. Food service and retail waste is mostly unsold or unserved food, so most of it is edible: 74% in British food service (WRAP, 2025), 72% in German food service and 84% in German retail (Schmidt et al., 2019). WRAP takes all retail waste as edible.
 
-With these shares, the world's edible waste after shops is about 594 million tonnes, 74 kg per person a year: 33 kg in households, 27 kg in food service and 14 kg in retail. By country, household edible waste runs from 6 to 141 kg per person, with a median of 32 kg.
+With these shares, the world's edible waste after shops is about 599 million tonnes, 74 kg per person a year: 33 kg in households, 27 kg in food service and 14 kg in retail. By country, household edible waste runs from 6 to 99 kg per person, with a median of 32 kg.
 
 ### A cap at 40% of the food supply
 
-The edible waste is also capped at 40% of a country's food supply in the Food Balance Sheets (all items kept in the model, kg per person). No country reaches the cap. The share runs from 3% (Spain) to 29% (Yemen), with a median of 11%, and nine countries in ten are below 17%. The highest shares are in countries with a small food supply per person, where the Index's estimates are extrapolated (Yemen, Syria, Chad, Afghanistan).
+The edible waste is also capped at 40% of a country's food supply in the Food Balance Sheets (all items kept in the model, kg per person). No country reaches the cap. The share runs from 3% (Spain) to 29% (Yemen), with a median of 10%, and nine countries in ten are below 17%. The highest shares are in countries with a small food supply per person, where the Index's estimates are extrapolated (Yemen, Syria, Chad, Afghanistan).
 
 ## Caveats
 

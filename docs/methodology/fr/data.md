@@ -1,6 +1,6 @@
 # Données : bilans alimentaires, pays et groupes
 
-Les données de Planetshift sur ce que chaque pays produit, échange et mange viennent des bilans alimentaires de FAOSTAT, le service statistique de l'Organisation des Nations unies pour l'alimentation et l'agriculture (FAO). Le modèle part de l'année **2023** et couvre **188 pays**. Les sections ci-dessous disent quels pays sont pris en compte, comment les aliments sont regroupés, ce qui est laissé de côté et comment télécharger les données.
+Les données de Planetshift sur ce que chaque pays produit, échange et mange viennent des bilans alimentaires de FAOSTAT, le service statistique de l'Organisation des Nations unies pour l'alimentation et l'agriculture (FAO). Le modèle part de l'année **2024** et couvre **187 pays**. Les sections ci-dessous disent quels pays sont pris en compte, comment les aliments sont regroupés, ce qui est laissé de côté et comment télécharger les données.
 
 ## Les bilans alimentaires
 
@@ -24,13 +24,13 @@ Chaque tonne doit être comptée une seule fois. Les émissions d'un produit pri
 
 ## L'année de référence
 
-L'année de référence est la dernière année dont les bilans couvrent au moins 95 % autant de pays que l'année la mieux couverte. Avec le téléchargement actuel, c'est **2023**, la dernière année publiée.
+L'année de référence est la dernière année dont les bilans couvrent au moins 95 % autant de pays que l'année la mieux couverte. Avec le téléchargement actuel, c'est **2024**, la dernière année publiée.
 
 Les kcal et les protéines par tonne de chaque produit sont calculées pour l'année de référence. Ce sont l'apport alimentaire mondial en kcal et en protéines de ce produit selon FAOSTAT, divisé par son apport alimentaire mondial en tonnes.
 
 ## Pays
 
-Le modèle compte **188 pays**. Ce sont les pays et territoires isolés de FAOSTAT qui ont un bilan alimentaire, moins quelques zones retirées pour que rien ne soit compté deux fois.
+Le modèle compte **187 pays**. Ce sont les pays et territoires isolés de FAOSTAT qui ont un bilan alimentaire, moins quelques zones retirées pour que rien ne soit compté deux fois.
 
 ### Les zones gardées
 
@@ -51,10 +51,10 @@ FAOSTAT liste les pays et territoires isolés sous des codes de zone inférieurs
 
 Certains pays n'ont pas de bilan pour l'année de référence dans cette version. Plutôt que de les laisser vides, Planetshift prend leur dernier bilan. Il multiplie chaque quantité par la croissance de leur population depuis. Leur alimentation par personne reste celle de ce bilan :
 
-- dans la série actuelle : Cuba (2019) et la République populaire démocratique de Corée (2018) ;
-- dans la série historique, qui s'arrête en 2013 : le Japon, le Soudan, le Mali, le Tchad, le Bénin, le Togo, la République centrafricaine, le Brunéi Darussalam, la Dominique et les Bermudes. Deux produits ont changé de code entre les séries (le riz, de 2805 à 2807, et les arachides, de 2556 à 2552) et sont renommés.
+- dans la série actuelle : Cuba (2019), la République populaire démocratique de Corée (2018) et le Nicaragua (2022) ;
+- dans la série historique, qui s'arrête en 2013 : la République centrafricaine, le Brunéi Darussalam et les Bermudes. Deux produits ont changé de code entre les séries (le riz, de 2805 à 2807, et les arachides, de 2556 à 2552) et sont renommés.
 
-Les pays sans aucun bilan ne sont pas dans le modèle. Parmi eux figurent la Somalie, le Burundi, le Soudan du Sud, Singapour, la Palestine et l'Érythrée, ainsi que de petits territoires. Avec ces règles, le modèle compte **188 pays**.
+Les pays sans aucun bilan ne sont pas dans le modèle. Parmi eux figurent la Somalie, le Burundi, le Soudan du Sud, Singapour, la Palestine, l'Érythrée et les Seychelles, ainsi que de petits territoires. Avec ces règles, le modèle compte **187 pays**.
 
 ## Groupes de produits
 
@@ -78,8 +78,8 @@ Un test vérifie que chaque produit des bilans dont la production mondiale dépa
 ## Hypothèses
 
 - Le bilan de l'année de référence représente le système alimentaire d'aujourd'hui. Le modèle du changement le fait évoluer avec la population.
-- Les 188 pays du modèle comptent 8,02 milliards d'habitants en 2023 et 10,00 milliards en 2100 dans la population de FAOSTAT (Perspectives de la population mondiale). C'est 98 à 99 % des totaux mondiaux des WPP 2024 (8,09 et 10,18 milliards).
-- Les pays absents de l'année de référence gardent l'alimentation par personne de leur dernier bilan, vieux de dix ans au plus, mise à l'échelle de leur population. La série historique suit une méthode différente de celle de la série actuelle.
+- Les 187 pays du modèle comptent 8,09 milliards d'habitants en 2024 et 10,00 milliards en 2100 dans la population de FAOSTAT (Perspectives de la population mondiale). C'est 98 à 99 % des totaux mondiaux des WPP 2024 (8,16 et 10,18 milliards).
+- Les pays absents de l'année de référence gardent l'alimentation par personne de leur dernier bilan, vieux de onze ans au plus, mise à l'échelle de leur population. La série historique suit une méthode différente de celle de la série actuelle.
 - `other` boucle le bilan de chaque produit. Les variations de stocks et les résidus statistiques sont donc gardés plutôt que répartis sur les autres utilisations.
 - La sous-région M49 d'un pays est sa région pour les moyennes régionales.
 - Les abats et les graisses animales appartiennent chacun à un seul groupe animal, bien qu'ils viennent de plusieurs espèces.

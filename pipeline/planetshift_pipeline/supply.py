@@ -51,9 +51,17 @@ def balance(rows: pd.DataFrame) -> pd.DataFrame:
     return wide.assign(other=wide["production"] + wide["imports"] - wide["exports"] - uses)
 
 
+def with_food(fbs: pd.DataFrame) -> pd.DataFrame:
+    """The food rows of years with a balance: FAOSTAT lists some years with every value at 0."""
+    rows = fbs[fbs["element_code"] == FOOD]
+    totals = rows.groupby(["area_code", "year"])["value"].transform("sum")
+    return rows[totals != 0]
+
+
 def latest_years(fbs: pd.DataFrame, missing: set[int]) -> dict[int, int]:
     """The latest year each missing area has a balance in `fbs`."""
-    rows = fbs[(fbs["element_code"] == FOOD) & fbs["area_code"].isin(missing)]
+    rows = with_food(fbs)
+    rows = rows[rows["area_code"].isin(missing)]
     return rows.groupby("area_code")["year"].max().astype(int).to_dict()
 
 
@@ -72,9 +80,8 @@ def gap_filled(
     latest balance (current FBS first, then the historic one) scaled by population growth since.
 
     Returns the rows and, for each filled country, where its balance came from."""
-    present = set(
-        countries_only(fbs[(fbs["year"] == year) & (fbs["element_code"] == FOOD)])["area_code"]
-    )
+    food = with_food(fbs)
+    present = set(countries_only(food[food["year"] == year])["area_code"])
     wanted = {a for a in population.index if a not in present}
     from_current = latest_years(fbs, wanted)
     from_historic = latest_years(fbsh, wanted - set(from_current))

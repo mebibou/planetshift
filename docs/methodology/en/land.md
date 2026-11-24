@@ -4,7 +4,7 @@ Planetshift gives, country by country, how much farmland each scenario uses and 
 
 ## Farmland today
 
-Farming uses about 4.7 billion hectares, a third of the world's land. That is roughly 1.6 billion hectares of cropland and 3.1 billion hectares of permanent meadows and pastures. These figures are from FAOSTAT's current land-use data for 2023. Our World in Data shows the same data as 36.9% of the world's land area in 2023 ([chart](https://ourworldindata.org/grapher/share-of-land-area-used-for-agriculture)).
+Farming uses about 4.7 billion hectares, a third of the world's land. That is roughly 1.6 billion hectares of cropland and 3.1 billion hectares of permanent meadows and pastures. These figures are from FAOSTAT's current land-use data for 2024. Our World in Data shows the same data as 36.9% of the world's land area in 2023 ([chart](https://ourworldindata.org/grapher/share-of-land-area-used-for-agriculture)).
 
 FAO's earlier briefs gave about 4.8 and 3.2 billion hectares. They were based on earlier releases of the same data. The pipeline reads the total area of "permanent meadows and pastures", not only the cultivated part. The difference comes from FAOSTAT's revision of the series.
 
@@ -18,8 +18,8 @@ The figures are in `land.json`. The code is `pipeline/planetshift_pipeline/land.
 
 ## What land is counted
 
-- **Cropland**: the area harvested for each food crop of the Food Balance Sheets (cereals, pulses, oilseeds, roots, sugar crops, fruit, vegetables, nuts, coffee, cocoa, tea and spices), from FAOSTAT's crop statistics. Harvested area counts a field twice when it gives two harvests in a year (multiple cropping). It leaves out fallow land, fodder crops and non-food crops (cotton lint, tobacco, rubber). FAOSTAT's cropland measures physical land, and is a little larger for these reasons. The model's food crops add up to 1.51 billion hectares in 2023. For the same year, FAOSTAT gives 1.42 billion hectares harvested and 1.58 billion hectares of cropland (see the checks below).
-- **Oilcakes**: the part of the land of crushed oilseeds that goes to the cake fed to animals (see below): 0.11 billion hectares.
+- **Cropland**: the area harvested for each food crop of the Food Balance Sheets (cereals, pulses, oilseeds, roots, sugar crops, fruit, vegetables, nuts, coffee, cocoa, tea and spices), from FAOSTAT's crop statistics. Harvested area counts a field twice when it gives two harvests in a year (multiple cropping). It leaves out fallow land, fodder crops and non-food crops (cotton lint, tobacco, rubber). FAOSTAT's cropland measures physical land, and is a little larger for these reasons. The model's food crops add up to 1.55 billion hectares in 2024. For the same year, FAOSTAT gives 1.44 billion hectares harvested and 1.58 billion hectares of cropland (see the checks below).
+- **Oilcakes**: the part of the land of crushed oilseeds that goes to the cake fed to animals (see below): 0.12 billion hectares.
 - **Fodder**: FAOSTAT's "temporary meadows and pastures", which is grass sown on arable land for grazing or hay: 0.14 billion hectares. It is counted as cropland, and shared between the ruminant groups as their pasture is.
 - **Pasture**: FAOSTAT's "permanent meadows and pastures" in each country: 3.02 billion hectares in the model's countries, out of 3.10 billion in the world. Much of it is rangeland: dry grassland, steppe and shrubland grazed at low density, which was never forest.
 
@@ -33,11 +33,11 @@ When a scenario changes production, cropland changes with it, item by item, at t
 
 Pasture changes with the production of the ruminant groups. Each group's share of a country's pasture changes in proportion to the group's production. If a country produces half as much beef, the pasture given to beef halves. Pasture never falls below zero. Temporary meadows change the same way.
 
-**Example.** With a 50% shift, protein kept equal and the default options, the world frees 1.51 billion hectares of its 3.02 billion of pasture. It also frees 65 Mha of its 1.65 billion hectares of cropland, about 4%.
+**Example.** With a 50% shift, protein kept equal and the default options, the world frees 1.51 billion hectares of its 3.02 billion of pasture. It also frees 65 Mha of its 1.69 billion hectares of cropland, about 4%.
 
 ### Cropland under a full plant-based shift
 
-With no animal products at all and protein kept equal, the model's cropland falls by 0.13 billion hectares, 8% of its 1.65 billion. With calories kept equal it falls by 24%, and with the legume mix by 10%. Nearly all pasture (3.0 billion hectares) is freed.
+With no animal products at all and protein kept equal, the model's cropland falls by 0.13 billion hectares, 8% of its 1.69 billion. With calories kept equal it falls by 24%, and with the legume mix by 11%. Nearly all pasture (3.0 billion hectares) is freed.
 
 Poore and Nemecek (2018) find that such a diet would cut farmland by 76% (3.1 billion hectares), "including a 19% reduction in arable land use".
 
@@ -51,7 +51,7 @@ Three modelling choices turn a rise in cropland into a fall. Each was tested on 
 | Replacement by today's protein-rich plant foods only (cereals, rice, pulses, nuts, oilseeds) | +141 Mha |
 | Oilseed land shared between oil and cake by value, the cake's part freed with the animals | +36 Mha |
 | Temporary meadows counted as fodder for ruminants, and freed with them | −99 Mha (−6%) |
-| All three, as in the model, with every animal group's food production taken to zero and the animals not raised for food kept | −130 Mha (−8%) |
+| All three, as in the model, with every animal group's food production taken to zero and the animals not raised for food kept | −129 Mha (−8%) |
 
 - Scaling every plant food by the same factor to replace meat's protein would raise fruit by 80%, vegetables by 74%, and sugar, drinks and vegetable oils in proportion, although they bring almost no protein. More soybean oil would then mean more soybean fields. The default adds protein only to the plant foods eaten for it (see [The shift](#method-shift)). Restricting it further, to foods with at least 5% protein, gives about −2% before fodder. But that threshold is arbitrary. It drops rice (4.8%) and nuts, which are staples of plant protein in much of the world.
 - If the oilcakes carried no land, the soybean fields grown for meal could not be freed. Sharing by value is the usual practice in life-cycle studies. Sharing by mass would give the oil less land and the cake more (soybean oil 19% of the land instead of 37%), and a full shift would free a little more.
@@ -69,13 +69,13 @@ The remaining gap with Poore and Nemecek's −19% has three likely causes:
 
 For each country and crop, the model uses the hectares harvested per tonne produced. The crops of FAOSTAT's production statistics are grouped into Food Balance Sheet items using the same table as for emissions (`qcl_items.csv`). For example, wheat goes to "Wheat and products", lentils and chickpeas to "Pulses, other", and 15% of a seed-cotton field to cottonseed (the rest is lint, outside the model).
 
-- The hectares per tonne are averaged over three years around the base year, 2022 to 2024: the hectares of the three years divided by their tonnes. This way a drought or an unusually large harvest in 2023 does not set the value. Only crop-years with both an area and a production are used.
-- It is then expressed per tonne of the Food Balance Sheet item, which is not always the crop as harvested. The hectares per tonne of crop are multiplied by the crop's tonnes in 2023 and divided by the item's production in the balance.
+- The hectares per tonne are averaged over the base year and the years either side of it that FAOSTAT has published, 2023 and 2024 (2025 is not out yet): the hectares of those years divided by their tonnes. This way a drought or an unusually large harvest in one year does not set the value. Only crop-years with both an area and a production are used.
+- It is then expressed per tonne of the Food Balance Sheet item, which is not always the crop as harvested. The hectares per tonne of crop are multiplied by the crop's tonnes in 2024 and divided by the item's production in the balance.
 - A value more than 20 times above or below the item's production-weighted world median points to a mismatch between the two FAOSTAT domains. It is not used, as for emissions.
 
 A country may have no value of its own for an item, because it does not grow it or because its value was set aside. It then takes the production-weighted median of its region, or of the world if its region has none. About 4,100 country-item values are a country's own, 3,100 come from its region and 2,300 from the world. The borrowed values mostly fill items a country does not grow, which matter only if the scenario moves production there.
 
-Some world values, weighted by production: wheat 0.27 ha per tonne, maize 0.17, rice 0.21 (per tonne of paddy-equivalent production in the balance), soybeans 0.37, potatoes 0.045, coffee 1.0.
+Some world values, weighted by production: wheat 0.28 ha per tonne, maize 0.17, rice 0.21 (per tonne of paddy-equivalent production in the balance), soybeans 0.37, potatoes 0.044, coffee 1.0.
 
 ### Processed products
 
@@ -84,7 +84,7 @@ The land of processed products follows the rule for emissions (see [Emissions](#
 - A primary crop's land is its hectares per tonne × (production − processing).
 - A processed item (vegetable oils, sugar, sweeteners, wine, beer and other drinks) carries the land of the crop it was made from. That is its primary item's hectares per tonne divided by the extraction rate, with the same rates and weights as for emissions.
 
-A tonne of soybean oil, made from about 5.3 tonnes of soybeans, carries 2.3 ha. A tonne of palm oil carries 0.29 ha, and a tonne of raw sugar 0.12 ha. Rice bran oil and maize germ oil, by-products of milling, carry none. Butter and cream are made from milk, which uses no cropland of its own.
+A tonne of soybean oil, made from about 5.3 tonnes of soybeans, carries 2.2 ha. A tonne of palm oil carries 0.29 ha, and a tonne of raw sugar 0.12 ha. Rice bran oil and maize germ oil, by-products of milling, carry none. Butter and cream are made from milk, which uses no cropland of its own.
 
 ### Oil and oilcake
 
@@ -108,7 +108,7 @@ The shares come from `pipeline/oilcakes.csv`: tonnes of cake per tonne of oil fr
 
 Palm oil and olive oil keep all their land, because the press cake of the oil palm's fruit and the olive's pomace are rarely fed to animals.
 
-The cake's land changes with the production of the animal groups that eat it, weighted by the oilseed's feed shares (`feed.json`). With trade shares held, the cake's land follows the world's change in each group's production, because cake is traded like its oil. With each country producing its own change, it follows the country's own change. In all, oilcakes carry 0.11 billion hectares, soybean meal most of it. Emissions are shared the same way, and the cake's emissions follow the animals as its land does (see [Emissions](#method-emissions)).
+The cake's land changes with the production of the animal groups that eat it, weighted by the oilseed's feed shares (`feed.json`). With trade shares held, the cake's land follows the world's change in each group's production, because cake is traded like its oil. With each country producing its own change, it follows the country's own change. In all, oilcakes carry 0.12 billion hectares, soybean meal most of it. Emissions are shared the same way, and the cake's emissions follow the animals as its land does (see [Emissions](#method-emissions)).
 
 ## Pasture and the animals that graze it
 
@@ -122,7 +122,7 @@ A country missing from Livestock Patterns (Nicaragua, at present) takes its numb
 
 ## Land use on the map
 
-The map's *Land use* layer gives the farmland counted here, cropland and pasture, as a share of each country's land area (FAOSTAT's *Land area*, inland water excluded). It gives this share today and once the levers are fully in place. It shows how much of a country's land farming uses: 80% of Saudi Arabia (mostly rangeland), 73% of India, 34% of Brazil, 6% of Canada. Cropland is counted as harvested area, so land cropped twice a year counts twice, which raises the share where double cropping is common, as in India. Eating less meat lowers it where pasture and feed crops are freed. The bins are fixed (5%, 10%, 20%, 30%, 45%, 60%), so a scenario's change shows as a change of colour. The tooltip gives the hectares of cropland and pasture.
+The map's *Land use* layer gives the farmland counted here, cropland and pasture, as a share of each country's land area (FAOSTAT's *Land area*, inland water excluded). It gives this share today and once the levers are fully in place. It shows how much of a country's land farming uses: 80% of Saudi Arabia (mostly rangeland), 75% of India, 33% of Brazil, 6% of Canada. Cropland is counted as harvested area, so land cropped twice a year counts twice, which raises the share where double cropping is common, as in India. Eating less meat lowers it where pasture and feed crops are freed. The bins are fixed (5%, 10%, 20%, 30%, 45%, 60%), so a scenario's change shows as a change of colour. The tooltip gives the hectares of cropland and pasture.
 
 ## Regrowth: an option, off by default
 
@@ -153,7 +153,7 @@ The rate per hectare of freed farmland is then the regrowth rate × that share. 
 
 In Ireland, nearly all farmland could grow back to forest, and the central rate is 12.5 t CO₂ per hectare per year. It is 10.3 in Brazil and 6.1 in France. In the United States it is 1.8, because much of its pasture is western rangeland. In Kazakhstan it is 0.3 and in Mongolia 0.1, mostly steppe.
 
-Countries missing from the table (54 of the model's 188, mostly small islands and deserts) are filled as follows:
+Countries missing from the table (53 of the model's 187, mostly small islands and deserts) are filled as follows:
 
 - A country with less than 10% of its land under forest (FAOSTAT's land use) is taken as dryland. It takes the table's lowest rate, on at most its cropland.
 - Another missing country takes the rates of the lowest country of its region in the table, on anywhere between none and all of its farmland.
@@ -193,7 +193,7 @@ The table shows what netting changes, on the real data with FaIR, SSP2-4.5 and b
 | Dairy to plant milk, before → netted | 1.10 → 1.04 | 0.040 → 0.040 | 0.081 → 0.080 |
 | Half the fish to legumes, before → netted | 0.01 → −0.10 | 0.0005 → −0.0003 | 0.0015 → 0.0004 |
 
-Under the full shift, 12 countries farm more land overall than before, 44 Mha together. Under the fish swap, 105 countries do, 18 Mha together. With regrowth off, nothing changes.
+Under the full shift, 14 countries farm more land overall than before, 41 Mha together. Under the fish swap, 105 countries do, 18 Mha together. With regrowth off, nothing changes.
 
 ## Land-use CO₂ by country
 
@@ -213,23 +213,23 @@ The national inventories' LULUCF totals were not used: they count the uptake of 
 
 | | Planetshift | Reference | Tolerance |
 | --- | --- | --- | --- |
-| Cropland of food crops with their oilcakes, 2023 (billion ha) | 1.51 | 1.42 harvested (FAOSTAT, same countries and crops) | 10% |
+| Cropland of food crops with their oilcakes, 2024 (billion ha) | 1.55 | 1.44 harvested (FAOSTAT, same countries and crops) | 10% |
 | Temporary meadows (billion ha) | 0.14 | 0.14 (FAOSTAT world) | 10% |
 | Pasture (billion ha) | 3.02 | 3.10 (FAOSTAT world) | 5% |
-| Wheat, world (ha per tonne) | 0.27 | 0.25 to 0.4 | |
+| Wheat, world (ha per tonne) | 0.28 | 0.25 to 0.4 | |
 | Land for animal products, share of farmland | 77% | about 83%, with aquaculture (Poore and Nemecek, 2018) | 65% to 85% |
 | Regrowth if all pasture were freed (billion t CO₂ a year) | 8.4 | about 11 (EAT-Lancet diet) to 18 (vegan) in vegetation, 2020–2050 (Hayek et al., 2021) | |
 
-The model's cropland is 6% above FAOSTAT's harvested area of the same crops. The processed items carry their crops' land at world extraction rates. These rates do not match every country's own processing exactly, mostly for vegetable oils.
+The model's cropland is 8% above FAOSTAT's harvested area of the same crops. The processed items carry their crops' land at world extraction rates. These rates do not match every country's own processing exactly, mostly for vegetable oils.
 
-Land used for animal products is all pasture, the land of the oilcakes and temporary meadows, and, for each crop, its cropland times the world share of its uses that is feed. That is 3.0 billion hectares of pasture and 0.58 billion of feed crops, cake and fodder: 77% of the model's farmland. Poore and Nemecek (2018) find that meat, aquaculture, eggs and dairy use about 83% of farmland. The model counts no fodder crop but temporary meadows, so its share is a little lower.
+Land used for animal products is all pasture, the land of the oilcakes and temporary meadows, and, for each crop, its cropland times the world share of its uses that is feed. That is 3.0 billion hectares of pasture and 0.60 billion of feed crops, cake and fodder: 77% of the model's farmland. Poore and Nemecek (2018) find that meat, aquaculture, eggs and dairy use about 83% of farmland. The model counts no fodder crop but temporary meadows, so its share is a little lower.
 
-The FAOSTAT land-use data the pipeline reads give 1.58 billion hectares of cropland in 2023, in line with FAO's land statistics brief for 2001–2023.
+The FAOSTAT land-use data the pipeline reads give 1.58 billion hectares of cropland in 2024, in line with FAO's land statistics brief for 2001–2023.
 
 ## Assumptions
 
 - Harvested area stands for cropland: a field harvested twice counts twice. Fallow, non-food crops and fodder crops other than temporary meadows are not counted.
-- Hectares per tonne are averaged over 2022 to 2024, and expressed per tonne of the base year's Food Balance Sheet production.
+- Hectares per tonne are averaged over 2023 and 2024, and expressed per tonne of the base year's Food Balance Sheet production.
 - A processed item carries the land of the crop it is made from, at world extraction rates. A crushed oilseed's land is shared between its oil and its cake by their value, and the cake's part changes with the animals that eat it.
 - Temporary meadows are fodder for ruminants, shared and changed as their pasture is.
 - Countries borrow their region's, then the world's, production-weighted median hectares per tonne for items they do not grow.

@@ -38,13 +38,13 @@ The URL keys of the options, the diet controls and the levers are listed under [
 
 ## Data and countries
 
-- **Base year 2023**: the latest year whose Food Balance Sheets cover at least 95% as many countries as the best-covered year. Today's food system is then the most recent one that is nearly complete. See [Data](#method-data).
+- **Base year 2024**: the latest year whose Food Balance Sheets cover at least 95% as many countries as the best-covered year. Today's food system is then the most recent one that is nearly complete. See [Data](#method-data).
 - **The base-year balance stands for today's food system**: the current FAOSTAT series (2010 onwards) as published. Nothing is averaged over several years. See [Data](#method-data).
 - **`other` closes each item's balance**: production + imports − exports = food + feed + losses + processing + seed + other. Stock changes and statistical residuals are therefore kept rather than spread over the other uses. See [Data](#method-data).
 - **Kcal and protein per tonne are world values**: FAOSTAT's world food supply of kcal and protein divided by world food supply in tonnes, in the base year. They are the same in every country. See [Data](#method-data).
-- **188 countries**: single countries only (FAOSTAT area codes below 5000). The "China" sum of its four parts and areas that no longer exist are left out, so nothing is counted twice. See [Data](#method-data).
-- **Countries missing from the base year keep their latest diet per person**, rather than being left blank. These are Cuba (2019), the Democratic People's Republic of Korea (2018), and ten countries from the historic series ending in 2013. Each is scaled by its population growth since. See [Data](#method-data).
-- **Countries with no balance at all are left out**: among them Somalia, Burundi, South Sudan, Singapore, Palestine and Eritrea. See [Data](#method-data).
+- **187 countries**: single countries only (FAOSTAT area codes below 5000). The "China" sum of its four parts and areas that no longer exist are left out, so nothing is counted twice. See [Data](#method-data).
+- **Countries missing from the base year keep their latest diet per person**, rather than being left blank. These are Cuba (2019), the Democratic People's Republic of Korea (2018), Nicaragua (2022), and three countries from the historic series ending in 2013. Each is scaled by its population growth since. See [Data](#method-data).
+- **Countries with no balance at all are left out**: among them Somalia, Burundi, South Sudan, Singapore, Palestine, Eritrea and Seychelles. See [Data](#method-data).
 - **A country's region is its M49 sub-region** (a UN grouping such as "Western Africa"), used for feed shares and regional averages. Natural Earth and FAOSTAT both use it. See [Data](#method-data).
 - **High income is the World Bank's classification for fiscal year 2027**, used for the high-income scenario and the feed rations. See [Data](#method-data).
 - **Population to 2100 is FAOSTAT's annual population**, which carries the UN World Population Prospects (WPP) estimates and medium-variant projection. See [Data](#method-data).
@@ -76,7 +76,7 @@ The URL keys of the options, the diet controls and the levers are listed under [
 - **HESTIA conversion factors**: oats in husk to groats 0.7; Poore & Nemecek's dressing percentages for meat counted live (52–55% cattle and buffalo, 47% sheep and goats, 75% pigs, 72% poultry); 16.7 eggs per kg; fat- and protein-corrected milk taken as whole milk. See [HESTIA](#method-hestia).
 - **Some HESTIA emissions are left out of both scopes**: land use, burning of natural vegetation, biogenic CO₂ and natural background N₂O. The production of agricultural inputs (feed, seed, animals, crops, processed food) is also left out of cradle to farm gate. Feed additives and organic fertilisers are kept. See [HESTIA](#method-hestia).
 - **Processed products' HESTIA aggregations are not used**: they count the whole crop as one background input. See [HESTIA](#method-hestia).
-- **FAOSTAT's own Tier 1 estimates, not countries' inventories**, for the emissions year closest to 2023, so that every country is estimated the same way. See [Emissions](#method-emissions).
+- **FAOSTAT's own Tier 1 estimates, not countries' inventories**, for the emissions year closest to 2024, so that every country is estimated the same way. See [Emissions](#method-emissions).
 - **Synthetic nitrogen is shared by harvested area × a world rate per crop class.** The rates come from the shares of world nitrogen use in Heffer et al. (2017): wheat 18%, maize 18%, rice 15%, vegetables 7%, fruit 6%, and so on. Real rates vary between countries. See [Emissions](#method-emissions).
 - **4.7% of each country's synthetic nitrogen goes on grassland**, as in the world average of the same survey. It is given to ruminant products in proportion to their methane. See [Emissions](#method-emissions).
 - **A dairy herd's emissions go 85% to milk and 15% to beef** everywhere. This is a physical allocation, as the International Dairy Federation's standard asks; its worked example gives 85.1% for one farm, but the standard sets no global default. See [Emissions](#method-emissions).

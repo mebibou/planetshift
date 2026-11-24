@@ -1,6 +1,6 @@
 # Carbon stored in farmland
 
-Farming can take CO₂ out of the air as well as emit it. Plants put carbon into the soil, trees store it in wood, and some materials spread on fields store it. This page explains the four practices Planetshift offers as levers, how much CO₂ each takes up per hectare, and how much each could store worldwide. With each practice on the most land it can reach, that is about 0.37 Gt (billion tonnes) of CO₂ a year for cover crops, 1.3 Gt for trees on farms, 0.63 Gt for biochar and 0.16 Gt for rock dust, which is experimental.
+Farming can take CO₂ out of the air as well as emit it. Plants put carbon into the soil, trees store it in wood, and some materials spread on fields store it. This page explains the four practices Planetshift offers as levers, how much CO₂ each takes up per hectare, and how much each could store worldwide. With each practice on the most land it can reach, that is about 0.37 Gt (billion tonnes) of CO₂ a year for cover crops, 1.3 Gt for trees on farms, 0.64 Gt for biochar and 0.16 Gt for rock dust, which is experimental.
 
 ## How the uptake is counted
 
@@ -20,7 +20,7 @@ The uptake of a practice is its rate per hectare times the hectares where it is 
 | Biochar | cropland | 1.9 (0.6–4.9) everywhere | 20% | 100 (no saturation) |
 | Rock dust (enhanced weathering), experimental | cropland | 1.5 (0.3–2.7) tropical moist, 1.0 (0.2–1.8) temperate moist, 0.5 tropical dry, 0.4 temperate dry | 10% | 100 (no saturation) |
 
-The model's cropland is 1.65 billion hectares: the harvested area of the food crops, plus the oilcakes' land and temporary meadows (see [Land](#method-land)).
+The model's cropland is 1.69 billion hectares: the harvested area of the food crops, plus the oilcakes' land and temporary meadows (see [Land](#method-land)).
 
 The practices fall into two kinds:
 
@@ -61,7 +61,7 @@ $$
 
 The range spans 0.5 t of poorly carbonised char to 2 t of char made at high temperature. The rate does not depend on climate.
 
-At that rate, the sustainable feedstock of Woolf et al. (2010) can supply at most a fifth of cropland. At that cap, biochar stores about 0.63 Gt of CO₂ a year. This is below the IPCC Sixth Assessment Report's potential for biochar (1.1, 0.3–1.8, Gt CO₂-equivalent a year at up to \$100 a tonne; 2.6 technically), so it is a conservative reading.
+At that rate, the sustainable feedstock of Woolf et al. (2010) can supply at most a fifth of cropland. At that cap, biochar stores about 0.64 Gt of CO₂ a year. This is below the IPCC Sixth Assessment Report's potential for biochar (1.1, 0.3–1.8, Gt CO₂-equivalent a year at up to \$100 a tonne; 2.6 technically), so it is a conservative reading.
 
 ### Rock dust (experimental)
 

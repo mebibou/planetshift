@@ -1,6 +1,6 @@
 # Emissions per tonne of food
 
-To turn a change in production into a change in emissions, Planetshift needs to know how much each food emits. For every country and every food item, it holds the kilograms of carbon dioxide (CO₂), methane (CH₄) and nitrous oxide (N₂O) emitted per tonne produced: the item's emission intensity. FAOSTAT's estimates give two thirds of the world's farm emissions in the model. HESTIA gives a fifth, and published averages and stand-in values give the rest. Added up over the world, they come close to FAOSTAT's totals: 138.1 Mt of methane a year against 141.8 Mt.
+To turn a change in production into a change in emissions, Planetshift needs to know how much each food emits. For every country and every food item, it holds the kilograms of carbon dioxide (CO₂), methane (CH₄) and nitrous oxide (N₂O) emitted per tonne produced: the item's emission intensity. FAOSTAT's estimates give two thirds of the world's farm emissions in the model. HESTIA gives a fifth, and published averages and stand-in values give the rest. Added up over the world, they come close to FAOSTAT's totals: 138.1 Mt of methane a year against 142.4 Mt.
 
 The three gases are kept separate all the way to the climate model.
 
@@ -36,7 +36,7 @@ Every country in the model has a value for every item and both scopes, including
 
 ### How many cells each tier fills
 
-The table counts the farm-gate country × item cells that each tier fills, by group, for the 188 countries and 90 items. The cradle-to-farm-gate scope is close.
+The table counts the farm-gate country × item cells that each tier fills, by group, for the 187 countries and 90 items. The cradle-to-farm-gate scope is close.
 
 Only seafood needs tier 6: 278 of its 1,504 cells. Almost all are landlocked countries that import all their fish. Their balance lists an item that FishStat does not give them (see [Fish and seafood](#method-seafood)). For every other item, the published world averages of tier 4 cover what has no proxy.
 
@@ -65,7 +65,7 @@ Weighted by emissions rather than cells, FAOSTAT (tier 3) gives two thirds of th
 
 ## Tier 3: FAOSTAT's emissions by item
 
-FAOSTAT estimates agricultural emissions for every country with the IPCC Tier 1 methods, the IPCC's simplest default methods. FAOSTAT also lists the countries' own UNFCCC inventories for the same rows. Planetshift reads FAOSTAT's own estimates (source "FAO TIER 1"), for the emissions year closest to the base year (2023).
+FAOSTAT estimates agricultural emissions for every country with the IPCC Tier 1 methods, the IPCC's simplest default methods. FAOSTAT also lists the countries' own UNFCCC inventories for the same rows. Planetshift reads FAOSTAT's own estimates (source "FAO TIER 1"), for the emissions year closest to the base year (2024).
 
 FAOSTAT gives most emissions by crop or by animal species. Planetshift shares them out among the food items as follows.
 
@@ -171,7 +171,7 @@ Fuel and electricity count in the cradle-to-farm-gate scope only, as for farms. 
 
 Some farm animals are not raised for food: oxen and buffalo kept to plough, horses, donkeys and mules kept for work and transport, and cattle kept for other reasons, as most of India's are. Their emissions stay in each country's farm emissions, but no product carries them and no lever changes them. A 100% shift leaves them in place.
 
-They are written by country as `nonFood` in `intensities.json`. They add up to 211 Mt CO₂e a year in the base year, 115 Mt of it in India, then Niger (15), Brazil (9), Mexico (8) and Ethiopia (6).
+They are written by country as `nonFood` in `intensities.json`. They add up to 211 Mt CO₂e a year in the base year, 113 Mt of it in India, then Niger (18), Brazil (9), Mexico (8) and Ethiopia (7).
 
 ### How they are found
 
@@ -196,9 +196,9 @@ The model takes the lowest of these means, southern Africa's 6.7%, as the thresh
 
 The threshold is a sub-Saharan figure applied to every country. No comparable review was found for other regions.
 
-India is most of the baseline, and does not depend on the threshold. FAOSTAT records no cattle slaughter in India, so its 131 million non-dairy cattle are all in the baseline at any threshold. India's 20th Livestock Census counts 192.5 million cattle in 2019, of which 74.2 million milch cows (in milk or dry). That leaves 118.3 million other cattle, 47.4 million of them male (Department of Animal Husbandry and Dairying, 2019, tables 6 and 7). The census does not say what they are kept for.
+India is most of the baseline, and does not depend on the threshold. FAOSTAT records no cattle slaughter in India, so its 128 million non-dairy cattle are all in the baseline at any threshold. India's 20th Livestock Census counts 192.5 million cattle in 2019, of which 74.2 million milch cows (in milk or dry). That leaves 118.3 million other cattle, 47.4 million of them male (Department of Animal Husbandry and Dairying, 2019, tables 6 and 7). The census does not say what they are kept for.
 
-No country source was found for the offtake of Niger's cattle. FAOSTAT records net exports of 113,000 head for Niger in 2023, and 206,000 for Mali. At 9.9%, these exports lowered their baselines from 18.7 and 9.1 Mt to 17.2 and 6.5 Mt. With the threshold at 6.7%, they are 15.0 and 2.2 Mt.
+No country source was found for the offtake of Niger's cattle. FAOSTAT records net exports of 36,000 head for Niger in 2024, and 301,000 for Mali. At 9.9%, these exports lowered their baselines from 20.2 and 9.0 Mt to 19.8 and 5.1 Mt. With the threshold at 6.7%, they are 18.1 and 1.1 Mt.
 
 ### What the threshold changes
 
@@ -206,10 +206,10 @@ The threshold moves the baseline, but it hardly moves the effect of a shift. A h
 
 | Offtake threshold | Non-food baseline, Mt CO₂e | India | Niger | Ethiopia | Mali | Full shift: emissions avoided, Gt CO₂e | Full shift: warming avoided in 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 6.7% (southern Africa, used) | 211 | 115 | 15.0 | 6.4 | 2.2 | 5.12 | 0.271 |
-| 9% (median) | 242 | 115 | 16.8 | 23.7 | 5.6 | 5.08 | 0.268 |
-| 9.9% (mean) | 255 | 115 | 17.2 | 28.6 | 6.5 | 5.07 | 0.267 |
-| 12% (pastoral systems) | 281 | 115 | 18.1 | 37.3 | 8.1 | 5.04 | 0.266 |
+| 6.7% (southern Africa, used) | 211 | 113 | 18.1 | 6.9 | 1.1 | 5.12 | 0.271 |
+| 9% (median) | 245 | 113 | 19.4 | 26.0 | 4.0 | 5.08 | 0.268 |
+| 9.9% (mean) | 257 | 113 | 19.8 | 31.1 | 5.1 | 5.07 | 0.267 |
+| 12% (pastoral systems) | 285 | 113 | 20.4 | 39.9 | 7.1 | 5.04 | 0.266 |
 
 A half shift avoids half as much (2.51 to 2.56 Gt CO₂e, 0.133 to 0.135 °C). The likely range that the app shows covers only the climate response, not this choice.
 
@@ -289,15 +289,15 @@ Milk has no proxy: no other item is a fair stand-in per tonne. A country without
 
 ## Checks against FAOSTAT's totals
 
-A test recomputes world emissions from the built files and compares them with FAOSTAT's world totals for the same processes in 2023. Methane comes within a few percent. N₂O is higher, and CO₂ differs most, for reasons given below.
+A test recomputes world emissions from the built files and compares them with FAOSTAT's world totals for the same processes in 2024. Methane comes within a few percent. N₂O is higher, and CO₂ differs most, for reasons given below.
 
 | | Planetshift, test | FAOSTAT | Tolerance | Planetshift with the oilcakes, as the app counts |
 | --- | --- | --- | --- | --- |
-| Farm gate, CH₄ (Mt) | 138.1 | 141.8 | 10% | 138.4 |
-| Farm gate, N₂O (Mt) | 8.01 | 7.26 | 20% | 8.12 |
-| Cradle to farm gate, CH₄ (Mt) | 140.6 | 142.3 | 10% | 141.1 |
-| Cradle to farm gate, N₂O (Mt) | 8.14 | 7.56 | 20% | 8.26 |
-| Cradle to farm gate, CO₂ (Mt) | 1,688 | 1,348 | 50% | 1,741 |
+| Farm gate, CH₄ (Mt) | 138.1 | 142.4 | 10% | 138.4 |
+| Farm gate, N₂O (Mt) | 8.01 | 7.32 | 20% | 8.12 |
+| Cradle to farm gate, CH₄ (Mt) | 140.6 | 142.9 | 10% | 141.1 |
+| Cradle to farm gate, N₂O (Mt) | 8.14 | 7.61 | 20% | 8.26 |
+| Cradle to farm gate, CO₂ (Mt) | 1,688 | 1,322 | 50% | 1,741 |
 
 ### How the check is computed
 
@@ -317,9 +317,9 @@ Direct agricultural N₂O was 6.1 Mt in 2020 (3.9 Tg N, Tian et al., 2024). Plan
 
 ### Rice methane
 
-Rice methane is 22.6 Mt in the model, against 24.9 Mt in FAOSTAT for 2023 and 32 (25–37) Tg in the Global Methane Budget. Most of the gap is India.
+Rice methane is 22.6 Mt in the model, against 25.3 Mt in FAOSTAT for 2024 and 32 (25–37) Tg in the Global Methane Budget. Most of the gap is India.
 
-India's intensity is HESTIA's (tier 1): 16.7 kg of methane from flooding per tonne of paddy, and 17.1 kg with the rest. FAOSTAT's is 24.6 kg (5.08 Mt over 206.7 Mt of paddy). Both are per tonne of paddy, the unit the balance uses for rice, so the gap is not a conversion error. Per hectare, HESTIA gives about 72 kg of methane and FAOSTAT about 106.
+India's intensity is HESTIA's (tier 1): 16.7 kg of methane from flooding per tonne of paddy, and 17.1 kg with the rest. FAOSTAT's is 24.5 kg (5.33 Mt over 217.9 Mt of paddy). Both are per tonne of paddy, the unit the balance uses for rice, so the gap is not a conversion error. Per hectare, HESTIA gives about 72 kg of methane and FAOSTAT about 106.
 
 HESTIA's model applies the IPCC's 2019 Refinement to the water regimes and amendments of its Indian rice data. FAOSTAT applies the IPCC's Tier 1 method with its own assumptions on water regimes. The difference is one of method, so the HESTIA value is kept as the better-documented tier. With FAOSTAT's intensity for India, the world total would be about 24.1 Mt.
 
@@ -329,10 +329,10 @@ Our World in Data shows Poore and Nemecek's (2018) emissions per kilogram of foo
 
 | Item | Planetshift | Poore and Nemecek, farm stage |
 | --- | --- | --- |
-| Beef | 24.7 | 21.9 (dairy herd) to 56.2 (beef herd) |
+| Beef | 24.6 | 21.9 (dairy herd) to 56.2 (beef herd) |
 | Sheep and goat meat | 21.4 | 27.0 |
-| Pig meat | 1.70 | 2.48 |
-| Poultry meat | 0.88 | 0.93 |
+| Pig meat | 1.68 | 2.48 |
+| Poultry meat | 0.87 | 0.93 |
 | Eggs | 0.82 | 1.32 |
 | Milk | 1.19 | 1.51 |
 | Rice | 1.07 per kg of paddy, 1.6 per kg milled | 3.55 |

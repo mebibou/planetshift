@@ -17,7 +17,7 @@ Planetshift counts emissions in one of two scopes, chosen under *Other options* 
 
 Wild fish therefore have no emissions at the farm gate. Their fuel appears only in the cradle-to-farm-gate scope (*With inputs*), the default; *Biological processes only* under *Other options* leaves it out. The same rule keeps tractors' diesel out of the farm-gate emissions of wheat, but its effect is larger for fish. The hint of *Emissions counted* under *Other options* says so, and so does the summary's note on what is counted.
 
-All seafood items together emit 66 Mt (million tonnes) CO₂e a year at the farm gate and 236 Mt CO₂e cradle to farm gate, weighted by the Food Balance Sheets' production. CO₂e (CO₂-equivalent) adds the gases into one figure with their 100-year weights (see [From emissions to temperature](#method-climate)).
+All seafood items together emit 66 Mt (million tonnes) CO₂e a year at the farm gate and 235 Mt CO₂e cradle to farm gate, weighted by the Food Balance Sheets' production. CO₂e (CO₂-equivalent) adds the gases into one figure with their 100-year weights (see [From emissions to temperature](#method-climate)).
 
 ### In the app
 
@@ -134,7 +134,7 @@ The two feed methods (see [Feed](#method-feed)) give seafood its share as follow
 
 ### Fish fed to animals
 
-The balance sheets record the fish reduced to meal and oil as feed use of the fish items: 24 Mt of fish in 2023, 20 Mt of it pelagic. The fish items are therefore feed items too. Their feed use goes about 90% to aquaculture, 9% to pigs and 1% to poultry, the split of fishmeal in 2020 (FAO, SOFIA 2022, from IFFO: 86%, 9% and 1%, the other 4% mainly to pet food):
+The balance sheets record the fish reduced to meal and oil as feed use of the fish items: 23 Mt of fish in 2024, 19 Mt of it pelagic. The fish items are therefore feed items too. Their feed use goes about 90% to aquaculture, 9% to pigs and 1% to poultry, the split of fishmeal in 2020 (FAO, SOFIA 2022, from IFFO: 86%, 9% and 1%, the other 4% mainly to pet food):
 
 - in the species method, as a split of its own (`fishmeal` in `feed_species.csv`);
 - in the GLEAM-style method, as a `fish` class of the rations (0.25 of the aquafeed ration, 0.01 of pigs', 0.003 of poultry's), which gives 74%, 20% and 6%.
@@ -143,7 +143,7 @@ When less farmed fish is eaten, less fish is caught for its feed, and the emissi
 
 ### What changed for the other groups
 
-For every feed item that existed before, in every region and both methods, the five livestock groups keep the same proportions to each other. Each of their shares is the old share × (1 − seafood's share). `tests/test_seafood_built.py` checks this against the last data without seafood, to within the rounding of the shares (largest difference 0.0003). World seafood shares are 5.5% of every crop in the species method. In the GLEAM-style one they are 2.6% of grain and rice, 5.9% of pulses and 9.1% of soybeans.
+For every feed item that existed before, in every region and both methods, the five livestock groups keep the same proportions to each other. Each of their shares is the old share × (1 − seafood's share). `tests/test_seafood_built.py` checks this against the last data without seafood, to within the rounding of the shares (largest difference 0.0003). World seafood shares are 5.5% of every crop in the species method. In the GLEAM-style one they are 2.6% of grain and rice, 5.8% of pulses and 9.0% of soybeans.
 
 ## Breakdown and land
 
@@ -155,8 +155,8 @@ Seafood has no pasture and no cropland of its own. The cropland of its feed belo
 
 | Check | Planetshift | Published |
 | --- | --- | --- |
-| World food supply of fish and seafood, base year 2023 | 20.1 kg a person a year | 20.7 kg in 2022 (FAO, SOFIA 2024) |
-| Seafood's share of animal protein | 14.2% | about 15% (FAO, SOFIA 2024; 17% in older editions, which counted differently) |
+| World food supply of fish and seafood, base year 2024 | 20.1 kg a person a year | 20.7 kg in 2022 (FAO, SOFIA 2024) |
+| Seafood's share of animal protein | 14.1% | about 15% (FAO, SOFIA 2024; 17% in older editions, which counted differently) |
 | Seafood's share of all protein | 6.0% | about 6% (FAO, SOFIA 2024) |
 | World capture production, FishStat 2023 | 90 Mt | about 91 Mt in 2022, aquatic animals (SOFIA 2024) |
 | Fuel burnt by fisheries | 39 billion litres (2023 catches) | 40 billion litres in 2011 (Parker et al.) |
@@ -165,7 +165,7 @@ Seafood has no pasture and no cropland of its own. The cropland of its feed belo
 | Aquaculture emissions with feed | feed counted on the crops and fish | 263 Mt CO₂e in 2017, 57% of it feed (MacLeod et al.) |
 | Compound aquafeed | about 69 Mt (GLEAM-style intake) | 69.4 Mt in 2023 (Tacon et al., 2025); about 50 Mt in 2017 (Tacon, 2020) |
 
-All seafood items together, weighted by the balance sheets' production, give 66 Mt CO₂e a year at the farm gate and 236 Mt CO₂e cradle to farm gate. The capture total is within a few percent of Parker et al.'s fuel emissions, because world catches have hardly changed since 2011. Aquaculture comes out lower per tonne than MacLeod et al.'s non-feed share for two reasons: N₂O is weighed with AR6's 273 instead of 298, and pond fertiliser is left out. Adding seafood leaves the intensities, supply, items and breakdown of every other item, and `land.json`, unchanged (`tests/test_seafood_built.py`).
+All seafood items together, weighted by the balance sheets' production, give 66 Mt CO₂e a year at the farm gate and 235 Mt CO₂e cradle to farm gate. The capture total is within a few percent of Parker et al.'s fuel emissions, because world catches have hardly changed since 2011. Aquaculture comes out lower per tonne than MacLeod et al.'s non-feed share for two reasons: N₂O is weighed with AR6's 273 instead of 298, and pond fertiliser is left out. Adding seafood leaves the intensities, supply, items and breakdown of every other item, and `land.json`, unchanged (`tests/test_seafood_built.py`).
 
 ## Does eating less fish let the ocean store more carbon?
 

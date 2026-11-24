@@ -46,6 +46,16 @@ def test_gap_fill_scales_an_older_balance_by_population():
     assert set(rows["year"]) == {2023}
 
 
+def test_a_base_year_of_zeros_is_filled_from_the_latest_year_with_a_balance():
+    current = fbs(
+        [(1, 2511, 5142, 2024, 0.0), (1, 2513, 5142, 2024, 0.0), (1, 2511, 5142, 2023, 5.0)]
+    )
+    pop = pd.DataFrame({2023: [1.0], 2024: [1.1]}, index=[1])
+    rows, notes = S.gap_filled(current, fbs([]), pop, 2024, {})
+    assert notes == {1: "FBS 2023"}
+    assert rows.set_index(["area_code", "item_code"])["value"][(1, 2511)] == pytest.approx(5.5)
+
+
 def test_supply_json_omits_empty_rows_and_items_left_out():
     rows = fbs([(1, 2511, 5142, 2023, 1.0), (1, 2761, 5142, 2023, 1.0), (1, 2513, 5142, 2023, 0.0)])
     out = S.supply_json(S.balance(rows), {1: "FRA"}, {2511, 2513})

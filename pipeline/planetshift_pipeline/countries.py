@@ -64,7 +64,7 @@ def is_country(area_code: int) -> bool:
 
 def countries_only(df: pd.DataFrame) -> pd.DataFrame:
     """Rows of single countries: no regions, no aggregates such as "China", no former areas."""
-    return df[df["area_code"].map(is_country)]
+    return df[df["area_code"].map(is_country).astype(bool)]
 
 
 def iso3_by_m49(ne: pd.DataFrame) -> dict[str, str]:

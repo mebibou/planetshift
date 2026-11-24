@@ -70,11 +70,12 @@ def test_a_download_records_its_date_and_hash(tmp_path, monkeypatch):
     assert side["downloaded"] == cache.today()
 
 
-def test_a_faostat_extract_is_keyed_by_its_bulk_file(tmp_path):
+def test_a_faostat_extract_is_keyed_by_its_bulk_file(tmp_path, monkeypatch):
     from planetshift_pipeline import cache
     from planetshift_pipeline.sources import faostat
 
-    zip_path = tmp_path / faostat.FILES["QCL"]
+    monkeypatch.setattr(faostat, "listed_update", lambda *_: "2025-12-20")
+    zip_path = tmp_path / faostat.release_name(faostat.FILES["QCL"], "2025-12-20")
     zip_path.write_bytes(b"")
     cache.record(zip_path, downloaded="2026-01-02", updated="2025-12-20")
     first = faostat.extract_path(tmp_path, "QCL", 2022, 2022)
@@ -87,3 +88,13 @@ def test_downloads_retry_server_errors():
 
     retry = cache.session().get_adapter("https://example.org").max_retries
     assert retry.total == 5 and 503 in retry.status_forcelist
+
+
+def test_a_faostat_bulk_file_is_cached_under_its_release_date():
+    from planetshift_pipeline.sources import faostat
+
+    name = "FoodBalanceSheets_E_All_Data_(Normalized).zip"
+    assert faostat.release_name(name, "2026-11-23") == (
+        "FoodBalanceSheets_E_All_Data_(Normalized)_2026-11-23.zip"
+    )
+    assert faostat.release_name(name, "") == name
