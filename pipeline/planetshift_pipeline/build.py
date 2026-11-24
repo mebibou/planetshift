@@ -14,6 +14,7 @@ from .sections import (
     climate,
     coemissions,
     countries,
+    deeptime,
     deforestation,
     enso,
     feed,
@@ -77,6 +78,7 @@ SECTIONS: tuple[Section, ...] = (
     Section("removals", removals.build, ("removals.json",), ("removals",)),
     Section("population", population.build, ("population.json",), ("population",)),
     Section("people", people.build, ("people.json",)),
+    Section("deeptime", deeptime.build, ("deeptime.json",), ("deeptime",)),
     Section("map", map.build, ("world.topo.json",)),
     Section("meta", lambda b: meta.build(b, source_modules()), ("meta.json",)),
 )
