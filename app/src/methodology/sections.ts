@@ -8,6 +8,7 @@ const TAIL = [
   'climate',
   'link',
   'impacts',
+  'biodiversity',
   'deeptime',
   'options',
   'assumptions',

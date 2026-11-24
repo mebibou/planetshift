@@ -67,6 +67,7 @@ import {
 import { animalUse, feedChange, feedSharesOf, groupProductionChange } from './feed';
 import { addLand, countryLand, landChangeOf, NO_LAND, type CakeDemand } from './land';
 import { clipChange, locateAll } from './location';
+import { mammalsOf, NO_MAMMALS } from './mammals';
 import { groupTotals, prepare, type Prepared, type PreparedCountry } from './prepare';
 import { baselineScale, builtUp, ramp, tabulate, type Scale } from './timePath';
 import {
@@ -471,6 +472,14 @@ const addRecords = (
 };
 
 /** What a cut removes from the base year's production, kept while the cut is. */
+/** A country's farmed mammals and their change, none without `mammals.json`. */
+const countryMammals = (pc: PreparedCountry, change: ItemVector, prepared: Prepared) => {
+  const herds = prepared.data.mammals?.byCountry[pc.country.iso3];
+  return herds
+    ? mammalsOf(herds, atLeastAll(groupProductionChange(pc.emitting, change, prepared)))
+    : NO_MAMMALS;
+};
+
 const ownCutCache = memoPer<Record<Gas, ItemVector>, GasVector>();
 
 const countryParts = (
@@ -557,6 +566,7 @@ const countryParts = (
         land,
         landChange,
         landArea: prepared.data.land.landArea?.[pc.country.iso3] ?? 0,
+        ...countryMammals(pc, change, prepared),
       },
       ...extra.map((e) => e.result ?? {}),
     ) as CountryResult,

@@ -314,6 +314,17 @@ export interface Impacts {
   groups: ImpactGroup[];
 }
 
+/** `other`: the animals not raised for food, which follow no group. */
+export type HerdGroup = AnimalGroup | 'other';
+
+/** mammals.json: farmed mammals' live weight and the world's wild mammals, tonnes. */
+export interface Mammals {
+  year: number;
+  byCountry: Record<string, Partial<Record<HerdGroup, number>>>;
+  wild: { land: number; marine: number };
+  source: string;
+}
+
 /**
  * All files loaded together: the core's here, each lever module's added by its `data.ts`
  * (app/src/levers/<id>/data.ts), which also describes the file.
@@ -333,6 +344,8 @@ export interface ModelData {
   landuse?: LandUse;
   /** Optional: a build without it has no card on what the warming means. */
   impacts?: Impacts;
+  /** Optional: a build without it has no farmed mammals figure or map layer. */
+  mammals?: Mammals;
   /** Not a file: the build's departures from FaIR stand for it when it is unset. */
   departures?: Departures;
 }

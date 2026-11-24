@@ -315,6 +315,7 @@ export const Explore = (props: ExploreProps) => {
           completeYear={state.scenario.rampEnd}
           horizon={horizon}
           options={state.options}
+          wild={data.mammals?.wild}
         />
         {data.impacts && (
           <Impacts t={t} locale={locale} impacts={data.impacts} result={shown} horizon={horizon} />

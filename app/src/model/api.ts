@@ -88,6 +88,9 @@ export interface CountryResult {
   landChange: { cropland: number; pasture: number };
   /** The country's land area, ha; 0 where the data has none. */
   landArea: number;
+  /** Farmed mammals' live weight, tonnes, and its change at the full shift; 0 without the file. */
+  mammals: number;
+  mammalsChange: number;
 }
 
 export type Band3 = { median: number; p05: number; p95: number };

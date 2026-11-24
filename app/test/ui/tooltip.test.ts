@@ -76,6 +76,25 @@ describe('tooltip', () => {
     expect(m.source).toBeUndefined();
   });
 
+  it('shows farmed mammals per km² of land and their live weight, without a source', () => {
+    const m = tooltipModel(
+      'France',
+      countryResult({ mammals: 8.7e6, mammalsChange: -4.35e6, landArea: 5.47e7 }),
+      { ...spec, layer: 'mammals' },
+      t,
+      'en-GB',
+      { tier: 3, source: 'https://www.fao.org/faostat/' },
+    );
+    expect(m.rows.map(([k, v]) => [k, v.replace(/\u00a0/g, ' ')])).toEqual([
+      ['Farmed mammals per km² of land', ''],
+      ['Today', '16 t/km²'],
+      ['With the levers', '8 t/km²'],
+      ['Change', '−50%'],
+      ['Live weight of farmed mammals', '8.7 Mt → 4.35 Mt'],
+    ]);
+    expect(m.source).toBeUndefined();
+  });
+
   it('shows the forest cleared a year and its CO₂, without an emission source', () => {
     const m = tooltipModel(
       'Brazil',

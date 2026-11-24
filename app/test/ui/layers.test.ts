@@ -8,6 +8,7 @@ import {
   layerValues,
   landCo2Change,
   landUseCo2,
+  mammalDensity,
   measureOf,
   relativeChange,
   type LayerSpec,
@@ -122,5 +123,25 @@ describe('layers', () => {
       layerValue(countryResult({ iso3: 'USA' }), spec({ layer: 'landCo2' }), landUse),
     ).toBeNull();
     expect(landUseCo2(undefined).size).toBe(0);
+  });
+
+  it('gives farmed mammals in tonnes of live weight per km² of land, before and after', () => {
+    const c = countryResult({ mammals: 8e6, mammalsChange: -6e6, landArea: 5.5e7 });
+    expect(measureOf(spec({ layer: 'mammals' }))).toBe('mammals');
+    expect(mammalDensity(c)[0]).toBeCloseTo(8e6 / 5.5e5);
+    expect(beforeAfter(c, spec({ layer: 'mammals' }))).toEqual({
+      kind: 'mammals',
+      before: expect.closeTo(8e6 / 5.5e5),
+      after: expect.closeTo(2e6 / 5.5e5),
+    });
+    expect(layerValue(c, spec({ layer: 'mammals' }))).toBeCloseTo(2e6 / 5.5e5);
+  });
+
+  it('has no farmed mammals value without herds or land area, but one when all are gone', () => {
+    const none = spec({ layer: 'mammals' });
+    expect(layerValue(countryResult({ mammals: 0, mammalsChange: 0 }), none)).toBeNull();
+    expect(layerValue(countryResult({ landArea: 0 }), none)).toBeNull();
+    expect(layerValue(countryResult({ mammals: 10, mammalsChange: -10 }), none)).toBe(0);
+    expect(mammalDensity(countryResult({ landArea: 0 }))).toEqual([0, 0]);
   });
 });
