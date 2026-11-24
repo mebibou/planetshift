@@ -92,7 +92,7 @@ La trituration d'un oléagineux donne de l'huile et un tourteau donné aux anima
 
 Planetshift partage les terres entre les deux selon leur valeur, comme le font d'ordinaire les analyses de cycle de vie pour les coproduits. On parle d'allocation économique. L'huile garde sa part des hectares par tonne. Le reste des terres que l'huile portait l'année de référence va au tourteau (`oilcakeHa` dans `land.json`, par pays et par oléagineux).
 
-Les parts viennent de `pipeline/oilcakes.csv` : les tonnes de tourteau par tonne d'huile d'après les facteurs de conversion techniques de la FAO, et les prix mondiaux d'après les données commerciales de FAOSTAT (valeur des exportations sur leur quantité, 2021–2023).
+Les parts viennent de `pipeline/oilcakes.csv` : les tonnes de tourteau par tonne d'huile d'après les facteurs de conversion techniques de la FAO (la médiane de leurs tableaux par pays), et les prix mondiaux d'après les données commerciales de FAOSTAT (valeur des exportations sur leur quantité, 2021–2023).
 
 | Huile | Tourteau par tonne d'huile | Huile, \$/t | Tourteau, \$/t | Part des terres pour l'huile |
 | --- | --- | --- | --- | --- |

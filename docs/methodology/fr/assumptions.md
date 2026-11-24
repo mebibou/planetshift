@@ -77,9 +77,9 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 - **Certaines émissions HESTIA sont exclues des deux périmètres** : l'usage des terres, le brûlage de la végétation naturelle, le CO₂ biogénique et le flux naturel de fond de N₂O. La production des intrants agricoles (aliments pour animaux, semences, animaux, cultures, aliments transformés) est aussi exclue du périmètre du berceau à la sortie de ferme. Les additifs alimentaires et les engrais organiques sont gardés. Voir [HESTIA](#method-hestia).
 - **Les agrégations HESTIA des produits transformés ne sont pas utilisées** : elles comptent toute la culture comme une seule entrée d'arrière-plan. Voir [HESTIA](#method-hestia).
 - **Les estimations de niveau 1 propres à FAOSTAT, et non les inventaires des pays**, pour l'année d'émissions la plus proche de 2023, pour que chaque pays soit estimé de la même façon. Voir [Émissions](#method-emissions).
-- **L'azote de synthèse est réparti selon la surface récoltée × une dose mondiale par classe de cultures.** Les doses viennent des parts de l'azote utilisé dans le monde selon Heffer et al. (2017) : blé 18 %, maïs 16 %, riz 16 %, légumes 10 %, fruits 7 %, etc. Les doses réelles varient d'un pays à l'autre. Voir [Émissions](#method-emissions).
-- **3,6 % de l'azote de synthèse de chaque pays va aux prairies**, comme dans la moyenne mondiale de la même enquête. Il est attribué aux produits des ruminants en proportion de leur méthane. Voir [Émissions](#method-emissions).
-- **Les émissions d'un troupeau laitier vont à 85 % au lait et à 15 % au bœuf** partout. C'est une allocation physique proche de la valeur mondiale par défaut de la Fédération internationale de laiterie. Voir [Émissions](#method-emissions).
+- **L'azote de synthèse est réparti selon la surface récoltée × une dose mondiale par classe de cultures.** Les doses viennent des parts de l'azote utilisé dans le monde selon Heffer et al. (2017) : blé 18 %, maïs 18 %, riz 15 %, légumes 7 %, fruits 6 %, etc. Les doses réelles varient d'un pays à l'autre. Voir [Émissions](#method-emissions).
+- **4,7 % de l'azote de synthèse de chaque pays va aux prairies**, comme dans la moyenne mondiale de la même enquête. Il est attribué aux produits des ruminants en proportion de leur méthane. Voir [Émissions](#method-emissions).
+- **Les émissions d'un troupeau laitier vont à 85 % au lait et à 15 % au bœuf** partout. C'est une allocation physique, comme le demande la norme de la Fédération internationale de laiterie ; son exemple chiffré donne 85,1 % pour une ferme, mais la norme ne fixe aucune valeur mondiale par défaut. Voir [Émissions](#method-emissions).
 - **Les cheptels mixtes (buffles, moutons, chèvres, chameaux) sont répartis entre lait et viande selon les protéines**, avec 15 % de protéines dans la viande en carcasse et de 3,2 à 5,5 % dans le lait selon l'espèce. Voir [Émissions](#method-emissions).
 - **Les chevaux, les ânes et les mulets sont laissés de côté** : ils sont surtout gardés pour le travail. Voir [Émissions](#method-emissions).
 - **Les abats et les graisses animales portent les mêmes émissions par tonne que la carcasse**, partageant les émissions de la viande au prorata de la masse. Voir [Émissions](#method-emissions).
@@ -195,15 +195,18 @@ Les autres sources sont sous CC BY 4.0, dans le domaine public, sous Open Govern
 
 ### Valeurs reprises de mémoire plutôt que vérifiées à la source
 
-- La répartition de l'alimentation animale par espèce (11/16/28/28/17) et les consommations de concentrés et rations de type GLEAM. Voir [Alimentation animale](#method-feed).
-- Les parts de l'azote utilisé dans le monde par classe de cultures et sur les prairies, d'après Heffer et al. (2017). Voir [Émissions](#method-emissions).
-- Les 85 % des émissions d'un troupeau laitier attribués au lait, présentés comme proches de la valeur par défaut de la Fédération internationale de laiterie. Voir [Émissions](#method-emissions).
-- Les facteurs de conversion techniques de la FAO dans la table des taux d'extraction (sucre non centrifugé, autres huiles d'oléagineux, boissons fermentées et alcoolisées). Voir [Émissions](#method-emissions).
-- Les tonnes de tourteau par tonne d'huile de `oilcakes.csv`, tirées des facteurs de conversion techniques de la FAO. Elles fixent le partage des terres d'un oléagineux trituré entre l'huile et le tourteau. Voir [Terres](#method-land).
-- Les taux d'extraction du sucre utilisés pour convertir les unités de Poore & Nemecek (11 % pour la canne, 15 % pour la betterave). Le bilan mondial de la page sur les émissions donne 0,16 pour la betterave. Voir [Données ACV publiées](#method-literature).
+- La répartition de l'alimentation animale par espèce (11/16/28/28/17). Les consommations de grains de GLEAM (Mottet et al., 2017, tableau SI 2) et l'enquête de l'industrie des aliments du bétail donnent à peu près la même part aux ruminants ensemble et aux porcs, mais aucune ne donne 16 % au lait ni aussi peu que 28 % à la volaille. Voir [Alimentation animale](#method-feed).
+- Les consommations de concentrés et les rations de type GLEAM, qu'aucun tableau publié ne donne sous cette forme, et la ration 30/40/5/25 de l'aquaculture. Voir [Alimentation animale](#method-feed).
+- Les aliments composés pour l'aquaculture en 2023 (69,4 Mt, Tacon et al., 2025), d'où vient la part de 5,5 % des concentrés donnée aux produits de la mer : l'article n'a pas pu être lu. Voir [Poissons et fruits de mer](#method-seafood).
+- Les 85 % des émissions d'un troupeau laitier attribués au lait. La norme 2022 de la Fédération internationale de laiterie donne la formule d'allocation et un exemple à 85,1 % pour une ferme, mais aucune valeur mondiale par défaut ; son bulletin de 2015 n'a pas pu être lu. Voir [Émissions](#method-emissions).
+- Les grains par tonne de boissons fermentées (0,25 t) et alcoolisées (1,1 t), que les facteurs de conversion techniques de la FAO ne donnent pas. Voir [Émissions](#method-emissions).
 - Le mélange de légumineuses (60 % de légumineuses, 20 % de soja, 20 % de céréales). Voir [Le changement](#method-shift).
 - Le mélange de boissons végétales (50 % de soja, 50 % d'avoine). Voir [Le changement](#method-shift).
-- La part applicable de chaque pratique par pays et la plus grande part des terres de chaque stockage. Voir [Pratiques agricoles](#method-practices) et [Carbone dans les terres agricoles](#method-removals).
+- La part applicable de chaque pratique par pays, un jugement qu'aucune source ne donne. Voir [Pratiques agricoles](#method-practices).
+- Le quart des terres cultivées des cultures intermédiaires et l'indépendance de leur taux vis-à-vis du climat, ainsi que les taux de l'altération forcée par zone climatique et le cinquième retiré pour la logistique : la méta-analyse n'a pu être lue que dans son résumé, et les études sur l'altération ne donnent ni l'un ni l'autre. Voir [Carbone dans les terres agricoles](#method-removals).
+- Les 0,85 Gt du transport maritime, lues seulement là où d'autres citent l'AIE, et la répartition de la route entre 60 % de passagers et 40 % de marchandises, que les parts de l'AIE encadrent (plus de 60 % pour les voitures et utilitaires, environ un tiers pour les camions) sans donner celle des utilitaires. Voir [Énergie et transports](#method-sectors).
+- Les 0,15–0,22 kWh/km d'une voiture électrique. Voir [Énergie et transports](#method-sectors).
+- Les baisses de l'acier et du ciment à adoption complète (90 %, 80 %) et l'électricité du ciment par kg évité, ainsi que les 3,0 Gt de CO₂ direct des bâtiments, lues seulement dans un résumé de recherche de la page de l'AIE. Voir [Bâtiments et industrie](#method-industry).
 
 ### HESTIA n'a pas encore de produits animaux
 

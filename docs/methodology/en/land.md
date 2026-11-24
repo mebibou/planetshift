@@ -92,7 +92,7 @@ Crushing an oilseed gives oil and a cake (meal) that is fed to animals. The cake
 
 Planetshift shares the land between the two by their value, as life-cycle studies usually do for co-products. This is called economic allocation. The oil keeps its share of the hectares per tonne. The rest of the land the oil carried in the base year goes to the cake (`oilcakeHa` in `land.json`, by country and oilseed).
 
-The shares come from `pipeline/oilcakes.csv`: tonnes of cake per tonne of oil from FAO's technical conversion factors, and world prices from FAOSTAT's trade data (export value over quantity, 2021–2023).
+The shares come from `pipeline/oilcakes.csv`: tonnes of cake per tonne of oil from FAO's technical conversion factors (the median of their country tables), and world prices from FAOSTAT's trade data (export value over quantity, 2021–2023).
 
 | Oil | Cake per tonne of oil | Oil, \$/t | Cake, \$/t | Oil's share of the land |
 | --- | --- | --- | --- | --- |

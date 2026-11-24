@@ -33,10 +33,9 @@ TWH_PER_EJ = 1e6 / 3.6
 # Road: CEDS's fossil CO₂ of road transport in its last year, 2022 (`road_kg`), carried to 2023
 # by each SSP's transport shape; split 60/40 between passengers (cars, two- and three-wheelers,
 # buses) and freight (trucks and vans) after the IEA's tracking of cars and vans and of trucks and
-# buses. Aviation (domestic and international): IEA tracking, about 0.95 Gt. Shipping
-# (international and domestic navigation): IEA tracking and the IMO Fourth GHG Study, about
-# 0.85 Gt. Electricity: Ember Global Electricity Review 2024, 14,153 Mt for 29,471 TWh of demand,
-# the basis of Ember's 480 g/kWh.
+# buses. Aviation (domestic and international): IEA tracking, "almost 950 Mt". Shipping
+# (international and domestic navigation): IEA tracking, about 0.85 Gt. Electricity: Ember Global
+# Electricity Review 2024, 14,153 Mt for 29,471 TWh of demand, the basis of Ember's 480 g/kWh.
 PASSENGER_SHARE = 0.6
 ROAD_SHARES = {"roadPassenger": PASSENGER_SHARE, "roadFreight": 1 - PASSENGER_SHARE}
 INVENTORY = {
@@ -57,8 +56,10 @@ RCMIP_SHAPE = {
 # Electricity per kg of tailpipe CO₂ avoided, kWh/kg: EV use at the plug ÷ the vehicle it replaces'
 # CO₂ per km (petrol 2.33 kg/L, diesel 2.63 kg/L: UK conversion factors 2023, 100% mineral
 # fuel). Passenger: 0.18 (0.15–0.22) kWh/km against 7 (9–5.5) L of petrol per 100 km.
-# Freight: a 40 t battery truck at 1.3 kWh/km against 33 L of diesel per 100 km, with vans
-# (0.25 kWh/km against 9 L/100 km) at the low end.
+# Freight: a 40 t battery truck at 1.1 kWh/km (1.06 for the eActros 600 tractor and 1.15 for a
+# 38 t Scania in German fleets: Oeko-Institut 2025, Real-world data analysis of battery electric
+# trucks operating in Germany) against 33 L of diesel per 100 km, with vans (0.25 kWh/km against
+# 9 L/100 km) at the low end.
 PETROL_KG_PER_L = 2.33
 DIESEL_KG_PER_L = 2.63
 EV_KWH_PER_KG = {
@@ -68,15 +69,16 @@ EV_KWH_PER_KG = {
         "high": 0.22 / (0.055 * PETROL_KG_PER_L),
     },
     "freight": {
-        "median": 1.3 / (0.33 * DIESEL_KG_PER_L),
+        "median": 1.1 / (0.33 * DIESEL_KG_PER_L),
         "low": 0.25 / (0.09 * DIESEL_KG_PER_L),
         "high": 1.6 / (0.30 * DIESEL_KG_PER_L),
     },
 }
 
 # IEA, Energy and AI (2025): world data-centre electricity, TWh. 415 in 2024; base case 945 in
-# 2030 and about 1,200 in 2035; Headwinds about 700 and Lift-Off about 1,700 in 2035. Held flat
-# after 2035. Only the growth beyond 2024 is added to the SSPs, which already supply 2024's.
+# 2030 and about 1,200 in 2035; Headwinds about 700 and Lift-Off about 1,700 in 2035 (executive
+# summary). The report gives nothing after 2035, where demand is held flat, an assumption. Only
+# the growth beyond 2024 is added to the SSPs, which already supply 2024's.
 DATA_CENTRES_2024 = 415.0
 DATA_CENTRES = {
     "median": {2024: 415.0, 2030: 945.0, 2035: 1200.0},
@@ -85,7 +87,7 @@ DATA_CENTRES = {
 }
 
 # Lee et al. (2021), Table 2: aviation's net non-CO₂ ERF in 2018, 66.6 (21–111) mW/m², from
-# 1,034 Tg of aviation CO₂ that year.
+# 1,034 Tg of aviation CO₂ that year (abstract and Table 5).
 AVIATION_CO2_2018_KG = 1034e9
 AVIATION_NON_CO2_W = {"median": 66.6e-3, "low": 21e-3, "high": 111e-3}
 

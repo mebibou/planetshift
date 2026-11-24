@@ -67,7 +67,7 @@ Les procédés propres consomment de l'électricité. De l'hydrogène produit av
 
 Ces chiffres viennent de l'*Iron and Steel Technology Roadmap* de l'AIE (2020) et du rapport *Making Net-Zero Steel Possible* de la Mission Possible Partnership (2022).
 
-La réduction directe à l'hydrogène demande environ 3,5 MWh d'électricité par tonne d'acier, surtout pour produire l'hydrogène (Vogl et al. 2018). Un haut fourneau émet environ 2 t de CO₂ direct par tonne : la filière hydrogène consomme donc 1,9 kWh par kg évité. La ferraille au four électrique demande environ 0,6 MWh par tonne, soit 0,3 kWh/kg. La médiane, 1,5 kWh/kg, tire trois quarts de la baisse de l'hydrogène et un quart d'un plus grand usage de ferraille. La fourchette va de 0,3 (tout en ferraille) à 2,2 (une électrolyse moins efficace).
+La réduction directe à l'hydrogène demande 3,48 MWh d'électricité par tonne d'acier liquide, surtout pour produire l'hydrogène, et évite 1,82 t de CO₂ par rapport à un haut fourneau (Vogl et al. 2018) : la filière hydrogène consomme donc 1,9 kWh par kg évité. La ferraille au four électrique demande 0,67 MWh par tonne (même étude), soit 0,4 kWh/kg. La médiane, 1,5 kWh/kg, tire trois quarts de la baisse de l'hydrogène et un quart d'un plus grand usage de ferraille. La fourchette va de 0,4 (tout en ferraille) à 2,2 (une électrolyse moins efficace).
 
 ### Ciment
 

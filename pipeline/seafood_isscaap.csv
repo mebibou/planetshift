@@ -14,7 +14,7 @@ Miscellaneous demersal fishes,2762,demersalFish,marineFish,
 "Herrings, sardines, anchovies",2763,smallPelagic,marineFish,"Parker et al.'s pelagic fish under 30 cm"
 "Tunas, bonitos, billfishes",2763,largePelagic,marineFish,"Parker et al.'s pelagic fish over 30 cm"
 Miscellaneous pelagic fishes,2763,largePelagic,marineFish,"jacks and mackerels: with tunas, they make up Parker et al.'s 21 Mt of pelagic fish over 30 cm"
-"Sharks, rays, chimaeras",2764,largePelagic,marineFish,mostly caught by longlines with large pelagics
+"Sharks, rays, chimaeras",2762,largePelagic,marineFish,mostly caught by longlines with large pelagics
 Marine fishes not identified,2764,average,marineFish,
 Freshwater crustaceans,2765,crustaceans,shrimps,
 "Crabs, sea-spiders",2765,crustaceans,shrimps,

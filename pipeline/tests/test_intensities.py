@@ -31,7 +31,8 @@ def test_nitrogen_rates_weight_area_by_class():
     crops = pd.DataFrame({"qcl_code": [56, 358], "n_class": ["maize", "vegetables"]})
     area = pd.DataFrame({"area_code": [1, 1], "qcl_code": [56, 358], "ha": [10.0, 10.0]})
     w = I.nitrogen_weights(area, crops, rates).set_index("key")["weight"]
-    assert w[358] / w[56] == pytest.approx((0.103 / 10) / (0.164 / 100))
+    shares = I.NITROGEN_SHARES
+    assert w[358] / w[56] == pytest.approx((shares["vegetables"] / 10) / (shares["maize"] / 100))
 
 
 def test_area_weights_leave_out_faostat_aggregate_items():

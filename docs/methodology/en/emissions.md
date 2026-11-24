@@ -77,9 +77,9 @@ The *Emissions from Crops* domain (GCE) gives rice cultivation methane, crop res
 
 Synthetic fertiliser N₂O is a country total in FAOSTAT. Planetshift shares it between crops in proportion to each crop's harvested area × a nitrogen rate per hectare for its crop class. A hectare of maize or vegetables therefore takes more than a hectare of pulses.
 
-The rate comes from the International Fertilizer Association's survey of fertiliser use by crop (Heffer et al., 2017). It is the class's share of world nitrogen use (wheat 18%, maize 16%, rice 16%, vegetables 10%, fruit 7%, and so on), divided by the class's world harvested area.
+The rate comes from the International Fertilizer Association's survey of fertiliser use by crop (Heffer et al., 2017). It is the class's share of world nitrogen use (wheat 18%, maize 18%, rice 15%, vegetables 7%, fruit 6%, and so on: the world N shares of its Annex 2), divided by the class's world harvested area.
 
-The same survey finds 3.6% of nitrogen spread on grassland. That share goes to ruminant products (beef, mutton, other meat, milk) in proportion to their methane, in countries that have both crops and ruminants.
+The same survey finds 4.7% of nitrogen spread on grassland. That share goes to ruminant products (beef, mutton, other meat, milk) in proportion to their methane, in countries that have both crops and ruminants.
 
 The shares add up to each country's total. The part that falls on non-food crops is left out of the model: fibres, tobacco, rubber, and 85% of seed cotton (its lint).
 
@@ -87,7 +87,7 @@ The shares add up to each country's total. The part that falls on non-food crops
 
 The *Emissions from Livestock* domain (GLE) gives, by species, the CH₄ of enteric fermentation and manure management, and the N₂O of manure management, manure on pasture and manure applied. It goes to the products as follows:
 
-- **Dairy cattle**: 85% to milk and 15% to beef, the beef of culled cows and surplus calves. This physical allocation is close to the International Dairy Federation's global default.
+- **Dairy cattle**: 85% to milk and 15% to beef, the beef of culled cows and surplus calves. This is a physical allocation, as the International Dairy Federation's standard asks; its worked example gives 85.1% for one farm, but the standard sets no global default.
 - **Other cattle**: beef, less the animals not raised for food (see below).
 - **Buffalo, sheep, goats and camels**: split between milk and meat by the protein each country's herd produces (FAOSTAT production × protein content). Where no milk is recorded, all goes to meat. For buffalo, the animals not raised for food are taken off first.
 - **Pigs** go to pig meat, **broilers, ducks and turkeys** to poultry meat, **laying hens** to eggs, and **llamas** to other meat.
@@ -124,7 +124,7 @@ The rates are in `proxies.csv`. Most are the ratio of the world's 2023 output of
 
 | Processed item | Primary item and rate (t per t) | Basis |
 | --- | --- | --- |
-| 2541 Sugar non-centrifugal | 2536 cane: 0.10 | FAO technical conversion factors |
+| 2541 Sugar non-centrifugal | 2536 cane: 0.09 | FAO technical conversion factors (India, the main producer) |
 | 2542 Sugar (raw equivalent) | 2536 cane: 0.11; 2537 beet: 0.16 | world balance 2023 |
 | 2543 Sweeteners, other | 2514 maize: 1.7 | world balance 2023 (molasses, a sugar by-product, is part of the item) |
 | 2571 Soybean oil | 2555 soybeans: 0.19 | world balance 2023 |
@@ -137,11 +137,11 @@ The rates are in `proxies.csv`. Most are the ratio of the world's 2023 output of
 | 2578 Coconut oil | 2560 coconuts: 0.13 | world balance 2023 |
 | 2579 Sesame oil | 2561 sesame: 0.46 | world balance 2023 |
 | 2580 Olive oil | 2563 olives: 0.16 | world balance 2023 |
-| 2586 Other oilcrop oils | 2570 other oilcrops: 0.35 | FAO technical conversion factors (the world ratio is above 1: the item holds oils of seeds listed elsewhere) |
+| 2586 Other oilcrop oils | 2570 other oilcrops: 0.35 | FAO technical conversion factors, linseed and safflower (the world ratio is above 1: the item holds oils of seeds listed elsewhere) |
 | 2655 Wine | 2620 grapes: 0.63 | world balance 2023 |
 | 2656 Beer | 2513 barley: 5.8 | world balance 2023 |
-| 2657 Fermented beverages | 2518 sorghum: 4 | FAO technical conversion factors |
-| 2658 Alcoholic beverages | 2514 maize: 0.9 | FAO technical conversion factors |
+| 2657 Fermented beverages | 2518 sorghum: 4 | assumed (FAO's technical conversion factors give none for beverages) |
+| 2658 Alcoholic beverages | 2514 maize: 0.9 | assumed (FAO's technical conversion factors give none for beverages) |
 | 2740 Butter, ghee | 2848 milk: 0.056 | world balance 2023, 85% of the processed milk |
 | 2743 Cream | 2848 milk: 0.09 | world balance 2023, 15% of the processed milk |
 
@@ -355,7 +355,7 @@ The code is `pipeline/planetshift_pipeline/intensities.py`. Its tables are `pipe
 
 - FAOSTAT's Tier 1 estimates stand for every country, rather than the countries' own inventories.
 - Synthetic nitrogen is shared by area × a world rate per crop class. Real rates vary between countries.
-- 3.6% of each country's synthetic nitrogen goes on grassland, as in the world average.
+- 4.7% of each country's synthetic nitrogen goes on grassland, as in the world average.
 - 85% of a dairy herd's emissions go to milk everywhere.
 - Mixed herds (buffalo, sheep, goats, camels) are split by protein, with 15% protein in carcass meat.
 - Energy use is shared by the value of production, pesticide manufacture by area.
@@ -378,8 +378,9 @@ The code is `pipeline/planetshift_pipeline/intensities.py`. Its tables are `pipe
 - FAOSTAT, Food Balances (production and processing): <https://www.fao.org/faostat/en/#data/FBS>, CC BY 4.0.
 - Otte, M. J., Chilonda, P. (2002). Cattle and Small Ruminant Production Systems in sub-Saharan Africa: A Systematic Review. FAO, Rome: <https://www.fao.org/4/y4176e/y4176e00.htm>; chapter 5: <https://www.fao.org/4/y4176e/y4176e08.htm>; appendices 6 and 7: <https://www.fao.org/4/y4176e/y4176e0i.htm>, <https://www.fao.org/4/y4176e/y4176e0j.htm>.
 - Department of Animal Husbandry and Dairying, Government of India (2019). 20th Livestock Census 2019: Key Results, tables 6 and 7: <https://static.pib.gov.in/WriteReadData/userfiles/key%20results.pdf>.
-- Heffer, P., Gruère, A., Roberts, T. (2017). Assessment of Fertilizer Use by Crop at the Global Level 2014–2014/15. International Fertilizer Association and International Plant Nutrition Institute: <https://www.ifastat.org/>.
+- Heffer, P., Gruère, A., Roberts, T. (2017). Assessment of Fertilizer Use by Crop at the Global Level 2014–2014/15. International Fertilizer Association and International Plant Nutrition Institute, Annex 2: <https://www.fertilizer.org/wp-content/uploads/2023/01/2017_IFA_AgCom_17_134-rev_FUBC-assessment-2014.pdf>.
 - International Dairy Federation (2015). A common carbon footprint approach for the dairy sector. Bulletin of the IDF 479/2015: <https://fil-idf.org/>.
+- International Dairy Federation (2022). The IDF global Carbon Footprint standard for the dairy sector. Bulletin of the IDF 520/2022, equation 2 and appendix 10.5.
 - FAO, Technical Conversion Factors for Agricultural Commodities: <https://www.fao.org/statistics/en/>.
 - IPCC (2006, refined 2019). Guidelines for National Greenhouse Gas Inventories, volume 4: <https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html>.
 - Poore, J., Nemecek, T. (2018). Reducing food's environmental impacts through producers and consumers. Science 360, 987–992: <https://doi.org/10.1126/science.aaq0216>.

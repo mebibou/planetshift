@@ -122,7 +122,7 @@ Farm-gate values for some items, in kg per tonne of the FBS item:
 - An item's gas profile is HESTIA's for that item (or for the close item named), or FAOSTAT's on-farm livestock emissions for animal products. The profile is a world average.
 - Animal products carry no CO₂, and both scopes are equal for them.
 - The GWP100 factors (the 100-year weights that turn each gas into CO₂e) are AR5's with climate-carbon feedbacks: 34 for CH₄ and 298 for N₂O, for both fossil and biogenic CH₄.
-- Conversions to the current FBS quantity are those listed above. The sugar extraction rates of 11% (cane) and 15% (beet) are typical values, not taken from the study.
+- Conversions to the current FBS quantity are those listed above. The sugar extraction rates of 11% (cane) and 15% (beet) are not taken from the study. They are FAO's technical conversion factors for raw sugar in the main producers: 11% in India and the United States, 15% in France and Germany.
 - Products sharing an item are weighted by their 2009–11 food and waste.
 - Poore & Nemecek's estimates for the FBS items they did not survey ("Cereals & Oilcrops Misc.", "Oils Misc.", "Stimulants & Spices Misc.") are used for other cereals, other oil crops, other oils and tea.
 - No second literature source is used:

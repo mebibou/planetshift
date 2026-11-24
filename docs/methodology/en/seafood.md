@@ -34,9 +34,9 @@ The Food Balance Sheets (FAOSTAT's table of what each country produces, trades a
 | FBS item | What it holds | World production, 2021–2023 (Mt a year): capture / aquaculture |
 | --- | --- | --- |
 | 2761 Freshwater Fish | carps, tilapias, catfishes, salmons, trouts and other freshwater and diadromous fish | 12.4 / 57.9 |
-| 2762 Demersal Fish | cods, hakes, flatfish, coastal fish | 19.6 / 2.4 |
+| 2762 Demersal Fish | cods, hakes, flatfish, coastal fish, sharks and rays | 20.2 / 2.4 |
 | 2763 Pelagic Fish | herrings, sardines, anchovies, tunas, mackerels | 36.8 / 0.5 |
-| 2764 Marine Fish, Other | sharks, rays, marine fish not identified | 9.1 / 0.9 |
+| 2764 Marine Fish, Other | marine fish not identified | 8.5 / 0.9 |
 | 2765 Crustaceans | shrimps, prawns, crabs, lobsters, krill | 6.1 / 12.8 |
 | 2766 Cephalopods | squids, cuttlefishes, octopuses | 4.0 / 0.0 |
 | 2767 Molluscs, Other | oysters, mussels, clams, scallops | 2.3 / 18.9 |
@@ -70,7 +70,7 @@ Wild capture burns fuel at sea. Parker et al. (2018) give the fuel used per tonn
 
 **A worked example.** Small pelagic fish such as sardines need 42 litres of fuel per tonne landed. Each litre counts 2.8 + 0.5 = 3.3 kg of CO₂, so a tonne of sardines carries 42 × 3.3 = 139 kg of CO₂. A tonne of crustaceans, at 1,739 litres, carries 5,739 kg.
 
-Parker et al. also add 1.1 kg CO₂e per litre for vessels, gear and lost refrigerant. Planetshift leaves this out, as it leaves out the making of tractors and farm buildings. Refrigerants are not one of its three gases. Inland fisheries are outside Parker et al.'s data. Their fleets are mostly small boats, many without engines. Planetshift gives them the lowest marine intensity, that of small pelagic fish.
+Parker et al. also add 1.1 kg CO₂e per litre for vessels, gear and lost refrigerant. Planetshift leaves this out, as it leaves out the making of tractors and farm buildings. Refrigerants are not one of its three gases. Inland fisheries are outside Parker et al.'s data, and FAO finds too few data to estimate their energy use (FAO, 2025, section 2.3). Three quarters of their fishing uses no boat or one without an engine, and most of the rest outboard motors under 25 hp. Planetshift gives them the lowest marine intensity, that of small pelagic fish.
 
 | Capture group | Litres per tonne landed | kg CO₂ per tonne, cradle to farm gate |
 | --- | --- | --- |
@@ -134,7 +134,7 @@ The two feed methods (see [Feed](#method-feed)) give seafood its share as follow
 
 ### Fish fed to animals
 
-The balance sheets record the fish reduced to meal and oil as feed use of the fish items: 24 Mt of fish in 2023, 20 Mt of it pelagic. The fish items are therefore feed items too. Their feed use goes about 70% to aquaculture, 23% to pigs and 7% to poultry:
+The balance sheets record the fish reduced to meal and oil as feed use of the fish items: 24 Mt of fish in 2023, 20 Mt of it pelagic. The fish items are therefore feed items too. Their feed use goes about 90% to aquaculture, 9% to pigs and 1% to poultry, the split of fishmeal in 2020 (FAO, SOFIA 2022, from IFFO: 86%, 9% and 1%, the other 4% mainly to pet food):
 
 - in the species method, as a split of its own (`fishmeal` in `feed_species.csv`);
 - in the GLEAM-style method, as a `fish` class of the rations (0.25 of the aquafeed ration, 0.01 of pigs', 0.003 of poultry's), which gives 74%, 20% and 6%.
@@ -193,7 +193,7 @@ The code is `pipeline/planetshift_pipeline/seafood.py` and `pipeline/planetshift
 - Electricity on fish farms emits the world's average per kWh, in every country.
 - Vessels, gear, refrigerants, pond fertiliser and the building of farms are left out, as are post-landing processing, transport and cold chains.
 - Wild capture has no farm-gate emissions. Its fuel counts in cradle to farm gate.
-- Aquafeed is 5.5% of the world's concentrate feed. Fish fed to animals go 70% to aquaculture, 23% to pigs and 7% to poultry. The shares and the GLEAM-style intakes and ration are rounded values, chosen to match the published aquafeed total.
+- Aquafeed is 5.5% of the world's concentrate feed. Fish fed to animals go 90% to aquaculture, 9% to pigs and 1% to poultry. The shares and the GLEAM-style intakes and ration are rounded values, chosen to match the published aquafeed total.
 - Fish oils and aquatic plants are left out. The fish reduced to meal and oil are in the fish items.
 - The ocean's carbon pathways (fish carcasses, sediments) are not counted.
 
@@ -208,6 +208,9 @@ The code is `pipeline/planetshift_pipeline/seafood.py` and `pipeline/planetshift
 - Tacon, A. G. J. (2020). Trends in global aquaculture and aquafeed production: 2000–2017. Reviews in Fisheries Science & Aquaculture 28, 43–56. <https://doi.org/10.1080/23308249.2019.1649634>
 - Naylor, R. L. et al. (2021). A 20-year retrospective review of global aquaculture. Nature 591, 551–563. <https://doi.org/10.1038/s41586-021-03308-6>
 - FAO (2024). The State of World Fisheries and Aquaculture 2024. <https://doi.org/10.4060/cd0683en>
+- FAO (2022). The State of World Fisheries and Aquaculture 2022, Utilization and processing (uses of fishmeal in 2020): <https://www.fao.org/4/cc0461en/online/sofia/2022/utilization-processing-fisheries-production.html>
+- FAO (2025). The role and potential of inland fisheries in low-emission food production and climate change mitigation. Fisheries and Aquaculture Circular C1284, section 2.3.
+- FAO, Fishery and Aquaculture Statistics Yearbook 2016, food balance sheets, introduction (species in each group): <https://www.fao.org/fishery/static/Yearbook/YB2016_USBcard/root/food_balance/introduction.pdf>
 - Mariani, G. et al. (2020). Let more big fish sink: fisheries prevent blue carbon sequestration—half in unprofitable areas. Science Advances 6, eabb4848. <https://doi.org/10.1126/sciadv.abb4848>
 - Sala, E. et al. (2021). Protecting the global ocean for biodiversity, food and climate. Nature 592, 397–402. <https://doi.org/10.1038/s41586-021-03371-z>
 - Hiddink, J. G. et al. (2023). Quantifying the carbon benefits of ending bottom trawling. Nature 617, E1–E2. <https://doi.org/10.1038/s41586-023-06014-7>

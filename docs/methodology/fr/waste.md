@@ -1,6 +1,6 @@
 # Pertes et gaspillage alimentaires
 
-Une partie des aliments que produisent les fermes n'est jamais mangée. En gaspiller moins, c'est moins à produire pour les mêmes repas, donc moins de terres utilisées et moins d'émissions. Dans le monde, environ 84 kg d'aliments comestibles par personne sont gaspillés chaque année après leur arrivée dans les magasins. Le levier permet de réduire ce gaspillage, ainsi que les pertes avant les magasins, de la part qu'on choisit.
+Une partie des aliments que produisent les fermes n'est jamais mangée. En gaspiller moins, c'est moins à produire pour les mêmes repas, donc moins de terres utilisées et moins d'émissions. Dans le monde, environ 74 kg d'aliments comestibles par personne sont gaspillés chaque année après leur arrivée dans les magasins. Le levier permet de réduire ce gaspillage, ainsi que les pertes avant les magasins, de la part qu'on choisit.
 
 ## Pertes et gaspillage
 
@@ -82,17 +82,17 @@ L'Index compte les aliments et les parties non comestibles qui les accompagnent 
 
 | Secteur | Pays à revenu élevé | Autres pays |
 | --- | --- | --- |
-| Foyers | 0,75 | 0,50 |
+| Foyers | 0,75 | 0,35 |
 | Restauration | 0,75 | 0,75 |
 | Commerce de détail | 0,85 | 0,85 |
 
-La part des foyers dans les pays à revenu élevé suit les mesures du Royaume-Uni, où « environ les trois quarts » du gaspillage alimentaire des foyers sont comestibles (WRAP, 2021/22 : environ 4,7 sur 6,4 millions de tonnes, 73 %). Dans les pays à revenu plus faible, une plus grande part des aliments est achetée brute et préparée à la maison. Une plus grande partie du gaspillage des foyers y est donc faite d'épluchures, de balles et d'os. La part de 0,5 est une hypothèse dans la fourchette des quelques études disponibles. Le gaspillage de la restauration et du commerce de détail est surtout de la nourriture invendue ou non servie, donc en grande partie comestible. Leurs parts sont des hypothèses, aucune mesure à l'échelle d'un pays n'ayant été trouvée.
+La part des foyers dans les pays à revenu élevé suit les mesures du Royaume-Uni, où 74 % du gaspillage alimentaire des foyers est comestible (WRAP, 2021/22 : 4,7 sur 6,4 millions de tonnes). D'autres pays à revenu élevé mesurent moins : 77 % en Suisse, mais 54 % en Israël, 49 % en Nouvelle-Zélande et 33 % au Japon (PNUE, 2024, tableau 19). Dans les pays à revenu plus faible, une plus grande part des aliments est achetée brute et préparée à la maison. Une plus grande partie du gaspillage des foyers y est donc faite d'épluchures, de balles et d'os. Les seules mesures hors des pays à revenu élevé trouvent 31 % au Brésil, 34 % en Indonésie (PNUE, 2024, tableau 19) et 39 % à Rio de Janeiro (encadré 2) : la part est donc de 0,35. Le gaspillage de la restauration et du commerce de détail est surtout de la nourriture invendue ou non servie, donc en grande partie comestible : 74 % dans la restauration britannique (WRAP, 2025), 72 % dans la restauration allemande et 84 % dans le commerce de détail allemand (Schmidt et al., 2019). WRAP tient tout le gaspillage du commerce de détail pour comestible.
 
-Avec ces parts, le gaspillage comestible mondial après les magasins est d'environ 674 millions de tonnes, 84 kg par personne et par an : 43 kg dans les foyers, 27 kg dans la restauration et 14 kg dans le commerce de détail. Par pays, le gaspillage comestible des foyers va de 9 à 141 kg par personne, avec une médiane de 46 kg.
+Avec ces parts, le gaspillage comestible mondial après les magasins est d'environ 594 millions de tonnes, 74 kg par personne et par an : 33 kg dans les foyers, 27 kg dans la restauration et 14 kg dans le commerce de détail. Par pays, le gaspillage comestible des foyers va de 6 à 141 kg par personne, avec une médiane de 32 kg.
 
 ### Un plafond à 40 % des disponibilités alimentaires
 
-Le gaspillage comestible est aussi plafonné à 40 % des disponibilités alimentaires du pays dans les bilans alimentaires (tous les produits gardés dans le modèle, kg par personne). Aucun pays n'atteint le plafond. La part va de 3 % (Espagne) à 35 % (Yémen), avec une médiane de 12 %, et neuf pays sur dix sont sous 19 %. Les parts les plus élevées sont dans des pays aux faibles disponibilités alimentaires par personne, où les estimations de l'Index sont extrapolées (Yémen, Syrie, Tchad, Afghanistan).
+Le gaspillage comestible est aussi plafonné à 40 % des disponibilités alimentaires du pays dans les bilans alimentaires (tous les produits gardés dans le modèle, kg par personne). Aucun pays n'atteint le plafond. La part va de 3 % (Espagne) à 29 % (Yémen), avec une médiane de 11 %, et neuf pays sur dix sont sous 17 %. Les parts les plus élevées sont dans des pays aux faibles disponibilités alimentaires par personne, où les estimations de l'Index sont extrapolées (Yémen, Syrie, Tchad, Afghanistan).
 
 ## Limites
 
@@ -118,7 +118,9 @@ Le gaspillage comestible est aussi plafonné à 40 % des disponibilités aliment
 - Programme des Nations unies pour l'environnement (2024). Food Waste Index Report 2024. Think Eat Save: Tracking Progress to Halve Global Food Waste. Nairobi : <https://wedocs.unep.org/20.500.11822/45230>. Reproduction autorisée à des fins éducatives ou non lucratives, avec mention de la source.
 - Division de statistique des Nations unies, SDG Global Database, indicateur 12.3.1(b), série AG_FOOD_WST_PC (gaspillage alimentaire par habitant, par secteur) : <https://unstats.un.org/sdgs/dataportal>. Copie et diffusion libres en citant les Nations unies comme source ; une rediffusion commerciale demande l'autorisation des Nations unies.
 - Eurostat, Food waste and food waste prevention by NACE Rev. 2 activity (env_wasfw), les chiffres européens déclarés à la base de données des ODD : <https://ec.europa.eu/eurostat/web/waste/food-waste>.
-- WRAP (2023). Household Food and Drink Waste in the United Kingdom 2021/22 (part comestible du gaspillage alimentaire des foyers) : <https://wrap.ngo/resources/report/household-food-and-drink-waste-united-kingdom-202122>.
+- WRAP (2023). Household Food and Drink Waste in the United Kingdom 2021/22, résumé (part comestible du gaspillage alimentaire des foyers) : <https://www.wrap.ngo/sites/default/files/2024-05/WRAP-Household-Food-and-Drink-Waste-in-the-United-Kingdom-2021-22-v6.1.pdf>.
+- WRAP (2025). UK Food Waste & Food Surplus – Key Facts, tableaux 3 et 5 (part comestible du gaspillage de la restauration).
+- Schmidt, T., Schneider, F., Leverenz, D., Hafner, G. (2019). Lebensmittelabfälle in Deutschland – Baseline 2015. Thünen Report 71, tableau K.1 (part évitable du gaspillage de la restauration et du commerce de détail) : <https://www.zugutfuerdietonne.de/fileadmin/zgfdt/inhalt/hintergrund/Thuenen_Kurzfassung.pdf>.
 - FAO, indicateur ODD 12.3.1(a), pourcentage de pertes alimentaires (série AG_FLS_PCT), par région et groupe de produits, 2023, base de données mondiale des ODD des Nations unies : <https://unstats.un.org/sdgs/dataportal> ; métadonnées : <https://unstats.un.org/sdgs/metadata/files/Metadata-12-03-01A.pdf>.
 - FAO (2019). The State of Food and Agriculture 2019. Moving forward on food loss and waste reduction (indice des pertes alimentaires, indicateur ODD 12.3.1(a)) : <https://www.fao.org/publications/sofa>.
 - Nations unies, cible 12.3 des objectifs de développement durable : <https://sdgs.un.org/goals/goal12>.

@@ -34,9 +34,9 @@ Les bilans alimentaires (le tableau de FAOSTAT de ce que chaque pays produit, é
 | Produit des bilans | Ce qu'il contient | Production mondiale, 2021–2023 (Mt par an) : pêche / aquaculture |
 | --- | --- | --- |
 | 2761 Poissons d'eau douce | carpes, tilapias, poissons-chats, saumons, truites et autres poissons d'eau douce et diadromes | 12,4 / 57,9 |
-| 2762 Poissons démersaux | morues, merlus, poissons plats, poissons côtiers | 19,6 / 2,4 |
+| 2762 Poissons démersaux | morues, merlus, poissons plats, poissons côtiers, requins et raies | 20,2 / 2,4 |
 | 2763 Poissons pélagiques | harengs, sardines, anchois, thons, maquereaux | 36,8 / 0,5 |
-| 2764 Autres poissons marins | requins, raies, poissons marins non identifiés | 9,1 / 0,9 |
+| 2764 Autres poissons marins | poissons marins non identifiés | 8,5 / 0,9 |
 | 2765 Crustacés | crevettes, crabes, homards, krill | 6,1 / 12,8 |
 | 2766 Céphalopodes | calmars, seiches, poulpes | 4,0 / 0,0 |
 | 2767 Autres mollusques | huîtres, moules, palourdes, coquilles Saint-Jacques | 2,3 / 18,9 |
@@ -70,7 +70,7 @@ La pêche brûle du carburant en mer. Parker et al. (2018) donnent le carburant 
 
 **Un exemple chiffré.** Les petits poissons pélagiques comme la sardine demandent 42 litres de carburant par tonne débarquée. Chaque litre compte 2,8 + 0,5 = 3,3 kg de CO₂ : une tonne de sardines porte donc 42 × 3,3 = 139 kg de CO₂. Une tonne de crustacés, à 1 739 litres, en porte 5 739 kg.
 
-Parker et al. ajoutent aussi 1,1 kg CO₂e par litre pour les navires, les engins de pêche et les fuites de réfrigérant. Planetshift laisse cela de côté, comme il laisse de côté la fabrication des tracteurs et des bâtiments agricoles. Les réfrigérants ne sont pas l'un de ses trois gaz. La pêche continentale est hors des données de Parker et al. Elle se fait surtout avec de petits bateaux, souvent sans moteur. Planetshift lui donne l'intensité marine la plus basse, celle des petits poissons pélagiques.
+Parker et al. ajoutent aussi 1,1 kg CO₂e par litre pour les navires, les engins de pêche et les fuites de réfrigérant. Planetshift laisse cela de côté, comme il laisse de côté la fabrication des tracteurs et des bâtiments agricoles. Les réfrigérants ne sont pas l'un de ses trois gaz. La pêche continentale est hors des données de Parker et al., et la FAO trouve trop peu de données pour estimer sa consommation d'énergie (FAO, 2025, section 2.3). Les trois quarts de cette pêche se font sans bateau ou avec un bateau sans moteur, et l'essentiel du reste avec des moteurs hors-bord de moins de 25 ch. Planetshift lui donne l'intensité marine la plus basse, celle des petits poissons pélagiques.
 
 | Groupe de pêche | Litres par tonne débarquée | kg CO₂ par tonne, du berceau à la sortie de ferme |
 | --- | --- | --- |
@@ -134,7 +134,7 @@ Les deux méthodes de répartition des aliments (voir [Alimentation animale](#me
 
 ### Le poisson donné aux animaux
 
-Les bilans enregistrent le poisson transformé en farine et en huile comme usage fourrager des produits de la pêche : 24 Mt de poisson en 2023, dont 20 Mt de pélagiques. Les produits de la pêche sont donc aussi des produits fourragers. Leur usage fourrager va à environ 70 % à l'aquaculture, 23 % aux porcs et 7 % aux volailles :
+Les bilans enregistrent le poisson transformé en farine et en huile comme usage fourrager des produits de la pêche : 24 Mt de poisson en 2023, dont 20 Mt de pélagiques. Les produits de la pêche sont donc aussi des produits fourragers. Leur usage fourrager va à environ 90 % à l'aquaculture, 9 % aux porcs et 1 % aux volailles, la répartition de la farine de poisson en 2020 (FAO, SOFIA 2022, d'après l'IFFO : 86 %, 9 % et 1 %, les 4 % restants surtout aux aliments pour animaux de compagnie) :
 
 - dans la méthode par espèce, comme une répartition propre (`fishmeal` dans `feed_species.csv`) ;
 - dans la méthode de type GLEAM, comme une classe `fish` des rations (0,25 de la ration aquacole, 0,01 de celle des porcs, 0,003 de celle des volailles), qui donne 74 %, 20 % et 6 %.
@@ -193,7 +193,7 @@ Le code est `pipeline/planetshift_pipeline/seafood.py` et `pipeline/planetshift_
 - L'électricité des élevages de poissons émet la moyenne mondiale par kWh, dans chaque pays.
 - Les navires, les engins, les réfrigérants, les engrais des étangs et la construction des élevages sont laissés de côté, comme la transformation après débarquement, le transport et la chaîne du froid.
 - La pêche n'a pas d'émissions à la ferme. Son carburant compte du berceau à la sortie de ferme.
-- Les aliments aquacoles font 5,5 % des aliments concentrés du monde. Le poisson donné aux animaux va à 70 % à l'aquaculture, 23 % aux porcs et 7 % aux volailles. Les parts, ainsi que les consommations et la ration de type GLEAM, sont des valeurs arrondies, choisies pour retrouver le total publié d'aliments aquacoles.
+- Les aliments aquacoles font 5,5 % des aliments concentrés du monde. Le poisson donné aux animaux va à 90 % à l'aquaculture, 9 % aux porcs et 1 % aux volailles. Les parts, ainsi que les consommations et la ration de type GLEAM, sont des valeurs arrondies, choisies pour retrouver le total publié d'aliments aquacoles.
 - Les huiles de poisson et les plantes aquatiques sont laissées de côté. Le poisson transformé en farine et en huile est dans les produits de la pêche.
 - Les mécanismes du carbone océanique (carcasses de poissons, sédiments) ne sont pas comptés.
 
@@ -208,6 +208,9 @@ Le code est `pipeline/planetshift_pipeline/seafood.py` et `pipeline/planetshift_
 - Tacon, A. G. J. (2020). Trends in global aquaculture and aquafeed production: 2000–2017. Reviews in Fisheries Science & Aquaculture 28, 43–56. <https://doi.org/10.1080/23308249.2019.1649634>
 - Naylor, R. L. et al. (2021). A 20-year retrospective review of global aquaculture. Nature 591, 551–563. <https://doi.org/10.1038/s41586-021-03308-6>
 - FAO (2024). The State of World Fisheries and Aquaculture 2024. <https://doi.org/10.4060/cd0683en>
+- FAO (2022). The State of World Fisheries and Aquaculture 2022, Utilization and processing (usages de la farine de poisson en 2020) : <https://www.fao.org/4/cc0461en/online/sofia/2022/utilization-processing-fisheries-production.html>
+- FAO (2025). The role and potential of inland fisheries in low-emission food production and climate change mitigation. Fisheries and Aquaculture Circular C1284, section 2.3.
+- FAO, Fishery and Aquaculture Statistics Yearbook 2016, bilans alimentaires, introduction (espèces de chaque groupe) : <https://www.fao.org/fishery/static/Yearbook/YB2016_USBcard/root/food_balance/introduction.pdf>
 - Mariani, G. et al. (2020). Let more big fish sink: fisheries prevent blue carbon sequestration—half in unprofitable areas. Science Advances 6, eabb4848. <https://doi.org/10.1126/sciadv.abb4848>
 - Sala, E. et al. (2021). Protecting the global ocean for biodiversity, food and climate. Nature 592, 397–402. <https://doi.org/10.1038/s41586-021-03371-z>
 - Hiddink, J. G. et al. (2023). Quantifying the carbon benefits of ending bottom trawling. Nature 617, E1–E2. <https://doi.org/10.1038/s41586-023-06014-7>

@@ -85,7 +85,7 @@ Le CO₂ des carburants est le facteur 2023 du gouvernement britannique pour un 
 
 **Voitures électriques** agit sur le CO₂ du transport routier de passagers. Il faut 1,10 kWh par kg de CO₂ évité (0,72–1,72). Une voiture électrique consomme environ 0,18 kWh par km à la prise (0,15–0,22, pertes de recharge comprises). La voiture à essence qu'elle remplace brûle environ 7 litres aux 100 km (5,5–9). Sur le réseau mondial actuel, à 0,48 kg/kWh, une voiture électrique économise environ la moitié du CO₂ de la voiture à essence (1 − 1,10 × 0,48 = 0,47). Sur un réseau propre, elle en économise presque tout.
 
-**Camions électriques** agit sur le CO₂ du transport routier de marchandises. Il faut 1,50 kWh par kg évité (1,06–2,03). Un camion de 40 tonnes à batterie consomme environ 1,3 kWh par km à la prise, contre 33 litres de diesel aux 100 km. Les utilitaires électriques (0,25 kWh/km contre 9 L/100 km) sont le bas de la fourchette. Sur le réseau actuel, un camion économise environ 30 % de son CO₂ (1 − 1,50 × 0,48 = 0,28). Sur le réseau de SSP3-7.0, dont l'intensité augmente, il économise peu.
+**Camions électriques** agit sur le CO₂ du transport routier de marchandises. Il faut 1,27 kWh par kg évité (1,06–2,03). Un camion de 40 tonnes à batterie consomme environ 1,1 kWh par km à la prise dans les flottes allemandes (Oeko-Institut, 2025), contre 33 litres de diesel aux 100 km. Les utilitaires électriques (0,25 kWh/km contre 9 L/100 km) sont le bas de la fourchette. Sur le réseau actuel, un camion économise environ 40 % de son CO₂ (1 − 1,27 × 0,48 = 0,39). Sur le réseau de SSP3-7.0, dont l'intensité augmente, il économise peu.
 
 ### Moins d'avion
 
@@ -325,7 +325,7 @@ Réchauffement évité en °C, médiane (fourchette probable). Chaque levier est
 | Leviers | 2050, CO₂ seul | 2050, avec | 2100, CO₂ seul | 2100, avec |
 | --- | --- | --- | --- | --- |
 | Voitures électriques | 0,021 (0,011–0,034) | 0,045 (−0,011 à 0,116) | 0,072 (0,042–0,110) | 0,106 (0,025–0,199) |
-| Camions électriques | 0,011 (0,006–0,019) | 0,027 (−0,010 à 0,075) | 0,043 (0,026–0,067) | 0,065 (0,014–0,126) |
+| Camions électriques | 0,013 (0,006–0,019) | 0,029 (−0,010 à 0,075) | 0,046 (0,026–0,067) | 0,068 (0,014–0,126) |
 | Moins d'avion | 0,049 (0,014–0,115) | 0,054 (0,017–0,124) | 0,104 (0,040–0,237) | 0,122 (0,049–0,267) |
 | Carburant d'aviation propre | 0,009 (0,007–0,012) | 0,015 (0,010–0,022) | 0,042 (0,029–0,057) | 0,059 (0,038–0,087) |
 | Transport maritime propre | 0,006 (0,004–0,008) | 0,008 (0,005–0,013) | 0,021 (0,014–0,028) | 0,029 (0,019–0,043) |
@@ -358,7 +358,7 @@ Avec tous les leviers d'énergie, de chauffage et d'industrie au maximum, deux e
 - SSP1-2.6 : 0,033 et 0,049 °C (CO₂ seul 0,016 et 0,036) ;
 - SSP2-4.5 : 0,045 et 0,106 (CO₂ seul 0,021 et 0,072).
 
-Dans SSP3-7.0, le réseau reste sale et les NOx et le méthane sont élevés. Ce méthane reprend une partie du gain, mais les véhicules électriques évitent encore plus que leur seul CO₂. Les voitures électriques évitent 0,030 °C en 2050 et 0,054 °C en 2100 (CO₂ seul 0,013 et 0,041). Les camions électriques évitent 0,016 et 0,020 (CO₂ seul 0,005 et 0,014). Avec le coefficient unique de FaIR pour toutes les sources, ils ajouteraient 0,018 et 0,026 °C d'ici 2100. Avec ce coefficient partagé entre terre et mer, ils ajouteraient 0,009 et 0,020 (voir [Limites](#method-limitations)).
+Dans SSP3-7.0, le réseau reste sale et les NOx et le méthane sont élevés. Ce méthane reprend une partie du gain, mais les véhicules électriques évitent encore plus que leur seul CO₂. Les voitures électriques évitent 0,030 °C en 2050 et 0,054 °C en 2100 (CO₂ seul 0,013 et 0,041). Les camions électriques évitent 0,018 et 0,029 (CO₂ seul 0,007 et 0,022). Avec le coefficient unique de FaIR pour toutes les sources, ils ajouteraient 0,018 et 0,026 °C d'ici 2100. Avec ce coefficient partagé entre terre et mer, ils ajouteraient 0,009 et 0,020 (voir [Limites](#method-limitations)).
 
 ### Comparé aux sorties publiées des combustibles fossiles
 
@@ -415,7 +415,7 @@ Le gain du levier des voitures électriques est d'environ 47 % du CO₂ d'échap
 - Le transport maritime, international et intérieur, suit le transport maritime international du scénario.
 - L'électricité ne comprend que la production. La chaleur des centrales est laissée de côté. Son CO₂ et l'intensité du réseau s'arrêtent à zéro là où la bioénergie avec captage du carbone du scénario les rendrait négatifs.
 - Les modèles de scénarios sont ceux que CMIP6 a utilisés pour chaque trajectoire : IMAGE pour SSP1-2.6, MESSAGE-GLOBIOM pour SSP2-4.5, AIM/CGE pour SSP3-7.0. L'électricité suit donc le même récit que les émissions sur lesquelles tourne FaIR.
-- Un véhicule électrique demande 1,10 (voiture) ou 1,50 (camion) kWh par kg de CO₂ d'échappement évité, chaque année. Les véhicules ne deviennent pas plus efficaces avec le temps, et leur fabrication n'est pas comptée.
+- Un véhicule électrique demande 1,10 (voiture) ou 1,27 (camion) kWh par kg de CO₂ d'échappement évité, chaque année. Les véhicules ne deviennent pas plus efficaces avec le temps, et leur fabrication n'est pas comptée.
 - Le forçage de l'aviation hors CO₂ est proportionnel à son CO₂ de la même année, au rapport de 2018. Le carburant propre ne le change pas.
 - Les centres de données ajoutent leur électricité au-delà des 415 TWh de 2024, en suivant les cas de l'AIE jusqu'en 2035, puis constante. Leur construction n'est pas comptée.
 - La réponse au forçage est celle de FaIR à un forçage solaire (efficacité 1) sur SSP2-4.5 en 2035, utilisée pour chaque année et chaque scénario.
@@ -435,6 +435,7 @@ Le gain du levier des voitures électriques est d'environ 47 % du CO₂ d'échap
 - AIE (2025). Energy and AI, [iea.org/reports/energy-and-ai](https://www.iea.org/reports/energy-and-ai). Licence : CC BY 4.0.
 - Lee, D. S. et al. (2021). The contribution of global aviation to anthropogenic climate forcing for 2000 to 2018. Atmospheric Environment 244, 117834, [doi:10.1016/j.atmosenv.2020.117834](https://doi.org/10.1016/j.atmosenv.2020.117834). Licence : CC BY 4.0.
 - ICCT (2023). A total cost of ownership comparison of truck decarbonization pathways in Europe, pour la consommation d'énergie des camions électriques à batterie et diesel.
+- Le Corguillé, J., Hacker, F., Dolinga, T. (2025). Real-world data analysis of battery electric trucks operating in Germany. Oeko-Institut, EVS38 : 1,06 kWh/km pour le tracteur eActros 600 et 1,15 pour un Scania de 38 t, [oeko.de](https://www.oeko.de/fileadmin/oekodoc/Real-world-data-analysis-of-battery-electric-trucks-operating-in-Germany.pdf).
 - Bieker, G. (2021). A global comparison of the life-cycle greenhouse gas emissions of combustion engine and electric passenger cars. ICCT white paper, [theicct.org](https://theicct.org/publication/a-global-comparison-of-the-life-cycle-greenhouse-gas-emissions-of-combustion-engine-and-electric-passenger-cars/).
 - AIE (2024). Global EV Outlook 2024, [iea.org/reports/global-ev-outlook-2024](https://www.iea.org/reports/global-ev-outlook-2024). Licence : CC BY 4.0.
 - Schlömer, S. et al. (2014). Annex III: Technology-specific cost and performance parameters. In Climate Change 2014: Mitigation of Climate Change, contribution of Working Group III to the IPCC's Fifth Assessment Report, Cambridge University Press, table A.III.2.

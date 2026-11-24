@@ -49,27 +49,29 @@ GT_GASES = {7273: "co2", 7225: "ch4", 7230: "n2o"}
 #: The farm-gate processes the tier-3 intensities cover, as GT items (for the validation).
 FARM_GATE_ITEMS = (5058, 5059, 5060, 5061, 5062, 5063, 5064, 5066)
 
-#: Share of world synthetic nitrogen by crop class, Heffer et al. (2017), IFA, 2014-15.
+#: Share of world nitrogen fertiliser use by crop class in 2014-2014/15: Heffer et al. (2017),
+#: Assessment of Fertilizer Use by Crop at the Global Level, IFA and IPNI, Annex 2, World, N.
 NITROGEN_SHARES = {
     "wheat": 0.182,
-    "rice": 0.155,
-    "maize": 0.164,
-    "otherCereals": 0.043,
-    "soybean": 0.013,
-    "oilPalm": 0.016,
-    "otherOilseeds": 0.044,
-    "fibre": 0.037,
-    "sugar": 0.030,
-    "roots": 0.022,
-    "fruits": 0.066,
-    "vegetables": 0.103,
-    "residual": 0.089,
+    "rice": 0.152,
+    "maize": 0.178,
+    "otherCereals": 0.047,
+    "soybean": 0.011,
+    "oilPalm": 0.014,
+    "otherOilseeds": 0.053,
+    "fibre": 0.041,
+    "sugar": 0.036,
+    "roots": 0.021,
+    "fruits": 0.061,
+    "vegetables": 0.074,
+    "residual": 0.083,
 }
-#: Share of synthetic nitrogen spread on grassland (same source), given to ruminant products.
-GRASSLAND_SHARE = 0.036
+#: Share of nitrogen spread on grassland (same table), given to ruminant products.
+GRASSLAND_SHARE = 0.047
 
 #: Share of a dairy herd's emissions given to milk; the rest goes to the beef of culled cows
-#: and surplus calves (physical allocation, IDF 2015 global average about 0.85).
+#: and surplus calves. A physical allocation: the IDF's 2022 standard (Bulletin 520, eq. 2) gives
+#: 85.1% for the farm of its worked example (appendix 10.5), and no global default.
 DAIRY_MILK_SHARE = 0.85
 #: Protein, tonnes per tonne, to split mixed herds between milk and meat.
 MILK_PROTEIN = {951: 0.042, 982: 0.055, 1020: 0.035, 1130: 0.032}

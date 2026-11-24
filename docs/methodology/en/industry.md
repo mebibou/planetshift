@@ -67,7 +67,7 @@ At full adoption, steel's direct CO₂ falls by 90% (75–95%):
 
 These figures are from the IEA's *Iron and Steel Technology Roadmap* (2020) and the Mission Possible Partnership's *Making Net-Zero Steel Possible* (2022).
 
-Hydrogen direct reduction needs about 3.5 MWh of electricity per tonne of steel, mostly to make the hydrogen (Vogl et al. 2018). A blast furnace emits about 2 t of direct CO₂ per tonne, so the hydrogen route draws 1.9 kWh per kg avoided. Scrap in an electric furnace needs about 0.6 MWh per tonne, or 0.3 kWh/kg. The median, 1.5 kWh/kg, takes three quarters of the cut from hydrogen and a quarter from using more scrap. The range is 0.3 (all scrap) to 2.2 (less efficient electrolysis).
+Hydrogen direct reduction needs 3.48 MWh of electricity per tonne of liquid steel, mostly to make the hydrogen, and avoids 1.82 t of CO₂ against a blast furnace (Vogl et al. 2018), so the hydrogen route draws 1.9 kWh per kg avoided. Scrap in an electric furnace needs 0.67 MWh per tonne (same study), or 0.4 kWh/kg. The median, 1.5 kWh/kg, takes three quarters of the cut from hydrogen and a quarter from using more scrap. The range is 0.4 (all scrap) to 2.2 (less efficient electrolysis).
 
 ### Cement
 

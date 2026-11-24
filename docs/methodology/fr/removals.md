@@ -16,7 +16,7 @@ L'absorption d'une pratique est son rythme par hectare multiplié par les hectar
 | Pratique | Terres | Médiane (fourchette probable), t CO₂/ha/an | Part des terres au plus | Années à ce rythme |
 | --- | --- | --- | --- | --- |
 | Couverts végétaux | cultures | 1,17 (0,6–2,0) en climat humide, 0,45 (0,2–0,8) en climat sec | 25 % | 20 |
-| Arbres dans les fermes (agroforesterie) | cultures et prairies | 8,7 (4,4–17,5) tropical humide, 6,1 tropical sec, 4,3 (2,2–8,7) tempéré humide, 3,0 tempéré sec | 5 % | 20 |
+| Arbres dans les fermes (agroforesterie) | cultures et prairies | 9,4 (4,7–18,7) tropical humide, 6,5 tropical sec, 4,3 (2,2–8,7) tempéré humide, 3,0 tempéré sec | 5 % | 20 |
 | Biochar | cultures | 1,9 (0,6–4,9) partout | 20 % | 100 (pas de saturation) |
 | Poudre de roche (altération forcée des roches) | cultures | 3,0 (1,0–5,0) tropical humide, 2,0 (0,5–3,5) tempéré humide, 1,0 tropical sec, 0,8 tempéré sec | 20 % | 100 (pas de saturation) |
 
@@ -45,9 +45,9 @@ Les couverts végétaux atteignent au plus un quart des cultures, la surface que
 
 Les arbres dans les fermes (l'agroforesterie) associent des arbres aux cultures (systèmes agrosylvicoles, cultures en allées) ou aux prairies (sylvopastoralisme). Les arbres stockent du carbone dans leur bois et leurs racines, et leur litière enrichit le sol.
 
-Cardinael et al. (2018) ont synthétisé 542 observations en rythmes par système et par climat. En moyenne sur les systèmes agrosylvicoles et sylvopastoraux, les arbres et le sol absorbent environ 8,6 t de CO₂ par hectare et par an en climat tempéré et 17,5 t sous les tropiques. Ces rythmes sont ceux des parcelles étudiées, qui ont une médiane de 1 250 arbres par hectare et un âge médian de 8 à 11 ans, et qui poussent vite. Les systèmes adoptés à grande échelle ont moins d'arbres. La médiane est donc la moitié de la moyenne de la synthèse. Le bas de la fourchette en est le quart, et le haut est la moyenne elle-même. En climat sec, le rythme est 0,7 fois celui du climat humide, le rapport du GIEC entre la croissance des arbres en zone tropicale sèche et en zone tropicale humide.
+Cardinael et al. (2018) ont synthétisé 542 observations en rythmes par système et par climat. En moyenne sur les systèmes agrosylvicoles et sylvopastoraux, les arbres et le sol absorbent environ 8,6 t de CO₂ par hectare et par an en climat tempéré. Sous les tropiques humides, où la synthèse n'a que des systèmes agrosylvicoles, ils en absorbent 18,7 t ; ses moyennes pour l'ensemble des tropiques reposent surtout sur des parcelles sèches d'Asie. Ces rythmes sont ceux des parcelles étudiées, qui ont une médiane de 1 250 arbres par hectare et un âge médian de 8 à 11 ans, et qui poussent vite. Les systèmes adoptés à grande échelle ont moins d'arbres. La médiane est donc la moitié de la moyenne de la synthèse. Le bas de la fourchette en est le quart, et le haut est la moyenne elle-même. En climat sec, le rythme est 0,7 fois celui du climat humide, le rapport du GIEC entre la croissance des arbres en zone tropicale sèche et en zone tropicale humide.
 
-Planetshift prend 5 % des cultures et des prairies comme maximum réaliste. Sur environ 4,7 milliards d'hectares de terres agricoles, cela donne environ 1,3 Gt de CO₂ par an. C'est entre les potentiels rentable et technique de Roe et al. (2021) et du sixième rapport d'évaluation du GIEC. Pour l'agroforesterie, le rapport du GIEC donne 0,8 (de 0,4 à 1,1) Gt d'équivalent CO₂ par an jusqu'à 100 \$ la tonne, et 4,1 (de 0,3 à 9,4) techniquement.
+Planetshift prend 5 % des cultures et des prairies comme maximum réaliste. Sur environ 4,7 milliards d'hectares de terres agricoles, cela donne environ 1,4 Gt de CO₂ par an. C'est entre les potentiels rentable et technique de Roe et al. (2021) et du sixième rapport d'évaluation du GIEC. Pour l'agroforesterie, le rapport du GIEC donne 0,8 (de 0,4 à 1,1) Gt d'équivalent CO₂ par an jusqu'à 100 \$ la tonne, et 4,1 (de 0,3 à 9,4) techniquement.
 
 ### Biochar
 
@@ -69,7 +69,7 @@ La poudre de roche (l'altération forcée des roches) est de la roche silicatée
 
 Un essai au champ de quatre ans dans la Corn Belt américaine a mesuré 10,5 ± 3,8 t de CO₂ par hectare pour 50 t de basalte par hectare et par an (Beerling et al., 2024). Cela fait 2,6 t par an. Une fois retiré environ un cinquième pour l'extraction, le broyage et le transport, il reste 2 t. L'altération est plus rapide là où il fait chaud et humide, et lente là où l'eau ne circule pas dans le sol. Les tropiques ont donc un rythme plus élevé et les cultures en climat sec un rythme plus bas.
 
-L'approvisionnement en roche et son transport limitent la poudre de roche à un cinquième des cultures au plus. Avec 2 t par hectare, une valeur typique, cela donne environ 0,6 Gt par an. C'est dans les 0,5 à 2 Gt que Beerling et al. (2020) ont trouvées pour les principaux pays agricoles.
+L'approvisionnement en roche et son transport limitent la poudre de roche à un cinquième des cultures au plus. Avec 2 t par hectare, une valeur typique, cela donne environ 0,6 Gt par an. Beerling et al. (2020) trouvent que les principaux pays agricoles atteignent 0,5 Gt par an, déduction faite des émissions de la logistique, sur environ un dixième de leurs cultures, et 1 Gt sur environ un quart.
 
 ## Pays et climat
 

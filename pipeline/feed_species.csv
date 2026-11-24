@@ -1,7 +1,7 @@
 group,share,fishmeal
 ruminantMeat,0.10395,0
 dairy,0.1512,0
-pigMeat,0.2646,0.23
-poultryMeat,0.2646,0.07
+pigMeat,0.2646,0.09
+poultryMeat,0.2646,0.01
 eggs,0.16065,0
-seafood,0.055,0.70
+seafood,0.055,0.90

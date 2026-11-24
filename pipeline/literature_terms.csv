@@ -6,8 +6,8 @@ fbs_item_code,fbs_item,product,farm_kg_co2e_per_kg,weight_kt,kg_product_per_kg_i
 2807,Rice and products,Rice,3.553,397780,0.667,hestia:2807,P&N's FBS unit is milled rice (FBS before 2010); the current FBS counts paddy and milled rice is 66.7% of paddy
 2531,Potatoes and products,Potatoes,0.193,332343,1,hestia:2531,fresh tubers
 2532,Cassava and products,Cassava,0.22,173814,1,hestia:2532,fresh roots
-2536,Sugar cane,Cane Sugar,0.485,141702,0.11,hestia:2536,P&N's FBS unit is raw sugar; 0.11 kg raw sugar per kg cane
-2537,Sugar beet,Beet Sugar,0.536,34038,0.15,hestia:2537,P&N's FBS unit is raw sugar; 0.15 kg raw sugar per kg beet
+2536,Sugar cane,Cane Sugar,0.485,141702,0.11,hestia:2536,P&N's FBS unit is raw sugar; 0.11 kg raw sugar per kg cane (FAO Technical Conversion Factors: 0.11 in India and the USA)
+2537,Sugar beet,Beet Sugar,0.536,34038,0.15,hestia:2537,P&N's FBS unit is raw sugar; 0.15 kg raw sugar per kg beet (FAO Technical Conversion Factors: 0.15 in France and Germany)
 2542,Sugar (Raw Equivalent),Cane Sugar,0.485,141702,1,hestia:2536,raw sugar equivalent
 2542,Sugar (Raw Equivalent),Beet Sugar,0.536,34038,1,hestia:2537,raw sugar equivalent
 2546,Beans,Other Pulses,1.089,42765,1,hestia:2546,dry pulses
