@@ -158,9 +158,9 @@ describe('table pages', () => {
 
 describe('table sources', () => {
   it('shortens a source that holds an address and keeps a plain one', () => {
-    expect(sourceInText('proxy 2511: https://hestia.earth/impactassessment/x')).toEqual({
+    expect(sourceInText('proxy 2511: https://hestia.earth/cycle/x')).toEqual({
       label: 'HESTIA',
-      url: 'https://hestia.earth/impactassessment/x',
+      url: 'https://hestia.earth/cycle/x',
     });
     expect(sourceInText('median of seafood worldwide')).toEqual({
       label: 'median of seafood worldwide',

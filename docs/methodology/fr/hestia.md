@@ -31,7 +31,7 @@ Avec la version v1.3, 39 produits des bilans ont une valeur HESTIA, dans 61 pays
 1. Une recherche (`POST https://api.hestia.earth/search`, avec l'en-tête `X-Data-Version` réglé sur la date de la version) liste toutes les ImpactAssessment agrégées dont `aggregatedDataValidated` est renseigné. Les agrégations non validées sont aussi dans l'index, mais HESTIA ne les publie pas : elles ne sont pas utilisées.
 2. Pour chaque produit présent dans `hestia_terms.csv` et chaque zone (pays ou Monde), l'agrégation de la période la plus récente est gardée. Les périodes plus anciennes (1990–2009) sont écartées.
 3. Le pipeline télécharge chaque agrégation gardée sous sa forme recalculée (`GET /impactassessments/<id>?dataState=recalculated`), quatre requêtes à la fois. Une requête est retentée à intervalle croissant en cas d'erreur réseau et de réponse 429 ou 5xx. Quand la requête d'une agrégation reçoit 401, 403 ou 404, ce produit et cette zone n'ont pas de ligne. Une requête qui échoue encore après les nouvelles tentatives arrête la construction. Avec `--allow-missing`, la construction se poursuit sans HESTIA, et aussi sans le palier de la littérature, qui lit les valeurs de HESTIA.
-4. Les émissions de CO₂, de CH₄ et de N₂O dans l'air sont sommées par gaz et par périmètre (ci-dessous). Elles sont converties en kg de gaz par tonne du produit des bilans alimentaires de FAOSTAT (FBS), et écrites avec l'URL de la page de l'agrégation sur hestia.earth.
+4. Les émissions de CO₂, de CH₄ et de N₂O dans l'air sont sommées par gaz et par périmètre (ci-dessous). Elles sont converties en kg de gaz par tonne du produit des bilans alimentaires de FAOSTAT (FBS), et écrites avec l'URL de la page du Cycle de l'agrégation sur hestia.earth.
 
 ### Le cache
 

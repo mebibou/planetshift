@@ -31,7 +31,7 @@ With release v1.3, 39 FBS items get a HESTIA value, in 61 countries and for the 
 1. One search (`POST https://api.hestia.earth/search`, with the `X-Data-Version` header set to the release date) lists every aggregated ImpactAssessment that has `aggregatedDataValidated` set. Unvalidated aggregations are in the index too, but HESTIA does not publish them, so they are not used.
 2. For each product mapped in `hestia_terms.csv` and each area (country or World), the aggregation with the latest period is kept. Older periods (1990–2009) are dropped.
 3. The pipeline fetches every kept aggregation in its recalculated form (`GET /impactassessments/<id>?dataState=recalculated`), four requests at a time. A request is retried with exponential backoff on network errors and on 429 or 5xx responses. When an aggregation's request gets 401, 403 or 404, that product and area get no row. A request that still fails after the retries stops the build. With `--allow-missing`, the build goes on without HESTIA, and also without the literature tier, which reads HESTIA's values.
-4. The emissions of CO₂, CH₄ and N₂O to air are summed by gas and by scope (below). They are converted to kg of gas per tonne of the FAOSTAT Food Balance Sheet (FBS) item, and written with the URL of the aggregation's page on hestia.earth.
+4. The emissions of CO₂, CH₄ and N₂O to air are summed by gas and by scope (below). They are converted to kg of gas per tonne of the FAOSTAT Food Balance Sheet (FBS) item, and written with the URL of the aggregation's Cycle page on hestia.earth.
 
 ### Cache
 

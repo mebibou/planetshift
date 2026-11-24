@@ -166,7 +166,7 @@ def test_node_rows_convert_to_each_mapped_item():
     by = {(r["fbs_item_code"], r["scope"]): r for r in rows}
     assert by[(9999, "farmGate")]["ch4"] == pytest.approx(by[(2807, "farmGate")]["ch4"] / 2)
     assert all(r["area"] == "IND" for r in rows)
-    assert rows[0]["url"].endswith("/impactassessment/" + RICE["@id"])
+    assert rows[0]["url"].endswith("/cycle/" + RICE["@id"])
 
 
 def test_combine_keeps_best_priority_and_averages():

@@ -266,7 +266,9 @@ def node_rows(node: dict, terms: pd.DataFrame) -> list[dict]:
 def item_rows(node: dict, terms: pd.DataFrame, area: str, rows: list[dict]) -> list[dict]:
     """The aggregation's intensity per tonne of each FBS item it is mapped to, by scope."""
     term = node["product"]["term"]["@id"]
-    url = f"{SITE}/impactassessment/{node['@id']}"
+    # HESTIA gives an aggregation's Cycle the id of its ImpactAssessment; the Cycle page shows the
+    # inputs and the practices behind it.
+    url = f"{SITE}/cycle/{node['@id']}"
     totals = {scope: scope_totals(rows, scope) for scope in SCOPES}
     return [
         {
