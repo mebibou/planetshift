@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 const START = '/?data=fixtures';
 const OPTIONS: Record<string, string[]> = {
-  scope: ['farmGate', 'cradleToFarmGate'],
+  scope: ['cradleToFarmGate', 'farmGate'],
   feed: ['species', 'gleam'],
   baseline: ['population', 'ssp2'],
   location: ['fixedTrade', 'domestic'],

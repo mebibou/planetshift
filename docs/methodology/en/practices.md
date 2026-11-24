@@ -127,7 +127,7 @@ A practice needs to know which part of an item's emissions it acts on. Feed addi
 
 ### What the split shows for the world
 
-The two scopes are defined on the [Emissions per tonne of food](#method-emissions) page. *Farm gate* is the default. *Cradle to farm gate* adds the farm's energy use and the making of fertilisers and pesticides.
+The two scopes are defined on the [Emissions per tonne of food](#method-emissions) page. *Cradle to farm gate* is the default. *Farm gate* (biological processes only) leaves out the farm's energy use and the making of fertilisers and pesticides.
 
 | Gas, at the farm gate | World total in the model | Main sources |
 | --- | --- | --- |

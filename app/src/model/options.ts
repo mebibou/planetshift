@@ -11,7 +11,7 @@ const core = (field: keyof Options, key: string, values: readonly string[]): Opt
 
 /** The core's method options, the default first. */
 const CORE_OPTIONS: readonly OptionDef[] = [
-  core('scope', 'scope', ['farmGate', 'cradleToFarmGate']),
+  core('scope', 'scope', ['cradleToFarmGate', 'farmGate']),
   core('feed', 'feed', ['species', 'gleam']),
   core('baseline', 'base', ['population', 'ssp2']),
   core('location', 'loc', ['fixedTrade', 'domestic']),

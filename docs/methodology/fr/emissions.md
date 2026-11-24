@@ -8,8 +8,8 @@ Les trois gaz restent séparés jusqu'au modèle climatique.
 
 L'application propose deux périmètres :
 
-- **À la ferme** (par défaut) : les émissions des processus biologiques de la ferme. Ce sont la fermentation entérique (le méthane produit dans l'estomac des ruminants pendant la digestion), la gestion des effluents, les effluents laissés au pâturage et épandus sur les champs, les engrais de synthèse, les résidus de culture, les rizières et le brûlage des résidus.
-- **Du berceau à la sortie de ferme** : les mêmes, plus l'énergie utilisée sur la ferme (carburant et électricité) et la fabrication des engrais et des pesticides. Le carburant brûlé sur la ferme est compté ici, quelle que soit la source de l'intensité.
+- **À la ferme** (*Processus biologiques seulement* dans l'application) : les émissions des processus biologiques de la ferme. Ce sont la fermentation entérique (le méthane produit dans l'estomac des ruminants pendant la digestion), la gestion des effluents, les effluents laissés au pâturage et épandus sur les champs, les engrais de synthèse, les résidus de culture, les rizières et le brûlage des résidus.
+- **Du berceau à la sortie de ferme** (*Avec les intrants*, par défaut) : les mêmes, plus l'énergie utilisée sur la ferme (carburant et électricité) et la fabrication des engrais et des pesticides. Le carburant brûlé sur la ferme est compté ici, quelle que soit la source de l'intensité.
 
 Aucun des deux ne comprend le changement d'usage des terres, les sols organiques drainés, ni rien de ce qui suit la ferme : transformation, transport, distribution, cuisine et gaspillage.
 
@@ -202,7 +202,7 @@ Aucune source nationale n'a été trouvée sur le taux d'exploitation des bovins
 
 ### Ce que change le seuil
 
-Le seuil change la base, mais à peine l'effet d'un changement de régime. Un troupeau compté comme non élevé pour l'alimentation est exclu à la fois des émissions des produits et de ce qu'un changement peut éviter. Le tableau donne les résultats d'une construction avec chaque seuil, sur SSP2-4.5 avec les options par défaut :
+Le seuil change la base, mais à peine l'effet d'un changement de régime. Un troupeau compté comme non élevé pour l'alimentation est exclu à la fois des émissions des produits et de ce qu'un changement peut éviter. Le tableau donne les résultats d'une construction avec chaque seuil, sur SSP2-4.5 avec les options par défaut mais les processus biologiques seulement (`scope=farmGate`) :
 
 | Seuil de taux d'exploitation | Base hors alimentation, Mt CO₂e | Inde | Niger | Éthiopie | Mali | Changement complet : émissions évitées, Gt CO₂e | Changement complet : réchauffement évité en 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |

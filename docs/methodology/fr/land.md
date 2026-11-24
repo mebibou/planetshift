@@ -183,7 +183,7 @@ La charge est l'absorption perdue, pas le CO₂ du défrichement d'une forêt su
 
 Chaque pays du modèle a un rythme dans `land.json`. Un pays absent de la table prend la médiane des pays de la table, borne par borne, plutôt que rien. Cela peut arriver dans une version des données ou dans les données de test. Les terres libérées et nouvellement utilisées sont additionnées sur les pays au rythme de chacun : un hectare libéré en Irlande et un hectare pris au Kazakhstan ne s'annulent pas.
 
-Le tableau montre ce que change la compensation, sur les données réelles avec FaIR et SSP2-4.5 (voir [Climat](#method-climate) et [Options](#method-options)). « Avant » est le résultat sans compensation. Le réchauffement évité est la médiane, avec entre parenthèses, pour 2100, la fourchette de 5 à 95 % des simulations climatiques. Une Gt est un milliard de tonnes.
+Le tableau montre ce que change la compensation, sur les données réelles avec FaIR, SSP2-4.5 et les processus biologiques seulement (`scope=farmGate` ; voir [Climat](#method-climate) et [Options](#method-options)). « Avant » est le résultat sans compensation. Le réchauffement évité est la médiane, avec entre parenthèses, pour 2100, la fourchette de 5 à 95 % des simulations climatiques. Une Gt est un milliard de tonnes.
 
 | Scénario, repousse activée | Absorption nette une fois complet (Gt de CO₂ par an) | Évité en 2050 (°C) | Évité en 2100 (°C) |
 | --- | --- | --- | --- |

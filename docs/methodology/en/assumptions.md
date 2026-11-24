@@ -10,7 +10,7 @@ Each choice below is set in the panel and has a default and one or more alternat
 
 | Choice | Default | Alternatives |
 | --- | --- | --- |
-| Emissions counted | on the farm (`farmGate`) | with inputs (`cradleToFarmGate`) |
+| Emissions counted | with inputs (`cradleToFarmGate`) | biological processes only (`farmGate`) |
 | Feed shared out | by species (`species`) | regional rations (`gleam`) |
 | Farming's future without the levers | population growth (`population`) | SSP2 path (`ssp2`) |
 | Where production changes | trade shares held (`fixedTrade`) | each country itself (`domestic`) |
@@ -63,7 +63,7 @@ The URL keys of the options, the diet controls and the levers are listed under [
 ## Emission intensities and the six tiers
 
 - **Three gases, kept separate**: kg of CO₂, CH₄ and N₂O per tonne of each item. They are never added up before the climate model. See [Emissions](#method-emissions).
-- **Farm gate by default**: the farm's biological processes only. Cradle to farm gate adds energy and the making of fertilisers and pesticides. Neither includes land-use change, drained organic soils or anything after the farm. See [Emissions](#method-emissions).
+- **Cradle to farm gate by default**: the farm's biological processes, plus energy and the making of fertilisers and pesticides. *Biological processes only* (farm gate) leaves the inputs out. Neither includes land-use change, drained organic soils or anything after the farm. See [Emissions](#method-emissions).
 - **Animal intensities leave out feed**, because the model removes feed through the crops' own intensities. Counting it on the animal too would count it twice. See [Emissions](#method-emissions).
 - **A primary item's emissions are counted on production − processing**, and the processed share is counted on the products made from it, so that each tonne is counted once. See [Emissions](#method-emissions).
 - **A processed item without its own value takes its primary item's intensity divided by the extraction rate.** The extraction rate is the tonnes of product made from a tonne of the primary item. It is mostly the world's 2023 output of the product over the primary item processed: soybean oil 0.19, sugar 0.11 from cane and 0.16 from beet, butter 0.056 for 85% of processed milk. It is the same in every country. See [Emissions](#method-emissions).

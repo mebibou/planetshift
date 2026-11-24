@@ -98,11 +98,11 @@ Un levier qui n'agit qu'avec un autre partage cet effet commun à moitié avec l
 
 | Groupes actifs | Réchauffement évité en 2100 |
 | --- | --- |
-| Alimentation seule | 0,1355 °C |
+| Alimentation seule | 0,1408 °C |
 | Repousse seule | 0 (elle ne libère aucune terre) |
-| Alimentation et repousse | 0,1816 °C |
+| Alimentation et repousse | 0,1870 °C |
 
-L'effet commun de la repousse est de 0,1816 − 0,1355 = 0,0461 °C. La valeur de Shapley le partage à moitié. La repousse obtient 0,0231 °C et l'alimentation 0,1355 + 0,0231 = 0,1586 °C, ce que montre le résumé (au dernier chiffre arrondi près).
+L'effet commun de la repousse est de 0,1870 − 0,1408 = 0,0462 °C. La valeur de Shapley le partage à moitié. La repousse obtient 0,0231 °C et l'alimentation 0,1408 + 0,0231 = 0,1639 °C, ce que montre le résumé (au dernier chiffre arrondi près).
 
 ### Comment Planetshift les calcule vite
 

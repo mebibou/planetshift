@@ -214,7 +214,7 @@ describe('processed items', () => {
       const expected = { co2: 0, ch4: 0, n2o: 0 };
       pc.rows.forEach((row, code) => {
         const i = prepared.indexOf.get(code)!;
-        const kg = countryIntensities(pc, prepared, 'farmGate');
+        const kg = countryIntensities(pc, prepared, DEFAULT_OPTIONS.scope);
         GASES.forEach(
           (g) =>
             (expected[g] +=

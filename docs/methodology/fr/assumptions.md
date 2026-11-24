@@ -10,7 +10,7 @@ Chaque choix ci-dessous se règle dans le panneau et a une valeur par défaut et
 
 | Choix | Par défaut | Alternatives |
 | --- | --- | --- |
-| Émissions comptées | sur la ferme (`farmGate`) | avec les intrants (`cradleToFarmGate`) |
+| Émissions comptées | avec les intrants (`cradleToFarmGate`) | processus biologiques seulement (`farmGate`) |
 | Répartition des aliments du bétail | par espèce (`species`) | rations régionales (`gleam`) |
 | Avenir de l'agriculture sans les leviers | croissance démographique (`population`) | trajectoire SSP2 (`ssp2`) |
 | Où la production change | parts du commerce fixes (`fixedTrade`) | chaque pays pour lui-même (`domestic`) |
@@ -63,7 +63,7 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 ## Intensités d'émission et les six niveaux
 
 - **Trois gaz, gardés séparés** : kg de CO₂, de CH₄ et de N₂O par tonne de chaque produit. Ils ne sont jamais additionnés avant le modèle climatique. Voir [Émissions](#method-emissions).
-- **À la ferme par défaut** : les seuls processus biologiques de la ferme. Le périmètre du berceau à la sortie de ferme ajoute l'énergie et la fabrication des engrais et des pesticides. Aucun des deux ne comprend le changement d'usage des terres, les sols organiques drainés ni rien de ce qui suit la ferme. Voir [Émissions](#method-emissions).
+- **Du berceau à la sortie de ferme par défaut** : les processus biologiques de la ferme, plus l'énergie et la fabrication des engrais et des pesticides. *Processus biologiques seulement* (à la ferme) laisse les intrants de côté. Aucun des deux ne comprend le changement d'usage des terres, les sols organiques drainés ni rien de ce qui suit la ferme. Voir [Émissions](#method-emissions).
 - **Les intensités animales excluent l'alimentation animale**, parce que le modèle la retire par les intensités propres des cultures. La compter aussi sur l'animal la compterait deux fois. Voir [Émissions](#method-emissions).
 - **Les émissions d'un produit primaire sont comptées sur la production − la transformation**, et la part transformée est comptée sur les produits qui en sont tirés, pour que chaque tonne soit comptée une seule fois. Voir [Émissions](#method-emissions).
 - **Un produit transformé sans valeur propre prend l'intensité de son produit primaire divisée par le taux d'extraction.** Le taux d'extraction est le nombre de tonnes de produit tirées d'une tonne du produit primaire. C'est le plus souvent la production mondiale 2023 du produit rapportée au produit primaire transformé : huile de soja 0,19, sucre 0,11 à partir de la canne et 0,16 à partir de la betterave, beurre 0,056 pour 85 % du lait transformé. Il est le même dans chaque pays. Voir [Émissions](#method-emissions).
