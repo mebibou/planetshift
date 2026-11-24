@@ -1464,3 +1464,76 @@ test('every slider and switch of the panel has a note behind an (i)', async ({ p
     'Wild fish',
   );
 });
+
+test('behind ?popctl=people, a number of people on Earth replaces the UN projection', async ({
+  page,
+}) => {
+  await open(page);
+  await expect(page.locator('[data-control="people"]')).toHaveCount(0);
+  await open(page, `${START}&popctl=people`);
+  const follow = page.locator('[data-control="people"] .people-follow input');
+  const slider = page.locator('#people');
+  await expect(follow).toBeChecked();
+  await expect(slider).toHaveCount(0);
+  await expect(page).not.toHaveURL(/ppl=/);
+  await expect(page.locator('label[for="option-population-low"]')).toHaveCount(1);
+  const baseline = () => page.locator('.temperature-chart .baseline-line').getAttribute('d');
+  const area = () => page.locator('.temperature-chart .population-area').getAttribute('d');
+  await expect(page.locator('.population-chart')).toHaveCount(0);
+  await expect(page.locator('.temperature-chart .key-population-area')).toBeVisible();
+  await follow.uncheck();
+  await expect(slider).toBeVisible();
+  await expect(page).toHaveURL(/ppl=/);
+  await expect(page.locator('label[for="option-population-low"]')).toHaveCount(0);
+  const medium = page.locator('[data-control="people"] .people-marks button', {
+    hasText: 'UN medium',
+  });
+  await expect(medium).toHaveAttribute('aria-pressed', 'true');
+  await expect(slider).toHaveAttribute('aria-valuetext', /billion, UN medium$/);
+  const [start, startArea] = [await baseline(), await area()];
+  await slider.fill('0');
+  await expect(page).toHaveURL(/ppl=0(&|$)/);
+  await expect(page).toHaveURL(/popctl=people/);
+  await expect.poll(baseline).not.toBe(start);
+  await expect.poll(area).not.toBe(startArea);
+  await slider.focus();
+  await page.keyboard.press('PageUp');
+  await expect(slider).toHaveAttribute('aria-valuetext', /, UN low$/);
+  await page.keyboard.press('ArrowRight');
+  await expect(slider).toHaveAttribute('aria-valuetext', /^\d+(\.\d)? billion$/);
+  await medium.click();
+  await expect(slider).toHaveAttribute('aria-valuetext', /billion, UN medium$/);
+  await follow.check();
+  await expect(slider).toHaveCount(0);
+  await expect(page).not.toHaveURL(/ppl=/);
+  await noHorizontalScroll(page);
+});
+
+test('behind ?popctl=lever, education and voluntary family planning is a lever', async ({
+  page,
+}) => {
+  await open(page, `${START}&fp=50`);
+  await expect(page.locator('#lever-familyPlanning')).toHaveCount(0);
+  await expect(page).not.toHaveURL(/fp=/);
+  await open(page, `${START}&popctl=lever&to=2100`);
+  const fold = page.locator('details[data-group="levers-population"]');
+  await fold.locator('summary').click();
+  const slider = page.locator('#lever-familyPlanning');
+  await expect(slider).toBeVisible();
+  await slider.fill('100');
+  await expect(page).toHaveURL(/fp=100/);
+  await expect(page).toHaveURL(/popctl=lever/);
+  await expect(page.locator('.gap-annotation text')).toContainText('−');
+  await page.locator('[data-lever="familyPlanning"] button.info').click();
+  await expect(page.locator('[data-lever="familyPlanning"] .info-tip')).toContainText(
+    'voluntary family planning',
+  );
+  await page.keyboard.press('Escape');
+  await page.locator('details[data-group="options"] > summary').click();
+  await page.locator('label[for="option-population-low"]').click();
+  await expect(slider).toBeDisabled();
+  await expect(page.locator('[data-lever="familyPlanning"] .lever-foot')).toContainText(
+    'low projection',
+  );
+  await noHorizontalScroll(page);
+});

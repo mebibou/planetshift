@@ -4,7 +4,7 @@ import { formatPercent } from '../i18n/format';
 import type { T } from '../i18n/i18n';
 import { adoptionOf, type LeverId } from '../levers/registry';
 import type { LeverSpec } from '../levers/types';
-import type { Scenario } from '../model/api';
+import type { Options, Scenario } from '../model/api';
 import type { PanelProps } from './DietGroup';
 import { Group } from './Group';
 import { Info } from './Info';
@@ -15,6 +15,7 @@ import { WorthPill } from './Worth';
 export interface LeverGroupProps extends PanelProps {
   module: LeverSpec;
   available: (id: LeverId) => boolean;
+  options?: Options;
 }
 
 /** What is adopted of a module's levers, for its group's summary line. */
@@ -32,9 +33,12 @@ const LeverSlider = ({
   setScenario,
   lever,
   on,
+  note = 'levers.noData',
 }: Omit<LeverGroupProps, 'module' | 'available'> & {
   lever: LeverSpec['levers'][number];
   on: boolean;
+  /** Why it cannot act, when it cannot. */
+  note?: string;
 }) => {
   const { id, min, max, step, ui } = lever;
   const pct = (v: number) => formatPercent(locale, v / 100);
@@ -54,7 +58,7 @@ const LeverSlider = ({
         onChange={(v) => setScenario((s: Scenario) => withLever(s, id, v / 100))}
       />
       <div className="lever-foot">
-        {on ? <WorthPill id={`lever:${id}`} /> : <p className="hint">{t('levers.noData')}</p>}
+        {on ? <WorthPill id={`lever:${id}`} /> : <p className="hint">{t(note)}</p>}
       </div>
     </div>
   );
@@ -64,6 +68,7 @@ const LeverSlider = ({
 export const LeverGroup = ({ module, available, ...props }: LeverGroupProps) => {
   const { t, locale, scenario, setScenario } = props;
   const title = t(`levers.${module.id}.title`);
+  const blocked = (props.options && module.ui.blocked?.(props.options)) ?? null;
   const button = (label: string, adoption: number) => (
     <button
       type="button"
@@ -93,7 +98,13 @@ export const LeverGroup = ({ module, available, ...props }: LeverGroupProps) => 
     >
       <p className="hint">{t(`levers.${module.id}.description`)}</p>
       {module.levers.map((lever) => (
-        <LeverSlider key={lever.id} {...props} lever={lever} on={available(lever.id)} />
+        <LeverSlider
+          key={lever.id}
+          {...props}
+          lever={lever}
+          on={available(lever.id) && !blocked}
+          note={blocked ?? undefined}
+        />
       ))}
       <div className="lever-actions">
         {button(t('levers.maxAll'), 1)}

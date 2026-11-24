@@ -1134,6 +1134,70 @@ write('population.json', {
   source: 'Planetshift test fixture: smooth curves near UN WPP 2024',
 });
 
+// every human emission above its pre-industrial level, kg a year, straight lines between rounded
+// SSP values in 2025, 2050 and 2100, each SSP's 2050 and 2100 values scaled together, and the
+// forcing of their air pollution, W/m², with a range; each SSP's own population
+const peopleKg = {
+  co2: [42e12, 43e12, 10e12],
+  ch4: [3.5e11, 3.2e11, 2.6e11],
+  n2o: [1.1e10, 1.2e10, 0.8e10],
+  so2: [7.7e10, 5.1e10, 2.9e10],
+  bc: [6.3e9, 4.2e9, 0.6e9],
+  oc: [1.7e10, 1.1e10, 0.1e10],
+  nh3: [6.3e10, 6.9e10, 5.9e10],
+  nox: [1.3e11, 1.0e11, 0.7e11],
+  co: [5.2e11, 3.8e11, 0.4e11],
+  voc: [1.6e11, 1.4e11, 0.6e11],
+};
+const peopleScale = { ssp126: 0.6, ssp245: 1, ssp370: 1.3 };
+const peopleYears = years(2000, 2100);
+write('people.json', {
+  years: peopleYears,
+  bySsp: Object.fromEntries(
+    Object.entries(peopleScale).map(([ssp, k]) => [
+      ssp,
+      {
+        ...Object.fromEntries(
+          Object.entries(peopleKg).map(([species, [a, b, c]]) => {
+            const f = through([
+              [2000, a * 0.8],
+              [2025, a],
+              [2050, a + (b - a) * k],
+              [2100, a + (c - a) * k],
+            ]);
+            return [species, peopleYears.map((y) => Number(f(y).toPrecision(4)))];
+          }),
+        ),
+        erf: Object.fromEntries(
+          Object.entries({ median: 1, low: 2, high: 0.15 }).map(([end, m]) => {
+            const f = through([
+              [2000, -1.0],
+              [2025, -0.77],
+              [2050, -0.77 + 0.22 * k],
+              [2100, -0.77 + 0.58 * k],
+            ]);
+            return [end, peopleYears.map((y) => Number((f(y) * m).toPrecision(4)))];
+          }),
+        ),
+      },
+    ]),
+  ),
+  population: Object.fromEntries(
+    Object.entries({ ssp126: [8.5e9, 7.0e9], ssp245: [9.2e9, 9.0e9], ssp370: [10e9, 12.6e9] }).map(
+      ([ssp, [p2050, p2100]]) => {
+        const f = through([
+          [2000, 6.1e9],
+          [2025, 8.0e9],
+          [2050, p2050],
+          [2100, p2100],
+        ]);
+        return [ssp, peopleYears.map((y) => Number(f(y).toPrecision(4)))];
+      },
+    ),
+  ),
+  source: 'Planetshift test fixture: straight lines near the SSP emissions and populations',
+});
+
 // direct fossil CO₂ of buildings and industry, kg a year, straight lines between the values of
 // industry.md (2023, 2050, 2100), and the heat-pump, steel and cement factors
 const industryGt = {

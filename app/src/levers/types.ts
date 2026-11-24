@@ -2,13 +2,21 @@
 // run calls at fixed points, and how the interface draws and names it. docs/app.md explains
 // how to add one.
 
-import type { CountedCause, Gas, GasVector, LeverCause, ModelData } from '../data/types';
+import type {
+  CauseWarming,
+  CountedCause,
+  Gas,
+  GasVector,
+  LeverCause,
+  ModelData,
+} from '../data/types';
 import type { CountryResult, Options, Scenario, ScenarioResult } from '../model/api';
 import type { ModuleDeparture } from '../config';
 import type { Band } from '../model/climate';
 import type { Farmland } from '../model/land';
 import type { Prepared, PreparedCountry } from '../model/prepare';
 import type { ItemVector } from '../model/util';
+import type { Scale } from '../model/timePath';
 
 /** A lever: a share adopted, 0..1, reached when the shift is complete. */
 export interface LeverDef {
@@ -96,6 +104,8 @@ export interface WorldContext {
   shareAt: (year: number) => number;
   /** Index in `years` of the year the shift is complete. */
   completeIndex: number;
+  /** The baseline's farm emissions over the base year's, by gas and year. */
+  baselineScale: Scale;
 }
 
 /**
@@ -119,6 +129,7 @@ export interface WorldPart {
 export interface PopulationContext {
   prepared: Prepared;
   options: Options;
+  currentYear: number;
 }
 
 export interface BaselineContext {
@@ -131,9 +142,13 @@ export interface BaselineContext {
   temperature: readonly number[];
 }
 
-/** Warming the module adds to the baseline (null for none), and what it keeps for `feedback`. */
+/**
+ * Warming the module adds to the baseline (null for none), split by cause of warming when it can
+ * say, and what it keeps for `feedback`.
+ */
 export interface BaselinePart {
   warming: number[] | null;
+  byCause?: CauseWarming | null;
   memo?: unknown;
 }
 
@@ -154,10 +169,20 @@ export interface Hooks {
    * registry order that returns one is used.
    */
   population?: (ctx: PopulationContext) => Readonly<Record<number, number>> | null;
+  /**
+   * A multiplier by year on every human emission outside farming, and on what the levers outside
+   * farming change (the people-on-Earth thought experiment); the first module's is used.
+   */
+  people?: (ctx: PopulationContext) => ((year: number) => number) | null;
   /** What people use once the diet has shifted (less waste): a production step. */
   demand?: (ctx: RunContext) => SupplyChain['used'] | null;
   /** Supply per tonne of use and losses avoided: a production step with `demand`. */
   supplyChain?: (ctx: RunContext) => Omit<SupplyChain, 'used'> | null;
+  /**
+   * A multiplier by year on the scenario's farm emissions (fewer people to feed), the first
+   * module's: its family is a player of the breakdown that every farm family's change meets.
+   */
+  scenarioScale?: (ctx: RunContext) => ((year: number) => number) | null;
   /** The share of each item's intensity of each gas removed, on the production with every step. */
   intensity?: (
     ctx: RunContext,
@@ -212,10 +237,17 @@ export interface LeverModule {
   files: readonly DataFileDef[];
   /** Whether the data has what a lever needs to act. */
   available?: (data: ModelData, leverId: string) => boolean;
+  /**
+   * A prototype shown only behind ?popctl=<this value>: its levers stay out of the panel, and
+   * its family out of the breakdown while it does not act, so nothing changes without it.
+   */
+  prototype?: string;
   hooks: Hooks;
   ui: {
     /** Its levers' fold in the Levers section; options always render in the Options group. */
     section?: 'levers';
+    /** Why its levers cannot act with these options (an i18n key), or null when they can. */
+    blocked?: (options: Options) => string | null;
     /** Its figure in the summary strip, after the farmland freed. */
     stat?: (
       result: ScenarioResult,

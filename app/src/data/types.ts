@@ -203,6 +203,12 @@ export type Cause =
 /** A part of one gas's warming: a greenhouse cause that emits it, or its other sources. */
 export type GasCause = LeverCause | 'other';
 
+/** Warming by cause of warming, and each gas's by the causes that emit it, °C by year. */
+export interface CauseWarming {
+  byCause: Partial<Record<Cause, number[]>>;
+  byGas: Partial<Record<Gas, Partial<Record<GasCause, number[]>>>>;
+}
+
 /**
  * Permafrost carbon released as the world warms (AR6): kg of carbon per °C of warming above
  * 1850–1900, released over the century, with a range; the share released as CH₄, and the

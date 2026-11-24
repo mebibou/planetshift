@@ -50,18 +50,17 @@ export const populationLines = (p: WorldPopulation, from: number, end: number): 
   const billions = (points: Point[]) => points.map((q) => ({ ...q, value: q.value / 1e9 }));
   const history = billions(inRange(zipSeries(p.history.years, p.history.values), from, end));
   const last = zipSeries(p.history.years, p.history.values).at(-1);
+  const joined = (s: { years: number[]; values: number[] }) =>
+    billions(inRange([...(last ? [last] : []), ...zipSeries(s.years, s.values)], from, end));
   const variants = [...VARIANTS]
     .sort((a, b) => Number(a === p.variant) - Number(b === p.variant))
-    .map((variant) => {
-      const s = p.variants[variant];
-      const points = [...(last ? [last] : []), ...zipSeries(s.years, s.values)];
-      return {
-        variant,
-        chosen: variant === p.variant,
-        points: billions(inRange(points, from, end)),
-      };
-    });
-  return { history, variants };
+    .map((variant) => ({
+      variant,
+      chosen: !p.people && variant === p.variant,
+      points: joined(p.variants[variant]),
+    }));
+  const people = p.people ? [{ variant: 'people', chosen: true, points: joined(p.people) }] : [];
+  return { history, variants: [...variants, ...people] };
 };
 
 /**
@@ -73,13 +72,13 @@ export const baselineShift = (
   baseline: number | null,
   medium: number | null | undefined,
 ): number | null =>
-  p.variant === 'medium' ||
-  !p.applies ||
-  baseline === null ||
-  medium === null ||
-  medium === undefined
+  !moved(p) || baseline === null || medium === null || medium === undefined
     ? null
     : baseline - medium;
+
+/** Whether the population differs from the medium projection where it acts. */
+const moved = (p: WorldPopulation): boolean =>
+  p.applies && (p.variant !== 'medium' || p.people !== undefined);
 
 /**
  * The notes under the chart: how the variant pairs with the SSP, whether it acts at all, and how
@@ -100,7 +99,9 @@ export const populationNotes = (
       ]
     : []),
   ...(p.applies ? [] : [t('levers.population.chart.notApplied')]),
-  ...(shift ? [t('levers.population.chart.baselineShift', shift)] : []),
+  ...(shift
+    ? [t(`levers.population.chart.${p.people ? 'peopleShift' : 'baselineShift'}`, shift)]
+    : []),
 ];
 
 /** World population on the temperature chart's years: the history, then the UN's three variants. */
@@ -197,9 +198,12 @@ export const populationChart = (
                 ? []
                 : [
                     {
-                      label: t('levers.population.chart.projection', {
-                        variant: t(`levers.population.chart.variants.${v.variant}`),
-                      }),
+                      label:
+                        v.variant === 'people'
+                          ? t('levers.population.chart.peopleLine')
+                          : t('levers.population.chart.projection', {
+                              variant: t(`levers.population.chart.variants.${v.variant}`),
+                            }),
                       value: billion(value),
                       swatch: v.chosen ? 'var(--ink)' : 'var(--series-baseline)',
                     },

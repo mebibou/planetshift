@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { attributionChart } from '../chart/attribution';
 import { avoidedOf, nowTexts, scenarioText, titleTexts } from '../chart/cause';
-import { attributionOf, CAUSE_GASES, type CauseGas } from '../chart/series';
+import { attributionOf, CAUSE_GASES, changeOf, shiftedBy, type CauseGas } from '../chart/series';
 import type { Climate, Ssp, TemperatureSource } from '../data/types';
 import type { T } from '../i18n/i18n';
 import type { ScenarioResult } from '../model/api';
@@ -35,7 +35,10 @@ export const CauseView = (props: CauseViewProps) => {
   useEffect(
     () =>
       stacked.update({
-        attribution: attributionOf(climate, ssp, shown),
+        attribution: shiftedBy(
+          attributionOf(climate, ssp, shown),
+          changeOf(result?.temperature, shown),
+        ),
         gas: shown,
         observed: shown === 'all' ? climate.observed[temperature] : null,
         from,

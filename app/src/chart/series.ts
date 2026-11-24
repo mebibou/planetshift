@@ -2,6 +2,7 @@ import {
   GASES,
   type BandSeries,
   type Cause,
+  type CauseWarming,
   type Climate,
   type Enso,
   type EnsoPhase,
@@ -90,6 +91,50 @@ export const attributionOf = (climate: Climate, ssp: Ssp, gas: CauseGas): Attrib
   gas === 'all'
     ? climate.attribution[ssp]
     : (climate.attributionByGas?.[ssp][gas as Gas] ?? climate.attribution[ssp]);
+
+/** A change by cause on `years`, the warming the baseline adds to or takes from each. */
+export interface CauseChange {
+  years: readonly number[];
+  byCause: Readonly<Partial<Record<Cause, readonly number[]>>>;
+}
+
+/** A band moved by a change on other years, read by year; unchanged where it has none. */
+const shiftBand = (s: BandSeries, index: Map<number, number>, change: readonly number[]) => {
+  const at = (i: number) => change[index.get(s.years[i] as number) ?? -1] ?? 0;
+  return {
+    years: s.years,
+    median: s.median.map((v, i) => v + at(i)),
+    p05: s.p05.map((v, i) => v + at(i)),
+    p95: s.p95.map((v, i) => v + at(i)),
+  };
+};
+
+/** The attribution with what the baseline changes in each cause added (the people on Earth). */
+export const shiftedBy = (attribution: Attribution, change: CauseChange | null): Attribution => {
+  const index = new Map(change?.years.map((y, i) => [y, i]));
+  return change
+    ? (Object.fromEntries(
+        (Object.entries(attribution) as [Cause, BandSeries][]).map(([c, s]) => {
+          const own = change.byCause[c];
+          return [c, own ? shiftBand(s, index, own) : s];
+        }),
+      ) as Attribution)
+    : attribution;
+};
+
+/** The baseline's change in a gas choice's causes, from a run; none without one. */
+export const changeOf = (
+  temperature: { years: number[]; baselineChange?: CauseWarming } | undefined,
+  gas: CauseGas,
+): CauseChange | null => {
+  const change = temperature?.baselineChange;
+  return temperature && change
+    ? {
+        years: temperature.years,
+        byCause: gas === 'all' ? change.byCause : (change.byGas[gas as Gas] ?? {}),
+      }
+    : null;
+};
 
 /** The causes a build has: one made before air pollution and the natural factors were split has neither. */
 export const causesIn = (attribution: Attribution): Cause[] =>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useRef, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
 import { useLatest } from './useLatest';
 
 export interface SliderProps {
@@ -11,9 +11,15 @@ export interface SliderProps {
   format: (v: number) => string;
   /** Values marked under the track, with their labels. */
   marks?: { value: number; label: string }[];
+  /** Chrome draws its own ticks for a datalist; off where the marks are drawn as ticks already. */
+  nativeTicks?: boolean;
   /** An (i) beside the label, explaining the slider. */
   info?: ReactNode;
   disabled?: boolean;
+  /** What a screen reader says of a value, `format` by default. */
+  valueText?: (v: number) => string;
+  /** Keys handled in place of the input's own steps (a value of `undefined` leaves them). */
+  keyValue?: (key: string, value: number) => number | undefined;
   onChange: (v: number) => void;
 }
 
@@ -26,8 +32,18 @@ const noop = () => {};
  * A range slider. It listens to the input's own `input` event rather than React's `onChange`, so
  * a value set from outside (a test, an extension) moves it too.
  */
+const nativeList = (p: SliderProps): string | undefined =>
+  p.marks?.length && p.nativeTicks !== false ? `${p.id}-marks` : undefined;
+
 export const Slider = (p: SliderProps) => {
-  const { id, label, min, max, step, value, format, marks = [], info, disabled } = p;
+  const { id, label, min, max, step, value, format, marks = [], info, disabled, keyValue } = p;
+  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    const next = keyValue?.(e.key, value);
+    if (next !== undefined) {
+      e.preventDefault();
+      onChange.current(Math.min(max, Math.max(min, next)));
+    }
+  };
   const input = useRef<HTMLInputElement>(null);
   const onChange = useLatest(p.onChange);
   useEffect(() => {
@@ -36,7 +52,7 @@ export const Slider = (p: SliderProps) => {
     el?.addEventListener('input', listener);
     return () => el?.removeEventListener('input', listener);
   }, [onChange]);
-  const listId = `${id}-marks`;
+  const listId = nativeList(p);
   return (
     <div className="slider">
       <div className="slider-head">
@@ -59,26 +75,41 @@ export const Slider = (p: SliderProps) => {
         value={value}
         onChange={noop}
         disabled={disabled}
-        list={marks.length ? listId : undefined}
-        aria-valuetext={format(value)}
+        list={listId}
+        onKeyDown={keyValue && onKeyDown}
+        aria-valuetext={(p.valueText ?? format)(value)}
         style={{ '--fill': position(value, min, max) } as CSSProperties}
       />
-      {marks.length > 0 && (
-        <>
-          <datalist id={listId}>
-            {marks.map((m) => (
-              <option key={m.value} value={m.value} />
-            ))}
-          </datalist>
-          <div className="slider-marks" aria-hidden="true">
-            {marks.map((m) => (
-              <span key={m.value} style={{ left: position(m.value, min, max) }}>
-                {m.label}
-              </span>
-            ))}
-          </div>
-        </>
-      )}
+      <Marks marks={marks} min={min} max={max} listId={listId} />
     </div>
   );
 };
+
+const Marks = ({
+  marks,
+  min,
+  max,
+  listId,
+}: {
+  marks: NonNullable<SliderProps['marks']>;
+  min: number;
+  max: number;
+  listId: string | undefined;
+}) => (
+  <>
+    {listId && (
+      <datalist id={listId}>
+        {marks.map((m) => (
+          <option key={m.value} value={m.value} />
+        ))}
+      </datalist>
+    )}
+    <div className="slider-marks" aria-hidden="true">
+      {marks.map((m) => (
+        <span key={m.value} style={{ left: position(m.value, min, max) }}>
+          {m.label}
+        </span>
+      ))}
+    </div>
+  </>
+);
