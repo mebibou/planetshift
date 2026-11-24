@@ -16,7 +16,10 @@ import { Segmented } from './Segmented';
 import { Slider } from './Slider';
 import { PeopleControl } from './PeopleControl';
 import type { PopulationData } from '../levers/population/data';
-import { HINT_TEXT } from './classes';
+import { IconTabs } from './IconTabs';
+import { Steady } from './Steady';
+import { changedOptions } from '../controls/panelModel';
+import type { T } from '../i18n/i18n';
 
 /** The diet, then each lever module, each under the cause of warming it mainly acts on. */
 const GROUPS: readonly PanelGroup[] = [
@@ -182,9 +185,56 @@ const Cause = ({
   );
 };
 
+type PanelView = 'levers' | 'options';
+
+/** The panel's two views, the Options tab counting the options changed from their defaults. */
+const PanelTabs = ({
+  t,
+  options,
+  view,
+  setView,
+}: {
+  t: T;
+  options: Options;
+  view: PanelView;
+  setView: (v: PanelView) => void;
+}) => {
+  const count = changedOptions(options);
+  return (
+    <IconTabs<PanelView>
+      wide
+      label={t('panel.label')}
+      prefix="panel"
+      tabs={[
+        { value: 'levers', icon: 'levers', label: <Steady text={t('panel.levers')} /> },
+        {
+          value: 'options',
+          icon: 'options',
+          label: (
+            <>
+              <Steady text={t('options.title')} />
+              {count > 0 && (
+                <span
+                  className="rounded-full bg-accent px-1.5 text-[0.72rem] leading-[1.4] font-bold text-accent-ink"
+                  title={t('options.changed', { count })}
+                >
+                  {count}
+                </span>
+              )}
+            </>
+          ),
+        },
+      ]}
+      value={view}
+      onChange={setView}
+    />
+  );
+};
+
 /** The panel beside the charts: when levers are in place, the levers by cause, the options. */
 export const SidePanel = (props: SidePanelProps) => {
   const { t, locale, options, horizon, scenario, setScenario, climate, values } = props;
+  const [view, setView] = useState<PanelView>('levers');
   const sizes = causeSizes(climate, options, horizon);
   const order = usePanelOrder(
     sizes,
@@ -197,69 +247,84 @@ export const SidePanel = (props: SidePanelProps) => {
       className="panel lg:[grid-area:panel] sticky top-[calc(var(--header-h)+20px)] grid max-h-[calc(100dvh-var(--header-h)-32px)] gap-[18px] overflow-y-auto rounded-card border border-rule bg-surface p-4 max-lg:static max-lg:max-h-none"
       aria-label={t('explore.panel')}
     >
-      <div className="time-settings grid gap-3.5 border-b border-rule pb-3">
-        <Timing {...props} />
-        <Segmented<Horizon>
-          compact
-          name="horizon"
-          legend={t('controls.horizon')}
-          options={HORIZONS.map((v) => ({ value: v, label: v }))}
-          value={horizon}
-          info={
-            <Info
-              label={t('controls.info', { name: t('controls.horizon') })}
-              text={t('controls.horizonHint')}
-            />
-          }
-          onChange={props.setHorizon}
-        />
-      </div>
-      {props.population && (
-        <PeopleControl
-          t={t}
-          locale={locale}
-          options={options}
-          population={props.population}
-          year={scenario.rampEnd}
-          setOptions={props.setOptions}
-        />
-      )}
-      <p className={`${HINT_TEXT} worth-legend m-0`}>{t('worth.legend', { year: horizon })}</p>
-      <section className="levers grid gap-0" aria-labelledby="levers-title">
-        <div className="levers-head mt-1.5 flex items-center justify-between gap-2">
-          <span className="inline-flex items-center gap-1.5">
-            <h2
-              id="levers-title"
-              className="panel-heading m-0 text-[0.78rem] tracking-[0.06em] text-muted uppercase"
-            >
-              {t('levers.title')}
-            </h2>
-            <Info
-              label={t('controls.info', { name: t('levers.title') })}
-              text={t('levers.intro')}
-            />
-          </span>
-          <span className="quick-all inline-flex items-center gap-1.5">
-            <span className="quick-label text-[0.72rem] text-muted" aria-hidden="true">
-              {t('quick.allLabel')}
+      <PanelTabs t={t} options={options} view={view} setView={setView} />
+      <div
+        role="tabpanel"
+        id="panel-panel-levers"
+        aria-labelledby="panel-tab-levers"
+        hidden={view !== 'levers'}
+        className="grid gap-[18px]"
+      >
+        <div className="time-settings grid gap-3.5 border-b border-rule pb-3">
+          <Timing {...props} />
+          <Segmented<Horizon>
+            compact
+            name="horizon"
+            legend={t('controls.horizon')}
+            options={HORIZONS.map((v) => ({ value: v, label: v }))}
+            value={horizon}
+            info={
+              <Info
+                label={t('controls.info', { name: t('controls.horizon') })}
+                text={t('controls.horizonHint')}
+              />
+            }
+            onChange={props.setHorizon}
+          />
+        </div>
+        {props.population && (
+          <PeopleControl
+            t={t}
+            locale={locale}
+            options={options}
+            population={props.population}
+            year={scenario.rampEnd}
+            setOptions={props.setOptions}
+          />
+        )}
+        <section className="levers grid gap-0" aria-labelledby="levers-title">
+          <div className="levers-head mt-1.5 flex items-center justify-between gap-2">
+            <span className="inline-flex items-center gap-1.5">
+              <h2
+                id="levers-title"
+                className="panel-heading m-0 text-[0.78rem] tracking-[0.06em] text-muted uppercase"
+              >
+                {t('levers.title')}
+              </h2>
+              <Info
+                label={t('controls.info', { name: t('levers.title') })}
+                text={[t('levers.intro'), t('worth.legend', { year: horizon })]}
+              />
             </span>
-            <QuickPair
-              ids={GROUPS.map((g) => g.id)}
-              scope="all"
-              locale={locale}
-              scenario={scenario}
-              name={(value) => t('quick.all', { value })}
-              setScenario={setScenario}
-            />
-          </span>
-        </div>
-        <div className="cause-sections">
-          {order.map(({ cause, groups }) => (
-            <Cause key={cause} props={props} cause={cause} ids={groups} size={sizes[cause]} />
-          ))}
-        </div>
-      </section>
-      <OptionsGroup t={t} options={options} setOptions={props.setOptions} />
+            <span className="quick-all inline-flex items-center gap-1.5">
+              <span className="quick-label text-[0.72rem] text-muted" aria-hidden="true">
+                {t('quick.allLabel')}
+              </span>
+              <QuickPair
+                ids={GROUPS.map((g) => g.id)}
+                scope="all"
+                locale={locale}
+                scenario={scenario}
+                name={(value) => t('quick.all', { value })}
+                setScenario={setScenario}
+              />
+            </span>
+          </div>
+          <div className="cause-sections">
+            {order.map(({ cause, groups }) => (
+              <Cause key={cause} props={props} cause={cause} ids={groups} size={sizes[cause]} />
+            ))}
+          </div>
+        </section>
+      </div>
+      <div
+        role="tabpanel"
+        id="panel-panel-options"
+        aria-labelledby="panel-tab-options"
+        hidden={view !== 'options'}
+      >
+        <OptionsGroup t={t} options={options} setOptions={props.setOptions} />
+      </div>
     </aside>
   );
 };

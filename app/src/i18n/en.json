@@ -89,6 +89,10 @@
     "all": "Set all levers to {value}",
     "allLabel": "All"
   },
+  "panel": {
+    "label": "What the panel shows",
+    "levers": "Levers"
+  },
   "options": {
     "title": "Other options",
     "intro": "Each choice below has a default and an alternative. Switching shows how much the answer depends on it.",
@@ -135,8 +139,7 @@
       "ssp126": "Low (SSP1-2.6)",
       "ssp370": "High (SSP3-7.0)"
     },
-    "changed": "Changed: {count}",
-    "defaults": "All at their defaults"
+    "changed": "Changed: {count}"
   },
   "groups": {
     "all": "All foods",
@@ -394,7 +397,7 @@
     "description": "Move part of the animal foods people eat to plant foods, keeping protein or calories equal."
   },
   "worth": {
-    "legend": "−0.01 °C beside a group or a lever: the change in warming in {year} from it alone, in full.",
+    "legend": "The figure beside each group or lever, such as −0.01 °C, is how much it would change the warming in {year} on its own, used in full.",
     "title": "{value} of warming in {year} with this alone, in full"
   },
   "milestones": {

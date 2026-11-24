@@ -1,8 +1,7 @@
-import { changedOptions, optionValue } from '../controls/panelModel';
+import { optionValue } from '../controls/panelModel';
 import type { T } from '../i18n/i18n';
 import type { Options } from '../model/api';
 import { OPTIONS } from '../model/options';
-import { Group } from './Group';
 import { Info } from './Info';
 import { Segmented } from './Segmented';
 import { HINT } from './classes';
@@ -11,7 +10,7 @@ import { HINT } from './classes';
 const replaced = (options: Options, field: string): boolean =>
   field === 'population' && options.people !== undefined;
 
-/** The Other options group: the core's options, then the lever modules', each a switch. */
+/** The panel's Options view: the core's options, then the lever modules', each a switch. */
 export const OptionsGroup = ({
   t,
   options,
@@ -21,13 +20,8 @@ export const OptionsGroup = ({
   options: Options;
   setOptions: (change: (o: Options) => Options) => void;
 }) => {
-  const count = changedOptions(options);
   return (
-    <Group
-      id="options"
-      title={t('options.title')}
-      meta={count > 0 ? t('options.changed', { count }) : t('options.defaults')}
-    >
+    <section className="options grid gap-3.5" data-group="options" aria-label={t('options.title')}>
       <p className={HINT}>{t('options.intro')}</p>
       {OPTIONS.filter((o) => !replaced(options, o.field)).map(({ field, values, texts }) => (
         <Segmented<string>
@@ -45,6 +39,6 @@ export const OptionsGroup = ({
           onChange={(v) => setOptions((o) => ({ ...o, [field]: v }))}
         />
       ))}
-    </Group>
+    </section>
   );
 };

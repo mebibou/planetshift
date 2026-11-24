@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Topology } from 'topojson-specification';
 import type { AppState } from '../app/context';
 import { chartCsv, mapCsv, mapFileName, scenarioJson } from '../app/download';
 import { GROUP_CHOICES } from '../app/groups';
-import { tabKeys } from '../app/tabs';
 import { MAP_VIEWS, type UiState } from '../app/url';
 import type { Climate, Country, Intensities, LandUse, Meta } from '../data/types';
 import { formatPercent } from '../i18n/format';
@@ -29,8 +28,8 @@ import { tableRows, type TableRow } from '../map/table';
 import { formatMeasure, tooltipModel } from '../map/tooltip';
 import type { ScenarioResult } from '../model/api';
 import { DownloadButton, DownloadPanel, type DownloadSources } from './Download';
-import { FIELD, FIELD_LABEL, MAP_CARD, TOOL_BUTTON } from './classes';
-import { Icon } from './Icon';
+import { FIELD, FIELD_LABEL, MAP_CARD } from './classes';
+import { IconTabs } from './IconTabs';
 import { Segmented } from './Segmented';
 import { TableView } from './TableView';
 import { useDrawn } from './useDrawn';
@@ -212,37 +211,19 @@ const usePaint = (props: MapCardProps, names: Map<string, string>, landUse: Land
 
 const LEGEND_ITEM = 'inline-flex items-center gap-[5px]';
 
-const ViewTabs = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui: UiState }) => {
-  const select = (v: UiState['mapView']) => setUi((u) => ({ ...u, mapView: v }));
-  return (
-    <div
-      className="view-tabs flex gap-1 rounded-lg bg-surface-2 p-[3px]"
-      role="tablist"
-      aria-label={t('map.views.label')}
-    >
-      {MAP_VIEWS.map((v) => (
-        <button
-          key={v}
-          type="button"
-          role="tab"
-          id={`map-tab-${v}`}
-          className={`view-tab ${TOOL_BUTTON} border-0 bg-transparent text-muted not-aria-selected:hover:bg-accent-soft aria-selected:bg-surface aria-selected:font-bold aria-selected:text-ink aria-selected:ring-1 aria-selected:ring-rule`}
-          data-view={v}
-          aria-controls={`map-panel-${v}`}
-          aria-selected={ui.mapView === v}
-          tabIndex={ui.mapView === v ? 0 : -1}
-          onClick={() => select(v)}
-          onKeyDown={(e: KeyboardEvent) =>
-            tabKeys(MAP_VIEWS, v, select, (target) => `map-tab-${target}`)(e.nativeEvent)
-          }
-        >
-          <Icon name={v} />
-          <Steady text={t(`map.views.${v}`)} />
-        </button>
-      ))}
-    </div>
-  );
-};
+const ViewTabs = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui: UiState }) => (
+  <IconTabs<UiState['mapView']>
+    label={t('map.views.label')}
+    prefix="map"
+    tabs={MAP_VIEWS.map((v) => ({
+      value: v,
+      icon: v,
+      label: <Steady text={t(`map.views.${v}`)} />,
+    }))}
+    value={ui.mapView}
+    onChange={(v) => setUi((u) => ({ ...u, mapView: v }))}
+  />
+);
 
 /** The map's choices: the layer, what changes, the gas and the food group. */
 const MapControls = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui: UiState }) => {

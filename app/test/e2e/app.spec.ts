@@ -107,7 +107,7 @@ test('the shift slider moves the scenario line below the baseline', async ({ pag
 test('every option switch works both ways', async ({ page }) => {
   // The feed split only matters when the animal groups change by different shares.
   await open(page, `${START}&shift=20&rum=60`);
-  await page.locator('details[data-group="options"] > summary').click();
+  await page.locator('#panel-tab-options').click();
   for (const [key, values] of Object.entries(OPTIONS)) {
     const [first, ...alternatives] = values;
     for (const value of alternatives) {
@@ -130,7 +130,7 @@ test('a shared URL restores the state', async ({ page, browser }) => {
   await page.locator('details[data-fold="advanced"] > summary').click();
   await page.locator('#group-ruminantMeat').fill('50');
   await page.locator('label[for="basis-kcal"]').click();
-  await page.locator('details[data-group="options"] > summary').click();
+  await page.locator('#panel-tab-options').click();
   await page.locator('label[for="option-ssp-ssp126"]').click();
   await page.locator('label[for="layer-change"]').click();
   await expect.poll(() => page.url()).toContain('ssp=ssp126');
@@ -605,7 +605,7 @@ test('natural regrowth adds the CO₂ taken up to the summary, and leaves when o
   await expect(page.locator('.summary .stat-land')).toContainText('Mha');
   await expect(page.locator('.summary .stat-regrowth')).toHaveCount(0);
   const hero = await page.locator('.summary .stat-hero .stat-value').innerText();
-  await page.locator('details[data-group="options"] > summary').click();
+  await page.locator('#panel-tab-options').click();
   await page.locator('label[for="option-regrowth-natural"]').click();
   await expect(page).toHaveURL(/regrow=natural/);
   await expect(page.locator('.summary .stat-regrowth')).toContainText('taken up by regrowth');
@@ -752,8 +752,8 @@ test('a chart’s legend shows or hides each of its series', async ({ page }) =>
 
 test('the data-centre and permafrost options move the baseline', async ({ page }) => {
   await open(page);
-  await page.locator('details[data-group="options"] > summary').click();
   await page.locator('label[for="horizon-2100"]').click();
+  await page.locator('#panel-tab-options').click();
   // The axis rescales with the curve, so compare the drawn path, not its end in pixels.
   const baseline = () => page.locator('.temperature-chart .baseline-line').getAttribute('d');
   const start = await baseline();
@@ -773,8 +773,8 @@ test('the population option moves the baseline and the population area behind it
 }) => {
   await open(page);
   await expect(page.locator('.population-chart')).toHaveCount(0);
-  await page.locator('details[data-group="options"] > summary').click();
   await page.locator('label[for="horizon-2100"]').click();
+  await page.locator('#panel-tab-options').click();
   const baseline = () => page.locator('.temperature-chart .baseline-line').getAttribute('d');
   const area = () => page.locator('.temperature-chart .population-area').getAttribute('d');
   const [start, startArea] = [await baseline(), await area()];
@@ -816,7 +816,9 @@ test('the panel is in groups, all closed, under their causes, with the time sett
 }) => {
   await open(page);
   const groups = page.locator('.panel details.group');
-  await expect(groups).toHaveCount(8);
+  await expect(groups).toHaveCount(7);
+  await expect(page.locator('#panel-tab-levers')).toHaveAttribute('aria-selected', 'true');
+  await expect(page.locator('#panel-panel-options')).toBeHidden();
   for (const id of [
     'diet',
     ...['practices', 'waste', 'deforestation', 'removals', 'energy', 'industry'].map(
@@ -825,16 +827,11 @@ test('the panel is in groups, all closed, under their causes, with the time sett
   ]) {
     await expect(page.locator(`details[data-group="${id}"]`)).not.toHaveAttribute('open');
   }
-  await expect(page.locator('details[data-group="options"]')).not.toHaveAttribute('open');
-  const time = page.locator('.panel > *').first();
+  const time = page.locator('#panel-panel-levers > *').first();
   await expect(time).toHaveClass(/\btime-settings\b/);
   await expect(time.locator('> *').first()).toHaveAttribute('data-control', 'timing');
   await expect(time.locator('> *').nth(1)).toHaveAttribute('data-control', 'horizon');
   await expect(time).toContainText('Results up to');
-  await expect(page.locator('.panel > details.group').last()).toHaveAttribute(
-    'data-group',
-    'options',
-  );
   await expect(page.locator('details[data-group="diet"] #rampEnd')).toHaveCount(0);
   await expect(page.locator('.timing label')).toHaveText('All levers fully in place by');
   await expect(
@@ -849,7 +846,7 @@ test('the panel is in groups, all closed, under their causes, with the time sett
   const meta = (id: string) => page.locator(`details[data-group="${id}"] .group-meta`);
   await expect(meta('diet')).toHaveText('No shift yet');
   await expect(meta('levers-practices')).toHaveText('None of 6 adopted');
-  await expect(meta('options')).toHaveText('All at their defaults');
+  await expect(page.locator('#panel-tab-options')).toHaveText('Other options');
   await openDiet(page);
   await page.locator('#shift').fill('40');
   await expect(meta('diet')).toHaveText('40% moved');
@@ -862,9 +859,9 @@ test('the panel is in groups, all closed, under their causes, with the time sett
   await practices.locator('summary').click();
   await expect(practices).not.toHaveAttribute('open');
   await expect(meta('levers-practices')).toBeVisible();
-  await page.locator('details[data-group="options"] > summary').click();
+  await page.locator('#panel-tab-options').click();
   await page.locator('label[for="option-ssp-ssp126"]').click();
-  await expect(meta('options')).toHaveText('Changed: 1');
+  await expect(page.locator('#panel-tab-options')).toContainText('1');
   await noHorizontalScroll(page);
 });
 
@@ -922,7 +919,7 @@ test('each group and lever shows the warming it would avoid alone, in full', asy
   const before = await pill('diet').innerText();
   await page.locator('label[for="horizon-2100"]').click();
   await expect.poll(() => pill('diet').innerText()).not.toBe(before);
-  await expect(page.locator('.worth-legend')).toContainText('2100');
+  await expect(page.locator('.levers-head .info-tip')).toContainText('in 2100 on its own');
 });
 
 test('the temperature chart marks the Paris Agreement levels and natural factors', async ({
@@ -1277,7 +1274,7 @@ test('a cause’s pair sets every group under it, and the all-levers pair every 
   await expect.poll(() => new URL(page.url()).search).toBe('?data=fixtures');
   expect(await pressed(page, 'all')).toBe('zero');
   await expect(page.locator('.panel details.group[open]')).toHaveCount(0);
-  await expect(page.locator('details[data-group="options"] .quick')).toHaveCount(0);
+  await expect(page.locator('#panel-panel-options .quick')).toHaveCount(0);
   await noHorizontalScroll(page);
 });
 
