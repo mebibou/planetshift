@@ -89,6 +89,10 @@
     "all": "Mettre tous les leviers à {value}",
     "allLabel": "Tous"
   },
+  "panel": {
+    "label": "Ce que montre le panneau",
+    "levers": "Leviers"
+  },
   "options": {
     "title": "Autres options",
     "intro": "Chaque choix ci-dessous a une valeur par défaut et une alternative. Les changer montre à quel point le résultat en dépend.",
@@ -135,8 +139,7 @@
       "ssp126": "Bas (SSP1-2.6)",
       "ssp370": "Haut (SSP3-7.0)"
     },
-    "changed": "Modifiées : {count}",
-    "defaults": "Toutes par défaut"
+    "changed": "Modifiées : {count}"
   },
   "groups": {
     "all": "Tous les aliments",
@@ -394,7 +397,7 @@
     "description": "Remplacer une partie des aliments d'origine animale par des aliments végétaux, à protéines ou calories égales."
   },
   "worth": {
-    "legend": "−0,01 °C à côté d'un groupe ou d'un levier : la variation du réchauffement en {year} avec lui seul, en entier.",
+    "legend": "Le chiffre à côté de chaque groupe ou levier, par exemple −0,01 °C, indique de combien il changerait le réchauffement en {year} à lui seul, appliqué en entier.",
     "title": "{value} de réchauffement en {year} avec ceci seul, en entier"
   },
   "milestones": {
