@@ -67,11 +67,11 @@ Each lever's adoption is a percentage under the key its module declares. A lever
 
 | Module | Keys |
 | --- | --- |
-| `practices` | `fa` feed additives, `bf` breeding and feed, `mm` manure, `rw` rice water, `ne` nitrogen efficiency, `ni` inhibitors, `fe` farm energy |
+| `practices` | `fa` feed additives, `bf` breeding and feed, `mm` manure, `rw` rice water, `ne` nitrogen efficiency, `fe` farm energy |
 | `waste` | `fw` food waste, `sl` supply losses |
 | `deforestation` | `df` deforestation |
 | `removals` | `cc` cover crops, `af` agroforestry, `bc` biochar, `ew` rock dust |
-| `energy` | `ev` electric cars, `et` electric trucks, `fl` less flying, `saf` clean aviation fuel, `cs` clean shipping, `re` renewable electricity, `cdc` data centres on clean power |
+| `energy` | `ev` electric cars, `et` electric trucks, `fl` less flying, `saf` clean aviation fuel, `cs` clean shipping, `re` renewable electricity |
 | `industry` | `ch` clean heating, `ci` clean industry |
 
 Each option follows under its key, and is left out at its default: `scope`, `feed`, `base`, `loc`, `temp`, `clim`, `ssp`, and the modules' `pop`, `regrow`, `dc` and `pf`.

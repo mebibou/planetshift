@@ -92,23 +92,6 @@
     },
     "source": "https://doi.org/10.1126/science.aaq0216"
   },
-  "nitrificationInhibitors": {
-    "sources": [
-      "syntheticFertiliser"
-    ],
-    "gases": [
-      "n2o"
-    ],
-    "reduction": {
-      "median": 0.35,
-      "low": 0.2,
-      "high": 0.5
-    },
-    "applicable": {
-      "World": 0.6
-    },
-    "source": "https://doi.org/10.1126/science.aaq0216"
-  },
   "farmEnergy": {
     "sources": [
       "fuel"

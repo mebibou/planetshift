@@ -132,7 +132,7 @@ describe('what comes with the fossil fuel the levers cut', () => {
   const ratio = (sector: CoSector, species: CoSpecies, year: number) =>
     valueAt(co.years, co.perKgCo2.ssp245[sector][species], year);
 
-  it.each(ENERGY_LEVERS.filter((id) => id !== 'cleanDataCentres'))(
+  it.each(ENERGY_LEVERS)(
     '%s cuts methane and air pollution in proportion to the CO₂ it removes',
     (id) => {
       const full = changeOf({ [id]: 1 });
@@ -278,9 +278,7 @@ describe('the data-centre option', () => {
     expect(baselineIn(iea, 2020)).toBe(baselineIn(ssp, 2020));
     expect(w2100(iea)).toBe(0);
   });
-  it('clean data centres act on the extra demand only', () => {
-    expect(w2100(lever('cleanDataCentres', 1, { dataCentres: 'iea' }))).toBeGreaterThan(0);
-    expect(w2100(lever('cleanDataCentres', 1, { dataCentres: 'ssp' }))).toBe(0);
+  it('renewable electricity also cleans the extra demand', () => {
     expect(w2100(lever('renewableElectricity', 1, { dataCentres: 'iea' }))).toBeGreaterThan(
       w2100(lever('renewableElectricity', 1, { dataCentres: 'ssp' })),
     );
@@ -299,19 +297,21 @@ describe('energy levers and new options in the URL', () => {
         cleanAviationFuel: 0.1,
         cleanShipping: 1,
         renewableElectricity: 0.8,
-        cleanDataCentres: 0.6,
       },
     };
     const options: Options = { ...DEFAULT_OPTIONS, dataCentres: 'ssp', permafrost: 'on' };
     expect(encodeState(scenario, options)).toBe(
-      'sea=40&ev=50&et=25&fl=30&saf=10&cs=100&re=80&cdc=60&dc=ssp&pf=on',
+      'sea=40&ev=50&et=25&fl=30&saf=10&cs=100&re=80&dc=ssp&pf=on',
     );
     expect(decodeState(encodeState(scenario, options))).toEqual({ scenario, options });
   });
   it('read invalid values as none or the default', () => {
-    const { scenario, options } = decodeState('ev=abc&fl=150&re=-5&cdc=20&dc=x&pf=maybe');
-    expect(scenario.levers).toEqual({ cleanDataCentres: 0.2 });
+    const { scenario, options } = decodeState('ev=abc&fl=150&re=-5&et=20&dc=x&pf=maybe');
+    expect(scenario.levers).toEqual({ electricTrucks: 0.2 });
     expect(options.dataCentres).toBe('iea');
     expect(options.permafrost).toBe('off');
+  });
+  it('ignore the data centres on clean power of an old URL, now part of renewable electricity', () => {
+    expect(decodeState('re=50&cdc=100').scenario.levers).toEqual({ renewableElectricity: 0.5 });
   });
 });

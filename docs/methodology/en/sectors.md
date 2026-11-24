@@ -1,6 +1,6 @@
 # Beyond the farm: transport, electricity and data centres
 
-Food is one part of the climate problem. Burning coal, oil and gas for power and transport is the larger part. So that diet and farming levers can be compared with other actions, Planetshift has seven levers on road vehicles, aviation, shipping, electricity and data centres. With all seven in full from 2026 to 2035, they avoid 0.263 °C of warming in 2050 and 0.646 °C in 2100 (median, SSP2-4.5), once the methane and air pollution that come with the fuel are counted.
+Food is one part of the climate problem. Burning coal, oil and gas for power and transport is the larger part. So that diet and farming levers can be compared with other actions, Planetshift has six levers on road vehicles, aviation, shipping and electricity, which also reaches data centres. With all six in full from 2026 to 2035, they avoid 0.263 °C of warming in 2050 and 0.646 °C in 2100 (median, SSP2-4.5), once the methane and air pollution that come with the fuel are counted.
 
 ## What these levers count
 
@@ -118,13 +118,13 @@ The scenarios were made around 2016, before that growth was foreseen. They alrea
 
 So `dataCentresTwh` counts only the growth beyond 2024's 415 TWh as extra demand. In the base case this is 0 in 2024, 530 TWh in 2030 and 785 TWh from 2035. Headwinds gives 155 TWh in 2030 and 285 TWh from 2035, and Lift-Off 701 and 1,285 TWh. Values between the IEA's years are on straight lines. They are held flat after 2035, where the IEA stops.
 
-The CO₂ of this demand is its electricity times each scenario's grid intensity. It shrinks as the grid gets cleaner, and the renewable-electricity lever cuts it too. The data-centre lever moves a share of this extra demand onto clean power.
+The CO₂ of this demand is its electricity times each scenario's grid intensity. It shrinks as the grid gets cleaner, and the renewable-electricity lever cleans it with the rest of the grid.
 
 The emissions of building the data centres and making their chips are not included. Published estimates are for single sites or companies, and there is no world figure per TWh to use.
 
 ## In the app
 
-The **Energy and transport** fold of the Levers section has seven sliders. Each is the share adopted. Like every lever, each ramps in from the current year to the year set by *All levers fully in place by*. The fold's *Adopt all in full* sets all seven at 100%.
+The **Energy and transport** fold of the Levers section has six sliders. Each is the share adopted. Like every lever, each ramps in from the current year to the year set by *All levers fully in place by*. The fold's *Adopt all in full* sets all six at 100%.
 
 In the summary's breakdown by lever, these levers count as one group of their own, *Energy and transport*. Their effect is split between two causes:
 
@@ -137,12 +137,11 @@ Its CO₂ and methane are in the emissions avoided. The forcings are in the warm
 
 The code is `app/src/levers/energy/model.ts`, a lever module called by `run.ts`. In each year $y$, take each adoption $a$ already ramped, and $g$ the grid's intensity in the chosen scenario:
 
-- Renewable electricity (`re`) cuts $a \times$ the electricity CO₂. The grid left has the intensity $g' = g\,(1 - a)$.
+- Renewable electricity (`re`) cuts $a \times$ the electricity CO₂. The grid left has the intensity $g' = g\,(1 - a)$. With the *AI data centres* option at its default, *growth added* (`dc=iea`), it also cleans the data centres' extra demand: its emissions go from its kWh × $g$ in the baseline to its kWh × $g'$ in the scenario. With *as in the scenario* (`dc=ssp`) there is no extra demand to clean.
 - Electric cars (`ev`) and electric trucks (`et`) save $a \times \text{road passenger (or freight) CO}_2 \times (1 - k\,g')$, with $k$ = `evKwhPerKgCo2`.
 - Less flying (`fl`) and clean aviation fuel (`saf`) cut aviation CO₂ by $1 - (1 - a_{\text{fly}})(1 - a_{\text{fuel}})$. Less flying also cuts aviation's non-CO₂ forcing by $n \times a_{\text{fly}} \times \text{aviation CO}_2$, with $n$ = `aviationNonCo2`.
 - Clean shipping (`cs`) cuts $a \times$ shipping CO₂.
 - Each sector's change in CO₂ brings its co-emissions with it (below). The electricity drawn counts in the electricity sector's change. The methane goes with the CO₂ into the emissions. The change in air pollution gives a forcing and a methane change of its own, both counted under *air pollution*.
-- Data centres on clean power (`cdc`) depends on the *AI data centres* option. At its default, *growth added* (`dc=iea`), the extra demand's emissions go from its kWh × $g$ in the baseline to its kWh × $g'\,(1 - a)$ in the scenario. With *as in the scenario* (`dc=ssp`) there is no extra demand, and the lever has nothing to act on.
 
 The CO₂ and methane changes are convolved with their AGTP curves. An AGTP curve gives the warming, year by year, after one kilogram of a gas is emitted (see the [temperature page](#method-climate)). The forcing changes are convolved with `forcingResponse`. All are added to the warming change.
 
@@ -158,7 +157,7 @@ The response is linear around the scenario. This holds well for small changes. I
 
 ## Methane and air pollution that come with the fuel
 
-Burning coal, oil and gas emits more than CO₂. A lever that cuts fuel cuts all of these emissions along with the CO₂. Counting it raises the warming the energy levers avoid. All seven in full avoid 0.263 °C in 2050 with it, against 0.205 °C counting CO₂ only. Of all the energy, heating and industry levers, only clean steel and cement, on the [Buildings and industry](#method-industry) page, avoid less when it is counted (0.016 °C instead of 0.025 in 2050).
+Burning coal, oil and gas emits more than CO₂. A lever that cuts fuel cuts all of these emissions along with the CO₂. Counting it raises the warming the energy levers avoid. All six in full avoid 0.263 °C in 2050 with it, against 0.205 °C counting CO₂ only. Of all the energy, heating and industry levers, only clean steel and cement, on the [Buildings and industry](#method-industry) page, avoid less when it is counted (0.016 °C instead of 0.025 in 2050).
 
 What comes with the fuel:
 
@@ -330,9 +329,8 @@ Warming avoided in °C, median (likely range). Each lever is at 100% from 2026 t
 | Clean aviation fuel | 0.009 (0.007–0.012) | 0.015 (0.010–0.022) | 0.042 (0.029–0.057) | 0.059 (0.038–0.087) |
 | Clean shipping | 0.006 (0.004–0.008) | 0.008 (0.005–0.013) | 0.021 (0.014–0.028) | 0.029 (0.019–0.043) |
 | Renewable electricity | 0.096 (0.070–0.128) | 0.105 (0.057–0.192) | 0.234 (0.157–0.331) | 0.279 (0.184–0.416) |
-| Data centres on clean power | 0.002 (0.000–0.004) | 0.002 (0.000–0.005) | 0.003 (0.001–0.008) | 0.004 (0.001–0.009) |
-| All seven | 0.205 (0.129–0.323) | 0.263 (0.090–0.532) | 0.512 (0.316–0.811) | 0.646 (0.335–1.092) |
-| All seven with clean heating, steel and cement | 0.257 (0.161–0.398) | 0.314 (0.110–0.643) | 0.692 (0.425–1.079) | 0.851 (0.453–1.426) |
+| All six | 0.205 (0.129–0.323) | 0.263 (0.090–0.532) | 0.512 (0.316–0.810) | 0.646 (0.335–1.091) |
+| All six with clean heating, steel and cement | 0.257 (0.161–0.398) | 0.314 (0.110–0.643) | 0.692 (0.425–1.079) | 0.851 (0.453–1.426) |
 
 With every energy, heating and industry lever in full, two effects roughly cancel at first. The fuel's supply and methane are no longer emitted, which is a gain. The cooling the pollution masked is lost. After that, the gains are larger (median, °C, SSP2-4.5):
 

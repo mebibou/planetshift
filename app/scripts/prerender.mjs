@@ -27,8 +27,8 @@ const READY = {
 
 /** Every lever in full, so the share image shows the two futures apart. */
 const EVERY_LEVER =
-  'shift=50&with=legumes&fa=100&bf=100&mm=100&rw=100&ne=100&ni=100&fe=100&fw=100&sl=100&df=100' +
-  '&cc=100&af=100&bc=100&ew=100&ev=100&et=100&fl=100&saf=100&cs=100&re=100&cdc=100';
+  'shift=50&with=legumes&fa=100&bf=100&mm=100&rw=100&ne=100&fe=100&fw=100&sl=100&df=100' +
+  '&cc=100&af=100&bc=100&ew=100&ev=100&et=100&fl=100&saf=100&cs=100&re=100';
 
 const texts = async (lang) =>
   JSON.parse(await readFile(new URL(`../src/i18n/${lang}.json`, import.meta.url), 'utf8'));

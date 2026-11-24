@@ -23,7 +23,7 @@ A few terms used on this page:
 | Observed temperature (`temp`) | HadCRUT5 (`hadcrut5`) | Berkeley Earth (`berkeley`) | Only the observed line on the chart. Years a series does not cover are left blank. |
 | Climate response (`clim`) | FaIR (`fair`) | AR6 tables (`ar6`) | The warming per tonne of each gas. FaIR has a 5–95% range. The AR6 fallback has a single curve, so its range is the median line itself. |
 | Freed farmland (`regrow`) | left as it is (`none`) | grows back (`natural`) | Whether farmland freed by the shift takes up CO₂ as natural vegetation grows back, for 30 years after each hectare is freed. The scenario's CO₂ falls by that uptake, so the warming and the CO₂ avoided grow; methane and nitrous oxide do not change. See [The shift](#method-shift), step 8, and [Land](#method-land). |
-| AI data centres (`dc`) | growth added, IEA (`iea`) | as in the scenario (`ssp`) | With `iea`, the electricity that data centres use beyond 2024's 415 TWh is added to the future without any lever, at each year's grid intensity. That electricity follows the IEA's *Energy and AI* to 2035 and is held flat after. The baseline temperature rises by a few thousandths of a degree, and the data-centre and renewable-electricity levers can cut it. With `ssp`, the scenario's electricity is used as published, and the data-centre lever has nothing to act on. See [Energy and transport](#method-sectors). |
+| AI data centres (`dc`) | growth added, IEA (`iea`) | as in the scenario (`ssp`) | With `iea`, the electricity that data centres use beyond 2024's 415 TWh is added to the future without any lever, at each year's grid intensity. That electricity follows the IEA's *Energy and AI* to 2035 and is held flat after. The baseline temperature rises by a few thousandths of a degree, and the renewable-electricity lever can cut it. With `ssp`, the scenario's electricity is used as published, with no extra demand to cut. See [Energy and transport](#method-sectors). |
 | Permafrost (`pf`) | left out (`off`) | thaws (`on`) | With `on`, each year's rise in temperature releases carbon from thawing permafrost over the next 20 years, as CO₂ and methane. The release is computed on the baseline temperature, which rises, and on the temperature with the levers. The levers' cooling releases less, so the warming avoided grows a little. See [Climate](#method-climate). |
 | Rest of the world's emissions (`ssp`) | middle, SSP2-4.5 (`ssp245`) | low, SSP1-2.6 (`ssp126`); high, SSP3-7.0 (`ssp370`) | The total temperature curve, agriculture's share of it, and, with the population baseline, the adjustment between the two agricultural paths. |
 | World population (`pop`) | UN medium projection (`medium`) | UN low (`low`), UN high (`high`) projection | With the population baseline, the world population that scales farm emissions to 2100, in the baseline and with the levers alike: 10.2 billion people in 2100 with the medium projection, 7.0 with the low and 14.4 with the high. See *World population* below. |
@@ -95,11 +95,11 @@ Each lever's adoption is 0–100, in percent. It is left out of the address at 0
 
 | Family | Levers (URL key) |
 | --- | --- |
-| Farm practices | feed additives (`fa`), breeding and feed (`bf`), manure management (`mm`), rice paddies drained (`rw`), less nitrogen, better used (`ne`), nitrification inhibitors (`ni`), clean farm energy (`fe`) |
+| Farm practices | feed additives (`fa`), breeding and feed (`bf`), manure management (`mm`), rice paddies drained (`rw`), less nitrogen, better used (`ne`), clean farm energy (`fe`) |
 | Food waste | waste after shops (`fw`), losses before shops (`sl`) |
 | Deforestation | deforestation stopped (`df`) |
 | Carbon in farmland | cover crops (`cc`), trees on farms (`af`), biochar (`bc`), rock dust (`ew`) |
-| Energy and transport | electric cars (`ev`), electric trucks (`et`), less flying (`fl`), clean aviation fuel (`saf`), clean shipping (`cs`), renewable electricity (`re`), data centres on clean power (`cdc`) |
+| Energy and transport | electric cars (`ev`), electric trucks (`et`), less flying (`fl`), clean aviation fuel (`saf`), clean shipping (`cs`), renewable electricity (`re`) |
 | Buildings and industry | clean heating (`ch`), clean steel and cement (`ci`) |
 
 A value the page does not recognise falls back to its default.

@@ -21,11 +21,7 @@
   },
   "nitrogenEfficiency": {
     "title": "Moins d'azote, mieux employé",
-    "description": "Un engrais ajusté aux besoins de la culture, dont moins se transforme en protoxyde d'azote."
-  },
-  "nitrificationInhibitors": {
-    "title": "Inhibiteurs de nitrification",
-    "description": "Des produits ajoutés à l'engrais qui ralentissent sa transformation en protoxyde d'azote."
+    "description": "Un engrais ajusté aux besoins de la culture, et des inhibiteurs qui ralentissent sa transformation en nitrate, pour que moins en devienne du protoxyde d'azote."
   },
   "farmEnergy": {
     "title": "Énergie propre à la ferme",

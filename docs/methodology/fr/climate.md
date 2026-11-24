@@ -294,7 +294,7 @@ Avec chaque interrupteur sur FaIR tel quel, sur SSP2-4.5 :
 
 - moins d'avion à fond évite 0,007 °C en 2050 et 0,045 °C en 2100, au lieu de 0,054 et 0,122, car l'essentiel de son effet vient des traînées et FaIR n'en a pas ;
 - les voitures électriques évitent 0,027 et 0,091 °C au lieu de 0,045 et 0,106, et dans SSP3-7.0 ajoutent 0,018 °C d'ici 2100 au lieu d'en éviter 0,054 ;
-- les sept leviers d'énergie ensemble évitent 0,164 et 0,532 °C au lieu de 0,263 et 0,646.
+- les six leviers d'énergie ensemble évitent 0,164 et 0,532 °C au lieu de 0,263 et 0,646.
 
 Sans la règle sur le transport maritime, la référence est plus fraîche de 0,037 °C en 2024 et de 0,067 °C en 2100. Les leviers agricoles ne bougent pas.
 

@@ -21,11 +21,7 @@
   },
   "nitrogenEfficiency": {
     "title": "Less nitrogen, better used",
-    "description": "Fertiliser matched to the crop's needs, so less of it turns into nitrous oxide."
-  },
-  "nitrificationInhibitors": {
-    "title": "Nitrification inhibitors",
-    "description": "Products added to fertiliser that slow its turning into nitrous oxide."
+    "description": "Fertiliser matched to the crop's needs, and inhibitors that slow its turning into nitrate, so less of it becomes nitrous oxide."
   },
   "farmEnergy": {
     "title": "Clean farm energy",

@@ -1,6 +1,6 @@
 # Pratiques agricoles
 
-Au-delà de ce que l'on mange, on peut réduire les émissions là où les aliments sont produits. Planetshift permet d'appliquer sept pratiques agricoles. Pour chacune, cette page indique ce que font les agriculteurs, ce qu'elle réduit et de combien, et où elle peut être adoptée. Adoptées en entier partout où elles s'appliquent, les sept ensemble évitent environ 0,9 milliard de tonnes d'équivalent CO₂ par an. C'est entre l'estimation du GIEC à un coût allant jusqu'à 100 \$ la tonne et son estimation de ce qui est techniquement possible (voir *Toutes les pratiques ensemble* plus bas).
+Au-delà de ce que l'on mange, on peut réduire les émissions là où les aliments sont produits. Planetshift permet d'appliquer six pratiques agricoles. Pour chacune, cette page indique ce que font les agriculteurs, ce qu'elle réduit et de combien, et où elle peut être adoptée. Adoptées en entier partout où elles s'appliquent, les six ensemble évitent environ 0,7 milliard de tonnes d'équivalent CO₂ par an à la ferme, et 1,0 milliard du berceau à la sortie de ferme. C'est entre l'estimation du GIEC à un coût allant jusqu'à 100 \$ la tonne et son estimation de ce qui est techniquement possible (voir *Toutes les pratiques ensemble* plus bas).
 
 ## Comment une pratique est décrite
 
@@ -78,9 +78,9 @@ La réduction qu'une pratique fait dans un pays est l'adoption choisie × la par
 
 ## Moins d'azote, mieux employé
 
-**Ce que font les agriculteurs.** Ils donnent aux cultures l'azote dont elles ont besoin, et pas plus. Les mesures comprennent les analyses de sol et de plantes, la dose juste, les apports fractionnés au bon moment, le placement près des racines, les engrais à efficacité améliorée et les légumineuses dans la rotation.
+**Ce que font les agriculteurs.** Ils donnent aux cultures l'azote dont elles ont besoin, et pas plus. Les mesures comprennent les analyses de sol et de plantes, la dose juste, les apports fractionnés au bon moment, le placement près des racines, les engrais à efficacité améliorée, les inhibiteurs de nitrification et les légumineuses dans la rotation. Un inhibiteur (DCD, DMPP, nitrapyrine) ajouté à l'engrais ralentit la transformation de l'ammonium en nitrate, d'où se forme le N₂O.
 
-**Ce qu'elle réduit.** Le N₂O des engrais de synthèse au champ, le CO₂ de l'urée, et les émissions de la fabrication de l'engrais qui n'est plus acheté. Une synthèse de 1 521 observations au champ trouve que onze mesures de ce type réduisent ensemble l'usage d'engrais de 21 % et les pertes d'azote de 32 % à rendement égal ou supérieur. Là où l'azote est en excès, le N₂O baisse plus vite que la dose, car sa réponse à l'azote n'est pas linéaire. Planetshift retient 25 % (12–35 %).
+**Ce qu'elle réduit.** Le N₂O des engrais de synthèse au champ, le CO₂ de l'urée, et les émissions de la fabrication de l'engrais qui n'est plus acheté. Une synthèse de 1 521 observations au champ trouve que onze mesures de ce type réduisent ensemble l'usage d'engrais de 21 % et les pertes d'azote de 32 % à rendement égal ou supérieur. Là où l'azote est en excès, le N₂O baisse plus vite que la dose, car sa réponse à l'azote n'est pas linéaire. Les inhibiteurs, en plus, réduisent le N₂O direct de 0,2 à 4,5 kg de N₂O-N par hectare (8 à 57 %), mais ils augmentent les pertes d'ammoniac de 3 à 65 %, et cet ammoniac ajoute ensuite du N₂O indirect. En le comptant, leur effet net va d'une baisse de 4,5 à une hausse de 0,5 kg de N₂O-N par hectare (Lam et al. 2017). Ils n'élargissent donc que le haut de la fourchette. Planetshift retient 25 % (12–40 %).
 
 **Où elle s'applique.** Là où l'on épand plus d'azote que les cultures n'en prélèvent :
 
@@ -88,17 +88,7 @@ La réduction qu'une pratique fait dans un pays est l'adoption choisie × la par
 - 60 % dans les pays à revenu intermédiaire de la tranche supérieure, 50 % dans les pays à revenu élevé et dans ceux de la tranche inférieure ;
 - 20 % dans les pays à faible revenu et en Afrique de l'Ouest, de l'Est et centrale, où les sols reçoivent trop peu d'azote et où de meilleurs rendements en demandent plus.
 
-**Limites.** La fabrication des intrants de `breakdown.json` comprend aussi les pesticides, les machines et les plastiques, que la pratique ne réduit pas. Appliquer la même réduction à l'ensemble surestime un peu l'effet. « Moins d'azote, mieux employé » et les inhibiteurs de nitrification agissent sur le même N₂O : leur effet combiné est inférieur à leur somme.
-
-## Inhibiteurs de nitrification
-
-**Ce que font les agriculteurs.** Ils achètent un engrais enrobé d'un inhibiteur de nitrification (DCD, DMPP, nitrapyrine). L'inhibiteur ralentit la transformation de l'ammonium en nitrate, d'où se forme le N₂O.
-
-**Ce qu'elle réduit.** Le N₂O des engrais de synthèse. Une méta-analyse trouve que les inhibiteurs réduisent le N₂O direct de 38 % en moyenne. Une autre revue trouve 8 à 57 % selon les études, mais plus d'ammoniac se volatilise, et cet ammoniac ajoute ensuite du N₂O indirect. Le N₂O indirect, environ un cinquième du N₂O des engrais, est à peine réduit. Planetshift retient 30 % (10–45 %).
-
-**Où elle s'applique.** Partout où l'engrais traité peut être acheté et payé : 60 % des émissions visées dans les pays à revenu élevé, 50 % dans les pays à revenu intermédiaire de la tranche supérieure, 30 % dans ceux de la tranche inférieure et 10 % dans les pays à faible revenu.
-
-**Limites.** Des résidus de DCD ont été trouvés dans le lait en Nouvelle-Zélande en 2013, ce qui y a arrêté son usage. Les inhibiteurs coûtent plus que l'engrais économisé dans la plupart des endroits, et agissent moins dans les sols chauds et secs.
+**Limites.** La fabrication des intrants de `breakdown.json` comprend aussi les pesticides, les machines et les plastiques, que la pratique ne réduit pas. Appliquer la même réduction à l'ensemble surestime un peu l'effet. Des résidus de l'inhibiteur DCD ont été trouvés dans le lait en Nouvelle-Zélande en 2013, ce qui y a arrêté son usage. Les inhibiteurs coûtent plus que l'engrais économisé dans la plupart des endroits, et agissent moins dans les sols chauds et secs.
 
 ## Énergie propre à la ferme
 
@@ -118,7 +108,7 @@ La réduction qu'une pratique fait dans un pays est l'adoption choisie × la par
 
 ## Toutes les pratiques ensemble
 
-Avec toutes les pratiques adoptées en entier, partout où elles s'appliquent, le modèle évite environ 0,9 milliard de tonnes d'équivalent CO₂ par an (GWP100). Le sixième rapport d'évaluation du GIEC (groupe de travail III, chapitre 7, tableau 7.3) évalue le potentiel de réduction du méthane et du protoxyde d'azote agricoles à 0,6 (0,3–1,3) milliard de tonnes par an jusqu'à 100 \$ la tonne d'équivalent CO₂. Il évalue le potentiel technique à 1,7 milliard de tonnes. L'adoption complète de Planetshift se situe entre les deux.
+Avec toutes les pratiques adoptées en entier, partout où elles s'appliquent, le modèle évite environ 0,7 milliard de tonnes d'équivalent CO₂ par an (GWP100) à la ferme, et 1,0 milliard du berceau à la sortie de ferme, où comptent l'énergie propre à la ferme et la fabrication des engrais. Le sixième rapport d'évaluation du GIEC (groupe de travail III, chapitre 7, tableau 7.3) évalue le potentiel de réduction du méthane et du protoxyde d'azote agricoles à 0,6 (0,3–1,3) milliard de tonnes par an jusqu'à 100 \$ la tonne d'équivalent CO₂. Il évalue le potentiel technique à 1,7 milliard de tonnes. L'adoption complète de Planetshift se situe entre les deux.
 
 ## Comment les émissions sont réparties par source
 
@@ -173,7 +163,7 @@ Si un gaz n'a toujours pas de répartition, il prend la première trouvée dans 
 
 - Une seule réduction par pratique s'applique à chaque source et à chaque gaz qu'elle vise. La hausse du N₂O des rizières drainées est déduite de la baisse du méthane en équivalents CO₂ sur 100 ans.
 - Les parts applicables sont des jugements fondés sur les systèmes agricoles de chaque groupe de revenu et de chaque région, avec une valeur propre pour les pays cités plus haut. Un pays prend sa propre valeur, sinon celle de sa région, sinon celle de son groupe de revenu (Banque mondiale), sinon celle du monde.
-- Les pratiques qui agissent sur la même source (additifs alimentaires avec sélection et alimentation ; moins d'azote, mieux employé avec inhibiteurs de nitrification) devraient se combiner par multiplication, pas par addition.
+- Les pratiques qui agissent sur la même source (additifs alimentaires avec sélection et alimentation) devraient se combiner par multiplication, pas par addition.
 - Les effluents laissés au pâturage et les effluents épandus sur les sols comptent comme engrais organiques, pas comme effluents : la gestion des effluents ne les atteint donc pas.
 - La fabrication des intrants est une seule source : « Moins d'azote, mieux employé » réduit donc aussi la fabrication des pesticides et des machines.
 - Les intensités tirées de la littérature et des substituts prennent la répartition FAOSTAT de leur produit. Un produit transformé prend la répartition de ses produits primaires. Les produits sans aucune répartition sont comptés dans « autres ».
@@ -191,7 +181,6 @@ Si un gaz n'a toujours pas de répartition, il prend la première trouvée dans 
 - Gu, B. et al. (2023). Cost-effective mitigation of nitrogen pollution from global croplands. Nature 613, 77–84 : <https://doi.org/10.1038/s41586-022-05481-8>.
 - Shcherbak, I., Millar, N., Robertson, G. P. (2014). Global metaanalysis of the nonlinear response of soil nitrous oxide (N₂O) emissions to fertilizer nitrogen. PNAS 111, 9199–9204 : <https://doi.org/10.1073/pnas.1322434111>.
 - Nabuurs, G.-J. et al. (2022). Agriculture, Forestry and Other Land Uses (AFOLU). Dans GIEC AR6, groupe de travail III, chapitre 7 (tableau 7.3, potentiels d'atténuation par mesure) : <https://doi.org/10.1017/9781009157926.009>.
-- Akiyama, H., Yan, X., Yagi, K. (2010). Evaluation of effectiveness of enhanced-efficiency fertilizers as mitigation options for N₂O and NO emissions from agricultural soils: meta-analysis. Global Change Biology 16, 1837–1846 : <https://doi.org/10.1111/j.1365-2486.2009.02031.x>.
 - Lam, S. K. et al. (2017). Using nitrification inhibitors to mitigate agricultural N₂O emission: a double-edged sword? Global Change Biology 23, 485–489 : <https://doi.org/10.1111/gcb.13338>.
 - FAO (2011). Energy-smart food for people and climate. Issue paper : <https://www.fao.org/3/i2454e/i2454e.pdf>.
 - FAOSTAT, Emissions from Crops, Emissions from Livestock et Emissions totals : <https://www.fao.org/faostat/en/#data/GT>, CC BY 4.0.

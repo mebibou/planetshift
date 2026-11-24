@@ -713,9 +713,6 @@ write('practices.json', {
     [0.2, 0.1, 0.3],
     { World: 0.7 },
   ),
-  nitrificationInhibitors: practice(['syntheticFertiliser'], ['n2o'], [0.35, 0.2, 0.5], {
-    World: 0.6,
-  }),
   farmEnergy: {
     ...practice(['fuel'], ['co2'], [0.5, 0.3, 0.7], { World: 0.8 }),
     electrified: { efficiency: 0.3, co2PerFuelCo2: { World: 0.5 } },

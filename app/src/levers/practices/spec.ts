@@ -9,7 +9,6 @@ const KEYS: Record<PracticeId, string> = {
   manureManagement: 'mm',
   riceWater: 'rw',
   nitrogenEfficiency: 'ne',
-  nitrificationInhibitors: 'ni',
   farmEnergy: 'fe',
 };
 const LEVERS = PRACTICES.map((id) => lever(ID, id, KEYS[id]));

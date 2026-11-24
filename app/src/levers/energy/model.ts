@@ -68,8 +68,8 @@ export type EnergySource =
  * Change in fossil CO₂ in a year by the sector that emits it, kg (negative when avoided). An
  * electric vehicle saves its tailpipe CO₂ and draws electricity on the grid left after renewable
  * electricity; less flying and clean fuel combine on aviation's CO₂, each acting on what the
- * other leaves; data centres (option 'iea') change from their baseline emissions to those on the
- * cleaner grid, less what runs on clean power.
+ * other leaves; data centres' extra demand (option 'iea') changes from its baseline emissions to
+ * those on the grid renewable electricity leaves.
  */
 export const energyCo2BySource = (
   ctx: YearContext,
@@ -87,9 +87,7 @@ export const energyCo2BySource = (
       freight * towards(sectors.evKwhPerKgCo2.freight, band, false)) *
     cleanGrid;
   const dataCentres =
-    ctx.dataCentres === 'iea'
-      ? dataCentreKwh(sectors, year, band) * (grid - cleanGrid * (1 - a.cleanDataCentres))
-      : 0;
+    ctx.dataCentres === 'iea' ? dataCentreKwh(sectors, year, band) * (grid - cleanGrid) : 0;
   return {
     roadPassenger: -passenger,
     roadFreight: -freight,
