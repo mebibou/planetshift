@@ -281,6 +281,7 @@
     "label": "Global temperature from 1850 to {year}: observed, without the levers and with them",
     "unit": "°C above 1850–1900",
     "observed": "Observed",
+    "observedNote": "The observed line is the record chosen in the options, HadCRUT5 or Berkeley Earth. The two paths do not change with it. The climate runs are constrained on the mean of four observed records, which include both of these.",
     "baseline": "Without the levers",
     "scenario": "With the levers",
     "band": "Likely range (5–95%)",

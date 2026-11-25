@@ -333,9 +333,10 @@ const layoutOf = (plotEl: HTMLElement, end: number) => {
   };
 };
 
-/** The notes on the Paris levels, and on the policies band and the population when drawn. */
+/** The notes on the observed line, the Paris levels, and on the policies band and the population when drawn. */
 const milestoneNotes = (t: T, reaches2100: boolean, population: boolean): string[] =>
   [
+    t('chart.observedNote'),
     t('milestones.caption'),
     reaches2100 ? t('milestones.policies.caption') : '',
     population ? t('levers.population.chart.caption') : '',

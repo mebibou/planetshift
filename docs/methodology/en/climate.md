@@ -123,13 +123,13 @@ The app shows the median and the 5–95% range relative to 1850–1900. The tabl
 | SSP2-4.5 | 1.20 °C (1.01–1.35) | 1.90 °C (1.50–2.33) | 2.62 °C (1.92–3.61) |
 | SSP3-7.0 | 1.20 °C (1.01–1.35) | 1.88 °C (1.50–2.29) | 3.50 °C (2.68–4.46) |
 
-Observed warming over 2015–2024 is 1.27 °C in HadCRUT5 and 1.33 °C in Berkeley Earth, both re-baselined here to their own 1850–1900 means. The FaIR median is 0.06 °C below HadCRUT5, inside its range, which a test checks. The 2100 values are close to AR6's assessed best estimates for 2081–2100: 1.8, 2.7 and 3.6 °C (Table SPM.1).
+Observed warming over 2015–2024 is 1.27 °C in HadCRUT5 and 1.33 °C in Berkeley Earth, both re-baselined here to their own 1850–1900 means. The FaIR median is 0.06 °C below HadCRUT5, which lies inside FaIR's 5–95% range. Indicators of Global Climate Change 2024, which combines four records, assesses 2015–2024 at 1.24 °C (1.11–1.35) (Forster et al. 2025). Tests check FaIR's median against HadCRUT5 and against this assessment. The 2100 values are close to AR6's assessed best estimates for 2081–2100: 1.8, 2.7 and 3.6 °C (Table SPM.1).
 
 ### Where these runs and the observed lines come from
 
 Up to 2022, the emissions are the history FaIR's calibration 1.4.1 was constrained on, as FaIR v2.2.5 publishes it with its example scenarios. After that they are the SSPs of RCMIP v5.1.0. The gap between the two in 2022 fades out over 15 years, rather than the SSP being scaled, so a series that crosses zero keeps its sign. RCMIP's own history differs: its land-use CO₂ is 190 billion tonnes of carbon over 1750–2019, against 245 in the calibration's, and its 1750 methane is 19 Mt, against the calibration's pre-industrial 38 Mt. Land use's albedo change is prescribed from RCMIP's albedo forcing for each SSP, which follows the land cleared at the time. It is not derived from cumulative land-use CO₂. Each calendar year is the mean of FaIR's values at its start and end.
 
-The observed lines are the Met Office HadCRUT5 analysis (global annual series, complete years only) and Berkeley Earth Land + Ocean (annual, air temperature over sea ice). Each is shifted so that its 1850–1900 mean is zero.
+The observed lines are the Met Office HadCRUT5 analysis (global annual series, complete years only) and Berkeley Earth Land + Ocean (annual, air temperature over sea ice). Each is shifted so that its 1850–1900 mean is zero. Choosing one changes only the observed line, not the runs. Berkeley Earth's other variant, with water temperature under sea ice, gives 1.20 °C over 2015–2024. It is not used. Berkeley Earth prefers the air variant, which it finds describes the change at the surface more naturally.
 
 ### For comparison: recent warming, targets and carbon budgets
 
