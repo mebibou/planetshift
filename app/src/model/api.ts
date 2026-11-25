@@ -97,6 +97,9 @@ export interface CountryResult {
   /** Food's emissions after the farm, kg a year, and their change at the full shift; none without chain.json. */
   chain?: GasVector;
   chainChange?: GasVector;
+  /** What the food eaten in the country emits per person, kg a year, and its change with the levers. */
+  footprint?: GasVector;
+  footprintChange?: GasVector;
 }
 
 export type Band3 = { median: number; p05: number; p95: number };

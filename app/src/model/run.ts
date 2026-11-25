@@ -71,6 +71,7 @@ import { addLand, countryLand, landChangeOf, NO_LAND, type CakeDemand } from './
 import { clipChange, locateAll } from './location';
 import { mammalsOf, NO_MAMMALS } from './mammals';
 import { speciesOf } from './species';
+import { foodFootprints, type IntensityCut as FootprintCut } from './footprint';
 import {
   allCauses,
   CHAIN_CAUSES,
@@ -151,7 +152,7 @@ export const productionChanges = (
   options: Options,
   chain: SupplyChain = {},
   dietFood?: ByCountry,
-): { food: ByCountry; change: ByCountry; clipped: string[] } => {
+): { food: ByCountry; change: ByCountry; supply: ByCountry; clipped: string[] } => {
   const { countries, items, worldEmitting } = prepared;
   const n = items.length;
   const animal = animalMask(items);
@@ -249,9 +250,20 @@ export const productionChanges = (
         ),
       ),
     ),
+    supply: recordOf(
+      countries,
+      used.map((u, c) => eatenSupply(u, multipliers[c] as ItemVector, avoided?.[c])),
+    ),
     clipped: [...new Set([...animals.clipped, ...fish.clipped, ...plants.clipped])].sort(),
   };
 };
+
+/**
+ * The change in a country's supply of food in farm tonnes, where it is eaten: the change in end
+ * use times the supply each tonne needs, less the losses no longer incurred.
+ */
+const eatenSupply = (used: ItemVector, m: ItemVector, lost: ItemVector | undefined): ItemVector =>
+  used.map((d, i) => d * (m[i] as number) - (lost?.[i] ?? 0));
 
 const dietCache = memoLatest<Prepared, ReturnType<typeof productionChanges>>();
 
@@ -328,7 +340,7 @@ const noProduction = (prepared: Prepared): Production =>
       prepared.countries,
       prepared.countries.map(() => zeros(prepared.items.length)),
     );
-    return { food: none, change: none, clipped: [] };
+    return { food: none, change: none, supply: none, clipped: [] };
   });
 
 interface Chain {
@@ -1576,6 +1588,49 @@ const familyShares = (
 const withPeopleYear = (options: Options, scenario: Scenario): Options =>
   options.people === undefined ? options : { ...options, peopleYear: scenario.rampEnd };
 
+/**
+ * The levers' share of each item's intensity removed in a country, median, combined, and what it
+ * depends on (the levers and the options); none without an intensity lever.
+ */
+const leverCut = (ctx: RunContext): { key: string; of: FootprintCut } | null => {
+  const hooks = MODULES.flatMap((m) => {
+    const hook = m.hooks.intensity?.(ctx);
+    return hook ? [hook] : [];
+  });
+  const of: FootprintCut = (pc) => {
+    const cuts = hooks.map((h) => h(pc, 'median'));
+    return Object.fromEntries(
+      GASES.map((g) => [
+        g,
+        (cuts[0] as Record<Gas, ItemVector>)[g].map(
+          (_, i) => 1 - cuts.reduce((left, c) => left * (1 - (c[g][i] as number)), 1),
+        ),
+      ]),
+    ) as Record<Gas, ItemVector>;
+  };
+  return hooks.length === 0
+    ? null
+    : { key: JSON.stringify([ctx.scenario.levers, ctx.options, ctx.currentYear]), of };
+};
+
+/** The countries' results with their food footprint per person, today and with the levers. */
+const withFootprints = (
+  ctx: RunContext,
+  steps: readonly Step[],
+  countries: readonly CountryResult[],
+): CountryResult[] => {
+  const { prepared, options } = ctx;
+  const last = steps[steps.length - 1];
+  const prints = foodFootprints(
+    prepared,
+    options.scope,
+    options.feed,
+    last?.run.supply ?? {},
+    leverCut(ctx),
+  );
+  return countries.map((c) => ({ ...c, ...prints.get(c.iso3) }));
+};
+
 export const runPrepared = (
   prepared: Prepared,
   scenario: Scenario,
@@ -1752,7 +1807,7 @@ export const runPrepared = (
     causeRecord((c) => sum(FAMILIES.map((f) => r[f]?.[c] ?? 0)));
 
   const result: ScenarioResult = {
-    countries,
+    countries: withFootprints(ctx, steps, countries),
     years,
     baselineEmissions: baselinePath,
     scenarioEmissions: baselinePath.map((e, i) => addGas(e, farmDifference[i] as GasVector)),

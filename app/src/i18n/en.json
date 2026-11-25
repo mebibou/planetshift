@@ -239,6 +239,7 @@
       "deforestationCo2": "CO₂ from the clearing, a year",
       "chain": "After the farm (processing to waste), a year",
       "clearingCo2": "CO₂ from clearing forest for farming, a year",
+      "footprint": "Food footprint per person, a year",
       "landShare": "Share of the land farmed",
       "mammals": "Farmed mammals per km² of land",
       "species": "Species committed to extinction",

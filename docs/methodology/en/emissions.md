@@ -246,6 +246,21 @@ In France, a tonne of beef has about 1.06 t CO₂e after the farm, and a tonne o
 
 **Simplifications.** Everything is placed where the food is produced, as for the farm's emissions, though shops and kitchens are where it is eaten. Cooking and food waste follow a food's mass, so a tonne of wheat and a tonne of beef have the same emissions at home. Less food waste also cuts the cooking emissions of the food no longer wasted. This slightly overstates the cut, because wasted food is not always cooked. The energy after the farm does not get cleaner over the years, unlike the scenario's grid.
 
+## Food footprint per person
+
+The map's Emissions layer counts emissions where food is produced. Its tooltip also shows *Food footprint per person*: what the food eaten in the country emits per person a year. Production per person looks high in an exporting country and low in an importing one, so the footprint follows what people eat instead.
+
+For each food, a country's footprint adds up:
+
+- **How much is eaten**: the food supply of the Food Balance Sheets, times the supply each tonne needs (losses, processing and seed). The result is in farm tonnes, as the diet shift counts it.
+- **Where it comes from**: the part the country produces takes the country's own intensity. The imported part takes the world's intensity: each item's intensity averaged over the countries that produce it, weighted by their production. The imported share is imports over production plus imports. Imports are not traced to their real origin.
+- **What a tonne emits**: the farm's emissions in the chosen scope, plus the chain after the farm, plus the CO₂ of clearing forest for that food in that country.
+- **The feed of animal products**: an animal product's intensity leaves out its feed (see above). The footprint therefore adds the emissions of the feed each animal group eats per tonne it produces. It takes the country's figure for the part the country produces, and the world's for the part it imports.
+
+The total is divided by the country's population in the base year. With the levers, the food eaten changes with the diet shift and less food waste. The farm's intensities change with the farm practices. The chain after the farm and the clearing per tonne do not change.
+
+In CO₂e per person a year, France's footprint is 2.12 t, the United States' 2.33 t, China's 1.92 t, India's 0.86 t and Brazil's 4.27 t. In Brazil, clearing for farming is the largest part, about half. With the whole diet shifted, France's footprint falls to 0.89 t.
+
 ## Proxies
 
 A proxy is a similar item's value in the same country, used when an item has no value of its own from tiers 1–4. Each item tries its proxies in order:
