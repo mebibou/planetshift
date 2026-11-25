@@ -14,7 +14,7 @@ Each file is written by one section of the pipeline, `pipeline/planetshift_pipel
 | `feed.json` | `Feed` | feed allocation tables, FAO FishStat fed aquaculture for `seafood` |
 | `land.json` | `Land` | FAOSTAT harvested area and land use, each country's land area (`landArea`, optional: without it the map's land use layer is empty), natural regrowth rates |
 | `breakdown.json` | `Breakdown` (`levers/practices/data.ts`) | emissions by source (enteric, manure, rice, fertiliser…) from HESTIA terms and FAOSTAT |
-| `practices.json` | `Practices` (`levers/practices/data.ts`) | published reductions of farming practices |
+| `practices.json` | `Practices` (`levers/practices/data.ts`) | published reductions of farming practices; for Clean farm energy, the kWh drawn per kg of fuel CO₂ switched (FAOSTAT GN), each country's grid intensity over the world's (Ember, else FAOSTAT GN) and FAOSTAT's world grid for a build without `sectors.json` |
 | `waste.json` | `Waste` (`levers/waste/data.ts`) | food waste after shops |
 | `deforestation.json` | `Deforestation` (`levers/deforestation/data.ts`) | deforestation CO₂ attributed to commodities, and the forest area cleared (`areaByCountry`, optional: without it the map's Deforestation layer shows no clearing) |
 | `removals.json` | `Removals` (`levers/removals/data.ts`) | carbon stored in farmland by practice |

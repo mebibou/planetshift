@@ -137,6 +137,7 @@ The model computes the change at the full shift. Over the years from now to 2100
 
 - **Baseline**: with the default *today's diet × population*, each year's emissions are the base year's × world population that year ÷ world population in the base year. With the *SSP2 path*, they follow SSP2-4.5's agricultural emissions, gas by gas, relative to the base year. SSP2-4.5 is the middle-of-the-road future among the Shared Socioeconomic Pathways (SSPs), the published scenarios the IPCC uses (see [Climate](#method-climate)).
 - **Shift**: the baseline plus ramp(t) × the full-shift change, scaled the same way as the baseline. The ramp is 0 in the current year. It rises in a straight line to 1 in the chosen year (2035 by default), and stays at 1. With natural regrowth, the CO₂ taken up by freed land (step 8) is subtracted. It is not scaled with the baseline.
+- **Farm electricity**: the part of the change that is the CO₂ of the grid electricity farms use (in the cradle-to-farm-gate scope, see [Farm practices](#method-practices)) also follows the grid. Each year it is multiplied by the chosen SSP's world grid intensity that year over this year's: on SSP2-4.5, 0.58 in 2050 and none in 2100. Electricity a diet shift saves therefore avoids less CO₂ as the grid gets cleaner. Without `sectors.json`, it stays at this year's grid.
 
 The avoided emissions shown in the summary are those of the year the shift is complete.
 

@@ -1,13 +1,14 @@
-import { GASES, type Gas, type Scope } from '../../data/types';
+import { GASES, type Gas, type GasVector, type Scope } from '../../data/types';
 import { bandRecord, bandValue } from '../../model/bands';
 import type { Band } from '../../model/climate';
-import { OTHER_SCOPE } from '../../model/emissions';
+import { countryIntensities, OTHER_SCOPE } from '../../model/emissions';
 import { GROUPS, groupIndicesOf, type Prepared, type PreparedCountry } from '../../model/prepare';
 import { cachedIn, memoLatest, memoPer, range, zeros, type ItemVector } from '../../model/util';
 import {
   EMISSION_SOURCES,
   PRACTICES,
   type Breakdown,
+  type Electrified,
   type EmissionSource,
   type Practice,
   type Practices,
@@ -80,13 +81,29 @@ export interface PracticeCut {
   cut: number;
 }
 
-/** Below zero where the grid emits more than the fuel it replaces. */
-export const netReduction = (practice: Practice, iso3: string, band: Band): number => {
-  const reduction = bandValue(practice.reduction, band);
+const countryValue = (table: Record<string, number>, iso3: string, fallback: number): number =>
+  table[iso3] ?? table['World'] ?? fallback;
+
+/** kg of the grid's CO₂ per kg of fuel CO₂ replaced, on a world grid of `worldGrid` kg/kWh. */
+export const co2PerFuelCo2 = (e: Electrified, iso3: string, worldGrid: number): number =>
+  countryValue(e.kwhPerFuelCo2, iso3, 0) * countryValue(e.gridRatio, iso3, 1) * worldGrid;
+
+/** The share of the targeted emissions a practice switches to the grid. */
+const switchedShare = (practice: Practice, band: Band): number => {
   const e = practice.electrified;
-  const switched = e ? Math.max(0, reduction - e.efficiency) : 0;
-  const grid = e ? (e.co2PerFuelCo2[iso3] ?? e.co2PerFuelCo2['World'] ?? 0) : 0;
-  return reduction - switched * grid;
+  return e ? Math.max(0, bandValue(practice.reduction, band) - e.efficiency) : 0;
+};
+
+/** Below zero where the grid emits more than the fuel it replaces. */
+export const netReduction = (
+  practice: Practice,
+  iso3: string,
+  band: Band,
+  worldGrid: number,
+): number => {
+  const e = practice.electrified;
+  const grid = e ? co2PerFuelCo2(e, iso3, worldGrid) : 0;
+  return bandValue(practice.reduction, band) - switchedShare(practice, band) * grid;
 };
 
 /** The practices adopted in a country and the share of their targeted emissions each removes. */
@@ -95,11 +112,12 @@ export const practiceCuts = (
   adoption: (id: string) => number,
   iso3: string,
   band: Band,
+  worldGrid: number,
 ): PracticeCut[] =>
   PRACTICES.flatMap((id) => {
     const practice = practices[id];
     const cut = practice
-      ? adoption(id) * applicableIn(practice, iso3) * netReduction(practice, iso3, band)
+      ? adoption(id) * applicableIn(practice, iso3) * netReduction(practice, iso3, band, worldGrid)
       : 0;
     return practice && cut !== 0 ? [{ practice, cut: Math.min(1, cut) }] : [];
   });
@@ -156,8 +174,11 @@ export const intensityCuts = (
 const practiceCache = memoLatest<PreparedCountry, Record<Band, Record<Gas, ItemVector>>>();
 
 /** The scope and the practices' adoptions, which the cuts are kept by. */
-export const practicesKey = (scope: Scope, adoption: (id: string) => number): string =>
-  `${scope}|${PRACTICES.map((id) => adoption(id)).join(',')}`;
+export const practicesKey = (
+  scope: Scope,
+  adoption: (id: string) => number,
+  worldGrid: number,
+): string => `${scope}|${worldGrid}|${PRACTICES.map((id) => adoption(id)).join(',')}`;
 
 /**
  * Share of each item's intensity the practices remove, by band; kept while only the diet moves.
@@ -168,14 +189,83 @@ export const practiceCutsOf = (
   prepared: Prepared,
   scope: Scope,
   adoption: (id: string) => number,
-  key: string = practicesKey(scope, adoption),
+  worldGrid: number,
+  key: string = practicesKey(scope, adoption, worldGrid),
 ): Record<Band, Record<Gas, ItemVector>> =>
   practiceCache(pc, key, () =>
     bandRecord((band) =>
       intensityCuts(
         countrySplit(pc, prepared, scope),
-        practiceCuts(prepared.data.practices, adoption, pc.country.iso3, band),
+        practiceCuts(prepared.data.practices, adoption, pc.country.iso3, band, worldGrid),
         groupIndicesOf(prepared.items),
       ),
     ),
   );
+
+/**
+ * kg of the grid's CO₂ a year that the electrified practices add back in a country, by band, on
+ * the base year's production plus `change` (tonnes by item) and a world grid of `worldGrid`
+ * kg/kWh: each practice's fuel CO₂ times the share it switches, times the grid's CO₂ per kg of
+ * fuel CO₂.
+ */
+export const gridAddBack = (
+  pc: PreparedCountry,
+  prepared: Prepared,
+  scope: Scope,
+  adoption: (id: string) => number,
+  change: ItemVector | undefined,
+  worldGrid: number,
+): Record<Band, number> => {
+  const co2 = countryIntensities(pc, prepared, scope).kgPerTonne.co2;
+  const kgFrom = (s: SourceShares): number =>
+    Array.from(s.items).reduce(
+      (a, i) =>
+        a +
+        ((pc.emitting[i] as number) + (change?.[i] ?? 0)) *
+          (co2[i] as number) *
+          (s.shares[i] as number),
+      0,
+    );
+  const split = countrySplit(pc, prepared, scope).filter((s) => s.gas === 'co2');
+  const electrified = PRACTICES.flatMap((id) => {
+    const practice = prepared.data.practices[id];
+    const e = practice?.electrified;
+    const fuel = split
+      .filter((s) => practice?.sources.includes(s.source))
+      .reduce((a, s) => a + kgFrom(s), 0);
+    const reach = practice ? adoption(id) * applicableIn(practice, pc.country.iso3) : 0;
+    return e && practice && reach > 0
+      ? [{ practice, kg: fuel * reach * co2PerFuelCo2(e, pc.country.iso3, worldGrid) }]
+      : [];
+  });
+  return bandRecord((band) =>
+    electrified.reduce((t, { practice, kg }) => t + kg * switchedShare(practice, band), 0),
+  );
+};
+
+/**
+ * The yearly change to the grid's CO₂ added back as the grid moves from today's: the add-back
+ * times the grid's ratio to today's less one, scaled like farm emissions and ramped in like the
+ * adoption.
+ */
+export const gridPath = (
+  addBack: number,
+  ratio: readonly number[],
+  years: readonly number[],
+  scale: (gas: Gas, year: number) => number,
+  shareAt: (year: number) => number,
+): GasVector[] =>
+  years.map((y, k) => ({
+    co2: addBack * ((ratio[k] ?? 1) - 1) * scale('co2', y) * shareAt(y),
+    ch4: 0,
+    n2o: 0,
+  }));
+
+/** Each item's share of a country's CO₂ that comes from grid electricity, in the scope. */
+export const electricityShare = (
+  pc: PreparedCountry,
+  prepared: Prepared,
+  scope: Scope,
+): ItemVector =>
+  countrySplit(pc, prepared, scope).find((s) => s.gas === 'co2' && s.source === 'electricity')
+    ?.shares ?? zeros(prepared.items.length);

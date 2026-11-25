@@ -147,5 +147,5 @@ Une partie de l'incertitude n'est pas dans la fourchette :
 - Le CO₂ de la déforestation est un flux constant, non multiplié par la population. Il varie avec la variation relative de la production de chaque produit dans le pays (entre −100 % et +100 %), et le levier empêche sa part de ce qui reste.
 - Le stockage agit sur les terres une fois le changement complet et dure `years` ans à partir de l'adoption de chaque hectare. Le taux est celui du pays, sinon celui du monde.
 - La répartition est la valeur de Shapley de chaque groupe sur les groupes actifs, répartie par cause. La variation du pergélisol est répartie en proportion de la taille de chaque part.
-- Les leviers d'énergie retirent une part du CO₂ de chaque secteur dans le scénario choisi dans *Autres options*, en montant comme le changement de régime. Ils ne changent pas les émissions agricoles, et l'électricité utilisée dans les fermes garde sa propre intensité.
+- Les leviers d'énergie retirent une part du CO₂ de chaque secteur dans le scénario choisi dans *Autres options*, en montant comme le changement de régime. Ils ne changent pas les émissions agricoles. L'électricité utilisée dans les fermes suit le réseau du SSP choisi, pas Électricité renouvelable.
 - Un fichier de levier manquant laisse ses leviers sans effet, affichés comme indisponibles.

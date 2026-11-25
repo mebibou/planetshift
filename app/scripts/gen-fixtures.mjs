@@ -780,7 +780,12 @@ write('practices.json', {
   ),
   farmEnergy: {
     ...practice(['fuel'], ['co2'], [0.5, 0.3, 0.7], { World: 0.8 }),
-    electrified: { efficiency: 0.3, co2PerFuelCo2: { World: 0.5 } },
+    electrified: {
+      efficiency: 0.3,
+      kwhPerFuelCo2: { World: 1.5 },
+      gridRatio: { World: 1, FRA: 0.1, IND: 1.5 },
+      kgCo2PerKwh: 0.5,
+    },
   },
 });
 

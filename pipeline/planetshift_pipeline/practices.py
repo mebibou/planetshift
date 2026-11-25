@@ -154,15 +154,32 @@ def value(rows: pd.DataFrame, field: str) -> float | None:
     return float(values.iloc[0]) if len(values) else None
 
 
-def electrified(rows: pd.DataFrame, co2_per_fuel_co2: dict[str, float] | None) -> dict:
-    """The part of a fuel cut beyond `efficiency` switches to grid electricity, which emits
-    co2PerFuelCo2 kg per kg of fuel CO₂ it replaces; nothing for a practice without one."""
+def electrified(rows: pd.DataFrame, grid: dict | None) -> dict:
+    """The part of a fuel cut beyond `efficiency` switches to grid electricity: `grid` gives the
+    kWh drawn per kg of fuel CO₂ replaced and each country's grid against the world's; nothing for
+    a practice without an efficiency."""
     efficiency = value(rows, "efficiency")
     return (
-        {"electrified": {"efficiency": efficiency, "co2PerFuelCo2": co2_per_fuel_co2}}
-        if efficiency is not None and co2_per_fuel_co2
+        {"electrified": {"efficiency": efficiency, **grid}}
+        if efficiency is not None and grid
         else {}
     )
+
+
+def grid_ratio(
+    ember: dict[str, float], ember_world: float, faostat: dict[str, float]
+) -> dict[str, float]:
+    """{'World' | iso3: the country's grid intensity over the world's}: Ember's where it has the
+    country, else FAOSTAT's on-farm electricity CO₂ per kWh over FAOSTAT's world."""
+    world = faostat["World"]
+    return {
+        "World": 1.0,
+        **{
+            iso3: ember[iso3] / ember_world if iso3 in ember else kg / world
+            for iso3, kg in faostat.items()
+            if iso3 != "World"
+        },
+    }
 
 
 def practice(
@@ -170,7 +187,7 @@ def practice(
     countries: list[str],
     regions: dict,
     incomes: dict,
-    co2_per_fuel_co2: dict[str, float] | None = None,
+    grid: dict | None = None,
 ) -> dict:
     reduction = rows[rows["field"] == "reduction"].set_index("key")["value"].astype(float)
     groups = listed(rows, "groups")
@@ -180,7 +197,7 @@ def practice(
         **({"groups": groups} if groups else {}),
         "reduction": {k: float(reduction[k]) for k in ("median", "low", "high")},
         "applicable": applicable(rows, countries, regions, incomes),
-        **electrified(rows, co2_per_fuel_co2),
+        **electrified(rows, grid),
         "source": "; ".join(cited(rows)),
     }
 
@@ -190,13 +207,11 @@ def practices_json(
     countries: list[str],
     regions: dict[str, str],
     incomes: dict[str, str],
-    co2_per_fuel_co2: dict[str, float] | None = None,
+    grid: dict | None = None,
 ) -> dict:
     """Practices: one record per practice id, every country given its applicable share, and the
-    grid's CO₂ per kg of fuel CO₂ for a practice that switches fuel to electricity."""
+    grid a practice that switches fuel to electricity draws on."""
     return {
-        pid: practice(
-            table[table["practice"] == pid], countries, regions, incomes, co2_per_fuel_co2
-        )
+        pid: practice(table[table["practice"] == pid], countries, regions, incomes, grid)
         for pid in PRACTICES
     }

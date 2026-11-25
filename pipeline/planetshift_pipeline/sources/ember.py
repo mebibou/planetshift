@@ -38,6 +38,17 @@ COUNTRY = "Country or economy"
 WORLD = "World"
 KG_PER_G = 1e-3
 
+SOURCES = [
+    {
+        "id": "ember-yearly",
+        "name": f"{NAME}: each country's grid carbon intensity against the world's, in its latest "
+        "year (gCO2e/kWh, Total generation)",
+        "version": "the release the build read, keyed by its Last-Modified date",
+        "url": PAGE,
+        "licence": LICENCE,
+    }
+]
+
 
 def release_name(released: str) -> str:
     """The cached file's name, keyed by the date Ember last changed it: a new release is a new

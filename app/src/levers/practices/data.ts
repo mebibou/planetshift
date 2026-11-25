@@ -34,10 +34,16 @@ export interface Breakdown {
   >;
 }
 
-/** A cut beyond `efficiency` switches to the grid: kg CO₂ per kg of fuel CO₂ replaced. */
+/**
+ * A cut beyond `efficiency` switches to the grid: kWh drawn per kg of fuel CO₂ replaced, and each
+ * country's grid intensity over the world's (Ember); the world's grid is the SSP's, or FAOSTAT's
+ * `kgCo2PerKwh` without sectors.json.
+ */
 export interface Electrified {
   efficiency: number;
-  co2PerFuelCo2: Record<string, number>;
+  kwhPerFuelCo2: Record<string, number>;
+  gridRatio: Record<string, number>;
+  kgCo2PerKwh: number;
 }
 
 /** Farming practices that cut emissions at the source. */

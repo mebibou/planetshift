@@ -14,6 +14,7 @@ import { decodeState } from '../../model/state';
 import {
   gasSplitOf,
   intensityCuts,
+  gridPath,
   netReduction,
   type PracticeCut,
   type SourceShares,
@@ -37,19 +38,44 @@ describe('practices', () => {
     expect(lever('farmEnergy', 1, {}, { scope: 'farmGate' }).summary.avoided.co2).toBe(0);
     expect(lever('farmEnergy').summary.avoided.co2).toBeGreaterThan(0);
   });
-  it('farmEnergy charges the fuel it switches to electricity at the country’s grid', () => {
+  it('farmEnergy charges the fuel it switches to electricity at the country’s share of the world grid', () => {
     const fuel: Practice = {
       sources: ['fuel'],
       gases: ['co2'],
       reduction: { median: 0.5, low: 0.25, high: 0.8 },
       applicable: { World: 1 },
-      electrified: { efficiency: 0.25, co2PerFuelCo2: { World: 0.8, FRA: 0.1, IND: 1.2 } },
+      electrified: {
+        efficiency: 0.25,
+        kwhPerFuelCo2: { World: 1.5, FRA: 1.6 },
+        gridRatio: { World: 1, FRA: 0.1, IND: 1.5 },
+        kgCo2PerKwh: 0.5,
+      },
       source: '',
     };
-    expect(netReduction(fuel, 'FRA', 'median')).toBeCloseTo(0.5 - 0.25 * 0.1);
-    expect(netReduction(fuel, 'BRA', 'median')).toBeCloseTo(0.5 - 0.25 * 0.8);
-    expect(netReduction(fuel, 'IND', 'p95')).toBeCloseTo(0.8 - 0.55 * 1.2);
-    expect(netReduction({ ...fuel, electrified: undefined }, 'IND', 'median')).toBe(0.5);
+    expect(netReduction(fuel, 'FRA', 'median', 0.4)).toBeCloseTo(0.5 - 0.25 * 1.6 * 0.1 * 0.4);
+    expect(netReduction(fuel, 'BRA', 'median', 0.4)).toBeCloseTo(0.5 - 0.25 * 1.5 * 0.4);
+    expect(netReduction(fuel, 'IND', 'p95', 0.4)).toBeCloseTo(0.8 - 0.55 * 1.5 * 1.5 * 0.4);
+    expect(netReduction(fuel, 'IND', 'median', 0)).toBe(0.5);
+    expect(netReduction({ ...fuel, electrified: undefined }, 'IND', 'median', 0.4)).toBe(0.5);
+  });
+  it('farmEnergy adds back less of the grid’s CO₂ as the grid gets cleaner', () => {
+    const path = gridPath(
+      100,
+      [1, 0.5, 0],
+      [2026, 2050, 2100],
+      () => 1,
+      () => 1,
+    );
+    expect(path.map((v) => v.co2)).toEqual([0, -50, -100]);
+    expect(
+      gridPath(
+        100,
+        [0.5],
+        [2026],
+        () => 2,
+        () => 0.5,
+      )[0]?.co2,
+    ).toBeCloseTo(-50);
   });
   const enteric = (cut: number, groups?: Practice['groups']): PracticeCut => ({
     practice: {

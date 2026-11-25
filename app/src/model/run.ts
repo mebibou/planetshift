@@ -26,6 +26,7 @@ import { MODULES } from '../levers/modules';
 import type {
   CountryContext,
   CountryPart,
+  FarmGrid,
   LeverModule,
   RunContext,
   Stage,
@@ -432,6 +433,8 @@ interface CountryParts {
   jointCo2: ByCause<Readonly<Record<string, number>>>;
   /** CO₂ a year that builds up after a change, by the cause it counts in, time constant and family. */
   builtUp: readonly BuiltUp[];
+  /** The part of each production step's farm CO₂ that is grid electricity, kg a year. */
+  gridFarm: Readonly<Record<string, number>>;
 }
 
 interface BuiltUp {
@@ -495,6 +498,8 @@ const countryParts = (
   /** How the oilcakes follow the animals at each stage. */
   cakes: readonly CakeDemand[],
   bands: readonly Band[],
+  /** Each item's share of its CO₂ from grid electricity, or none. */
+  gridShare: ItemVector | null,
 ): CountryParts => {
   const base = countryBase(pc, prepared, options.scope);
   const intensities = countryIntensities(pc, prepared, options.scope);
@@ -589,8 +594,31 @@ const countryParts = (
     builtUp: extra.flatMap((e, k) =>
       e.buildUp ? [{ cause: countryHooks[k]?.cause ?? DIET_CAUSE, ...e.buildUp }] : [],
     ),
+    gridFarm: stepGridCo2(stages, intensities.kgPerTonne.co2, gridShare),
   };
 };
+
+/** The grid electricity's part of a vector of production's CO₂, kg. */
+const gridCo2 = (change: ItemVector, co2: ItemVector, share: ItemVector): number =>
+  change.reduce((a, t, i) => a + t * (co2[i] as number) * (share[i] as number), 0);
+
+/** Each step's own change in the grid electricity's CO₂, as `farm` gives each step's emissions. */
+const stepGridCo2 = (
+  stages: readonly Stage[],
+  co2: ItemVector,
+  share: ItemVector | null,
+): Record<string, number> => {
+  const totals = stages.map((s) => (share ? gridCo2(s.change, co2, share) : 0));
+  return share
+    ? Object.fromEntries(
+        stages.map((s, k) => [s.family, (totals[k] as number) - (totals[k - 1] ?? 0)]),
+      )
+    : {};
+};
+
+/** The first module's farm grid, which every pass reads whatever families are in play. */
+const farmGridOf = (ctx: RunContext): FarmGrid | null =>
+  MODULES.reduce<FarmGrid | null>((found, m) => found ?? m.hooks.grid?.(ctx) ?? null, null);
 
 /**
  * The farm emissions of a family summed over the countries, in their order; accumulated in place
@@ -681,6 +709,29 @@ const builtUpPaths = (
   }, {});
 
 const isZero = (v: GasVector): boolean => GASES.every((g) => v[g] === 0);
+
+const gridTotal = (parts: readonly CountryParts[], family: string): number =>
+  parts.reduce((a, p) => a + (p.gridFarm[family] ?? 0), 0);
+
+/**
+ * The change to a family's farm CO₂ as the grid its electricity comes from moves from today's:
+ * the electricity's CO₂ times the grid's ratio to today's less one, scaled like farm emissions
+ * and ramped in like the shift. None without electricity.
+ */
+const gridPath = (
+  kg: number,
+  ratio: (year: number) => number,
+  years: readonly number[],
+  scale: Scale,
+  shareAt: (year: number) => number,
+): GasVector[] | undefined =>
+  kg === 0
+    ? undefined
+    : years.map((y) => ({
+        co2: kg * (ratio(y) - 1) * scale('co2', y) * shareAt(y),
+        ch4: 0,
+        n2o: 0,
+      }));
 
 /**
  * Yearly emission changes of one family: farm emissions scale like the baseline, clearing is a
@@ -1172,6 +1223,7 @@ const emissionsPass = (
     return hook ? [{ cause: causeOfModule(m), hook }] : [];
   });
   const cakeOfs = steps.map((s) => cakeDemandOf(prepared, options, s.run.change));
+  const grid = farmGridOf(ctx);
   // A pass of the breakdown reads the median alone and none of the countries' diets.
   const food = bands.length > 1 ? (steps[0] as Step).run.food : null;
   const parts = prepared.countries.map((pc) =>
@@ -1185,6 +1237,7 @@ const emissionsPass = (
       countryHooks,
       cakeOfs.map((cakeOf) => cakeOf(pc)),
       bands,
+      grid ? grid.share(pc) : null,
     ),
   );
   const countries = parts.map((p) => p.result);
@@ -1218,12 +1271,15 @@ const emissionsPass = (
       ]),
     );
   });
-  /** A family's farm emissions in a band, or none. */
+  /** A family's farm emissions in a band, or none, their grid electricity following the grid. */
   const farmPath = (f: string, band: Band): GasVector[] => {
     const farm = farmTotal(parts, f, band);
+    const onGrid = grid
+      ? gridPath(gridTotal(parts, f), grid.ratio, years, scale, shareAt)
+      : undefined;
     return isZero(farm.own) && isZero(farm.joint)
       ? zeroPath(years)
-      : familyPath(farm, NO_CLEARING, years, scale, shareAt);
+      : (plusPath(familyPath(farm, NO_CLEARING, years, scale, shareAt), onGrid) as GasVector[]);
   };
   /**
    * A farm family's paths: its farm emissions and the streams counted in farming (the carbon of
@@ -1235,15 +1291,21 @@ const emissionsPass = (
         ? (plusPath(farmPath(f, band), clearingPaths.agriculture[f]) as GasVector[])
         : (clearingPaths[c][f] ?? zeroPath(years)),
     );
-  /** A family's own emissions, all in the cause it mainly acts on. */
-  const ownPaths = (module: LeverModule, extra: GasVector[]): ByCause<GasVector[]> =>
-    causeRecord((c) => (c === causeOfModule(module) ? extra : zeroPath(years)));
+  /**
+   * A family's own emissions, all in the cause it mainly acts on; a farm family's are added to its
+   * farm paths (the grid's CO₂ that clean farm energy adds back as the grid changes).
+   */
+  const ownPaths = (module: LeverModule, extra: GasVector[], f: string, band: Band) =>
+    causeRecord((c) => {
+      const farm = module.farm === false ? zeroPath(years) : farmPaths(f, band)[c];
+      return c === causeOfModule(module) ? (plusPath(farm, extra) as GasVector[]) : farm;
+    });
   const pathsIn = (band: Band): Record<string, ByCause<GasVector[]>> =>
     Object.fromEntries(
       FAMILIES.map((f) => {
         const own = ownOf(f);
         const extra = own?.part.extraEmissions?.[band];
-        return [f, extra && own ? ownPaths(own.module, extra) : farmPaths(f, band)];
+        return [f, extra && own ? ownPaths(own.module, extra, f, band) : farmPaths(f, band)];
       }),
     );
   return {
