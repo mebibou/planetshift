@@ -616,5 +616,16 @@
     "subtitle": "The causes of global warming and the levers that limit it, with the warming each would avoid by 2050 and 2100.",
     "alt": "Planetshift: global temperature since 1850, without the levers and with every lever in full.",
     "withAll": "With every lever in full"
+  },
+  "menu": {
+    "show": "Show {name}",
+    "hide": "Hide {name}",
+    "names": {
+      "panel": "the scenario and controls",
+      "summary": "the summary",
+      "toc": "the contents",
+      "markers": "the markers",
+      "rates": "how fast it warms"
+    }
   }
 }

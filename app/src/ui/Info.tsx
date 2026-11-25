@@ -28,6 +28,8 @@ export const Info = ({
     const onToggle = (e: Event) => {
       const open = (e as ToggleEvent).newState === 'open';
       if (open && el && button.current) {
+        el.style.left = '0px';
+        el.style.top = '0px';
         const at = placeBelow(
           button.current.getBoundingClientRect(),
           el.getBoundingClientRect(),
@@ -63,7 +65,7 @@ export const Info = ({
       <div
         ref={tip}
         id={id}
-        className={`info-tip fixed inset-auto m-0 max-w-[min(300px,calc(100vw_-_12px))] rounded-lg border border-rule bg-surface px-2.5 py-2 text-[0.82rem] leading-[1.4] font-normal text-ink ${POPUP_SHADOW} not-data-placed:invisible`}
+        className={`info-tip fixed inset-auto m-0 w-max max-w-[min(300px,calc(100vw_-_2*var(--gutter)))] rounded-lg border border-rule bg-surface px-2.5 py-2 text-[0.82rem] leading-[1.4] font-normal text-ink ${POPUP_SHADOW} not-data-placed:invisible`}
         popover="auto"
         role="tooltip"
       >

@@ -12,6 +12,7 @@ import { inRange, zipSeries, type Point } from './series';
 
 /** Room on the right for the axis, past the current-policies band when it is drawn. */
 const AXIS_WIDTH = 34;
+const AXIS_WIDTH_TIGHT = 26;
 const POLICIES_WIDTH = 14;
 /** The people slider's top, so the axis does not move between the UN path and the slider. */
 export const PEOPLE_AXIS_MAX = 14;
@@ -33,9 +34,17 @@ export const peoplePoints = (
   p ? inRange(populationPath(p), from, end).map((q) => ({ ...q, value: q.value / 1e9 })) : [];
 
 /** The margin with room for the axis on the right, or as it was without an area. */
-export const withAxis = (margin: Margin, points: readonly Point[], reaches2100: boolean): Margin =>
+export const withAxis = (
+  margin: Margin,
+  points: readonly Point[],
+  reaches2100: boolean,
+  tight = false,
+): Margin =>
   points.length > 0
-    ? { ...margin, right: (reaches2100 ? POLICIES_WIDTH : 0) + AXIS_WIDTH }
+    ? {
+        ...margin,
+        right: (reaches2100 ? POLICIES_WIDTH : 0) + (tight ? AXIS_WIDTH_TIGHT : AXIS_WIDTH),
+      }
     : margin;
 
 /** The area from zero, inserted first so it sits behind everything, and its axis. */

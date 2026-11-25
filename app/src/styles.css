@@ -367,7 +367,8 @@
   padding: 8px 10px;
   font-size: 0.82rem;
   min-width: 180px;
-  max-width: min(300px, 80vw);
+  width: max-content;
+  max-width: min(300px, 100%, calc(100vw - 2 * var(--gutter)));
   box-shadow: 0 4px 16px color-mix(in srgb, var(--ink) 14%, transparent);
   &.pinned {
     pointer-events: auto;

@@ -23,14 +23,18 @@ export const placeTooltip = (
   top: placeAlong(y, tip.height, frame.height, gap),
 });
 
-/** A popover's top left corner under its anchor, else above it, kept `gap` inside the viewport. */
+/** A popover under its anchor, else above it: at the right edge it moves left, never narrows. */
 export const placeBelow = (
   anchor: { left: number; top: number; bottom: number },
   tip: Size,
   view: Size,
   gap = 6,
+  edge = 16,
 ): { left: number; top: number } => ({
-  left: Math.max(gap, Math.min(anchor.left, view.width - tip.width - gap)),
+  left: Math.max(
+    Math.min(edge, (view.width - tip.width) / 2),
+    Math.min(anchor.left, view.width - tip.width - edge),
+  ),
   top:
     anchor.bottom + gap + tip.height <= view.height
       ? anchor.bottom + gap

@@ -616,5 +616,16 @@
     "subtitle": "Les causes du réchauffement climatique et les leviers qui le limitent, avec le réchauffement que chacun éviterait d'ici 2050 et 2100.",
     "alt": "Planetshift : la température mondiale depuis 1850, sans les leviers et avec tous les leviers en entier.",
     "withAll": "Avec tous les leviers en entier"
+  },
+  "menu": {
+    "show": "Afficher {name}",
+    "hide": "Masquer {name}",
+    "names": {
+      "panel": "le scénario et les réglages",
+      "summary": "le résumé",
+      "toc": "la table des matières",
+      "markers": "les repères",
+      "rates": "la vitesse du réchauffement"
+    }
   }
 }

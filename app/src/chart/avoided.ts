@@ -7,6 +7,8 @@ import {
   addHover,
   drawAxes,
   frame,
+  isTight,
+  tightened,
   legendList,
   onResize,
   verticalRule,
@@ -48,7 +50,8 @@ export const avoidedChart = (t: T, locale: string, currentYear: number): Avoided
     const median = inRange(zipSeries(tp.years, tp.avoided.median), currentYear, end);
     const band = inRange(zipBand(tp.years, tp.avoided.p05, tp.avoided.p95), currentYear, end);
     const narrow = (plotEl.clientWidth || 640) < 520;
-    const f = frame(plotEl, narrow ? 260 : 340, MARGIN, t('avoidedChart.label', { year: end }));
+    const margin = tightened(MARGIN, isTight(plotEl));
+    const f = frame(plotEl, narrow ? 260 : 340, margin, t('avoidedChart.label', { year: end }));
     const top = Math.max(AXIS_FLOOR, ...band.map((p) => p.hi), ...median.map((p) => p.value));
     const bottom = Math.min(0, ...band.map((p) => p.lo));
     const x = scaleLinear().domain([currentYear, end]).range([0, f.innerWidth]);
@@ -58,7 +61,7 @@ export const avoidedChart = (t: T, locale: string, currentYear: number): Avoided
     f.plot
       .append('text')
       .attr('class', 'axis-title')
-      .attr('x', -MARGIN.left + 4)
+      .attr('x', -margin.left + 4)
       .attr('y', -10)
       .text(t('avoidedChart.unit'));
     if (end > 2050) {
@@ -100,7 +103,7 @@ export const avoidedChart = (t: T, locale: string, currentYear: number): Avoided
       plotEl,
       f,
       x,
-      MARGIN,
+      margin,
       (year) => {
         const i = tp.years.indexOf(year);
         const v = tp.avoided.median[i];

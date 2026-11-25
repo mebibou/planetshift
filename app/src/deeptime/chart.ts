@@ -1,6 +1,6 @@
 import { area, axisLeft, easeCubicInOut, line, scaleLinear, timer, type Timer } from 'd3';
 import { h } from '../app/dom';
-import { frame, onResize, type Frame, type Margin } from '../chart/frame';
+import { frame, isTight, onResize, tightened, type Frame, type Margin } from '../chart/frame';
 import { EVENTS, PARIS_LEVELS } from './events';
 import {
   between,
@@ -97,7 +97,7 @@ const drawXAxis = (f: Frame, v: View, x: Px, texts: ChartTexts, present: number)
   f.plot
     .append('text')
     .attr('class', 'axis-title')
-    .attr('x', -MARGIN.left + 2)
+    .attr('x', -f.margin.left + 2)
     .attr('y', -14)
     .text(texts.yAxis);
 };
@@ -185,7 +185,7 @@ const drawEnd = (
 const fractionAt = (f: Frame, clientX: number): number => {
   const box = f.svg.node()!.getBoundingClientRect();
   const scale = box.width > 0 ? box.width / f.width : 1;
-  const fraction = ((clientX - box.left) / scale - MARGIN.left) / f.innerWidth;
+  const fraction = ((clientX - box.left) / scale - f.margin.left) / f.innerWidth;
   return Math.min(1, Math.max(0, fraction));
 };
 
@@ -240,7 +240,7 @@ export const deepTimeChart = (
   const render = () => {
     queued = 0;
     const height = el.clientWidth < 600 ? 320 : 400;
-    f = frame(el, height, MARGIN, texts.label(view));
+    f = frame(el, height, tightened(MARGIN, isTight(el)), texts.label(view));
     f.svg
       .append('defs')
       .append('clipPath')
@@ -285,7 +285,7 @@ export const deepTimeChart = (
     const box = el.getBoundingClientRect();
     const left = clientX - box.left + 14;
     tip.style.left = `${Math.max(0, Math.min(left, box.width - tip.offsetWidth))}px`;
-    tip.style.top = `${MARGIN.top}px`;
+    tip.style.top = `${frameNow.margin.top}px`;
   };
   const schedule = () => {
     queued ||= requestAnimationFrame(render);

@@ -13,11 +13,22 @@ export interface Margin {
 export interface Frame {
   svg: Selection<SVGSVGElement, unknown, null, undefined>;
   plot: Selection<SVGGElement, unknown, null, undefined>;
+  margin: Margin;
   width: number;
   height: number;
   innerWidth: number;
   innerHeight: number;
 }
+
+/** Under this width, a phone's, the plot takes more of it. */
+const TIGHT_WIDTH = 600;
+
+export const isTight = (container: HTMLElement): boolean =>
+  (container.clientWidth || 640) < TIGHT_WIDTH;
+
+/** The margin with narrower sides on a phone: the axis labels still fit, in less room. */
+export const tightened = (margin: Margin, tight: boolean): Margin =>
+  tight ? { ...margin, left: margin.left - 12, right: margin.right - 4 } : margin;
 
 /** Replaces the container's svg with a fresh one sized to the container. */
 export const frame = (
@@ -40,6 +51,7 @@ export const frame = (
   return {
     svg,
     plot,
+    margin,
     width,
     height,
     innerWidth: width - margin.left - margin.right,

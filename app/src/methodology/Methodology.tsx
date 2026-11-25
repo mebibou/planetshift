@@ -6,6 +6,9 @@ import { renderMarkdown } from './markdown';
 import { SECTIONS, sectionTitleKey } from './sections';
 import { indexFiles, pickSections } from './select';
 import { activeIndex } from './spy';
+import { isPhone } from '../app/menus';
+import { MenuHead } from '../ui/MenuHead';
+import { useMenu } from '../ui/useMenu';
 
 const LOADERS: Record<Lang, () => Promise<{ default: Record<string, string> }>> = {
   en: () => import('./docs-en'),
@@ -166,8 +169,14 @@ const TocEntry = ({ section, on, sub }: { section: Section; on: boolean; sub: nu
   );
 };
 
-const Toc = ({ t, sections }: { t: T; sections: readonly Section[] }) => {
-  const [open, setOpen] = useState(false);
+interface TocProps {
+  t: T;
+  sections: readonly Section[];
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
+
+const Toc = ({ t, sections, open, setOpen }: TocProps) => {
   const { active, sub } = useReading(sections);
   const nav = useRef<HTMLElement>(null);
   const list = useRef<HTMLOListElement>(null);
@@ -180,7 +189,7 @@ const Toc = ({ t, sections }: { t: T; sections: readonly Section[] }) => {
     }
   }, [active, sub]);
   const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && open) {
+    if (e.key === 'Escape' && open && isPhone()) {
       setOpen(false);
       toggle.current?.focus();
     }
@@ -192,9 +201,22 @@ const Toc = ({ t, sections }: { t: T; sections: readonly Section[] }) => {
       aria-label={t('methodology.toc')}
       onKeyDown={onKeyDown}
     >
-      <h2 className="m-0 mb-2.5 text-[0.72rem] tracking-[0.08em] text-muted uppercase max-md:hidden">
-        {t('methodology.toc')}
-      </h2>
+      <div className={`max-md:hidden ${open ? 'mb-2.5' : ''}`}>
+        <MenuHead
+          t={t}
+          id="toc"
+          open={open}
+          setOpen={setOpen}
+          controls="toc-list"
+          side="left"
+          rail="hidden"
+          title={
+            <h2 className="m-0 text-[0.72rem] tracking-[0.08em] text-muted uppercase">
+              {t('methodology.toc')}
+            </h2>
+          }
+        />
+      </div>
       <button
         ref={toggle}
         type="button"
@@ -211,8 +233,8 @@ const Toc = ({ t, sections }: { t: T; sections: readonly Section[] }) => {
       <ol
         ref={list}
         id="toc-list"
-        className={`toc-list m-0 list-none border-l-2 border-rule p-0 [counter-reset:toc] ${open ? 'max-md:block max-md:max-h-[calc(100dvh-var(--header-h)-64px)] max-md:overflow-y-auto max-md:pb-3' : 'max-md:hidden'}`}
-        onClick={(e) => (e.target as Element).closest('a') && setOpen(false)}
+        className={`toc-list m-0 list-none border-l-2 border-rule p-0 [counter-reset:toc] ${open ? 'max-md:max-h-[calc(100dvh-var(--header-h)-64px)] max-md:overflow-y-auto max-md:pb-3' : 'hidden'}`}
+        onClick={(e) => (e.target as Element).closest('a') && isPhone() && setOpen(false)}
       >
         {sections.map((s, i) => (
           <TocEntry key={s.id} section={s} on={i === active} sub={sub} />
@@ -226,10 +248,13 @@ const Toc = ({ t, sections }: { t: T; sections: readonly Section[] }) => {
 const Methodology = ({ t, lang }: { t: T; lang: Lang }) => {
   const files = use(filesFor(lang));
   const sections = useMemo(() => sectionsFor(t, lang, files), [t, lang, files]);
+  const [open, setOpen] = useMenu('toc', false);
   useEffect(() => scrollToSection(location.hash), []);
   return (
-    <div className="methodology mx-auto grid max-w-[1400px] grid-cols-[260px_minmax(0,1fr)] items-start gap-12 max-md:block">
-      <Toc t={t} sections={sections} />
+    <div
+      className={`methodology mx-auto grid max-w-[1400px] items-start gap-12 max-md:block ${open ? 'grid-cols-[260px_minmax(0,1fr)]' : 'grid-cols-[auto_minmax(0,1fr)]'}`}
+    >
+      <Toc t={t} sections={sections} open={open} setOpen={setOpen} />
       <article className="method-body">
         <h1>{t('methodology.title')}</h1>
         {sections.length ? (

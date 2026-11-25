@@ -34,8 +34,24 @@ describe('info placement', () => {
 
   it('goes above near the bottom and stays inside on the right', () => {
     expect(placeBelow({ left: 300, top: 600, bottom: 620 }, tip, view)).toEqual({
-      left: 114,
+      left: 104,
       top: 514,
     });
+  });
+
+  it('keeps its width at the right edge of a phone and moves left to fit between the gutters', () => {
+    const phone = { width: 390, height: 844 };
+    const wide = { width: 300, height: 120 };
+    const at = placeBelow({ left: 360, top: 300, bottom: 318 }, wide, phone);
+    expect(at).toEqual({ left: 74, top: 324 });
+    expect(at.left + wide.width).toBe(phone.width - 16);
+    const full = { width: phone.width - 32, height: 120 };
+    expect(placeBelow({ left: 360, top: 300, bottom: 318 }, full, phone).left).toBe(16);
+  });
+
+  it('centres a popover wider than the room between the gutters', () => {
+    expect(
+      placeBelow({ left: 300, top: 10, bottom: 30 }, { width: 340, height: 50 }, view).left,
+    ).toBe(10);
   });
 });

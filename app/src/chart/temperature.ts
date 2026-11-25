@@ -11,6 +11,8 @@ import {
   chartNotes,
   drawAxes,
   frame,
+  isTight,
+  tightened,
   type Frame,
   type HoverLink,
   type HoverRow,
@@ -321,10 +323,12 @@ const middleAnchor = (left: boolean, right: boolean): 'start' | 'end' | undefine
 const layoutOf = (plotEl: HTMLElement, end: number) => {
   const narrow = (plotEl.clientWidth || 640) < 520;
   const reaches2100 = end >= 2100;
+  const tight = isTight(plotEl);
   return {
     narrow,
     reaches2100,
-    margin: reaches2100 ? MARGIN_2100 : MARGIN,
+    tight,
+    margin: tightened(reaches2100 ? MARGIN_2100 : MARGIN, tight),
     height: narrow ? 280 : 360,
   };
 };
@@ -394,9 +398,9 @@ export const temperatureChart = (
   const draw = ([result, range, end, natural, enso]: NonNullable<typeof last>) => {
     const tp = result.temperature;
     const from = RANGE_START[range];
-    const { narrow, reaches2100, height, ...layout } = layoutOf(plotEl, end);
+    const { narrow, reaches2100, height, tight, ...layout } = layoutOf(plotEl, end);
     const people = peoplePoints(result.population, from, end);
-    const margin = withAxis(layout.margin, people, reaches2100);
+    const margin = withAxis(layout.margin, people, reaches2100, tight);
     const f = frame(plotEl, height, margin, t('chart.label', { year: end }));
     const s = shownSeries(tp, natural, from, end, currentYear);
     const values = yValues(s, reaches2100);

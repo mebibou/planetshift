@@ -29,6 +29,8 @@ import { Segmented } from './Segmented';
 import { useChartDownload } from './Download';
 import { useDrawn } from './useDrawn';
 import { useLatest } from './useLatest';
+import { columns } from './columns';
+import { useMenu } from './useMenu';
 import { useWorth, WorthContext } from './Worth';
 
 /** A counter that goes up each time `data` changes: a deferred lever file arriving. */
@@ -192,7 +194,7 @@ const ChartCard = (props: ExploreProps) => {
   const causeGas = causeGasOf(state.ui, split);
   return (
     <section
-      className={`${CARD} chart-card lg:[grid-area:chart] max-lg:aria-busy:min-h-[1000px]`}
+      className={`${CARD} chart-card max-[640px]:px-3 lg:[grid-area:chart] max-lg:aria-busy:min-h-[1000px]`}
       aria-label={t('charts.title')}
       aria-busy={result === undefined}
     >
@@ -283,9 +285,17 @@ export const Explore = (props: ExploreProps) => {
   const horizon = state.ui.horizon;
   const worth = useMemo(() => ({ values, horizon, t, locale }), [values, horizon, t, locale]);
   const shown = props.result ?? null;
+  const [panelOpen, setPanelOpen] = useMenu('panel');
+  const [summaryOpen, setSummaryOpen] = useMenu('summary');
   return (
     <WorthContext.Provider value={worth}>
-      <div className="explore grid grid-cols-[minmax(0,1fr)] items-start gap-x-5 gap-y-4 *:min-w-0 lg:grid-cols-[minmax(280px,340px)_minmax(0,1fr)] lg:[grid-template-areas:'panel_chart'_'panel_summary'_'panel_impacts'_'panel_map'] xl:grid-cols-[minmax(280px,340px)_minmax(0,1fr)_minmax(260px,320px)] xl:[grid-template-areas:'panel_chart_summary'_'panel_impacts_summary'_'panel_map_summary']">
+      <div
+        className="explore grid grid-cols-[minmax(0,1fr)] items-start gap-x-5 gap-y-4 *:min-w-0 lg:grid-cols-[var(--panel-col)_minmax(0,1fr)] lg:[grid-template-areas:'panel_chart'_'panel_summary'_'panel_impacts'_'panel_map'] xl:grid-cols-[var(--panel-col)_minmax(0,1fr)_var(--summary-col)] xl:[grid-template-areas:'panel_chart_summary'_'panel_impacts_summary'_'panel_map_summary']"
+        style={columns({
+          panel: [panelOpen, 'minmax(280px,340px)'],
+          summary: [summaryOpen, 'minmax(260px,320px)'],
+        })}
+      >
         <ChartCard {...props} />
         <SidePanel
           t={t}
@@ -303,6 +313,8 @@ export const Explore = (props: ExploreProps) => {
           dataVersion={dataVersion}
           available={(id) => leverAvailable(data, id)}
           population={data.population}
+          open={panelOpen}
+          setOpen={setPanelOpen}
         />
         <Summary
           t={t}
@@ -316,6 +328,8 @@ export const Explore = (props: ExploreProps) => {
           horizon={horizon}
           options={state.options}
           wild={data.mammals?.wild}
+          open={summaryOpen}
+          setOpen={setSummaryOpen}
         />
         {data.impacts && (
           <Impacts t={t} locale={locale} impacts={data.impacts} result={shown} horizon={horizon} />
