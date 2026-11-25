@@ -3,6 +3,7 @@ import { bandRecord } from '../../model/bands';
 import {
   airPollutionPaths,
   airPollutionWarming,
+  coemissionsOf,
   hasCoEmissions,
   coGases,
 } from '../energy/coemissions';
@@ -25,7 +26,8 @@ export const industry: LeverModule = {
   ...industrySpec,
   hooks: {
     world: ({ prepared, options, adoption, currentYear }, { years, tYears, shareAt }) => {
-      const { industry, sectors, coemissions, climate } = prepared.data;
+      const { industry, sectors, climate } = prepared.data;
+      const coemissions = coemissionsOf(prepared.data);
       const paths = bandRecord((band) =>
         industryPaths(industry, sectors, coemissions, adoption, options.ssp, band, years, shareAt),
       );

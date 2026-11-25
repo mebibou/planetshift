@@ -108,6 +108,21 @@ def test_hoors_road_gets_back_the_methane_of_its_vocs():
     assert C.ship_to_land(with_voc)["median"] < C.ship_to_land()["median"]
 
 
+def test_hoors_road_gets_back_the_methane_of_its_co_when_given():
+    nox = table([("1A3b_Road", "diesel_oil", 3.2845e9)])
+    voc = table([("1A3b_Road", "diesel_oil", 2.0e9)])
+    co = table([("1A3b_Road", "diesel_oil", 10.0e9)])
+    with_co = C.hoor_without_voc(nox, voc, co)["road"]["TM4"]
+    given_back = 10.0 * C.ACCMIP_CO_MW * C.MW_PER_MT_CH4 / C.ACCMIP_CH4_MW * C.HOOR_NOX_TGN["road"]
+    assert with_co == pytest.approx(C.hoor_without_voc(nox, voc)["road"]["TM4"] + given_back)
+
+
+def test_the_split_keeps_fairs_voc_effect_and_shares_it_in_accmips_ratio():
+    split = C.split_voc(2e-4, voc_above=100.0, co_above=500.0)
+    assert split["CO"] / split["VOC"] == pytest.approx(C.ACCMIP_CO_MW / C.ACCMIP_VOC_MW)
+    assert split["VOC"] * 100 + split["CO"] * 500 == pytest.approx(2e-4 * 100)
+
+
 def test_an_emission_factor_follows_the_ssp_but_never_worsens_and_is_held_once_co2_halves():
     co2 = np.array([10.0, 10.0, 8.0, 4.0, 1.0])
     species = np.array([2.0, 1.0, 0.8, 0.8, 0.9])
@@ -294,11 +309,18 @@ def test_the_file_matches_the_contract(built):
         "noxPlaceFactor",
         "vocCh4PerKg",
         "vocCh4PerKgCo2",
+        "coMethaneSplit",
         "particleErfPerKgCo2",
         "ozoneErfPerKgCo2",
         "source",
     }
     n = len(document["years"])
+    split = document["coMethaneSplit"]
+    assert set(split["noxCh4PerKgCo2"]) == {"chemistry"}
+    for ssp in SSPS:
+        assert max(split["coCh4PerKg"][ssp]["median"]) < 0
+        unsplit, voc = document["vocCh4PerKg"][ssp]["median"], split["vocCh4PerKg"][ssp]["median"]
+        assert max(unsplit) < max(voc) < 0
     for ssp in SSPS:
         assert set(document["perKgCo2"][ssp]) == set(C.SECTORS)
         for by_species in document["perKgCo2"][ssp].values():

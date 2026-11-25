@@ -36,6 +36,7 @@ Planetshift runs its climate calculations on FaIR and its calibrated ensemble. I
 Visitors never see these switches. They aren't options on the site, and they aren't in the URL. The departures are:
 
 - `noxMethane`: how much methane stays in the air for each kg less NOx. `chemistry`, the default, uses the chemistry models' own values on land and at sea, from Hoor et al. (2009)'s multi-model study of transport. It is the default because FaIR's one coefficient is several times theirs for road traffic. `fair` uses FaIR's one coefficient. `hoor` shares FaIR's coefficient between land and sea by Hoor et al.'s ratio.
+- `coMethane`: how much methane stays in the air for each kg less carbon monoxide. `split`, the default, shares FaIR's VOC coefficient between VOCs and CO in the chemistry models' ratio (ACCMIP). That coefficient carries CO's effect too. `split` also gives CO's methane back to the chemistry models' NOx figures. `fair` leaves CO without an effect on methane, as FaIR does.
 - `aviationNonCo2`: what less flying cuts besides CO₂. `lee2021`, the default, uses Lee et al. (2021)'s non-CO₂ forcing, contrails included. `fair` counts only aviation's own NOx, sulphur and soot through FaIR, which has no contrails.
 - `permafrost`: `on`, the default, shows visitors the Permafrost option. `off` leaves the module out.
 - `shippingSulphur2020`: with `on`, the default, the 2020 limit on ships' fuel sulphur adds its published forcing, 0.12 W/m² (0.08–0.14), outside FaIR's ensemble. With `off`, the scenarios use only their own ships' SO₂.

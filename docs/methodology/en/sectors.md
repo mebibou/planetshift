@@ -265,29 +265,29 @@ In FaIR, a kilogram less NOx leaves this much methane in the air:
 
 That methane is turned into warming with methane's AGTP curve. It outweighs NOx's ozone: in FaIR, a tonne less NOx warms about as much, a few decades on, as a tonne less methane cools.
 
-VOCs work the other way, with s = +0.0002 per million tonnes. A kilogram less leaves 0.064 kg less methane in the air in 2023 in SSP2-4.5 (0.051 in 2100). In SSP1-2.6 it is 0.058, falling to 0.020. In SSP3-7.0 it is 0.071, rising to 0.13. There is one value for every source (`vocCh4PerKgCo2`). For road this is 3% of its NOx's methane per kg of CO₂, with the opposite sign.
+VOCs work the other way, with s = +0.0002 per million tonnes. A kilogram less leaves 0.058 kg less methane in the air in 2023 in SSP2-4.5 (0.051 in 2100). In SSP1-2.6 it is 0.057, falling to 0.020. In SSP3-7.0 it is 0.059, rising to 0.13. There is one value for every source (`vocCh4PerKgCo2`). The website shares this coefficient with carbon monoxide (below), and the VOCs keep 41% of it. For road this is 3% of its NOx's methane per kg of CO₂, with the opposite sign.
 
-FaIR gives carbon monoxide no effect on methane's lifetime. The chemistry models find one: about 0.05 kg of methane per kg of CO (ACCMIP's 0.11 mW/m² per Tg, against 2.2 per Mt of methane; Stevenson et al. 2013). fair-calibrate's VOC coefficient is fitted to the AerChemMIP runs, which perturb CO and VOCs together. So CO's effect may be missing from FaIR, rather than folded into the VOCs'. It would add about a tenth to road's and steel's CO₂-only effect. This is an open question for FaIR's authors, and it is not added here.
+FaIR gives carbon monoxide no effect on methane's lifetime. Its VOC coefficient carries CO's effect too. That coefficient is fitted to AerChemMIP runs that perturbed CO and VOCs together, so the calibration puts all of their effect on the VOCs (fair-calibrate issue #111). The chemistry models give CO an effect of its own: ACCMIP finds 0.11 mW/m² of methane forcing per Tg of CO, against 0.27 per Tg of VOCs and 2.2 per Mt of methane (Stevenson et al. 2013). Planetshift shares FaIR's VOC coefficient between the two in ACCMIP's ratio, keeping its effect at the emissions of 2014, the last year of its fit. This is the `split` value of the `coMethane` departure. A kilogram less CO then leaves 0.0097 kg less methane in the air in 2023 in SSP2-4.5 (0.0084 in 2100), about a fifth of ACCMIP's 0.05 kg. The fitted VOC coefficient sits near the bottom of its range, so FaIR's calibration leaves little room for CO, and ACCMIP's full value added on top would count part of it twice. With the CO given back to the chemistry models' figures (below), the split takes about 0.005 °C from what electric cars and renewable electricity each avoid by 2050 in SSP2-4.5, and 0.016 °C from every lever together. Plain FaIR keeps CO at zero (`fair`).
 
 ### Where the NOx is emitted
 
-FaIR's coefficient is one value for all the world's NOx. But a kilogram of NOx destroys more methane where the air is clean. Planetshift therefore uses figures from chemistry models for each place, rather than FaIR's single coefficient. On land, a kilogram less NOx leaves about a quarter of FaIR's methane. At sea, it leaves about four fifths.
+FaIR's coefficient is one value for all the world's NOx. But a kilogram of NOx destroys more methane where the air is clean. Planetshift therefore uses figures from chemistry models for each place, rather than FaIR's single coefficient. On land, a kilogram less NOx leaves about half as much methane as FaIR's coefficient gives. At sea, it leaves about 85% as much.
 
 **The chemistry models' figures.** Hoor et al. (2009, *Atmospheric Chemistry and Physics* 9, 3113, the QUANTIFY project) perturbed each transport sector's emissions in five chemistry models. Ships emit their NOx in the clean marine air of the tropics. Per Tg of nitrogen, ships' NOx gave a methane and methane-ozone forcing of −12.0 mW/m², against −3.0 for road's (Tables 1 and 8: −52.8 mW/m² from 4.39 Tg N, −20.6 from 6.85 Tg N).
 
-**The VOCs given back.** The models perturbed all of each sector's emissions. So road's figure is net of the carbon monoxide and VOCs emitted with its NOx, which lengthen methane's lifetime. Planetshift counts the VOCs' methane separately (above). It gives that methane back to each figure, rather than count it twice:
+**The VOCs and CO given back.** The models perturbed all of each sector's emissions. So road's figure is net of the carbon monoxide and VOCs emitted with its NOx, which lengthen methane's lifetime. Planetshift counts their methane separately (above). It gives that methane back to each figure, rather than count it twice:
 
-- In CEDS, road emitted 2.7 Tg of VOCs per Tg of NOx's nitrogen in 2000, the models' year.
-- At ACCMIP's 0.27 mW/m² of methane forcing per Tg (with its ozone in the same proportion as methane's), this is 0.95 mW/m² per Tg N. That is a quarter of road's net figure. For ships it is 0.04.
-- Road's NOx then gives −3.95 mW/m² per Tg N, and ships' 3.05 times as much (2.15 to 4.46 times across the models). With the published figures it would be 4.0 times.
+- In CEDS, road emitted 2.7 Tg of VOCs and 18.7 Tg of CO per Tg of NOx's nitrogen in 2000, the models' year. Ships emitted 0.1 Tg of each.
+- At ACCMIP's 0.27 mW/m² of methane forcing per Tg of VOCs and 0.11 per Tg of CO (with its ozone in the same proportion as methane's), this is 0.95 and 2.71 mW/m² per Tg N. Together they are 55% of road's figure once the VOCs' and CO's methane is given back. For ships they are under 0.05.
+- Road's NOx then gives −6.66 mW/m² per Tg N, and ships' 1.81 times as much (1.34 to 2.66 times across the models). With the published figures it would be 4.0 times.
 
-CO's methane stays netted in road's figure, because FaIR has no CO methane to count separately.
+With `coMethane` set to `fair`, CO's methane stays netted in road's figure, because FaIR then has no CO methane to count separately. Road's NOx gives −3.95 mW/m² per Tg N, and ships' 3.05 times as much (2.15 to 4.46).
 
 **Why the chemistry models.** A multi-model study of each transport sector is more realistic than one value for all the world's NOx. FaIR's response, about 2 kg of methane per kg of NO₂ (SSP2-4.5, 2023), is several times what the chemistry models find for road traffic. With FaIR's response, electric vehicles appeared to add warming in SSP3-7.0 (see *Results* below).
 
-**The factors used.** Hoor et al.'s methane and methane-ozone forcing per kg of NO₂, with the VOCs' methane given back, is turned into the methane emission that gives the same forcing. This uses ACCMIP's 2.9 mW/m² per million tonnes a year (Stevenson et al. 2013). The result is 0.41 kg of methane for road traffic (0.35–0.47 across the five models) and 1.27 for ships (1.0–1.9). FaIR gives 1.53 for every source in 2000, the models' year. So the factors are 0.27 of FaIR's coefficient on land and 0.83 at sea.
+**The factors used.** Planetshift turns Hoor et al.'s methane and methane-ozone forcing per kg of NO₂, with the VOCs' and CO's methane given back, into the methane emission that gives the same forcing. This uses ACCMIP's 2.9 mW/m² per million tonnes a year (Stevenson et al. 2013). The result is 0.70 kg of methane for road traffic (0.63–0.76 across the five models) and 1.27 for ships (1.0–1.9). FaIR gives 1.49 for every source in 2000, the models' year. So the factors are 0.47 of FaIR's coefficient on land and 0.85 at sea. With `coMethane` set to `fair`, road's is 0.41 kg (0.35–0.47), 0.28 of FaIR's coefficient.
 
-Each factor follows FaIR's change with the scenario. In SSP2-4.5, a kilogram less NOx leaves 0.54 kg of methane on land and 1.65 at sea in 2023, and 0.30 and 0.92 in 2100. In SSP3-7.0, land's rises to 1.12 by 2100.
+Each factor follows FaIR's change with the scenario. In SSP2-4.5, a kilogram less NOx leaves 0.79 kg of methane on land and 1.43 at sea in 2023, and 0.52 and 0.95 in 2100. In SSP3-7.0, land's rises to 1.93 by 2100.
 
 **What this gives up.** It gives up FaIR's world total: the methane of all the world's NOx is about a third of FaIR's (see [Limitations](#method-limitations)). It is a departure from FaIR's single coefficient. A fork can set it back in two ways (see the [temperature page](#method-climate)):
 
@@ -309,7 +309,7 @@ A test runs cuts held from 2025 under SSP2-4.5 through FaIR itself with 100 memb
 In each year, every lever's change in fossil CO₂ is split by the sector that emits it. The electricity drawn by electric vehicles, heat pumps and clean industry counts as the electricity sector's, on the grid that remains after renewable electricity. Each sector's change, times its ratios of that year, gives two things:
 
 - **The change in the supply's CO₂, methane and N₂O.** These join the CO₂ in the emissions. They are convolved with their AGTP curves, under *fossil fuels and industry*.
-- **The change in air pollution**, under *air pollution*. Its forcing goes through `forcingResponse`: each sector's particle, CO ozone and VOC ozone forcing per kg of CO₂, plus NOx's. Its NOx and VOC methane goes through methane's AGTP. NOx's methane is scaled for where it is emitted.
+- **The change in air pollution**, under *air pollution*. Its forcing goes through `forcingResponse`: each sector's particle, CO ozone and VOC ozone forcing per kg of CO₂, plus NOx's. Its NOx, VOC and CO methane goes through methane's AGTP. NOx's methane is scaled for where it is emitted.
 
 The Causes of warming chart's air-pollution band holds SO₂, black and organic carbon, ammonia and NOx alone. CO and VOCs are there with the other human emissions (see [Causes of global warming](#method-link)). The levers' CO and VOCs still count under air pollution, as part of what burning the fuel emits.
 
@@ -345,7 +345,7 @@ With every energy, heating and industry lever in full, two effects roughly cance
 
 **The supply's CO₂** makes the largest difference. It adds about a tenth to every oil lever's CO₂, in every year: 0.150 kg per kg for road, 0.153 for aviation and shipping. It adds 8% to the electricity a lever cuts or draws.
 
-**CO and VOCs** add a little warming avoided: their ozone and the VOCs' methane go with the fuel. Ammonia's small cooling works against this.
+**CO and VOCs** add a little warming avoided: their ozone and methane scale with the fuel. Ammonia's small cooling works against this.
 
 **Renewable electricity** loses the cooling of coal power's SO₂, the largest source of SO₂. But it gains its NOx's ozone and methane, and its fuel's supply. It avoids 0.105 °C instead of 0.096 in 2050, and 0.279 against 0.234 in 2100.
 
@@ -421,8 +421,8 @@ The electric car lever's saving is about 47% of tailpipe CO₂ on today's world 
 - The response to forcing is FaIR's response to solar forcing (efficacy 1) on SSP2-4.5 in 2035, used for every year and scenario.
 - What comes with each kg of a sector's fossil CO₂ is CEDS's 2022 ratio, own fuel and fuel supply. It changes with the scenario's emission factors, never above today's, and is held once the sector's CO₂ halves. Road passengers and freight share road's ratio. The supply's CO₂ keeps its 2022 ratio. The energy industries' `1A1bc` is two thirds oil and one third coal.
 - Aviation's own NOx, sulphate and soot are in its non-CO₂ forcing. Only its fuel's supply is counted as co-emissions. Clean shipping keeps its NOx.
-- Air pollution's forcing per kg is FaIR's, with the aerosol-cloud effect linearised at the scenario's emissions of each year. NOx counts its ozone, its nitrate and the methane it no longer destroys. That methane is the chemistry models' (Hoor et al. 2009, road's VOCs given back): 0.27 of FaIR's coefficient on land and 0.83 at sea, following FaIR's change with the scenario. CO and VOCs count their ozone, and VOCs the methane they leave. Ammonia counts its nitrate.
-- CO's effect on methane, which FaIR leaves out, is not counted (an open question, above).
+- Air pollution's forcing per kg is FaIR's, with the aerosol-cloud effect linearised at the scenario's emissions of each year. NOx counts its ozone, its nitrate and the methane it no longer destroys. That methane is the chemistry models' (Hoor et al. 2009, road's VOCs and CO given back): 0.47 of FaIR's coefficient on land and 0.85 at sea, following FaIR's change with the scenario. CO and VOCs count their ozone and the methane they leave, FaIR's VOC coefficient shared between them in ACCMIP's ratio. Ammonia counts its nitrate.
+- CO's methane is its share of FaIR's VOC coefficient, about a fifth of what the chemistry models give, as FaIR's calibration leaves no more room (fair-calibrate issue #111).
 
 ## Sources
 
