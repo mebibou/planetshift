@@ -29,6 +29,7 @@ from .sections import (
     mammals,
     map,
     meta,
+    origins,
     people,
     population,
     practices,
@@ -89,6 +90,7 @@ SECTIONS: tuple[Section, ...] = (
     Section("mammals", mammals.build, ("mammals.json",), ("mammals",)),
     Section("species", species.build, ("species.json",), ("species",)),
     Section("chain", chain.build, ("chain.json",), ("sources.food_stages",)),
+    Section("origins", origins.build, ("origins.json",)),
     Section("map", map.build, ("world.topo.json",)),
     Section("meta", lambda b: meta.build(b, source_modules()), ("meta.json",)),
 )

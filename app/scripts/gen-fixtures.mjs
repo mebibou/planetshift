@@ -895,6 +895,19 @@ write('chain.json', {
   },
 });
 
+// where each country's imports come from: France's poultry from Brazil and the United States
+write('origins.json', {
+  years: [2022, 2024],
+  byCountry: {
+    FRA: {
+      2734: [
+        ['BRA', 0.6],
+        ['USA', 0.3],
+      ],
+    },
+  },
+});
+
 // carbon stored in farmland, t CO₂ per ha a year
 const removal = (rate, appliesTo, maxShare, years) => ({
   rate: Object.fromEntries(

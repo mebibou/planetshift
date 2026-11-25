@@ -24,6 +24,7 @@ export const OPTIONAL_FILES = [
   'mammals',
   'species',
   'chain',
+  'origins',
 ] as const;
 
 /**

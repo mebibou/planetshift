@@ -149,10 +149,12 @@ export interface Feed {
  * per year, median and range, for `regrowthYears` years after the land is freed.
  * landArea[iso3]: the country's land area in hectares (FAOSTAT), for the share of it farmed;
  * a build without it leaves the map's land use layer empty.
+ * crush[oilseedCode]: the oil crushing it gives, and the oil's share of the crush's value.
  */
 export interface Land {
   cropHaPerTonne: Record<string, Record<string, number>>;
   oilcakeHa?: Record<string, Record<string, number>>;
+  crush?: Record<string, { oil: string; oilShare: number }>;
   fodderHa?: Record<string, number>;
   landArea?: Record<string, number>;
   pasture: Record<string, { ha: number; shares: Partial<Record<AnimalGroup, number>> }>;
@@ -361,6 +363,15 @@ export interface Chain {
 }
 
 /**
+ * origins.json: where each country's imports of each food come from, as [origin iso3, share of
+ * its imports] for the main origins; the shares left over come from the rest of the world.
+ */
+export interface Origins {
+  years: [number, number];
+  byCountry: Record<string, Record<string, [string, number][]>>;
+}
+
+/**
  * All files loaded together: the core's here, each lever module's added by its `data.ts`
  * (app/src/levers/<id>/data.ts), which also describes the file.
  */
@@ -385,6 +396,8 @@ export interface ModelData {
   species?: Species;
   /** Optional: a build without it counts nothing after the farm. */
   chain?: Chain;
+  /** Optional: without it, every import takes the world's average intensity. */
+  origins?: Origins;
   /** Not a file: the build's departures from FaIR stand for it when it is unset. */
   departures?: Departures;
 }

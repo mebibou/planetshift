@@ -1,0 +1,373 @@
+tm_code,tm_item,fbs_code,note
+15,Wheat,2511,"primary, as qcl_items.csv maps it"
+16,Wheat and meslin flour,2511,processed
+18,Uncooked pasta; not stuffed or otherwise prepared,2511,processed
+19,Germ of wheat,2511,processed
+20,Bread,2511,processed
+21,Bulgur,2511,processed
+22,Pastry,2511,processed
+27,Rice,2807,"primary, as qcl_items.csv maps it"
+28,Husked rice,2807,processed
+29,Rice; milled (husked),2807,processed
+30,Rice; paddy (rice milled equivalent),2807,processed
+31,Rice; milled,2807,processed
+32,Rice; broken,2807,processed
+36,Oil of rice bran,2581,processed
+38,Flour of rice,2807,processed
+39,Rice-fermented beverages,2657,processed
+41,Breakfast cereals,2511,processed
+44,Barley,2513,"primary, as qcl_items.csv maps it"
+45,Pot barley,2513,processed
+46,Barley; pearled,2513,processed
+48,Barley flour and grits,2513,processed
+49,Malt; whether or not roasted,2513,processed
+50,Malt extract,2513,processed
+51,Beer of barley; malted,2656,processed
+56,Maize (corn),2514,"primary, as qcl_items.csv maps it"
+57,Germ of maize,2514,processed
+58,Flour of maize,2514,processed
+60,Oil of maize,2582,processed
+71,Rye,2515,"primary, as qcl_items.csv maps it"
+72,Flour of rye,2515,processed
+75,Oats,2516,"primary, as qcl_items.csv maps it"
+76,Oats; rolled,2516,processed
+79,Millet,2517,"primary, as qcl_items.csv maps it"
+80,Flour of millet,2517,processed
+83,Sorghum,2518,"primary, as qcl_items.csv maps it"
+84,Flour of sorghum,2518,processed
+86,Beer of sorghum; malted,2657,processed
+89,Buckwheat,2520,"primary, as qcl_items.csv maps it"
+90,Flour of buckwheat,2520,processed
+92,Quinoa,2520,"primary, as qcl_items.csv maps it"
+94,Fonio,2520,"primary, as qcl_items.csv maps it"
+95,Flour of fonio,2520,processed
+97,Triticale,2520,"primary, as qcl_items.csv maps it"
+101,Canary seed,2520,"primary, as qcl_items.csv maps it"
+103,Mixed grain,2520,"primary, as qcl_items.csv maps it"
+104,Flour of mixed grain,2520,processed
+108,Cereals n.e.c.,2520,"primary, as qcl_items.csv maps it"
+111,Flour of cereals n.e.c.,2520,processed
+113,Cereal preparations,2520,processed
+114,Mixes and doughs for the preparation of bakers' wares,2511,processed
+115,Food preparations of flour; meal or malt extract,2511,processed
+116,Potatoes,2531,"primary, as qcl_items.csv maps it"
+117,Flour; meal; powder; flakes; granules and pellets of potatoes,2531,processed
+118,Potatoes; frozen,2531,processed
+121,Tapioca of potatoes,2531,processed
+122,Sweet potatoes,2533,"primary, as qcl_items.csv maps it"
+125,Cassava; fresh,2532,"primary, as qcl_items.csv maps it"
+126,Flour of cassava,2532,processed
+127,Tapioca of cassava,2532,processed
+128,Cassava; dry,2532,processed
+129,Starch of cassava,2532,processed
+135,Yautia,2534,"primary, as qcl_items.csv maps it"
+136,Taro,2534,"primary, as qcl_items.csv maps it"
+137,Yams,2535,"primary, as qcl_items.csv maps it"
+149,Edible roots and tubers with high starch or inulin content; n.e.c.; fresh,2534,"primary, as qcl_items.csv maps it"
+150,Flour of roots and tubers n.e.c.,2534,processed
+151,Edible roots and tubers with high starch or inulin content; n.e.c.; dry,2534,processed
+156,Sugar cane,2536,"primary, as qcl_items.csv maps it"
+157,Sugar beet,2537,"primary, as qcl_items.csv maps it"
+160,Refined cane or beet sugar; in solid form; containing added flavouring or colouring matter; maple sugar and maple syrup,2542,processed
+161,Other sugar crops n.e.c.,2536,"primary, as qcl_items.csv maps it"
+162,Raw cane or beet sugar (centrifugal only),2542,processed
+163,Cane sugar; non-centrifugal,2541,processed
+164,Refined sugar,2542,processed
+166,Other fructose and syrup,2543,processed
+167,Sugar and syrups n.e.c.,2543,processed
+168,Sugar confectionery,2542,processed
+172,Glucose and dextrose,2543,processed
+175,Isoglucose,2543,processed
+176,Beans; dry,2546,"primary, as qcl_items.csv maps it"
+181,Broad beans and horse beans; dry,2549,"primary, as qcl_items.csv maps it"
+187,Peas; dry,2547,"primary, as qcl_items.csv maps it"
+191,Chick peas; dry,2549,"primary, as qcl_items.csv maps it"
+195,Cow peas; dry,2549,"primary, as qcl_items.csv maps it"
+197,Pigeon peas; dry,2549,"primary, as qcl_items.csv maps it"
+201,Lentils; dry,2549,"primary, as qcl_items.csv maps it"
+203,Bambara beans; dry,2549,"primary, as qcl_items.csv maps it"
+205,Vetches,2549,"primary, as qcl_items.csv maps it"
+210,Lupins,2549,"primary, as qcl_items.csv maps it"
+211,Other pulses n.e.c.,2549,"primary, as qcl_items.csv maps it"
+212,Flour of pulses,2549,processed
+216,Brazil nuts; in shell,2551,"primary, as qcl_items.csv maps it"
+217,Cashew nuts; in shell,2551,"primary, as qcl_items.csv maps it"
+220,Chestnuts; in shell,2551,"primary, as qcl_items.csv maps it"
+221,Almonds; in shell,2551,"primary, as qcl_items.csv maps it"
+222,Walnuts; in shell,2551,"primary, as qcl_items.csv maps it"
+223,Pistachios; in shell,2551,"primary, as qcl_items.csv maps it"
+224,Kola nuts,2551,"primary, as qcl_items.csv maps it"
+225,Hazelnuts; in shell,2551,"primary, as qcl_items.csv maps it"
+226,Areca nuts,2551,"primary, as qcl_items.csv maps it"
+229,Brazil nuts; shelled,2551,processed
+230,Cashew nuts; shelled,2551,processed
+231,Almonds; shelled,2551,processed
+232,Walnuts; shelled,2551,processed
+233,Hazelnuts; shelled,2551,processed
+234,Other nuts (excluding wild edible nuts and groundnuts); in shell; n.e.c.,2551,"primary, as qcl_items.csv maps it"
+235,Prepared nuts,2551,processed
+236,Soya beans,2555,"primary, as qcl_items.csv maps it"
+237,Soya bean oil,2571,processed
+239,Soya sauce,2555,processed
+240,Soya paste,2555,processed
+241,Soya curd,2555,processed
+242,Groundnuts; excluding shelled,2552,"primary, as qcl_items.csv maps it"
+243,Groundnuts; shelled,2552,processed
+244,Groundnut oil,2572,processed
+246,Prepared groundnuts,2552,processed
+247,Peanut butter,2552,processed
+249,Coconuts; in shell,2560,"primary, as qcl_items.csv maps it"
+250,Coconuts; desiccated,2560,processed
+251,Copra,2560,processed
+252,Coconut oil,2578,processed
+256,Palm kernels,2562,processed
+257,Palm oil,2577,processed
+258,Oil of palm kernel,2576,processed
+260,Olives,2563,"primary, as qcl_items.csv maps it"
+261,Olive oil,2580,processed
+262,Olives preserved,2563,processed
+263,Karite nuts (sheanuts),2570,"primary, as qcl_items.csv maps it"
+267,Sunflower seed,2557,"primary, as qcl_items.csv maps it"
+268,Sunflower-seed oil; crude,2573,processed
+270,Rape or colza seed,2558,"primary, as qcl_items.csv maps it"
+271,Rapeseed or canola oil; crude,2574,processed
+274,Oil of olive residues,2586,processed
+280,Safflower seed,2570,"primary, as qcl_items.csv maps it"
+281,Safflower-seed oil; crude,2586,processed
+289,Sesame seed,2561,"primary, as qcl_items.csv maps it"
+290,Oil of sesame seed,2579,processed
+292,Mustard seed,2558,"primary, as qcl_items.csv maps it"
+293,Mustard seed oil; crude,2574,processed
+296,Poppy seed,2570,"primary, as qcl_items.csv maps it"
+297,Oil of poppy seed,2586,processed
+299,Melonseed,2570,"primary, as qcl_items.csv maps it"
+329,Cotton seed,2559,processed
+331,Cottonseed oil,2575,processed
+333,Linseed,2570,"primary, as qcl_items.csv maps it"
+334,Oil of linseed,2586,processed
+336,Hempseed,2570,"primary, as qcl_items.csv maps it"
+339,Other oil seeds; n.e.c.,2570,"primary, as qcl_items.csv maps it"
+340,Other oil of vegetable origin; crude n.e.c.,2586,processed
+358,Cabbages,2605,"primary, as qcl_items.csv maps it"
+366,Artichokes,2605,"primary, as qcl_items.csv maps it"
+367,Asparagus,2605,"primary, as qcl_items.csv maps it"
+372,Lettuce and chicory,2605,"primary, as qcl_items.csv maps it"
+373,Spinach,2605,"primary, as qcl_items.csv maps it"
+388,Tomatoes,2601,"primary, as qcl_items.csv maps it"
+390,Tomato juice,2601,processed
+391,Paste of tomatoes,2601,processed
+392,Tomatoes; peeled (o/t vinegar),2601,processed
+393,Cauliflowers and broccoli,2605,"primary, as qcl_items.csv maps it"
+394,Pumpkins; squash and gourds,2605,"primary, as qcl_items.csv maps it"
+397,Cucumbers and gherkins,2605,"primary, as qcl_items.csv maps it"
+399,Eggplants (aubergines),2605,"primary, as qcl_items.csv maps it"
+401,Chillies and peppers; green (Capsicum spp. and Pimenta spp.),2605,"primary, as qcl_items.csv maps it"
+402,Onions and shallots; green,2602,"primary, as qcl_items.csv maps it"
+403,Onions and shallots; dry (excluding dehydrated),2602,"primary, as qcl_items.csv maps it"
+406,Green garlic,2605,"primary, as qcl_items.csv maps it"
+407,Leeks and other alliaceous vegetables,2605,"primary, as qcl_items.csv maps it"
+414,Other beans; green,2605,"primary, as qcl_items.csv maps it"
+417,Peas; green,2605,"primary, as qcl_items.csv maps it"
+420,Broad beans and horse beans; green,2605,"primary, as qcl_items.csv maps it"
+423,String beans,2605,"primary, as qcl_items.csv maps it"
+426,Carrots and turnips,2605,"primary, as qcl_items.csv maps it"
+430,Okra,2605,"primary, as qcl_items.csv maps it"
+446,Green corn (maize),2605,"primary, as qcl_items.csv maps it"
+447,Sweet corn; frozen,2605,processed
+448,Sweet corn; prepared or preserved,2605,processed
+449,Mushrooms and truffles,2605,"primary, as qcl_items.csv maps it"
+450,Dried mushrooms,2605,processed
+451,Canned mushrooms,2605,processed
+459,Chicory roots,2605,"primary, as qcl_items.csv maps it"
+460,Vegetable products; fresh or dry n.e.c.,2605,processed
+461,Locust beans (carobs),2625,"primary, as qcl_items.csv maps it"
+463,Other vegetables; fresh n.e.c.,2605,"primary, as qcl_items.csv maps it"
+465,Other vegetables and pulses; preserved other than by vinegar; acetic acid or sugar; n.e.c.,2605,processed
+466,Other vegetable juices,2605,processed
+469,Vegetables; dehydrated,2605,processed
+471,Vegetables; pulses and potatoes; preserved by vinegar or acetic acid,2605,processed
+472,Vegetables preserved nes (o/t vinegar),2605,processed
+473,Vegetables frozen,2605,processed
+474,Other vegetables provisionally preserved,2605,processed
+475,Vegetables preserved (frozen),2605,processed
+476,Homogenized vegetable preparations,2605,processed
+486,Bananas,2615,"primary, as qcl_items.csv maps it"
+489,Plantains and cooking bananas,2616,"primary, as qcl_items.csv maps it"
+490,Oranges,2611,"primary, as qcl_items.csv maps it"
+491,Orange juice,2611,processed
+492,Orange juice; concentrated,2611,processed
+495,Tangerines; mandarins; clementines,2611,"primary, as qcl_items.csv maps it"
+496,Juice of tangerine,2611,processed
+497,Lemons and limes,2612,"primary, as qcl_items.csv maps it"
+498,Juice of lemon,2612,processed
+499,Lemon juice; concentrated,2612,processed
+507,Pomelos and grapefruits,2613,"primary, as qcl_items.csv maps it"
+509,Grapefruit juice,2613,processed
+510,Grapefruit juice; concentrated,2613,processed
+512,Other citrus fruit; n.e.c.,2614,"primary, as qcl_items.csv maps it"
+513,Juice of citrus fruit n.e.c.,2614,processed
+514,Citrus juice; concentrated n.e.c.,2614,processed
+515,Apples,2617,"primary, as qcl_items.csv maps it"
+517,Cider and other fermented beverages,2657,processed
+518,Apple juice,2617,processed
+519,Apple juice; concentrated,2617,processed
+521,Pears,2625,"primary, as qcl_items.csv maps it"
+523,Quinces,2625,"primary, as qcl_items.csv maps it"
+526,Apricots,2625,"primary, as qcl_items.csv maps it"
+527,Apricots; dried,2625,processed
+530,Sour cherries,2625,"primary, as qcl_items.csv maps it"
+531,Cherries,2625,"primary, as qcl_items.csv maps it"
+534,Peaches and nectarines,2625,"primary, as qcl_items.csv maps it"
+536,Plums and sloes,2625,"primary, as qcl_items.csv maps it"
+537,Plums; dried,2625,processed
+538,Juice of plum,2625,processed
+539,Juice of plum; concentrated,2625,processed
+541,Other stone fruits,2625,"primary, as qcl_items.csv maps it"
+544,Strawberries,2625,"primary, as qcl_items.csv maps it"
+547,Raspberries,2625,"primary, as qcl_items.csv maps it"
+549,Gooseberries,2625,"primary, as qcl_items.csv maps it"
+550,Currants,2625,"primary, as qcl_items.csv maps it"
+552,Blueberries,2625,"primary, as qcl_items.csv maps it"
+554,Cranberries,2625,"primary, as qcl_items.csv maps it"
+558,Other berries and fruits of the genus vaccinium n.e.c.,2625,"primary, as qcl_items.csv maps it"
+560,Grapes,2620,"primary, as qcl_items.csv maps it"
+561,Raisins,2620,processed
+562,Grape juice,2620,processed
+563,Must of grape,2620,processed
+564,Wine,2655,processed
+565,Vermouth and other wine of fresh grapes flavoured with plats or aromatic substances,2655,processed
+567,Watermelons,2625,"primary, as qcl_items.csv maps it"
+568,Cantaloupes and other melons,2625,"primary, as qcl_items.csv maps it"
+569,Figs,2625,"primary, as qcl_items.csv maps it"
+570,Figs; dried,2625,processed
+571,Mangoes; guavas and mangosteens,2625,"primary, as qcl_items.csv maps it"
+572,Avocados,2625,"primary, as qcl_items.csv maps it"
+574,Pineapples,2618,"primary, as qcl_items.csv maps it"
+575,Pineapples; otherwise prepared or preserved,2618,processed
+576,Pineapple juice,2618,processed
+577,Dates,2619,"primary, as qcl_items.csv maps it"
+580,Juice of pineapples; concentrated,2618,processed
+583,Juice of mango,2625,processed
+584,Mango pulp,2625,processed
+587,Persimmons,2625,"primary, as qcl_items.csv maps it"
+591,Cashewapple,2625,"primary, as qcl_items.csv maps it"
+592,Kiwi fruit,2625,"primary, as qcl_items.csv maps it"
+600,Papayas,2625,"primary, as qcl_items.csv maps it"
+603,Other tropical fruits; n.e.c.,2625,"primary, as qcl_items.csv maps it"
+604,Other tropical fruit; dried,2625,processed
+619,Other fruits; n.e.c.,2625,"primary, as qcl_items.csv maps it"
+620,Other fruit n.e.c.; dried,2625,processed
+622,Juice of fruits n.e.c.,2625,processed
+623,Fruit prepared n.e.c.,2625,processed
+624,Flour of fruits,2625,processed
+625,Fruit; nuts; peel; sugar preserved,2625,processed
+626,Homogenized cooked fruit; prepared,2625,processed
+634,Undenatured ethyl alcohol of an alcoholic strength by volume of less than 80% vol; spirits; liqueurs and other spirituous beverages,2658,processed
+656,Coffee; green,2630,"primary, as qcl_items.csv maps it"
+657,Coffee; decaffeinated or roasted,2630,processed
+659,Coffee extracts,2630,processed
+661,Cocoa beans,2633,"primary, as qcl_items.csv maps it"
+662,Cocoa paste not defatted,2633,processed
+664,Cocoa butter; fat and oil,2633,processed
+665,Cocoa powder and cake,2633,processed
+666,Chocolate products nes,2633,processed
+667,Tea leaves,2635,"primary, as qcl_items.csv maps it"
+671,MatÃ© leaves,2635,"primary, as qcl_items.csv maps it"
+672,Extracts; essences and concentrates of tea or mate; and preparations with a basis thereof or with a basis of tea or matÃ©,2635,processed
+687,Pepper (Piper spp.); raw,2640,"primary, as qcl_items.csv maps it"
+689,Chillies and peppers; dry (Capsicum spp.; Pimenta spp.); raw,2641,"primary, as qcl_items.csv maps it"
+692,Vanilla; raw,2645,"primary, as qcl_items.csv maps it"
+693,Cinnamon and cinnamon-tree flowers; raw,2645,"primary, as qcl_items.csv maps it"
+698,Cloves (whole stems); raw,2642,"primary, as qcl_items.csv maps it"
+702,Nutmeg; mace; cardamoms; raw,2645,"primary, as qcl_items.csv maps it"
+711,Anise; badian; coriander; cumin; caraway; fennel and juniper berries; raw,2645,"primary, as qcl_items.csv maps it"
+720,Ginger; raw,2645,"primary, as qcl_items.csv maps it"
+723,Other stimulant; spice and aromatic crops; n.e.c.,2645,"primary, as qcl_items.csv maps it"
+867,Meat of cattle with the bone; fresh or chilled,2731,"primary, as qcl_items.csv maps it"
+868,Edible offal of cattle; fresh; chilled or frozen,2736,processed
+869,Cattle fat; unrendered,2737,processed
+870,Meat of cattle boneless; fresh or chilled,2731,processed
+871,Cattle; butcher fat,2737,processed
+872,Bovine meat; salted; dried or smoked,2731,processed
+874,Sausages and similar products of meat; offal or blood of beef and veal,2731,processed
+875,Beef and veal preparations nes,2731,processed
+877,Homogenized meat preparations,2735,processed
+878,Liver preparations,2736,processed
+882,Raw milk of cattle,2848,"primary, as qcl_items.csv maps it"
+885,Cream; fresh,2743,processed
+886,Butter of cow milk,2740,processed
+887,Ghee from cow milk,2740,processed
+888,Skim milk of cows,2848,processed
+889,Whole milk; condensed,2848,processed
+890,Whey; condensed,2848,processed
+891,Yoghurt,2848,processed
+892,Yoghurt; with additives,2848,processed
+893,Buttermilk; curdled and acidified milk,2848,processed
+894,Whole milk; evaporated,2848,processed
+895,Skim milk; evaporated,2848,processed
+896,Skim milk; condensed,2848,processed
+897,Whole milk powder,2848,processed
+898,Skim milk and whey powder,2848,processed
+899,Buttermilk; dry,2848,processed
+900,Whey; dry,2848,processed
+901,Cheese from whole cow milk,2848,processed
+903,Whey; fresh,2848,processed
+904,Cheese from skimmed cow milk,2848,processed
+905,Whey cheese,2848,processed
+907,Processed cheese,2848,processed
+908,Reconstituted milk,2848,processed
+909,Dairy products n.e.c.,2848,processed
+910,Ice cream and other edible ice,2848,processed
+947,Meat of buffalo; fresh or chilled,2731,"primary, as qcl_items.csv maps it"
+948,Edible offal of buffalo; fresh; chilled or frozen,2736,processed
+953,Ghee from buffalo milk,2740,processed
+977,Meat of sheep; fresh or chilled,2732,"primary, as qcl_items.csv maps it"
+978,Edible offal of sheep; fresh; chilled or frozen,2736,processed
+979,Sheep fat; unrendered,2737,processed
+982,Raw milk of sheep,2848,"primary, as qcl_items.csv maps it"
+983,Butter and ghee of sheep milk,2740,processed
+984,Cheese from milk of sheep; fresh or processed,2848,processed
+1017,Meat of goat; fresh or chilled,2732,"primary, as qcl_items.csv maps it"
+1018,Edible offal of goat; fresh; chilled or frozen,2736,processed
+1021,Cheese from milk of goats; fresh or processed,2848,processed
+1022,Butter of goat milk,2740,processed
+1035,Meat of pig with the bone; fresh or chilled,2733,"primary, as qcl_items.csv maps it"
+1036,Edible offal of pigs; fresh; chilled or frozen,2736,processed
+1037,Fat of pigs,2737,processed
+1038,Meat of pig boneless; fresh or chilled,2733,processed
+1039,Pig meat; cuts; salted; dried or smoked (bacon and ham),2733,processed
+1040,Pig; butcher fat,2737,processed
+1041,Sausages and similar products of meat; offal or blood of pig,2733,processed
+1042,Pig meat preparations,2733,processed
+1043,Pig fat; rendered,2737,processed
+1058,Meat of chickens; fresh or chilled,2734,"primary, as qcl_items.csv maps it"
+1059,Edible offals and liver of chickens and guinea fowl; fresh; chilled or frozen,2736,processed
+1060,Fatty liver preparations,2734,processed
+1061,Poultry meat preparations,2734,processed
+1062,Hen eggs in shell; fresh,2744,"primary, as qcl_items.csv maps it"
+1063,Eggs; liquid,2744,processed
+1064,Eggs; dried,2744,processed
+1065,Fat of poultry,2737,processed
+1066,Poultry fat; rendered,2737,processed
+1069,Meat of ducks; fresh or chilled,2734,"primary, as qcl_items.csv maps it"
+1073,Meat of geese; fresh or chilled,2734,"primary, as qcl_items.csv maps it"
+1074,Edible offals and liver of geese; fresh; chilled or frozen,2736,processed
+1075,Edible offals and liver of ducks; fresh; chilled or frozen,2736,processed
+1080,Meat of turkeys; fresh or chilled,2734,"primary, as qcl_items.csv maps it"
+1081,Edible offals and liver of turkey; fresh; chilled or frozen,2736,processed
+1089,Meat of pigeons and other birds n.e.c.; fresh; chilled or frozen,2734,"primary, as qcl_items.csv maps it"
+1091,Eggs from other birds in shell; fresh; n.e.c.,2744,"primary, as qcl_items.csv maps it"
+1097,Horse meat; fresh or chilled,2735,"primary, as qcl_items.csv maps it"
+1098,Edible offals of horses and other equines; fresh; chilled or frozen,2736,processed
+1108,Meat of asses; fresh or chilled,2735,"primary, as qcl_items.csv maps it"
+1127,Meat of camels; fresh or chilled,2735,"primary, as qcl_items.csv maps it"
+1129,Fat of camels,2737,processed
+1141,Meat of rabbits and hares; fresh or chilled,2735,"primary, as qcl_items.csv maps it"
+1163,Game meat; fresh; chilled or frozen,2735,"primary, as qcl_items.csv maps it"
+1164,Other meat and edible meat offal; salted; in brine; dried or smoked; edible flours and meals of meat or meat offal,2735,processed
+1166,Other meat of mammals; fresh or chilled,2735,"primary, as qcl_items.csv maps it"
+1167,Offals n.e.c. (excluding mammals); fresh; chilled or frozen,2736,processed
+1168,Animal oils and fats n.e.c.,2737,processed
+1172,Meat prepared n.e.c.,2735,processed
+1221,Lard stearine and lard oil,2737,processed
+1225,Tallow,2737,processed

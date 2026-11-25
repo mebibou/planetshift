@@ -248,18 +248,21 @@ In France, a tonne of beef has about 1.06 t CO₂e after the farm, and a tonne o
 
 ## Food footprint per person
 
-The map's Emissions layer counts emissions where food is produced. Its tooltip also shows *Food footprint per person*: what the food eaten in the country emits per person a year. Production per person looks high in an exporting country and low in an importing one, so the footprint follows what people eat instead.
+The map's Emissions layer counts emissions where food is produced. Its tooltip also shows *Food footprint per person*: what the food eaten in the country emits per person a year. Production per person looks high in an exporting country and low in an importing one, so the footprint is based on what people eat.
 
 For each food, a country's footprint adds up:
 
-- **How much is eaten**: the food supply of the Food Balance Sheets, times the supply each tonne needs (losses, processing and seed). The result is in farm tonnes, as the diet shift counts it.
-- **Where it comes from**: the part the country produces takes the country's own intensity. The imported part takes the world's intensity: each item's intensity averaged over the countries that produce it, weighted by their production. The imported share is imports over production plus imports. Imports are not traced to their real origin.
-- **What a tonne emits**: the farm's emissions in the chosen scope, plus the chain after the farm, plus the CO₂ of clearing forest for that food in that country.
-- **The feed of animal products**: an animal product's intensity leaves out its feed (see above). The footprint therefore adds the emissions of the feed each animal group eats per tonne it produces. It takes the country's figure for the part the country produces, and the world's for the part it imports.
+- **How much is eaten**: the food supply of the Food Balance Sheets, times the supply needed per tonne (losses, processing and seed). The result is in farm tonnes, the unit the diet shift uses.
+- **Where it comes from**: the part the country produces takes the country's own intensity. The imported share is imports over production plus imports. The imported part takes the intensity of the countries it comes from. Each origin is weighted by its share of the country's imports of that food in FAOSTAT's detailed trade matrix, 2022–2024 (`origins.json`). The main origins are kept until they cover 95% of the imports, at most ten, and none under 1%. The rest takes the world's intensity, which is each item's intensity averaged over the countries that produce it and weighted by their production. The trade matrix records the last country a food was shipped from, so a food re-exported through the Netherlands is treated as Dutch. It does not cover fish and seafood, which take the world's intensity.
+- **What a tonne emits**: the farm's emissions in the chosen scope, plus the chain after the farm, plus the CO₂ from clearing forest for that food in that country.
+- **The feed of animal products**: an animal product's intensity leaves out its feed (see above). The footprint therefore adds the emissions of the feed each animal group eats per tonne it produces. The feed crops a country's animals eat take the country's own intensity for the part it produces, and the intensity of its imports for the rest. The imported part of an animal product takes the feed per tonne of its origin countries, as above.
+- **Oilseeds**: most oilseeds are crushed into oil and cake, including 90% of the world's soybeans. The clearing for an oilseed is shared the same way. The share of the world's crop that is crushed is divided between the oil and the cake in proportion to their value: the cake takes 63% for soy (`pipeline/oilcakes.csv`). The rest stays on the seed. The model trades cake and oil worldwide, so the cake's emissions and clearing are pooled over the world. The animal groups share them by what they eat, per tonne they produce. The oil's clearing is pooled per tonne of oil eaten.
 
-The total is divided by the country's population in the base year. With the levers, the food eaten changes with the diet shift and less food waste. The farm's intensities change with the farm practices. The chain after the farm and the clearing per tonne do not change.
+The total is divided by the country's population in the base year. With the levers, the diet shift and less food waste change the food eaten. The farm's intensities change with the farm practices. The chain after the farm and the clearing per tonne do not change.
 
-In CO₂e per person a year, France's footprint is 2.12 t, the United States' 2.33 t, China's 1.92 t, India's 0.86 t and Brazil's 4.27 t. In Brazil, clearing for farming is the largest part, about half. With the whole diet shifted, France's footprint falls to 0.89 t.
+In CO₂e per person a year, France's footprint is 1.98 t, the United States' 2.36 t, China's 1.99 t, India's 0.88 t and Brazil's 4.31 t. In Brazil, clearing for farming is about half, 2.19 t. In France it is 0.04 t. France's imported beef comes mostly from its neighbours, the Netherlands, Ireland and the United Kingdom first. Much of its soy arrives as cake, which takes the world's average. With the whole diet shifted, France's footprint falls to 0.88 t.
+
+Published estimates for France are often higher. The main reason is the farm's intensities. Planetshift's intensities are a third to a half below Poore and Nemecek's for most foods (see *Per kilogram, against Poore and Nemecek*), as they count fewer sources. The cold chain's refrigerants and drained organic soils are left out too.
 
 ## Proxies
 
