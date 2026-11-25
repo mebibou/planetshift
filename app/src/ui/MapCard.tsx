@@ -23,6 +23,7 @@ import {
   type Measure,
   type SpeciesPer,
 } from '../map/layers';
+import { shapeNames } from '../map/geo';
 import { legendBins } from '../map/legend';
 import {
   colourScale,
@@ -314,12 +315,20 @@ export const MapCard = (props: MapCardProps) => {
   const { t, locale, lang, countries, state, setUi } = props;
   const { ui } = state;
   const names = useMemo(
-    () => new Map(countries.map((c) => [c.iso3, c.name[lang] || c.name.en])),
-    [countries, lang],
+    () =>
+      new Map([
+        ...shapeNames(props.world, lang),
+        ...countries.map((c): [string, string] => [c.iso3, c.name[lang] || c.name.en]),
+      ]),
+    [props.world, countries, lang],
   );
   const englishNames = useMemo(
-    () => new Map(countries.map((c) => [c.iso3, c.name.en])),
-    [countries],
+    () =>
+      new Map([
+        ...shapeNames(props.world, 'en'),
+        ...countries.map((c): [string, string] => [c.iso3, c.name.en]),
+      ]),
+    [props.world, countries],
   );
   const [downloading, setDownloading] = useState(false);
   const card = useRef<HTMLElement>(null);
