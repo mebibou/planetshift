@@ -3,6 +3,7 @@ import {
   type CauseWarming,
   type Climate,
   type ClimateMethod,
+  type FarmGas,
   type Gas,
   type GasVector,
   type Ssp,
@@ -137,7 +138,11 @@ const causeAt = (ctx: PeopleContext, cause: 'fossilIndustry' | 'landUse', g: Gas
 };
 
 /** kg a year of each gas outside farming, by cause: the SSP's, the rest of it `other`. */
-const outsideFarming = (ctx: PeopleContext, g: Gas, y: number): Record<OutsideFarming, number> => {
+const outsideFarming = (
+  ctx: PeopleContext,
+  g: FarmGas,
+  y: number,
+): Record<OutsideFarming, number> => {
   const farm = ctx.climate.agricultureEmissions[ctx.ssp][g];
   const fossilIndustry = causeAt(ctx, 'fossilIndustry', g, y);
   const landUse = causeAt(ctx, 'landUse', g, y);
@@ -156,7 +161,10 @@ const otherGases = (ctx: PeopleContext, years: readonly number[]) =>
       years.map(
         (y) =>
           Object.fromEntries(
-            GASES.map((g) => [g, (ctx.factor(y) - 1) * outsideFarming(ctx, g, y)[c]]),
+            GASES.map((g) => [
+              g,
+              g === 'hfc' ? 0 : (ctx.factor(y) - 1) * outsideFarming(ctx, g, y)[c],
+            ]),
           ) as GasVector,
       ),
     ]),

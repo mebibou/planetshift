@@ -12,7 +12,7 @@ import {
 
 describe('food waste and losses', () => {
   it.each(['foodWaste', 'supplyLosses'])('%s alone cuts every gas', (id) =>
-    expectOwnGases(id, ['co2', 'ch4', 'n2o']),
+    expectOwnGases(id, ['co2', 'ch4', 'n2o', 'hfc']),
   );
   it('follow waste.md’s example', () => {
     const food = Float64Array.from([800]);

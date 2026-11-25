@@ -43,6 +43,7 @@ export const releaseAsGases = (carbon: readonly number[], ch4Share: number): Gas
     co2: c * (1 - ch4Share) * CO2_PER_C,
     ch4: c * ch4Share * CH4_PER_C,
     n2o: 0,
+    hfc: 0,
   }));
 
 /** The release, as gases, from a temperature path. */

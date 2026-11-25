@@ -1,4 +1,5 @@
 import {
+  farmGasOf,
   GASES,
   type GasVector,
   type Intensities,
@@ -50,7 +51,10 @@ export const countryIntensities = (
     );
     return {
       kgPerTonne: Object.fromEntries(
-        GASES.map((g) => [g, Float64Array.from(found, (i) => i?.kgPerTonne[g] ?? 0)]),
+        GASES.map((g) => [
+          g,
+          Float64Array.from(found, (i) => (i ? farmGasOf(i.kgPerTonne, g) : 0)),
+        ]),
       ) as Record<keyof GasVector, ItemVector>,
       tiers: found.map((i) => i?.tier ?? MISSING_TIER),
       sources: found.map((i) => i?.source ?? ''),
@@ -116,7 +120,7 @@ export const countryCakes = (pc: PreparedCountry, prepared: Prepared, scope: Sco
       prepared.data.intensities.oilcake?.[pc.country.iso3] ?? {},
     ).flatMap(([code, byScope]) => {
       const cell = byScope[scope] ?? byScope[OTHER_SCOPE[scope]];
-      return cell ? [{ code, kg: gasVector((g) => cell[g] ?? 0) }] : [];
+      return cell ? [{ code, kg: gasVector((g) => farmGasOf(cell, g)) }] : [];
     });
     const codes = found.map((f) => f.code);
     return {
@@ -153,5 +157,5 @@ export const cutCakeEmissions = (
 /** kg of each gas a year from the country's animals not raised for food: no lever changes it. */
 export const nonFoodEmissions = (prepared: Prepared, iso3: string): GasVector => {
   const kg = prepared.data.intensities.nonFood?.[iso3];
-  return kg ? gasVector((g) => kg[g] ?? 0) : ZERO_GAS;
+  return kg ? gasVector((g) => farmGasOf(kg, g)) : ZERO_GAS;
 };

@@ -14,8 +14,29 @@ GREENHOUSE = ("fossilIndustry", "agriculture", "landUse")
 AEROSOLS = ("Sulfur", "BC", "OC", "NH3", "NOx")
 GASES = ("co2", "ch4", "n2o")
 FAIR_GAS = {"co2": "CO2 FFI", "ch4": "CH4", "n2o": "N2O"}
-GAS_SPECIES = {"co2": ("CO2 FFI", "CO2 AFOLU"), "ch4": ("CH4",), "n2o": ("N2O",)}
-KG_PER_FAIR_UNIT = {"CO2 FFI": 1e12, "CO2 AFOLU": 1e12, "CH4": 1e9, "N2O": 1e9}
+HFCS = tuple(
+    f"HFC-{n}"
+    for n in (
+        "125",
+        "134a",
+        "143a",
+        "152a",
+        "227ea",
+        "23",
+        "236fa",
+        "245fa",
+        "32",
+        "365mfc",
+        "4310mee",
+    )
+)
+GAS_SPECIES = {"co2": ("CO2 FFI", "CO2 AFOLU"), "ch4": ("CH4",), "n2o": ("N2O",), "hfc": HFCS}
+# The gases whose warming climate.json splits by cause: the farm's three and every HFC, which the
+# SSPs give for the world only, so all of it is the gas's other sources.
+ATTRIBUTION_GASES = (*GASES, "hfc")
+KG_PER_FAIR_UNIT = {"CO2 FFI": 1e12, "CO2 AFOLU": 1e12, "CH4": 1e9, "N2O": 1e9} | dict.fromkeys(
+    HFCS, 1e6
+)
 KG_PER_RCMIP_UNIT = {"Mt CH4/yr": 1e9, "kt N2O/yr": 1e6, "Mt CO2/yr": 1e9}
 
 # Each SSP's trajectory for agriculture and for fossil fuels and industry, by gas, as RCMIP

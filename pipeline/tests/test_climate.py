@@ -114,6 +114,7 @@ def gas_taken() -> tuple[dict, dict]:
         "CO2 AFOLU": np.array([4.0]),
         "CH4": np.array([300.0]),
         "N2O": np.array([8.0]),
+        "HFC-134a": np.array([200.0]),
         "Sulfur": np.array([100.0]),
     }
     agriculture = {"co2": np.array([1e11]), "ch4": np.array([1e11]), "n2o": np.array([2e9])}
@@ -124,7 +125,7 @@ def gas_taken() -> tuple[dict, dict]:
 
 def test_gas_removals_split_each_cause_by_gas_and_alias_a_cause_of_one_gas():
     taken, emissions = gas_taken()
-    baseline = {"CO2 FFI": 0.0, "CO2 AFOLU": 0.0, "CH4": 20.0, "N2O": 1.0}
+    baseline = {"CO2 FFI": 0.0, "CO2 AFOLU": 0.0, "CH4": 20.0, "N2O": 1.0, "HFC-134a": 0.0}
     parts, alone = climate.gas_removals(taken, emissions, baseline)
     assert alone == {"landUse:co2": "landUse"}
     assert set(parts) == {
@@ -132,8 +133,10 @@ def test_gas_removals_split_each_cause_by_gas_and_alias_a_cause_of_one_gas():
         "all:co2",
         "all:ch4",
         "all:n2o",
+        "all:hfc",
     }
     assert set(parts["agriculture:ch4"]) == {"CH4"}
+    assert climate_scenarios.without(emissions, parts["all:hfc"])["HFC-134a"] == pytest.approx([0])
     assert parts["all:co2"]["CO2 AFOLU"] == pytest.approx([4e12])
     less = climate_scenarios.without(emissions, parts["all:ch4"])
     assert less["CH4"] == pytest.approx([20.0])
@@ -146,11 +149,12 @@ def test_gas_contributions_add_up_to_each_gas_total_for_every_member():
         "full",
         *(f"{c}:{g}" for c in ("fossilIndustry", "agriculture") for g in climate.GASES),
     ]
-    names += ["landUse:co2", "all:co2", "all:ch4", "all:n2o"]
+    names += ["landUse:co2", "all:co2", "all:ch4", "all:n2o", "all:hfc"]
     runs = {k: rng.normal(size=(len(years), 5)) for k in names}
     by_gas = climate.gas_contributions(years, runs)
     assert set(by_gas["co2"]) == {"total", "fossilIndustry", "agriculture", "landUse", "other"}
     assert set(by_gas["ch4"]) == {"total", "fossilIndustry", "agriculture", "other"}
+    assert set(by_gas["hfc"]) == {"total", "other"}
     for parts in by_gas.values():
         summed = sum(v for k, v in parts.items() if k != "total")
         assert summed == pytest.approx(parts["total"])
@@ -195,3 +199,12 @@ def test_rounded_keeps_four_significant_figures():
         12350.0,
     ]
     assert json.dumps(climate.rounded(np.array([3.0e-16])))
+
+
+def test_hfc134a_temperature_potentials_match_ar6():
+    """AR6 WG1 Table 7.SM.7 gives HFC-134a a GTP50 of 733 and a GTP100 of 306."""
+    from planetshift_pipeline import climate_ar6
+
+    curves = climate_ar6.agtp_curves(100)
+    assert curves["hfc"][50] / curves["co2"][50] == pytest.approx(733, rel=0.03)
+    assert curves["hfc"][100] / curves["co2"][100] == pytest.approx(306, rel=0.03)

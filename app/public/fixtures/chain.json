@@ -25,6 +25,10 @@
       "processing": {
         "co2": 350
       },
+      "retail": {
+        "co2": 90,
+        "hfc": 0.8
+      },
       "transport": {
         "co2": 420
       },

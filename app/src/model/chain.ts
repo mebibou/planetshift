@@ -33,6 +33,13 @@ const factorOf = (chain: Chain, iso3: string, stage: ChainStage, gas: Gas): numb
   return (own ? own[stage]?.[gas] : chain.world[stage]?.[gas]) ?? 0;
 };
 
+/**
+ * The cause a stage's gas counts in: the refrigerants (HFC-134a) in other human emissions, where
+ * fluorinated gases sit, whatever the stage; the rest by the stage.
+ */
+const stageCause = (stage: ChainStage, gas: Gas): ChainCause =>
+  gas === 'hfc' ? 'other' : CAUSE_OF[stage];
+
 const BY_MASS: ReadonlySet<ChainStage> = new Set(['household', 'waste', 'wastewater']);
 
 /** An item's weight at a stage: Poore & Nemecek's for the shared stages, 1 by mass. */
@@ -54,7 +61,7 @@ export const chainIntensities = (pc: PreparedCountry, prepared: Prepared, chain:
             GASES.map((gas) => [
               gas,
               Float64Array.from(prepared.items, (item) =>
-                CHAIN_STAGES.filter((s) => CAUSE_OF[s] === cause).reduce(
+                CHAIN_STAGES.filter((s) => stageCause(s, gas) === cause).reduce(
                   (a, s) =>
                     a +
                     factorOf(chain, pc.country.iso3, s, gas) *

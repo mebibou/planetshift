@@ -2,7 +2,7 @@
 // from them. With `modules.ts`, the only files a new module shares.
 
 import { DEPARTURES } from '../config';
-import type { Cause, CountedCause, LeverCause, ModelData } from '../data/types';
+import type { Cause, CountedCause, GasLeverCause, LeverCause, ModelData } from '../data/types';
 import type { Levers } from '../model/api';
 import { deadfallSpec as deadfall } from './deadfall/spec';
 import { deforestationSpec as deforestation } from './deforestation/spec';
@@ -93,6 +93,7 @@ export const DIET_CAUSE: LeverCause = 'agriculture';
 
 /** The causes a lever acts on, in the order of the data. */
 export const LEVER_CAUSES: readonly LeverCause[] = ['fossilIndustry', 'agriculture', 'landUse'];
+export const GAS_LEVER_CAUSES: readonly GasLeverCause[] = [...LEVER_CAUSES, 'other'];
 
 /**
  * The causes the levers' effects are counted in, in the order of the data: a lever's own cause,

@@ -21,7 +21,8 @@ def build(b: Build) -> None:
         C.factors(kg, denominator), C.world_factors(kg, denominator, b.iso3), w, b.iso3, y
     )
     own = kg[kg["area_code"].isin(b.iso3)]
-    co2e = own.assign(kg=own["kg"] * own["gas"].map(GWP100)).groupby("stage")["kg"].sum() / 1e9
+    gwp = {**GWP100, "hfc": C.HFC_AR6_GWP100}
+    co2e = own.assign(kg=own["kg"] * own["gas"].map(gwp)).groupby("stage")["kg"].sum() / 1e9
     log.info(
         "food after the farm %d: %s Mt CO2e (GWP100) by stage; no figures for %s",
         y,

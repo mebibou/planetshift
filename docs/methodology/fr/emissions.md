@@ -224,25 +224,27 @@ Aucun domaine de FAOSTAT ne compte les animaux de trait. La règle n'utilise don
 
 ## Après la ferme
 
-Les aliments causent aussi des émissions après avoir quitté la ferme. Ils sont transformés, transportés, emballés et vendus, cuisinés à la maison, puis jetés. *Emissions from pre- and post-production* de FAOSTAT donne le CO₂, le méthane et le N₂O de chacune de ces étapes pour chaque pays, pour sa dernière année. En 2024, les pays du modèle émettent 5,0 Gt CO₂e après la ferme :
+Les aliments causent aussi des émissions après avoir quitté la ferme. Ils sont transformés, transportés, emballés et vendus, cuisinés à la maison, puis jetés. *Emissions from pre- and post-production* de FAOSTAT donne le CO₂, le méthane, le N₂O et les gaz fluorés de chacune de ces étapes pour chaque pays, pour sa dernière année. En 2024, les pays du modèle émettent 6,0 Gt CO₂e après la ferme :
 
 | Étape | Mt CO₂e (PRG100) | Partagée entre les aliments selon |
 | --- | --- | --- |
 | Déchets alimentaires : déchets solides, incinération et eaux usées de l'industrie alimentaire | 1 638 | la masse |
-| Cuisine à la maison | 1 495 | la masse |
-| Transport | 522 | l'étape de Poore et Nemecek |
-| Transformation | 476 | l'étape de Poore et Nemecek |
+| Cuisine à la maison | 1 506 | la masse |
+| Distribution | 1 105 | l'étape de Poore et Nemecek |
+| Transport | 566 | l'étape de Poore et Nemecek |
+| Transformation | 514 | l'étape de Poore et Nemecek |
 | Eaux usées domestiques | 368 | la masse |
 | Emballage | 277 | l'étape de Poore et Nemecek |
-| Distribution | 234 | l'étape de Poore et Nemecek |
 
-Trois étapes de FAOSTAT sont laissées de côté. La fabrication des engrais et celle des pesticides sont déjà comptées du berceau à la sortie de ferme. Les réfrigérants qui fuient de la chaîne du froid (0,84 Gt CO₂e) sont des gaz fluorés, que le modèle ne compte pas encore.
+La fabrication des engrais et celle des pesticides sont laissées de côté, car elles sont déjà comptées du berceau à la sortie de ferme.
+
+**Réfrigérants.** Les réfrigérants qui fuient de la chaîne du froid sont des gaz fluorés. FAOSTAT les donne pour chaque étape en CO₂e, avec le PRG100 de l'AR5. Planetshift les compte comme du HFC-134a, le principal réfrigérant : il ramène le CO₂e de chaque étape en kg de HFC-134a avec son PRG100 de l'AR5, 1 300. Ils réchauffent ensuite selon la réponse propre au HFC-134a, de FaIR ou des formules de l'AR6 (une durée de vie de 14 ans, une efficacité radiative de 0,167 W m⁻² ppb⁻¹), et pèsent 1 530 fois le CO₂ en CO₂e (AR6). Ils font l'essentiel des émissions de la distribution dans le tableau ci-dessus. L'amendement de Kigali réduit progressivement ces gaz, ce que le modèle ne suit pas : comme le reste de la chaîne, ils suivent la référence.
 
 **Partagées entre les aliments.** Pour la transformation, le transport, l'emballage et la distribution, la part de chaque aliment dans le total de son pays est sa production multipliée par les émissions par kg de cet aliment à cette étape selon Poore et Nemecek (2018). Our World in Data publie ces chiffres (CC BY 4.0). À la transformation, le bœuf a 1,81 kg CO₂e par kg et le blé 0,21. `pipeline/chain_items.csv` indique, pour chaque aliment, de lequel de leurs 42 aliments il prend les étapes, avec une note quand c'est un substitut (le thé utilise les étapes du café). La cuisine, les déchets alimentaires et les eaux usées sont partagés selon la masse, car les étapes de Poore et Nemecek s'arrêtent à la distribution. Un pays sans chiffres de FAOSTAT utilise ceux de l'ensemble des pays du modèle. Une étape que FAOSTAT laisse vide pour un pays compte pour zéro.
 
-En France, une tonne de bœuf a environ 1,06 t CO₂e après la ferme, et une tonne de blé environ 0,31 t. Pour le bœuf, c'est peu par rapport aux émissions de la ferme. Pour le blé, c'est proche.
+En France, une tonne de bœuf a environ 1,08 t CO₂e après la ferme, et une tonne de blé environ 0,31 t. Pour le bœuf, c'est peu par rapport aux émissions de la ferme. Pour le blé, c'est proche.
 
-**Ce que changent les leviers.** Un changement de production (un changement de régime, moins de gaspillage, moins de pertes) change aussi les émissions après la ferme. Il le fait aliment par aliment, aux chiffres du pays. Comme les émissions de la ferme, elles suivent la référence et montent avec le changement. Elles comptent dans les [causes du réchauffement](#method-link) auxquelles elles appartiennent aujourd'hui : les étapes d'énergie dans *Combustibles fossiles et industrie*, les déchets alimentaires et les eaux usées dans *Autres émissions humaines*. Avec elles, le changement de régime complet évite environ 1,1 Gt CO₂e de plus par an, 6,6 Gt en tout une fois les leviers en place. Il évite 0,33 °C en 2100 au lieu de 0,28 °C.
+**Ce que changent les leviers.** Un changement de production (un changement de régime, moins de gaspillage, moins de pertes) change aussi les émissions après la ferme. Il le fait aliment par aliment, aux chiffres du pays. Comme les émissions de la ferme, elles suivent la référence et montent avec le changement. Elles comptent dans les [causes du réchauffement](#method-link) auxquelles elles appartiennent aujourd'hui : les étapes d'énergie dans *Combustibles fossiles et industrie* ; les déchets alimentaires, les eaux usées et les réfrigérants dans *Autres émissions humaines*. Avec elles, le changement de régime complet évite environ 1,6 Gt CO₂e de plus par an, 7,1 Gt en tout une fois les leviers en place, dont 329 kt de HFC-134a. Il évite 0,36 °C en 2100 au lieu de 0,28 °C.
 
 **Simplifications.** Tout est placé là où l'aliment est produit, comme les émissions de la ferme, bien que les magasins et les cuisines soient là où il est mangé. La cuisine et les déchets alimentaires suivent la masse d'un aliment, si bien qu'une tonne de blé et une tonne de bœuf ont les mêmes émissions à la maison. Moins de gaspillage réduit aussi les émissions de la cuisine des aliments qui ne sont plus gaspillés. Cela surestime un peu la réduction, car les aliments gaspillés ne sont pas toujours cuisinés. L'énergie après la ferme ne devient pas plus propre au fil des années, contrairement au réseau du scénario.
 
@@ -260,9 +262,9 @@ Pour chaque aliment, l'empreinte d'un pays additionne :
 
 Le total est divisé par la population du pays l'année de référence. Avec les leviers, le changement de régime et la réduction du gaspillage changent les aliments mangés. Les intensités de la ferme suivent les pratiques agricoles. La chaîne après la ferme et le défrichement par tonne ne changent pas.
 
-En CO₂e par personne et par an, l'empreinte est de 1,98 t en France, 2,36 t aux États-Unis, 1,99 t en Chine, 0,88 t en Inde et 4,31 t au Brésil. Au Brésil, le défrichement pour l'agriculture en représente environ la moitié, 2,19 t. En France, il représente 0,04 t. Le bœuf que la France importe vient surtout de ses voisins, les Pays-Bas, l'Irlande et le Royaume-Uni d'abord. Une grande part de son soja arrive en tourteau, qui prend la moyenne du monde. Avec tout le régime changé, l'empreinte de la France tombe à 0,88 t.
+En CO₂e par personne et par an, l'empreinte est de 2,03 t en France, 2,51 t aux États-Unis, 2,09 t en Chine, 0,92 t en Inde et 4,37 t au Brésil. Les réfrigérants en font 0,05 t en France et 0,15 t aux États-Unis. Au Brésil, le défrichement pour l'agriculture en représente environ la moitié, 2,19 t. En France, il représente 0,04 t. Le bœuf que la France importe vient surtout de ses voisins, les Pays-Bas, l'Irlande et le Royaume-Uni d'abord. Une grande part de son soja arrive en tourteau, qui prend la moyenne du monde. Avec tout le régime changé, l'empreinte de la France tombe à 0,90 t.
 
-Les estimations publiées pour la France sont souvent plus élevées. La raison principale tient aux intensités de la ferme. Celles de Planetshift sont inférieures d'un tiers à la moitié à celles de Poore et Nemecek pour la plupart des aliments (voir *Par kilogramme, face à Poore et Nemecek*), car elles comptent moins de sources. Les réfrigérants de la chaîne du froid et les sols organiques drainés sont aussi laissés de côté.
+Les estimations publiées pour la France sont souvent plus élevées. La raison principale tient aux intensités de la ferme. Celles de Planetshift sont inférieures d'un tiers à la moitié à celles de Poore et Nemecek pour la plupart des aliments (voir *Par kilogramme, face à Poore et Nemecek*), car elles comptent moins de sources. Les sols organiques drainés sont aussi laissés de côté.
 
 ## Substituts
 

@@ -140,12 +140,12 @@ describe('tooltip', () => {
 
   it('adds food’s emissions after the farm and the clearing CO₂ on the Emissions layer', () => {
     const c = countryResult({
-      chain: { co2: 2e8, ch4: 1e6, n2o: 0 },
-      chainChange: { co2: -5e7, ch4: 0, n2o: 0 },
+      chain: { co2: 2e8, ch4: 1e6, n2o: 0, hfc: 0 },
+      chainChange: { co2: -5e7, ch4: 0, n2o: 0, hfc: 0 },
       deforestationCo2: 4e8,
       deforestationChange: -1e8,
-      footprint: { co2: 900, ch4: 20, n2o: 1 },
-      footprintChange: { co2: -300, ch4: -10, n2o: 0 },
+      footprint: { co2: 900, ch4: 20, n2o: 1, hfc: 0 },
+      footprintChange: { co2: -300, ch4: -10, n2o: 0, hfc: 0 },
     });
     const co2 = tooltipModel('France', c, { ...spec, gas: 'co2' }, t, 'en-GB');
     expect(co2.rows.slice(4, 6).map(([k, v]) => [k, v.replace(/\u00a0/g, ' ')])).toEqual([

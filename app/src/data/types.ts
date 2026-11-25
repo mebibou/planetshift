@@ -3,9 +3,20 @@
 
 import type { Departures } from '../configSchema';
 
-export const GASES = ['co2', 'ch4', 'n2o'] as const;
+export const GASES = ['co2', 'ch4', 'n2o', 'hfc'] as const;
 export type Gas = (typeof GASES)[number];
 export type GasVector = Record<Gas, number>;
+
+/**
+ * The gases farming emits, which the files of intensities, emissions and attribution carry;
+ * `hfc` (HFC-134a, the cold chain's refrigerants) comes only after the farm.
+ */
+export const FARM_GASES = ['co2', 'ch4', 'n2o'] as const;
+export type FarmGas = (typeof FARM_GASES)[number];
+export type FarmGasVector = Record<FarmGas, number>;
+
+/** A farm gas vector's value of a gas, none of a gas farming does not emit. */
+export const farmGasOf = (v: FarmGasVector, gas: Gas): number => (gas === 'hfc' ? 0 : v[gas]);
 
 export const ANIMAL_GROUPS = [
   'ruminantMeat',
@@ -96,15 +107,18 @@ export interface Supply {
 export type Tier = 1 | 2 | 3 | 4 | 5 | 6;
 
 export interface Intensity {
-  kgPerTonne: GasVector;
+  kgPerTonne: FarmGasVector;
   tier: Tier;
   source: string; // a URL (HESTIA node or FAOSTAT domain)
 }
 /** oilcake[iso3][oilseedCode][scope]: kg of each gas a year the crushed oilseed's cake carries. */
-export type OilcakeEmissions = Record<string, Record<string, Partial<Record<Scope, GasVector>>>>;
+export type OilcakeEmissions = Record<
+  string,
+  Record<string, Partial<Record<Scope, FarmGasVector>>>
+>;
 
 /** nonFood[iso3]: kg of each gas a year from the animals raised but not farmed for food. */
-export type NonFoodEmissions = Record<string, GasVector>;
+export type NonFoodEmissions = Record<string, FarmGasVector>;
 
 export interface Intensities {
   byCountry: Record<string, Record<string, Partial<Record<Scope, Intensity>>>>;
@@ -192,6 +206,8 @@ export type ClimateMethod = 'fair' | 'ar6';
  */
 /** The causes some lever acts on. */
 export type LeverCause = 'fossilIndustry' | 'agriculture' | 'landUse';
+/** The causes the levers' avoided warming is split by gas in: their own and other human emissions. */
+export type GasLeverCause = LeverCause | 'other';
 
 /**
  * The causes the levers' effects are counted in: those a lever acts on, and air pollution, which
@@ -241,7 +257,7 @@ export interface Climate {
   /** Scenario temperature vs 1850–1900, from FaIR, historical then scenario, 1850–2100. */
   scenarioTemperature: Record<Ssp, BandSeries>;
   /** World agricultural emissions, kg per year by gas, PRIMAP-hist then scenario, 1850–2100. */
-  agricultureEmissions: Record<Ssp, Record<Gas, Series>>;
+  agricultureEmissions: Record<Ssp, Record<FarmGas, Series>>;
   /** Warming attributed to each cause, °C vs 1850–1900, 1850–2100 under each SSP. */
   attribution: Record<
     Ssp,

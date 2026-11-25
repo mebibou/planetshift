@@ -420,6 +420,10 @@ const agtpCh4 = hs.map(
     3e-15 * (1 - Math.exp(-h / 5)) * Math.exp(-h / 400),
 );
 const agtpN2o = hs.map((h) => 1.6e-13 * (1 - Math.exp(-h / 4)) * Math.exp(-h / 150) + 1e-15);
+// HFC-134a: FaIR's 1.4e-12 at 20 years and 1.6e-13 at 100.
+const agtpHfc = hs.map(
+  (h) => 4e-12 * (Math.exp(-h / 14) - Math.exp(-h / 3)) + 1.6e-13 * (1 - Math.exp(-h / 10)),
+);
 const band = (m) => ({
   median: m.map((v) => Number(v.toPrecision(4))),
   p05: m.map((v) => Number((v * 0.7).toPrecision(4))),
@@ -482,6 +486,7 @@ const gasShare = {
   co2: { fossilIndustry: 0.66, agriculture: 0.01, landUse: 0.12, other: 0.02 },
   ch4: { fossilIndustry: 0.08, agriculture: 0.17, other: 0.07 },
   n2o: { fossilIndustry: 0.01, agriculture: 0.06, other: 0.01 },
+  hfc: { other: 0.012 },
 };
 // Natural forcing alone: a flat line near zero, with a dip after each large eruption.
 const natural = (y) =>
@@ -493,8 +498,13 @@ const natural = (y) =>
 write('climate.json', {
   observed: { hadcrut5: observed(1850, 2024, 0), berkeley: observed(1850, 2025, 0.03) },
   agtp: {
-    fair: { co2: band(agtpCo2), ch4: band(agtpCh4), n2o: band(agtpN2o) },
-    ar6: { co2: medianOnly(agtpCo2), ch4: medianOnly(agtpCh4), n2o: medianOnly(agtpN2o) },
+    fair: { co2: band(agtpCo2), ch4: band(agtpCh4), n2o: band(agtpN2o), hfc: band(agtpHfc) },
+    ar6: {
+      co2: medianOnly(agtpCo2),
+      ch4: medianOnly(agtpCh4),
+      n2o: medianOnly(agtpN2o),
+      hfc: medianOnly(agtpHfc),
+    },
   },
   scenarioTemperature: Object.fromEntries(
     ssps.map((s) => [s, bandSeries((y) => projected(s, y), 1850, 2100, spreadT)]),
@@ -870,6 +880,7 @@ write('chain.json', {
   byCountry: {
     FRA: {
       processing: { co2: 350 },
+      retail: { co2: 90, hfc: 0.8 },
       transport: { co2: 420 },
       household: { co2: 30 },
       waste: { ch4: 3.8 },

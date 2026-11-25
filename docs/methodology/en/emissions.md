@@ -224,25 +224,27 @@ No FAOSTAT domain counts draught animals. The rule therefore uses only stocks, m
 
 ## After the farm
 
-Food also causes emissions after it leaves the farm. It is processed, transported, packaged and sold, cooked at home, and thrown away. FAOSTAT's *Emissions from pre- and post-production* gives each country's CO₂, methane and N₂O from each of these stages, in its latest year. In 2024 the model's countries emit 5.0 Gt CO₂e after the farm:
+Food also causes emissions after it leaves the farm. It is processed, transported, packaged and sold, cooked at home, and thrown away. FAOSTAT's *Emissions from pre- and post-production* gives each country's CO₂, methane, N₂O and fluorinated gases from each of these stages, in its latest year. In 2024 the model's countries emit 6.0 Gt CO₂e after the farm:
 
 | Stage | Mt CO₂e (GWP100) | Shared between foods by |
 | --- | --- | --- |
 | Food waste: solid waste, incineration and the food industry's wastewater | 1,638 | mass |
-| Cooking at home | 1,495 | mass |
-| Transport | 522 | Poore & Nemecek's stage |
-| Processing | 476 | Poore & Nemecek's stage |
+| Cooking at home | 1,506 | mass |
+| Retail | 1,105 | Poore & Nemecek's stage |
+| Transport | 566 | Poore & Nemecek's stage |
+| Processing | 514 | Poore & Nemecek's stage |
 | Domestic wastewater | 368 | mass |
 | Packaging | 277 | Poore & Nemecek's stage |
-| Retail | 234 | Poore & Nemecek's stage |
 
-Three of FAOSTAT's stages are left out. The making of fertilisers and the making of pesticides are already counted from cradle to farm gate. The refrigerants that leak from the cold chain (0.84 Gt CO₂e) are fluorinated gases, which the model does not include yet.
+The making of fertilisers and the making of pesticides are left out, as they are already counted from cradle to farm gate.
+
+**Refrigerants.** The refrigerants that leak from the cold chain are fluorinated gases. FAOSTAT gives them for each stage in CO₂e, with AR5's GWP100. Planetshift counts them as HFC-134a, the main refrigerant: it converts each stage's CO₂e back to kg of HFC-134a with its AR5 GWP100 of 1,300. They then warm through HFC-134a's own response, from FaIR or from AR6's formulas (a lifetime of 14 years, a radiative efficiency of 0.167 W m⁻² ppb⁻¹), and weigh 1,530 times CO₂ in CO₂e (AR6). They are most of retail's emissions in the table above. The Kigali amendment phases these gases down, which the model does not follow: like the rest of the chain, they scale with the baseline.
 
 **Shared between foods.** For processing, transport, packaging and retail, each food's share of its country's total is its production times Poore and Nemecek's (2018) emissions per kg of that food at that stage. Our World in Data publishes these figures (CC BY 4.0). At processing, beef has 1.81 kg CO₂e per kg and wheat 0.21. `pipeline/chain_items.csv` says which of their 42 foods each food takes its stages from, with a note where it is a stand-in (tea uses coffee's stages). Cooking, food waste and wastewater are shared by mass, because Poore and Nemecek's stages end at retail. A country without FAOSTAT figures uses those of the model's countries together. A stage FAOSTAT leaves empty for a country is counted as zero.
 
-In France, a tonne of beef has about 1.06 t CO₂e after the farm, and a tonne of wheat about 0.31 t. That is small compared with the beef's farm emissions, and close to the wheat's.
+In France, a tonne of beef has about 1.08 t CO₂e after the farm, and a tonne of wheat about 0.31 t. That is small compared with the beef's farm emissions, and close to the wheat's.
 
-**What the levers change.** A change in production (a diet shift, less food waste, fewer supply losses) also changes the emissions after the farm. It does so food by food, at the country's figures. Like the farm's emissions, they scale with the baseline and ramp in with the shift. They count in the [causes of warming](#method-link) they belong to today: the energy stages in *Fossil fuels and industry*, food waste and wastewater in *Other human emissions*. With them, the whole diet shift avoids about 1.1 Gt CO₂e a year more, 6.6 Gt in all once the levers are in full. It avoids 0.33 °C by 2100 rather than 0.28 °C.
+**What the levers change.** A change in production (a diet shift, less food waste, fewer supply losses) also changes the emissions after the farm. It does so food by food, at the country's figures. Like the farm's emissions, they scale with the baseline and ramp in with the shift. They count in the [causes of warming](#method-link) they belong to today: the energy stages in *Fossil fuels and industry*; food waste, wastewater and the refrigerants in *Other human emissions*. With them, the whole diet shift avoids about 1.6 Gt CO₂e a year more, 7.1 Gt in all once the levers are in full, of which 329 kt of HFC-134a. It avoids 0.36 °C by 2100 rather than 0.28 °C.
 
 **Simplifications.** Everything is placed where the food is produced, as for the farm's emissions, though shops and kitchens are where it is eaten. Cooking and food waste follow a food's mass, so a tonne of wheat and a tonne of beef have the same emissions at home. Less food waste also cuts the cooking emissions of the food no longer wasted. This slightly overstates the cut, because wasted food is not always cooked. The energy after the farm does not get cleaner over the years, unlike the scenario's grid.
 
@@ -260,9 +262,9 @@ For each food, a country's footprint adds up:
 
 The total is divided by the country's population in the base year. With the levers, the diet shift and less food waste change the food eaten. The farm's intensities change with the farm practices. The chain after the farm and the clearing per tonne do not change.
 
-In CO₂e per person a year, France's footprint is 1.98 t, the United States' 2.36 t, China's 1.99 t, India's 0.88 t and Brazil's 4.31 t. In Brazil, clearing for farming is about half, 2.19 t. In France it is 0.04 t. France's imported beef comes mostly from its neighbours, the Netherlands, Ireland and the United Kingdom first. Much of its soy arrives as cake, which takes the world's average. With the whole diet shifted, France's footprint falls to 0.88 t.
+In CO₂e per person a year, France's footprint is 2.03 t, the United States' 2.51 t, China's 2.09 t, India's 0.92 t and Brazil's 4.37 t. The refrigerants are 0.05 t of France's and 0.15 t of the United States'. In Brazil, clearing for farming is about half, 2.19 t. In France it is 0.04 t. France's imported beef comes mostly from its neighbours, the Netherlands, Ireland and the United Kingdom first. Much of its soy arrives as cake, which takes the world's average. With the whole diet shifted, France's footprint falls to 0.90 t.
 
-Published estimates for France are often higher. The main reason is the farm's intensities. Planetshift's intensities are a third to a half below Poore and Nemecek's for most foods (see *Per kilogram, against Poore and Nemecek*), as they count fewer sources. The cold chain's refrigerants and drained organic soils are left out too.
+Published estimates for France are often higher. The main reason is the farm's intensities. Planetshift's intensities are a third to a half below Poore and Nemecek's for most foods (see *Per kilogram, against Poore and Nemecek*), as they count fewer sources. Drained organic soils are left out too.
 
 ## Proxies
 

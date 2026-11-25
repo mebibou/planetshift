@@ -7,6 +7,7 @@ import {
   type Ssp,
   type CauseWarming,
   type Gas,
+  type GasLeverCause,
   type GasVector,
   type CountedCause,
   type Item,
@@ -21,7 +22,7 @@ import {
   DIET_CAUSE,
   FAMILIES,
   FARM_FAMILIES,
-  LEVER_CAUSES,
+  GAS_LEVER_CAUSES,
 } from '../levers/registry';
 import { MODULES } from '../levers/modules';
 import type {
@@ -685,8 +686,8 @@ const farmTotal = (
   family: string,
   band: Band,
 ): Joint<GasVector> => {
-  const own = { co2: 0, ch4: 0, n2o: 0 };
-  const joint = { co2: 0, ch4: 0, n2o: 0 };
+  const own = { co2: 0, ch4: 0, n2o: 0, hfc: 0 };
+  const joint = { co2: 0, ch4: 0, n2o: 0, hfc: 0 };
   for (const p of parts) {
     const cut = p.cuts[family]?.[band];
     const o = cut ? cut.own : (p.farm[family] ?? ZERO_GAS);
@@ -694,9 +695,11 @@ const farmTotal = (
     own.co2 += o.co2;
     own.ch4 += o.ch4;
     own.n2o += o.n2o;
+    own.hfc += o.hfc;
     joint.co2 += j.co2;
     joint.ch4 += j.ch4;
     joint.n2o += j.n2o;
+    joint.hfc += j.hfc;
   }
   return { own, joint };
 };
@@ -787,6 +790,7 @@ const gridPath = (
         co2: kg * (ratio(y) - 1) * scale('co2', y) * shareAt(y),
         ch4: 0,
         n2o: 0,
+        hfc: 0,
       }));
 
 /**
@@ -811,6 +815,7 @@ const familyPath = (
       co2: at('co2', clearing.own, clearing.joint),
       ch4: at('ch4', 0, 0),
       n2o: at('n2o', 0, 0),
+      hfc: at('hfc', 0, 0),
     };
   });
 
@@ -1763,17 +1768,17 @@ export const runPrepared = (
     (causeShares[COUNTED_CAUSES.indexOf(c)] ?? []).map((v) => 0 - v),
   );
   const leverGas = Object.fromEntries(
-    LEVER_CAUSES.map((c) => [
+    GAS_LEVER_CAUSES.map((c) => [
       c,
       gasShares(causeGas[c], causeChange[c], causeShares[COUNTED_CAUSES.indexOf(c)] ?? []),
     ]),
-  ) as Record<LeverCause, Record<Gas, number[]>>;
+  ) as Record<GasLeverCause, Record<Gas, number[]>>;
   const avoidedByGas = Object.fromEntries(
     GASES.map((g) => [
       g,
-      Object.fromEntries(LEVER_CAUSES.map((c) => [c, leverGas[c][g].map((v) => 0 - v)])),
+      Object.fromEntries(GAS_LEVER_CAUSES.map((c) => [c, leverGas[c][g].map((v) => 0 - v)])),
     ]),
-  ) as Record<Gas, Record<LeverCause, number[]>>;
+  ) as Record<Gas, Record<GasLeverCause, number[]>>;
 
   const shares = familyShares(frame, full, chains);
   const feedbackAt = HORIZON_YEARS.map((y) => 0 - (feedbackDelta.median[y - FIRST_YEAR] ?? 0));

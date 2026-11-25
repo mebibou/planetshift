@@ -1,7 +1,7 @@
 import { GASES, type BandSeries, type Climate, type Meta, type Series } from '../data/types';
 import { populationPath } from '../chart/populationArea';
 import type { Options, Scenario, ScenarioResult } from '../model/api';
-import { attributionFor, causesIn, type Attribution } from '../chart/series';
+import { attributionFor, causeGasesOf, causesIn, type Attribution } from '../chart/series';
 import { measureOf, type LayerSpec, type Measure } from '../map/layers';
 import type { TableRow } from '../map/table';
 import type { ChartTab, UiState } from './url';
@@ -232,11 +232,9 @@ export const causeRows = (
 ): { header: string[]; rows: Cell[][] } => {
   const attribution = attributionFor(climate, options.ssp, 'all', temperature);
   const causes = attributionColumns(attribution, '');
-  const gases = climate.attributionByGas
-    ? GASES.map((g) =>
-        attributionColumns(attributionFor(climate, options.ssp, g, temperature), `${g}_`),
-      )
-    : [];
+  const gases = GASES.filter((g) => causeGasesOf(climate).includes(g)).map((g) =>
+    attributionColumns(attributionFor(climate, options.ssp, g, temperature), `${g}_`),
+  );
   const observed = seriesAt(climate.observed[options.temperature]);
   return {
     header: ['year', ...causes.header, 'observed_degC', ...gases.flatMap((g) => g.header)],

@@ -38,7 +38,14 @@ describe('convolution', () => {
     expect(convolve([1], 2000, short, [2010])).toEqual([3]);
   });
   it('sums the gases', () => {
-    const t = warmingFrom([{ co2: 1, ch4: 1, n2o: 1 }], 2030, climate, 'fair', 'median', [2040]);
+    const t = warmingFrom(
+      [{ co2: 1, ch4: 1, n2o: 1, hfc: 0 }],
+      2030,
+      climate,
+      'fair',
+      'median',
+      [2040],
+    );
     const expected = (['co2', 'ch4', 'n2o'] as const).reduce(
       (a, g) => a + (agtpOf(climate, 'fair', g, 'median')[10] as number),
       0,

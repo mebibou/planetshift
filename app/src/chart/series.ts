@@ -87,11 +87,20 @@ export type Attribution = Partial<Record<Cause, BandSeries>>;
 export const CAUSE_GASES = ['all', ...GASES] as const;
 export type CauseGas = (typeof CAUSE_GASES)[number];
 
+/** The gas choices a build has a split for: all gases alone without one, and HFCs only from builds that run them. */
+export const causeGasesOf = (climate: Climate): CauseGas[] =>
+  CAUSE_GASES.filter(
+    (g) =>
+      g === 'all' ||
+      (climate.attributionByGas !== undefined &&
+        Object.values(climate.attributionByGas).every((bySsp) => bySsp[g] !== undefined)),
+  );
+
 /** The attribution of a gas choice; all gases' when the build has no split by gas. */
 export const attributionOf = (climate: Climate, ssp: Ssp, gas: CauseGas): Attribution =>
   gas === 'all'
     ? climate.attribution[ssp]
-    : (climate.attributionByGas?.[ssp][gas as Gas] ?? climate.attribution[ssp]);
+    : (climate.attributionByGas?.[ssp][gas] ?? climate.attribution[ssp]);
 
 /** A change by cause on `years`, the warming the baseline adds to or takes from each. */
 export interface CauseChange {
@@ -123,7 +132,7 @@ const zeroBand = (years: number[]): BandSeries => {
 export const shiftedBy = (attribution: Attribution, change: CauseChange | null): Attribution => {
   const index = new Map(change?.years.map((y, i) => [y, i]));
   const zero = zeroBand(Object.values(attribution)[0]?.years ?? []);
-  const causes = CAUSES.filter((c) => attribution[c] ?? change?.byCause[c]);
+  const causes = CAUSES.filter((c) => attribution[c] ?? change?.byCause[c]?.some((v) => v !== 0));
   return change
     ? (Object.fromEntries(
         causes.map((c) => {

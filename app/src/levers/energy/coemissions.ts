@@ -63,7 +63,7 @@ const coChangeOf = (
 export const coGases = (co2: readonly number[], co: readonly CoYear[]): GasVector[] =>
   co2.map((v, i) => {
     const change = (co[i] as CoYear).change;
-    return { co2: v + change.co2, ch4: change.ch4, n2o: change.n2o };
+    return { co2: v + change.co2, ch4: change.ch4, n2o: change.n2o, hfc: 0 };
   });
 
 const rangeAt = (co: CoEmissions, r: RangeSeries, year: number): Range3 => ({

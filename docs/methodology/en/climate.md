@@ -22,7 +22,7 @@ So Planetshift carries each gas separately, from the emission factors to the tem
 
 ## The temperature response to one kilogram
 
-For each gas, the pipeline computes the absolute global temperature change potential (AGTP). It is how much warmer the world is, year by year, after one kilogram of the gas is emitted in year 0. The curve covers 0 to 200 years after the emission.
+For each gas, the pipeline computes the absolute global temperature change potential (AGTP). It is how much warmer the world is, year by year, after one kilogram of the gas is emitted in year 0. The curve covers 0 to 200 years after the emission. The gases are CO₂, methane, N₂O and HFC-134a, which stands for the food cold chain's refrigerants (see [Emissions](#method-emissions), *After the farm*). FaIR's HFC-134a pulse is 10 kt.
 
 The curves come from FaIR, a simple climate model used in the IPCC's Sixth Assessment Report (AR6). FaIR is run with 841 sets of parameters, each consistent with the climate observed so far. The app keeps, for each year after the emission, the median of the 841 and their 5th and 95th percentiles.
 

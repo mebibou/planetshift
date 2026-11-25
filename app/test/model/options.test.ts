@@ -79,7 +79,8 @@ describe('options', () => {
     expect(r.summary.avoidedCo2e).toBeCloseTo(
       r.summary.avoided.co2 +
         r.summary.avoided.ch4 * GWP100.ch4 +
-        r.summary.avoided.n2o * GWP100.n2o,
+        r.summary.avoided.n2o * GWP100.n2o +
+        r.summary.avoided.hfc * GWP100.hfc,
       0,
     );
   });

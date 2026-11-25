@@ -13,6 +13,7 @@ import numpy as np
 from . import climate_ar6, climate_fair
 from .cache import DEFAULT_CACHE
 from .climate_scenarios import (
+    ATTRIBUTION_GASES,
     CAUSES,
     GASES,
     GREENHOUSE,
@@ -70,11 +71,13 @@ AGTP_SSP = "ssp245"
 HORIZON = 200
 PULSE_YEAR = 2035
 PULSE_YEARS = (2025, 2035, 2045)
-# Pulse sizes in FaIR's units (Gt CO₂, Mt CH₄, Mt N₂O): small against annual emissions,
-# far above rounding error. The ×10 sizes test linearity.
-PULSES = {"co2": 1.0, "ch4": 1.0, "n2o": 0.1}
-PULSE_SPECIE = {"co2": "CO2 FFI", "ch4": "CH4", "n2o": "N2O"}
-KG_PER_UNIT = {"co2": 1e12, "ch4": 1e9, "n2o": 1e9}
+# Pulse sizes in FaIR's units (Gt CO₂, Mt CH₄, Mt N₂O, kt HFC-134a): small against annual
+# emissions, far above rounding error. The ×10 sizes test linearity. `hfc` is HFC-134a, the
+# stand-in for the food cold chain's refrigerants, which has an AGTP curve but no attribution.
+PULSES = {"co2": 1.0, "ch4": 1.0, "n2o": 0.1, "hfc": 10.0}
+PULSE_SPECIE = {"co2": "CO2 FFI", "ch4": "CH4", "n2o": "N2O", "hfc": "HFC-134a"}
+KG_PER_UNIT = {"co2": 1e12, "ch4": 1e9, "n2o": 1e9, "hfc": 1e6}
+AGTP_GASES = (*GASES, "hfc")
 FIRST_YEAR = 1850
 EMISSIONS_END = 2100
 ATTRIBUTION_END = 2100
@@ -194,10 +197,10 @@ def year_spread(pulses: dict[str, np.ndarray], gas: str) -> float:
 def pulse_plan(diagnostics: bool = False) -> list[tuple[str, int, float]]:
     """The pulse each AGTP curve is read from, and with `diagnostics` those that check it does not
     depend on the year or the size of the pulse."""
-    main = [(gas, PULSE_YEAR, 1.0) for gas in GASES]
-    checks = [(gas, year, 1.0) for gas in GASES for year in PULSE_YEARS if year != PULSE_YEAR] + [
-        (gas, PULSE_YEAR, 10.0) for gas in GASES
-    ]
+    main = [(gas, PULSE_YEAR, 1.0) for gas in AGTP_GASES]
+    checks = [
+        (gas, year, 1.0) for gas in AGTP_GASES for year in PULSE_YEARS if year != PULSE_YEAR
+    ] + [(gas, PULSE_YEAR, 10.0) for gas in AGTP_GASES]
     return main + (checks if diagnostics else [])
 
 
@@ -234,17 +237,19 @@ def gas_removals(
     A cause that emits that gas alone is its own run already, given as an alias."""
     alone = {
         gas_key(c, g): c
-        for g in GASES
+        for g in ATTRIBUTION_GASES
         for c in gas_causes(taken, g)
         if of_gas(taken[c], g).keys() == taken[c].keys()
     }
     parts = {
         gas_key(c, g): of_gas(taken[c], g)
-        for g in GASES
+        for g in ATTRIBUTION_GASES
         for c in gas_causes(taken, g)
         if gas_key(c, g) not in alone
     }
-    totals = {gas_key(ALL_SOURCES, g): all_of_gas(emissions, baseline, g) for g in GASES}
+    totals = {
+        gas_key(ALL_SOURCES, g): all_of_gas(emissions, baseline, g) for g in ATTRIBUTION_GASES
+    }
     return parts | totals, alone
 
 
@@ -312,7 +317,7 @@ def gas_contributions(
         }
         return {"total": total, **causes, "other": total - sum(causes.values())}
 
-    return {gas: one(gas) for gas in GASES}
+    return {gas: one(gas) for gas in ATTRIBUTION_GASES}
 
 
 def additivity_gap(years: np.ndarray, runs: dict[str, np.ndarray]) -> np.ndarray:
@@ -408,7 +413,7 @@ def observed(cache_dir: Path) -> dict:
 def agtp_section(pulses: dict[str, np.ndarray]) -> dict:
     fair = {
         gas: {k: rounded(v) for k, v in band(pulses[pulse_key(gas, PULSE_YEAR, 1.0)]).items()}
-        for gas in GASES
+        for gas in AGTP_GASES
     }
     ar6 = {
         gas: {k: rounded(curve) for k in ("median", "p05", "p95")}
@@ -578,7 +583,7 @@ def summary(document: dict, diagnostics: dict) -> list[str]:
         f"natural factors only, 2010–2019: {np.median(natural):.3f} "
         f"({np.percentile(natural, 5):.3f}–{np.percentile(natural, 95):.3f})",
         *(line for ssp in SSPS for line in ssp_lines(diagnostics, ssp)),
-        *(agtp_line(document, diagnostics["pulses"], gas) for gas in GASES),
+        *(agtp_line(document, diagnostics["pulses"], gas) for gas in AGTP_GASES),
     ]
 
 

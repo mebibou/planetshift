@@ -6,7 +6,7 @@ import { runScenario } from '../../src/model/run';
 import { BASE_SCENARIO } from '../../src/model/scenarios';
 import { CURRENT_YEAR, loadFixtures } from './fixtures';
 
-const CAKE: GasVector = { co2: 2e8, ch4: 3e6, n2o: 4e5 };
+const CAKE: GasVector = { co2: 2e8, ch4: 3e6, n2o: 4e5, hfc: 0 };
 const CAKE_HA = 1e5;
 
 const withCake = (cake: Partial<Record<'farmGate' | 'cradleToFarmGate', GasVector>>): ModelData => {
