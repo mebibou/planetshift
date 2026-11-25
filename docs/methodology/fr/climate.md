@@ -22,7 +22,7 @@ Planetshift garde donc chaque gaz séparé, des facteurs d'émission jusqu'à la
 
 ## La réponse de la température à un kilogramme
 
-Pour chaque gaz, le pipeline calcule le potentiel absolu de changement de température mondiale (AGTP). C'est l'écart de température du monde, année après année, après l'émission d'un kilogramme du gaz l'année 0. La courbe couvre de 0 à 200 ans après l'émission. Les gaz sont le CO₂, le méthane, le N₂O et le HFC-134a, qui représente les réfrigérants de la chaîne du froid alimentaire (voir [Émissions](#method-emissions), *Après la ferme*). L'impulsion de HFC-134a dans FaIR est de 10 kt.
+Pour chaque gaz, le pipeline calcule le potentiel absolu de changement de température mondiale (AGTP). C'est l'écart de température du monde, année après année, après l'émission d'un kilogramme du gaz l'année 0. La courbe couvre de 0 à 200 ans après l'émission. Les gaz sont le CO₂, le méthane, le N₂O et le HFC-134a. Le HFC-134a tient lieu des réfrigérants de la chaîne du froid alimentaire (voir [Émissions](#method-emissions), *Après la ferme*). L'impulsion de HFC-134a dans FaIR est de 10 kt.
 
 Les courbes viennent de FaIR, un modèle climatique simple utilisé dans le sixième rapport d'évaluation du GIEC (AR6). FaIR tourne avec 841 jeux de paramètres, chacun compatible avec le climat observé jusqu'ici. L'application garde, pour chaque année après l'émission, la médiane des 841 et leurs 5e et 95e centiles.
 
