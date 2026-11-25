@@ -325,6 +325,17 @@ export interface Mammals {
   source: string;
 }
 
+/** Species committed to extinction per hectare: [average, marginal]. */
+export type SpeciesPerHa = [number, number];
+
+/** species.json: species per hectare by country; the targeted fish with and without fishing, t. */
+export interface Species {
+  byCountry: Record<string, { cropland: SpeciesPerHa; pasture: SpeciesPerHa }>;
+  described: number;
+  fish: { unfished: number; fished: number };
+  source: string;
+}
+
 /**
  * All files loaded together: the core's here, each lever module's added by its `data.ts`
  * (app/src/levers/<id>/data.ts), which also describes the file.
@@ -346,6 +357,8 @@ export interface ModelData {
   impacts?: Impacts;
   /** Optional: a build without it has no farmed mammals figure or map layer. */
   mammals?: Mammals;
+  /** Optional: a build without it has no species or fish figures and no species map layer. */
+  species?: Species;
   /** Not a file: the build's departures from FaIR stand for it when it is unset. */
   departures?: Departures;
 }

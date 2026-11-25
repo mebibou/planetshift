@@ -186,10 +186,12 @@
       "deforestation": "Deforestation",
       "landCo2": "Land-use CO₂",
       "mammals": "Farmed mammals",
+      "species": "Species loss",
       "change": "Change",
       "quality": "Data quality"
     },
     "changeOf": "Change in",
+    "speciesPer": { "legend": "Count", "country": "By country", "farmland": "Per Mha of farmland" },
     "gas": "Gas",
     "group": "Food",
     "country": "Country",
@@ -203,7 +205,9 @@
       "deforestation": "Forest cleared for farming with the levers, a year",
       "landCo2": "Net CO₂ from land-use change with the levers, a year (today's: mean of {from}–{to})",
       "landShare": "Share of the land farmed (cropland and pasture) with the levers",
-      "mammals": "Farmed mammals' live weight per km² of land with the levers"
+      "mammals": "Farmed mammals' live weight per km² of land with the levers",
+      "species": "Species committed to extinction by the country's farmland, with the levers",
+      "speciesDensity": "Species committed to extinction per Mha of the country's farmland, with the levers"
     },
     "notes": {
       "production": "Where food is grown, not where it is eaten.",
@@ -213,7 +217,8 @@
       "quality": "Neighbouring countries can differ only because their figures come from different sources.",
       "deforestation": "Forest cleared for crops and pasture in each country once the levers are fully in place, in hectares a year. The tooltip gives today's clearing, the change and the CO₂ it releases.",
       "landCo2": "Each country's net CO₂ from all land-use change: forest cleared for any reason, peat drained and other changes, less forest regrowing on abandoned land. Blue countries take up more than they release. Today's figure is the mean of the Global Carbon Budget's three bookkeeping models over the years shown. The levers change two parts of it. One is the forest cleared for farming (the Deforestation layer shows its area). The other is the CO₂ that freed farmland takes up as it grows back, when Freed farmland is set to Grows back in the options. The rest of each country's land-use CO₂ stays as it is.",
-      "mammals": "Cattle, buffalo, sheep, goats, pigs, camels, llamas, horses, asses and mules as FAOSTAT counts them, times IPCC's typical live weight in each region, per km² of each country's land. Each herd grows or shrinks with the production of the food it gives. Animals kept for work stay. The summary sets the world's farmed mammals against its wild ones. The tooltip gives the tonnes."
+      "mammals": "Cattle, buffalo, sheep, goats, pigs, camels, llamas, horses, asses and mules as FAOSTAT counts them, times IPCC's typical live weight in each region, per km² of each country's land. Each herd grows or shrinks with the production of the food it gives. Animals kept for work stay. The summary sets the world's farmed mammals against its wild ones. The tooltip gives the tonnes.",
+      "species": "The species of plants, mammals, birds, reptiles and amphibians that each country's cropland and pasture commit to extinction worldwide. Each is Scherer et al. (2023)'s factor for the land, times the species described in each group. It is a loss committed over time if the land stays farmed. It is not the number of species lost by a given year. Land newly farmed commits more species, at the factor for the next hectare. Freed farmland gives species back only when Freed farmland is set to Grows back in the options. Per Mha of farmland divides each country's count by its cropland and pasture. It shows where a hectare commits the most species. The tooltip gives the farmland."
     },
     "tooltip": {
       "noData": "No data for this country",
@@ -234,6 +239,8 @@
       "deforestationCo2": "CO₂ from the clearing, a year",
       "landShare": "Share of the land farmed",
       "mammals": "Farmed mammals per km² of land",
+      "species": "Species committed to extinction",
+      "speciesDensity": "Species committed per Mha of farmland",
       "mammalsWeight": "Live weight of farmed mammals"
     },
     "noClearing": "No clearing or no data",
@@ -307,6 +314,15 @@
       "label": "Farmed mammals to wild ones, by weight",
       "ratio": "{value} to 1",
       "detail": "farmed {before} → {after} of live weight once the levers are in full; wild, on land and at sea, {wild} (Greenspoon et al. 2023)"
+    },
+    "species": {
+      "label": "Species committed to extinction by farmland",
+      "detail": "{before} → {after} of the {described} described species of plants, mammals, birds, reptiles and amphibians. Freed farmland left as it is gives none back (Scherer et al. 2023)",
+      "detailRegrows": "{before} → {after} of the {described} described species of plants, mammals, birds, reptiles and amphibians, once freed farmland has grown back (Scherer et al. 2023)"
+    },
+    "fish": {
+      "label": "Fish the fisheries target, against an unfished ocean",
+      "detail": "{before} → {after} of the {unfished} there would be without fishing, as the catch changes by {change} (Bianchi et al. 2021)"
     },
     "protein": "Protein per person",
     "kcal": "Calories per person",

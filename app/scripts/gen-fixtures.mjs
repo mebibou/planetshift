@@ -839,6 +839,20 @@ write('mammals.json', {
   source: 'Synthetic fixture',
 });
 
+// species committed to extinction per ha of cropland and pasture, [average, marginal]; NGA left
+// without factors
+write('species.json', {
+  byCountry: {
+    FRA: { cropland: [9.7e-6, 1.8e-5], pasture: [3.9e-5, 4.8e-5] },
+    USA: { cropland: [5.5e-6, 1.1e-5], pasture: [1.1e-5, 2.0e-5] },
+    IND: { cropland: [3.1e-6, 7.2e-6], pasture: [8.0e-6, 1.5e-5] },
+    BRA: { cropland: [2.6e-5, 4.9e-5], pasture: [3.1e-5, 6.1e-5] },
+  },
+  described: 421093,
+  fish: { unfished: 3.3e9, fished: 1.1e9 },
+  source: 'Synthetic fixture',
+});
+
 // carbon stored in farmland, t CO₂ per ha a year
 const removal = (rate, appliesTo, maxShare, years) => ({
   rate: Object.fromEntries(

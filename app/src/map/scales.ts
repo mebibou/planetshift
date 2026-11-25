@@ -47,6 +47,12 @@ export const LAND_SHARE_THRESHOLDS = [0.05, 0.1, 0.2, 0.3, 0.45, 0.6];
 /** Farmed mammals, tonnes of live weight per km² of land: fixed bins, as for the land share. */
 export const MAMMAL_THRESHOLDS = [1, 2.5, 5, 10, 20, 40];
 
+/** Species committed to extinction by a country's farmland: fixed bins, as for the mammals. */
+export const SPECIES_THRESHOLDS = [25, 100, 250, 500, 1000, 2500];
+
+/** Species committed per Mha of farmland: fixed bins. */
+export const SPECIES_DENSITY_THRESHOLDS = [2.5, 5, 10, 25, 50, 100];
+
 export const thresholdsFor = (kind: ScaleKind, values: number[], bins: number): number[] => {
   const positive = values.filter((v) => v > 0);
   return kind === 'quality'

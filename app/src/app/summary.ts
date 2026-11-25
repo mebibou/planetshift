@@ -4,15 +4,17 @@ import {
   formatMass,
   formatNumber,
   formatPercent,
+  formatSignificant,
   formatSignedArea,
   formatTemperature,
   massUnit,
 } from '../i18n/format';
 import { SUMMARY_MODULES } from '../levers/registry';
 import type { Format } from '../levers/types';
-import type { Mammals } from '../data/types';
+import type { Mammals, Species } from '../data/types';
 import type { Options, ScenarioResult } from '../model/api';
 import { mammalRatio, type MammalRatio } from './mammals';
+import { fishTotal, speciesTotal, type FishTotal, type SpeciesTotal } from './species';
 import { gasChange, landStat, type PerCapita } from './summaryModel';
 import type { Milestone, Milestones } from './milestones';
 
@@ -111,6 +113,56 @@ export const mammalStat = (t: T, locale: string, m: MammalRatio): Stat => ({
   className: 'stat-mammals',
 });
 
+/**
+ * Species committed to extinction by farmland, today and with the levers, as a count and a share
+ * of the described species; the note says whether freed farmland gives any back.
+ */
+export const speciesStat = (t: T, locale: string, s: SpeciesTotal, regrows: boolean): Stat => ({
+  label: t('summary.species.label'),
+  value: t('summary.beforeAfter', {
+    before: formatSignificant(locale, s.before, 2),
+    after: formatSignificant(locale, s.after, 2),
+  }),
+  detail: t(regrows ? 'summary.species.detailRegrows' : 'summary.species.detail', {
+    before: formatPercent(locale, s.before / s.described, 1),
+    after: formatPercent(locale, s.after / s.described, 1),
+    described: formatNumber(locale, s.described, 0),
+  }),
+  className: 'stat-species',
+});
+
+/** The fish the fisheries target, as a share of an unfished ocean's, today and with the levers. */
+export const fishStat = (t: T, locale: string, f: FishTotal): Stat => ({
+  label: t('summary.fish.label'),
+  value: t('summary.beforeAfter', {
+    before: formatPercent(locale, f.before / f.unfished),
+    after: formatPercent(locale, f.after / f.unfished),
+  }),
+  detail: t('summary.fish.detail', {
+    before: formatMass(locale, f.before * 1000),
+    after: formatMass(locale, f.after * 1000),
+    unfished: formatMass(locale, f.unfished * 1000),
+    change: formatPercent(locale, f.catchChange, 0, true),
+  }),
+  className: 'stat-fish',
+});
+
+/** The species and fish figures, where the data has species.json. */
+const natureStats = (
+  t: T,
+  locale: string,
+  result: ScenarioResult,
+  options: Options,
+  species?: Species,
+) => {
+  const s = speciesTotal(result.countries, species);
+  const f = fishTotal(result.countries, species?.fish);
+  return [
+    ...(s ? [speciesStat(t, locale, s, options.regrowth === 'natural')] : []),
+    ...(f ? [fishStat(t, locale, f)] : []),
+  ];
+};
+
 /** The mammals' figure, where the data has farmed and wild mammals. */
 const mammalStats = (t: T, locale: string, result: ScenarioResult, wild?: Mammals['wild']) => {
   const m = mammalRatio(result.countries, wild);
@@ -119,7 +171,8 @@ const mammalStats = (t: T, locale: string, result: ScenarioResult, wild?: Mammal
 
 /**
  * The summary's figures: the warming avoided by the horizon, the emissions avoided as CO₂e and by
- * gas, the land freed, farmed against wild mammals, each module's own figure, and the protein and
+ * gas, the land freed, farmed against wild mammals, species committed to extinction and the
+ * fish left in the ocean, each module's own figure, and the protein and
  * calories per person.
  */
 export const summaryStats = (
@@ -131,6 +184,7 @@ export const summaryStats = (
   horizon: '2050' | '2100',
   options: Options,
   wild?: Mammals['wild'],
+  species?: Species,
 ): Stat[] => {
   const s = result.summary;
   const w = horizon === '2100' ? s.avoidedWarming2100 : s.avoidedWarming2050;
@@ -170,6 +224,7 @@ export const summaryStats = (
       className: 'stat-land',
     },
     ...mammalStats(t, locale, result, wild),
+    ...natureStats(t, locale, result, options, species),
     ...SUMMARY_MODULES.flatMap((m) => {
       const own = m.ui.stat?.(result, options, completeYear, format);
       return own ? [own] : [];

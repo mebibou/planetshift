@@ -14,6 +14,7 @@ export const loadRealData = (): ModelData | null =>
         ...Object.fromEntries(CORE.map((f) => [f, read(f)])),
         intensities: decodeIntensities(read('intensities') as IntensitiesFile),
         ...(existsSync(join(FOLDER, 'mammals.json')) ? { mammals: read('mammals') } : {}),
+        ...(existsSync(join(FOLDER, 'species.json')) ? { species: read('species') } : {}),
         ...Object.fromEntries(
           LEVER_FILES.map((f) => [
             f,

@@ -18,6 +18,8 @@ export const countryResult = (over: Partial<CountryResult> = {}): CountryResult 
   landArea: 5000,
   mammals: 100,
   mammalsChange: -40,
+  species: 30,
+  speciesChange: 2,
   deforestationCo2: 0,
   deforestationChange: 0,
   deforestationHa: 0,

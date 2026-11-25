@@ -16,10 +16,12 @@ import {
   landUseCo2,
   layerValues,
   measureOf,
+  SPECIES_PER,
   type LandUseCo2,
   type Layer,
   type LayerSpec,
   type Measure,
+  type SpeciesPer,
 } from '../map/layers';
 import { legendBins } from '../map/legend';
 import {
@@ -27,6 +29,8 @@ import {
   LAND_SHARE_THRESHOLDS,
   MAMMAL_THRESHOLDS,
   pickColours,
+  SPECIES_DENSITY_THRESHOLDS,
+  SPECIES_THRESHOLDS,
   thresholdsFor,
 } from '../map/scales';
 import { TIERS, worstSource } from '../map/sources';
@@ -67,17 +71,23 @@ const valueFormatter = (spec: LayerSpec, t: T, locale: string) => (v: number) =>
       ? t(`tiers.${Math.round(v)}`)
       : formatMeasure(locale, measureOf(spec))(v);
 
-/** The layers whose bins are the same in every scenario, so a change shows in the colours. */
-const FIXED_THRESHOLDS: Partial<Record<Layer, number[]>> = {
-  land: LAND_SHARE_THRESHOLDS,
+/** The measures whose bins are the same in every scenario, so a change shows in the colours. */
+const FIXED_THRESHOLDS: Partial<Record<Measure, number[]>> = {
+  landShare: LAND_SHARE_THRESHOLDS,
   mammals: MAMMAL_THRESHOLDS,
+  species: SPECIES_THRESHOLDS,
+  speciesDensity: SPECIES_DENSITY_THRESHOLDS,
 };
 
+const fixedThresholds = (spec: LayerSpec): number[] | undefined =>
+  spec.layer === 'change' ? undefined : FIXED_THRESHOLDS[measureOf(spec)];
+
 /** The layer's colour scale: its kind, thresholds and colours, from the values it shows. */
-const paletteOf = (layer: Layer, values: ReadonlyMap<string, number | null>) => {
+const paletteOf = (spec: LayerSpec, values: ReadonlyMap<string, number | null>) => {
+  const layer = spec.layer;
   const kind = scaleKind(layer);
   const numbers = [...values.values()].filter((v): v is number => v !== null);
-  const thresholds = FIXED_THRESHOLDS[layer] ?? thresholdsFor(kind, numbers, 7);
+  const thresholds = fixedThresholds(spec) ?? thresholdsFor(kind, numbers, 7);
   const colours =
     kind === 'sequential'
       ? pickColours(LAYER_COLOURS[layer], thresholds.length + 1)
@@ -95,6 +105,8 @@ const MEASURE_TITLES: Record<Measure, (t: T, ui: UiState, years: readonly number
   land: (t) => t('map.legend.land'),
   landCo2: (t, _, [from, to]) => t('map.legend.landCo2', { from: from ?? '', to: to ?? '' }),
   mammals: (t) => t('map.legend.mammals'),
+  species: (t) => t('map.legend.species'),
+  speciesDensity: (t) => t('map.legend.speciesDensity'),
 };
 
 const legendTitleOf = (t: T, ui: UiState, years: readonly number[]): string => {
@@ -199,7 +211,7 @@ const usePaint = (props: MapCardProps, names: Map<string, string>, landUse: Land
     () => layerValues(result?.countries ?? [], ui, landUse),
     [result, ui, landUse],
   );
-  const palette = useMemo(() => paletteOf(ui.layer, values), [ui.layer, values]);
+  const palette = useMemo(() => paletteOf(ui, values), [ui, values]);
   useEffect(() => {
     const byIso = new Map((result?.countries ?? []).map((c) => [c.iso3, c]));
     map.paint({
@@ -260,6 +272,14 @@ const MapControls = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui:
         value={ui.changeOf}
         hidden={ui.layer !== 'change'}
         onChange={(changeOf) => setUi((u) => ({ ...u, changeOf }))}
+      />
+      <Segmented<SpeciesPer>
+        name="speciesPer"
+        legend={t('map.speciesPer.legend')}
+        options={SPECIES_PER.map((v) => ({ value: v, label: t(`map.speciesPer.${v}`) }))}
+        value={ui.speciesPer}
+        hidden={ui.layer !== 'species'}
+        onChange={(speciesPer) => setUi((u) => ({ ...u, speciesPer }))}
       />
       <Segmented<UiState['gas']>
         name="gas"

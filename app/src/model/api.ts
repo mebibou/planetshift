@@ -91,6 +91,9 @@ export interface CountryResult {
   /** Farmed mammals' live weight, tonnes, and its change at the full shift; 0 without the file. */
   mammals: number;
   mammalsChange: number;
+  /** Species its farmland commits to extinction; the change leaves out regrowth on freed land. */
+  species: number;
+  speciesChange: number;
 }
 
 export type Band3 = { median: number; p05: number; p95: number };

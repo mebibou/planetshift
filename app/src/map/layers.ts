@@ -1,5 +1,6 @@
 import { GASES, type Gas, type GasVector, type Group, type LandUse } from '../data/types';
 import { GWP100, type CountryResult } from '../model/api';
+import { speciesAfter } from '../model/species';
 
 export const LAYERS = [
   'production',
@@ -8,6 +9,7 @@ export const LAYERS = [
   'deforestation',
   'landCo2',
   'mammals',
+  'species',
   'change',
   'quality',
 ] as const;
@@ -16,10 +18,11 @@ export const CHANGE_OF = ['production', 'emissions', 'land'] as const;
 export type ChangeOf = (typeof CHANGE_OF)[number];
 /**
  * What a layer measures: a quantity the Change layer also offers, the forest area cleared, the
- * share of a country's land that is farmed, its net land-use CO₂, or its farmed mammals' live
- * weight per km² of land.
+ * share of a country's land that is farmed, its net land-use CO₂, its farmed mammals' live
+ * weight per km² of land, or the species its farmland commits to extinction.
  */
-export type Measure = ChangeOf | 'deforestation' | 'landShare' | 'landCo2' | 'mammals';
+export type Measure =
+  ChangeOf | 'deforestation' | 'landShare' | 'landCo2' | 'mammals' | 'species' | 'speciesDensity';
 
 /** What each layer but Change measures, production where it is not listed. */
 const LAYER_MEASURES: Partial<Record<Layer, Measure>> = {
@@ -28,16 +31,22 @@ const LAYER_MEASURES: Partial<Record<Layer, Measure>> = {
   deforestation: 'deforestation',
   landCo2: 'landCo2',
   mammals: 'mammals',
+  species: 'species',
 };
 export type GasChoice = Gas | 'co2e';
 export const GAS_CHOICES: GasChoice[] = ['co2e', ...GASES];
 export type GroupChoice = Group | 'all';
+
+/** The species layer: each country's count, or its count per Mha of farmland. */
+export const SPECIES_PER = ['country', 'farmland'] as const;
+export type SpeciesPer = (typeof SPECIES_PER)[number];
 
 export interface LayerSpec {
   layer: Layer;
   changeOf: ChangeOf;
   group: GroupChoice;
   gas: GasChoice;
+  speciesPer?: SpeciesPer;
 }
 
 /** Each country's measured net land-use CO₂, kg a year. */
@@ -70,8 +79,12 @@ export interface BeforeAfter {
   after: number;
 }
 
-export const measureOf = (spec: Pick<LayerSpec, 'layer' | 'changeOf'>): Measure =>
-  spec.layer === 'change' ? spec.changeOf : (LAYER_MEASURES[spec.layer] ?? 'production');
+export const measureOf = (spec: Pick<LayerSpec, 'layer' | 'changeOf' | 'speciesPer'>): Measure =>
+  spec.layer === 'change'
+    ? spec.changeOf
+    : spec.layer === 'species' && spec.speciesPer === 'farmland'
+      ? 'speciesDensity'
+      : (LAYER_MEASURES[spec.layer] ?? 'production');
 
 /** The deforestation module's fields of a country: forest cleared a year, ha, and its change. */
 const clearing = (c: CountryResult): [number, number] => [
@@ -98,6 +111,17 @@ export const mammalDensity = (c: CountryResult): [number, number] =>
     ? [c.mammals / (c.landArea * KM2_PER_HA), c.mammalsChange / (c.landArea * KM2_PER_HA)]
     : [0, 0];
 
+const HA_PER_MHA = 1e6;
+
+const perMha = (species: number, ha: number): number => (ha > 0 ? (species / ha) * HA_PER_MHA : 0);
+
+/** Species committed per Mha of the country's farmland, today and its change with the levers. */
+export const speciesDensity = (c: CountryResult): [number, number] => {
+  const before = perMha(c.species, farmland(c.land));
+  const farmAfter = farmland(c.land) + farmland(c.landChange);
+  return [before, perMha(speciesAfter(c), farmAfter) - before];
+};
+
 const MEASURES: Record<
   Measure,
   (c: CountryResult, spec: LayerSpec, landUse: LandUseCo2) => [number, number]
@@ -112,6 +136,8 @@ const MEASURES: Record<
   landShare,
   landCo2: (c, _, landUse) => [landUse.get(c.iso3) ?? 0, landCo2Change(c)],
   mammals: mammalDensity,
+  species: (c) => [c.species, speciesAfter(c) - c.species],
+  speciesDensity,
 };
 
 export const beforeAfter = (
@@ -137,6 +163,7 @@ const VALUES: Partial<Record<Layer, Value>> = {
   change: (_, ba) => relativeChange(ba),
   landCo2: (c, ba, landUse) => (landUse.has(c.iso3) ? ba.after : null),
   mammals: (c, ba) => (c.mammals > 0 && c.landArea > 0 ? ba.after : null),
+  species: (c, ba) => (c.species > 0 ? ba.after : null),
 };
 
 /** The number the map colours a country by, or null for no data. */

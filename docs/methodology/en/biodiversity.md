@@ -1,4 +1,6 @@
-# Biodiversity: farmed and wild mammals
+# Biodiversity: species, mammals and fish
+
+Food and farming cause more biodiversity loss on land than anything else, and fishing causes the most in the ocean. Planetshift gives three measures, each today and once the levers are in full: the species that farmland commits to extinction, farmed mammals compared with wild ones, and the fish that fisheries target compared with an unfished ocean. All three are kept apart from warming, as the last section explains.
 
 Farm animals now make up most of the world's mammals by weight. Planetshift weighs the farmed mammals of each country, today and once the levers are in full, and sets the world total against the wild mammals. The summary gives the world figure, *Farmed mammals to wild ones, by weight*. The map's *Farmed mammals* layer gives each country's farmed mammals per km² of land.
 
@@ -73,9 +75,83 @@ Today the Netherlands has 75 t/km², Ireland 47, India 25, New Zealand 19, Franc
 - The herds are counted where they are kept, not where their products are eaten.
 - Wild mammals are a world total with a wide range. Freed land is not modelled to bring them back.
 
+## Species committed to extinction
+
+Farmland takes the place of the habitat that species need. Planetshift counts the species of plants, mammals, birds, reptiles and amphibians that each country's cropland and pasture commit to extinction worldwide. The summary gives the world figure, *Species committed to extinction by farmland*. The map's *Species loss* layer gives each country's figure, as a count or per Mha of its farmland. Per Mha, France's farmland commits about 22 species, Madagascar's about 69 and Australia's about 5.
+
+It is a loss committed over time, if the land stays farmed. It counts the species that would be lost in the long run, because their remaining habitat is too small to keep them. It is not the number of species lost by a given year, and it does not say which species they are.
+
+The factors are in `species.json`. The code is `pipeline/planetshift_pipeline/species.py`, `app/src/model/species.ts` and `app/src/app/species.ts`.
+
+### The factors
+
+Scherer et al. (2023) give, for each country, land-use type and intensity, the share of each group's species that one m² of land use commits to global extinction. Their model weighs habitat loss and the fragmentation of what remains. It also weighs how threatened and how widespread each species is (its global extinction probability). LC-IMPACT v2 (2026) adopts these factors for land use. Planetshift reads their country file, `CF_country.csv` (CC BY 4.0), and takes:
+
+- **Cropland**: light use for plants; for animals, light and intense use, which the model merges.
+- **Pasture**: set by how densely it is grazed (see below).
+- **Today's farmland**: the average factor, the land's share of the loss already caused.
+- **Land newly farmed**: the marginal factor, the loss from the next hectare. It is higher, as each hectare taken loses more species once less habitat is left.
+
+Each group's factor is multiplied by its described species (IUCN Red List 2025-1, Table 1a: 6,736 mammals, 11,195 birds, 12,386 reptiles, 8,863 amphibians and 381,913 vascular plants, 421,093 in all), and the five groups are added. A country's species committed today are:
+
+$$
+E_c = A_{c,\text{crop}} \, f_{c,\text{crop}} + A_{c,\text{pasture}} \, f_{c,\text{pasture}}
+$$
+
+with $A$ the farmland of the model (harvested cropland and permanent pasture, ha) and $f$ the species per ha. Bermuda, Hong Kong, Macao, New Caledonia, French Polynesia and Taiwan have no factors and are left out.
+
+The intensity matters, mostly for plants on pasture, where minimal use scores about 30 times lower than light use. FAOSTAT's permanent pasture includes vast rangelands grazed at a few head per km². Australia counts 332 Mha of it, 43% of its land. Each country's pasture takes its intensity from its ruminants' livestock units per hectare of pasture (FAOSTAT's livestock patterns and stocks). At 0.15 or less, pasture is at minimal use. At 0.6 or more, it is at light use. In between, it is a linear mix of the two. Saudi Arabia (0.03), Kazakhstan, Mongolia, Madagascar and Australia (0.11) take minimal use. The United States (0.33) and China (0.37) are split about evenly between minimal and light use. Brazil (0.98), France (1.5) and the Netherlands (4.4) take light use. The thresholds are Planetshift's choice: with all pasture at light use the world total would be about 56,000, with all at minimal use about 33,000. Cropland takes light use everywhere, as the model has no intensity for it.
+
+### Today
+
+The world's farmland commits about 42,000 species to extinction, 10.0% of the 421,093 described. Pasture accounts for 47% of them. Brazil comes first, with about 6,000. Then come Madagascar (2,900), Indonesia (2,800), Mexico (2,500), Colombia (2,200), China (2,000) and Australia (1,900). France's farmland commits about 550, and the United States' about 1,200.
+
+### With the levers
+
+The farmland of each country changes with the levers as described in [Land](#method-land). Land newly farmed commits species at the marginal factor. Freed land regains its species as it regrows. The figure therefore depends on the *Freed farmland* option, as the CO₂ of regrowth does:
+
+- **Left as it is** (the default): freed land regains no species. The figure can only rise, through land newly farmed. With the whole diet shifted it reaches about 44,000.
+- **Grows back**: freed land regains its species at the average factor once it has grown back. With the whole diet shifted the figure falls to about 22,000, 5.3% of the species described. Half the shift gives about 32,000.
+
+The figure applies once the levers are in full and freed land has grown back. Species return more slowly than vegetation, often over decades.
+
+### Checked against HESTIA
+
+HESTIA's v1.3 aggregations compute land-use damage with Chaudhary & Brooks (2018) (`damageToTerrestrialEcosystemsLandOccupation`). For wheat in Spain and France, maize in the United States and Brazil, and wheat in India, their factor per m² of cropland is 50 to 140 times Scherer et al.'s. The ratio differs between countries, so the two also differ in places. Most of the gap comes from the scale. Chaudhary & Brooks weigh species by a vulnerability score that is not scaled to the world's species, so their global factors cannot be added into a count. The global extinction probability that Scherer et al. use is scaled so that a group cannot lose more than all its species (LC-IMPACT v2, chapter 2). LC-IMPACT v2's own country table (`EQ_LandUse_gloPDF_Country_Aggregated`) has the same problem: multiplied by the world's farmland it gives more than the total number of species, so Planetshift reads Scherer et al.'s file instead.
+
+### What it leaves out
+
+- The intensity of cropland, and each country's crops: a hectare of wheat and one of oil palm count the same.
+- Species in fresh water, and insects and fungi, which the factors do not cover.
+- The clearing of forest for farming: only the farmland it becomes is counted.
+- The time it takes for species to come back, and those lost for good before the land is freed.
+
+## Fish and fishing
+
+Fishing has reduced the fish it targets to about a third of their unfished biomass. Bianchi et al. (2021) model the fish that fisheries target, from 10 g to 100 kg: 3.3 Gt (±0.5) without fishing, and 1.1 Gt (±0.2) at the global peak catch of the late 1990s. Planetshift uses the peak-catch figure for today. Catches have fallen somewhat since, so this may understate today's fish a little. The summary gives *Fish the fisheries target, against an unfished ocean*: 33% today.
+
+With the levers, the catch changes by the same share as the world's production of fish and seafood in the model. Planetshift assumes that the biomass fishing removes scales with the catch:
+
+$$
+B = B_0 - (B_0 - B_1) \, \frac{C'}{C}
+$$
+
+with $B_0$ the biomass without fishing, $B_1$ today's, $C$ today's catch and $C'$ the catch with the levers. Half the diet shift halves the catch and brings the fish to 67% of their unfished biomass. The whole shift ends fishing and brings them back to 100%.
+
+This is a rough measure. Fish stocks do not rebuild as fast as the catch falls, and rebuilding takes years. The catch also follows farmed seafood as well as wild, because the model does not split seafood by system. Bianchi et al.'s article is under a CC BY-NC 4.0 licence, and Planetshift cites only its two figures.
+
+## Kept apart from warming
+
+Planetshift neither adds biodiversity loss to warming nor converts it into warming. In HESTIA's v1.3 aggregations, the damage to land ecosystems from climate change is about 600 times smaller than that from land use for Brazilian soybean, and about 1,250 times smaller for wheat in Spain. The warming each scenario avoids is in the climate figures. Its effects on species are among the impacts the IPCC assesses (see [What the warming means](#method-impacts)).
+
 ## Sources
 
 - FAOSTAT, Emissions from Livestock (GLE): stocks by species, [fao.org/faostat](https://www.fao.org/faostat/en/#data/GLE). Licence: CC BY 4.0.
 - IPCC (2006), *2006 IPCC Guidelines for National Greenhouse Gas Inventories*, Vol. 4, Ch. 10, *Emissions from Livestock and Manure Management*, Tables 10A-4 to 10A-9 and 10.10, [ipcc-nggip.iges.or.jp](https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol4.html). Values cited.
 - Greenspoon et al. (2023), *The global biomass of wild mammals*, PNAS 120, e2204892120, [doi:10.1073/pnas.2204892120](https://doi.org/10.1073/pnas.2204892120). Licence: CC BY-NC-ND 4.0, figures cited. Their code and data, with the livestock masses they used: [gitlab.com/milo-lab-public/mammal_biomass](https://gitlab.com/milo-lab-public/mammal_biomass), MIT licence.
 - Bar-On et al. (2018), *The biomass distribution on Earth*, PNAS 115, 6506–6511, [doi:10.1073/pnas.1711842115](https://doi.org/10.1073/pnas.1711842115). Licence: CC BY-NC-ND 4.0, figures cited.
+- Scherer et al. (2023), *Biodiversity impact assessment considering land use intensities and fragmentation*, Environmental Science & Technology 57, 19612–19623. Factors: [zenodo.org/records/10114493](https://zenodo.org/records/10114493). Licence: CC BY 4.0.
+- LC-IMPACT v2 (2026), [zenodo.org/records/18670560](https://zenodo.org/records/18670560). Licence: CC BY 4.0. Its land-use chapter and its chapter on global extinction probabilities.
+- IUCN (2025), *The IUCN Red List of Threatened Species*, version 2025-1, Table 1a, [iucnredlist.org](https://www.iucnredlist.org/resources/summary-statistics). Figures cited.
+- Chaudhary & Brooks (2018), *Land use intensity-specific global characterization factors to assess product biodiversity footprints*, Environmental Science & Technology 52, 5094–5104, [doi:10.1021/acs.est.7b05570](https://doi.org/10.1021/acs.est.7b05570), as HESTIA applies them ([hestia.earth/guide](https://www.hestia.earth/guide/damageToTerrestrialEcosystemsLandOccupation)).
+- Bianchi et al. (2021), *Estimating global biomass and biogeochemical cycling of marine fish with and without fishing*, Science Advances 7, eabd7554, [doi:10.1126/sciadv.abd7554](https://doi.org/10.1126/sciadv.abd7554). Licence: CC BY-NC 4.0, figures cited.

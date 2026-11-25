@@ -74,6 +74,8 @@ const UNITS: Record<Measure, (spec: LayerSpec) => string> = {
   deforestation: () => 'ha',
   landCo2: () => 'kg CO2',
   mammals: () => 't live weight per km2',
+  species: () => 'species committed to extinction',
+  speciesDensity: () => 'species committed to extinction per Mha of farmland',
   emissions: (spec) => (spec.gas === 'co2e' ? 'kg CO2e (GWP100)' : `kg ${spec.gas.toUpperCase()}`),
 };
 
