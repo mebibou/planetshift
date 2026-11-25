@@ -19,6 +19,7 @@ export const gasVector = (f: (gas: Gas) => number): GasVector => ({
   co2: f('co2'),
   ch4: f('ch4'),
   n2o: f('n2o'),
+  hfc: f('hfc'),
 });
 
 /** A record of a value per key, built without the entry arrays of Object.fromEntries (hot paths). */

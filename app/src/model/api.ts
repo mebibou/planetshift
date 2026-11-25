@@ -11,7 +11,7 @@ import type {
   GasVector,
   Group,
   CountedCause,
-  LeverCause,
+  GasLeverCause,
   Scope,
   Ssp,
   TemperatureSource,
@@ -137,7 +137,7 @@ export interface ScenarioResult {
      * The same by gas. Air pollution and aviation's non-CO₂ forcing are no gas, so a cause's
      * gases can fall short of its `avoidedByCause`.
      */
-    avoidedByGas: Record<Gas, Record<LeverCause, number[]>>;
+    avoidedByGas: Record<Gas, Record<GasLeverCause, number[]>>;
     /**
      * What a choice of people on Earth changes in the baseline's median warming, by cause and
      * each gas's by cause, °C on `years`; absent when the population follows the UN's.
@@ -195,4 +195,4 @@ export interface Summary {
 }
 
 /** GWP100 (AR6, non-fossil CH₄), used only to show a CO₂e figure. */
-export const GWP100: GasVector = { co2: 1, ch4: 27.0, n2o: 273 };
+export const GWP100: GasVector = { co2: 1, ch4: 27.0, n2o: 273, hfc: 1530 };

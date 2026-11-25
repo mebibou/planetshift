@@ -157,20 +157,29 @@ describe('the avoided warming by gas', () => {
     expect(avoidedByGas.ch4.agriculture[i]).toBeGreaterThan(0);
     expect(avoidedByGas.n2o.landUse[i]).toBe(0);
   });
+  it("counts the food chain's refrigerants and waste methane in other human emissions", () => {
+    const i = years.indexOf(2100);
+    expect(avoidedByGas.hfc.other[i]).toBeGreaterThan(0);
+    expect(avoidedByGas.ch4.other[i]).toBeGreaterThan(0);
+    expect(avoidedByGas.hfc.agriculture[i]).toBe(0);
+  });
 });
 
 describe('gasShares', () => {
   it("splits a cause's feedback between its gases and its other forcing by their sizes", () => {
-    const shares = gasShares({ co2: [3], ch4: [1], n2o: [0] }, [6], [7.2]);
+    const shares = gasShares({ co2: [3], ch4: [1], n2o: [0], hfc: [0] }, [6], [7.2]);
     expect(shares.co2[0]).toBeCloseTo(3.6, 12);
     expect(shares.ch4[0]).toBeCloseTo(1.2, 12);
     expect(shares.n2o[0]).toBe(0);
   });
   it('leaves each gas as it is without a feedback', () => {
-    expect(gasShares({ co2: [3, 1], ch4: [1, 2], n2o: [0, 4] }, [4, 7], [4, 7])).toEqual({
+    expect(
+      gasShares({ co2: [3, 1], ch4: [1, 2], n2o: [0, 4], hfc: [0, 0] }, [4, 7], [4, 7]),
+    ).toEqual({
       co2: [3, 1],
       ch4: [1, 2],
       n2o: [0, 4],
+      hfc: [0, 0],
     });
   });
 });

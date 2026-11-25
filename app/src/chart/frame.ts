@@ -59,6 +59,12 @@ export const frame = (
   };
 };
 
+/** The decimals that tell a scale's ticks apart: one at least, two for steps of 0.02, … */
+export const tickDigits = (ticks: readonly number[]): number => {
+  const step = Math.abs((ticks[1] ?? 0) - (ticks[0] ?? 0));
+  return step > 0 ? Math.max(1, -Math.floor(Math.log10(step) + 1e-9)) : 1;
+};
+
 export const drawAxes = (
   f: Frame,
   x: ScaleLinear<number, number>,

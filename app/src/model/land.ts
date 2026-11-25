@@ -161,4 +161,4 @@ export const uptakePath = (
 
 /** CO₂ taken up each year as a negative emission. */
 export const uptakeAsEmissions = (uptake: readonly number[]): GasVector[] =>
-  uptake.map((u) => ({ co2: -u, ch4: 0, n2o: 0 }));
+  uptake.map((u) => ({ co2: -u, ch4: 0, n2o: 0, hfc: 0 }));

@@ -165,7 +165,8 @@
     "co2e": "CO₂e",
     "co2": "CO₂",
     "ch4": "CH₄",
-    "n2o": "N₂O"
+    "n2o": "N₂O",
+    "hfc": "HFCs"
   },
   "tiers": {
     "1": "HESTIA, this country",
@@ -363,12 +364,14 @@
       "all": "All gases",
       "co2": "CO₂",
       "ch4": "Methane",
-      "n2o": "N₂O"
+      "n2o": "N₂O",
+      "hfc": "HFCs"
     },
     "gasNames": {
       "co2": "CO₂",
       "ch4": "methane",
-      "n2o": "N₂O"
+      "n2o": "N₂O",
+      "hfc": "HFCs"
     },
     "gasText": "Each band is the warming from one cause's emissions of this gas. After today, each band is what is left once the levers chosen act on its cause. Air pollution, aviation's contrails and the natural factors are not greenhouse gases: they show under All gases only.",
     "gasCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today. Each cause is the warming its emissions of this gas add. The other sources and interactions are the rest of the gas's warming.",
@@ -378,6 +381,7 @@
     "whyMethane": "Methane is short-lived: about half of it is gone within twelve years. Emit less of it and the warming it causes starts to fall within decades, which is why a change in what we eat shows up before 2050.",
     "whyNitrous": "Nitrous oxide lasts about a century, so less of it slows warming steadily rather than reversing it.",
     "whyCo2": "CO₂ stays for centuries. The warming it has caused stays too. Adding the gases up as CO₂e hides these differences, so Planetshift computes the temperature from each gas separately.",
+    "whyHfc": "HFCs are the refrigerants in fridges, freezers and air conditioning. HFC-134a, the main one, lasts about 14 years and traps over a thousand times more heat than CO₂ per kilogram. The scenarios give HFCs for the world only, so all their warming shows as other sources, where the food chain's refrigerants are counted.",
     "part": "{cause} {value}",
     "separator": "; ",
     "withoutLevers": "Without the levers",

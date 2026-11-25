@@ -165,7 +165,8 @@
     "co2e": "CO₂e",
     "co2": "CO₂",
     "ch4": "CH₄",
-    "n2o": "N₂O"
+    "n2o": "N₂O",
+    "hfc": "HFC"
   },
   "tiers": {
     "1": "HESTIA, ce pays",
@@ -367,12 +368,14 @@
       "all": "Tous les gaz",
       "co2": "CO₂",
       "ch4": "Méthane",
-      "n2o": "N₂O"
+      "n2o": "N₂O",
+      "hfc": "HFC"
     },
     "gasNames": {
       "co2": "CO₂",
       "ch4": "méthane",
-      "n2o": "N₂O"
+      "n2o": "N₂O",
+      "hfc": "HFC"
     },
     "gasText": "Chaque bande est le réchauffement dû aux émissions de ce gaz par une cause. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause. La pollution de l'air, les traînées des avions et les facteurs naturels ne sont pas des gaz à effet de serre : ils n'apparaissent que sous Tous les gaz.",
     "gasCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui. Chaque cause est le réchauffement qu'ajoutent ses émissions de ce gaz. Les autres sources et interactions sont le reste du réchauffement dû au gaz.",
@@ -382,6 +385,7 @@
     "whyMethane": "Le méthane a une courte durée de vie : la moitié disparaît en une douzaine d'années. En émettre moins fait baisser le réchauffement qu'il cause en quelques décennies ; c'est pourquoi un changement d'alimentation se voit avant 2050.",
     "whyNitrous": "Le protoxyde d'azote dure environ un siècle : en émettre moins ralentit le réchauffement sans l'inverser.",
     "whyCo2": "Le CO₂ reste des siècles. Le réchauffement qu'il a causé reste aussi. Additionner les gaz en CO₂e masque ces différences ; Planetshift calcule donc la température gaz par gaz.",
+    "whyHfc": "Les HFC sont les fluides frigorigènes des réfrigérateurs, des congélateurs et de la climatisation. Le HFC-134a, le principal, dure environ 14 ans et retient plus de mille fois plus de chaleur que le CO₂ par kilogramme. Les scénarios ne donnent les HFC que pour le monde entier : tout leur réchauffement apparaît donc dans les autres sources, là où sont comptés les fluides frigorigènes de la chaîne alimentaire.",
     "part": "{cause} {value}",
     "separator": " ; ",
     "withoutLevers": "Sans les leviers",

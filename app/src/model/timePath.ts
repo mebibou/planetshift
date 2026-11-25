@@ -1,4 +1,4 @@
-import { GASES, type Climate, type Gas } from '../data/types';
+import { FARM_GASES, GASES, type Climate, type FarmGas, type Gas } from '../data/types';
 import type { Baseline } from './api';
 import { clamp, valueAt } from './util';
 
@@ -35,16 +35,19 @@ const populationScale = (
   return (_gas, year) => (base > 0 ? valueAt(years, values, year) / base : 1);
 };
 
-/** SSP2-4.5's agricultural emissions path, gas by gas. */
+/**
+ * SSP2-4.5's agricultural emissions path, gas by gas; HFC-134a, which comes only after the farm,
+ * follows CO₂'s, as the chain's other emissions do.
+ */
 const sspScale = (climate: Climate, baseYear: number): Scale => {
-  const ratios = Object.fromEntries(
-    GASES.map((gas) => {
+  const farm = Object.fromEntries(
+    FARM_GASES.map((gas) => {
       const { years, values } = climate.agricultureEmissions.ssp245[gas];
       const base = valueAt(years, values, baseYear);
       return [gas, (year: number) => (base > 0 ? valueAt(years, values, year) / base : 1)];
     }),
-  ) as Record<Gas, (year: number) => number>;
-  return (gas, year) => ratios[gas](year);
+  ) as Record<FarmGas, (year: number) => number>;
+  return (gas, year) => farm[gas === 'hfc' ? 'co2' : gas](year);
 };
 
 /** The same scale, its values over `years` computed once (others as before). */

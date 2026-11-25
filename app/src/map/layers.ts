@@ -1,4 +1,11 @@
-import { GASES, type Gas, type GasVector, type Group, type LandUse } from '../data/types';
+import {
+  FARM_GASES,
+  GASES,
+  type Gas,
+  type GasVector,
+  type Group,
+  type LandUse,
+} from '../data/types';
 import { GWP100, type CountryResult } from '../model/api';
 import { speciesAfter } from '../model/species';
 
@@ -34,7 +41,8 @@ const LAYER_MEASURES: Partial<Record<Layer, Measure>> = {
   species: 'species',
 };
 export type GasChoice = Gas | 'co2e';
-export const GAS_CHOICES: GasChoice[] = ['co2e', ...GASES];
+/** The farm's gases and CO₂e, which also counts the refrigerants after the farm. */
+export const GAS_CHOICES: GasChoice[] = ['co2e', ...FARM_GASES];
 export type GroupChoice = Group | 'all';
 
 /** The species layer: each country's count, or its count per Mha of farmland. */

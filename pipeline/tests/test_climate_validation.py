@@ -47,7 +47,7 @@ def test_document_matches_the_contract(built):
         "shippingSulphur2020",
     }
     for method in ("fair", "ar6"):
-        for gas in ("co2", "ch4", "n2o"):
+        for gas in climate.AGTP_GASES:
             curve = document["agtp"][method][gas]
             assert len(curve["median"]) == len(curve["p05"]) == climate.HORIZON + 1
     for ssp in climate.SSPS:
@@ -63,6 +63,7 @@ def test_document_matches_the_contract(built):
         assert (
             set(by_gas["ch4"]) == set(by_gas["n2o"]) == {"fossilIndustry", "agriculture", "other"}
         )
+        assert set(by_gas["hfc"]) == {"other"}
         assert by_gas["co2"]["landUse"] == document["attribution"][ssp]["landUse"]
     assert len(json.dumps(document, separators=(",", ":"))) < 1_000_000
 
@@ -102,6 +103,17 @@ def test_agriculture_share_of_present_warming_is_in_the_published_range(built):
     assert 0.12 < agriculture / total < 0.30
 
 
+def test_hfcs_warm_as_little_as_their_forcing_today(built):
+    """AR6 WG1 Table 7.8 puts the HFCs' effective radiative forcing in 2019 at 0.04 W m⁻², about
+    a fiftieth of CO₂'s; their warming over 2015–2024 must be 0.005–0.04 °C, and grow by 2100."""
+    _, diagnostics = built
+    hfc = diagnostics["by_gas"]["ssp245"]["hfc"]
+    years = diagnostics["years"]
+    now = np.median(hfc["total"][(years >= 2015) & (years <= 2024)].mean(axis=0))
+    assert 0.005 < now < 0.04
+    assert np.median(hfc["total"][years == 2100]) > now
+
+
 def test_future_food_warming_compares_with_the_2023_food_consumption_study(built):
     """The 2023 food-consumption study (doi:10.1038/s41558-023-01605-8; preprint
     doi:10.21203/rs.3.rs-1964969/v1, CC BY 4.0) finds that food consumption at today's per-capita
@@ -137,7 +149,7 @@ def test_pulses_are_linear_within_one_percent(built, gas):
     assert climate.relative_spread(large, small) < 0.01
 
 
-@pytest.mark.parametrize("gas", ["co2", "ch4", "n2o"])
+@pytest.mark.parametrize("gas", ["co2", "ch4", "n2o", "hfc"])
 def test_agtp_is_stable_across_pulse_years_within_ten_percent(built, gas):
     _, diagnostics = built
     assert climate.year_spread(diagnostics["pulses"], gas) < 0.10
@@ -159,7 +171,7 @@ def test_co2_agtp_is_roughly_flat_after_its_first_decade(built):
     assert settled.max() / settled.min() < 1.5
 
 
-@pytest.mark.parametrize("gas", ["co2", "ch4", "n2o"])
+@pytest.mark.parametrize("gas", ["co2", "ch4", "n2o", "hfc"])
 def test_fair_and_ar6_agtp_agree_within_a_factor_of_two_and_a_half(built, gas):
     """Same order of magnitude at 20, 50 and 100 years. They agree within about 25% at 20 years;
     FaIR's CH₄ curve has a longer tail (about twice AR6's at 50 years), from its ensemble's larger

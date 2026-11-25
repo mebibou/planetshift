@@ -211,7 +211,7 @@ describe('processed items', () => {
     const r = run({});
     r.countries.forEach((c) => {
       const pc = prepared.countries.find((p) => p.country.iso3 === c.iso3)!;
-      const expected = { co2: 0, ch4: 0, n2o: 0 };
+      const expected = { co2: 0, ch4: 0, n2o: 0, hfc: 0 };
       pc.rows.forEach((row, code) => {
         const i = prepared.indexOf.get(code)!;
         const kg = countryIntensities(pc, prepared, DEFAULT_OPTIONS.scope);

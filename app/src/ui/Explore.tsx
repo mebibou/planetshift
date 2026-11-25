@@ -12,7 +12,7 @@ import { worldPerCapita } from '../app/summaryModel';
 import { tabKeys } from '../app/tabs';
 import { CHARTS, type ChartTab, type Horizon } from '../app/url';
 import { avoidedChart } from '../chart/avoided';
-import { CAUSE_GASES, type CauseGas } from '../chart/series';
+import { causeGasesOf, type CauseGas } from '../chart/series';
 import { RANGE_START, temperatureChart, type Range } from '../chart/temperature';
 import { dataFolder } from '../data/load';
 import type { ModelData } from '../data/types';
@@ -131,17 +131,18 @@ const useCharts = ({ ctx, state, result, data }: ExploreProps) => {
   return { temperatureRef, avoidedRef };
 };
 
-/** The gas the Causes of warming tab shows: every emission when the build has no split by gas. */
-const causeGasOf = (ui: AppState['ui'], split: boolean): CauseGas => (split ? ui.causeGas : 'all');
+/** The gas the Causes of warming tab shows: every emission when the build has no split for it. */
+const causeGasOf = (ui: AppState['ui'], gases: readonly CauseGas[]): CauseGas =>
+  gases.includes(ui.causeGas) ? ui.causeGas : 'all';
 
 /** The switches above the charts, together on one row with the download button. */
 const ChartSwitches = (props: {
   ctx: ViewContext;
   ui: AppState['ui'];
-  split: boolean;
+  gases: readonly CauseGas[];
   children: ReactNode;
 }) => {
-  const { ctx, ui, split } = props;
+  const { ctx, ui, gases } = props;
   const { t } = ctx;
   return (
     <div className="chart-switches mt-3 mb-2 flex flex-wrap items-end gap-x-5 gap-y-3 [&>.download-menu]:ml-auto">
@@ -159,13 +160,15 @@ const ChartSwitches = (props: {
       <Segmented<CauseGas>
         name="causegas"
         legend={t('link.gas')}
-        options={CAUSE_GASES.map((value) => ({ value, label: t(`link.gasChoices.${value}`) }))}
-        value={causeGasOf(ui, split)}
-        hidden={ui.chart !== 'cause' || !split}
+        options={gases.map((value) => ({ value, label: t(`link.gasChoices.${value}`) }))}
+        value={causeGasOf(ui, gases)}
+        hidden={ui.chart !== 'cause' || gases.length < 2}
         info={
           <Info
             label={t('link.whyTitle')}
-            text={['intro', 'whyMethane', 'whyNitrous', 'whyCo2'].map((k) => t(`link.${k}`))}
+            text={['intro', 'whyMethane', 'whyNitrous', 'whyCo2', 'whyHfc'].map((k) =>
+              t(`link.${k}`),
+            )}
           />
         }
         onChange={(g) => ctx.setUi((u) => ({ ...u, causeGas: g }))}
@@ -190,8 +193,8 @@ const ChartCard = (props: ExploreProps) => {
   }));
   const failed = ctx.failedFiles();
   const { chart, range } = state.ui;
-  const split = props.data.climate.attributionByGas !== undefined;
-  const causeGas = causeGasOf(state.ui, split);
+  const gases = causeGasesOf(props.data.climate);
+  const causeGas = causeGasOf(state.ui, gases);
   return (
     <section
       className={`${CARD} chart-card max-[640px]:px-3 lg:[grid-area:chart] max-lg:aria-busy:min-h-[1000px]`}
@@ -199,7 +202,7 @@ const ChartCard = (props: ExploreProps) => {
       aria-busy={result === undefined}
     >
       <ChartTabs ctx={ctx} chart={chart} />
-      <ChartSwitches ctx={ctx} ui={state.ui} split={split}>
+      <ChartSwitches ctx={ctx} ui={state.ui} gases={gases}>
         {download.button}
       </ChartSwitches>
       {download.status}

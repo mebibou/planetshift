@@ -4,7 +4,8 @@ FAOSTAT's emissions from pre- and post-production give each country's CO₂, CH�
 Processing, transport, packaging and retail are shared between foods by Poore & Nemecek (2018)'s
 emissions per kg of each food at that stage, times its production; cooking at home, food waste
 and wastewater by mass. The manufacture of fertilisers and pesticides is left out, as it is
-counted on the farm, and the cold chain's fluorinated gases, which the model does not carry.
+counted on the farm. The stages' fluorinated gases, the cold chain's refrigerants, count as
+HFC-134a.
 """
 
 from pathlib import Path
@@ -22,8 +23,14 @@ SHARED = {6507: "processing", 6815: "transport", 6506: "packaging", 6508: "retai
 #: incineration and the food industry's wastewater) and domestic wastewater.
 BY_MASS = {6505: "household", 6987: "waste", 6990: "waste", 6989: "waste", 6988: "wastewater"}
 STAGES = (*dict.fromkeys(SHARED.values()), *dict.fromkeys(BY_MASS.values()))
-GASES = {7273: "co2", 7225: "ch4", 7230: "n2o"}
+GASES = {7273: "co2", 7225: "ch4", 7230: "n2o", 717815: "hfc"}
 KG_PER_KT = 1e6
+#: FAOSTAT gives the stages' fluorinated gases in CO₂e with AR5's GWP100; they are counted as
+#: HFC-134a, the main refrigerant, whose AR5 GWP100 is 1,300 (AR5 WG1 Table 8.A.1).
+HFC_AR5_GWP100 = 1300.0
+#: HFC-134a's GWP100 in AR6 (WG1 Table 7.SM.7), the one the model's CO₂e uses.
+HFC_AR6_GWP100 = 1530.0
+PER_KT = {"co2": KG_PER_KT, "ch4": KG_PER_KT, "n2o": KG_PER_KT, "hfc": KG_PER_KT / HFC_AR5_GWP100}
 
 
 def load_items(path: Path = ITEMS_CSV) -> pd.DataFrame:
@@ -50,7 +57,7 @@ def stage_kg(gpp: pd.DataFrame, year: int) -> pd.DataFrame:
         latest.assign(
             stage=latest["item_code"].map(stage_of),
             gas=latest["element_code"].map(GASES),
-            kg=latest["value"] * KG_PER_KT,
+            kg=latest["value"] * latest["element_code"].map(GASES).map(PER_KT),
         )
         .groupby(["area_code", "stage", "gas"], as_index=False)["kg"]
         .sum()

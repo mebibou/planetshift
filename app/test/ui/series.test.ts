@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { BandSeries, Climate } from '../../src/data/types';
 import {
   attributionOf,
+  causeGasesOf,
   attributionRows,
   causesAt,
   causesBySize,
@@ -15,6 +16,7 @@ import {
   zipBand,
   zipSeries,
 } from '../../src/chart/series';
+import { tickDigits } from '../../src/chart/frame';
 
 const band = (median: number[]): BandSeries => ({
   years: [2000, 2001],
@@ -116,6 +118,25 @@ describe('series', () => {
     expect(attributionOf(before as Climate, 'ssp245', 'ch4')).toBe(attribution);
   });
 
+  it('offers the gases the build splits the warming of, HFCs only from a build that runs them', () => {
+    const split = (gases: string[]) =>
+      ({
+        attribution: { ssp245: attribution },
+        attributionByGas: { ssp245: Object.fromEntries(gases.map((g) => [g, older])) },
+      }) as unknown as Climate;
+    expect(causeGasesOf(split(['co2', 'ch4', 'n2o', 'hfc']))).toEqual([
+      'all',
+      'co2',
+      'ch4',
+      'n2o',
+      'hfc',
+    ]);
+    expect(causeGasesOf(split(['co2', 'ch4', 'n2o']))).toEqual(['all', 'co2', 'ch4', 'n2o']);
+    expect(causeGasesOf({ attribution: { ssp245: attribution } } as unknown as Climate)).toEqual([
+      'all',
+    ]);
+  });
+
   it('measures the gap between two series in a year', () => {
     expect(gapAt([2049, 2050], [1, 2], [1, 1.9], 2050)).toBeCloseTo(-0.1);
     expect(gapAt([2049], [1], [1], 2050)).toBeNull();
@@ -129,6 +150,12 @@ describe('the baseline’s change by cause', () => {
     const shifted = shiftedBy(attribution, { years: [2001], byCause: { permafrost: [0.05] } });
     expect(shifted.permafrost?.median).toEqual([0, 0.05]);
     expect(causesIn(shifted)).toContain('permafrost');
+  });
+
+  it('adds no cause the change leaves at zero, as HFCs outside the food chain', () => {
+    const hfc: Attribution = { other: band([0.01, 0.02]) };
+    const shifted = shiftedBy(hfc, { years: [2001], byCause: { fossilIndustry: [0], other: [0] } });
+    expect(causesIn(shifted)).toEqual(['other']);
   });
 
   it('moves a cause’s band by the change in its year, and leaves the others', () => {
@@ -181,5 +208,15 @@ describe('El Niño and La Niña marks', () => {
 
   it('marks nothing without the file', () => {
     expect(ensoMarks(undefined, observed)).toEqual([]);
+  });
+});
+
+describe('tickDigits', () => {
+  it('gives the decimals that tell the ticks apart, one at least', () => {
+    expect(tickDigits([0, 0.5, 1])).toBe(1);
+    expect(tickDigits([0, 0.02, 0.04])).toBe(2);
+    expect(tickDigits([0, 0.1, 0.2])).toBe(1);
+    expect(tickDigits([0, 1, 2])).toBe(1);
+    expect(tickDigits([0])).toBe(1);
   });
 });

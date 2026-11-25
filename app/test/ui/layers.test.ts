@@ -25,8 +25,8 @@ const spec = (over: Partial<LayerSpec>): LayerSpec => ({
 
 describe('layers', () => {
   it('weighs gases by GWP100 for CO₂e only', () => {
-    expect(co2e({ co2: 1, ch4: 1, n2o: 1 })).toBeCloseTo(1 + 27 + 273);
-    expect(gasValue({ co2: 1, ch4: 2, n2o: 3 }, 'ch4')).toBe(2);
+    expect(co2e({ co2: 1, ch4: 1, n2o: 1, hfc: 0 })).toBeCloseTo(1 + 27 + 273);
+    expect(gasValue({ co2: 1, ch4: 2, n2o: 3, hfc: 0 }, 'ch4')).toBe(2);
   });
 
   it('sums all groups or picks one', () => {

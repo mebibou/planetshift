@@ -259,6 +259,7 @@ export const gridPath = (
     co2: addBack * ((ratio[k] ?? 1) - 1) * scale('co2', y) * shareAt(y),
     ch4: 0,
     n2o: 0,
+    hfc: 0,
   }));
 
 /** Each item's share of a country's CO₂ that comes from grid electricity, in the scope. */

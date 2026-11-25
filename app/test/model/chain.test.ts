@@ -17,9 +17,17 @@ describe('food’s emissions after the farm', () => {
   it('weighs a shared stage by Poore & Nemecek and cooking and waste by mass', () => {
     const ints = chainIntensities(countryOf('FRA'), prepared, data.chain!);
     const beef = indexOf(2731);
-    expect(ints.fossilIndustry.co2[beef]).toBeCloseTo(350 * 1.8 + 420 * 0.5 + 30);
+    expect(ints.fossilIndustry.co2[beef]).toBeCloseTo(350 * 1.8 + 420 * 0.5 + 90 * 0.23 + 30);
     expect(ints.other.ch4[beef]).toBeCloseTo(3.8);
     expect(ints.fossilIndustry.ch4[beef]).toBe(0);
+  });
+
+  it('counts the refrigerants in other human emissions, whatever the stage', () => {
+    const ints = chainIntensities(countryOf('FRA'), prepared, data.chain!);
+    const beef = indexOf(2731);
+    expect(ints.other.hfc[beef]).toBeCloseTo(0.8 * 0.23);
+    expect(ints.fossilIndustry.hfc[beef]).toBe(0);
+    expect(ints.fossilIndustry.co2[beef]).toBeGreaterThan(90 * 0.23);
   });
 
   it('takes the world’s factors for a country without figures, and none for an item without weights', () => {
@@ -35,8 +43,9 @@ describe('food’s emissions after the farm', () => {
       co2: Float64Array.from([10, 1]),
       ch4: Float64Array.from([0, 1]),
       n2o: Float64Array.from([0, 0]),
+      hfc: Float64Array.from([0, 0]),
     };
-    expect(chainEmissions(t, g)).toEqual({ co2: 23, ch4: 3, n2o: 0 });
+    expect(chainEmissions(t, g)).toEqual({ co2: 23, ch4: 3, n2o: 0, hfc: 0 });
   });
 
   it('counts a diet shift’s chain in fossil fuels and industry and in other human emissions', () => {

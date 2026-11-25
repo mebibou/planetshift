@@ -16,6 +16,7 @@ import {
   addHover,
   chartNotes,
   drawAxes,
+  tickDigits,
   frame,
   isTight,
   tightened,
@@ -155,7 +156,8 @@ const drawProjection = (f: Frame, x: Scale, currentYear: number, t: T): void => 
 };
 
 const drawFrame = (f: Frame, x: Scale, y: Scale, t: T, locale: string): void => {
-  drawAxes(f, x, y, (v) => formatNumber(locale, v, 1));
+  const digits = tickDigits(y.ticks(5));
+  drawAxes(f, x, y, (v) => formatNumber(locale, v, digits));
   f.plot
     .append('text')
     .attr('class', 'axis-title')

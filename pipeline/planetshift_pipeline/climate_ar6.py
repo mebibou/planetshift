@@ -1,4 +1,4 @@
-"""AGTP of CO₂, CH₄ and N₂O from the analytic expressions of IPCC AR6 WG1 Chapter 7 (7.SM.5).
+"""AGTP of CO₂, CH₄, N₂O and HFC-134a: the analytic expressions of AR6 WG1 Ch. 7 (7.SM.5).
 
 Every constant is the one Chapter 7's own code used to compute Table 7.SM.7 (the
 IPCC-WG1/Chapter-7 repository: `src/ar6/metrics/` and notebook
@@ -33,6 +33,12 @@ CH4_O3 = 1.4e-4
 CH4_H2O = 4e-5
 
 N2O_LIFETIME = 109.0
+
+#: HFC-134a, AR6 WG1 Table 7.SM.7: lifetime (years), radiative efficiency (W m⁻² ppb⁻¹) and molar
+#: mass (kg/mol); no rapid adjustment, as AR6 gives none for halocarbons.
+HFC_LIFETIME = 14.0
+HFC_RE = 0.167
+M_HFC = 102.03e-3
 N2O_RA = 0.07
 N2O_O3 = 5.5e-4
 N2O_CH4 = -1.7
@@ -77,6 +83,10 @@ def n2o_forcing_per_kg() -> float:
     return (n2o + N2O_CH4 * ch4_forcing_per_ppb()) / _kg_per_ppb(M_N2O)
 
 
+def hfc_forcing_per_kg() -> float:
+    return HFC_RE / _kg_per_ppb(M_HFC)
+
+
 def _decay_response(t: np.ndarray, lifetime: float) -> np.ndarray:
     """Temperature per unit forcing-at-emission of a gas decaying with `lifetime` (years)."""
     return (
@@ -117,6 +127,11 @@ def agtp_n2o_instant(t: np.ndarray) -> np.ndarray:
     return own + carbon_cycle_adjustment(t, own)
 
 
+def agtp_hfc_instant(t: np.ndarray) -> np.ndarray:
+    own = hfc_forcing_per_kg() * _decay_response(t, HFC_LIFETIME)
+    return own + carbon_cycle_adjustment(t, own)
+
+
 def annualised(instant: np.ndarray, horizon: int) -> np.ndarray:
     """Annual-mean response in years 0..horizon to an emission spread evenly over year 0.
 
@@ -139,4 +154,5 @@ def agtp_curves(horizon: int) -> dict[str, np.ndarray]:
         "co2": annualised(agtp_co2_instant(t), horizon),
         "ch4": annualised(agtp_ch4_instant(t), horizon),
         "n2o": annualised(agtp_n2o_instant(t), horizon),
+        "hfc": annualised(agtp_hfc_instant(t), horizon),
     }

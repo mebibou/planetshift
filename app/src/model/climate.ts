@@ -12,10 +12,13 @@ import { addSeries, END_YEAR, range, sum, valueAt, zerosOn } from './util';
 export type Band = 'median' | 'p05' | 'p95';
 export const BANDS: readonly Band[] = ['median', 'p05', 'p95'];
 
-/** The AGTP curve of a gas for a band; a method without a range uses its median for all three. */
+/**
+ * The AGTP curve of a gas for a band; a method without a range uses its median for all three, and
+ * a build without the gas's curve (a climate.json from before HFC-134a) none.
+ */
 export const agtpOf = (climate: Climate, method: ClimateMethod, gas: Gas, band: Band): number[] => {
-  const curves = climate.agtp[method][gas];
-  return curves[band].length > 0 ? curves[band] : curves.median;
+  const curves = climate.agtp[method][gas] as Climate['agtp'][ClimateMethod][Gas] | undefined;
+  return !curves ? [] : curves[band].length > 0 ? curves[band] : curves.median;
 };
 
 /** ΔT `h` years after the series starts: each earlier year's emission times its AGTP. */
@@ -102,10 +105,13 @@ export const populationAdjustmentEmissions = (
     (y) =>
       Object.fromEntries(
         GASES.map((gas) => {
-          const { years, values } = climate.agricultureEmissions[ssp][gas];
+          const series = gas === 'hfc' ? null : climate.agricultureEmissions[ssp][gas];
           return [
             gas,
-            valueAt(years, values, baseYear) * populationRatio(y) - valueAt(years, values, y),
+            series
+              ? valueAt(series.years, series.values, baseYear) * populationRatio(y) -
+                valueAt(series.years, series.values, y)
+              : 0,
           ];
         }),
       ) as GasVector,

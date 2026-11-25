@@ -8,7 +8,7 @@ import { BASE_SCENARIO } from '../../src/model/scenarios';
 import { CURRENT_YEAR, loadFixtures } from './fixtures';
 
 const v = (...xs: number[]) => Float64Array.from(xs);
-const gas = (co2: number): GasVector => ({ co2, ch4: 0, n2o: 0 });
+const gas = (co2: number): GasVector => ({ co2, ch4: 0, n2o: 0, hfc: 0 });
 const feedOf = (ruminant: number) =>
   ANIMAL_GROUPS.map((g) => gas(g === 'ruminantMeat' ? ruminant : 0));
 const prepared = {
@@ -18,8 +18,11 @@ const prepared = {
   ],
 } as unknown as Prepared;
 const frame: FootprintFrame = {
-  consumed: [{ co2: v(10, 150), ch4: v(0, 0), n2o: v(0, 0) }],
-  feed: { own: [feedOf(50)], imported: [{ co2: v(0, 80), ch4: v(0, 0), n2o: v(0, 0) }] },
+  consumed: [{ co2: v(10, 150), ch4: v(0, 0), n2o: v(0, 0), hfc: v(0, 0) }],
+  feed: {
+    own: [feedOf(50)],
+    imported: [{ co2: v(0, 80), ch4: v(0, 0), n2o: v(0, 0), hfc: v(0, 0) }],
+  },
 };
 
 describe('the food footprint', () => {

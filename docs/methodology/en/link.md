@@ -15,7 +15,7 @@ Farming has caused about 18% of the warming over 2015–2024, and 28% together w
 
 After today, each cause's band shows what is left of it once the levers you chose act on it. The band without the levers is drawn as a dashed outline. The causes of past warming are the ones that keep causing it, and each lever reduces one cause or more (see [Levers](#method-levers)).
 
-A switch above the chart, *All gases*, *CO₂*, *Methane* and *N₂O*, shows one greenhouse gas at a time. For that gas, it shows how much warming each cause makes, with and without the levers (see "Each gas by cause" below). Air pollution and the natural factors are not greenhouse gases, so they appear under *All gases* only.
+A switch above the chart, *All gases*, *CO₂*, *Methane*, *N₂O* and *HFCs*, shows one greenhouse gas at a time. For that gas, it shows how much warming each cause makes, with and without the levers (see "Each gas by cause" below). Air pollution and the natural factors are not greenhouse gases, so they appear under *All gases* only.
 
 ## Attribution, not correlation
 
@@ -109,7 +109,7 @@ What each cause takes out:
 - **Land use**: all of FaIR's land-use CO₂ (deforestation and other land-use change), with the surface albedo change FaIR derives from it. Its warming is the net of the two: the CO₂ warms and the albedo change cools, so land use's part in the chart is less than its CO₂'s alone. Its history in RCMIP comes from the Global Carbon Budget 2016 from 1959, PRIMAP-hist v1.0 for 1850–1958 and a back-extrapolation before. Each SSP's land-use CO₂ comes after that history. PRIMAP-hist's own LULUCF category was not used. It is built from national inventories that count the uptake of managed forests, so it turns negative in recent decades and does not measure land-use change.
 - **Air pollution (cooling)**: the aerosols and their precursors as FaIR runs them, from every source: sulphur dioxide, black and organic carbon, ammonia and nitrogen oxides. Each is brought back to its pre-industrial (1750) emissions rather than to none.
 - **Natural factors (sun and volcanoes)**: FaIR run with every human emission held at its 1750 level, so only the solar and volcanic forcing change the climate, relative to its own 1850–1900 mean. The dips after Krakatoa (1883), Agung (1963), El Chichón (1982) and Pinatubo (1991) show here as natural effects, not in a human cause.
-- **Other human emissions**: what is left, so that the causes add up to the total. It holds methane from waste and the other sources not named above, the fluorinated gases and the other minor gases, the ozone precursors carbon monoxide and volatile organic compounds, and the interactions between the causes. With the levers, the methane and N₂O of food waste and wastewater that a change in food production avoids are taken off this cause. The energy after the farm that it avoids is taken off *Fossil fuels and industry* (see [Emissions](#method-emissions), *After the farm*).
+- **Other human emissions**: what is left, so that the causes add up to the total. It holds methane from waste and the other sources not named above, the fluorinated gases and the other minor gases, the ozone precursors carbon monoxide and volatile organic compounds, and the interactions between the causes. With the levers, the methane and N₂O of food waste and wastewater, and the cold chain's refrigerants, that a change in food production avoids are taken off this cause. The energy after the farm that it avoids is taken off *Fossil fuels and industry* (see [Emissions](#method-emissions), *After the farm*).
 
 The median of *other human emissions* is set so that the medians add up exactly to the median total. Its 5–95% range is computed member by member.
 
@@ -123,13 +123,13 @@ These interactions sit in *other human emissions*. This is why that band is larg
 
 ### How each gas is computed
 
-The same runs are made gas by gas. A gas's warming is the temperature with everything minus the temperature with all of that gas's emissions brought back to their pre-industrial (1750) level: CO₂ from fossil fuels, industry and land use, or all methane, or all N₂O. A cause's part of it is the temperature with everything minus the temperature without that cause's emissions of the gas alone, the same emissions as above. *Other sources and interactions* is the gas's warming minus the causes' parts, and its median is set so that the medians add up to the gas's.
+The same runs are made gas by gas. A gas's warming is the temperature with everything minus the temperature with all of that gas's emissions brought back to their pre-industrial (1750) level: CO₂ from fossil fuels, industry and land use, or all methane, or all N₂O, or all eleven HFCs FaIR runs. A cause's part of it is the temperature with everything minus the temperature without that cause's emissions of the gas alone, the same emissions as above. *Other sources and interactions* is the gas's warming minus the causes' parts, and its median is set so that the medians add up to the gas's. The scenarios give HFCs for the world only, not by cause, so all of their warming is other sources and interactions: 0.015 °C over 2015–2024 and, on SSP2-4.5, 0.07 °C in 2100.
 
-Land use's part of CO₂ is land use's own run, as land use emits nothing else here. That makes nine more runs of each scenario: farming's and fossil fuels' part of each of the three gases, and each gas taken out in full.
+Land use's part of CO₂ is land use's own run, as land use emits nothing else here. That makes ten more runs of each scenario: farming's and fossil fuels' part of each of CO₂, methane and N₂O, and each of the four gases taken out in full.
 
 ### What the levers do to each gas
 
-After today, each cause's band in a gas is what is left once the levers have cut that cause's emissions of the gas. The change is worked out gas by gas, with the same temperature response as the rest (see [Levers](#method-levers)). With permafrost on, each cause's share of the change in its release is split between the cause's gases in proportion to the size of each.
+After today, each cause's band in a gas is what is left once the levers have cut that cause's emissions of the gas. The change is worked out gas by gas, with the same temperature response as the rest (see [Levers](#method-levers)). With permafrost on, each cause's share of the change in its release is split between the cause's gases in proportion to the size of each. What the levers cut in other human emissions, the food chain's refrigerants and the methane of its waste, comes off each gas's other sources.
 
 Some of what the energy levers change is not a greenhouse gas: aviation's non-CO₂ forcing (its contrails and NOx) and the air pollution of the fuel they no longer burn, including the methane NOx leaves in the air. These count under *All gases* only, in fossil fuels and in air pollution, so a cause's gases do not quite add up to its band under *All gases*.
 

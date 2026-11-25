@@ -9,7 +9,7 @@ import { sum } from '../../src/model/util';
 import { CURRENT_YEAR, loadFixtures } from './fixtures';
 import { loadRealData } from './realData';
 
-const NON_FOOD: GasVector = { co2: 0, ch4: 2e8, n2o: 3e6 };
+const NON_FOOD: GasVector = { co2: 0, ch4: 2e8, n2o: 3e6, hfc: 0 };
 const ALL_LEVERS = Object.fromEntries(LEVER_IDS.map((id) => [id, 1]));
 
 const withNonFood = (): ModelData => {

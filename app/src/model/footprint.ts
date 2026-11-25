@@ -114,7 +114,7 @@ export const crushPools = (
 ): { oil: Map<number, number>; cake: FeedPerTonne } => {
   const crush = prepared.data.land.crush ?? {};
   const oilKg = new Map<number, number>();
-  const cakeKg = ANIMAL_GROUPS.map(() => ({ co2: 0, ch4: 0, n2o: 0 }));
+  const cakeKg = ANIMAL_GROUPS.map(() => ({ co2: 0, ch4: 0, n2o: 0, hfc: 0 }));
   const toCake = (seed: string, kg: GasVector) => {
     const shares = feedSharesOf(prepared.data.feed, method, 'World', seed) ?? {};
     ANIMAL_GROUPS.forEach((group, k) => {
@@ -130,7 +130,7 @@ export const crushPools = (
       if (index !== undefined && crushed > 0) {
         oilKg.set(index, (oilKg.get(index) ?? 0) + crushed * oilShare);
       }
-      toCake(seed, { co2: crushed * (1 - oilShare), ch4: 0, n2o: 0 });
+      toCake(seed, { co2: crushed * (1 - oilShare), ch4: 0, n2o: 0, hfc: 0 });
     });
     const cakes = countryCakes(pc, prepared, scope);
     const cuts = cut(pc);
@@ -141,6 +141,7 @@ export const crushPools = (
         co2: kg.co2 * kept('co2'),
         ch4: kg.ch4 * kept('ch4'),
         n2o: kg.n2o * kept('n2o'),
+        hfc: 0,
       });
     });
   });
@@ -198,13 +199,14 @@ const groupTonnes = (pc: PreparedCountry, prepared: Prepared): number[] =>
 /** kg of each gas from what each group is fed, at a country's intensities. */
 const feedKg = (split: readonly ItemVector[], intensity: ByGas): GasVector[] =>
   split.map((fed) => {
-    const out = { co2: 0, ch4: 0, n2o: 0 };
+    const out = { co2: 0, ch4: 0, n2o: 0, hfc: 0 };
     for (let i = 0; i < fed.length; i++) {
       const t = fed[i] as number;
       if (t > 0) {
         out.co2 += t * (intensity.co2[i] as number);
         out.ch4 += t * (intensity.ch4[i] as number);
         out.n2o += t * (intensity.n2o[i] as number);
+        out.hfc += t * (intensity.hfc[i] as number);
       }
     }
     return out;
@@ -435,6 +437,7 @@ const addGas = (a: GasVector, b: GasVector): GasVector => ({
   co2: a.co2 + b.co2,
   ch4: a.ch4 + b.ch4,
   n2o: a.n2o + b.n2o,
+  hfc: a.hfc + b.hfc,
 });
 
 const groupIndexCache = memoPer<Prepared, Int32Array>();
@@ -463,7 +466,7 @@ export const footprintOf = (
   const feed = frame.feed.own[c] as FeedPerTonne;
   const fedImported = frame.feed.imported[c] as ByGas;
   const groups = animalIndex(prepared);
-  const out = { co2: 0, ch4: 0, n2o: 0 };
+  const out = { co2: 0, ch4: 0, n2o: 0, hfc: 0 };
   for (let i = 0; i < supply.length; i++) {
     const q = supply[i] as number;
     if (q !== 0) {

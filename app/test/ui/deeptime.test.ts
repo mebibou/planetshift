@@ -159,9 +159,10 @@ const temperature = (): ScenarioResult['temperature'] => {
       other: [],
     },
     avoidedByGas: {
-      co2: { fossilIndustry: [], agriculture: [], landUse: [] },
-      ch4: { fossilIndustry: [], agriculture: [], landUse: [] },
-      n2o: { fossilIndustry: [], agriculture: [], landUse: [] },
+      co2: { fossilIndustry: [], agriculture: [], landUse: [], other: [] },
+      ch4: { fossilIndustry: [], agriculture: [], landUse: [], other: [] },
+      n2o: { fossilIndustry: [], agriculture: [], landUse: [], other: [] },
+      hfc: { fossilIndustry: [], agriculture: [], landUse: [], other: [] },
     },
   };
 };
