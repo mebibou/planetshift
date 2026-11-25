@@ -264,7 +264,7 @@ The total is divided by the country's population in the base year. With the leve
 
 In CO₂e per person a year, France's footprint is 2.03 t, the United States' 2.51 t, China's 2.09 t, India's 0.92 t and Brazil's 4.37 t. The refrigerants are 0.05 t of France's and 0.15 t of the United States'. In Brazil, clearing for farming is about half, 2.19 t. In France it is 0.04 t. France's imported beef comes mostly from its neighbours, the Netherlands, Ireland and the United Kingdom first. Much of its soy arrives as cake, which takes the world's average. With the whole diet shifted, France's footprint falls to 0.90 t.
 
-Published estimates for France are often higher. The main reason is the farm's intensities. Planetshift's intensities are a third to a half below Poore and Nemecek's for most foods (see *Per kilogram, against Poore and Nemecek*), as they count fewer sources. Drained organic soils are left out too.
+Published estimates for France are often higher. Planetshift's intensities explain little of the difference. Its meat and milk, which make most of a French diet's footprint, are close to Poore and Nemecek's or above them once both are in the same unit and with the same factors. Its crops and eggs are 20% to 40% below theirs (see *Per kilogram, against Poore and Nemecek*). Drained organic soils are left out too.
 
 ## Proxies
 
@@ -369,23 +369,25 @@ HESTIA's model applies the IPCC's 2019 Refinement to the water regimes and amend
 
 ### Per kilogram, against Poore and Nemecek
 
-Our World in Data shows Poore and Nemecek's (2018) emissions per kilogram of food, split by stage of the supply chain. Their farm stage is the one that compares with Planetshift's intensities, which leave out feed (counted on the crops), land-use change and everything after the farm. World averages weighted by production, from cradle to farm gate, in kg of CO₂-equivalent per kg:
+Poore and Nemecek (2018) give each food's emissions by stage of the supply chain. Their farm stage is the one that compares with Planetshift's intensities, which leave out feed (counted on the crops), land-use change and everything after the farm. Our World in Data shows it per kg of the retail product, such as boneless meat, bread or milled rice. Their data S2 gives it per kg of the FAOSTAT item, Planetshift's unit: meat in carcass weight, grain, rice as paddy. `pipeline/literature_terms.csv` keeps those figures. They weigh methane and N₂O with AR5's factors with climate-carbon feedbacks (34 and 298), and Planetshift with AR6's (27 and 273). Their totals give no split by gas, so each is moved to AR6's factors with the item's gas mix in Planetshift. World averages weighted by production, from cradle to farm gate, in kg of CO₂-equivalent per kg of the item:
 
-| Item | Planetshift | Poore and Nemecek, farm stage |
-| --- | --- | --- |
-| Beef | 24.6 | 21.9 (dairy herd) to 56.2 (beef herd) |
-| Sheep and goat meat | 21.2 | 27.0 |
-| Pig meat | 1.68 | 2.48 |
-| Poultry meat | 0.87 | 0.93 |
-| Eggs | 0.77 | 1.32 |
-| Milk | 1.18 | 1.51 |
-| Rice | 1.17 per kg of paddy, 1.8 per kg milled | 3.55 |
-| Wheat | 0.49 | 0.82 |
-| Maize | 0.37 | 0.72 |
-| Potatoes | 0.13 | 0.19 |
-| Peas | 0.40 | 0.72 |
+| Item | Planetshift | Poore and Nemecek, AR5 | Poore and Nemecek, AR6 | Ratio |
+| --- | --- | --- | --- | --- |
+| Beef | 24.6 | 29.0 | 24.0 | 1.03 |
+| Sheep and goat meat | 21.2 | 19.5 | 16.4 | 1.29 |
+| Pig meat | 1.68 | 1.69 | 1.46 | 1.15 |
+| Poultry meat | 0.87 | 0.67 | 0.63 | 1.39 |
+| Eggs | 0.77 | 1.32 | 1.22 | 0.64 |
+| Milk | 1.18 | 1.46 | 1.21 | 0.98 |
+| Rice (paddy) | 1.17 | 2.37 | 2.02 | 0.58 |
+| Wheat | 0.49 | 0.85 | 0.80 | 0.61 |
+| Maize | 0.37 | 0.48 | 0.45 | 0.82 |
+| Potatoes | 0.132 | 0.193 | 0.185 | 0.72 |
+| Peas | 0.40 | 0.72 | 0.68 | 0.59 |
 
-Planetshift is lower for every item, by a third to a half for most, and beef lies between their two herds. Three differences explain most of it. Planetshift weighs methane and N₂O with AR6's factors (27 and 273), and Poore and Nemecek with AR5's with climate-carbon feedbacks (34 and 298). Their data are a meta-analysis of studies from around 2010, and Planetshift's come from FAOSTAT's IPCC Tier 1 method and HESTIA. And the units differ: Planetshift's meat is in carcass weight. Rice is furthest apart, for the reasons above and because their paddy emissions come from field measurements.
+The ratio is Planetshift's figure over theirs with AR6's factors. Their beef is the beef and dairy herds together, weighted by their production. In the same unit and with the same factors, the animal products agree. Beef and milk are within 3% of theirs, and pig meat, sheep and goat meat and poultry are 15% to 39% above. Crops and eggs are 20% to 40% below. Planetshift's crops come from HESTIA's aggregated assessments (tiers 1 and 2), and its eggs mostly from FAOSTAT (tier 3). Poore and Nemecek's totals do not show which of their sources make the gap. Their data are a meta-analysis of studies from around 2010, and their paddy emissions come from field measurements. Moving their totals to AR6 with Planetshift's gas mix is approximate. For animal products, where that mix is mostly methane, a little more CO₂ in theirs would raise their AR6 figure by a few percent.
+
+`uv run python -m planetshift_pipeline.against_literature` prints the comparison for every item both have, from a build. A test checks this table against it.
 
 ## Emissions by source
 
