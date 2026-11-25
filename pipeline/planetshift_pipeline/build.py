@@ -77,7 +77,7 @@ SECTIONS: tuple[Section, ...] = (
     Section("coemissions", coemissions.build, ("coemissions.json",), ("coemissions",)),
     Section("waste", waste.build, ("waste.json",), ("waste", "food_loss")),
     Section("land", land.build, ("land.json",), ("land",)),
-    Section("practices", practices.build, ("practices.json",), ("practices",)),
+    Section("practices", practices.build, ("practices.json",), ("practices", "sources.ember")),
     Section("deforestation", deforestation.build, ("deforestation.json",), ("deforestation",)),
     Section("landuse", landuse.build, ("landuse.json",), ("landuse",)),
     Section("removals", removals.build, ("removals.json",), ("removals",)),

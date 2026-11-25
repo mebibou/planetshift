@@ -78,6 +78,11 @@ export interface Stage {
   change: ItemVector;
 }
 
+export interface FarmGrid {
+  share: (pc: PreparedCountry) => ItemVector;
+  ratio: (year: number) => number;
+}
+
 export interface CountryContext {
   pc: PreparedCountry;
   /** The steps in order; the last is the change in production with every module. */
@@ -185,6 +190,11 @@ export interface Hooks {
    * module's: its family is a player of the breakdown that every farm family's change meets.
    */
   scenarioScale?: (ctx: RunContext) => ((year: number) => number) | null;
+  /**
+   * The farm's grid electricity, the first module's: each item's share of a country's CO₂ that
+   * comes from it, and the grid's intensity in a year over today's.
+   */
+  grid?: (ctx: RunContext) => FarmGrid | null;
   /** The share of each item's intensity of each gas removed, on the production with every step. */
   intensity?: (
     ctx: RunContext,

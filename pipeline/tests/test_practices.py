@@ -43,9 +43,16 @@ def contract_list(name: str) -> list[str]:
     return re.findall(r"'(\w+)'", body)
 
 
+GRID = {
+    "kwhPerFuelCo2": {"World": 1.5, "FRA": 1.6},
+    "gridRatio": {"World": 1.0, "FRA": 0.1},
+    "kgCo2PerKwh": 0.5,
+}
+
+
 @pytest.fixture(scope="module")
 def built():
-    return P.practices_json(P.load(), COUNTRIES, REGIONS, INCOMES, {"World": 0.8, "FRA": 0.1})
+    return P.practices_json(P.load(), COUNTRIES, REGIONS, INCOMES, GRID)
 
 
 def test_ids_and_sources_match_the_contract():
@@ -67,8 +74,11 @@ def check(practices: dict, countries: list[str]) -> None:
         assert p["source"].startswith("https://"), pid
     electrified = practices["farmEnergy"]["electrified"]
     assert 0 < electrified["efficiency"] <= practices["farmEnergy"]["reduction"]["median"]
-    assert "World" in electrified["co2PerFuelCo2"]
-    assert all(v >= 0 for v in electrified["co2PerFuelCo2"].values())
+    for table in ("kwhPerFuelCo2", "gridRatio"):
+        assert "World" in electrified[table]
+        assert all(v >= 0 for v in electrified[table].values())
+    assert electrified["gridRatio"]["World"] == 1.0
+    assert electrified["kgCo2PerKwh"] > 0
 
 
 def test_practices_follow_the_contract(built):
@@ -99,8 +109,13 @@ def test_the_built_file_follows_the_contract():
 
 
 def test_only_a_practice_with_an_efficiency_is_electrified(built):
-    assert built["farmEnergy"]["electrified"] == {
-        "efficiency": 0.25,
-        "co2PerFuelCo2": {"World": 0.8, "FRA": 0.1},
-    }
+    assert built["farmEnergy"]["electrified"] == {"efficiency": 0.25, **GRID}
     assert "electrified" not in built["feedAdditives"]
+
+
+def test_the_grid_ratio_is_embers_and_faostats_where_ember_has_no_figure():
+    ratio = P.grid_ratio({"FRA": 0.04, "IND": 0.66}, 0.46, {"World": 0.5, "FRA": 0.1, "TUV": 0.75})
+    assert ratio["World"] == 1.0
+    assert ratio["FRA"] == pytest.approx(0.04 / 0.46)
+    assert ratio["TUV"] == pytest.approx(0.75 / 0.5)
+    assert "IND" not in ratio

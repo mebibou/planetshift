@@ -147,5 +147,5 @@ Some uncertainty is not in the range:
 - Deforestation CO₂ is a constant stream, not scaled with population. It moves with each item's relative production change in the country (between −100% and +100%), and the lever prevents its share of what is left.
 - Removals act on the land once the shift is complete and store for `years` years from each hectare's adoption. The rate is the country's, or else the world's.
 - The breakdown is each group's Shapley value over the acting groups, split by cause. The permafrost change is shared out in proportion to the size of each part.
-- Energy levers cut a share of each sector's CO₂ in the scenario chosen under *Other options*, ramping in like the shift. They do not change farm emissions, and electricity used on farms keeps its own intensity.
+- Energy levers cut a share of each sector's CO₂ in the scenario chosen under *Other options*, ramping in like the shift. They do not change farm emissions. The electricity used on farms follows the chosen SSP's grid, not Renewable electricity.
 - A missing lever file leaves its levers without effect, shown as not available.

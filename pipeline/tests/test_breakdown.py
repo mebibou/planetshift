@@ -254,7 +254,7 @@ def test_split_energy_keeps_the_kg_and_leaves_other_sources():
     )
 
 
-def test_electricity_per_fuel_co2_is_the_grid_over_the_fuel_it_replaces():
+def test_kwh_per_fuel_co2_and_the_grid_come_from_each_countrys_farm_energy():
     gn = gn_rows(
         [
             (1, B.ELECTRICITY, B.CO2, 2022, 0.5),
@@ -265,7 +265,10 @@ def test_electricity_per_fuel_co2_is_the_grid_over_the_fuel_it_replaces():
             (2, B.FUEL, B.ENERGY_USE, 2022, 1.0),
         ]
     )
-    drawn = B.electricity_per_fuel_co2(gn, {1: "AAA", 2: "BBB"}, 0.1)
-    assert drawn["AAA"] == pytest.approx(0.1 * 0.5 / 0.07)
-    assert drawn["BBB"] == drawn["World"]
-    assert drawn["World"] == pytest.approx(0.1 * 0.5 / 0.105)
+    kwh = B.kwh_per_fuel_co2(gn, {1: "AAA", 2: "BBB"}, 0.1)
+    assert kwh["AAA"] == pytest.approx(0.1 / 0.07)
+    assert kwh["BBB"] == pytest.approx(0.1 / 0.14)
+    assert kwh["World"] == pytest.approx(0.1 / 0.105)
+    grid = B.grid_kg_per_kwh(gn, {1: "AAA", 2: "BBB"})
+    assert grid["AAA"] == pytest.approx(0.5)
+    assert grid["BBB"] == grid["World"] == pytest.approx(0.5)

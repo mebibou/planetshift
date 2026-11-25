@@ -102,29 +102,52 @@ FUEL, CO2, ENERGY_USE = 6812, 7273, 72184
 KWH_PER_MJ = 3.6
 
 
-def electricity_per_fuel_co2(
-    gn: pd.DataFrame, iso3: dict[int, str], kwh_per_mj_fuel: float
-) -> dict[str, float]:
-    """{'World' | iso3: kg CO₂ of the grid electricity that replaces a farm's fuel, per kg of fuel
-    CO₂ it replaces}: the country's on-farm electricity CO₂ per kWh over its fuel's CO₂ per MJ, in
-    its latest year with both; the countries' together where it has none."""
+def energy_table(gn: pd.DataFrame, iso3: dict[int, str]) -> pd.DataFrame:
+    """Each country's latest on-farm electricity and fuel, CO₂ and energy use (GN)."""
     rows = gn[
         gn["item_code"].isin((ELECTRICITY, FUEL)) & gn["element_code"].isin((CO2, ENERGY_USE))
     ]
     latest = rows.sort_values("year").drop_duplicates(
         ["area_code", "item_code", "element_code"], keep="last"
     )
-    table = latest[latest["area_code"].isin(iso3)].pivot_table(
+    return latest[latest["area_code"].isin(iso3)].pivot_table(
         index="area_code", columns=["item_code", "element_code"], values="value", aggfunc="sum"
     )
 
-    def ratio(t: pd.DataFrame | pd.Series) -> pd.Series | float:
-        grid = t[(ELECTRICITY, CO2)] / t[(ELECTRICITY, ENERGY_USE)] * KWH_PER_MJ
-        return kwh_per_mj_fuel * grid / (t[(FUEL, CO2)] / t[(FUEL, ENERGY_USE)])
 
-    own = ratio(table[(table > 0).all(axis=1)])
-    world = float(ratio(table.sum()))
+def per_country(
+    table: pd.DataFrame, iso3: dict[int, str], ratio, needs: list[tuple[int, int]]
+) -> dict[str, float]:
+    """{'World' | iso3: ratio(row)}, from the countries with every column of `needs`; the
+    countries' together where a country has none."""
+    cols = table.reindex(columns=pd.MultiIndex.from_tuples(needs))
+    known = cols.dropna()
+    own = ratio(known[(known > 0).all(axis=1)])
+    world = float(ratio(cols.sum()))
     return {"World": world, **{code: float(own.get(area, world)) for area, code in iso3.items()}}
+
+
+def kwh_per_fuel_co2(
+    gn: pd.DataFrame, iso3: dict[int, str], kwh_per_mj_fuel: float
+) -> dict[str, float]:
+    """{'World' | iso3: kWh of grid electricity that replaces the farm fuel emitting 1 kg of CO₂}:
+    `kwh_per_mj_fuel` over the fuel's CO₂ per MJ, in the country's latest year."""
+    return per_country(
+        energy_table(gn, iso3),
+        iso3,
+        lambda t: kwh_per_mj_fuel / (t[(FUEL, CO2)] / t[(FUEL, ENERGY_USE)]),
+        [(FUEL, CO2), (FUEL, ENERGY_USE)],
+    )
+
+
+def grid_kg_per_kwh(gn: pd.DataFrame, iso3: dict[int, str]) -> dict[str, float]:
+    """{'World' | iso3: kg CO₂ per kWh of the electricity farms use}, in the latest year."""
+    return per_country(
+        energy_table(gn, iso3),
+        iso3,
+        lambda t: t[(ELECTRICITY, CO2)] / t[(ELECTRICITY, ENERGY_USE)] * KWH_PER_MJ,
+        [(ELECTRICITY, CO2), (ELECTRICITY, ENERGY_USE)],
+    )
 
 
 def split_energy(frame: pd.DataFrame, shares: dict[tuple[str, str], float]) -> pd.DataFrame:
