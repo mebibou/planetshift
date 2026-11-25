@@ -100,7 +100,7 @@ Le domaine *Emissions from Livestock* (GLE) donne, par espèce, le CH₄ de la f
 Ce périmètre ajoute trois sources de FAOSTAT :
 
 - l'énergie utilisée sur la ferme, répartie entre tous les produits selon leur valeur brute de production ;
-- la fabrication des engrais, répartie comme l'azote de synthèse ;
+- la fabrication des engrais, ramenée aux pays qui épandent l'azote puis répartie comme l'azote de synthèse. FAOSTAT la compte là où l'engrais est fabriqué, environ 440 Mt de CO₂e en 2024 : les exportateurs comme la Russie, l'Arabie saoudite ou le Qatar chargeraient sinon leurs propres cultures de l'engrais épandu ailleurs. Chaque pays prend son usage d'azote (*Fertilizers by Nutrient* de FAOSTAT) multiplié par les émissions mondiales par tonne d'azote, environ 3,8 t de CO₂e ;
 - la fabrication des pesticides, répartie selon la surface récoltée.
 
 ### Des émissions aux intensités
@@ -262,9 +262,9 @@ Pour chaque aliment, l'empreinte d'un pays additionne :
 
 Le total est divisé par la population du pays l'année de référence. Avec les leviers, le changement de régime et la réduction du gaspillage changent les aliments mangés. Les intensités de la ferme suivent les pratiques agricoles. La chaîne après la ferme et le défrichement par tonne ne changent pas.
 
-En CO₂e par personne et par an, l'empreinte est de 2,03 t en France, 2,51 t aux États-Unis, 2,09 t en Chine, 0,92 t en Inde et 4,37 t au Brésil. Les réfrigérants en font 0,05 t en France et 0,15 t aux États-Unis. Au Brésil, le défrichement pour l'agriculture en représente environ la moitié, 2,19 t. En France, il représente 0,04 t. Le bœuf que la France importe vient surtout de ses voisins, les Pays-Bas, l'Irlande et le Royaume-Uni d'abord. Une grande part de son soja arrive en tourteau, qui prend la moyenne du monde. Avec tout le régime changé, l'empreinte de la France tombe à 0,90 t.
+En CO₂e par personne et par an, l'empreinte est de 2,04 t en France, 2,51 t aux États-Unis, 2,09 t en Chine, 0,92 t en Inde et 4,39 t au Brésil. Les réfrigérants en font 0,05 t en France et 0,15 t aux États-Unis. Au Brésil, le défrichement pour l'agriculture en représente environ la moitié, 2,19 t. En France, il représente 0,04 t. Le bœuf que la France importe vient surtout de ses voisins, les Pays-Bas, l'Irlande et le Royaume-Uni d'abord. Une grande part de son soja arrive en tourteau, qui prend la moyenne du monde. Avec tout le régime changé, l'empreinte de la France tombe à 0,90 t.
 
-Les estimations publiées pour la France sont souvent plus élevées. Les intensités de Planetshift expliquent peu de cet écart. Sa viande et son lait, qui font l'essentiel de l'empreinte d'un régime français, sont proches de ceux de Poore et Nemecek ou au-dessus, une fois les deux dans la même unité et avec les mêmes facteurs. Ses cultures et ses œufs sont de 20 % à 40 % en dessous des leurs (voir *Par kilogramme, face à Poore et Nemecek*). Les sols organiques drainés sont aussi laissés de côté.
+Les estimations publiées pour la France sont souvent plus élevées. Les intensités de Planetshift expliquent peu de cet écart. Sa viande et son lait, qui font l'essentiel de l'empreinte d'un régime français, sont proches de ceux de Poore et Nemecek ou au-dessus, une fois les deux dans la même unité et avec les mêmes facteurs. Ses cultures et ses œufs sont de 20 % à 50 % en dessous des leurs (voir *Par kilogramme, face à Poore et Nemecek*). Les sols organiques drainés sont aussi laissés de côté.
 
 ## Substituts
 
@@ -383,9 +383,9 @@ Poore et Nemecek (2018) donnent les émissions de chaque aliment par étape de l
 | Blé | 0,49 | 0,85 | 0,80 | 0,61 |
 | Maïs | 0,37 | 0,48 | 0,45 | 0,82 |
 | Pommes de terre | 0,132 | 0,193 | 0,185 | 0,72 |
-| Pois | 0,40 | 0,72 | 0,68 | 0,59 |
+| Pois | 0,36 | 0,72 | 0,68 | 0,53 |
 
-Le rapport est le chiffre de Planetshift divisé par le leur avec les facteurs de l'AR6. Leur bœuf réunit les troupeaux allaitant et laitier, pondérés par leur production. Dans la même unité et avec les mêmes facteurs, les produits animaux concordent. Le bœuf et le lait sont à 3 % près des leurs, et le porc, la viande ovine et caprine et la volaille de 15 % à 39 % au-dessus. Les cultures et les œufs sont de 20 % à 40 % en dessous. Les cultures de Planetshift viennent des évaluations agrégées de HESTIA (niveaux 1 et 2), et ses œufs surtout de FAOSTAT (niveau 3). Les totaux de Poore et Nemecek ne montrent pas lesquelles de leurs sources font l'écart. Leurs données sont une méta-analyse d'études des années 2010 environ, et leurs émissions des rizières viennent de mesures au champ. Ramener leurs totaux à l'AR6 avec la répartition par gaz de Planetshift est approché. Pour les produits animaux, où cette répartition est surtout du méthane, un peu plus de CO₂ chez eux relèverait leur chiffre de quelques pour cent.
+Le rapport est le chiffre de Planetshift divisé par le leur avec les facteurs de l'AR6. Leur bœuf réunit les troupeaux allaitant et laitier, pondérés par leur production. Dans la même unité et avec les mêmes facteurs, les produits animaux concordent. Le bœuf et le lait sont à 3 % près des leurs, et le porc, la viande ovine et caprine et la volaille de 15 % à 39 % au-dessus. Les cultures et les œufs sont de 20 % à 50 % en dessous. Les cultures de Planetshift viennent surtout des évaluations agrégées de HESTIA (niveaux 1 et 2), et ses œufs surtout de FAOSTAT (niveau 3). Les totaux de Poore et Nemecek ne montrent pas lesquelles de leurs sources font l'écart. Leurs données sont une méta-analyse d'études des années 2010 environ, et leurs émissions des rizières viennent de mesures au champ. Ramener leurs totaux à l'AR6 avec la répartition par gaz de Planetshift est approché. Pour les produits animaux, où cette répartition est surtout du méthane, un peu plus de CO₂ chez eux relèverait leur chiffre de quelques pour cent.
 
 `uv run python -m planetshift_pipeline.against_literature` affiche la comparaison pour chaque produit présent des deux côtés, à partir d'une construction. Un test vérifie ce tableau par rapport à elle.
 

@@ -506,3 +506,26 @@ def test_intensities_json_stores_each_source_once():
     }
     assert out["byCountry"]["FRA"]["2511"]["cradleToFarmGate"]["source"] == 0
     assert out["byCountry"]["DEU"]["2513"]["farmGate"]["source"] == 1
+
+
+def test_fertiliser_manufacturing_goes_where_its_nitrogen_is_applied():
+    made = pd.DataFrame(
+        {
+            "area_code": [1, 2, 1, 5000],
+            "gas": ["co2", "co2", "n2o", "co2"],
+            "process": ["fertiliserManufacturing"] * 4,
+            "kg": [90.0, 10.0, 4.0, 1e9],
+        }
+    )
+    nitrogen = pd.DataFrame(
+        {
+            "area_code": [1, 2, 3, 5000, 2],
+            "item_code": [I.FERTILISER_ITEM] * 4 + [3103],
+            "element_code": [I.AGRICULTURAL_USE] * 4 + [I.AGRICULTURAL_USE],
+            "value": [0.0, 1.0, 3.0, 1e9, 50.0],
+        }
+    )
+    moved = I.where_applied(made, nitrogen).set_index(["area_code", "gas"])["kg"]
+    assert moved.to_dict() == pytest.approx(
+        {(1, "co2"): 0, (1, "n2o"): 0, (2, "co2"): 25, (2, "n2o"): 1, (3, "co2"): 75, (3, "n2o"): 3}
+    )
