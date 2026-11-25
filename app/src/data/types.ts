@@ -284,6 +284,18 @@ export interface Climate {
    */
   naturalOnly?: BandSeries;
   permafrost: Permafrost;
+  /** Optional until the pipeline builds it. */
+  seaLevel?: SeaLevel;
+}
+
+/** Rise in mm a year per °C above the balance temperature (°C), fitted to the median and to each likely end of AR6 Table 9.9. */
+export interface SeaLevel {
+  mmPerYearPerDegree: { median: number; low: number; high: number };
+  balanceTemperature: { median: number; low: number; high: number };
+  /** Observed global mean sea level, m above 1900: AR6's tide gauges to 1992, NASA's satellites from 1993. */
+  observed?: Series;
+  /** How far the 1995–2014 mean sat above the 1900 level, m: what turns the fit's rise into a rise since 1900. */
+  baseAbove1900?: number;
 }
 
 export type EnsoPhase = 'elNino' | 'laNina' | 'neutral';

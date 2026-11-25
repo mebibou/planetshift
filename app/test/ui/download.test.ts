@@ -1,3 +1,4 @@
+import type { ChartTab } from '../../src/app/url';
 import { describe, expect, it } from 'vitest';
 import {
   BOM,
@@ -172,7 +173,7 @@ const climate = {
   },
   naturalOnly: { years: [2026], median: [0.01], p05: [0], p95: [0.02] },
 } as unknown as Climate;
-const chart = (tab: 'temperature' | 'avoided' | 'cause', r: ScenarioResult | null = result) =>
+const chart = (tab: ChartTab, r: ScenarioResult | null = result) =>
   chartCsv({
     tab,
     result: r,
@@ -214,6 +215,28 @@ describe('chart csv', () => {
       'year,warming_avoided_median_degC,warming_avoided_p05_degC,warming_avoided_p95_degC',
     );
     expect(rows).toEqual(['2026,0.5,-0.5,1.5', '2027,0.5,-0.5,1.5']);
+  });
+
+  it('gives the sea-level rise without and with the levers in cm, or nothing without it', () => {
+    const band = (k: number) => ({
+      median: [k, 2 * k, 3 * k],
+      low: [0, k, 2 * k],
+      high: [k, 3 * k, 4 * k],
+    });
+    const withSea = {
+      ...result,
+      seaLevel: { years: [1999, 2000, 2001], baseline: band(0.01), scenario: band(0.005) },
+    } as unknown as ScenarioResult;
+    const [header, ...rows] = lines(chart('sealevel', withSea)?.text ?? '');
+    expect(header?.split(',')).toEqual([
+      'year',
+      'sea_level_observed_cm',
+      ...['without_levers', 'with_levers'].flatMap((w) =>
+        ['median', 'p17', 'p83'].map((q) => `sea_level_${w}_${q}_cm`),
+      ),
+    ]);
+    expect(rows).toEqual(['1999,,,,,,,', '2000,,2,1,3,1,0.5,1.5', '2001,,3,2,4,1.5,1,2']);
+    expect(chart('sealevel')).toBeNull();
   });
 
   it('gives warming by cause from the climate data, even before the model has run', () => {

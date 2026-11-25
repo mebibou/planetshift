@@ -270,6 +270,14 @@
     },
     "landUse": "Usage des terres"
   },
+  "seaLevelChart": {
+    "title": "Hausse du niveau de la mer",
+    "label": "Hausse du niveau de la mer jusqu'en {year} sans les leviers et avec eux, avec leurs fourchettes probables",
+    "unit": "cm au-dessus de 1900",
+    "band": "Fourchette probable (17–83 %)",
+    "value": "{value} cm",
+    "caption": "Hausse du niveau moyen mondial de la mer, d'après une vitesse de hausse par °C ajustée sur les projections du GIEC (AR6), sans les leviers et avec eux. Chaque courbe est mesurée depuis le niveau de la mer en 1900. La courbe observée montre les marégraphes à partir de 1900 (GIEC AR6), puis les satellites de la NASA à partir de 1993. La mer continue de monter pendant des siècles. L'écart continue de grandir après 2100."
+  },
   "avoidedChart": {
     "title": "Réchauffement évité",
     "label": "Réchauffement évité chaque année jusqu'en {year} grâce aux leviers, avec sa fourchette probable",
@@ -294,7 +302,8 @@
     "range": "Années",
     "ranges": {
       "full": "Depuis 1850",
-      "recent": "Depuis 2000"
+      "recent": "Depuis 2000",
+      "since1900": "Depuis 1900"
     },
     "natural": "Facteurs naturels seuls (soleil et volcans)",
     "enso": {
@@ -320,6 +329,11 @@
     "landFreed": "Terres agricoles libérées",
     "landAdded": "Terres agricoles en plus",
     "landDetail": "cultures {cropland}, prairies {pasture} ; {share} des terres agricoles du monde",
+    "seaLevel": {
+      "label": "Hausse du niveau de la mer évitée d'ici 2100",
+      "value": "{value} cm",
+      "detail": "Fourchette probable de {low} à {high} cm. Sans les leviers, la mer est {baseline} m au-dessus de son niveau de 1900 en 2100 (fourchette probable de {baselineLow} à {baselineHigh} m), d'après une vitesse ajustée sur le GIEC AR6. La hausse que les leviers évitent continue de croître après 2100. Ce chiffre laisse cela de côté."
+    },
     "mammals": {
       "label": "Mammifères d'élevage pour un sauvage, en poids",
       "ratio": "{value} pour 1",
@@ -429,7 +443,8 @@
     "tabs": {
       "temperature": "Température mondiale",
       "avoided": "Réchauffement évité",
-      "cause": "Causes du réchauffement"
+      "cause": "Causes du réchauffement",
+      "sealevel": "Niveau de la mer"
     },
     "seeCauses": "Voir ce qui cause le réchauffement"
   },
@@ -502,7 +517,7 @@
     "range": "{name} : {parts}.",
     "rangeWithout": "{range} sans les leviers",
     "rangeWith": "{range} avec eux",
-    "note": "Les fourchettes du (i) sont celles des sources, pas celle du réchauffement. Les dommages économiques, le niveau de la mer et l'acidité des océans sont laissés de côté.",
+    "note": "Les fourchettes du (i) sont celles des sources, pas celle du réchauffement. Les dommages économiques et l'acidité des océans sont laissés de côté. La hausse du niveau de la mer évitée est dans le résumé.",
     "more": "Comment c'est lu",
     "units": {
       "times": "{value} fois",

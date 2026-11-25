@@ -166,6 +166,30 @@ const natureStats = (
   ];
 };
 
+const cm = (locale: string, m: number) => formatNumber(locale, m * 100, 1);
+const metres = (locale: string, m: number) => formatNumber(locale, m, 2);
+
+/** The sea-level rise avoided by 2100 against AR6's rise without the levers, where the data has it. */
+const seaLevelStats = (t: T, locale: string, result: ScenarioResult): Stat[] => {
+  const sea = result.summary.seaLevel2100;
+  return sea
+    ? [
+        {
+          label: t('summary.seaLevel.label'),
+          value: t('summary.seaLevel.value', { value: cm(locale, sea.avoided.median) }),
+          detail: t('summary.seaLevel.detail', {
+            low: cm(locale, Math.min(sea.avoided.low, sea.avoided.high)),
+            high: cm(locale, Math.max(sea.avoided.low, sea.avoided.high)),
+            baseline: metres(locale, sea.baseline.median),
+            baselineLow: metres(locale, sea.baseline.low),
+            baselineHigh: metres(locale, sea.baseline.high),
+          }),
+          className: 'stat-sea-level',
+        },
+      ]
+    : [];
+};
+
 /** The mammals' figure, where the data has farmed and wild mammals. */
 const mammalStats = (t: T, locale: string, result: ScenarioResult, wild?: Mammals['wild']) => {
   const m = mammalRatio(result.countries, wild);
@@ -226,6 +250,7 @@ export const summaryStats = (
       }),
       className: 'stat-land',
     },
+    ...seaLevelStats(t, locale, result),
     ...mammalStats(t, locale, result, wild),
     ...natureStats(t, locale, result, options, species),
     ...SUMMARY_MODULES.flatMap((m) => {

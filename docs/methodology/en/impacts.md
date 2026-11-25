@@ -35,7 +35,7 @@ The heatwave row is not an IPCC finding. It comes from one study, Dosio et al. (
 
 ## What is left out
 
-Economic damages are left out: their estimates depend on choices about growth, adaptation and discounting that the card could not show. Sea level and ocean acidity change slowly after the warming and would need their own outputs, not a row read at one level of warming.
+Economic damages are left out: their estimates depend on choices about growth, adaptation and discounting that the card could not show. Sea level and ocean acidity change slowly after the warming and need their own outputs, not a row read at one level of warming. The summary has one for sea level, the rise the levers avoid (see [the temperature page](#method-climate)). Ocean acidity has none yet.
 
 The impacts are global. They do not say where the heat, rain or drought falls, nor who bears it.
 

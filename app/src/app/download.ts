@@ -1,3 +1,4 @@
+import type { SeaLevelBand } from '../model/seaLevel';
 import { GASES, type BandSeries, type Climate, type Meta, type Series } from '../data/types';
 import { populationPath } from '../chart/populationArea';
 import type { Options, Scenario, ScenarioResult } from '../model/api';
@@ -214,6 +215,41 @@ export const avoidedRows = (
   };
 };
 
+type Table = { header: string[]; rows: Cell[][] } | null;
+
+/**
+ * The observed sea level from 1900, and the rise without and with the levers from 2000 to 2100,
+ * cm above 1900 (above 1995–2014 without the observed record), median and likely range.
+ */
+export const seaLevelRows = (result: ScenarioResult, observed?: Series): Table => {
+  const s = result.seaLevel;
+  const cm = (m: number | null | undefined) => (m === undefined || m === null ? null : m * 100);
+  const columns = (name: string) =>
+    ['median', 'p17', 'p83'].map((q) => `sea_level_${name}_${q}_cm`);
+  const at = (band: SeaLevelBand, i: number, year: number) =>
+    year < 2000 ? [null, null, null] : [band.median[i], band.low[i], band.high[i]].map(cm);
+  const seen = (year: number) => cm(observed?.values[observed.years.indexOf(year)]);
+  return s
+    ? {
+        header: [
+          'year',
+          'sea_level_observed_cm',
+          ...columns('without_levers'),
+          ...columns('with_levers'),
+        ],
+        rows: s.years
+          .map((year, i) => ({ year, i }))
+          .filter(({ year }) => year >= 1900)
+          .map(({ year, i }) => [
+            year,
+            seen(year),
+            ...at(s.baseline, i, year),
+            ...at(s.scenario, i, year),
+          ]),
+      }
+    : null;
+};
+
 /** The band columns of each cause of an attribution, named with `prefix`. */
 const attributionColumns = (attribution: Attribution, prefix: string) => {
   const causes = causesIn(attribution);
@@ -260,17 +296,23 @@ export interface ChartInput {
   currentYear: number;
 }
 
+/** Each tab's table from a run; the causes' table is read from the data alone. */
+const RUN_TABLES: Record<
+  Exclude<ChartTab, 'cause'>,
+  (r: ScenarioResult, i: ChartInput) => Table
+> = {
+  temperature: (r, i) => temperatureRows(r, i.climate.naturalOnly),
+  avoided: (r, i) => avoidedRows(r, i.currentYear),
+  sealevel: (r) => seaLevelRows(r),
+};
+
 /** The data of one chart tab as CSV, or null when the model has not run. */
 export const chartCsv = (input: ChartInput): DownloadFile | null => {
-  const { tab, result, climate, scenario, options, currentYear } = input;
+  const { tab, result, climate, scenario, options } = input;
   const table =
     tab === 'cause'
       ? causeRows(climate, options, result?.temperature)
-      : !result
-        ? null
-        : tab === 'avoided'
-          ? avoidedRows(result, currentYear)
-          : temperatureRows(result, climate.naturalOnly);
+      : result && RUN_TABLES[tab](result, input);
   return table
     ? csvFile(chartFileName(tab, scenario, options, 'csv'), table.header, table.rows)
     : null;

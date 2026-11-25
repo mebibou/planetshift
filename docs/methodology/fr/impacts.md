@@ -35,7 +35,7 @@ La ligne des vagues de chaleur n'est pas une conclusion du GIEC. Elle vient d'un
 
 ## Ce qui est laissé de côté
 
-Les dommages économiques sont laissés de côté : leurs estimations dépendent de choix sur la croissance, l'adaptation et l'actualisation que la carte ne pourrait pas montrer. Le niveau de la mer et l'acidité des océans changent lentement après le réchauffement et demanderaient leurs propres résultats, pas une ligne lue à un niveau de réchauffement.
+Les dommages économiques sont laissés de côté : leurs estimations dépendent de choix sur la croissance, l'adaptation et l'actualisation que la carte ne pourrait pas montrer. Le niveau de la mer et l'acidité des océans changent lentement après le réchauffement et demandent leurs propres résultats, pas une ligne lue à un niveau de réchauffement. Le résumé en a un pour le niveau de la mer, la hausse que les leviers évitent (voir [la page sur la température](#method-climate)). L'acidité des océans n'en a pas encore.
 
 Les impacts sont mondiaux. Ils ne disent pas où tombent la chaleur, la pluie ou la sécheresse, ni qui les subit.
 

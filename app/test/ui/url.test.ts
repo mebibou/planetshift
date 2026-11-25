@@ -27,6 +27,10 @@ describe('url', () => {
     expect(parseUi('?layer=land&change=land')).toMatchObject({ layer: 'land', changeOf: 'land' });
   });
 
+  it('opens the sea-level tab from its link', () => {
+    expect(parseUi('?chart=sealevel')).toMatchObject({ chart: 'sealevel' });
+  });
+
   it('opens an old link to The link on Explore, at the chart by cause', () => {
     expect(parseUi('?view=link&chart=avoided')).toMatchObject({ view: 'explore', chart: 'cause' });
     expect(parseUi('?chart=cause')).toMatchObject({ view: 'explore', chart: 'cause' });
