@@ -2,6 +2,7 @@ import {
   ANIMAL_GROUPS,
   GASES,
   type AnimalGroup,
+  type Chain as FoodChain,
   type Climate,
   type Ssp,
   type CauseWarming,
@@ -70,6 +71,15 @@ import { addLand, countryLand, landChangeOf, NO_LAND, type CakeDemand } from './
 import { clipChange, locateAll } from './location';
 import { mammalsOf, NO_MAMMALS } from './mammals';
 import { speciesOf } from './species';
+import {
+  allCauses,
+  CHAIN_CAUSES,
+  causeOf,
+  chainBase,
+  chainIntensities,
+  chainSums,
+  type ChainCause,
+} from './chain';
 import { groupTotals, prepare, type Prepared, type PreparedCountry } from './prepare';
 import { baselineScale, builtUp, ramp, tabulate, type Scale } from './timePath';
 import {
@@ -435,6 +445,8 @@ interface CountryParts {
   builtUp: readonly BuiltUp[];
   /** The part of each production step's farm CO₂ that is grid electricity, kg a year. */
   gridFarm: Readonly<Record<string, number>>;
+  /** Each production step's emissions after the farm, by the cause they count in. */
+  chainFarm: Readonly<Record<string, Partial<Record<ChainCause, GasVector>>>>;
 }
 
 interface BuiltUp {
@@ -553,6 +565,7 @@ const countryParts = (
     cakes[cakes.length - 1] as CakeDemand,
   );
   const extra = countryHooks.map(({ hook }) => hook({ pc, stages, land, landChange }));
+  const chain = countryChain(pc, prepared, stages);
   return {
     result: Object.assign(
       {
@@ -574,6 +587,7 @@ const countryParts = (
         landArea: prepared.data.land.landArea?.[pc.country.iso3] ?? 0,
         ...countryMammals(pc, change, prepared),
         ...speciesOf(prepared.data.species?.byCountry[pc.country.iso3], land, landChange),
+        ...chain.result,
       },
       ...extra.map((e) => e.result ?? {}),
     ) as CountryResult,
@@ -595,6 +609,36 @@ const countryParts = (
       e.buildUp ? [{ cause: countryHooks[k]?.cause ?? DIET_CAUSE, ...e.buildUp }] : [],
     ),
     gridFarm: stepGridCo2(stages, intensities.kgPerTonne.co2, gridShare),
+    chainFarm: chain.byStep,
+  };
+};
+
+const NO_CHAIN = { byStep: {}, result: {} };
+
+/**
+ * A country's emissions after the farm: each production step's own change by cause, and, for
+ * its result, the base year's and their change once every step is taken.
+ */
+const countryChain = (pc: PreparedCountry, prepared: Prepared, stages: readonly Stage[]) =>
+  prepared.data.chain ? chainOf(pc, prepared, prepared.data.chain, stages) : NO_CHAIN;
+
+const chainOf = (
+  pc: PreparedCountry,
+  prepared: Prepared,
+  chain: FoodChain,
+  stages: readonly Stage[],
+) => {
+  const ints = chainIntensities(pc, prepared, chain);
+  const totals = stages.map((s) => chainSums(s.change, ints));
+  const last = totals[totals.length - 1];
+  return {
+    byStep: Object.fromEntries(
+      stages.map((s, k) => {
+        const own = (totals[k] as Float64Array).map((v, i) => v - (totals[k - 1]?.[i] ?? 0));
+        return [s.family, Object.fromEntries(CHAIN_CAUSES.map((c) => [c, causeOf(own, c)]))];
+      }),
+    ),
+    result: { chain: chainBase(pc, ints), chainChange: last ? allCauses(last) : ZERO_GAS },
   };
 };
 
@@ -1271,6 +1315,25 @@ const emissionsPass = (
       ]),
     );
   });
+  /** A family's emissions after the farm in a cause, scaled and ramped like its farm emissions. */
+  const chainOwn = (f: string, c: ChainCause): GasVector =>
+    parts.reduce((a, p) => addGas(a, p.chainFarm[f]?.[c] ?? ZERO_GAS), ZERO_GAS);
+  /** Each family's chain path in each cause, once per pass, as it does not depend on the band. */
+  const chainPaths = new Map<string, GasVector[] | undefined>(
+    FAMILIES.flatMap((f) =>
+      CHAIN_CAUSES.map((c) => {
+        const own = chainOwn(f, c);
+        return [
+          `${f}|${c}`,
+          isZero(own)
+            ? undefined
+            : familyPath({ own, joint: ZERO_GAS }, NO_CLEARING, years, scale, shareAt),
+        ] as const;
+      }),
+    ),
+  );
+  const chainPath = (f: string, c: CountedCause): GasVector[] | undefined =>
+    chainPaths.get(`${f}|${c}`);
   /** A family's farm emissions in a band, or none, their grid electricity following the grid. */
   const farmPath = (f: string, band: Band): GasVector[] => {
     const farm = farmTotal(parts, f, band);
@@ -1289,7 +1352,7 @@ const emissionsPass = (
     causeRecord((c) =>
       c === 'agriculture'
         ? (plusPath(farmPath(f, band), clearingPaths.agriculture[f]) as GasVector[])
-        : (clearingPaths[c][f] ?? zeroPath(years)),
+        : (plusPath(clearingPaths[c][f], chainPath(f, c)) ?? zeroPath(years)),
     );
   /**
    * A family's own emissions, all in the cause it mainly acts on; a farm family's are added to its

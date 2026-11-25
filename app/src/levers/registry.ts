@@ -98,7 +98,7 @@ export const LEVER_CAUSES: readonly LeverCause[] = ['fossilIndustry', 'agricultu
  * The causes the levers' effects are counted in, in the order of the data: a lever's own cause,
  * and air pollution, which the energy levers' fuel cuts reduce.
  */
-export const COUNTED_CAUSES: readonly CountedCause[] = [...LEVER_CAUSES, 'airPollution'];
+export const COUNTED_CAUSES: readonly CountedCause[] = [...LEVER_CAUSES, 'airPollution', 'other'];
 
 /** The cause a family mainly acts on, its group's heading in the panel. */
 export const causeOfFamily = (family: string): Cause =>

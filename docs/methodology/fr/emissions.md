@@ -11,7 +11,7 @@ L'application propose deux périmètres :
 - **À la ferme** (*Processus biologiques seulement* dans l'application) : les émissions des processus biologiques de la ferme. Ce sont la fermentation entérique (le méthane produit dans l'estomac des ruminants pendant la digestion), la gestion des effluents, les effluents laissés au pâturage et épandus sur les champs, les engrais de synthèse, les résidus de culture, les rizières et le brûlage des résidus.
 - **Du berceau à la sortie de ferme** (*Avec les intrants*, par défaut) : les mêmes, plus l'énergie utilisée sur la ferme (carburant et électricité) et la fabrication des engrais et des pesticides. Le carburant brûlé sur la ferme est compté ici, quelle que soit la source de l'intensité.
 
-Aucun des deux ne comprend le changement d'usage des terres, les sols organiques drainés, ni rien de ce qui suit la ferme : transformation, transport, distribution, cuisine et gaspillage.
+Aucun des deux ne comprend le changement d'usage des terres, les sols organiques drainés, ni rien de ce qui suit la ferme : transformation, transport, distribution, cuisine et gaspillage. Ce qui suit la ferme est compté séparément, dans *Après la ferme* plus bas. La forêt défrichée pour l'agriculture est comptée par le module de déforestation (voir [Déforestation](#method-deforestation)). L'infobulle de la couche Émissions de la carte montre les émissions après la ferme et le CO₂ du défrichement, à côté des émissions de la ferme. Les sols organiques drainés sont laissés de côté.
 
 ## Pourquoi les produits animaux excluent leur alimentation
 
@@ -221,6 +221,30 @@ Un demi-changement évite la moitié (de 2,53 à 2,58 Gt CO₂e, de 0,137 à 0,1
 - Un bœuf de travail et un veau comptent pareil par tête.
 
 Aucun domaine de FAOSTAT ne compte les animaux de trait. La règle n'utilise donc que les cheptels, les animaux traits et abattus, et le commerce d'animaux vivants.
+
+## Après la ferme
+
+Les aliments causent aussi des émissions après avoir quitté la ferme. Ils sont transformés, transportés, emballés et vendus, cuisinés à la maison, puis jetés. *Emissions from pre- and post-production* de FAOSTAT donne le CO₂, le méthane et le N₂O de chacune de ces étapes pour chaque pays, pour sa dernière année. En 2024, les pays du modèle émettent 5,0 Gt CO₂e après la ferme :
+
+| Étape | Mt CO₂e (PRG100) | Partagée entre les aliments selon |
+| --- | --- | --- |
+| Déchets alimentaires : déchets solides, incinération et eaux usées de l'industrie alimentaire | 1 638 | la masse |
+| Cuisine à la maison | 1 495 | la masse |
+| Transport | 522 | l'étape de Poore et Nemecek |
+| Transformation | 476 | l'étape de Poore et Nemecek |
+| Eaux usées domestiques | 368 | la masse |
+| Emballage | 277 | l'étape de Poore et Nemecek |
+| Distribution | 234 | l'étape de Poore et Nemecek |
+
+Trois étapes de FAOSTAT sont laissées de côté. La fabrication des engrais et celle des pesticides sont déjà comptées du berceau à la sortie de ferme. Les réfrigérants qui fuient de la chaîne du froid (0,84 Gt CO₂e) sont des gaz fluorés, que le modèle ne compte pas encore.
+
+**Partagées entre les aliments.** Pour la transformation, le transport, l'emballage et la distribution, la part de chaque aliment dans le total de son pays est sa production multipliée par les émissions par kg de cet aliment à cette étape selon Poore et Nemecek (2018). Our World in Data publie ces chiffres (CC BY 4.0). À la transformation, le bœuf a 1,81 kg CO₂e par kg et le blé 0,21. `pipeline/chain_items.csv` indique, pour chaque aliment, de lequel de leurs 42 aliments il prend les étapes, avec une note quand c'est un substitut (le thé utilise les étapes du café). La cuisine, les déchets alimentaires et les eaux usées sont partagés selon la masse, car les étapes de Poore et Nemecek s'arrêtent à la distribution. Un pays sans chiffres de FAOSTAT utilise ceux de l'ensemble des pays du modèle. Une étape que FAOSTAT laisse vide pour un pays compte pour zéro.
+
+En France, une tonne de bœuf a environ 1,06 t CO₂e après la ferme, et une tonne de blé environ 0,31 t. Pour le bœuf, c'est peu par rapport aux émissions de la ferme. Pour le blé, c'est proche.
+
+**Ce que changent les leviers.** Un changement de production (un changement de régime, moins de gaspillage, moins de pertes) change aussi les émissions après la ferme. Il le fait aliment par aliment, aux chiffres du pays. Comme les émissions de la ferme, elles suivent la référence et montent avec le changement. Elles comptent dans les [causes du réchauffement](#method-link) auxquelles elles appartiennent aujourd'hui : les étapes d'énergie dans *Combustibles fossiles et industrie*, les déchets alimentaires et les eaux usées dans *Autres émissions humaines*. Avec elles, le changement de régime complet évite environ 1,1 Gt CO₂e de plus par an, 6,6 Gt en tout une fois les leviers en place. Il évite 0,33 °C en 2100 au lieu de 0,28 °C.
+
+**Simplifications.** Tout est placé là où l'aliment est produit, comme les émissions de la ferme, bien que les magasins et les cuisines soient là où il est mangé. La cuisine et les déchets alimentaires suivent la masse d'un aliment, si bien qu'une tonne de blé et une tonne de bœuf ont les mêmes émissions à la maison. Moins de gaspillage réduit aussi les émissions de la cuisine des aliments qui ne sont plus gaspillés. Cela surestime un peu la réduction, car les aliments gaspillés ne sont pas toujours cuisinés. L'énergie après la ferme ne devient pas plus propre au fil des années, contrairement au réseau du scénario.
 
 ## Substituts
 

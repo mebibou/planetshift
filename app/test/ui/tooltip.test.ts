@@ -138,6 +138,24 @@ describe('tooltip', () => {
     expect(none.rows[0]?.[0]).toBe('No data for this country');
   });
 
+  it('adds food’s emissions after the farm and the clearing CO₂ on the Emissions layer', () => {
+    const c = countryResult({
+      chain: { co2: 2e8, ch4: 1e6, n2o: 0 },
+      chainChange: { co2: -5e7, ch4: 0, n2o: 0 },
+      deforestationCo2: 4e8,
+      deforestationChange: -1e8,
+    });
+    const co2 = tooltipModel('France', c, { ...spec, gas: 'co2' }, t, 'en-GB');
+    expect(co2.rows.slice(4, 6).map(([k, v]) => [k, v.replace(/\u00a0/g, ' ')])).toEqual([
+      ['After the farm (processing to waste), a year', '200 kt → 150 kt'],
+      ['CO₂ from clearing forest for farming, a year', '400 kt → 300 kt'],
+    ]);
+    const ch4 = tooltipModel('France', c, spec, t, 'en-GB');
+    expect(ch4.rows.map(([k]) => k)).not.toContain('CO₂ from clearing forest for farming, a year');
+    const land = tooltipModel('France', c, { ...spec, layer: 'land' }, t, 'en-GB');
+    expect(land.rows.map(([k]) => k)).not.toContain('After the farm (processing to waste), a year');
+  });
+
   it('says when a country has no data', () => {
     expect(tooltipModel('Chad', undefined, spec, t, 'en-GB').rows[0]?.[0]).toBe(
       'No data for this country',

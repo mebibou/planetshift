@@ -77,6 +77,7 @@ describe('causeGroups', () => {
     agriculture: a,
     landUse: l,
     airPollution: p,
+    other: 0,
   });
   const none = of(0, 0, 0);
   const zero = {

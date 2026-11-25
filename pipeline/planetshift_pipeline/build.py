@@ -11,6 +11,7 @@ from .cache import DEFAULT_CACHE
 from .inputs import OUT_DIR, Build, log
 from .sections import (
     breakdown,
+    chain,
     climate,
     coemissions,
     countries,
@@ -87,6 +88,7 @@ SECTIONS: tuple[Section, ...] = (
     Section("impacts", impacts.build, ("impacts.json",), ("impacts",)),
     Section("mammals", mammals.build, ("mammals.json",), ("mammals",)),
     Section("species", species.build, ("species.json",), ("species",)),
+    Section("chain", chain.build, ("chain.json",), ("sources.food_stages",)),
     Section("map", map.build, ("world.topo.json",)),
     Section("meta", lambda b: meta.build(b, source_modules()), ("meta.json",)),
 )

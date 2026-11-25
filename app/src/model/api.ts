@@ -94,6 +94,9 @@ export interface CountryResult {
   /** Species its farmland commits to extinction; the change leaves out regrowth on freed land. */
   species: number;
   speciesChange: number;
+  /** Food's emissions after the farm, kg a year, and their change at the full shift; none without chain.json. */
+  chain?: GasVector;
+  chainChange?: GasVector;
 }
 
 export type Band3 = { median: number; p05: number; p95: number };

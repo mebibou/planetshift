@@ -241,6 +241,8 @@
       "clearing": "Dont défrichement pour l'agriculture, avec les leviers",
       "regrowth": "Absorbé par la repousse des terres agricoles libérées, par an",
       "deforestationCo2": "CO₂ du défrichement, par an",
+      "chain": "Après la ferme (de la transformation aux déchets), par an",
+      "clearingCo2": "CO₂ du défrichement pour l'agriculture, par an",
       "landShare": "Part des terres cultivées ou pâturées",
       "mammals": "Mammifères d'élevage par km² de terres",
       "species": "Espèces condamnées à l'extinction",

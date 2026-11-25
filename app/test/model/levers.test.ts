@@ -112,12 +112,14 @@ describe('the breakdown by family', () => {
       ),
     );
   });
-  it('counts the diet in farming and in land use, and the energy levers in fossil fuels', () => {
+  it('counts the diet in farming, land use and its chain after the farm, and the energy levers in fossil fuels', () => {
     const s = everything.summary.byFamilyCause.avoidedWarming2100;
     const family = (f: string) => s[f] ?? expect.fail(`no ${f}`);
     expect(family('diet').agriculture).toBeGreaterThan(0);
     expect(Math.abs(family('diet').landUse)).toBeGreaterThan(0);
-    expect(family('diet').fossilIndustry).toBe(0);
+    expect(family('diet').fossilIndustry).toBeGreaterThan(0);
+    expect(family('diet').other).toBeGreaterThan(0);
+    expect(family('practices').other).toBe(0);
     expect(family('energy').fossilIndustry).toBeGreaterThan(0);
     expect(family('energy').agriculture).toBe(0);
     expect(family('deforestation').agriculture).toBe(0);
