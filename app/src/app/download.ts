@@ -172,6 +172,7 @@ const populationAt = (result: ScenarioResult) => {
 export const temperatureRows = (
   result: ScenarioResult,
   natural?: BandSeries,
+  currentYear = -Infinity,
 ): { header: string[]; rows: Cell[][] } => {
   const tp = result.temperature;
   const nat = natural ? bandAt(natural) : null;
@@ -191,9 +192,9 @@ export const temperatureRows = (
       tp.baseline.median[i],
       tp.baseline.p05[i],
       tp.baseline.p95[i],
-      tp.scenario.median[i],
-      tp.scenario.p05[i],
-      tp.scenario.p95[i],
+      ...(year < currentYear
+        ? [null, null, null]
+        : [tp.scenario.median[i], tp.scenario.p05[i], tp.scenario.p95[i]]),
       ...(nat ? nat(year) : []),
       ...(pop ? [pop(year)] : []),
     ]),
@@ -301,9 +302,9 @@ const RUN_TABLES: Record<
   Exclude<ChartTab, 'cause'>,
   (r: ScenarioResult, i: ChartInput) => Table
 > = {
-  temperature: (r, i) => temperatureRows(r, i.climate.naturalOnly),
+  temperature: (r, i) => temperatureRows(r, i.climate.naturalOnly, i.currentYear),
   avoided: (r, i) => avoidedRows(r, i.currentYear),
-  sealevel: (r) => seaLevelRows(r),
+  sealevel: (r, i) => seaLevelRows(r, i.climate.seaLevel?.observed),
 };
 
 /** The data of one chart tab as CSV, or null when the model has not run. */

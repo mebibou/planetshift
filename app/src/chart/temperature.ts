@@ -240,7 +240,10 @@ const valueIn = (locale: string, years: number[], values: (number | null)[], yea
   return v === null || v === undefined ? '–' : formatTemperature(locale, v, 2);
 };
 
-/** The hover's rows in a year: observed, El Niño or La Niña, both medians, natural factors. */
+/**
+ * The hover's rows in a year: observed, El Niño or La Niña, both medians (the levers' from the
+ * current year, when they can act), natural factors.
+ */
 const hoverRows =
   (
     t: T,
@@ -248,6 +251,7 @@ const hoverRows =
     tp: Temperature,
     natural: BandSeries | undefined,
     marks: EnsoMark[],
+    currentYear: number,
     people: readonly Point[] = [],
   ) =>
   (year: number): HoverRow[] => {
@@ -272,12 +276,16 @@ const hoverRows =
         swatch: 'var(--series-baseline)',
         toggle: 'baseline',
       },
-      {
-        label: t('chart.scenario'),
-        value: at(tp.years, tp.scenario.median),
-        swatch: 'var(--series-scenario)',
-        toggle: 'scenario',
-      },
+      ...(year < currentYear
+        ? []
+        : [
+            {
+              label: t('chart.scenario'),
+              value: at(tp.years, tp.scenario.median),
+              swatch: 'var(--series-scenario)',
+              toggle: 'scenario',
+            },
+          ]),
       ...(natural
         ? [
             {
@@ -445,7 +453,7 @@ export const temperatureChart = (
       f,
       x,
       margin,
-      hoverRows(t, locale, tp, natural, marks, people),
+      hoverRows(t, locale, tp, natural, marks, currentYear, people),
       t('chart.keys'),
       linked,
     );

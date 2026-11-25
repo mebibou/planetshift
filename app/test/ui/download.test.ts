@@ -191,7 +191,8 @@ describe('chart csv', () => {
     expect(header).toBe(
       'year,observed_degC,without_levers_median_degC,without_levers_p05_degC,without_levers_p95_degC,with_levers_median_degC,with_levers_p05_degC,with_levers_p95_degC,natural_only_median_degC,natural_only_p05_degC,natural_only_p95_degC',
     );
-    expect(first).toBe('2025,1.2,2,1,3,1.5,0.5,2.5,,,');
+    // The levers act from the current year (2026), so 2025 has nothing with them.
+    expect(first).toBe('2025,1.2,2,1,3,,,,,,');
     expect(second).toBe('2026,,2,1,3,1.5,0.5,2.5,0.01,0,0.02');
   });
 
@@ -237,6 +238,30 @@ describe('chart csv', () => {
     ]);
     expect(rows).toEqual(['1999,,,,,,,', '2000,,2,1,3,1,0.5,1.5', '2001,,3,2,4,1.5,1,2']);
     expect(chart('sealevel')).toBeNull();
+  });
+
+  it('gives the observed sea level from the climate data', () => {
+    const withSea = {
+      ...result,
+      seaLevel: {
+        years: [2000],
+        baseline: { median: [0.2], low: [0.1], high: [0.3] },
+        scenario: { median: [0.2], low: [0.1], high: [0.3] },
+      },
+    } as unknown as ScenarioResult;
+    const file = chartCsv({
+      tab: 'sealevel',
+      result: withSea,
+      climate: { ...climate, seaLevel: { observed: { years: [2000], values: [0.15] } } } as Climate,
+      scenario,
+      options: { ...DEFAULT_OPTIONS, ssp: 'ssp245' },
+      currentYear: 2026,
+    });
+    expect(
+      lines(file?.text ?? '')[1]
+        ?.split(',')
+        .slice(0, 2),
+    ).toEqual(['2000', '15']);
   });
 
   it('gives warming by cause from the climate data, even before the model has run', () => {
