@@ -16,6 +16,7 @@ export const loadRealData = (): ModelData | null =>
         ...(existsSync(join(FOLDER, 'mammals.json')) ? { mammals: read('mammals') } : {}),
         ...(existsSync(join(FOLDER, 'species.json')) ? { species: read('species') } : {}),
         ...(existsSync(join(FOLDER, 'chain.json')) ? { chain: read('chain') } : {}),
+        ...(existsSync(join(FOLDER, 'origins.json')) ? { origins: read('origins') } : {}),
         ...Object.fromEntries(
           LEVER_FILES.map((f) => [
             f,

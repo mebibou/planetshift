@@ -18,15 +18,14 @@ const prepared = {
   ],
 } as unknown as Prepared;
 const frame: FootprintFrame = {
-  own: [{ co2: v(10, 100), ch4: v(0, 0), n2o: v(0, 0) }],
-  world: { co2: v(20, 200), ch4: v(0, 0), n2o: v(0, 0) },
-  feed: { own: [feedOf(50)], world: feedOf(80) },
+  consumed: [{ co2: v(10, 150), ch4: v(0, 0), n2o: v(0, 0) }],
+  feed: { own: [feedOf(50)], imported: [{ co2: v(0, 80), ch4: v(0, 0), n2o: v(0, 0) }] },
 };
 
 describe('the food footprint', () => {
-  it('counts the produced part at home, the imported part at the world’s, and feed for animal products', () => {
+  it('counts what is used at its intensity, and the feed of animal products by where they come from', () => {
     const kg = footprintOf(0, prepared, v(1, 2), v(0, 0.5), frame);
-    expect(kg.co2).toBeCloseTo(1 * 10 + 2 * (0.5 * 100 + 0.5 * 200 + 0.5 * 50 + 0.5 * 80));
+    expect(kg.co2).toBeCloseTo(1 * 10 + 2 * (150 + 0.5 * 50 + 0.5 * 80));
   });
 
   it('imports all of an item a country does not produce, and none without a row', () => {
@@ -60,5 +59,21 @@ describe('the food footprint in a run', () => {
     const practices = fra({ shift: 0, levers: { feedAdditives: 1 } });
     expect(practices.footprintChange!.ch4).toBeLessThan(0);
     expect(practices.footprintChange!.co2).toBeCloseTo(0, 6);
+  });
+
+  it('takes an import’s intensity from where it comes from, the world’s without origins', () => {
+    const co2e = (c: { footprint?: { co2: number; ch4: number; n2o: number } }) =>
+      c.footprint!.co2 + 27 * c.footprint!.ch4 + 273 * c.footprint!.n2o;
+    const withOrigins = runScenario(data, BASE_SCENARIO, DEFAULT_OPTIONS, CURRENT_YEAR);
+    const without = runScenario(
+      { ...data, origins: undefined },
+      BASE_SCENARIO,
+      DEFAULT_OPTIONS,
+      CURRENT_YEAR,
+    );
+    const fra = (r: typeof without) => r.countries.find((c) => c.iso3 === 'FRA')!;
+    const usa = (r: typeof without) => r.countries.find((c) => c.iso3 === 'USA')!;
+    expect(co2e(fra(withOrigins))).not.toBeCloseTo(co2e(fra(without)), 3);
+    expect(co2e(usa(withOrigins))).toBeCloseTo(co2e(usa(without)), 9);
   });
 });

@@ -225,6 +225,17 @@ def load_oilcakes(path: Path = OILCAKES) -> pd.DataFrame:
     ]
 
 
+def crush_json(oilcakes: pd.DataFrame) -> dict[str, dict]:
+    """crush[oilseed code] = {oil: the oil's code, oilShare: its share of the crush's value}."""
+    return {
+        str(int(r.primary_code)): {
+            "oil": str(int(r.oil_code)),
+            "oilShare": round(float(r.oil_share), 3),
+        }
+        for r in oilcakes.itertuples()
+    }
+
+
 def shared_with_cake(
     ha_per_t: pd.DataFrame, rows: pd.DataFrame, oilcakes: pd.DataFrame
 ) -> tuple[pd.DataFrame, pd.DataFrame]:

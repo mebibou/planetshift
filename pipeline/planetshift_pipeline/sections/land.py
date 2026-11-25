@@ -32,6 +32,7 @@ def build(b: Build) -> None:
         {
             "cropHaPerTonne": L.crop_json(ha_per_t),
             "oilcakeHa": L.cake_json(cake),
+            "crush": L.crush_json(L.load_oilcakes()),
             "pasture": L.pasture_json(in_model, L.pasture_shares(lsu), b.iso3),
             "fodderHa": L.hectares_json(fodder, b.iso3),
             "landArea": L.hectares_json(L.latest(rl, L.LAND_AREA, y), b.iso3),
