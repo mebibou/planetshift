@@ -154,6 +154,11 @@ ACCMIP_CH4_MW = 2.2
 # ACCMIP's methane forcing of a Tg of NMVOC a year, same sources: what Hoor's figures are given
 # back for the VOCs emitted with each source's NOx, now that their methane is counted apart.
 ACCMIP_VOC_MW = 0.27
+# ACCMIP's methane forcing of a Tg of CO a year, same sources. FaIR's VOC term carries CO's effect
+# on methane's lifetime too (fair-calibrate issue #111).
+ACCMIP_CO_MW = 0.11
+# The last year of the fit of FaIR's methane lifetime, whose VOC effect the split keeps.
+SPLIT_YEAR = 2014
 HOOR_CEDS = {"road": ("1A3b_Road",), "ship": ("1A3di_International-shipping",)}
 # Lever sectors whose NOx is emitted at sea; every other source is on land, like road.
 AT_SEA = ("shipping",)
@@ -393,18 +398,22 @@ def erf_per_kg_co2(
     }
 
 
-def hoor_without_voc(nox: pd.DataFrame, voc: pd.DataFrame) -> dict[str, dict[str, float]]:
-    """Hoor et al.'s forcing of each source with the methane of the VOCs emitted with its NOx
-    given back: their models perturbed all of a source's emissions, and the VOCs' own methane is
-    now counted apart, so leaving it in would count it twice. `nox` and `voc` are CEDS's in Hoor's
-    year; a Tg of VOC's methane and methane-ozone forcing is ACCMIP's, its ozone in proportion."""
+def hoor_without_voc(
+    nox: pd.DataFrame, voc: pd.DataFrame, co: pd.DataFrame | None = None
+) -> dict[str, dict[str, float]]:
+    """Hoor et al.'s forcing of each source with the methane of the VOCs (and of the CO, when
+    given) emitted with its NOx given back: their models perturbed all of a source's emissions, and
+    the VOCs' own methane is now counted apart, so leaving it in would count it twice. `nox`, `voc`
+    and `co` are CEDS's in Hoor's year; a Tg's methane and methane-ozone forcing is ACCMIP's, its
+    ozone in proportion."""
 
     def offset(source: str) -> float:
         def tg(table: pd.DataFrame) -> float:
             return table[table["sector"].isin(HOOR_CEDS[source])]["kg"].sum() / 1e9
 
-        per_tg_n = tg(voc) / (tg(nox) / NO2_PER_N)
-        return per_tg_n * ACCMIP_VOC_MW * MW_PER_MT_CH4 / ACCMIP_CH4_MW * HOOR_NOX_TGN[source]
+        given_back = tg(voc) * ACCMIP_VOC_MW + (0 if co is None else tg(co) * ACCMIP_CO_MW)
+        per_tg_n = given_back / (tg(nox) / NO2_PER_N)
+        return per_tg_n * MW_PER_MT_CH4 / ACCMIP_CH4_MW * HOOR_NOX_TGN[source]
 
     return {
         source: {m: v + offset(source) for m, v in models.items()}
@@ -501,6 +510,35 @@ def erf_band(values: np.ndarray) -> dict[str, list[float]]:
 LIFETIME_SPECIES = {"nox": "NOx", "voc": "VOC"}
 
 
+def split_voc(sensitivity: float, voc_above: float, co_above: float) -> dict[str, float]:
+    """FaIR's VOC sensitivity shared between VOCs and CO in ACCMIP's ratio of their methane
+    forcing per Tg, keeping its effect at `voc_above` and `co_above` Mt above their baselines."""
+    ratio = ACCMIP_CO_MW / ACCMIP_VOC_MW
+    voc = sensitivity * voc_above / (voc_above + ratio * co_above)
+    return {"VOC": voc, "CO": ratio * voc}
+
+
+def fair_sensitivities(species: pd.DataFrame) -> dict[str, tuple[str, float]]:
+    return {
+        key: (specie, float(species.loc[specie, "ch4_lifetime_chemical_sensitivity"]))
+        for key, specie in LIFETIME_SPECIES.items()
+    }
+
+
+def split_sensitivities(
+    species: pd.DataFrame, emissions: dict[str, np.ndarray], year_index: int
+) -> dict[str, tuple[str, float]]:
+    """The VOCs' and CO's sensitivities once split, from one SSP's emissions."""
+
+    def above(specie: str) -> float:
+        return float(emissions[specie][year_index] - species.loc[specie, "baseline_emissions"])
+
+    split = split_voc(
+        float(species.loc["VOC", "ch4_lifetime_chemical_sensitivity"]), above("VOC"), above("CO")
+    )
+    return {"vocSplit": ("VOC", split["VOC"]), "co": ("CO", split["CO"])}
+
+
 def lifetime_methane_by_ssp(
     setup: climate_fair.Setup,
     rcmip_df: pd.DataFrame,
@@ -508,15 +546,19 @@ def lifetime_methane_by_ssp(
     at: np.ndarray,
     history: pd.DataFrame | None = None,
 ) -> dict[str, dict[str, np.ndarray]]:
-    """lifetime_methane of NOx and VOCs on the years `at`, from one FaIR run of each SSP."""
+    """lifetime_methane of NOx and VOCs on the years `at`, and of the VOCs and CO once split, from
+    one FaIR run of each SSP."""
     years = np.arange(climate_fair.START, END_YEAR + 2)
     emissions = {
         ssp: rcmip.fair_emissions(rcmip_df, ssp, setup.emitted, years, history) for ssp in SSPS
     }
     run = climate_fair.run(setup, emissions, END_YEAR + 2)
     index = at - climate_fair.START
+    sensitivities = fair_sensitivities(species) | split_sensitivities(
+        species, emissions[SSPS[0]], SPLIT_YEAR - climate_fair.START
+    )
 
-    def one(i: int, ssp: str, specie: str) -> np.ndarray:
+    def one(i: int, ssp: str, specie: str, sensitivity: float) -> np.ndarray:
         sink = methane_sink(
             run.ch4_airborne[:, i, :],
             emissions[ssp]["CH4"][: len(run.years)],
@@ -526,12 +568,41 @@ def lifetime_methane_by_ssp(
             sink[index],
             emissions[ssp][specie][index],
             species.loc[specie, "baseline_emissions"],
-            species.loc[specie, "ch4_lifetime_chemical_sensitivity"],
+            sensitivity,
         )
 
     return {
-        key: {ssp: one(i, ssp, specie) for i, ssp in enumerate(run.scenarios)}
-        for key, specie in LIFETIME_SPECIES.items()
+        key: {ssp: one(i, ssp, specie, s) for i, ssp in enumerate(run.scenarios)}
+        for key, (specie, s) in sensitivities.items()
+    }
+
+
+def coemission_split(
+    by_ssp: dict[str, dict[str, dict[str, np.ndarray]]],
+    split: dict[str, dict[str, np.ndarray]],
+    kept: dict[str, dict[str, np.ndarray]],
+    chemistry: dict[str, dict[str, np.ndarray]],
+) -> dict:
+    """What replaces the VOCs' methane, and NOx's in the chemistry variant, once CO's methane is
+    split from the VOCs' and counted apart."""
+    n = len(next(iter(chemistry.values()))["median"])
+
+    def per_kg_co2(key: str, specie: str) -> dict:
+        return {
+            ssp: ch4_per_kg_co2(by_ssp[ssp], split[key][ssp], plain_factors(n), specie)
+            for ssp in SSPS
+        }
+
+    return {
+        "vocCh4PerKg": {ssp: erf_band(split["vocSplit"][ssp]) for ssp in SSPS},
+        "vocCh4PerKgCo2": per_kg_co2("vocSplit", "voc"),
+        "coCh4PerKg": {ssp: erf_band(split["co"][ssp]) for ssp in SSPS},
+        "coCh4PerKgCo2": per_kg_co2("co", "co"),
+        "noxCh4PerKgCo2": {
+            "chemistry": {
+                ssp: ch4_per_kg_co2(by_ssp[ssp], kept[ssp]["chemistry"], chemistry) for ssp in SSPS
+            }
+        },
     }
 
 
@@ -547,10 +618,11 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
     archive = ceds.path(cache_dir)
     tables = load_tables(archive)
     base = base_ratios(tables)
-    hoor_table = hoor_without_voc(
-        ceds.by_sector_fuel(archive, CEDS_NAME["nox"], HOOR_YEAR),
-        ceds.by_sector_fuel(archive, CEDS_NAME["voc"], HOOR_YEAR),
-    )
+    in_hoor_year = {
+        s: ceds.by_sector_fuel(archive, CEDS_NAME[s], HOOR_YEAR) for s in OZONE + ("nox",)
+    }
+    hoor_table = hoor_without_voc(in_hoor_year["nox"], in_hoor_year["voc"])
+    hoor_split = hoor_without_voc(in_hoor_year["nox"], in_hoor_year["voc"], in_hoor_year["co"])
     rcmip_df = rcmip.load(cache_dir)
     setup = climate_fair.load_setup(cache_dir, members)
     parameters = pd.read_csv(setup.parameters, index_col=0).loc[setup.configs]
@@ -567,6 +639,8 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
     )
     nox = {ssp: v[1:] for ssp, v in lifetime["nox"].items()}
     voc = {ssp: v[1:] for ssp, v in lifetime["voc"].items()}
+    split = {key: {ssp: v[1:] for ssp, v in lifetime[key].items()} for key in ("vocSplit", "co")}
+    chemistry_split = chemistry_per_kg(hoor_split)
     reference = {ssp: v[0] for ssp, v in lifetime["nox"].items()}
     ratio = ship_to_land(hoor_table)
     chemistry = chemistry_per_kg(hoor_table)
@@ -627,6 +701,7 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
         "vocCh4PerKgCo2": {
             ssp: ch4_per_kg_co2(by_ssp[ssp], voc[ssp], plain_factors(n), "voc") for ssp in SSPS
         },
+        "coMethaneSplit": coemission_split(by_ssp, split, kept, held(chemistry_split, n)),
         **{
             key: {
                 ssp: {
@@ -650,6 +725,7 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
         "voc": voc,
         "factors": relative,
         "chemistry": chemistry,
+        "chemistry_split": chemistry_split,
         "reference": reference,
         "members": len(setup.configs),
     }
@@ -702,6 +778,20 @@ def summary(document: dict, diagnostics: dict) -> list[str]:
         + ", ".join(
             f"{p} {v['median']:.2f} ({v['low']:.2f}–{v['high']:.2f})" for p, v in chemistry.items()
         )
+    )
+    split = diagnostics["chemistry_split"]
+    lines.append(
+        f"chemistry models' kg CH₄ per kg NO₂ in {HOOR_YEAR}, CO given back too: "
+        + ", ".join(f"{p} {v['median']:.2f}" for p, v in split.items())
+    )
+    i = document["years"].index(2030)
+    lines.append(
+        "SSP2-4.5 kg CH₄ per kg in 2030, VOCs and CO split: "
+        + ", ".join(
+            f"{k} {document['coMethaneSplit'][k]['ssp245']['median'][i]:.4f}"
+            for k in ("vocCh4PerKg", "coCh4PerKg")
+        )
+        + f" (VOCs unsplit {document['vocCh4PerKg']['ssp245']['median'][i]:.4f})"
     )
     for ssp in SSPS:
         lines.append(

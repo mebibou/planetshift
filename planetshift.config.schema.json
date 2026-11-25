@@ -17,6 +17,12 @@
           "default": "chemistry",
           "plainFair": "fair"
         },
+        "coMethane": {
+          "description": "The methane a kg less carbon monoxide leaves in the air. split: FaIR's VOC term, which carries CO's effect on methane's lifetime too, is shared between VOCs and CO in ACCMIP's ratio of their methane forcing per Tg (Stevenson et al. 2013), keeping its effect in 2014. The chemistry variant of NOx's methane then also gives back the CO emitted with Hoor et al.'s NOx. fair: CO has no effect on methane's lifetime, and the VOCs carry it all.",
+          "enum": ["split", "fair"],
+          "default": "split",
+          "plainFair": "fair"
+        },
         "aviationNonCo2": {
           "description": "What less flying cuts besides CO₂. lee2021: Lee et al. (2021)'s non-CO₂ forcing (contrails, NOx, soot, sulphate, water vapour) per kg of aviation CO₂. fair: aviation's own NOx, SO₂, black and organic carbon as co-emissions through FaIR's coefficients, and no contrails, which FaIR does not have.",
           "enum": ["lee2021", "fair"],

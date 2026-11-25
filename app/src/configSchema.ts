@@ -4,6 +4,7 @@
 /** Each departure from FaIR and its values; the schema gives the default and the plain one. */
 export interface Departures {
   noxMethane: 'chemistry' | 'fair' | 'hoor';
+  coMethane: 'split' | 'fair';
   aviationNonCo2: 'lee2021' | 'fair';
   permafrost: 'on' | 'off';
   shippingSulphur2020: 'on' | 'off';

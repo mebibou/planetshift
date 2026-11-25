@@ -295,6 +295,7 @@ Each departure is a named switch in `planetshift.config.json`, the file a fork o
 | Departure | On this website | Plain FaIR | Explained in |
 | --- | --- | --- | --- |
 | Where NOx is emitted (`noxMethane`) | the chemistry models' own methane per kg of NOx on land and at sea (Hoor et al. 2009), carried by FaIR's change with the scenario; a fork can also share FaIR's coefficient between land and sea by their ratio, its world total kept (`hoor`) | one coefficient for every source | [Energy and transport](#method-sectors), [Limitations](#method-limitations) |
+| Carbon monoxide's methane (`coMethane`) | FaIR's VOC coefficient shared between VOCs and CO in ACCMIP's ratio per Tg (Stevenson et al. 2013), with its effect in 2014 kept, and CO's methane given back to the chemistry models' NOx figures (`split`) | CO has no effect on methane's lifetime, and the VOCs carry it all | [Energy and transport](#method-sectors) |
 | Aviation's non-CO₂ effects (`aviationNonCo2`) | Lee et al. (2021)'s forcing, contrails included, cut by less flying | aviation's own NOx, SO₂ and soot through FaIR's coefficients; FaIR has no contrails | [Energy and transport](#method-sectors) |
 | Permafrost (`permafrost`) | offered as an option, on by default | the option and its module left out | Permafrost, above |
 | The 2020 shipping sulphur rule (`shippingSulphur2020`) | its published forcing, 0.12 (0.08–0.14) W/m² from 2020, added to the baseline | the scenarios' own ships' SO₂ through FaIR's world-wide aerosol response | Why 2023 and 2024 were so warm, above |

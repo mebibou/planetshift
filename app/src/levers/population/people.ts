@@ -10,7 +10,7 @@ import {
 } from '../../data/types';
 import { agtpOf, convolve, sumOfGases, warmingByGas, type Band } from '../../model/climate';
 import { addSeries, dataValueAt, END_YEAR, range, valueAt, zerosOn } from '../../model/util';
-import type { CoEmissions } from '../energy/data';
+import type { CoEmissions, RangeSeries } from '../energy/data';
 import type { PeopleData, PeopleSpecies, PopulationData, PopulationVariant } from './data';
 
 /**
@@ -200,14 +200,31 @@ const pollutionForcing = (ctx: PeopleContext, years: readonly number[]): number[
   );
 };
 
-/** kg of methane NOx and VOCs leave in the air: more as NOx falls, less as VOCs do. */
+/** kg of methane a change in a pollutant leaves in the air, by year; none without its series. */
+const methaneOf = (
+  ctx: PeopleContext,
+  co: CoEmissions,
+  perKg: RangeSeries | undefined,
+  change: readonly number[],
+  years: readonly number[],
+): number[] =>
+  years.map((y, i) => (perKg ? endFor(co.years, perKg, ctx.band, y, change[i] ?? 0) : 0));
+
+/**
+ * kg of methane NOx, VOCs and CO leave in the air: more as NOx falls, less as VOCs and CO do. CO
+ * counts only when the coMethane departure splits its methane from the VOCs'.
+ */
 const pollutionMethane = (ctx: PeopleContext, co: CoEmissions, years: readonly number[]) => {
-  const [nox, voc] = [changeOf(ctx, years, 'nox'), changeOf(ctx, years, 'voc')];
-  return years.map(
-    (y, i) =>
-      -endFor(co.years, co.noxCh4PerKg[ctx.ssp], ctx.band, y, nox[i] ?? 0) -
-      endFor(co.years, co.vocCh4PerKg[ctx.ssp], ctx.band, y, voc[i] ?? 0),
+  const parts = (['nox', 'voc', 'co'] as const).map((s) =>
+    methaneOf(ctx, co, METHANE_PER_KG[s](co)?.[ctx.ssp], changeOf(ctx, years, s), years),
   );
+  return years.map((_, i) => -parts.reduce((total, p) => total + (p[i] as number), 0));
+};
+
+const METHANE_PER_KG = {
+  nox: (co: CoEmissions) => co.noxCh4PerKg,
+  voc: (co: CoEmissions) => co.vocCh4PerKg,
+  co: (co: CoEmissions) => co.coCh4PerKg,
 };
 
 /** Warming from the methane the NOx and VOCs the people chosen take away or add leave. */

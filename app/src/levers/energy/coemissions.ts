@@ -1,10 +1,13 @@
 import type { Climate, ClimateMethod, GasVector, Range3, Ssp } from '../../data/types';
 import { towards } from '../../model/bands';
 import { agtpOf, convolve, type Band } from '../../model/climate';
-import { dataValueAt, recordFrom } from '../../model/util';
+import { cachedIn, dataValueAt, recordFrom } from '../../model/util';
+import { departuresOf, type Departures } from '../../config';
+import type { ModelData } from '../../data/types';
 import {
   CO_SPECIES,
   type CoEmissions,
+  type CoMethaneSplit,
   type CoSector,
   type CoSpecies,
   type NoxMethane,
@@ -19,6 +22,32 @@ export const NO_CO_CHANGE: CoChange = Object.fromEntries(CO_SPECIES.map((s) => [
 /** Whether coemissions.json was loaded with data for the levers to act on. */
 export const hasCoEmissions = (co: Partial<CoEmissions> | undefined): co is CoEmissions =>
   co?.perKgCo2 !== undefined && Object.keys(co.perKgCo2).length > 0;
+
+type CoMethane = Departures['coMethane'];
+
+const splitCache = new WeakMap<CoEmissions, CoEmissions>();
+
+const withSplit = (co: CoEmissions, split: CoMethaneSplit): CoEmissions => ({
+  ...co,
+  vocCh4PerKg: split.vocCh4PerKg,
+  vocCh4PerKgCo2: split.vocCh4PerKgCo2,
+  coCh4PerKg: split.coCh4PerKg,
+  coCh4PerKgCo2: split.coCh4PerKgCo2,
+  noxCh4PerKgCo2: { ...co.noxCh4PerKgCo2, ...split.noxCh4PerKgCo2 },
+});
+
+/**
+ * coemissions.json under the coMethane departure: with CO's methane split from the VOCs' when it
+ * is `split` and the file carries the split, as it is otherwise.
+ */
+export const withCoMethane = (co: CoEmissions, variant: CoMethane): CoEmissions =>
+  variant === 'split' && co.coMethaneSplit
+    ? cachedIn(splitCache, co, () => withSplit(co, co.coMethaneSplit as CoMethaneSplit))
+    : co;
+
+/** The data's coemissions.json under its build's coMethane departure. */
+export const coemissionsOf = (data: Pick<ModelData, 'coemissions' | 'departures'>): CoEmissions =>
+  data.coemissions && withCoMethane(data.coemissions, departuresOf(data).coMethane);
 
 /** Sectors that keep their NOx when a lever cuts their CO₂, as the clean fuel is still burnt. */
 export type KeepsNox = readonly CoSector[];
@@ -142,6 +171,21 @@ export const vocMethane = (
   hasCoEmissions(co) ? -bySector(co, co.vocCh4PerKgCo2?.[ssp], band, year, co2, (v) => v > 0) : 0;
 
 /**
+ * kg of methane a change in carbon monoxide leaves in the air in a year, less as it falls, as for
+ * the VOCs: only when the coMethane departure splits CO's methane from theirs.
+ */
+export const coMethane = (
+  co: Partial<CoEmissions> | undefined,
+  ssp: Ssp,
+  band: Band,
+  year: number,
+  { co2 }: CoYear,
+): number =>
+  hasCoEmissions(co) && co.coCh4PerKgCo2
+    ? -bySector(co, co.coCh4PerKgCo2[ssp], band, year, co2, (v) => v > 0)
+    : 0;
+
+/**
  * kg of methane a change in NOx leaves in the air in a year, more as NOx falls: each sector's
  * change in CO₂ times its methane per kg of CO₂ through its NOx, which counts where the NOx is
  * emitted (ships' destroys more methane per kg than that emitted on land). Sectors that keep
@@ -176,7 +220,7 @@ const noxMethaneOf = (
 export interface AirPollutionPaths {
   /** W/m² by year. */
   forcing: number[];
-  /** kg of methane NOx and VOCs leave in the air, by year. */
+  /** kg of methane NOx, VOCs and CO leave in the air, by year. */
   methane: number[];
 }
 
@@ -193,7 +237,8 @@ export const airPollutionPaths = (
   methane: years.map(
     (y, i) =>
       noxMethane(co, ssp, band, y, changes[i] as CoYear, variant) +
-      vocMethane(co, ssp, band, y, changes[i] as CoYear),
+      vocMethane(co, ssp, band, y, changes[i] as CoYear) +
+      coMethane(co, ssp, band, y, changes[i] as CoYear),
   ),
 });
 

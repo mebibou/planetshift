@@ -1,5 +1,6 @@
 import type { Options } from '../../model/api';
 import type { Prepared } from '../../model/prepare';
+import { coemissionsOf } from '../energy/coemissions';
 import { forcingResponseOf } from '../energy/model';
 import { totalWarming } from '../../model/climate';
 import type { LeverModule, PopulationContext } from '../types';
@@ -109,14 +110,14 @@ export const population: LeverModule = {
     people: sspFactorOf,
     baseline: ({ prepared, options, currentYear, band, tYears }) => {
       const factor = sspFactorOf({ prepared, options, currentYear });
-      const { people, climate, coemissions, sectors } = prepared.data;
+      const { people, climate, sectors } = prepared.data;
       const byCause =
         factor && hasPeople(people, options.ssp)
           ? peopleWarmingByCause(
               {
                 people,
                 climate,
-                co: coemissions,
+                co: coemissionsOf(prepared.data),
                 response: forcingResponseOf(sectors, band),
                 ssp: options.ssp,
                 method: options.climate,

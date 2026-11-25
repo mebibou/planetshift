@@ -13,6 +13,7 @@ import {
   airPollutionPaths,
   airPollutionWarming,
   coChange,
+  coemissionsOf,
   coGases,
   hasCoEmissions,
   type CoYear,
@@ -51,7 +52,8 @@ const dataCentreWarming = (
   tYears: readonly number[],
   dcStart: number,
 ): CauseWarming => {
-  const { climate, sectors, coemissions } = prepared.data;
+  const { climate, sectors } = prepared.data;
+  const coemissions = coemissionsOf(prepared.data);
   const years = range(dcStart, END_YEAR);
   const co2 = dataCentreBaseline(sectors, options.ssp, 'iea', years, band);
   const co: CoYear[] = years.map((y, i) => {
@@ -105,7 +107,8 @@ export const energy: LeverModule = {
   ...energySpec,
   hooks: {
     world: ({ prepared, options, adoption, currentYear }, { years, tYears, shareAt }) => {
-      const { sectors, coemissions, climate } = prepared.data;
+      const { sectors, climate } = prepared.data;
+      const coemissions = coemissionsOf(prepared.data);
       const paths = bandRecord((band) =>
         energyPaths(
           sectors,

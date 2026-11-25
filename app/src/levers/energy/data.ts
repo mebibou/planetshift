@@ -98,6 +98,9 @@ export interface RangeSeries {
  * and sea, relative to FaIR's global coefficient).
  * vocCh4PerKg[ssp], vocCh4PerKgCo2[ssp][sector]: the same for VOCs, which lengthen methane's
  * lifetime, so a kg less leaves less methane (negative); one coefficient everywhere.
+ * coCh4PerKg, coCh4PerKgCo2: the same for carbon monoxide, under the coMethane departure only.
+ * coMethaneSplit: what replaces the VOCs' methane and the chemistry variant of NOx's, and adds
+ * CO's, once CO is split from FaIR's VOC term.
  * particleErfPerKgCo2[ssp][sector]: forcing of the SO₂, black and organic carbon and ammonia that
  * come with a kg a year of the sector's CO₂, W/m² per (kg/yr), its range added up member by
  * member; ozoneErfPerKgCo2, the same for the ozone of carbon monoxide and VOCs.
@@ -111,9 +114,20 @@ export interface CoEmissions {
   noxPlaceFactor: Record<NoxMethane, Record<Ssp, Record<'land' | 'sea', RangeSeries>>>;
   vocCh4PerKg: Record<Ssp, RangeSeries>;
   vocCh4PerKgCo2: Record<Ssp, Record<CoSector, RangeSeries>>;
+  coCh4PerKg?: Record<Ssp, RangeSeries>;
+  coCh4PerKgCo2?: Record<Ssp, Record<CoSector, RangeSeries>>;
+  coMethaneSplit?: CoMethaneSplit;
   particleErfPerKgCo2: Record<Ssp, Record<CoSector, RangeSeries>>;
   ozoneErfPerKgCo2: Record<Ssp, Record<CoSector, RangeSeries>>;
   source: string;
+}
+
+export interface CoMethaneSplit {
+  vocCh4PerKg: Record<Ssp, RangeSeries>;
+  vocCh4PerKgCo2: Record<Ssp, Record<CoSector, RangeSeries>>;
+  coCh4PerKg: Record<Ssp, RangeSeries>;
+  coCh4PerKgCo2: Record<Ssp, Record<CoSector, RangeSeries>>;
+  noxCh4PerKgCo2: Partial<CoEmissions['noxCh4PerKgCo2']>;
 }
 
 export const EMPTY_COEMISSIONS = {} as CoEmissions;

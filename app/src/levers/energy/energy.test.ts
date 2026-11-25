@@ -1,8 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import { DEFAULT_OPTIONS, type Options, type Scenario } from '../../model/api';
 import { towards } from '../../model/bands';
-import { coChange, noxMethane, vocMethane } from './coemissions';
-import { CO_SPECIES, EMPTY_COEMISSIONS, type CoSector, type CoSpecies } from './data';
+import { departuresOf } from '../../config';
+import { coChange, coMethane, noxMethane, vocMethane, withCoMethane } from './coemissions';
+import {
+  CO_SPECIES,
+  EMPTY_COEMISSIONS,
+  type CoEmissions,
+  type CoMethaneSplit,
+  type CoSector,
+  type CoSpecies,
+  type RangeSeries,
+} from './data';
 import {
   CLEAN_FUEL_KEEPS_NOX,
   ENERGY_LEVERS,
@@ -313,5 +322,69 @@ describe('energy levers and new options in the URL', () => {
   });
   it('ignore the data centres on clean power of an old URL, now part of renewable electricity', () => {
     expect(decodeState('re=50&cdc=100').scenario.levers).toEqual({ renewableElectricity: 0.5 });
+  });
+});
+
+describe('the coMethane departure', () => {
+  const co = data.coemissions;
+  const scaled = <T>(byKey: Record<string, T>, f: number, map: (v: T, f: number) => T) =>
+    Object.fromEntries(Object.entries(byKey).map(([k, v]) => [k, map(v, f)]));
+  const band = (b: RangeSeries, f: number): RangeSeries => ({
+    median: b.median.map((v) => v * f),
+    low: b.low.map((v) => v * f),
+    high: b.high.map((v) => v * f),
+  });
+  const bySector = (b: Record<string, RangeSeries>, f: number) => scaled(b, f, band);
+  const split: CoMethaneSplit = {
+    vocCh4PerKg: scaled(co.vocCh4PerKg, 0.4, band) as CoMethaneSplit['vocCh4PerKg'],
+    vocCh4PerKgCo2: scaled(co.vocCh4PerKgCo2, 0.4, bySector) as CoMethaneSplit['vocCh4PerKgCo2'],
+    coCh4PerKg: scaled(co.vocCh4PerKg, 0.1, band) as CoMethaneSplit['coCh4PerKg'],
+    coCh4PerKgCo2: scaled(co.vocCh4PerKgCo2, 0.6, bySector) as CoMethaneSplit['coCh4PerKgCo2'],
+    noxCh4PerKgCo2: {
+      chemistry: scaled(
+        co.noxCh4PerKgCo2.chemistry,
+        1.5,
+        bySector,
+      ) as CoEmissions['noxCh4PerKgCo2']['chemistry'],
+    },
+  };
+  const withSplit: CoEmissions = { ...co, coMethaneSplit: split };
+
+  it('leaves the file as it is under plain FaIR, or when it has no split', () => {
+    expect(withCoMethane(withSplit, 'fair')).toBe(withSplit);
+    expect(withCoMethane(co, 'split')).toBe(co);
+  });
+
+  it('takes the VOCs’, CO’s and the chemistry variant’s methane from the split', () => {
+    const applied = withCoMethane(withSplit, 'split');
+    expect(applied.vocCh4PerKgCo2).toBe(split.vocCh4PerKgCo2);
+    expect(applied.coCh4PerKgCo2).toBe(split.coCh4PerKgCo2);
+    expect(applied.noxCh4PerKgCo2.chemistry).toBe(split.noxCh4PerKgCo2.chemistry);
+    expect(applied.noxCh4PerKgCo2.hoor).toBe(co.noxCh4PerKgCo2.hoor);
+    expect(withCoMethane(withSplit, 'split')).toBe(applied);
+  });
+
+  it('counts CO’s methane only once it is split from the VOCs’', () => {
+    const co2 = { roadPassenger: -1e9 };
+    const change = coChange(co, 'ssp245', 2040, co2);
+    expect(coMethane(co, 'ssp245', 'median', 2040, { co2, change })).toBe(0);
+    const applied = withCoMethane(withSplit, 'split');
+    expect(coMethane(applied, 'ssp245', 'median', 2040, { co2, change })).toBeLessThan(0);
+  });
+
+  it('moves a lever’s result only when the build splits CO', () => {
+    const avoided = (coMethaneVariant: 'split' | 'fair') =>
+      runScenario(
+        {
+          ...data,
+          coemissions: withSplit,
+          departures: { ...departuresOf(data), coMethane: coMethaneVariant },
+        },
+        { ...BASE_SCENARIO, levers: { electricCars: 1 } },
+        DEFAULT_OPTIONS,
+        CURRENT_YEAR,
+      ).summary.avoidedWarming2050.median;
+    expect(avoided('fair')).toBe(lever('electricCars').summary.avoidedWarming2050.median);
+    expect(avoided('split')).not.toBe(avoided('fair'));
   });
 });
