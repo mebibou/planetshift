@@ -243,7 +243,7 @@ Closing the guided start in any way stores `planetshift.tour` in `localStorage`,
 
 **The chart card** has four tabs: Global temperature, Causes of warming, Warming avoided and Sea level avoided. They follow the tab pattern, like the map's: the arrow keys, Home and End move between them (`tabKeys` in `src/app/tabs.ts`). The temperature and by-cause tabs also have the start year (1850 or 2000).
 
-The temperature chart's lines are "Without the levers" and "With the levers". It shows totals only, with no cause singled out, as no cause is preferred over another. A "See what causes the warming" link under it opens the Causes of warming tab (`chart=cause`), as the tab does. The temperature chart has an empty `.chart-slot` under it (`TemperatureChart.slot`) for a small chart such as population.
+The temperature chart's lines are "Modelled" and "Modelled with levers", and its caption names the emissions scenario the modelled lines follow; the sea-level chart uses the same labels and caption. It shows totals only, with no cause singled out, as no cause is preferred over another. A "See what causes the warming" link under it opens the Causes of warming tab (`chart=cause`), as the tab does. The temperature chart has an empty `.chart-slot` under it (`TemperatureChart.slot`) for a small chart such as population.
 
 The Causes of warming tab shows warming by cause stacked, with what the bands mean in its caption, then the sentence on what the levers avoid of each cause. Why the gases are kept apart is in the (i) beside the Gas switch. Its legend sits where the temperature chart's does, so switching tabs does not move it. Its Methodology page is `link.md`.
 

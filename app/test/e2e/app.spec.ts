@@ -503,8 +503,8 @@ test('the charts are tabs, global temperature first, and reach 2100', async ({ p
   await expect(page.locator('#chart-panel-temperature')).toBeVisible();
   await expect(page.locator('#chart-panel-avoided')).toBeHidden();
   const legend = page.locator('.temperature-chart > .chart-legend');
-  await expect(legend).toContainText('Without the levers');
-  await expect(legend).toContainText('With the levers');
+  await expect(legend).toContainText('Modelled');
+  await expect(legend).toContainText('Modelled with levers');
   await expect(legend).not.toContainText('shift');
   await expect(legend).not.toContainText('farming');
   await expect(page.locator('.temperature-chart .agriculture-band')).toHaveCount(0);
@@ -527,7 +527,7 @@ test('the chart tabs and the chart values are reachable from the keyboard', asyn
   await expect(page.locator('#chart-tab-cause')).toHaveAttribute('aria-selected', 'true');
   await expect(page).toHaveURL(/chart=cause/);
   await page.keyboard.press('End');
-  await expect(page.locator('#chart-tab-avoided')).toBeFocused();
+  await expect(page.locator('#chart-tab-sealevel')).toBeFocused();
   await page.keyboard.press('ArrowRight');
   await expect(page.locator('#chart-tab-temperature')).toBeFocused();
   await expect(page.locator('#chart-panel-temperature')).toBeVisible();
