@@ -11,7 +11,7 @@ The app offers two scopes:
 - **Farm gate** (*Biological processes only* in the app): the emissions of the farm's biological processes. These are enteric fermentation (the methane made in ruminants' stomachs as they digest), manure management, manure left on pasture and spread on fields, synthetic fertiliser, crop residues, rice paddies and the burning of residues.
 - **Cradle to farm gate** (*With inputs*, the default): the same, plus the farm's energy use (fuel and electricity) and the making of fertilisers and pesticides. The fuel burnt on the farm counts here, whichever source the intensity comes from.
 
-Neither scope includes land-use change, drained organic soils, or anything after the farm: processing, transport, retail, cooking and waste.
+Neither scope includes land-use change, drained organic soils, or anything after the farm: processing, transport, retail, cooking and waste. What happens after the farm is counted separately, in *After the farm* below. The forest cleared for farming is counted by the deforestation module (see [Deforestation](#method-deforestation)). The tooltip of the map's Emissions layer shows the emissions after the farm and the clearing's CO₂, beside the farm's emissions. Drained organic soils are left out.
 
 ## Why animal products leave out their feed
 
@@ -221,6 +221,30 @@ A half shift avoids half as much (2.53 to 2.58 Gt CO₂e, 0.137 to 0.140 °C). T
 - A working ox and a calf count the same per head.
 
 No FAOSTAT domain counts draught animals. The rule therefore uses only stocks, milked and slaughtered animals, and live trade.
+
+## After the farm
+
+Food also causes emissions after it leaves the farm. It is processed, transported, packaged and sold, cooked at home, and thrown away. FAOSTAT's *Emissions from pre- and post-production* gives each country's CO₂, methane and N₂O from each of these stages, in its latest year. In 2024 the model's countries emit 5.0 Gt CO₂e after the farm:
+
+| Stage | Mt CO₂e (GWP100) | Shared between foods by |
+| --- | --- | --- |
+| Food waste: solid waste, incineration and the food industry's wastewater | 1,638 | mass |
+| Cooking at home | 1,495 | mass |
+| Transport | 522 | Poore & Nemecek's stage |
+| Processing | 476 | Poore & Nemecek's stage |
+| Domestic wastewater | 368 | mass |
+| Packaging | 277 | Poore & Nemecek's stage |
+| Retail | 234 | Poore & Nemecek's stage |
+
+Three of FAOSTAT's stages are left out. The making of fertilisers and the making of pesticides are already counted from cradle to farm gate. The refrigerants that leak from the cold chain (0.84 Gt CO₂e) are fluorinated gases, which the model does not include yet.
+
+**Shared between foods.** For processing, transport, packaging and retail, each food's share of its country's total is its production times Poore and Nemecek's (2018) emissions per kg of that food at that stage. Our World in Data publishes these figures (CC BY 4.0). At processing, beef has 1.81 kg CO₂e per kg and wheat 0.21. `pipeline/chain_items.csv` says which of their 42 foods each food takes its stages from, with a note where it is a stand-in (tea uses coffee's stages). Cooking, food waste and wastewater are shared by mass, because Poore and Nemecek's stages end at retail. A country without FAOSTAT figures uses those of the model's countries together. A stage FAOSTAT leaves empty for a country is counted as zero.
+
+In France, a tonne of beef has about 1.06 t CO₂e after the farm, and a tonne of wheat about 0.31 t. That is small compared with the beef's farm emissions, and close to the wheat's.
+
+**What the levers change.** A change in production (a diet shift, less food waste, fewer supply losses) also changes the emissions after the farm. It does so food by food, at the country's figures. Like the farm's emissions, they scale with the baseline and ramp in with the shift. They count in the [causes of warming](#method-link) they belong to today: the energy stages in *Fossil fuels and industry*, food waste and wastewater in *Other human emissions*. With them, the whole diet shift avoids about 1.1 Gt CO₂e a year more, 6.6 Gt in all once the levers are in full. It avoids 0.33 °C by 2100 rather than 0.28 °C.
+
+**Simplifications.** Everything is placed where the food is produced, as for the farm's emissions, though shops and kitchens are where it is eaten. Cooking and food waste follow a food's mass, so a tonne of wheat and a tonne of beef have the same emissions at home. Less food waste also cuts the cooking emissions of the food no longer wasted. This slightly overstates the cut, because wasted food is not always cooked. The energy after the farm does not get cleaner over the years, unlike the scenario's grid.
 
 ## Proxies
 

@@ -22,7 +22,7 @@ const temperature = (
     p95: scenario.map((v) => v + spread),
   },
   avoided: { median: [], p05: [], p95: [] },
-  avoidedByCause: { fossilIndustry: [], agriculture: [], landUse: [], airPollution: [] },
+  avoidedByCause: { fossilIndustry: [], agriculture: [], landUse: [], airPollution: [], other: [] },
   avoidedByGas: {
     co2: { fossilIndustry: [], agriculture: [], landUse: [] },
     ch4: { fossilIndustry: [], agriculture: [], landUse: [] },

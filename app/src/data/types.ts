@@ -195,7 +195,7 @@ export type LeverCause = 'fossilIndustry' | 'agriculture' | 'landUse';
  * The causes the levers' effects are counted in: those a lever acts on, and air pollution, which
  * the energy levers change with the fossil fuel they cut.
  */
-export type CountedCause = LeverCause | 'airPollution';
+export type CountedCause = LeverCause | 'airPollution' | 'other';
 
 export type Cause =
   | 'fossilIndustry'
@@ -336,6 +336,30 @@ export interface Species {
   source: string;
 }
 
+/** A stage after the farm: shared between foods by Poore & Nemecek's weight, or by mass. */
+export const CHAIN_STAGES = [
+  'processing',
+  'transport',
+  'packaging',
+  'retail',
+  'household',
+  'waste',
+  'wastewater',
+] as const;
+export type ChainStage = (typeof CHAIN_STAGES)[number];
+
+/**
+ * chain.json: food's emissions after the farm. A food's kg of a gas per tonne at a stage is its
+ * country's factor (the world's for a country without figures) times its weight at that stage,
+ * 1 for the stages shared by mass.
+ */
+export interface Chain {
+  year: number;
+  weights: Record<string, Partial<Record<ChainStage, number>>>;
+  byCountry: Record<string, Partial<Record<ChainStage, Partial<GasVector>>>>;
+  world: Partial<Record<ChainStage, Partial<GasVector>>>;
+}
+
 /**
  * All files loaded together: the core's here, each lever module's added by its `data.ts`
  * (app/src/levers/<id>/data.ts), which also describes the file.
@@ -359,6 +383,8 @@ export interface ModelData {
   mammals?: Mammals;
   /** Optional: a build without it has no species or fish figures and no species map layer. */
   species?: Species;
+  /** Optional: a build without it counts nothing after the farm. */
+  chain?: Chain;
   /** Not a file: the build's departures from FaIR stand for it when it is unset. */
   departures?: Departures;
 }

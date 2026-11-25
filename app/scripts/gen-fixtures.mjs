@@ -858,6 +858,43 @@ write('species.json', {
   source: 'Synthetic fixture',
 });
 
+// food's emissions after the farm: each food's Poore & Nemecek weight at the shared stages, and
+// kg of each gas per weighted tonne by country and stage; IND left to the world's
+write('chain.json', {
+  year: 2024,
+  weights: {
+    2511: { processing: 0.2, transport: 0.1, packaging: 0.1, retail: 0.05 },
+    2731: { processing: 1.8, transport: 0.5, packaging: 0.35, retail: 0.23 },
+    2848: { processing: 0.15, transport: 0.1, packaging: 0.1, retail: 0.27 },
+  },
+  byCountry: {
+    FRA: {
+      processing: { co2: 350 },
+      transport: { co2: 420 },
+      household: { co2: 30 },
+      waste: { ch4: 3.8 },
+    },
+    USA: {
+      processing: { co2: 300 },
+      transport: { co2: 500 },
+      household: { co2: 120 },
+      waste: { ch4: 6 },
+    },
+    BRA: {
+      processing: { co2: 200 },
+      transport: { co2: 300 },
+      household: { co2: 40 },
+      waste: { ch4: 5 },
+    },
+  },
+  world: {
+    processing: { co2: 350 },
+    transport: { co2: 260 },
+    household: { co2: 160 },
+    waste: { ch4: 6.2 },
+  },
+});
+
 // carbon stored in farmland, t CO₂ per ha a year
 const removal = (rate, appliesTo, maxShare, years) => ({
   rate: Object.fromEntries(

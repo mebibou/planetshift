@@ -93,6 +93,10 @@ export const MAP_HEADER = [
   'change_relative',
   'tier',
   'source',
+  'after_farm_before',
+  'after_farm_after',
+  'clearing_co2_before',
+  'clearing_co2_after',
 ];
 
 /** The map's file name for a layer and a scenario, in a format. */
@@ -118,6 +122,10 @@ export const mapCsv = (rows: TableRow[], spec: LayerSpec, scenario: Scenario): D
       r.change,
       r.tier,
       r.source,
+      r.beyond.chainBefore,
+      r.beyond.chainAfter,
+      r.beyond.clearingBefore,
+      r.beyond.clearingAfter,
     ]),
   );
 };

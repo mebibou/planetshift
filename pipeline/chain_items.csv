@@ -1,0 +1,91 @@
+fbs_code,product,note
+2511,Wheat & Rye,
+2513,Barley,
+2514,Maize,
+2515,Wheat & Rye,
+2516,Oatmeal,
+2517,Wheat & Rye,other cereals take wheat's stages
+2518,Wheat & Rye,other cereals take wheat's stages
+2520,Wheat & Rye,other cereals take wheat's stages
+2531,Potatoes,
+2532,Cassava,
+2533,Root Vegetables,
+2534,Root Vegetables,
+2535,Root Vegetables,
+2536,Cane Sugar,
+2537,Beet Sugar,
+2541,Cane Sugar,
+2542,Cane Sugar,
+2543,Cane Sugar,other sweeteners take cane sugar's stages
+2546,Other Pulses,
+2547,Peas,
+2549,Other Pulses,
+2551,Nuts,
+2552,Groundnuts,
+2555,Tofu,soybeans eaten as food take tofu's stages
+2557,Sunflower Oil,the seed takes its oil's stages
+2558,Rapeseed Oil,the seed takes its oil's stages
+2559,Rapeseed Oil,no cotton product; rapeseed oil's stages
+2560,Other Fruit,no coconut product; other fruit's stages
+2561,Groundnuts,no sesame product; groundnuts' stages
+2562,Palm Oil,the kernel takes palm oil's stages
+2563,Olive Oil,the fruit takes its oil's stages
+2570,Groundnuts,other oilcrops take groundnuts' stages
+2571,Soybean Oil,
+2572,Sunflower Oil,no groundnut oil; sunflower oil's stages
+2573,Sunflower Oil,
+2574,Rapeseed Oil,
+2575,Rapeseed Oil,no cottonseed oil; rapeseed oil's stages
+2576,Palm Oil,
+2577,Palm Oil,
+2578,Palm Oil,no coconut oil; palm oil's stages
+2579,Sunflower Oil,no sesame oil; sunflower oil's stages
+2580,Olive Oil,
+2581,Sunflower Oil,no rice bran oil; sunflower oil's stages
+2582,Sunflower Oil,no maize germ oil; sunflower oil's stages
+2586,Sunflower Oil,other oils take sunflower oil's stages
+2601,Tomatoes,
+2602,Onions & Leeks,
+2605,Other Vegetables,
+2611,Citrus Fruit,
+2612,Citrus Fruit,
+2613,Citrus Fruit,
+2614,Citrus Fruit,
+2615,Bananas,
+2616,Bananas,plantains take bananas' stages
+2617,Apples,
+2618,Other Fruit,
+2619,Other Fruit,
+2620,Berries & Grapes,
+2625,Other Fruit,
+2630,Coffee,
+2633,Dark Chocolate,
+2635,Coffee,no tea product; coffee's stages
+2640,Other Vegetables,no spice product; other vegetables' stages
+2641,Other Vegetables,no spice product; other vegetables' stages
+2642,Other Vegetables,no spice product; other vegetables' stages
+2645,Other Vegetables,no spice product; other vegetables' stages
+2655,Wine,
+2656,Wine,no beer product; wine's stages
+2657,Wine,other fermented drinks take wine's stages
+2658,Wine,other alcoholic drinks take wine's stages
+2731,Beef (beef herd),
+2732,Lamb & Mutton,
+2733,Pig Meat,
+2734,Poultry Meat,
+2735,Lamb & Mutton,other meat takes lamb's stages
+2736,Beef (beef herd),offal takes beef's stages
+2737,Pig Meat,animal fats take pig meat's stages
+2740,Cheese,no butter product; cheese's stages
+2743,Milk,cream takes milk's stages
+2744,Eggs,
+2761,Fish (farmed),
+2762,Fish (farmed),
+2763,Fish (farmed),
+2764,Fish (farmed),
+2765,Shrimps (farmed),
+2766,Fish (farmed),cephalopods take fish's stages
+2767,Fish (farmed),molluscs take fish's stages
+2769,Fish (farmed),other aquatic animals take fish's stages
+2807,Rice,
+2848,Milk,

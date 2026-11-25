@@ -2,8 +2,10 @@ import type { Tier } from '../data/types';
 import type { CountryResult } from '../model/api';
 import {
   beforeAfter,
+  gasValue,
   measureOf,
   relativeChange,
+  type GasChoice,
   type Layer,
   type LandUseCo2,
   type LayerSpec,
@@ -23,7 +25,45 @@ export interface TableRow {
   /** The least precise source among the country's items, where the layer has one. */
   tier: Tier | null;
   source: string | null;
+  /** The Emissions layer's food emissions after the farm and clearing CO₂, in its gas; else null. */
+  beyond: BeyondFarm;
 }
+
+export interface BeyondFarm {
+  chainBefore: number | null;
+  chainAfter: number | null;
+  clearingBefore: number | null;
+  clearingAfter: number | null;
+}
+
+const NO_BEYOND: BeyondFarm = {
+  chainBefore: null,
+  chainAfter: null,
+  clearingBefore: null,
+  clearingAfter: null,
+};
+
+/** The chain after the farm in a gas, today and with the levers, or nulls without the file. */
+const chainOf = (c: CountryResult, gas: GasChoice) =>
+  c.chain && c.chainChange
+    ? {
+        chainBefore: gasValue(c.chain, gas),
+        chainAfter: gasValue(c.chain, gas) + gasValue(c.chainChange, gas),
+      }
+    : { chainBefore: null, chainAfter: null };
+
+/** The clearing CO₂, today and with the levers, in a gas that has CO₂; else nulls. */
+const clearingOf = (c: CountryResult, gas: GasChoice) =>
+  c.deforestationCo2 !== undefined && (gas === 'co2' || gas === 'co2e')
+    ? {
+        clearingBefore: c.deforestationCo2,
+        clearingAfter: c.deforestationCo2 + (c.deforestationChange ?? 0),
+      }
+    : { clearingBefore: null, clearingAfter: null };
+
+/** Food's emissions beyond the farm, on the Emissions layer only. */
+export const beyondFarm = (c: CountryResult, spec: LayerSpec): BeyondFarm =>
+  spec.layer === 'emissions' ? { ...chainOf(c, spec.gas), ...clearingOf(c, spec.gas) } : NO_BEYOND;
 
 export const COLUMNS = ['name', 'before', 'after', 'change', 'tier'] as const;
 export type Column = (typeof COLUMNS)[number];
@@ -88,6 +128,7 @@ export const tableRows = (
         after: ba.after,
         change: relativeChange(ba),
         ...(hasTier(spec) ? tierOf(c, worstOf(c)) : { tier: null, source: null }),
+        beyond: beyondFarm(c, spec),
       };
     });
 

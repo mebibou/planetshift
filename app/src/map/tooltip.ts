@@ -12,7 +12,9 @@ import {
 import {
   beforeAfter,
   farmland,
+  gasValue,
   relativeChange,
+  type GasChoice,
   type LandUseCo2,
   type LayerSpec,
   type Measure,
@@ -60,6 +62,32 @@ const clearingCo2Row = (
     after: formatMass(locale, (c.deforestationCo2 ?? 0) + (c.deforestationChange ?? 0)),
   }),
 ];
+
+/** Food's emissions after the farm in a gas, today and with the levers; none without the file. */
+const chainRows = (c: CountryResult, gas: GasChoice, t: T, locale: string): [string, string][] =>
+  c.chain && c.chainChange
+    ? [
+        [
+          t('map.tooltip.chain'),
+          t('map.tooltip.beforeAfter', {
+            before: formatMass(locale, gasValue(c.chain, gas)),
+            after: formatMass(locale, gasValue(c.chain, gas) + gasValue(c.chainChange, gas)),
+          }),
+        ],
+      ]
+    : [];
+
+/** The CO₂ of clearing forest for farming, in a gas that has CO₂ only. */
+const clearingRows = (c: CountryResult, gas: GasChoice, t: T, locale: string) =>
+  c.deforestationCo2 !== undefined && (gas === 'co2' || gas === 'co2e')
+    ? [clearingCo2Row(c, t, locale, 'map.tooltip.clearingCo2')]
+    : [];
+
+/** The Emissions layer's food emissions beyond the farm: the chain after it and the clearing. */
+const beyondFarmRows = (c: CountryResult, spec: LayerSpec, t: T, locale: string) =>
+  spec.layer === 'emissions'
+    ? [...chainRows(c, spec.gas, t, locale), ...clearingRows(c, spec.gas, t, locale)]
+    : [];
 
 /** Farmed mammals' live weight, today and with the levers. */
 const mammalsRow = (c: CountryResult, t: T, locale: string): [string, string] => [
@@ -211,6 +239,7 @@ const countryTooltip = (
       [t('map.tooltip.before'), measure(ba.before)],
       [t('map.tooltip.after'), measure(ba.after)],
       [t('map.tooltip.change'), change === null ? '–' : formatPercent(locale, change, 1, true)],
+      ...beyondFarmRows(c, spec, t, locale),
       ...extra.rows,
     ],
     ...(extra.source ? { source: extra.source } : {}),

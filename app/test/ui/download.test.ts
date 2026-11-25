@@ -72,6 +72,7 @@ describe('map csv', () => {
       change: -0.1,
       tier: 3 as const,
       source: 'https://www.fao.org/faostat/en/#data/GLE',
+      beyond: { chainBefore: 50, chainAfter: 40, clearingBefore: null, clearingAfter: null },
     },
     {
       iso3: 'ATA',
@@ -82,6 +83,7 @@ describe('map csv', () => {
       change: null,
       tier: null,
       source: null,
+      beyond: { chainBefore: null, chainAfter: null, clearingBefore: null, clearingAfter: null },
     },
   ];
 
@@ -92,9 +94,9 @@ describe('map csv', () => {
     const [header, kor, ata] = lines(file.text);
     expect(header).toBe(MAP_HEADER.join(','));
     expect(kor).toBe(
-      'KOR,"Korea, Republic of",change,emissions,co2e,kg CO2e (GWP100),1000,900,-0.1,3,https://www.fao.org/faostat/en/#data/GLE',
+      'KOR,"Korea, Republic of",change,emissions,co2e,kg CO2e (GWP100),1000,900,-0.1,3,https://www.fao.org/faostat/en/#data/GLE,50,40,,',
     );
-    expect(ata).toBe('ATA,Antarctica,change,emissions,co2e,kg CO2e (GWP100),0,0,,,');
+    expect(ata).toBe('ATA,Antarctica,change,emissions,co2e,kg CO2e (GWP100),0,0,,,,,,,');
   });
 
   it('names the layer, its selection and unit', () => {
