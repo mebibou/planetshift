@@ -33,7 +33,7 @@ const avoidedAt = (summary: Summary | undefined, end: number) => {
     : null;
 };
 
-/** What the levers avoid at the horizon and of each cause, or nothing when it is too small. */
+/** What the levers avoid at the horizon, and of each cause that shows at two decimals. */
 export const scenarioText = (
   lines: Lines,
   result: ScenarioResult | null,
@@ -48,7 +48,7 @@ export const scenarioText = (
         ssp: t(`options.ssp.${ssp}`),
         year: end,
         parts: [...COUNTED_CAUSES]
-          .filter((c) => Math.abs(avoided.byCause[c]) >= 0.0005)
+          .filter((c) => Math.abs(avoided.byCause[c]) >= 0.005)
           .sort((a, b) => Math.abs(avoided.byCause[b]) - Math.abs(avoided.byCause[a]))
           .map((c) => partText(lines, c, -avoided.byCause[c]))
           .join(t('link.separator')),

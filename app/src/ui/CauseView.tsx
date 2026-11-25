@@ -46,10 +46,8 @@ export const CauseView = (props: CauseViewProps) => {
   return (
     <div className="cause-view grid gap-2">
       <div className="drawn" ref={stackedRef} />
-      <div className="cause-intro" aria-live="polite">
-        <p className="headline-sub m-0 pl-[18px] text-[1.05rem]">
-          {scenarioText(lines, result, ssp, end)}
-        </p>
+      <div className="cause-intro sr-only" aria-live="polite">
+        <p className="headline-sub m-0">{scenarioText(lines, result, ssp, end)}</p>
       </div>
     </div>
   );
