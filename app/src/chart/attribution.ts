@@ -80,12 +80,14 @@ const causeLabel =
   (c: Cause): string =>
     gas !== 'all' && c === 'other' ? t('link.gasOther') : t(`link.causes.${c}`);
 
-const legendKeys = (t: T, view: AttributionView, levers: boolean) => [
-  ...causesBySize(view.attribution, view.end).map((c) => ({
-    label: causeLabel(t, view.gas)(c),
-    className: `key-cause-${c}`,
-    toggle: c,
-  })),
+/** The causes' legend keys in alphabetical order, which switching gases leaves as it is. */
+export const causeKeys = (t: T, locale: string, view: AttributionView) =>
+  causesIn(view.attribution)
+    .map((c) => ({ label: causeLabel(t, view.gas)(c), className: `key-cause-${c}`, toggle: c }))
+    .sort((a, b) => a.label.localeCompare(b.label, locale));
+
+const legendKeys = (t: T, locale: string, view: AttributionView, levers: boolean) => [
+  ...causeKeys(t, locale, view),
   ...(levers
     ? [{ label: t('link.withoutLevers'), className: 'key-outline', toggle: 'outlines' }]
     : []),
@@ -324,7 +326,7 @@ export const attributionChart = (t: T, locale: string, currentYear: number): Att
     lead.textContent = texts.lead;
     notes.set([texts.notes]);
     const off = offIn(el);
-    legendEl.replaceChildren(legendList(legendKeys(t, all, levers), render, off));
+    legendEl.replaceChildren(legendList(legendKeys(t, locale, all, levers), render, off));
     const view = shownOf(all, off);
     const causes = causesIn(view.attribution);
     const rows = rowsOf(view, levers);
