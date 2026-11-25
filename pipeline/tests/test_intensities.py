@@ -529,3 +529,21 @@ def test_fertiliser_manufacturing_goes_where_its_nitrogen_is_applied():
     assert moved.to_dict() == pytest.approx(
         {(1, "co2"): 0, (1, "n2o"): 0, (2, "co2"): 25, (2, "n2o"): 1, (3, "co2"): 75, (3, "n2o"): 3}
     )
+
+
+def test_rice_and_other_fruits_take_faostat_before_hestias_world_average():
+    cells = pd.DataFrame(
+        {
+            "iso3": ["PHL", "PHL", "PHL", "PHL", "JPN", "IND", "IND"],
+            "fbs_code": [2807, 2807, 2511, 2511, 2807, 2807, 2807],
+            "scope": ["farmGate"] * 7,
+            "ch4": [25.5, 82.0, 1.0, 2.0, 25.5, 17.0, 24.8],
+            "tier": [2, 3, 2, 3, 2, 1, 3],
+            "rank": [I.WORLD_RANK, 0, I.WORLD_RANK, 0, I.WORLD_RANK, 0, 0],
+        }
+    )
+    chosen = I.best(I.country_before_world(cells)).set_index(["iso3", "fbs_code"])
+    assert chosen.loc[("PHL", 2807), "ch4"] == 82.0
+    assert chosen.loc[("PHL", 2511), "ch4"] == 1.0
+    assert chosen.loc[("JPN", 2807), "ch4"] == 25.5
+    assert chosen.loc[("IND", 2807), "ch4"] == 17.0

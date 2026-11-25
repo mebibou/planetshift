@@ -32,6 +32,8 @@ Each value is drawn from the best source available. For each country, item and s
 5. **Proxy**: a stand-in value. For a processed item, it is its primary item's value over the extraction rate (see *Processed products* below). Otherwise, it is a similar item's tier 1–4 value in the same country, from the list in *Proxies* below. A proxy is never taken from another proxy or from a median.
 6. **Group median**: the production-weighted median, over all countries, of the tier 1–4 values of the group's items.
 
+Two items take FAOSTAT's value for the country (tier 3) before HESTIA's world average (tier 2): rice, whose methane depends on each country's water management (see *Rice methane*), and other fruits, for which HESTIA's only world aggregation is peach, at 1.03 kg CO₂e per kg against about 0.35 in Poore and Nemecek.
+
 Every country in the model has a value for every item and both scopes, including items it does not produce. The model can then move production to any country.
 
 ### How many cells each tier fills
@@ -262,7 +264,7 @@ For each food, a country's footprint adds up:
 
 The total is divided by the country's population in the base year. With the levers, the diet shift and less food waste change the food eaten. The farm's intensities change with the farm practices. The chain after the farm and the clearing per tonne do not change.
 
-In CO₂e per person a year, France's footprint is 2.20 t, the United States' 2.67 t, China's 2.12 t, India's 0.93 t and Brazil's 4.40 t. The refrigerants are 0.05 t of France's and 0.15 t of the United States'. Drained organic soils are 0.16 t of France's, through the dairy and beef it imports from its neighbours and through palm oil. In Brazil, clearing for farming is about half, 2.19 t. In France it is 0.04 t. France's imported beef comes mostly from its neighbours, the Netherlands, Ireland and the United Kingdom first. Much of its soy arrives as cake, which takes the world's average. With the whole diet shifted, France's footprint falls to 0.95 t.
+In CO₂e per person a year, France's footprint is 2.19 t, the United States' 2.66 t, China's 2.12 t, India's 0.91 t and Brazil's 4.38 t. The refrigerants are 0.05 t of France's and 0.15 t of the United States'. Drained organic soils are 0.16 t of France's, through the dairy and beef it imports from its neighbours and through palm oil. In Brazil, clearing for farming is about half, 2.19 t. In France it is 0.04 t. France's imported beef comes mostly from its neighbours, the Netherlands, Ireland and the United Kingdom first. Much of its soy arrives as cake, which takes the world's average. With the whole diet shifted, France's footprint falls to 0.94 t.
 
 Published estimates for France are often higher. Planetshift's intensities explain little of the difference. Its meat and milk, which make most of a French diet's footprint, are close to Poore and Nemecek's or above them once both are in the same unit and with the same factors. Its crops and eggs are 20% to 50% below theirs (see *Per kilogram, against Poore and Nemecek*).
 
@@ -361,11 +363,13 @@ Direct agricultural N₂O was 6.1 Mt in 2020 (3.9 Tg N, Tian et al., 2024). Plan
 
 ### Rice methane
 
-Rice methane is 20.8 Mt in the model, against 25.3 Mt in FAOSTAT for 2024 and 32 (25–37) Tg in the Global Methane Budget. Most of the gap is India.
+Rice methane is 23.0 Mt in the model, against 25.3 Mt in FAOSTAT for 2024 and 32 (25–37) Tg in the Global Methane Budget. Most of the gap is India.
+
+Rice methane depends on how each country manages the water of its paddies, which a world average cannot follow. So for rice, FAOSTAT's value for the country (tier 3) comes before HESTIA's world average (tier 2). In the Philippines, which HESTIA does not cover, FAOSTAT gives 82 kg of methane per tonne of paddy, against 25.5 kg for HESTIA's world. This raised the world total from 20.8 Mt.
 
 India's intensity is HESTIA's (tier 1): 16.7 kg of methane from flooding per tonne of paddy, and 17.1 kg with the rest. FAOSTAT's is 24.5 kg (5.33 Mt over 217.9 Mt of paddy). Both are per tonne of paddy, the unit the balance uses for rice, so the gap is not a conversion error. Per hectare, HESTIA gives about 72 kg of methane and FAOSTAT about 106.
 
-HESTIA's model applies the IPCC's 2019 Refinement to the water regimes and amendments of its Indian rice data. FAOSTAT applies the IPCC's Tier 1 method with its own assumptions on water regimes. The difference is one of method, so the model keeps the HESTIA value, which is better documented. With FAOSTAT's intensity for India, the world total would be about 22.5 Mt.
+HESTIA's model applies the IPCC's 2019 Refinement to the water regimes and amendments of its Indian rice data. FAOSTAT applies the IPCC's Tier 1 method with its own assumptions on water regimes. The difference is one of method, so the model keeps the HESTIA value, which is better documented. With FAOSTAT's intensity for India, the world total would be about 24.7 Mt.
 
 ### Per kilogram, against Poore and Nemecek
 
@@ -379,7 +383,7 @@ Poore and Nemecek (2018) give each food's emissions by stage of the supply chain
 | Poultry meat | 0.87 | 0.67 | 0.63 | 1.39 |
 | Eggs | 0.77 | 1.32 | 1.22 | 0.64 |
 | Milk | 1.18 | 1.46 | 1.21 | 0.98 |
-| Rice (paddy) | 1.17 | 2.37 | 2.02 | 0.58 |
+| Rice (paddy) | 1.23 | 2.37 | 2.01 | 0.61 |
 | Wheat | 0.49 | 0.85 | 0.80 | 0.61 |
 | Maize | 0.37 | 0.48 | 0.45 | 0.82 |
 | Potatoes | 0.132 | 0.193 | 0.185 | 0.72 |

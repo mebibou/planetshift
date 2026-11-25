@@ -642,9 +642,26 @@ def ranked(
     ]
     world = df[df["area"] == "World"]
     worldwide = world.merge(pd.DataFrame({"iso3": countries}), how="cross").assign(
-        tier=tier_wide, rank=10_000
+        tier=tier_wide, rank=WORLD_RANK
     )
     return pd.concat([own, *regional, worldwide], ignore_index=True)
+
+
+#: Rank of a world value among the wide-tier candidates, after the regions.
+WORLD_RANK = 10_000
+#: Items whose FAOSTAT country value (tier 3) comes before HESTIA's world average (tier 2): rice,
+#: whose methane depends on each country's water management, and other fruits, whose only world
+#: aggregation in HESTIA is peach.
+COUNTRY_BEFORE_WORLD = (2807, 2625)
+
+
+def country_before_world(candidates: pd.DataFrame, items=COUNTRY_BEFORE_WORLD) -> pd.DataFrame:
+    """Candidates without the world values of `items` in the cells FAOSTAT gives a value for."""
+    keys = ["iso3", "fbs_code", "scope"]
+    faostat = candidates.loc[candidates["tier"] == 3, keys].drop_duplicates()
+    world = candidates[candidates["fbs_code"].isin(items) & (candidates["rank"] == WORLD_RANK)]
+    dropped = world.reset_index().merge(faostat, on=keys)["index"]
+    return candidates.drop(index=dropped)
 
 
 def best(candidates: pd.DataFrame) -> pd.DataFrame:
@@ -783,7 +800,7 @@ def merge(
     )
     rest = grid[~grid["fbs_code"].isin(zero_items)]
     pool = pd.concat(candidates, ignore_index=True).merge(rest, on=["iso3", "fbs_code", "scope"])
-    chosen = best(pool)
+    chosen = best(country_before_world(pool))
     is_derived = rest["fbs_code"].isin(extraction)
     base, derived = rest[~is_derived], rest[is_derived]
     base_chosen = chosen[~chosen["fbs_code"].isin(extraction)]

@@ -32,6 +32,8 @@ Chaque valeur est tirée de la meilleure source disponible. Pour chaque pays, pr
 5. **Substitut** : une valeur de remplacement. Pour un produit transformé, c'est la valeur de son produit primaire divisée par le taux d'extraction (voir *Les produits transformés* plus bas). Sinon, c'est la valeur de niveau 1 à 4 d'un produit similaire dans le même pays, d'après la liste de la partie *Substituts* plus bas. Un substitut n'est jamais pris d'un autre substitut ni d'une médiane.
 6. **Médiane du groupe** : la médiane, pondérée par la production, sur tous les pays, des valeurs de niveau 1 à 4 des produits du groupe.
 
+Deux produits prennent la valeur de FAOSTAT pour le pays (niveau 3) avant la moyenne mondiale de HESTIA (niveau 2) : le riz, dont le méthane dépend de la gestion de l'eau de chaque pays (voir *Le méthane du riz*), et les autres fruits, pour lesquels la seule agrégation mondiale de HESTIA est la pêche, à 1,03 kg CO₂e par kg contre environ 0,35 chez Poore et Nemecek.
+
 Chaque pays du modèle a une valeur pour chaque produit et pour les deux périmètres, y compris pour les produits qu'il ne produit pas. Le modèle peut ainsi déplacer la production vers n'importe quel pays.
 
 ### Combien de cases chaque niveau remplit
@@ -262,7 +264,7 @@ Pour chaque aliment, l'empreinte d'un pays additionne :
 
 Le total est divisé par la population du pays l'année de référence. Avec les leviers, le changement de régime et la réduction du gaspillage changent les aliments mangés. Les intensités de la ferme suivent les pratiques agricoles. La chaîne après la ferme et le défrichement par tonne ne changent pas.
 
-En CO₂e par personne et par an, l'empreinte est de 2,20 t en France, 2,67 t aux États-Unis, 2,12 t en Chine, 0,93 t en Inde et 4,40 t au Brésil. Les réfrigérants en font 0,05 t en France et 0,15 t aux États-Unis. Les sols organiques drainés en font 0,16 t en France, par les produits laitiers et le bœuf qu'elle importe de ses voisins et par l'huile de palme. Au Brésil, le défrichement pour l'agriculture en représente environ la moitié, 2,19 t. En France, il représente 0,04 t. Le bœuf que la France importe vient surtout de ses voisins, les Pays-Bas, l'Irlande et le Royaume-Uni d'abord. Une grande part de son soja arrive en tourteau, qui prend la moyenne du monde. Avec tout le régime changé, l'empreinte de la France tombe à 0,95 t.
+En CO₂e par personne et par an, l'empreinte est de 2,19 t en France, 2,66 t aux États-Unis, 2,12 t en Chine, 0,91 t en Inde et 4,38 t au Brésil. Les réfrigérants en font 0,05 t en France et 0,15 t aux États-Unis. Les sols organiques drainés en font 0,16 t en France, par les produits laitiers et le bœuf qu'elle importe de ses voisins et par l'huile de palme. Au Brésil, le défrichement pour l'agriculture en représente environ la moitié, 2,19 t. En France, il représente 0,04 t. Le bœuf que la France importe vient surtout de ses voisins, les Pays-Bas, l'Irlande et le Royaume-Uni d'abord. Une grande part de son soja arrive en tourteau, qui prend la moyenne du monde. Avec tout le régime changé, l'empreinte de la France tombe à 0,94 t.
 
 Les estimations publiées pour la France sont souvent plus élevées. Les intensités de Planetshift expliquent peu de cet écart. Sa viande et son lait, qui font l'essentiel de l'empreinte d'un régime français, sont proches de ceux de Poore et Nemecek ou au-dessus, une fois les deux dans la même unité et avec les mêmes facteurs. Ses cultures et ses œufs sont de 20 % à 50 % en dessous des leurs (voir *Par kilogramme, face à Poore et Nemecek*).
 
@@ -361,11 +363,13 @@ Le N₂O agricole direct était de 6,1 Mt en 2020 (3,9 Tg N, Tian et al., 2024).
 
 ### Le méthane du riz
 
-Le méthane du riz est de 20,8 Mt dans le modèle, contre 25,3 Mt dans FAOSTAT pour 2024 et 32 (25–37) Tg dans le Global Methane Budget. L'essentiel de l'écart vient de l'Inde.
+Le méthane du riz est de 23,0 Mt dans le modèle, contre 25,3 Mt dans FAOSTAT pour 2024 et 32 (25–37) Tg dans le Global Methane Budget. L'essentiel de l'écart vient de l'Inde.
+
+Le méthane du riz dépend de la façon dont chaque pays gère l'eau de ses rizières, ce qu'une moyenne mondiale ne peut pas suivre. Pour le riz, la valeur de FAOSTAT pour le pays (niveau 3) passe donc avant la moyenne mondiale de HESTIA (niveau 2). Aux Philippines, que HESTIA ne couvre pas, FAOSTAT donne 82 kg de méthane par tonne de paddy, contre 25,5 kg pour le monde de HESTIA. Cela a relevé le total mondial de 20,8 Mt.
 
 L'intensité de l'Inde est celle de HESTIA (niveau 1) : 16,7 kg de méthane dû à l'inondation par tonne de paddy, et 17,1 kg avec le reste. Celle de FAOSTAT est de 24,5 kg (5,33 Mt pour 217,9 Mt de paddy). Les deux sont par tonne de paddy, l'unité qu'utilisent les bilans pour le riz : l'écart n'est donc pas une erreur de conversion. Par hectare, HESTIA donne environ 72 kg de méthane et FAOSTAT environ 106.
 
-Le modèle de HESTIA applique l'affinement de 2019 du GIEC aux régimes hydriques et aux amendements de ses données sur le riz indien. FAOSTAT applique la méthode de niveau 1 du GIEC avec ses propres hypothèses sur les régimes hydriques. La différence tient à la méthode : le modèle garde donc la valeur de HESTIA, qui est mieux documentée. Avec l'intensité de FAOSTAT pour l'Inde, le total mondial serait d'environ 22,5 Mt.
+Le modèle de HESTIA applique l'affinement de 2019 du GIEC aux régimes hydriques et aux amendements de ses données sur le riz indien. FAOSTAT applique la méthode de niveau 1 du GIEC avec ses propres hypothèses sur les régimes hydriques. La différence tient à la méthode : le modèle garde donc la valeur de HESTIA, qui est mieux documentée. Avec l'intensité de FAOSTAT pour l'Inde, le total mondial serait d'environ 24,7 Mt.
 
 ### Par kilogramme, face à Poore et Nemecek
 
@@ -379,7 +383,7 @@ Poore et Nemecek (2018) donnent les émissions de chaque aliment par étape de l
 | Volaille | 0,87 | 0,67 | 0,63 | 1,39 |
 | Œufs | 0,77 | 1,32 | 1,22 | 0,64 |
 | Lait | 1,18 | 1,46 | 1,21 | 0,98 |
-| Riz (paddy) | 1,17 | 2,37 | 2,02 | 0,58 |
+| Riz (paddy) | 1,23 | 2,37 | 2,01 | 0,61 |
 | Blé | 0,49 | 0,85 | 0,80 | 0,61 |
 | Maïs | 0,37 | 0,48 | 0,45 | 0,82 |
 | Pommes de terre | 0,132 | 0,193 | 0,185 | 0,72 |
