@@ -378,7 +378,7 @@
       "hfc": "HFC"
     },
     "gasText": "Chaque bande est le réchauffement dû aux émissions de ce gaz par une cause. Après aujourd'hui, chaque bande est ce qui reste une fois que les leviers choisis agissent sur sa cause. La pollution de l'air, les traînées des avions et les facteurs naturels ne sont pas des gaz à effet de serre : ils n'apparaissent que sous Tous les gaz.",
-    "gasCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui. Chaque cause est le réchauffement qu'ajoutent ses émissions de ce gaz. Les autres sources et interactions sont le reste du réchauffement dû au gaz.",
+    "gasCaption": "Médianes de simulations FaIR sur les émissions historiques par secteur, puis le scénario choisi après aujourd'hui. Chaque cause est le réchauffement qu'ajoutent ses émissions de ce gaz. Les autres sources et interactions sont le reste du réchauffement dû au gaz. Chaque bande part de sa propre moyenne de 1850–1900 : un gaz dont les émissions augmentaient déjà, comme le méthane, commence donc un peu sous zéro.",
     "gasOther": "Autres sources et interactions",
     "gasAttributionLabel": "Graphique empilé du réchauffement dû au {gas} par cause de {from} à {year}",
     "whyTitle": "Pourquoi les gaz sont séparés",
