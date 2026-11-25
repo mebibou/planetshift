@@ -54,14 +54,14 @@ La carte montre plutôt la surface de forêt défrichée : l'attribution non amo
 
 ### Sols organiques drainés
 
-Drainer les tourbières et autres sols organiques pour l'agriculture expose leur carbone à l'air. C'est une émission de terres déjà défrichées, qui continue que l'on coupe ou non davantage de forêt : le levier déforestation ne l'arrête donc pas. Elle relève des terres que l'alimentation occupe, et suit la production de chaque aliment.
+Drainer les tourbières et autres sols organiques pour l'agriculture expose leur carbone à l'air. Ses émissions viennent de terres déjà défrichées et continuent que l'on coupe ou non davantage de forêt : le levier déforestation ne les arrête donc pas. Elles relèvent des terres que l'alimentation occupe, et suivent la production de chaque aliment.
 
 Les *Emissions from Drained organic soils* de FAOSTAT donnent le CO₂ de chaque pays sur les terres cultivées et sur les prairies. Pour 2024, les pays du modèle émettent 0,81 Gt de CO₂ par an : 0,65 Gt sur les terres cultivées et 0,16 Gt sur les prairies. L'Indonésie vient en tête avec 0,24 Gt, puis la Russie, les États-Unis, la Biélorussie et le Canada.
 
-- Le CO₂ des terres cultivées va aux cultures selon le drainage des tourbières de DeDuCE par produit, là où DeDuCE en a pour le pays : celui de l'Indonésie va donc surtout au palmier à huile (0,18 Gt). Ailleurs, il va aux cultures selon leur surface récoltée.
-- Le CO₂ des prairies va aux produits des ruminants (bœuf, viande ovine et caprine, autres viandes, lait) selon leur méthane.
+- Le CO₂ des terres cultivées va aux cultures selon le drainage des tourbières de DeDuCE par produit, là où DeDuCE a ces données pour le pays : celui de l'Indonésie va donc surtout au palmier à huile (0,18 Gt). Ailleurs, il va aux cultures selon leur surface récoltée.
+- Le CO₂ des prairies va aux produits des ruminants (bœuf, viande ovine et caprine, autres viandes, lait) en proportion de leur méthane.
 
-Le CO₂ suit la production de chaque aliment, comme le défrichement, et compte dans la cause Usage des terres. Quand le changement de régime libère des terres drainées, le modèle les suppose remises en eau, si bien que leur émission s'arrête. Des terres restées drainées continueraient d'émettre : c'est donc le plus que le changement pourrait éviter. Le changement complet en évite 0,27 Gt par an. Le N₂O des sols drainés, 0,35 Mt par an, est laissé de côté. Le drainage des tourbières de DeDuCE (environ 0,23 Gt) ne sert pas d'émission, seulement à répartir celui des terres cultivées.
+Le CO₂ suit la production de chaque aliment, comme le défrichement, et compte dans la cause Usage des terres. Quand le changement de régime libère des terres drainées, le modèle les suppose remises en eau, si bien que leur émission s'arrête. Des terres restées drainées continueraient d'émettre : c'est donc le plus que le changement pourrait éviter. Le changement complet en évite 0,27 Gt par an. Le N₂O des sols drainés, 0,35 Mt par an, est laissé de côté. Le drainage des tourbières de DeDuCE (environ 0,23 Gt) ne sert pas d'émission, seulement à répartir le CO₂ des terres cultivées entre les cultures.
 
 ### Des produits de base aux aliments
 

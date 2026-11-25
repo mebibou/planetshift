@@ -11,7 +11,7 @@ The app offers two scopes:
 - **Farm gate** (*Biological processes only* in the app): the emissions of the farm's biological processes. These are enteric fermentation (the methane made in ruminants' stomachs as they digest), manure management, manure left on pasture and spread on fields, synthetic fertiliser, crop residues, rice paddies and the burning of residues.
 - **Cradle to farm gate** (*With inputs*, the default): the same, plus the farm's energy use (fuel and electricity) and the making of fertilisers and pesticides. The fuel burnt on the farm counts here, whichever source the intensity comes from.
 
-Neither scope includes land-use change, drained organic soils, or anything after the farm: processing, transport, retail, cooking and waste. What happens after the farm is counted separately, in *After the farm* below. The forest cleared for farming and the CO₂ of drained organic soils are counted by the deforestation module (see [Deforestation](#method-deforestation)). The tooltip of the map's Emissions layer shows the emissions after the farm, the clearing's CO₂ and the drained soils' CO₂, beside the farm's emissions.
+Neither scope includes land-use change, drained organic soils, or anything after the farm: processing, transport, retail, cooking and waste. What happens after the farm is counted separately, in *After the farm* below. The forest cleared for farming and the CO₂ of drained organic soils are counted by the deforestation module (see [Deforestation](#method-deforestation)). The tooltip of the map's Emissions layer shows, beside the farm's emissions, the emissions after the farm and the CO₂ of the clearing and of the drained soils.
 
 ## Why animal products leave out their feed
 
@@ -32,7 +32,7 @@ Each value is drawn from the best source available. For each country, item and s
 5. **Proxy**: a stand-in value. For a processed item, it is its primary item's value over the extraction rate (see *Processed products* below). Otherwise, it is a similar item's tier 1–4 value in the same country, from the list in *Proxies* below. A proxy is never taken from another proxy or from a median.
 6. **Group median**: the production-weighted median, over all countries, of the tier 1–4 values of the group's items.
 
-Two items take FAOSTAT's value for the country (tier 3) before HESTIA's world average (tier 2): rice, whose methane depends on each country's water management (see *Rice methane*), and other fruits, for which HESTIA's only world aggregation is peach, at 1.03 kg CO₂e per kg against about 0.35 in Poore and Nemecek.
+Two items take FAOSTAT's value for the country (tier 3) before HESTIA's world average (tier 2): rice, whose methane depends on each country's water management (see *Rice methane*), and other fruits. HESTIA's only world aggregation for other fruits is peach, at 1.03 kg CO₂e per kg against about 0.35 in Poore and Nemecek.
 
 Every country in the model has a value for every item and both scopes, including items it does not produce. The model can then move production to any country.
 
@@ -102,7 +102,7 @@ The *Emissions from Livestock* domain (GLE) gives, by species, the CH₄ of ente
 This scope adds three FAOSTAT sources:
 
 - on-farm energy use, shared between all products by their gross production value;
-- fertiliser manufacturing, moved to the countries that apply the nitrogen and then shared like synthetic nitrogen. FAOSTAT counts it where the fertiliser is made, about 440 Mt CO₂e in 2024, so exporters such as Russia, Saudi Arabia or Qatar would load their own crops with the fertiliser spread elsewhere. Each country takes its nitrogen use (FAOSTAT's *Fertilizers by Nutrient*) times the world's emissions per tonne of nitrogen, about 3.8 t of CO₂e;
+- fertiliser manufacturing, moved to the countries that apply the nitrogen and then shared like synthetic nitrogen. FAOSTAT counts it where the fertiliser is made, about 440 Mt CO₂e in 2024, so the crops of exporters such as Russia, Saudi Arabia or Qatar would carry the emissions of fertiliser spread in other countries. Each country's share is its nitrogen use (FAOSTAT's *Fertilizers by Nutrient*) times the world's emissions per tonne of nitrogen, about 3.8 t of CO₂e;
 - pesticide manufacturing, shared by harvested area.
 
 ### From emissions to intensities
@@ -246,7 +246,7 @@ The making of fertilisers and the making of pesticides are left out, as they are
 
 In France, a tonne of beef has about 1.08 t CO₂e after the farm, and a tonne of wheat about 0.31 t. That is small compared with the beef's farm emissions, and close to the wheat's.
 
-**What the levers change.** A change in production (a diet shift, less food waste, fewer supply losses) also changes the emissions after the farm. It does so food by food, at the country's figures. Like the farm's emissions, they scale with the baseline and ramp in with the shift. They count in the [causes of warming](#method-link) they belong to today: the energy stages in *Fossil fuels and industry*; food waste, wastewater and the refrigerants in *Other human emissions*. With them, the whole diet shift avoids about 1.6 Gt CO₂e a year more. Once the levers are in full, it avoids 7.3 Gt in all, including 329 kt of HFC-134a, about 0.5 Gt CO₂e, and 0.27 Gt of CO₂ from drained soils. It avoids 0.36 °C by 2100 rather than 0.28 °C.
+**What the levers change.** A change in production (a diet shift, less food waste, fewer supply losses) also changes the emissions after the farm. It does so food by food, at the country's figures. Like the farm's emissions, they scale with the baseline and ramp in with the shift. They count in the [causes of warming](#method-link) they belong to today: the energy stages in *Fossil fuels and industry*; food waste, wastewater and the refrigerants in *Other human emissions*. With them, the whole diet shift avoids about 1.6 Gt CO₂e a year more. Once the levers are in full, it avoids 7.3 Gt in all. That includes 329 kt of HFC-134a, about 0.5 Gt CO₂e, and 0.27 Gt of CO₂ from drained soils. It avoids 0.36 °C by 2100 rather than 0.28 °C.
 
 **Simplifications.** Everything is placed where the food is produced, as for the farm's emissions, though shops and kitchens are where it is eaten. Cooking and food waste follow a food's mass, so a tonne of wheat and a tonne of beef have the same emissions at home. Less food waste also cuts the cooking emissions of the food no longer wasted. This slightly overstates the cut, because wasted food is not always cooked. The energy after the farm does not get cleaner over the years, unlike the scenario's grid.
 
@@ -264,7 +264,7 @@ For each food, a country's footprint adds up:
 
 The total is divided by the country's population in the base year. With the levers, the diet shift and less food waste change the food eaten. The farm's intensities change with the farm practices. The chain after the farm and the clearing per tonne do not change.
 
-In CO₂e per person a year, France's footprint is 2.19 t, the United States' 2.66 t, China's 2.12 t, India's 0.91 t and Brazil's 4.38 t. The refrigerants are 0.05 t of France's and 0.15 t of the United States'. Drained organic soils are 0.16 t of France's, through the dairy and beef it imports from its neighbours and through palm oil. In Brazil, clearing for farming is about half, 2.19 t. In France it is 0.04 t. France's imported beef comes mostly from its neighbours, the Netherlands, Ireland and the United Kingdom first. Much of its soy arrives as cake, which takes the world's average. With the whole diet shifted, France's footprint falls to 0.94 t.
+In CO₂e per person a year, France's footprint is 2.19 t, the United States' 2.66 t, China's 2.12 t, India's 0.91 t and Brazil's 4.38 t. The refrigerants are 0.05 t of France's footprint and 0.15 t of the United States'. Drained organic soils add 0.16 t to France's, through the dairy and beef it imports from its neighbours and through palm oil. In Brazil, clearing for farming is about half of the footprint, 2.19 t. In France it is 0.04 t. France's imported beef comes mostly from its neighbours, the Netherlands, Ireland and the United Kingdom first. Much of its soy arrives as cake, which is given the world's average. With the whole diet shifted, France's footprint falls to 0.94 t.
 
 Published estimates for France are often higher. Planetshift's intensities explain little of the difference. Its meat and milk, which make most of a French diet's footprint, are close to Poore and Nemecek's or above them once both are in the same unit and with the same factors. Its crops and eggs are 20% to 50% below theirs (see *Per kilogram, against Poore and Nemecek*).
 
@@ -365,7 +365,7 @@ Direct agricultural N₂O was 6.1 Mt in 2020 (3.9 Tg N, Tian et al., 2024). Plan
 
 Rice methane is 23.0 Mt in the model, against 25.3 Mt in FAOSTAT for 2024 and 32 (25–37) Tg in the Global Methane Budget. Most of the gap is India.
 
-Rice methane depends on how each country manages the water of its paddies, which a world average cannot follow. So for rice, FAOSTAT's value for the country (tier 3) comes before HESTIA's world average (tier 2). In the Philippines, which HESTIA does not cover, FAOSTAT gives 82 kg of methane per tonne of paddy, against 25.5 kg for HESTIA's world. This raised the world total from 20.8 Mt.
+Rice methane depends on how each country manages the water of its paddies, and a world average cannot capture that. So for rice, FAOSTAT's value for the country (tier 3) comes before HESTIA's world average (tier 2). In the Philippines, which HESTIA does not cover, FAOSTAT gives 82 kg of methane per tonne of paddy, against 25.5 kg for HESTIA's world. Taking FAOSTAT's country values raised the world total from 20.8 Mt to 23.0 Mt.
 
 India's intensity is HESTIA's (tier 1): 16.7 kg of methane from flooding per tonne of paddy, and 17.1 kg with the rest. FAOSTAT's is 24.5 kg (5.33 Mt over 217.9 Mt of paddy). Both are per tonne of paddy, the unit the balance uses for rice, so the gap is not a conversion error. Per hectare, HESTIA gives about 72 kg of methane and FAOSTAT about 106.
 
@@ -373,7 +373,7 @@ HESTIA's model applies the IPCC's 2019 Refinement to the water regimes and amend
 
 ### Per kilogram, against Poore and Nemecek
 
-Poore and Nemecek (2018) give each food's emissions by stage of the supply chain. Their farm stage is the one that compares with Planetshift's intensities, which leave out feed (counted on the crops), land-use change and everything after the farm. Our World in Data shows it per kg of the retail product, such as boneless meat, bread or milled rice. Their data S2 gives it per kg of the FAOSTAT item, Planetshift's unit: meat in carcass weight, grain, rice as paddy. `pipeline/literature_terms.csv` keeps those figures. They weigh methane and N₂O with AR5's factors with climate-carbon feedbacks (34 and 298), and Planetshift with AR6's (27 and 273). Their totals give no split by gas, so each is moved to AR6's factors with the item's gas mix in Planetshift. World averages weighted by production, from cradle to farm gate, in kg of CO₂-equivalent per kg of the item:
+Poore and Nemecek (2018) give each food's emissions by stage of the supply chain. Their farm stage is the one that compares with Planetshift's intensities, which leave out feed (counted on the crops), land-use change and everything after the farm. Our World in Data shows it per kg of the retail product, such as boneless meat, bread or milled rice. Their data S2 gives it per kg of the FAOSTAT item, Planetshift's unit: meat in carcass weight, grain, rice as paddy. `pipeline/literature_terms.csv` keeps those figures. They weigh methane and N₂O with AR5's factors, which include climate-carbon feedbacks (34 and 298). Planetshift uses AR6's (27 and 273). Their totals are not split by gas, so each is converted to AR6's factors with the item's gas mix in Planetshift. World averages weighted by production, from cradle to farm gate, in kg of CO₂-equivalent per kg of the item:
 
 | Item | Planetshift | Poore and Nemecek, AR5 | Poore and Nemecek, AR6 | Ratio |
 | --- | --- | --- | --- | --- |
@@ -389,7 +389,7 @@ Poore and Nemecek (2018) give each food's emissions by stage of the supply chain
 | Potatoes | 0.132 | 0.193 | 0.185 | 0.72 |
 | Peas | 0.36 | 0.72 | 0.68 | 0.53 |
 
-The ratio is Planetshift's figure over theirs with AR6's factors. Their beef is the beef and dairy herds together, weighted by their production. In the same unit and with the same factors, the animal products agree. Beef and milk are within 3% of theirs, and pig meat, sheep and goat meat and poultry are 15% to 39% above. Crops and eggs are 20% to 50% below. Planetshift's crops come mostly from HESTIA's aggregated assessments (tiers 1 and 2), and its eggs mostly from FAOSTAT (tier 3). Poore and Nemecek's totals do not show which of their sources make the gap. Their data are a meta-analysis of studies from around 2010, and their paddy emissions come from field measurements. Moving their totals to AR6 with Planetshift's gas mix is approximate. For animal products, where that mix is mostly methane, a little more CO₂ in theirs would raise their AR6 figure by a few percent.
+The ratio is Planetshift's figure divided by theirs with AR6's factors. Their beef is the beef and dairy herds together, weighted by their production. In the same unit and with the same factors, the animal products are close to theirs or above. Beef and milk are within 3% of theirs, and pig meat, sheep and goat meat and poultry are 15% to 39% above. Crops and eggs are 20% to 50% below. Planetshift's crops come mostly from HESTIA's aggregated assessments (tiers 1 and 2), and its eggs mostly from FAOSTAT (tier 3). Poore and Nemecek's totals do not show which of their sources make the gap. Their data are a meta-analysis of studies from around 2010, and their paddy emissions come from field measurements. Moving their totals to AR6 with Planetshift's gas mix is approximate. For animal products, where that mix is mostly methane, a little more CO₂ in theirs would raise their AR6 figure by a few percent.
 
 `uv run python -m planetshift_pipeline.against_literature` prints the comparison for every item both have, from a build. A test checks this table against it.
 
