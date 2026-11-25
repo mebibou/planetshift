@@ -460,6 +460,7 @@ def regrowth_filled(
             "median": rate["median"] * mid,
             "low": rate["low"] * low,
             "high": rate["high"] * high,
+            "share": mid,
             "how": how,
         }
 

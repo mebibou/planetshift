@@ -194,6 +194,16 @@ The table shows what netting changes, on the real data with FaIR, SSP2-4.5 and b
 
 Under the full shift, 14 countries farm more land overall than before, 41 Mha together. Under the fish swap, 103 countries farm more land than before, 18 Mha together. With regrowth off, nothing changes.
 
+### The albedo of the land growing back
+
+Forest is darker than farmland, so land that grows back reflects less sunlight and warms the planet a little. With regrowth on, the model counts this in *Land use: albedo* on the causes chart, against the CO₂ the land takes up.
+
+Jiao et al. (2017) measured, from satellite albedo, the forcing of turning each kind of forest into cropland. Per million hectares, in global-mean mW m⁻²: about 0.071 for tropical broadleaf forest, 0.097 for temperate broadleaf and 0.246 for mixed forest, and 0.231 and 0.296 for the two boreal forests. Each country takes the value of its latitude band, read at the point where its name sits on the map: 0.071 in the tropics (below 23.5°), 0.17 between 23.5° and 50°, and 0.26 above. As for the CO₂, a hectare freed takes it only on the share of the country's farmland where forest would grow back, so dry rangeland neither takes up CO₂ nor darkens. Land freed in a year darkens fully over the 30 regrowth years.
+
+These values were not fitted to any total. Applied to all of today's farmland, they give −0.216 W m⁻², against the −0.20 W m⁻² RCMIP and AR6 give for land use's albedo in 2019.
+
+The effect is large. With the full shift and regrowth on, on SSP2-4.5, the albedo takes 0.06 °C off the warming avoided in 2100: 0.39 °C instead of 0.45 °C. The CO₂ that regrowth takes up stops after 30 years and then stays stored, while the darker surface keeps warming. Most of the freed land is pasture outside the tropics, where the contrast with forest is strongest. Jiao et al. find the strongest effects in boreal and mixed forests, up to −80 W m⁻² locally, and nearly none in the tropics. Their values hold no snow, which makes boreal clearing cool more, so the effect there may be larger still.
+
 ## Land-use CO₂ by country
 
 The map's Land-use CO₂ layer, beside the Land use layer's share of land farmed, gives each country's net CO₂ from all land-use change: forest cleared for any reason, peat drained and other changes, less the uptake of forest regrowing on abandoned land. It is the Global Carbon Budget 2025's national estimate, the mean of its three bookkeeping models (BLUE, OSCAR and LUCE), averaged over 2015–2024. The world's comes to 5.03 Gt of CO₂ a year, the 5.0 ± 2.6 Gt the Global Carbon Budget gives for that decade; the three models give 5.75, 4.73 and 4.60.
@@ -248,6 +258,7 @@ The FAOSTAT land-use data the pipeline reads give 1.58 billion hectares of cropl
 - Cook-Patton, S. C. et al. (2020). Mapping carbon accumulation potential from global natural forest regrowth. Nature 585, 545–550, Supplementary Data 1 (country rates): <https://doi.org/10.1038/s41586-020-2686-x>. The article is published under exclusive licence to Springer Nature; the country rates are reused with this citation, and the underlying maps are on Global Forest Watch under CC BY 4.0.
 - Griscom, B. W. et al. (2017). Natural climate solutions. PNAS 114, 11645–11650 (the reforestation area behind Cook-Patton et al.'s maximum scenario): <https://doi.org/10.1073/pnas.1710465114>.
 - Hayek, M. N., Harwatt, H., Ripple, W. J., Mueller, N. D. (2021). The carbon opportunity cost of animal-sourced food production on land. Nature Sustainability 4, 21–24: <https://doi.org/10.1038/s41893-020-00603-4>.
+- Jiao, Williams, Ghimire, Masek, Gao and Schaaf (2017). Global climate forcing from albedo change caused by large-scale deforestation and reforestation. Climatic Change 142, 463–476 (Table 1): [doi:10.1007/s10584-017-1962-8](https://doi.org/10.1007/s10584-017-1962-8).
 - Poore, J., Nemecek, T. (2018). Reducing food's environmental impacts through producers and consumers. Science 360, 987–992: <https://doi.org/10.1126/science.aaq0216>.
 - FAOSTAT, Trade, crops and livestock products (export value and quantity of oils and oilcakes, 2021–2023): <https://www.fao.org/faostat/en/#data/TCL>, CC BY 4.0.
 - FAO (2000). Technical Conversion Factors for Agricultural Commodities (oil and cake per tonne of oilseed crushed): <https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology-systems/technical-conversion-factors-for-agricultural-commodities/en/>.

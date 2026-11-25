@@ -27,7 +27,7 @@ def batches(monkeypatch):
     """A stand-in for FaIR that records each batch and returns its emissions as temperature."""
     seen: list[list[str]] = []
 
-    def fake(setup, emissions, end, carbon_feedback, land_forcing=True):
+    def fake(setup, emissions, end, carbon_feedback):
         seen.append(list(emissions))
         values = np.stack([e["CH4"][: end - climate_fair.START] for e in emissions.values()], 1)
         out = np.repeat(values[:, :, None], len(setup.configs), axis=2)
@@ -71,3 +71,33 @@ def test_workers_follow_the_environment_and_are_at_least_one(monkeypatch):
     assert climate_fair.workers() == 1
     monkeypatch.delenv(climate_fair.WORKERS_VARIABLE)
     assert 1 <= climate_fair.workers() <= 2
+
+
+def test_a_batch_prescribes_the_land_use_forcing_for_all_its_scenarios_or_none():
+    setup = climate_fair.Setup.__new__(climate_fair.Setup)
+    object.__setattr__(setup, "properties", {climate_fair.LAND_USE: {"input_mode": "calculated"}})
+    land = {climate_fair.LAND_USE: np.zeros(3)}
+    assert climate_fair.prescribed_land(setup, {"a": {}})[climate_fair.LAND_USE]["input_mode"] == (
+        "calculated"
+    )
+    both = climate_fair.prescribed_land(setup, {"a": land, "b": land})
+    assert both[climate_fair.LAND_USE]["input_mode"] == "forcing"
+    with pytest.raises(ValueError):
+        climate_fair.prescribed_land(setup, {"a": land, "b": {}})
+
+
+def test_the_run_key_holds_a_prescribed_land_use_forcing_and_no_other_key_changes():
+    emissions = {"CH4": np.arange(5.0)}
+    plain = climate_fair.run_key("d", emissions, ["CH4"], climate_fair.START + 5, True)
+    with_land = emissions | {climate_fair.LAND_USE: np.full(5, -0.2)}
+    other = emissions | {climate_fair.LAND_USE: np.zeros(5)}
+    keys = [
+        climate_fair.run_key("d", e, ["CH4"], climate_fair.START + 5, True)
+        for e in (with_land, other)
+    ]
+    assert len({plain, *keys}) == 3
+
+
+def test_annual_values_are_read_at_the_year_boundaries():
+    bounds = np.array([climate_fair.START, climate_fair.START + 1.0, climate_fair.START + 2.0])
+    assert climate_fair.at_bounds(np.array([0.0, 2.0]), bounds) == pytest.approx([0.0, 1.0, 2.0])

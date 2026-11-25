@@ -406,6 +406,8 @@ write('land.json', {
     Object.entries(regrowth).map(([iso3, [median, low, high]]) => [iso3, { median, low, high }]),
   ),
   regrowthYears: 30,
+  // albedo forcing of a hectare of farmland, W/m² of global mean: more in the north
+  albedoPerHa: { FRA: -6e-11, USA: -6e-11, IND: -2e-11, BRA: -2e-11, NGA: -2e-11 },
   // FAOSTAT land area, ha
   landArea: { FRA: 5.47e7, USA: 9.15e8, IND: 2.97e8, BRA: 8.36e8, NGA: 9.1e7 },
 });

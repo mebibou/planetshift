@@ -220,7 +220,7 @@ def test_hfc134a_temperature_potentials_match_ar6():
     assert curves["hfc"][100] / curves["co2"][100] == pytest.approx(306, rel=0.03)
 
 
-def test_land_use_splits_into_its_co2_and_the_albedo_change_which_still_add_up():
+def test_land_use_is_its_co2_and_the_albedo_its_own_run_which_still_add_up():
     years = np.arange(1850, 1905)
     rng = np.random.default_rng(2)
     names = ["full", *climate.CAUSES, climate.NO_LAND_FORCING]
@@ -228,26 +228,24 @@ def test_land_use_splits_into_its_co2_and_the_albedo_change_which_still_add_up()
     natural = rng.normal(size=(len(years), 4))
     parts = climate.contributions(years, runs, natural)
     albedo = climate.anomaly(years, runs["full"] - runs[climate.NO_LAND_FORCING])
-    whole = climate.anomaly(years, runs["full"] - runs["landUse"])
     assert parts[climate.LAND_ALBEDO] == pytest.approx(albedo)
-    assert parts["landUse"] + parts[climate.LAND_ALBEDO] == pytest.approx(whole)
+    assert parts["landUse"] == pytest.approx(climate.anomaly(years, runs["full"] - runs["landUse"]))
     named = sum(v for k, v in parts.items() if k != "total")
     assert named == pytest.approx(parts["total"])
     without = climate.contributions(
-        years, {k: v for k, v in runs.items() if k != "noLandForcing"}, natural
+        years, {k: v for k, v in runs.items() if k != climate.NO_LAND_FORCING}, natural
     )
     assert without[climate.LAND_ALBEDO] == pytest.approx(0)
 
 
-def test_co2s_gas_view_leaves_the_albedo_change_out_of_its_total_and_land_use():
+def test_co2s_gas_view_keeps_land_use_as_its_run_as_the_albedo_stays_prescribed():
     years = np.arange(1850, 1905)
     rng = np.random.default_rng(3)
     names = ["full", "landUse:co2", "all:co2", "all:ch4", "all:n2o", "all:hfc", "noLandForcing"]
     runs = {k: rng.normal(size=(len(years), 3)) for k in names}
     by_gas = climate.gas_contributions(years, runs)
-    albedo = climate.land_albedo(years, runs)
     whole = climate.anomaly(years, runs["full"] - runs["landUse:co2"])
-    assert by_gas["co2"]["landUse"] == pytest.approx(whole - albedo)
-    assert by_gas["ch4"]["total"] == pytest.approx(
-        climate.anomaly(years, runs["full"] - runs["all:ch4"])
+    assert by_gas["co2"]["landUse"] == pytest.approx(whole)
+    assert by_gas["co2"]["total"] == pytest.approx(
+        climate.anomaly(years, runs["full"] - runs["all:co2"])
     )

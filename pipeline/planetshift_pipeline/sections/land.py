@@ -1,13 +1,16 @@
 """land.json: cropland per tonne, pasture and its sharing, natural regrowth rates and each
 country's land area."""
 
+import numpy as np
 import pandas as pd
 
+from .. import albedo as A
 from .. import groups as G
 from .. import intensities as I
 from .. import land as L
 from ..cache import fetched
 from ..inputs import Build, log, write
+from ..sources import naturalearth, rcmip
 
 
 def build(b: Build) -> None:
@@ -38,8 +41,25 @@ def build(b: Build) -> None:
             "landArea": L.hectares_json(L.latest(rl, L.LAND_AREA, y), b.iso3),
             "regrowth": L.regrowth_json(rates),
             "regrowthYears": L.REGROWTH_YEARS,
+            "albedoPerHa": albedo_per_ha(b, rates, farmland),
         },
     )
+
+
+def albedo_per_ha(b: Build, rates: pd.DataFrame, farmland: dict) -> dict[str, float]:
+    """Each country's albedo forcing per hectare of farmland, where forest would grow back."""
+    lat = A.latitudes(naturalearth.geojson(b.cache), naturalearth.iso3_of)
+    per_ha = A.per_hectare(dict(zip(rates["iso3"], rates["share"], strict=True)), lat)
+    world = float(rcmip.albedo_forcing(rcmip.load_forcing(b.cache), "ssp245", np.array([2019]))[0])
+    farmed = sum(per_ha.get(i, 0.0) * (p + c) for i, (p, c) in farmland.items())
+    log.info(
+        "albedo: today's farmland %.3f W/m2 at these values, RCMIP's 2019 forcing %.3f; per Mha "
+        "%s mW/m2",
+        farmed,
+        world,
+        {i: round(per_ha[i] * 1e9, 3) for i in ("BRA", "FRA", "CAN", "USA") if i in per_ha},
+    )
+    return per_ha
 
 
 def ha_per_tonne(b: Build) -> pd.DataFrame:

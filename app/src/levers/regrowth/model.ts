@@ -48,3 +48,29 @@ export const regrowthPaths = (
       : years.map(() => 0);
   return { median: path('median'), p05: path('p05'), p95: path('p95') };
 };
+
+/** The share of freed land grown back in `t`: land freed in y darkens over `regrowthYears`. */
+export const maturity = (
+  t: number,
+  freedShare: (year: number) => number,
+  regrowthYears: number,
+): number => {
+  const span = Math.max(1, Math.round(regrowthYears));
+  const steps = Array.from({ length: span }, (_, k) => freedShare(t - k));
+  return steps.reduce((a, v) => a + v, 0) / span;
+};
+
+/**
+ * W/m² a year of albedo forcing the levers add as freed farmland grows back: the cooling of
+ * each hectare (`albedoPerHa`, negative) taken away, land newly used (negative `ha`) adding it.
+ */
+export const albedoForcingPath = (
+  net: readonly { iso3: string; ha: number }[],
+  albedoPerHa: Readonly<Record<string, number>>,
+  years: readonly number[],
+  freedShare: (year: number) => number,
+  regrowthYears: number,
+): number[] => {
+  const full = net.reduce((acc, f) => acc - f.ha * (albedoPerHa[f.iso3] ?? 0), 0);
+  return years.map((t) => full * maturity(t, freedShare, regrowthYears));
+};

@@ -128,6 +128,13 @@
     }
   },
   "regrowthYears": 30,
+  "albedoPerHa": {
+    "FRA": -6e-11,
+    "USA": -6e-11,
+    "IND": -2e-11,
+    "BRA": -2e-11,
+    "NGA": -2e-11
+  },
   "landArea": {
     "FRA": 54700000,
     "USA": 915000000,

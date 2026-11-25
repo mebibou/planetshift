@@ -76,6 +76,7 @@ describe('causeGroups', () => {
     fossilIndustry: f,
     agriculture: a,
     landUse: l,
+    landAlbedo: 0,
     waste: 0,
     airPollution: p,
     other: 0,

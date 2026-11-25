@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { netFreedHa } from '../../model/land';
 import { data, run } from '../../../test/levers';
-import { countryRate, fullUptake, regrowthPaths } from './model';
+import { albedoForcingPath, countryRate, fullUptake, maturity, regrowthPaths } from './model';
 
 describe('regrowth rates', () => {
   it('gives a country missing from the table the median of the table, not zero', () => {
@@ -77,5 +77,32 @@ describe('net uptake of freed and newly used land', () => {
     expect(
       run(shift, { regrowth: 'none' }).countries.every((c) => c.regrowthCo2 === undefined),
     ).toBe(true);
+  });
+});
+
+describe('the albedo of freed land growing back', () => {
+  const ramp = (y: number) => Math.min(1, Math.max(0, (y - 2030) / 10));
+  it('darkens land freed in a year over the regrowth years', () => {
+    const step = (y: number) => (y >= 2030 ? 1 : 0);
+    expect(maturity(2029, step, 10)).toBe(0);
+    expect(maturity(2034, step, 10)).toBeCloseTo(0.5);
+    expect(maturity(2039, step, 10)).toBe(1);
+  });
+  it('takes away the cooling of each freed hectare, and adds it for land newly used', () => {
+    const net = [
+      { iso3: 'FIN', ha: 100 },
+      { iso3: 'BRA', ha: -50 },
+    ];
+    const perHa = { FIN: -6e-11, BRA: -2e-11 };
+    const path = albedoForcingPath(net, perHa, [2020, 2060], ramp, 10);
+    expect(path[0]).toBe(0);
+    expect(path[1]).toBeCloseTo(100 * 6e-11 - 50 * 2e-11, 20);
+  });
+  it("warms, in land use's albedo, only when freed land regrows", () => {
+    const shift = { shift: 1 };
+    const regrowing = run(shift, { regrowth: 'natural' }).temperature.avoidedByCause.landAlbedo;
+    const left = run(shift, { regrowth: 'none' }).temperature.avoidedByCause.landAlbedo;
+    expect(Math.min(...regrowing)).toBeLessThan(0);
+    expect(left.every((v) => v === 0)).toBe(true);
   });
 });

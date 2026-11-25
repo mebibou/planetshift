@@ -3,7 +3,7 @@
   "options": {
     "regrowth": {
       "label": "Freed farmland",
-      "hint": "Left as it is, or growing back to natural vegetation that takes up CO₂ for some decades.",
+      "hint": "Left as it is, or growing back to natural vegetation that takes up CO₂ for some decades, and warms a little as forest darkens the land.",
       "none": "Left as it is",
       "natural": "Grows back"
     }

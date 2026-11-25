@@ -3,7 +3,7 @@
   "options": {
     "regrowth": {
       "label": "Terres libérées",
-      "hint": "Laissées en l'état, ou rendues à une végétation naturelle qui absorbe du CO₂ pendant quelques décennies.",
+      "hint": "Laissées en l'état, ou rendues à une végétation naturelle qui absorbe du CO₂ pendant quelques décennies, et réchauffe un peu car la forêt assombrit le sol.",
       "none": "Laissées en l'état",
       "natural": "Végétation spontanée"
     }

@@ -101,6 +101,7 @@ export const GAS_LEVER_CAUSES: readonly GasLeverCause[] = [...LEVER_CAUSES, 'was
  */
 export const COUNTED_CAUSES: readonly CountedCause[] = [
   ...LEVER_CAUSES,
+  'landAlbedo',
   'waste',
   'airPollution',
   'other',
