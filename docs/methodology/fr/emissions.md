@@ -246,6 +246,21 @@ En France, une tonne de bœuf a environ 1,06 t CO₂e après la ferme, et une to
 
 **Simplifications.** Tout est placé là où l'aliment est produit, comme les émissions de la ferme, bien que les magasins et les cuisines soient là où il est mangé. La cuisine et les déchets alimentaires suivent la masse d'un aliment, si bien qu'une tonne de blé et une tonne de bœuf ont les mêmes émissions à la maison. Moins de gaspillage réduit aussi les émissions de la cuisine des aliments qui ne sont plus gaspillés. Cela surestime un peu la réduction, car les aliments gaspillés ne sont pas toujours cuisinés. L'énergie après la ferme ne devient pas plus propre au fil des années, contrairement au réseau du scénario.
 
+## Empreinte alimentaire par personne
+
+La couche Émissions de la carte compte les émissions là où les aliments sont produits. Son infobulle donne aussi l'*Empreinte alimentaire par personne* : ce qu'émettent par personne et par an les aliments mangés dans le pays. La production par personne paraît élevée dans un pays exportateur et faible dans un pays importateur, si bien que l'empreinte suit plutôt ce que les gens mangent.
+
+Pour chaque aliment, l'empreinte d'un pays additionne :
+
+- **Ce qui est mangé** : la disponibilité alimentaire des bilans alimentaires, multipliée par l'offre qu'exige chaque tonne (pertes, transformation et semences). Le résultat est en tonnes à la ferme, comme les compte le changement de régime.
+- **D'où il vient** : la part que le pays produit prend l'intensité du pays. La part importée prend l'intensité du monde : l'intensité de chaque produit moyennée sur les pays qui le produisent, pondérée par leur production. La part importée est le rapport des importations à la production et aux importations. Les importations ne sont pas suivies jusqu'à leur origine réelle.
+- **Ce qu'émet une tonne** : les émissions de la ferme dans le périmètre choisi, plus la chaîne après la ferme, plus le CO₂ de la forêt défrichée pour cet aliment dans ce pays.
+- **L'alimentation des animaux** : l'intensité d'un produit animal n'inclut pas son alimentation (voir plus haut). L'empreinte ajoute donc les émissions de ce que mange chaque groupe d'animaux par tonne produite. Elle prend le chiffre du pays pour la part que le pays produit, et celui du monde pour la part importée.
+
+Le total est divisé par la population du pays l'année de référence. Avec les leviers, les aliments mangés suivent le changement de régime et la réduction du gaspillage. Les intensités de la ferme suivent les pratiques agricoles. La chaîne après la ferme et le défrichement par tonne ne changent pas.
+
+En CO₂e par personne et par an, l'empreinte est de 2,12 t en France, 2,33 t aux États-Unis, 1,92 t en Chine, 0,86 t en Inde et 4,27 t au Brésil. Au Brésil, le défrichement pour l'agriculture en est la plus grande part, environ la moitié. Avec tout le régime changé, l'empreinte de la France tombe à 0,89 t.
+
 ## Substituts
 
 Un substitut est la valeur d'un produit similaire dans le même pays, utilisée quand un produit n'a pas de valeur propre des niveaux 1 à 4. Chaque produit essaie ses substituts dans l'ordre :

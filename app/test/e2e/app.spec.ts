@@ -1092,6 +1092,16 @@ test('the summary gives the species committed and the fish left, and regrowth gi
   await expect(species).toContainText('once freed farmland has grown back');
 });
 
+test('the Emissions tooltip gives food after the farm and the footprint per person', async ({
+  page,
+}) => {
+  await open(page, `${START}&shift=50`);
+  await page.locator('path.country[data-iso3="FRA"]').click();
+  const tooltip = page.locator('.map-frame .tooltip');
+  await expect(tooltip).toContainText('After the farm');
+  await expect(tooltip).toContainText('Food footprint per person, a year');
+});
+
 test('the summary sets the farmed mammals against the wild ones, and a shift lowers it', async ({
   page,
 }) => {

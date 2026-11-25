@@ -144,11 +144,17 @@ describe('tooltip', () => {
       chainChange: { co2: -5e7, ch4: 0, n2o: 0 },
       deforestationCo2: 4e8,
       deforestationChange: -1e8,
+      footprint: { co2: 900, ch4: 20, n2o: 1 },
+      footprintChange: { co2: -300, ch4: -10, n2o: 0 },
     });
     const co2 = tooltipModel('France', c, { ...spec, gas: 'co2' }, t, 'en-GB');
     expect(co2.rows.slice(4, 6).map(([k, v]) => [k, v.replace(/\u00a0/g, ' ')])).toEqual([
       ['After the farm (processing to waste), a year', '200 kt → 150 kt'],
       ['CO₂ from clearing forest for farming, a year', '400 kt → 300 kt'],
+    ]);
+    expect(co2.rows[6]?.map((x) => x.replace(/\u00a0/g, ' '))).toEqual([
+      'Food footprint per person, a year',
+      '900 kg → 600 kg',
     ]);
     const ch4 = tooltipModel('France', c, spec, t, 'en-GB');
     expect(ch4.rows.map(([k]) => k)).not.toContain('CO₂ from clearing forest for farming, a year');

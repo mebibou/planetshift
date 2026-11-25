@@ -83,10 +83,34 @@ const clearingRows = (c: CountryResult, gas: GasChoice, t: T, locale: string) =>
     ? [clearingCo2Row(c, t, locale, 'map.tooltip.clearingCo2')]
     : [];
 
-/** The Emissions layer's food emissions beyond the farm: the chain after it and the clearing. */
+/** What the food eaten in the country emits per person, in a gas; none without a figure. */
+const footprintRows = (c: CountryResult, gas: GasChoice, t: T, locale: string) =>
+  c.footprint && c.footprintChange
+    ? [
+        [
+          t('map.tooltip.footprint'),
+          t('map.tooltip.beforeAfter', {
+            before: formatMass(locale, gasValue(c.footprint, gas)),
+            after: formatMass(
+              locale,
+              gasValue(c.footprint, gas) + gasValue(c.footprintChange, gas),
+            ),
+          }),
+        ] as [string, string],
+      ]
+    : [];
+
+/**
+ * The Emissions layer's food emissions beyond the farm: the chain after it, the clearing, and
+ * the footprint per person of the food eaten in the country.
+ */
 const beyondFarmRows = (c: CountryResult, spec: LayerSpec, t: T, locale: string) =>
   spec.layer === 'emissions'
-    ? [...chainRows(c, spec.gas, t, locale), ...clearingRows(c, spec.gas, t, locale)]
+    ? [
+        ...chainRows(c, spec.gas, t, locale),
+        ...clearingRows(c, spec.gas, t, locale),
+        ...footprintRows(c, spec.gas, t, locale),
+      ]
     : [];
 
 /** Farmed mammals' live weight, today and with the levers. */
