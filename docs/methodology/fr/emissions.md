@@ -264,7 +264,7 @@ Le total est divisé par la population du pays l'année de référence. Avec les
 
 En CO₂e par personne et par an, l'empreinte est de 2,03 t en France, 2,51 t aux États-Unis, 2,09 t en Chine, 0,92 t en Inde et 4,37 t au Brésil. Les réfrigérants en font 0,05 t en France et 0,15 t aux États-Unis. Au Brésil, le défrichement pour l'agriculture en représente environ la moitié, 2,19 t. En France, il représente 0,04 t. Le bœuf que la France importe vient surtout de ses voisins, les Pays-Bas, l'Irlande et le Royaume-Uni d'abord. Une grande part de son soja arrive en tourteau, qui prend la moyenne du monde. Avec tout le régime changé, l'empreinte de la France tombe à 0,90 t.
 
-Les estimations publiées pour la France sont souvent plus élevées. La raison principale tient aux intensités de la ferme. Celles de Planetshift sont inférieures d'un tiers à la moitié à celles de Poore et Nemecek pour la plupart des aliments (voir *Par kilogramme, face à Poore et Nemecek*), car elles comptent moins de sources. Les sols organiques drainés sont aussi laissés de côté.
+Les estimations publiées pour la France sont souvent plus élevées. Les intensités de Planetshift expliquent peu de cet écart. Sa viande et son lait, qui font l'essentiel de l'empreinte d'un régime français, sont proches de ceux de Poore et Nemecek ou au-dessus, une fois les deux dans la même unité et avec les mêmes facteurs. Ses cultures et ses œufs sont de 20 % à 40 % en dessous des leurs (voir *Par kilogramme, face à Poore et Nemecek*). Les sols organiques drainés sont aussi laissés de côté.
 
 ## Substituts
 
@@ -369,23 +369,25 @@ Le modèle de HESTIA applique l'affinement de 2019 du GIEC aux régimes hydrique
 
 ### Par kilogramme, face à Poore et Nemecek
 
-Our World in Data présente les émissions par kilogramme d'aliment de Poore et Nemecek (2018), réparties par étape de la chaîne. C'est leur étape de la ferme qui se compare aux intensités de Planetshift, qui laissent de côté l'alimentation des animaux (comptée sur les cultures), le changement d'usage des terres et tout ce qui suit la ferme. Moyennes mondiales pondérées par la production, du berceau à la sortie de la ferme, en kg d'équivalent CO₂ par kg :
+Poore et Nemecek (2018) donnent les émissions de chaque aliment par étape de la chaîne. C'est leur étape de la ferme qui se compare aux intensités de Planetshift, qui laissent de côté l'alimentation des animaux (comptée sur les cultures), le changement d'usage des terres et tout ce qui suit la ferme. Our World in Data la présente par kg du produit vendu, comme la viande désossée, le pain ou le riz blanchi. Leurs données S2 la donnent par kg du produit FAOSTAT, l'unité de Planetshift : la viande en poids de carcasse, le grain, le riz en paddy. `pipeline/literature_terms.csv` garde ces chiffres. Ils pondèrent le méthane et le N₂O avec les facteurs de l'AR5 avec rétroactions climat-carbone (34 et 298), et Planetshift avec ceux de l'AR6 (27 et 273). Leurs totaux ne sont pas répartis par gaz : chacun est donc ramené aux facteurs de l'AR6 avec la répartition par gaz du produit dans Planetshift. Moyennes mondiales pondérées par la production, du berceau à la sortie de la ferme, en kg d'équivalent CO₂ par kg du produit :
 
-| Produit | Planetshift | Poore et Nemecek, étape de la ferme |
-| --- | --- | --- |
-| Bœuf | 24,6 | 21,9 (troupeau laitier) à 56,2 (troupeau allaitant) |
-| Viande ovine et caprine | 21,2 | 27,0 |
-| Viande de porc | 1,68 | 2,48 |
-| Volaille | 0,87 | 0,93 |
-| Œufs | 0,77 | 1,32 |
-| Lait | 1,18 | 1,51 |
-| Riz | 1,17 par kg de paddy, 1,8 par kg de riz blanchi | 3,55 |
-| Blé | 0,49 | 0,82 |
-| Maïs | 0,37 | 0,72 |
-| Pommes de terre | 0,13 | 0,19 |
-| Pois | 0,40 | 0,72 |
+| Produit | Planetshift | Poore et Nemecek, AR5 | Poore et Nemecek, AR6 | Rapport |
+| --- | --- | --- | --- | --- |
+| Bœuf | 24,6 | 29,0 | 24,0 | 1,03 |
+| Viande ovine et caprine | 21,2 | 19,5 | 16,4 | 1,29 |
+| Viande de porc | 1,68 | 1,69 | 1,46 | 1,15 |
+| Volaille | 0,87 | 0,67 | 0,63 | 1,39 |
+| Œufs | 0,77 | 1,32 | 1,22 | 0,64 |
+| Lait | 1,18 | 1,46 | 1,21 | 0,98 |
+| Riz (paddy) | 1,17 | 2,37 | 2,02 | 0,58 |
+| Blé | 0,49 | 0,85 | 0,80 | 0,61 |
+| Maïs | 0,37 | 0,48 | 0,45 | 0,82 |
+| Pommes de terre | 0,132 | 0,193 | 0,185 | 0,72 |
+| Pois | 0,40 | 0,72 | 0,68 | 0,59 |
 
-Planetshift est plus bas pour chaque produit, d'un tiers à la moitié pour la plupart, et le bœuf se situe entre leurs deux troupeaux. Trois différences l'expliquent pour l'essentiel. Planetshift pondère le méthane et le N₂O avec les facteurs de l'AR6 (27 et 273), Poore et Nemecek avec ceux de l'AR5 avec rétroactions climat-carbone (34 et 298). Leurs données sont une méta-analyse d'études des années 2010 environ, celles de Planetshift viennent de la méthode de niveau 1 du GIEC de FAOSTAT et de HESTIA. Et les unités diffèrent : la viande de Planetshift est en poids de carcasse. Le riz est le plus éloigné, pour les raisons données plus haut et parce que leurs émissions des rizières viennent de mesures au champ.
+Le rapport est le chiffre de Planetshift divisé par le leur avec les facteurs de l'AR6. Leur bœuf réunit les troupeaux allaitant et laitier, pondérés par leur production. Dans la même unité et avec les mêmes facteurs, les produits animaux concordent. Le bœuf et le lait sont à 3 % près des leurs, et le porc, la viande ovine et caprine et la volaille de 15 % à 39 % au-dessus. Les cultures et les œufs sont de 20 % à 40 % en dessous. Les cultures de Planetshift viennent des évaluations agrégées de HESTIA (niveaux 1 et 2), et ses œufs surtout de FAOSTAT (niveau 3). Les totaux de Poore et Nemecek ne montrent pas lesquelles de leurs sources font l'écart. Leurs données sont une méta-analyse d'études des années 2010 environ, et leurs émissions des rizières viennent de mesures au champ. Ramener leurs totaux à l'AR6 avec la répartition par gaz de Planetshift est approché. Pour les produits animaux, où cette répartition est surtout du méthane, un peu plus de CO₂ chez eux relèverait leur chiffre de quelques pour cent.
+
+`uv run python -m planetshift_pipeline.against_literature` affiche la comparaison pour chaque produit présent des deux côtés, à partir d'une construction. Un test vérifie ce tableau par rapport à elle.
 
 ## Émissions par source
 
