@@ -49,15 +49,27 @@ def attributes(gj: dict) -> pd.DataFrame:
     )
 
 
+def capitalised(name: str) -> str:
+    """A name with its first letter upper-case: Natural Earth gives "îles Féroé"."""
+    return name[:1].upper() + name[1:]
+
+
 def slim(gj: dict) -> dict:
-    """Only what the map needs on each feature: its ISO3 code and an English name."""
+    """Only what the map needs on each feature: its ISO3 code and its English and French names,
+    which name the places the model has no data for."""
     return {
         "type": "FeatureCollection",
         "features": [
             {
                 "type": "Feature",
                 "id": iso3_of(f["properties"]),
-                "properties": {"iso3": iso3_of(f["properties"]), "name": f["properties"]["NAME"]},
+                "properties": {
+                    "iso3": iso3_of(f["properties"]),
+                    "name": f["properties"].get("NAME_EN") or f["properties"]["NAME"],
+                    "nameFr": capitalised(
+                        f["properties"].get("NAME_FR") or f["properties"]["NAME"]
+                    ),
+                },
                 "geometry": f["geometry"],
             }
             for f in gj["features"]
