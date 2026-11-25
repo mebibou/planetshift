@@ -266,6 +266,14 @@
     },
     "landUse": "Land use"
   },
+  "seaLevelChart": {
+    "title": "Sea-level rise",
+    "label": "Sea-level rise to {year} without the levers and with them, with their likely ranges",
+    "unit": "cm above 1900",
+    "band": "Likely range (17–83%)",
+    "value": "{value} cm",
+    "caption": "Global mean sea-level rise, from a rate of rise per °C fitted to the IPCC's projections (AR6), without the levers and with them. Each line is measured from the sea's level in 1900. The observed line shows tide gauges from 1900 (IPCC AR6), then NASA's satellites from 1993. The sea keeps rising for centuries. The gap keeps growing after 2100."
+  },
   "avoidedChart": {
     "title": "Warming avoided",
     "label": "Warming avoided by the levers each year to {year}, with its likely range",
@@ -290,7 +298,8 @@
     "range": "Years",
     "ranges": {
       "full": "Since 1850",
-      "recent": "Since 2000"
+      "recent": "Since 2000",
+      "since1900": "Since 1900"
     },
     "natural": "Natural factors only (sun and volcanoes)",
     "enso": {
@@ -316,6 +325,11 @@
     "landFreed": "Farmland freed",
     "landAdded": "Farmland added",
     "landDetail": "cropland {cropland}, pasture {pasture}; {share} of the world's farmland",
+    "seaLevel": {
+      "label": "Sea-level rise avoided by 2100",
+      "value": "{value} cm",
+      "detail": "Likely {low} to {high} cm. Without the levers, the sea is {baseline} m above its 1900 level by 2100 (likely {baselineLow} to {baselineHigh} m), from a rate fitted to IPCC AR6. The rise the levers avoid keeps growing after 2100. This figure leaves that out."
+    },
     "mammals": {
       "label": "Farmed mammals to wild ones, by weight",
       "ratio": "{value} to 1",
@@ -425,7 +439,8 @@
     "tabs": {
       "temperature": "Global temperature",
       "avoided": "Warming avoided",
-      "cause": "Causes of warming"
+      "cause": "Causes of warming",
+      "sealevel": "Sea level"
     },
     "seeCauses": "See what causes the warming"
   },
@@ -498,7 +513,7 @@
     "range": "{name}: {parts}.",
     "rangeWithout": "{range} without the levers",
     "rangeWith": "{range} with them",
-    "note": "The ranges in the (i) are the sources' own, not the range of the warming. Economic damages, sea level and ocean acidity are left out.",
+    "note": "The ranges in the (i) are the sources' own, not the range of the warming. Economic damages and ocean acidity are left out. The sea-level rise avoided is in the summary.",
     "more": "How it is read",
     "units": {
       "times": "{value}×",

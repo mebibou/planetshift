@@ -7,7 +7,7 @@ import json
 import numpy as np
 import pytest
 
-from planetshift_pipeline import climate, climate_fair
+from planetshift_pipeline import climate, climate_fair, sea_level
 from planetshift_pipeline.cache import DEFAULT_CACHE
 from planetshift_pipeline.sources import primap, rcmip, temperature
 
@@ -45,6 +45,7 @@ def test_document_matches_the_contract(built):
         "naturalOnly",
         "permafrost",
         "shippingSulphur2020",
+        "seaLevel",
     }
     for method in ("fair", "ar6"):
         for gas in climate.AGTP_GASES:
@@ -274,3 +275,23 @@ def test_the_natural_forcing_has_hunga_tonga_and_solar_cycle_25():
     assert max(solar, key=solar.get) == 2024
     assert solar[2024] == pytest.approx(0.09, abs=0.005)
     assert solar[2019] == pytest.approx(-0.02, abs=0.005)
+
+
+def test_the_sea_level_fit_follows_ar6_table_9_9(built):
+    """The rate fitted to AR6 WG1 Table 9.9 gives each SSP's median rise within 5 cm in every
+    year of the table, and a rate close to Grinsted & Christensen (2021)'s observed 0.40 m per
+    century per °C (likely 0.35–0.44)."""
+    document, _ = built
+    sea = document["seaLevel"]
+    rate = sea["mmPerYearPerDegree"]
+    assert rate["low"] < rate["median"] < rate["high"]
+    assert 3.5 < rate["median"] < 4.6
+    years = np.array(document["scenarioTemperature"]["ssp245"]["years"])
+    for ssp, levels in sea_level.TABLE_9_9.items():
+        temperature = np.array(document["scenarioTemperature"][ssp]["median"])
+        warming, elapsed = sea_level.terms(years, temperature)
+        for year, (median, _, _) in levels.items():
+            i = int(np.searchsorted(years, year))
+            balance = sea["balanceTemperature"]["median"]
+            fitted = rate["median"] / 1000 * (warming[i] - balance * elapsed[i])
+            assert abs(fitted - median) < 0.05, (ssp, year)

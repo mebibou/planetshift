@@ -17,7 +17,7 @@ export type View = (typeof VIEWS)[number];
 /** The views the header lists by default; the deep-time prototype only once opened by its URL. */
 export const NAV_VIEWS: readonly View[] = ['explore', 'methodology'];
 
-export const CHARTS = ['temperature', 'cause', 'avoided'] as const;
+export const CHARTS = ['temperature', 'cause', 'avoided', 'sealevel'] as const;
 export type ChartTab = (typeof CHARTS)[number];
 export const HORIZONS = ['2050', '2100'] as const;
 export type Horizon = (typeof HORIZONS)[number];

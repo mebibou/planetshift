@@ -1,3 +1,4 @@
+import { seaLevel2100, seaLevelPaths } from './seaLevel';
 import {
   ANIMAL_GROUPS,
   GASES,
@@ -1735,6 +1736,9 @@ export const runPrepared = (
 
   const avoidedAt = differenceIn.median[completeIndex];
   const avoided = avoidedAt ? gasVector((g) => 0 - avoidedAt[g]) : ZERO_GAS;
+  const seaPaths =
+    climate.seaLevel &&
+    seaLevelPaths(climate.seaLevel, baseline.median, scenarioBand.median, FIRST_YEAR);
   const avoidedIn = (year: number) => {
     const values = BANDS.map((band) => 0 - (delta[band][year - FIRST_YEAR] ?? 0));
     const range95 = values.slice(1);
@@ -1816,6 +1820,7 @@ export const runPrepared = (
     years,
     baselineEmissions: baselinePath,
     scenarioEmissions: baselinePath.map((e, i) => addGas(e, farmDifference[i] as GasVector)),
+    seaLevel: seaPaths,
     temperature: {
       years: tYears,
       observed: observedOn(climate.observed[options.temperature], tYears),
@@ -1832,6 +1837,7 @@ export const runPrepared = (
         avoidedCo2e: co2eOf(avoided),
         avoidedWarming2050: avoidedIn(2050),
         avoidedWarming2100: avoidedIn(2100),
+        seaLevel2100: seaPaths && seaLevel2100(seaPaths),
         clipped: [...new Set(steps.flatMap((s) => s.run.clipped))].sort(),
         landBefore: countries.reduce((a, c) => addLand(a, c.land), NO_LAND),
         landFreed: countries.reduce(

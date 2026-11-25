@@ -10,7 +10,7 @@ from pathlib import Path
 
 import numpy as np
 
-from . import climate_ar6, climate_fair
+from . import climate_ar6, climate_fair, sea_level
 from .cache import DEFAULT_CACHE
 from .climate_scenarios import (
     ATTRIBUTION_GASES,
@@ -27,6 +27,7 @@ from .climate_scenarios import (
     without,
 )
 from .sources import fair_history, primap, rcmip, temperature
+from .sources import sea_level as sea_level_obs
 
 SOURCES = [
     {
@@ -70,6 +71,20 @@ SOURCES = [
         "version": "annual summary",
         "url": "https://berkeleyearth.org/data/",
         "licence": temperature.BERKELEY_LICENCE,
+    },
+    {
+        "id": "nasa-gmsl",
+        "name": "NASA global mean sea level, satellite altimetry (Willis, Hamlington, Fournier)",
+        "version": sea_level_obs.NASA_VERSION,
+        "url": sea_level_obs.NASA_DOI,
+        "licence": sea_level_obs.LICENCE,
+    },
+    {
+        "id": "ar6-gmsl-tide-gauge",
+        "name": "IPCC AR6 WG1 assessed global mean sea level, tide gauges (Box 9.1)",
+        "version": "v20230523",
+        "url": sea_level_obs.AR6_DOI,
+        "licence": sea_level_obs.LICENCE,
     },
 ]
 
@@ -442,6 +457,11 @@ def observed(cache_dir: Path) -> dict:
     }
 
 
+def observed_sea_level(cache_dir: Path) -> dict:
+    years, values, base_above_1900 = sea_level_obs.observed(cache_dir)
+    return {"observed": series(years, values), "baseAbove1900": round(base_above_1900, 4)}
+
+
 def agtp_section(pulses: dict[str, np.ndarray]) -> dict:
     fair = {
         gas: {k: rounded(v) for k, v in band(pulses[pulse_key(gas, PULSE_YEAR, 1.0)]).items()}
@@ -523,6 +543,12 @@ def build(
         "naturalOnly": band_series(years[shown], band(natural[shown])),
         "permafrost": permafrost(),
         "shippingSulphur2020": shipping_sulphur(rcmip_df),
+        "seaLevel": {
+            **sea_level.section(
+                years[shown], {ssp: band(by_cause[ssp]["total"][shown])["median"] for ssp in SSPS}
+            ),
+            **observed_sea_level(cache_dir),
+        },
     }
     diagnostics = {
         "years": years,

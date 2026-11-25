@@ -18,6 +18,7 @@ import type {
   Tier,
 } from '../data/types';
 import type { Family } from '../levers/registry';
+import type { SeaLevel2100, SeaLevelPaths } from './seaLevel';
 
 export type { Family, LeverId } from '../levers/registry';
 export { DEFAULT_OPTIONS } from './options';
@@ -144,6 +145,8 @@ export interface ScenarioResult {
      */
     baselineChange?: CauseWarming;
   };
+  /** The sea-level rise each year to 2100 without and with the levers, m; absent without the data. */
+  seaLevel?: SeaLevelPaths;
   summary: Summary;
 }
 
@@ -158,6 +161,8 @@ export interface Summary {
   /** Avoided warming in 2050 and 2100, °C, median and range. */
   avoidedWarming2050: { median: number; p05: number; p95: number };
   avoidedWarming2100: { median: number; p05: number; p95: number };
+  /** Sea-level rise avoided by 2100 and AR6's rise without the levers, m; absent without the data. */
+  seaLevel2100?: SeaLevel2100;
   /** Countries where an item would have gone below zero and was clipped. */
   clipped: string[];
   /** World farmland in the base year, ha, and the land the full shift frees (positive = freed). */
