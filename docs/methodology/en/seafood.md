@@ -72,7 +72,7 @@ Wild capture burns fuel at sea. Parker et al. (2018) give the fuel used per tonn
 
 **A worked example.** Small pelagic fish such as sardines need 42 litres of fuel per tonne landed. Each litre counts 2.8 + 0.5 = 3.3 kg of CO₂, so a tonne of sardines carries 42 × 3.3 = 139 kg of CO₂. A tonne of crustaceans, at 1,739 litres, carries 5,739 kg.
 
-Parker et al. also add 1.1 kg CO₂e per litre for vessels, gear and lost refrigerant. Planetshift leaves this out, as it leaves out the making of tractors and farm buildings. Refrigerants are not one of its three gases. Inland fisheries are outside Parker et al.'s data, and FAO finds too few data to estimate their energy use (FAO, 2025, section 2.3). Three quarters of their fishing uses no boat or one without an engine, and most of the rest outboard motors under 25 hp. Planetshift gives them the lowest marine intensity, that of small pelagic fish.
+Parker et al. also add 1.1 kg CO₂e per litre for vessels, gear and lost refrigerant. Planetshift leaves this out, as it leaves out the making of tractors and farm buildings. Planetshift counts refrigerants only after landing, in the food chain, not on the vessels. Inland fisheries are outside Parker et al.'s data, and FAO finds too few data to estimate their energy use (FAO, 2025, section 2.3). Three quarters of their fishing uses no boat or one without an engine, and most of the rest outboard motors under 25 hp. Planetshift gives them the lowest marine intensity, that of small pelagic fish.
 
 | Capture group | Litres per tonne landed | kg CO₂ per tonne, cradle to farm gate |
 | --- | --- | --- |
@@ -234,7 +234,7 @@ The code is `pipeline/planetshift_pipeline/seafood.py` and `pipeline/planetshift
 - Farmed crustaceans are all shrimp-like in their energy use, farmed molluscs and other unfed invertebrates all bivalve-like, farmed marine fish salmon-like, and farmed frogs and turtles like freshwater fish.
 - The N₂O factor of fish-farm water applies to every farmed species, bivalves included, as in MacLeod et al. It is uncertain, and they ask for it to be treated with caution. Methane from ponds, which some studies find large, is not counted, as MacLeod et al. do not count it.
 - Electricity on fish farms emits the world's average per kWh, in every country.
-- Vessels, gear, refrigerants, pond fertiliser and the building of farms are left out, as are post-landing processing, transport and cold chains.
+- Vessels, gear, the vessels' refrigerants, pond fertiliser and the building of farms are left out. Post-landing processing, transport and cold chains count with the rest of the food chain (see [Emissions](#method-emissions), *After the farm*).
 - Wild capture has no farm-gate emissions. Its fuel counts in cradle to farm gate.
 - Aquafeed is 5.5% of the world's concentrate feed. Fish fed to animals go 90% to aquaculture, 9% to pigs and 1% to poultry. The shares and the GLEAM-style intakes and ration are rounded values, chosen to match the published aquafeed total.
 - Fish oils and aquatic plants are left out. The fish reduced to meal and oil are in the fish items.
