@@ -77,7 +77,9 @@ def test_taking_farming_out_keeps_the_carbon_removal_of_net_negative_fossil_co2(
     emissions = {"CO2 FFI": np.array([-5.0]), "CO2 AFOLU": np.array([0.0])}
     agriculture = {"co2": np.array([2e11]), "ch4": np.array([0.0]), "n2o": np.array([0.0])}
     fossil = {"co2": np.array([0.0]), "ch4": np.array([0.0]), "n2o": np.array([0.0])}
-    taken = climate_scenarios.removals(emissions, agriculture, fossil, {})
+    taken = climate_scenarios.removals(
+        emissions, agriculture, fossil, {}, fossil | {"ch4": np.array([0.0])}
+    )
     assert climate_scenarios.without(emissions, taken["agriculture"])["CO2 FFI"] == pytest.approx(
         [-5.2]
     )
@@ -90,7 +92,9 @@ def test_removals_never_take_agricultural_co2_twice():
     emissions = {"CO2 FFI": np.array([30.0]), "CO2 AFOLU": np.array([4.0])}
     agriculture = {"co2": np.array([1e11]), "ch4": np.array([1e11]), "n2o": np.array([1e9])}
     fossil = {"co2": np.array([0.0]), "ch4": np.array([1e11]), "n2o": np.array([1e9])}
-    taken = climate_scenarios.removals(emissions, agriculture, fossil, {})
+    taken = climate_scenarios.removals(
+        emissions, agriculture, fossil, {}, fossil | {"ch4": np.array([0.0])}
+    )
     total_ffi = taken["agriculture"]["CO2 FFI"] + taken["fossilIndustry"]["CO2 FFI"]
     assert total_ffi == pytest.approx(30e12)
     assert taken["landUse"]["CO2 AFOLU"] == pytest.approx(4e12)
@@ -120,22 +124,28 @@ def gas_taken() -> tuple[dict, dict]:
     agriculture = {"co2": np.array([1e11]), "ch4": np.array([1e11]), "n2o": np.array([2e9])}
     fossil = {"co2": np.array([0.0]), "ch4": np.array([1e11]), "n2o": np.array([1e9])}
     baseline = {"CO2 FFI": 0.0, "CO2 AFOLU": 0.0, "CH4": 20.0, "N2O": 1.0, "Sulfur": 2.0}
-    return climate_scenarios.removals(emissions, agriculture, fossil, baseline), emissions
+    waste = {"co2": np.array([0.0]), "ch4": np.array([5e10]), "n2o": np.array([1e8])}
+    return climate_scenarios.removals(emissions, agriculture, fossil, baseline, waste), emissions
 
 
 def test_gas_removals_split_each_cause_by_gas_and_alias_a_cause_of_one_gas():
     taken, emissions = gas_taken()
     baseline = {"CO2 FFI": 0.0, "CO2 AFOLU": 0.0, "CH4": 20.0, "N2O": 1.0, "HFC-134a": 0.0}
-    parts, alone = climate.gas_removals(taken, emissions, baseline)
+    parts, alone = climate.gas_removals(taken, emissions, baseline, np.array([3e9]))
     assert alone == {"landUse:co2": "landUse"}
     assert set(parts) == {
         *(f"{c}:{g}" for c in ("fossilIndustry", "agriculture") for g in ("co2", "ch4", "n2o")),
+        "waste:ch4",
+        "waste:n2o",
+        "burning:ch4",
         "all:co2",
         "all:ch4",
         "all:n2o",
         "all:hfc",
     }
     assert set(parts["agriculture:ch4"]) == {"CH4"}
+    assert parts["burning:ch4"] == {"CH4": pytest.approx([3e9])}
+    assert taken["waste"]["CH4"] == pytest.approx([5e10])
     assert climate_scenarios.without(emissions, parts["all:hfc"])["HFC-134a"] == pytest.approx([0])
     assert parts["all:co2"]["CO2 AFOLU"] == pytest.approx([4e12])
     less = climate_scenarios.without(emissions, parts["all:ch4"])
@@ -172,7 +182,7 @@ def test_air_pollution_brings_aerosols_back_to_their_preindustrial_level():
         "BC": np.array([8.0]),
     }
     zero = {g: np.array([0.0]) for g in ("co2", "ch4", "n2o")}
-    taken = climate_scenarios.removals(emissions, zero, zero, {"Sulfur": 2.0, "BC": 1.0})
+    taken = climate_scenarios.removals(emissions, zero, zero, {"Sulfur": 2.0, "BC": 1.0}, zero)
     less = climate_scenarios.without(emissions, taken["airPollution"])
     assert less["Sulfur"] == pytest.approx([2.0])
     assert less["BC"] == pytest.approx([1.0])
@@ -208,3 +218,36 @@ def test_hfc134a_temperature_potentials_match_ar6():
     curves = climate_ar6.agtp_curves(100)
     assert curves["hfc"][50] / curves["co2"][50] == pytest.approx(733, rel=0.03)
     assert curves["hfc"][100] / curves["co2"][100] == pytest.approx(306, rel=0.03)
+
+
+def test_land_use_splits_into_its_co2_and_the_albedo_change_which_still_add_up():
+    years = np.arange(1850, 1905)
+    rng = np.random.default_rng(2)
+    names = ["full", *climate.CAUSES, climate.NO_LAND_FORCING]
+    runs = {k: rng.normal(size=(len(years), 4)) for k in names}
+    natural = rng.normal(size=(len(years), 4))
+    parts = climate.contributions(years, runs, natural)
+    albedo = climate.anomaly(years, runs["full"] - runs[climate.NO_LAND_FORCING])
+    whole = climate.anomaly(years, runs["full"] - runs["landUse"])
+    assert parts[climate.LAND_ALBEDO] == pytest.approx(albedo)
+    assert parts["landUse"] + parts[climate.LAND_ALBEDO] == pytest.approx(whole)
+    named = sum(v for k, v in parts.items() if k != "total")
+    assert named == pytest.approx(parts["total"])
+    without = climate.contributions(
+        years, {k: v for k, v in runs.items() if k != "noLandForcing"}, natural
+    )
+    assert without[climate.LAND_ALBEDO] == pytest.approx(0)
+
+
+def test_co2s_gas_view_leaves_the_albedo_change_out_of_its_total_and_land_use():
+    years = np.arange(1850, 1905)
+    rng = np.random.default_rng(3)
+    names = ["full", "landUse:co2", "all:co2", "all:ch4", "all:n2o", "all:hfc", "noLandForcing"]
+    runs = {k: rng.normal(size=(len(years), 3)) for k in names}
+    by_gas = climate.gas_contributions(years, runs)
+    albedo = climate.land_albedo(years, runs)
+    whole = climate.anomaly(years, runs["full"] - runs["landUse:co2"])
+    assert by_gas["co2"]["landUse"] == pytest.approx(whole - albedo)
+    assert by_gas["ch4"]["total"] == pytest.approx(
+        climate.anomaly(years, runs["full"] - runs["all:ch4"])
+    )

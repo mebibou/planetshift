@@ -14,11 +14,12 @@ const run = (scenario: Partial<Scenario>, d = data) =>
   runScenario(d, { ...BASE_SCENARIO, ...scenario }, DEFAULT_OPTIONS, CURRENT_YEAR);
 
 describe('food’s emissions after the farm', () => {
-  it('weighs a shared stage by Poore & Nemecek and cooking and waste by mass', () => {
+  it('weighs a shared stage by Poore & Nemecek and cooking and waste by mass, waste in its cause', () => {
     const ints = chainIntensities(countryOf('FRA'), prepared, data.chain!);
     const beef = indexOf(2731);
     expect(ints.fossilIndustry.co2[beef]).toBeCloseTo(350 * 1.8 + 420 * 0.5 + 90 * 0.23 + 30);
-    expect(ints.other.ch4[beef]).toBeCloseTo(3.8);
+    expect(ints.waste.ch4[beef]).toBeCloseTo(3.8);
+    expect(ints.other.ch4[beef]).toBe(0);
     expect(ints.fossilIndustry.ch4[beef]).toBe(0);
   });
 
@@ -48,12 +49,14 @@ describe('food’s emissions after the farm', () => {
     expect(chainEmissions(t, g)).toEqual({ co2: 23, ch4: 3, n2o: 0, hfc: 0 });
   });
 
-  it('counts a diet shift’s chain in fossil fuels and industry and in other human emissions', () => {
+  it('counts a diet shift’s chain in fossil fuels and industry, waste and other human emissions', () => {
     const r = run({ shift: 1 });
     const byCause = r.summary.byCause.avoidedCo2e;
     expect(byCause.fossilIndustry).toBeGreaterThan(0);
+    expect(byCause.waste).toBeGreaterThan(0);
     expect(byCause.other).toBeGreaterThan(0);
     const without = run({ shift: 1 }, { ...data, chain: undefined });
+    expect(without.summary.byCause.avoidedCo2e.waste).toBe(0);
     expect(without.summary.byCause.avoidedCo2e.other).toBe(0);
     expect(r.summary.avoidedCo2e).toBeGreaterThan(without.summary.avoidedCo2e);
   });

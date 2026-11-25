@@ -10,7 +10,7 @@ import pandas as pd
 from . import climate_fair
 from .climate import LAST_HISTORY
 from .climate_scenarios import cause_emissions
-from .sources import ar6db, primap, rcmip
+from .sources import ar6db, fair_history, primap, rcmip
 
 SSPS = ("ssp126", "ssp245", "ssp370")
 FIRST_YEAR = 2000
@@ -92,10 +92,11 @@ def by_cause(
     baseline: dict[str, float],
     fossil: dict[str, np.ndarray],
     agriculture: dict[str, np.ndarray],
+    waste: dict[str, np.ndarray] | None = None,
 ) -> dict[str, dict[str, np.ndarray]]:
-    """kg a year of the human emissions that are fossil fuels and industry, and land use, as the
-    causes of warming count them: fossil CO₂ but farming's share of it, fossil CH₄ but waste's,
-    and all of land use's CO₂."""
+    """kg a year of the human emissions that are fossil fuels and industry, land use and waste, as
+    the causes of warming count them: fossil CO₂ but farming's share of it, fossil CH₄ but
+    waste's, all of land use's CO₂, and waste's CH₄ and N₂O."""
     return {
         "fossilIndustry": {
             "co2": human_kg(emissions, baseline, ("CO2 FFI",)) - agriculture["co2"],
@@ -103,7 +104,7 @@ def by_cause(
             "n2o": fossil["n2o"],
         },
         "landUse": {"co2": human_kg(emissions, baseline, ("CO2 AFOLU",))},
-    }
+    } | ({} if waste is None else {"waste": {"ch4": waste["ch4"], "n2o": waste["n2o"]}})
 
 
 def rounded(values: np.ndarray) -> list[float]:
@@ -129,17 +130,20 @@ def people_json(
     species: pd.DataFrame,
     population_rows: list[dict],
     primap_df: pd.DataFrame,
+    history: pd.DataFrame | None = None,
 ) -> dict:
     years = np.arange(FIRST_YEAR, LAST_YEAR + 1)
     fair_species = sorted({s for group in SPECIES.values() for s in group})
 
     def one(ssp: str) -> dict:
-        emissions = rcmip.fair_emissions(rcmip_df, ssp, fair_species, years)
+        emissions = rcmip.fair_emissions(rcmip_df, ssp, fair_species, years, history)
         sector = {
             c: cause_emissions(primap_df, rcmip_df, ssp, c, years, LAST_HISTORY)
-            for c in ("agriculture", "fossilIndustry")
+            for c in ("agriculture", "fossilIndustry", "waste")
         }
-        causes = by_cause(emissions, baseline, sector["fossilIndustry"], sector["agriculture"])
+        causes = by_cause(
+            emissions, baseline, sector["fossilIndustry"], sector["agriculture"], sector["waste"]
+        )
         return {k: rounded(human_kg(emissions, baseline, v)) for k, v in SPECIES.items()} | {
             "erf": band(air_pollution_erf(parameters, species, emissions, baseline)),
             "byCause": {
@@ -164,4 +168,5 @@ def build_people(cache_dir) -> dict:
         pd.read_csv(setup.species_file, index_col=0),
         ar6db.load(cache_dir, (ar6db.POPULATION,), ar6db.POPULATION_FILE),
         primap.load(cache_dir),
+        fair_history.load(cache_dir),
     )

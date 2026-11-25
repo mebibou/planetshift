@@ -16,7 +16,7 @@ import pandas as pd
 from . import climate_fair
 from .cache import DEFAULT_CACHE
 from .climate import DEFAULT_OUT, SSPS, rounded
-from .sources import ceds, rcmip
+from .sources import ceds, fair_history, rcmip
 
 log = logging.getLogger(__name__)
 
@@ -502,11 +502,17 @@ LIFETIME_SPECIES = {"nox": "NOx", "voc": "VOC"}
 
 
 def lifetime_methane_by_ssp(
-    setup: climate_fair.Setup, rcmip_df: pd.DataFrame, species: pd.DataFrame, at: np.ndarray
+    setup: climate_fair.Setup,
+    rcmip_df: pd.DataFrame,
+    species: pd.DataFrame,
+    at: np.ndarray,
+    history: pd.DataFrame | None = None,
 ) -> dict[str, dict[str, np.ndarray]]:
     """lifetime_methane of NOx and VOCs on the years `at`, from one FaIR run of each SSP."""
     years = np.arange(climate_fair.START, END_YEAR + 2)
-    emissions = {ssp: rcmip.fair_emissions(rcmip_df, ssp, setup.emitted, years) for ssp in SSPS}
+    emissions = {
+        ssp: rcmip.fair_emissions(rcmip_df, ssp, setup.emitted, years, history) for ssp in SSPS
+    }
     run = climate_fair.run(setup, emissions, END_YEAR + 2)
     index = at - climate_fair.START
 
@@ -550,11 +556,15 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
     parameters = pd.read_csv(setup.parameters, index_col=0).loc[setup.configs]
     species = pd.read_csv(setup.species_file, index_col=0)
     by_ssp = {ssp: ratios(base, trends(rcmip_df, ssp, YEARS)) for ssp in SSPS}
+    history = fair_history.load(cache_dir)
     totals = {
-        ssp: rcmip.fair_emissions(rcmip_df, ssp, ["Sulfur", "BC", "OC"], YEARS) for ssp in SSPS
+        ssp: rcmip.fair_emissions(rcmip_df, ssp, ["Sulfur", "BC", "OC"], YEARS, history)
+        for ssp in SSPS
     }
     erf = {ssp: erf_per_kg(parameters, species, totals[ssp]) for ssp in SSPS}
-    lifetime = lifetime_methane_by_ssp(setup, rcmip_df, species, np.array([HOOR_YEAR, *YEARS]))
+    lifetime = lifetime_methane_by_ssp(
+        setup, rcmip_df, species, np.array([HOOR_YEAR, *YEARS]), history
+    )
     nox = {ssp: v[1:] for ssp, v in lifetime["nox"].items()}
     voc = {ssp: v[1:] for ssp, v in lifetime["voc"].items()}
     reference = {ssp: v[0] for ssp, v in lifetime["nox"].items()}

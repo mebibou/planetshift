@@ -128,11 +128,12 @@ const changeOf = (ctx: PeopleContext, years: readonly number[], s: PeopleSpecies
   years.map((y) => (ctx.factor(y) - 1) * speciesAt(ctx, s, y));
 
 /** The greenhouse causes outside farming the people's emissions are split between. */
-const OUTSIDE_FARMING = ['fossilIndustry', 'landUse', 'other'] as const;
+const OUTSIDE_FARMING = ['fossilIndustry', 'landUse', 'waste', 'other'] as const;
 type OutsideFarming = (typeof OUTSIDE_FARMING)[number];
+type SplitCause = Exclude<OutsideFarming, 'other'>;
 
-/** kg a year of a gas from fossil fuels and industry, or land use; none without the split. */
-const causeAt = (ctx: PeopleContext, cause: 'fossilIndustry' | 'landUse', g: Gas, y: number) => {
+/** kg a year of a gas from fossil fuels and industry, land use or waste; none without the split. */
+const causeAt = (ctx: PeopleContext, cause: SplitCause, g: Gas, y: number) => {
   const own = ctx.people.bySsp[ctx.ssp]?.byCause?.[cause]?.[g] ?? [];
   return own.length > 0 ? dataValueAt(ctx.people.years, own, y) : 0;
 };
@@ -146,8 +147,9 @@ const outsideFarming = (
   const farm = ctx.climate.agricultureEmissions[ctx.ssp][g];
   const fossilIndustry = causeAt(ctx, 'fossilIndustry', g, y);
   const landUse = causeAt(ctx, 'landUse', g, y);
+  const waste = causeAt(ctx, 'waste', g, y);
   const own = speciesAt(ctx, g, y) - valueAt(farm.years, farm.values, y);
-  return { fossilIndustry, landUse, other: own - fossilIndustry - landUse };
+  return { fossilIndustry, landUse, waste, other: own - fossilIndustry - landUse - waste };
 };
 
 /**
@@ -259,6 +261,7 @@ export const peopleWarmingByCause = (
     byCause: {
       fossilIndustry: sumOfGases(byGas.fossilIndustry),
       landUse: sumOfGases(byGas.landUse),
+      waste: sumOfGases(byGas.waste),
       other: sumOfGases(byGas.other),
       airPollution: addSeries(pollutionForcingWarming(ctx, years, tYears), methane),
     },
@@ -268,6 +271,7 @@ export const peopleWarmingByCause = (
         {
           fossilIndustry: byGas.fossilIndustry[g],
           landUse: byGas.landUse[g],
+          waste: byGas.waste[g],
           other: g === 'ch4' ? addSeries(byGas.other[g], methane) : byGas.other[g],
         },
       ]),

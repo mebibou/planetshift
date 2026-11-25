@@ -78,7 +78,11 @@ interface Point {
 const causeLabel =
   (t: T, gas: CauseGas) =>
   (c: Cause): string =>
-    gas !== 'all' && c === 'other' ? t('link.gasOther') : t(`link.causes.${c}`);
+    gas !== 'all' && c === 'other'
+      ? t('link.gasOther')
+      : gas === 'all' && c === 'landUse'
+        ? t('link.landUseCo2')
+        : t(`link.causes.${c}`);
 
 /** The causes' legend keys in alphabetical order, which switching gases leaves as it is. */
 export const causeKeys = (t: T, locale: string, view: AttributionView) =>

@@ -35,6 +35,8 @@ BATCH = 4
 BATCH_MEMORY = 6e9
 CH4_METHOD = "Thornhill2021"
 FIELDS = ("temperature", "co2", "ch4_airborne")
+#: FaIR's specie for the forcing of land-use change other than its CO₂: surface albedo, irrigation.
+LAND_USE = "Land use"
 RUNS_FOLDER = "runs"
 WORKERS_VARIABLE = "PLANETSHIFT_FAIR_WORKERS"
 
@@ -100,7 +102,11 @@ def annual_means(bounds: np.ndarray) -> np.ndarray:
 
 
 def _run_batch(
-    setup: Setup, emissions: dict[str, dict[str, np.ndarray]], end: int, carbon_feedback: bool
+    setup: Setup,
+    emissions: dict[str, dict[str, np.ndarray]],
+    end: int,
+    carbon_feedback: bool,
+    land_forcing: bool = True,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     scenarios = list(emissions)
     f = FAIR(ch4_method=CH4_METHOD)
@@ -122,6 +128,8 @@ def _run_batch(
     f.override_defaults(setup.parameters)
     if not carbon_feedback:
         fill(f.species_configs["iirf_temperature"], 0, specie="CO2")
+    if not land_forcing:
+        fill(f.species_configs["forcing_scale"], 0, specie=LAND_USE)
     initialise(f.concentration, f.species_configs["baseline_concentration"])
     initialise(f.forcing, 0)
     initialise(f.temperature, 0)
@@ -150,10 +158,16 @@ def setup_digest(setup: Setup) -> str:
 
 
 def run_key(
-    digest: str, by_specie: dict[str, np.ndarray], emitted: list[str], end: int, feedback: bool
+    digest: str,
+    by_specie: dict[str, np.ndarray],
+    emitted: list[str],
+    end: int,
+    feedback: bool,
+    land_forcing: bool = True,
 ) -> str:
-    """The cache key of one scenario's run."""
-    key = hashlib.sha256(f"{digest}|{end}|{feedback}".encode())
+    """The cache key of one scenario's run; runs with the land-use forcing keep their old keys."""
+    flags = f"{feedback}" if land_forcing else f"{feedback}|no land forcing"
+    key = hashlib.sha256(f"{digest}|{end}|{flags}".encode())
     for specie in emitted:
         key.update(specie.encode())
         key.update(np.ascontiguousarray(by_specie[specie][: end - START], dtype=float).tobytes())
@@ -174,16 +188,19 @@ def memory_batches() -> int:
 
 
 def _run_batches(
-    setup: Setup, batches: list[dict[str, dict[str, np.ndarray]]], end: int, feedback: bool
+    setup: Setup,
+    batches: list[dict[str, dict[str, np.ndarray]]],
+    end: int,
+    feedback: bool,
+    land_forcing: bool = True,
 ) -> list[tuple[np.ndarray, np.ndarray, np.ndarray]]:
     count = min(workers(), len(batches))
+    one = partial(_run_batch, setup, end=end, carbon_feedback=feedback, land_forcing=land_forcing)
     if count <= 1:
-        outputs = [_run_batch(setup, batch, end, feedback) for batch in batches]
+        outputs = [one(batch) for batch in batches]
     else:
         with ProcessPoolExecutor(count) as pool:
-            outputs = list(
-                pool.map(partial(_run_batch, setup, end=end, carbon_feedback=feedback), batches)
-            )
+            outputs = list(pool.map(one, batches))
     return outputs
 
 
@@ -192,26 +209,33 @@ def run(
     emissions: dict[str, dict[str, np.ndarray]],
     end: int,
     carbon_feedback: bool = True,
+    land_forcing: bool = True,
 ) -> Result:
     """Run each scenario's emissions (per specie, one value per calendar year START..end-1).
 
     Each scenario's result is kept in `cache/fair/runs/`, keyed by everything it depends on, so
     only scenarios not run before go through FaIR: a few at a time to bound memory, in parallel
     processes (`workers`). `carbon_feedback=False` turns off the effect of warming on carbon
-    uptake, for diagnostics.
+    uptake, for diagnostics; `land_forcing=False` the forcing FaIR derives from cumulative
+    land-use CO₂ (surface albedo and irrigation), to measure it apart.
     """
     folder = setup.parameters.parent / RUNS_FOLDER
     folder.mkdir(parents=True, exist_ok=True)
     digest = setup_digest(setup)
     names = list(emissions)
     paths = {
-        n: folder / f"{run_key(digest, emissions[n], setup.emitted, end, carbon_feedback)}.npz"
+        n: folder
+        / f"{run_key(digest, emissions[n], setup.emitted, end, carbon_feedback, land_forcing)}.npz"
         for n in names
     }
     missing = [n for n in names if not paths[n].exists()]
     batches = [missing[i : i + BATCH] for i in range(0, len(missing), BATCH)]
     outputs = _run_batches(
-        setup, [{n: emissions[n] for n in batch} for batch in batches], end, carbon_feedback
+        setup,
+        [{n: emissions[n] for n in batch} for batch in batches],
+        end,
+        carbon_feedback,
+        land_forcing,
     )
     for batch, output in zip(batches, outputs, strict=True):
         for i, name in enumerate(batch):

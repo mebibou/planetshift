@@ -17,7 +17,7 @@ from .cache import DEFAULT_CACHE
 from .climate import AGTP_SSP, DEFAULT_OUT, HORIZON, PULSE_YEAR, SSPS, band, rounded
 from .coemissions import FUELS as FOSSIL_FUELS
 from .coemissions import ROAD as ROAD_SECTORS
-from .sources import ar6db, ceds, rcmip
+from .sources import ar6db, ceds, fair_history, rcmip
 
 log = logging.getLogger(__name__)
 
@@ -290,7 +290,9 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
 
     setup = climate_fair.load_setup(cache_dir, members)
     fair_years = np.arange(climate_fair.START, PULSE_YEAR + HORIZON + 1)
-    emissions = rcmip.fair_emissions(rcmip_df, AGTP_SSP, setup.emitted, fair_years)
+    emissions = rcmip.fair_emissions(
+        rcmip_df, AGTP_SSP, setup.emitted, fair_years, fair_history.load(cache_dir)
+    )
     responses = forcing_runs(setup, emissions, FORCING_SCALES)
 
     document = {

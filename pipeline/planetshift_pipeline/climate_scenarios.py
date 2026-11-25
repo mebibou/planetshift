@@ -6,9 +6,15 @@ import pandas as pd
 
 from .sources import primap, rcmip
 
-CAUSES = ("fossilIndustry", "agriculture", "landUse", "airPollution")
+CAUSES = ("fossilIndustry", "agriculture", "landUse", "waste", "airPollution")
 # The causes whose emissions are greenhouse gases, which add up nearly exactly when taken out.
-GREENHOUSE = ("fossilIndustry", "agriculture", "landUse")
+GREENHOUSE = ("fossilIndustry", "agriculture", "landUse", "waste")
+# Methane from burning forests, grassland and peat above its 1750 level: a named part of methane's
+# warming, not a cause (agricultural waste burning is farming's, in PRIMAP-hist's M.AG).
+BURNING = "burning"
+BURNING_VARIABLES = tuple(
+    f"Emissions|CH4|MAGICC AFOLU|{kind} Burning" for kind in ("Forest", "Grassland", "Peat")
+)
 # Aerosols and their precursors, as FaIR runs them: sulphur, black and organic carbon, ammonia and
 # nitrogen oxides, from every sector.
 AEROSOLS = ("Sulfur", "BC", "OC", "NH3", "NOx")
@@ -54,9 +60,22 @@ SSP_FOSSIL_INDUSTRY = {
     },
     "n2o": {"Emissions|N2O|MAGICC Fossil and Industrial": 1},
 }
+# Waste: landfills and wastewater. RCMIP gives no waste N₂O, so it is held at its last year; the
+# CO₂ of incineration stays with fossil fuels.
+SSP_WASTE = {
+    "co2": None,
+    "ch4": {"Emissions|CH4|MAGICC Fossil and Industrial|Waste": 1},
+    "n2o": None,
+}
+SSP_BY_CAUSE = {
+    "agriculture": SSP_AGRICULTURE,
+    "fossilIndustry": SSP_FOSSIL_INDUSTRY,
+    "waste": SSP_WASTE,
+}
 PRIMAP_CATEGORIES = {
     "agriculture": (primap.AGRICULTURE,),
     "fossilIndustry": (primap.ENERGY, primap.INDUSTRIAL_PROCESSES),
+    "waste": (primap.WASTE,),
 }
 
 
@@ -95,8 +114,9 @@ def cause_emissions(
     years: np.ndarray,
     last: int,
 ) -> dict[str, np.ndarray]:
-    """kg/yr by gas of `cause` ('agriculture' or 'fossilIndustry'), history then the SSP."""
-    ssp = SSP_AGRICULTURE if cause == "agriculture" else SSP_FOSSIL_INDUSTRY
+    """kg/yr by gas of `cause` ('agriculture', 'fossilIndustry' or 'waste'), history then the
+    SSP."""
+    ssp = SSP_BY_CAUSE[cause]
     history_years = years[years <= last]
 
     def one(gas: str) -> np.ndarray:
@@ -130,11 +150,19 @@ def without(
     }
 
 
+def burning_kg(rcmip_df: pd.DataFrame, scenario: str, years: np.ndarray) -> np.ndarray:
+    """kg/yr of methane from burning forests, grassland and peat above its 1750 level."""
+    kg = ssp_kg(rcmip_df, scenario, dict.fromkeys(BURNING_VARIABLES, 1), years)
+    at_1750 = ssp_kg(rcmip_df, scenario, dict.fromkeys(BURNING_VARIABLES, 1), np.array([1750]))
+    return np.maximum(kg - at_1750[0], 0)
+
+
 def removals(
     emissions: dict[str, np.ndarray],
     agriculture: dict[str, np.ndarray],
     fossil: dict[str, np.ndarray],
     baseline: dict[str, float],
+    waste: dict[str, np.ndarray],
 ) -> dict[str, dict[str, np.ndarray]]:
     """kg/yr to take out of the FaIR inputs for each cause, by FaIR specie.
 
@@ -152,6 +180,7 @@ def removals(
             "N2O": fossil["n2o"],
         },
         "landUse": {"CO2 AFOLU": emissions["CO2 AFOLU"] * KG_PER_FAIR_UNIT["CO2 AFOLU"]},
+        "waste": {"CH4": waste["ch4"], "N2O": waste["n2o"]},
         "airPollution": {s: emissions[s] - baseline[s] for s in AEROSOLS if s in emissions},
     }
 

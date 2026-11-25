@@ -118,6 +118,7 @@ describe('the breakdown by family', () => {
     expect(family('diet').agriculture).toBeGreaterThan(0);
     expect(Math.abs(family('diet').landUse)).toBeGreaterThan(0);
     expect(family('diet').fossilIndustry).toBeGreaterThan(0);
+    expect(family('diet').waste).toBeGreaterThan(0);
     expect(family('diet').other).toBeGreaterThan(0);
     expect(family('practices').other).toBe(0);
     expect(family('energy').fossilIndustry).toBeGreaterThan(0);
@@ -157,10 +158,11 @@ describe('the avoided warming by gas', () => {
     expect(avoidedByGas.ch4.agriculture[i]).toBeGreaterThan(0);
     expect(avoidedByGas.n2o.landUse[i]).toBe(0);
   });
-  it("counts the food chain's refrigerants and waste methane in other human emissions", () => {
+  it("counts the food chain's refrigerants in other human emissions and its waste methane in waste", () => {
     const i = years.indexOf(2100);
     expect(avoidedByGas.hfc.other[i]).toBeGreaterThan(0);
-    expect(avoidedByGas.ch4.other[i]).toBeGreaterThan(0);
+    expect(avoidedByGas.ch4.waste[i]).toBeGreaterThan(0);
+    expect(avoidedByGas.hfc.waste[i]).toBe(0);
     expect(avoidedByGas.hfc.agriculture[i]).toBe(0);
   });
 });

@@ -28,6 +28,9 @@
   --cause-airPollution: #eda100;
   --cause-natural: #e87ba4;
   --cause-permafrost: #8a6a4b;
+  --cause-waste: #a44a8f;
+  --cause-burning: #7a3b2e;
+  --cause-landAlbedo: #3fa9d6;
 
   --seq-production-1: #edf8e9;
   --seq-production-2: #c7e9c0;
@@ -129,6 +132,9 @@
     --cause-airPollution: #c98500;
     --cause-natural: #d55181;
     --cause-permafrost: #b08a64;
+    --cause-waste: #c9579a;
+    --cause-burning: #9a4a3a;
+    --cause-landAlbedo: #4aa3d6;
     --cause-airPollution: #c98500;
     --cause-natural: #d55181;
     --cause-permafrost: #b08a64;
@@ -218,6 +224,12 @@
   --cause-agriculture: #199e70;
   --cause-landUse: #d95926;
   --cause-other: #9085e9;
+  --cause-airPollution: #c98500;
+  --cause-natural: #d55181;
+  --cause-permafrost: #b08a64;
+  --cause-waste: #c9579a;
+  --cause-burning: #9a4a3a;
+  --cause-landAlbedo: #4aa3d6;
   --seq-production-1: #d0e9d3;
   --seq-production-2: #a9d4ae;
   --seq-production-3: #81c08a;
@@ -581,6 +593,15 @@
 .key-cause-permafrost {
   background: var(--cause-permafrost);
 }
+.key-cause-waste {
+  background: var(--cause-waste);
+}
+.key-cause-burning {
+  background: var(--cause-burning);
+}
+.key-cause-landAlbedo {
+  background: var(--cause-landAlbedo);
+}
 .key-outline {
   background: transparent;
   border: 1.5px dashed var(--ink);
@@ -679,6 +700,15 @@
 }
 .cause-airPollution {
   fill: var(--cause-airPollution);
+}
+.cause-waste {
+  fill: var(--cause-waste);
+}
+.cause-burning {
+  fill: var(--cause-burning);
+}
+.cause-landAlbedo {
+  fill: var(--cause-landAlbedo);
 }
 .cause-natural {
   fill: var(--cause-natural);

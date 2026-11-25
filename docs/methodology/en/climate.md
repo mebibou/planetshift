@@ -119,15 +119,15 @@ The app shows the median and the 5–95% range relative to 1850–1900. The tabl
 
 | Scenario | 2015–2024 | 2050 | 2100 |
 | --- | --- | --- | --- |
-| SSP1-2.6 | 1.20 °C (0.98–1.37) | 1.77 °C (1.35–2.30) | 1.76 °C (1.23–2.54) |
-| SSP2-4.5 | 1.19 °C (0.97–1.37) | 1.90 °C (1.51–2.34) | 2.63 °C (1.94–3.63) |
-| SSP3-7.0 | 1.17 °C (0.92–1.36) | 1.90 °C (1.51–2.32) | 3.54 °C (2.74–4.52) |
+| SSP1-2.6 | 1.20 °C (1.01–1.36) | 1.79 °C (1.36–2.33) | 1.76 °C (1.22–2.56) |
+| SSP2-4.5 | 1.20 °C (1.01–1.36) | 1.89 °C (1.50–2.33) | 2.61 °C (1.91–3.61) |
+| SSP3-7.0 | 1.20 °C (1.01–1.36) | 1.88 °C (1.50–2.30) | 3.51 °C (2.68–4.48) |
 
-Observed warming over 2015–2024 is 1.27 °C in HadCRUT5 and 1.33 °C in Berkeley Earth, both re-baselined here to their own 1850–1900 means. The FaIR median is 0.08 °C below HadCRUT5, inside its range, which a test checks. The 2100 values are close to AR6's assessed best estimates for 2081–2100: 1.8, 2.7 and 3.6 °C (Table SPM.1).
+Observed warming over 2015–2024 is 1.27 °C in HadCRUT5 and 1.33 °C in Berkeley Earth, both re-baselined here to their own 1850–1900 means. The FaIR median is 0.06 °C below HadCRUT5, inside its range, which a test checks. The 2100 values are close to AR6's assessed best estimates for 2081–2100: 1.8, 2.7 and 3.6 °C (Table SPM.1).
 
 ### Where these runs and the observed lines come from
 
-The scenarios' emissions are those of RCMIP v5.1.0. Each calendar year is the mean of FaIR's values at its start and end.
+Up to 2022, the emissions are the history FaIR's calibration 1.4.1 was constrained on, as FaIR v2.2.5 publishes it with its example scenarios. After that they are the SSPs of RCMIP v5.1.0. The gap between the two in 2022 fades out over 15 years, rather than the SSP being scaled, so a series that crosses zero keeps its sign. RCMIP's own history differs: its land-use CO₂ is 190 billion tonnes of carbon over 1750–2019, against 245 in the calibration's, and its 1750 methane is 19 Mt, against the calibration's pre-industrial 38 Mt. Each calendar year is the mean of FaIR's values at its start and end.
 
 The observed lines are the Met Office HadCRUT5 analysis (global annual series, complete years only) and Berkeley Earth Land + Ocean (annual, air temperature over sea ice). Each is shifted so that its 1850–1900 mean is zero.
 
@@ -325,7 +325,8 @@ Without the shipping rule, the baseline is 0.037 °C cooler in 2024 and 0.067 °
 
 - FaIR, the Finite-amplitude Impulse Response climate model, v2.2.5: [github.com/OMS-NetZero/FAIR](https://github.com/OMS-NetZero/FAIR), [documentation](https://docs.fairmodel.net). Licence: Apache 2.0. The calibration files are read from its example data at tag v2.2.5.
 - fair-calibrate v1.4.1, the calibrated, constrained parameter set: [doi:10.5281/zenodo.10566813](https://doi.org/10.5281/zenodo.10566813). Licence: CC BY 4.0.
-- RCMIP protocol v5.1.0, SSP emissions with their history: [rcmip.org](https://www.rcmip.org), [doi:10.5281/zenodo.4589756](https://doi.org/10.5281/zenodo.4589756), described in [doi:10.5194/gmd-13-5175-2020](https://doi.org/10.5194/gmd-13-5175-2020). Licence: CC BY-SA 4.0.
+- RCMIP protocol v5.1.0, SSP emissions after 2022: [rcmip.org](https://www.rcmip.org), [doi:10.5281/zenodo.4589756](https://doi.org/10.5281/zenodo.4589756), described in [doi:10.5194/gmd-13-5175-2020](https://doi.org/10.5194/gmd-13-5175-2020). Licence: CC BY-SA 4.0.
+- FaIR calibration 1.4.1's emissions history, 1750–2022, as FaIR v2.2.5 publishes it with its example scenarios: [github.com/OMS-NetZero/FAIR](https://github.com/OMS-NetZero/FAIR/tree/v2.2.5/examples/data/calibrated_constrained_ensemble). Licence: CC BY 4.0.
 - IPCC AR6 WG1 Chapter 7, *The Earth's Energy Budget, Climate Feedbacks and Climate Sensitivity*, and its supplementary material (7.SM.5, Table 7.SM.7): [doi:10.1017/9781009157896.009](https://doi.org/10.1017/9781009157896.009). The chapter's code: [github.com/IPCC-WG1/Chapter-7](https://github.com/IPCC-WG1/Chapter-7), MIT licence.
 - The sources AR6 cites for its constants: the CO₂ impulse response, [doi:10.5194/acp-13-2793-2013](https://doi.org/10.5194/acp-13-2793-2013); the greenhouse gas forcing fits, [doi:10.5194/gmd-13-3571-2020](https://doi.org/10.5194/gmd-13-3571-2020); the climate-carbon feedback in emission metrics, [doi:10.5194/esd-8-235-2017](https://doi.org/10.5194/esd-8-235-2017).
 - IPCC AR6 WG1 Chapter 5, *Global Carbon and other Biogeochemical Cycles and Feedbacks*, Box 5.1, Section 5.4.3 and Figure 5.29 (permafrost carbon feedback): [doi:10.1017/9781009157896.007](https://doi.org/10.1017/9781009157896.007).

@@ -74,9 +74,12 @@ export const CAUSES: readonly Cause[] = [
   'fossilIndustry',
   'agriculture',
   'landUse',
+  'waste',
+  'burning',
   'permafrost',
   'other',
   'natural',
+  'landAlbedo',
   'airPollution',
 ];
 
