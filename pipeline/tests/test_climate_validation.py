@@ -80,6 +80,16 @@ def test_fair_reproduces_observed_warming_of_the_last_decade(built):
     assert np.percentile(modelled, 5) < seen < np.percentile(modelled, 95)
 
 
+def test_fair_reproduces_the_assessed_warming_of_the_last_decade(built):
+    """Indicators of Global Climate Change 2024 (Forster et al. 2025) assess the observed warming
+    over 2015–2024 at 1.24 °C (1.11–1.35), from four records; FaIR's median lies inside that
+    range."""
+    _, diagnostics = built
+    modelled = window_mean(diagnostics, "ssp245", "total", 2015, 2024)
+    assert 1.11 < np.median(modelled) < 1.35
+    assert abs(np.median(modelled) - 1.24) < 0.1
+
+
 def test_natural_factors_alone_warm_little_over_2010_2019(built):
     """AR6 WG1 SPM (Figure SPM.2) assesses the change from solar and volcanic drivers between
     1850–1900 and 2010–2019 at −0.1 to +0.1 °C."""
