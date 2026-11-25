@@ -29,6 +29,9 @@ import { withPageTexts } from './texts';
 import './deeptime.css';
 import { CARD } from '../ui/classes';
 import { Steady } from '../ui/Steady';
+import { columns } from '../ui/columns';
+import { MenuHead } from '../ui/MenuHead';
+import { useMenu } from '../ui/useMenu';
 
 const TEXT = 'card-text text-muted';
 const SWITCH = 'flex flex-wrap gap-1 rounded-lg bg-surface-2 p-[3px]';
@@ -253,46 +256,72 @@ const ScenarioEnd = ({
   );
 };
 
-const Rates = ({ ctx, file, lines }: { ctx: ViewContext; file: DeepTimeFile; lines: Line[] }) => {
+interface Menu {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
+
+const Rates = ({
+  ctx,
+  file,
+  lines,
+  menu,
+}: {
+  ctx: ViewContext;
+  file: DeepTimeFile;
+  lines: Line[];
+  menu: Menu;
+}) => {
   const { t, locale } = ctx;
   const rates = ratesOf(file, lines, ctx.currentYear);
   const today = rates.find((r) => r.id === 'observed')!.perCentury;
   const top = Math.max(...rates.map((r) => r.perCentury));
   return (
     <section
-      className={`${CARD} deeptime-rates [grid-area:rates] ${STICKY_WIDE}`}
+      className={`${CARD} deeptime-rates [grid-area:rates] ${STICKY_WIDE} ${menu.open ? '' : 'min-[1200px]:p-1.5'}`}
       aria-labelledby="deeptime-rates"
     >
-      <h2 id="deeptime-rates">{t('deeptime.rates.title')}</h2>
-      <ul className={`${LIST} list-none`}>
-        {rates.map((r) => (
-          <li
-            key={r.id}
-            data-rate={r.id}
-            className="grid grid-cols-[minmax(0,1fr)_30%] gap-x-3 gap-y-0.5 text-[0.9rem] min-[1200px]:grid-cols-[minmax(0,1fr)]"
-          >
-            <span className="deeptime-rate-label col-[1/-1]">
-              {t(`deeptime.rates.${r.id}`, { from: ctx.currentYear })}
-            </span>
-            <span
-              className="deeptime-rate-bar h-2.5 self-center rounded-[3px] bg-surface-2"
-              aria-hidden="true"
+      <MenuHead
+        t={t}
+        id="rates"
+        {...menu}
+        controls="deeptime-rates-content"
+        side="right"
+        rail="min-[1200px]:hidden"
+        reverse="min-[1200px]:flex-row-reverse"
+        title={<h2 id="deeptime-rates">{t('deeptime.rates.title')}</h2>}
+      />
+      <div id="deeptime-rates-content" className="mt-2" hidden={!menu.open}>
+        <ul className={`${LIST} list-none`}>
+          {rates.map((r) => (
+            <li
+              key={r.id}
+              data-rate={r.id}
+              className="grid grid-cols-[minmax(0,1fr)_30%] gap-x-3 gap-y-0.5 text-[0.9rem] min-[1200px]:grid-cols-[minmax(0,1fr)]"
             >
+              <span className="deeptime-rate-label col-[1/-1]">
+                {t(`deeptime.rates.${r.id}`, { from: ctx.currentYear })}
+              </span>
               <span
-                className={`block h-full rounded-[3px] ${r.id === 'observed' || r.id === 'projected' ? 'bg-danger' : 'bg-[var(--series-baseline)]'}`}
-                style={{ width: `${Math.max(0.5, (100 * r.perCentury) / top)}%` }}
-              />
-            </span>
-            <span className="deeptime-rate-value text-[0.85rem] text-muted">
-              {t('deeptime.rates.value', { value: formatSignificant(locale, r.perCentury, 2) })}
-              {r.id !== 'observed' && r.id !== 'projected' && r.perCentury > 0
-                ? ` · ${t('deeptime.rates.slower', { times: formatSignificant(locale, today / r.perCentury, 2) })}`
-                : ''}
-            </span>
-          </li>
-        ))}
-      </ul>
-      <p className={TEXT}>{t('deeptime.rates.note')}</p>
+                className="deeptime-rate-bar h-2.5 self-center rounded-[3px] bg-surface-2"
+                aria-hidden="true"
+              >
+                <span
+                  className={`block h-full rounded-[3px] ${r.id === 'observed' || r.id === 'projected' ? 'bg-danger' : 'bg-[var(--series-baseline)]'}`}
+                  style={{ width: `${Math.max(0.5, (100 * r.perCentury) / top)}%` }}
+                />
+              </span>
+              <span className="deeptime-rate-value text-[0.85rem] text-muted">
+                {t('deeptime.rates.value', { value: formatSignificant(locale, r.perCentury, 2) })}
+                {r.id !== 'observed' && r.id !== 'projected' && r.perCentury > 0
+                  ? ` · ${t('deeptime.rates.slower', { times: formatSignificant(locale, today / r.perCentury, 2) })}`
+                  : ''}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p className={TEXT}>{t('deeptime.rates.note')}</p>
+      </div>
     </section>
   );
 };
@@ -314,45 +343,57 @@ const Markers = ({
   view,
   go,
   light,
+  menu,
 }: {
   ctx: ViewContext;
   view: View | null;
   go: (v: View) => void;
   light: (id: string | null) => void;
+  menu: Menu;
 }) => (
   <aside
-    className={`${CARD} deeptime-markers [grid-area:markers] ${STICKY_WIDE}`}
+    className={`${CARD} deeptime-markers [grid-area:markers] ${STICKY_WIDE} ${menu.open ? '' : 'min-[1200px]:p-1.5'}`}
     aria-labelledby="deeptime-markers"
   >
-    <h2 id="deeptime-markers">{ctx.t('deeptime.eventsTitle')}</h2>
-    <p className={TEXT}>{ctx.t('deeptime.markersHint')}</p>
-    <ol className="m-0 mb-2 grid list-none gap-0.5 p-0">
-      {EVENTS.map((e) => (
-        <li
-          key={e.id}
-          className={`deeptime-event-${e.kind}`}
-          data-outside={view && (e.year < view.start || e.year > view.end) ? '' : undefined}
-        >
-          <button
-            type="button"
-            className={`grid w-full cursor-pointer gap-0.5 rounded-r-md border-0 border-l-3 border-solid bg-transparent py-1.5 pr-2 pl-3 text-left text-ink hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:outline-none in-data-outside:opacity-55 ${MARKER_EDGE[e.kind]}`}
-            onClick={() => go(markerView(e.year))}
-            onMouseEnter={() => light(e.id)}
-            onMouseLeave={() => light(null)}
-            onFocus={() => light(e.id)}
-            onBlur={() => light(null)}
+    <MenuHead
+      t={ctx.t}
+      id="markers"
+      {...menu}
+      controls="deeptime-markers-content"
+      side="left"
+      rail="min-[1200px]:hidden"
+      title={<h2 id="deeptime-markers">{ctx.t('deeptime.eventsTitle')}</h2>}
+    />
+    <div id="deeptime-markers-content" className="mt-2" hidden={!menu.open}>
+      <p className={TEXT}>{ctx.t('deeptime.markersHint')}</p>
+      <ol className="m-0 mb-2 grid list-none gap-0.5 p-0">
+        {EVENTS.map((e) => (
+          <li
+            key={e.id}
+            className={`deeptime-event-${e.kind}`}
+            data-outside={view && (e.year < view.start || e.year > view.end) ? '' : undefined}
           >
-            <span className="deeptime-marker-name text-[0.9rem] font-bold">
-              {ctx.t(`deeptime.events.${e.id}.short`)}
-            </span>
-            <span className="deeptime-marker-note text-[0.82rem] leading-[1.4] text-muted">
-              {ctx.t(`deeptime.events.${e.id}.note`)}
-            </span>
-          </button>
-        </li>
-      ))}
-    </ol>
-    <p className={TEXT}>{ctx.t('deeptime.extinctions')}</p>
+            <button
+              type="button"
+              className={`grid w-full cursor-pointer gap-0.5 rounded-r-md border-0 border-l-3 border-solid bg-transparent py-1.5 pr-2 pl-3 text-left text-ink hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:outline-none in-data-outside:opacity-55 ${MARKER_EDGE[e.kind]}`}
+              onClick={() => go(markerView(e.year))}
+              onMouseEnter={() => light(e.id)}
+              onMouseLeave={() => light(null)}
+              onFocus={() => light(e.id)}
+              onBlur={() => light(null)}
+            >
+              <span className="deeptime-marker-name text-[0.9rem] font-bold">
+                {ctx.t(`deeptime.events.${e.id}.short`)}
+              </span>
+              <span className="deeptime-marker-note text-[0.82rem] leading-[1.4] text-muted">
+                {ctx.t(`deeptime.events.${e.id}.note`)}
+              </span>
+            </button>
+          </li>
+        ))}
+      </ol>
+      <p className={TEXT}>{ctx.t('deeptime.extinctions')}</p>
+    </div>
   </aside>
 );
 
@@ -474,10 +515,18 @@ const DeepTime = ({ ctx: app, result }: DeepTimeProps) => {
   const { host, chart } = useChart(ctx, lines, end, setView);
   const light = useActiveMarker(host, view);
   const { t } = ctx;
+  const [markersOpen, setMarkersOpen] = useMenu('markers', false);
+  const [ratesOpen, setRatesOpen] = useMenu('rates');
   return (
-    <div className="deeptime grid grid-cols-2 items-start gap-x-5 gap-y-4 [grid-template-areas:'main_main'_'markers_markers'_'scenario_rates'_'offsets_offsets'] max-md:grid-cols-[minmax(0,1fr)] max-md:[grid-template-areas:'main'_'markers'_'scenario'_'rates'_'offsets'] min-[1200px]:grid-cols-[minmax(260px,320px)_minmax(0,1fr)_minmax(280px,360px)] min-[1200px]:[grid-template-areas:'markers_main_rates'_'markers_scenario_rates'_'markers_offsets_rates'] [&_h1]:m-0 [&_h1]:text-[1.4rem] [&_h2]:m-0 [&_h2]:mb-2 [&_h2]:text-[1.05rem]">
+    <div
+      className="deeptime grid grid-cols-2 items-start gap-x-5 gap-y-4 [grid-template-areas:'main_main'_'markers_markers'_'scenario_rates'_'offsets_offsets'] max-md:grid-cols-[minmax(0,1fr)] max-md:[grid-template-areas:'main'_'markers'_'scenario'_'rates'_'offsets'] min-[1200px]:grid-cols-[var(--markers-col)_minmax(0,1fr)_var(--rates-col)] min-[1200px]:[grid-template-areas:'markers_main_rates'_'markers_scenario_rates'_'markers_offsets_rates'] [&_h1]:m-0 [&_h1]:text-[1.4rem] [&_h2]:m-0 [&_h2]:mb-2 [&_h2]:text-[1.05rem] [&_.menu-head_h2]:mb-0"
+      style={columns({
+        markers: [markersOpen, 'minmax(260px,320px)'],
+        rates: [ratesOpen, 'minmax(280px,360px)'],
+      })}
+    >
       <section
-        className={`${CARD} deeptime-main [grid-area:main]`}
+        className={`${CARD} deeptime-main max-[640px]:px-3 [grid-area:main]`}
         aria-labelledby="deeptime-title"
       >
         <div className="card-head mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
@@ -499,9 +548,22 @@ const DeepTime = ({ ctx: app, result }: DeepTimeProps) => {
         />
         <UnderChart ctx={ctx} view={view} lines={lines} />
       </section>
-      <Markers ctx={ctx} view={view} go={(v) => chart.current?.go(v)} light={light} />
+      <Markers
+        ctx={ctx}
+        view={view}
+        go={(v) => chart.current?.go(v)}
+        light={light}
+        menu={{ open: markersOpen, setOpen: setMarkersOpen }}
+      />
       <ScenarioEnd ctx={ctx} end={end} />
-      {loaded && result && <Rates ctx={ctx} file={loaded} lines={recent} />}
+      {loaded && result && (
+        <Rates
+          ctx={ctx}
+          file={loaded}
+          lines={recent}
+          menu={{ open: ratesOpen, setOpen: setRatesOpen }}
+        />
+      )}
       {loaded && <Offsets ctx={ctx} file={loaded} />}
     </div>
   );

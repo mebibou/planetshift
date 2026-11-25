@@ -1611,3 +1611,119 @@ test('the card on what the warming means reads each source at both futures', asy
   await expect(extinction.nth(1)).toHaveText('not assessed below 1.5 °C');
   await expect(extinction.nth(0)).toContainText('%');
 });
+
+/** Collapses a side menu by its button, checks it says so, and that a reload keeps it closed. */
+const collapses = async (page: Page, menu: string, reload: () => Promise<void>) => {
+  const toggle = page.locator(`[data-menu="${menu}"]`);
+  const content = page.locator(`#${await toggle.getAttribute('aria-controls')}`);
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await expect(toggle).toHaveAccessibleName(/^Hide /);
+  await expect(content).toBeVisible();
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(toggle).toHaveAccessibleName(/^Show /);
+  await expect(content).toBeHidden();
+  await noHorizontalScroll(page);
+  await reload();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(content).toBeHidden();
+  await toggle.focus();
+  await page.keyboard.press('Enter');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await expect(content).toBeVisible();
+};
+
+test('the Explore panel and summary collapse, and stay as left after a reload', async ({
+  page,
+}) => {
+  await open(page);
+  const reload = async () => {
+    await page.reload();
+    await expect(page.locator('main[data-ready]')).toBeAttached();
+  };
+  await collapses(page, 'panel', reload);
+  await collapses(page, 'summary', reload);
+  await expect(page.locator('[data-menu="panel"]')).toHaveAttribute(
+    'aria-controls',
+    'panel-content',
+  );
+});
+
+test('a closed panel gives its room to the chart on a desktop', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'the panel sits beside the chart on a desktop only');
+  await open(page);
+  const width = async () => (await page.locator('.chart-card').boundingBox())!.width;
+  const before = await width();
+  await page.locator('[data-menu="panel"]').click();
+  await expect.poll(width).toBeGreaterThan(before + 200);
+});
+
+test('the menus speak French', async ({ page }) => {
+  await open(page, `${START}&lang=fr`);
+  await expect(page.locator('[data-menu="panel"]')).toHaveAccessibleName(
+    'Masquer le scénario et les réglages',
+  );
+});
+
+test('the Methodology contents open on a desktop, closed on a phone, and stay as left', async ({
+  page,
+  isMobile,
+}) => {
+  await page.goto(`${START}&view=methodology`);
+  await expect(page.locator('.method-section').first()).toBeVisible();
+  const list = page.locator('#toc-list');
+  if (isMobile) {
+    const toggle = page.locator('.toc-toggle');
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    await expect(list).toBeHidden();
+    await toggle.click();
+    await page.reload();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    await expect(list).toBeVisible();
+  } else {
+    await collapses(page, 'toc', async () => {
+      await page.reload();
+    });
+  }
+  await noHorizontalScroll(page);
+});
+
+test('the deep-time markers and rates collapse, and stay as left', async ({ page, isMobile }) => {
+  await open(page);
+  await page.locator('.footer-links a[data-view="deeptime"]').click();
+  await expect(page.locator('.deeptime-rates')).toBeVisible();
+  const reload = async () => {
+    await page.reload();
+    await expect(page.locator('.deeptime-rates')).toBeVisible();
+  };
+  if (isMobile) {
+    await expect(page.locator('[data-menu="markers"]')).toHaveAttribute('aria-expanded', 'false');
+    await page.locator('[data-menu="markers"]').click();
+  }
+  await collapses(page, 'markers', reload);
+  await collapses(page, 'rates', reload);
+  await noHorizontalScroll(page);
+});
+
+test('an (i) button at the right of a phone keeps its popover wide and inside the screen', async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, 'a phone');
+  await open(page);
+  const right = page.locator('.impacts-card .impact-tile .info').nth(1);
+  await right.scrollIntoViewIfNeeded();
+  const button = (await right.boundingBox())!;
+  const width = page.viewportSize()!.width;
+  expect(button.x).toBeGreaterThan(width * 0.6);
+  for (let i = 0; i < 2; i++) {
+    await right.click();
+    const tip = page.locator('.info-tip[data-placed]:popover-open');
+    await expect(tip).toBeVisible();
+    const box = (await tip.boundingBox())!;
+    expect(box.width).toBeGreaterThan(Math.min(300, width - 32) - 2);
+    expect(box.x).toBeGreaterThanOrEqual(15);
+    expect(box.x + box.width).toBeLessThanOrEqual(width - 15);
+    await page.keyboard.press('Escape');
+  }
+});

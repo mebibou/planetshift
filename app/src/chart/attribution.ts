@@ -17,6 +17,8 @@ import {
   chartNotes,
   drawAxes,
   frame,
+  isTight,
+  tightened,
   type Frame,
   type HoverRow,
   legendList,
@@ -157,7 +159,7 @@ const drawFrame = (f: Frame, x: Scale, y: Scale, t: T, locale: string): void => 
   f.plot
     .append('text')
     .attr('class', 'axis-title')
-    .attr('x', -MARGIN.left + 4)
+    .attr('x', -f.margin.left + 4)
     .attr('y', -10)
     .text(t('chart.unit'));
 };
@@ -328,7 +330,12 @@ export const attributionChart = (t: T, locale: string, currentYear: number): Att
     const outlines = levers ? stackOf(causes, rows.baseRows) : [];
     const observed = observedPoints(view);
     const narrow = (plotEl.clientWidth || 640) < 520;
-    const f = frame(plotEl, narrow ? 280 : 360, MARGIN, chartLabel(t, view));
+    const f = frame(
+      plotEl,
+      narrow ? 280 : 360,
+      tightened(MARGIN, isTight(plotEl)),
+      chartLabel(t, view),
+    );
     const scales = scalesOf(f, rows.rows, [...layers, ...stackOf(causes, rows.baseRows)], observed);
     drawProjection(f, scales.x, currentYear, t);
     drawFrame(f, scales.x, scales.y, t, locale);
@@ -338,7 +345,7 @@ export const attributionChart = (t: T, locale: string, currentYear: number): Att
       plotEl,
       f,
       scales.x,
-      MARGIN,
+      f.margin,
       hoverRows(t, locale, view, rows, observed, currentYear),
       t('chart.keys'),
     );

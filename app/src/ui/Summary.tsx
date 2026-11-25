@@ -8,6 +8,7 @@ import type { T } from '../i18n/i18n';
 import { familyLabel } from '../levers/registry';
 import type { Mammals } from '../data/types';
 import type { Options, ScenarioResult } from '../model/api';
+import { MenuHead } from './MenuHead';
 
 export interface SummaryProps {
   t: T;
@@ -20,6 +21,8 @@ export interface SummaryProps {
   options: Options;
   /** The world's wild mammals, for the farmed mammals' figure. */
   wild?: Mammals['wild'] | undefined;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
 const STAT = {
@@ -171,20 +174,37 @@ export const Summary = (props: SummaryProps) => {
   const live = useLive(liveText(props));
   return (
     <section
-      className="summary rounded-card border border-rule bg-surface p-4 lg:[grid-area:summary] xl:sticky xl:top-[calc(var(--header-h)+20px)] xl:max-h-[calc(100dvh-var(--header-h)-32px)] xl:overflow-y-auto"
+      className={`summary rounded-card border border-rule bg-surface p-4 lg:[grid-area:summary] xl:sticky xl:top-[calc(var(--header-h)+20px)] xl:max-h-[calc(100dvh-var(--header-h)-32px)] xl:overflow-y-auto ${props.open ? '' : 'xl:p-1.5'}`}
       aria-labelledby="summary-title"
     >
-      <h2 id="summary-title" className="visually-hidden">
-        {t('summary.title')}
-      </h2>
+      <MenuHead
+        t={t}
+        id="summary"
+        open={props.open}
+        setOpen={props.setOpen}
+        controls="summary-content"
+        side="right"
+        rail="xl:hidden"
+        reverse="xl:flex-row-reverse"
+        title={
+          <h2
+            id="summary-title"
+            className="m-0 text-[0.78rem] tracking-[0.06em] text-muted uppercase"
+          >
+            {t('summary.title')}
+          </h2>
+        }
+      />
       <p className="visually-hidden" role="status">
         {live}
       </p>
-      {result && perCapita ? (
-        <Body {...props} result={result} perCapita={perCapita} />
-      ) : (
-        <dl className={STATS} />
-      )}
+      <div id="summary-content" className="mt-3" hidden={!props.open}>
+        {result && perCapita ? (
+          <Body {...props} result={result} perCapita={perCapita} />
+        ) : (
+          <dl className={STATS} />
+        )}
+      </div>
     </section>
   );
 };
