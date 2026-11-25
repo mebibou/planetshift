@@ -10,6 +10,13 @@ export const deforestationOf = (pc: PreparedCountry, prepared: Prepared): ItemVe
     return Float64Array.from(prepared.items, (item) => (byCode[String(item.code)] ?? 0) * 1000);
   });
 
+/** A country's CO₂ from drained organic soils by the item it is shared to, kg a year. */
+export const drainedOf = (pc: PreparedCountry, prepared: Prepared): ItemVector =>
+  cache(pc, 'drained', () => {
+    const byCode = prepared.data.deforestation.drainedByCountry?.[pc.country.iso3] ?? {};
+    return Float64Array.from(prepared.items, (item) => (byCode[String(item.code)] ?? 0) * 1000);
+  });
+
 /** A country's forest area cleared by the item it serves, hectares a year. */
 export const clearedAreaOf = (pc: PreparedCountry, prepared: Prepared): ItemVector =>
   cache(pc, 'clearedArea', () => {

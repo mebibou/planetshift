@@ -87,7 +87,7 @@ Le classement se fait par identifiant de terme (`category_of`). Un terme ajouté
 
 Un test compare la somme des trois gaz au GWP100 propre à chaque agrégation, tel que HESTIA le calcule avec les facteurs du GIEC AR6 (le GWP100 est la pondération sur 100 ans qui donne le CO₂e ; voir [Des émissions à la température](#method-climate)). Le blé en France donne 0,407 kg CO₂e/kg par les deux sommes, ce qui montre qu'aucune ligne n'est comptée deux fois.
 
-L'usage des terres est laissé de côté ici parce que le changement d'usage des terres a son propre levier, [Déforestation](#method-deforestation). Les sols organiques drainés sont laissés de côté aussi, comme dans les domaines de FAOSTAT.
+L'usage des terres est laissé de côté ici parce que le changement d'usage des terres a son propre levier, [Déforestation](#method-deforestation). Les sols organiques drainés sont laissés de côté aussi : ils sont comptés à partir de FAOSTAT avec la déforestation.
 
 ## Les deux périmètres, et pourquoi l'alimentation animale est exclue
 

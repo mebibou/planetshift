@@ -79,4 +79,13 @@ describe('the food footprint in a run', () => {
     expect(co2e(fra(withOrigins))).not.toBeCloseTo(co2e(fra(without)), 3);
     expect(co2e(usa(withOrigins))).toBeCloseTo(co2e(usa(without)), 9);
   });
+
+  it('counts the CO₂ of the drained soils under the food a country eats, as it counts clearing', () => {
+    const fra = (d: typeof data) =>
+      runScenario(d, BASE_SCENARIO, DEFAULT_OPTIONS, CURRENT_YEAR).countries.find(
+        (c) => c.iso3 === 'FRA',
+      )!.footprint!.co2;
+    const undrained = { ...data, deforestation: { ...data.deforestation, drainedByCountry: {} } };
+    expect(fra(data)).toBeGreaterThan(fra(undrained));
+  });
 });

@@ -24,5 +24,7 @@ export const countryResult = (over: Partial<CountryResult> = {}): CountryResult 
   deforestationChange: 0,
   deforestationHa: 0,
   deforestationHaChange: 0,
+  drainedCo2: 0,
+  drainedChange: 0,
   ...over,
 });

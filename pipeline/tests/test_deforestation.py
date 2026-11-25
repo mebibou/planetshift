@@ -131,7 +131,7 @@ def test_built_file_matches_the_contract_and_published_totals():
     if not path.exists():
         pytest.skip("deforestation.json not built")
     data = json.loads(path.read_text())
-    assert set(data) == {"byCountry", "areaByCountry", "years", "source"}
+    assert set(data) == {"byCountry", "areaByCountry", "drainedByCountry", "years", "source"}
     assert len(data["years"]) == 2 and data["years"][0] <= data["years"][1]
     countries = {c["iso3"] for c in json.loads((OUT / "countries.json").read_text())}
     assert set(data["byCountry"]) <= countries
@@ -147,6 +147,11 @@ def test_built_file_matches_the_contract_and_published_totals():
     # DeDuCE attributes about 6 Mha a year of tropical forest loss to agricultural commodities
     assert 3e6 < area < 1.2e7
     assert set(data["areaByCountry"]) <= countries
+    drained = {c: sum(v.values()) for c, v in data["drainedByCountry"].items()}
+    # FAOSTAT: about 0.83 Gt CO2/yr from drained organic soils, Indonesia's the largest
+    assert 0.7e9 < sum(drained.values()) < 0.9e9
+    assert max(drained, key=drained.__getitem__) == "IDN"
+    assert set(drained) <= countries
     assert path.stat().st_size < 1_000_000
 
 

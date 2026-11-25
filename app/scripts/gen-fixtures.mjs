@@ -829,6 +829,11 @@ write('deforestation.json', {
     NGA: { 2514: 6.0e4, 2615: 1.5e4 },
     IND: { 2555: 2.0e4 },
   },
+  // CO₂ from drained organic soils, tonnes a year, by the item it is shared to
+  drainedByCountry: {
+    FRA: { 2731: 2.0e6, 2511: 1.0e6 },
+    BRA: { 2731: 1.0e7 },
+  },
   years: [2018, 2022],
   source: 'https://doi.org/10.5281/zenodo.10633818',
 });
