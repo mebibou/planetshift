@@ -468,6 +468,36 @@ def value_weights(qv: pd.DataFrame, crops: pd.DataFrame) -> pd.DataFrame:
     ]
 
 
+#: FAOSTAT's GT item for fertiliser manufacturing, and RFN's element for the nitrogen applied.
+FERTILISER_MANUFACTURING, AGRICULTURAL_USE = 6504, 5157
+
+
+def where_applied(made: pd.DataFrame, nitrogen: pd.DataFrame) -> pd.DataFrame:
+    """Fertiliser manufacturing moved from the country that makes the fertiliser, where FAOSTAT
+    counts it, to those that apply it: each country's nitrogen use times the world's kg of each
+    gas per tonne of nitrogen, over single countries. Exporters such as Russia or Qatar would
+    otherwise load their own crops with the fertiliser spread elsewhere."""
+    made = countries_only(made)
+    used = countries_only(
+        nitrogen[
+            (nitrogen["item_code"] == FERTILISER_ITEM)
+            & (nitrogen["element_code"] == AGRICULTURAL_USE)
+        ]
+    )
+    per_tonne = made.groupby(["gas", "process"], as_index=False)["kg"].sum()
+    per_tonne = per_tonne.assign(kg=per_tonne["kg"] / used["value"].sum())
+    return (
+        used[["area_code", "value"]]
+        .merge(per_tonne, how="cross")
+        .assign(kg=lambda f: f["kg"] * f["value"])[["area_code", "gas", "process", "kg"]]
+    )
+
+
+def upstream_totals(gt: pd.DataFrame, item: int, nitrogen: pd.DataFrame) -> pd.DataFrame:
+    totals = gt_totals(gt, item)
+    return where_applied(totals, nitrogen) if item == FERTILISER_MANUFACTURING else totals
+
+
 def faostat_emissions(
     gce: pd.DataFrame,
     gle: pd.DataFrame,
@@ -476,6 +506,7 @@ def faostat_emissions(
     qv: pd.DataFrame,
     crops: pd.DataFrame,
     production: pd.DataFrame,
+    nitrogen: pd.DataFrame,
     nonfood: pd.DataFrame | None = None,
 ) -> dict[str, pd.DataFrame]:
     """kg by (area_code, fbs_code, gas, process), for each scope, for one year's FAOSTAT data,
@@ -502,7 +533,7 @@ def faostat_emissions(
     ]
     upstream_weights = {"area": area_weights(area, crops), "value": value_weights(qv, crops)}
     upstream = [
-        nitrogen_shared(gt_totals(gt, item))
+        nitrogen_shared(upstream_totals(gt, item, nitrogen))
         if how == "nitrogen"
         else to_fbs(shared(gt_totals(gt, item), upstream_weights[how]), crops)
         for item, how in UPSTREAM.items()

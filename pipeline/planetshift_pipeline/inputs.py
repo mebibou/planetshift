@@ -192,6 +192,7 @@ class Build:
             self.read("QV", y, y),
             crops,
             production,
+            self.read("RFN", y, y),
             self.nonfood_shares,
         )
         covered = set(self.read("GT", y, y)["area_code"]) & set(self.iso3)

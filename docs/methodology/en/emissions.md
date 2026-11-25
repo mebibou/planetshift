@@ -100,7 +100,7 @@ The *Emissions from Livestock* domain (GLE) gives, by species, the CH₄ of ente
 This scope adds three FAOSTAT sources:
 
 - on-farm energy use, shared between all products by their gross production value;
-- fertiliser manufacturing, shared like synthetic nitrogen;
+- fertiliser manufacturing, moved to the countries that apply the nitrogen and then shared like synthetic nitrogen. FAOSTAT counts it where the fertiliser is made, about 440 Mt CO₂e in 2024, so exporters such as Russia, Saudi Arabia or Qatar would load their own crops with the fertiliser spread elsewhere. Each country takes its nitrogen use (FAOSTAT's *Fertilizers by Nutrient*) times the world's emissions per tonne of nitrogen, about 3.8 t of CO₂e;
 - pesticide manufacturing, shared by harvested area.
 
 ### From emissions to intensities
@@ -262,9 +262,9 @@ For each food, a country's footprint adds up:
 
 The total is divided by the country's population in the base year. With the levers, the diet shift and less food waste change the food eaten. The farm's intensities change with the farm practices. The chain after the farm and the clearing per tonne do not change.
 
-In CO₂e per person a year, France's footprint is 2.03 t, the United States' 2.51 t, China's 2.09 t, India's 0.92 t and Brazil's 4.37 t. The refrigerants are 0.05 t of France's and 0.15 t of the United States'. In Brazil, clearing for farming is about half, 2.19 t. In France it is 0.04 t. France's imported beef comes mostly from its neighbours, the Netherlands, Ireland and the United Kingdom first. Much of its soy arrives as cake, which takes the world's average. With the whole diet shifted, France's footprint falls to 0.90 t.
+In CO₂e per person a year, France's footprint is 2.04 t, the United States' 2.51 t, China's 2.09 t, India's 0.92 t and Brazil's 4.39 t. The refrigerants are 0.05 t of France's and 0.15 t of the United States'. In Brazil, clearing for farming is about half, 2.19 t. In France it is 0.04 t. France's imported beef comes mostly from its neighbours, the Netherlands, Ireland and the United Kingdom first. Much of its soy arrives as cake, which takes the world's average. With the whole diet shifted, France's footprint falls to 0.90 t.
 
-Published estimates for France are often higher. Planetshift's intensities explain little of the difference. Its meat and milk, which make most of a French diet's footprint, are close to Poore and Nemecek's or above them once both are in the same unit and with the same factors. Its crops and eggs are 20% to 40% below theirs (see *Per kilogram, against Poore and Nemecek*). Drained organic soils are left out too.
+Published estimates for France are often higher. Planetshift's intensities explain little of the difference. Its meat and milk, which make most of a French diet's footprint, are close to Poore and Nemecek's or above them once both are in the same unit and with the same factors. Its crops and eggs are 20% to 50% below theirs (see *Per kilogram, against Poore and Nemecek*). Drained organic soils are left out too.
 
 ## Proxies
 
@@ -383,9 +383,9 @@ Poore and Nemecek (2018) give each food's emissions by stage of the supply chain
 | Wheat | 0.49 | 0.85 | 0.80 | 0.61 |
 | Maize | 0.37 | 0.48 | 0.45 | 0.82 |
 | Potatoes | 0.132 | 0.193 | 0.185 | 0.72 |
-| Peas | 0.40 | 0.72 | 0.68 | 0.59 |
+| Peas | 0.36 | 0.72 | 0.68 | 0.53 |
 
-The ratio is Planetshift's figure over theirs with AR6's factors. Their beef is the beef and dairy herds together, weighted by their production. In the same unit and with the same factors, the animal products agree. Beef and milk are within 3% of theirs, and pig meat, sheep and goat meat and poultry are 15% to 39% above. Crops and eggs are 20% to 40% below. Planetshift's crops come from HESTIA's aggregated assessments (tiers 1 and 2), and its eggs mostly from FAOSTAT (tier 3). Poore and Nemecek's totals do not show which of their sources make the gap. Their data are a meta-analysis of studies from around 2010, and their paddy emissions come from field measurements. Moving their totals to AR6 with Planetshift's gas mix is approximate. For animal products, where that mix is mostly methane, a little more CO₂ in theirs would raise their AR6 figure by a few percent.
+The ratio is Planetshift's figure over theirs with AR6's factors. Their beef is the beef and dairy herds together, weighted by their production. In the same unit and with the same factors, the animal products agree. Beef and milk are within 3% of theirs, and pig meat, sheep and goat meat and poultry are 15% to 39% above. Crops and eggs are 20% to 50% below. Planetshift's crops come mostly from HESTIA's aggregated assessments (tiers 1 and 2), and its eggs mostly from FAOSTAT (tier 3). Poore and Nemecek's totals do not show which of their sources make the gap. Their data are a meta-analysis of studies from around 2010, and their paddy emissions come from field measurements. Moving their totals to AR6 with Planetshift's gas mix is approximate. For animal products, where that mix is mostly methane, a little more CO₂ in theirs would raise their AR6 figure by a few percent.
 
 `uv run python -m planetshift_pipeline.against_literature` prints the comparison for every item both have, from a build. A test checks this table against it.
 
