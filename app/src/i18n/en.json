@@ -374,7 +374,7 @@
       "hfc": "HFCs"
     },
     "gasText": "Each band is the warming from one cause's emissions of this gas. After today, each band is what is left once the levers chosen act on its cause. Air pollution, aviation's contrails and the natural factors are not greenhouse gases: they show under All gases only.",
-    "gasCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today. Each cause is the warming its emissions of this gas add. The other sources and interactions are the rest of the gas's warming.",
+    "gasCaption": "Medians of FaIR runs on historical emissions by sector, then the chosen scenario after today. Each cause is the warming its emissions of this gas add. The other sources and interactions are the rest of the gas's warming. Each band is measured from its own 1850–1900 average, so a gas whose emissions were already growing then, such as methane, starts a little below zero.",
     "gasOther": "Other sources and interactions",
     "gasAttributionLabel": "Stacked chart of the warming from {gas} by cause from {from} to {year}",
     "whyTitle": "Why the gases are kept apart",
