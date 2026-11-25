@@ -52,9 +52,16 @@ Planetshift utilise la série amortie, parce que le modèle fait varier les émi
 
 La carte montre plutôt la surface de forêt défrichée : l'attribution non amortie de DeDuCE, en hectares, en moyenne sur les mêmes années et répartie entre les aliments comme le CO₂. Elle totalise environ 4,2 millions d'hectares par an pour les aliments du modèle, dont 1,5 million au Brésil. Le modèle la fait varier avec la production de chaque aliment et avec le levier, de la même façon que le CO₂. L'infobulle de la carte donne les deux.
 
-### Le drainage des tourbières est laissé de côté
+### Sols organiques drainés
 
-DeDuCE donne aussi le CO₂ du drainage des tourbières cultivées, surtout le palmier à huile en Indonésie et en Malaisie : environ 0,23 Gt par an. Planetshift le laisse de côté. C'est une émission de terres déjà défrichées, qui continue que l'on coupe ou non davantage de forêt. Elle relève donc des terres que l'alimentation occupe plutôt que de la déforestation.
+Drainer les tourbières et autres sols organiques pour l'agriculture expose leur carbone à l'air. C'est une émission de terres déjà défrichées, qui continue que l'on coupe ou non davantage de forêt : le levier déforestation ne l'arrête donc pas. Elle relève des terres que l'alimentation occupe, et suit la production de chaque aliment.
+
+Les *Emissions from Drained organic soils* de FAOSTAT donnent le CO₂ de chaque pays sur les terres cultivées et sur les prairies. Pour 2024, les pays du modèle émettent 0,81 Gt de CO₂ par an : 0,65 Gt sur les terres cultivées et 0,16 Gt sur les prairies. L'Indonésie vient en tête avec 0,24 Gt, puis la Russie, les États-Unis, la Biélorussie et le Canada.
+
+- Le CO₂ des terres cultivées va aux cultures selon le drainage des tourbières de DeDuCE par produit, là où DeDuCE en a pour le pays : celui de l'Indonésie va donc surtout au palmier à huile (0,18 Gt). Ailleurs, il va aux cultures selon leur surface récoltée.
+- Le CO₂ des prairies va aux produits des ruminants (bœuf, viande ovine et caprine, autres viandes, lait) selon leur méthane.
+
+Le CO₂ suit la production de chaque aliment, comme le défrichement, et compte dans la cause Usage des terres. Quand le changement de régime libère des terres drainées, le modèle les suppose remises en eau, si bien que leur émission s'arrête. Des terres restées drainées continueraient d'émettre : c'est donc le plus que le changement pourrait éviter. Le changement complet en évite 0,27 Gt par an. Le N₂O des sols drainés, 0,35 Mt par an, est laissé de côté. Le drainage des tourbières de DeDuCE (environ 0,23 Gt) ne sert pas d'émission, seulement à répartir celui des terres cultivées.
 
 ### Des produits de base aux aliments
 
@@ -83,7 +90,7 @@ Des totaux plus larges comptent davantage :
 ## Hypothèses
 
 - Les émissions de chaque année sont celles, amorties, de DeDuCE, moyennées sur 2019–2023 : les émissions du défrichement réparties sur les cinq années de récolte qui le suivent.
-- Le drainage des tourbières n'est pas de la déforestation et est laissé de côté.
+- Le drainage des tourbières n'est pas de la déforestation. Les sols organiques drainés sont comptés à part, à partir de FAOSTAT, et supposés remis en eau quand le changement de régime les libère.
 - La déforestation due aux pâturages va entièrement à la viande bovine. Le cuir, les produits laitiers et les autres animaux qui pâturent n'en reçoivent aucune part.
 - Les produits de base non alimentaires (cuir, caoutchouc, fibres, tabac, la part de fibre du coton) et les plantations forestières sont laissés de côté.
 - Les cases nettes négatives (une culture arborée qui contient plus de carbone que la forêt qu'elle a remplacée) sont abandonnées, et non comptées comme des absorptions.

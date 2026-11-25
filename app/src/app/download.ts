@@ -97,6 +97,8 @@ export const MAP_HEADER = [
   'after_farm_after',
   'clearing_co2_before',
   'clearing_co2_after',
+  'drained_soils_co2_before',
+  'drained_soils_co2_after',
 ];
 
 /** The map's file name for a layer and a scenario, in a format. */
@@ -126,6 +128,8 @@ export const mapCsv = (rows: TableRow[], spec: LayerSpec, scenario: Scenario): D
       r.beyond.chainAfter,
       r.beyond.clearingBefore,
       r.beyond.clearingAfter,
+      r.beyond.drainedBefore,
+      r.beyond.drainedAfter,
     ]),
   );
 };

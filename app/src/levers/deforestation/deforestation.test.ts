@@ -39,6 +39,16 @@ describe('deforestation', () => {
     expect(r.summary.deforestationCo2.avoided).toBeGreaterThan(0);
     expect(r.summary.byFamily.avoidedWarming2050.deforestation).toBe(0);
   });
+  it('carries the CO₂ of drained soils with production, which the lever does not stop', () => {
+    const france = (r: ReturnType<typeof run>) =>
+      r.countries.find((c) => c.iso3 === 'FRA') ?? expect.fail('no France');
+    const stopped = france(lever('deforestation'));
+    expect(stopped.drainedCo2).toBe(3.0e9);
+    expect(stopped.drainedChange).toBe(0);
+    const beef = france(run({ groupShifts: { ruminantMeat: 1 } }));
+    expect(beef.drainedChange).toBeLessThan(0);
+    expect(beef.drainedChange).toBeGreaterThanOrEqual(-2.0e9);
+  });
   it('moves the forest area cleared as it moves the CO₂', () => {
     const brazil = (s: Parameters<typeof run>[0]) =>
       run(s).countries.find((c) => c.iso3 === 'BRA') ?? expect.fail('no Brazil');

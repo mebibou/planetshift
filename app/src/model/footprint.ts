@@ -67,9 +67,21 @@ const baseIntensity = (pc: PreparedCountry, prepared: Prepared, scope: Scope): B
     ) as ByGas;
   });
 
-/** kg of CO₂ from clearing forest per tonne a country produces of each item. */
+/** t of land CO₂ a year by item: forest cleared for it and the drained organic soils under it. */
+const landCo2ByItem = (prepared: Prepared, iso3: string): Record<string, number> => {
+  const clearing = prepared.data.deforestation?.byCountry[iso3] ?? {};
+  const drained = prepared.data.deforestation?.drainedByCountry?.[iso3] ?? {};
+  return Object.fromEntries(
+    [...new Set([...Object.keys(clearing), ...Object.keys(drained)])].map((code) => [
+      code,
+      (clearing[code] ?? 0) + (drained[code] ?? 0),
+    ]),
+  );
+};
+
+/** kg of land CO₂ (clearing and drained soils) per tonne a country produces of each item. */
 const clearingPerTonne = (pc: PreparedCountry, prepared: Prepared): ItemVector => {
-  const clearing = prepared.data.deforestation?.byCountry[pc.country.iso3] ?? {};
+  const clearing = landCo2ByItem(prepared, pc.country.iso3);
   return Float64Array.from(prepared.items, (item, i) => {
     const code = String(item.code);
     const t = pc.emitting[i] as number;
@@ -123,7 +135,7 @@ export const crushPools = (
     });
   };
   prepared.countries.forEach((pc) => {
-    const clearing = prepared.data.deforestation?.byCountry[pc.country.iso3] ?? {};
+    const clearing = landCo2ByItem(prepared, pc.country.iso3);
     Object.entries(crush).forEach(([seed, { oil, oilShare }]) => {
       const crushed = (clearing[seed] ?? 0) * KG_PER_T * crushedShare(pc, prepared, seed);
       const index = prepared.indexOf.get(oil);

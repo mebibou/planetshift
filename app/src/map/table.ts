@@ -34,6 +34,8 @@ export interface BeyondFarm {
   chainAfter: number | null;
   clearingBefore: number | null;
   clearingAfter: number | null;
+  drainedBefore: number | null;
+  drainedAfter: number | null;
 }
 
 const NO_BEYOND: BeyondFarm = {
@@ -41,6 +43,8 @@ const NO_BEYOND: BeyondFarm = {
   chainAfter: null,
   clearingBefore: null,
   clearingAfter: null,
+  drainedBefore: null,
+  drainedAfter: null,
 };
 
 /** The chain after the farm in a gas, today and with the levers, or nulls without the file. */
@@ -52,14 +56,24 @@ const chainOf = (c: CountryResult, gas: GasChoice) =>
       }
     : { chainBefore: null, chainAfter: null };
 
-/** The clearing CO₂, today and with the levers, in a gas that has CO₂; else nulls. */
-const clearingOf = (c: CountryResult, gas: GasChoice) =>
-  c.deforestationCo2 !== undefined && (gas === 'co2' || gas === 'co2e')
-    ? {
-        clearingBefore: c.deforestationCo2,
-        clearingAfter: c.deforestationCo2 + (c.deforestationChange ?? 0),
-      }
-    : { clearingBefore: null, clearingAfter: null };
+/** A land CO₂ today and with the levers; nulls without it. */
+const beforeAfterOf = (before: number | undefined, change: number | undefined) =>
+  before === undefined ? [null, null] : [before, before + (change ?? 0)];
+
+/** The clearing and drained soils' CO₂, today and with the levers, in a gas that has CO₂; else nulls. */
+const clearingOf = (c: CountryResult, gas: GasChoice) => {
+  const shown = c.deforestationCo2 !== undefined && (gas === 'co2' || gas === 'co2e');
+  const [clearingBefore, clearingAfter] = shown
+    ? beforeAfterOf(c.deforestationCo2, c.deforestationChange)
+    : [null, null];
+  const [drainedBefore, drainedAfter] = shown
+    ? beforeAfterOf(c.drainedCo2, c.drainedChange)
+    : [null, null];
+  return { clearingBefore, clearingAfter, drainedBefore, drainedAfter } as Pick<
+    BeyondFarm,
+    'clearingBefore' | 'clearingAfter' | 'drainedBefore' | 'drainedAfter'
+  >;
+};
 
 /** Food's emissions beyond the farm, on the Emissions layer only. */
 export const beyondFarm = (c: CountryResult, spec: LayerSpec): BeyondFarm =>

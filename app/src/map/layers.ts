@@ -100,9 +100,9 @@ const clearing = (c: CountryResult): [number, number] => [
   c.deforestationHaChange ?? 0,
 ];
 
-/** The levers' change in a country's land-use CO₂, kg a year. */
+/** The levers' change in a country's land-use CO₂, kg a year: clearing, drained soils, regrowth. */
 export const landCo2Change = (c: CountryResult): number =>
-  (c.deforestationChange ?? 0) - (c.regrowthCo2 ?? 0);
+  (c.deforestationChange ?? 0) + (c.drainedChange ?? 0) - (c.regrowthCo2 ?? 0);
 
 /** Farmland as a share of the country's land area, and its change; none without the area. */
 const landShare = (c: CountryResult): [number, number] =>

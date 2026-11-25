@@ -52,9 +52,16 @@ Planetshift uses the amortised series, because the model scales emissions with p
 
 The map shows the forest area cleared instead: DeDuCE's unamortised attribution, in hectares, averaged over the same years and given to foods the same way as the CO₂. It totals about 4.2 million hectares a year on the foods in the model, 1.5 million in Brazil. The model moves it with each food's production and with the lever, the same way it moves the CO₂. The map's tooltip gives both.
 
-### Peat drainage is left out
+### Drained organic soils
 
-DeDuCE also reports the CO₂ from draining peatland under crops, mostly oil palm in Indonesia and Malaysia: about 0.23 Gt a year. Planetshift leaves it out. It is an emission of land already cleared, which continues whether or not more forest is cut. It therefore belongs with the land the food occupies rather than with deforestation.
+Draining peat and other organic soils for farming exposes their carbon to the air. It is an emission of land already cleared, which continues whether or not more forest is cut, so the deforestation lever does not stop it. It belongs with the land the food occupies, and it follows each food's production.
+
+FAOSTAT's *Emissions from Drained organic soils* gives each country's CO₂ on cropland and on grassland. For 2024, the countries of the model emit 0.81 Gt of CO₂ a year: 0.65 Gt on cropland and 0.16 Gt on grassland. Indonesia comes first with 0.24 Gt, then Russia, the United States, Belarus and Canada.
+
+- Cropland's CO₂ goes to the crops by DeDuCE's peat drainage by commodity where DeDuCE has any for the country, so Indonesia's goes mostly to oil palm (0.18 Gt). Elsewhere it goes to the crops by their harvested area.
+- Grassland's CO₂ goes to the ruminant products (beef, mutton and goat meat, other meat, milk) by their methane.
+
+The CO₂ moves with each food's production, as the clearing does, and counts in the Land use cause. When the shift frees drained land, the model takes the land to be rewetted, so its emission stops. Land left drained would keep emitting, so this is the most the shift could avoid. The full shift avoids 0.27 Gt a year of it. The N₂O of drained soils, 0.35 Mt a year, is left out. DeDuCE's own peat drainage (about 0.23 Gt) is not used as an emission, only to share the cropland's out.
 
 ### From commodities to foods
 
@@ -83,7 +90,7 @@ Wider totals count more:
 ## Assumptions
 
 - Each year's emissions are DeDuCE's amortised ones, averaged over 2019–2023: the emissions of clearing spread over the five years of harvest after it.
-- Peat drainage is not deforestation and is left out.
+- Peat drainage is not deforestation. Drained organic soils are counted apart, from FAOSTAT, and taken to be rewetted when the shift frees them.
 - Pasture deforestation is all bovine meat. Leather, dairy and other grazing animals get none of it.
 - Non-food commodities (leather, rubber, fibres, tobacco, the lint share of cotton) and forest plantations are left out.
 - Net negative cells (a tree crop holding more carbon than the forest it replaced) are dropped, not counted as removals.

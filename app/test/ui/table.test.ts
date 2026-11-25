@@ -29,7 +29,14 @@ const row = (over: Partial<TableRow>): TableRow => ({
   change: 0,
   tier: null,
   source: null,
-  beyond: { chainBefore: null, chainAfter: null, clearingBefore: null, clearingAfter: null },
+  beyond: {
+    chainBefore: null,
+    chainAfter: null,
+    clearingBefore: null,
+    clearingAfter: null,
+    drainedBefore: null,
+    drainedAfter: null,
+  },
   ...over,
 });
 
@@ -58,7 +65,14 @@ describe('table rows', () => {
       change: 15 / 110,
       tier: 5,
       source: 'https://hestia.earth/x',
-      beyond: { chainBefore: null, chainAfter: null, clearingBefore: null, clearingAfter: null },
+      beyond: {
+        chainBefore: null,
+        chainAfter: null,
+        clearingBefore: null,
+        clearingAfter: null,
+        drainedBefore: null,
+        drainedAfter: null,
+      },
     });
   });
 

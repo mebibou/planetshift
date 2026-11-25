@@ -11,7 +11,7 @@ The app offers two scopes:
 - **Farm gate** (*Biological processes only* in the app): the emissions of the farm's biological processes. These are enteric fermentation (the methane made in ruminants' stomachs as they digest), manure management, manure left on pasture and spread on fields, synthetic fertiliser, crop residues, rice paddies and the burning of residues.
 - **Cradle to farm gate** (*With inputs*, the default): the same, plus the farm's energy use (fuel and electricity) and the making of fertilisers and pesticides. The fuel burnt on the farm counts here, whichever source the intensity comes from.
 
-Neither scope includes land-use change, drained organic soils, or anything after the farm: processing, transport, retail, cooking and waste. What happens after the farm is counted separately, in *After the farm* below. The forest cleared for farming is counted by the deforestation module (see [Deforestation](#method-deforestation)). The tooltip of the map's Emissions layer shows the emissions after the farm and the clearing's CO₂, beside the farm's emissions. Drained organic soils are left out.
+Neither scope includes land-use change, drained organic soils, or anything after the farm: processing, transport, retail, cooking and waste. What happens after the farm is counted separately, in *After the farm* below. The forest cleared for farming and the CO₂ of drained organic soils are counted by the deforestation module (see [Deforestation](#method-deforestation)). The tooltip of the map's Emissions layer shows the emissions after the farm, the clearing's CO₂ and the drained soils' CO₂, beside the farm's emissions.
 
 ## Why animal products leave out their feed
 
@@ -244,7 +244,7 @@ The making of fertilisers and the making of pesticides are left out, as they are
 
 In France, a tonne of beef has about 1.08 t CO₂e after the farm, and a tonne of wheat about 0.31 t. That is small compared with the beef's farm emissions, and close to the wheat's.
 
-**What the levers change.** A change in production (a diet shift, less food waste, fewer supply losses) also changes the emissions after the farm. It does so food by food, at the country's figures. Like the farm's emissions, they scale with the baseline and ramp in with the shift. They count in the [causes of warming](#method-link) they belong to today: the energy stages in *Fossil fuels and industry*; food waste, wastewater and the refrigerants in *Other human emissions*. With them, the whole diet shift avoids about 1.6 Gt CO₂e a year more. Once the levers are in full, it avoids 7.1 Gt in all, including 329 kt of HFC-134a, about 0.5 Gt CO₂e. It avoids 0.36 °C by 2100 rather than 0.28 °C.
+**What the levers change.** A change in production (a diet shift, less food waste, fewer supply losses) also changes the emissions after the farm. It does so food by food, at the country's figures. Like the farm's emissions, they scale with the baseline and ramp in with the shift. They count in the [causes of warming](#method-link) they belong to today: the energy stages in *Fossil fuels and industry*; food waste, wastewater and the refrigerants in *Other human emissions*. With them, the whole diet shift avoids about 1.6 Gt CO₂e a year more. Once the levers are in full, it avoids 7.3 Gt in all, including 329 kt of HFC-134a, about 0.5 Gt CO₂e, and 0.27 Gt of CO₂ from drained soils. It avoids 0.36 °C by 2100 rather than 0.28 °C.
 
 **Simplifications.** Everything is placed where the food is produced, as for the farm's emissions, though shops and kitchens are where it is eaten. Cooking and food waste follow a food's mass, so a tonne of wheat and a tonne of beef have the same emissions at home. Less food waste also cuts the cooking emissions of the food no longer wasted. This slightly overstates the cut, because wasted food is not always cooked. The energy after the farm does not get cleaner over the years, unlike the scenario's grid.
 
@@ -262,9 +262,9 @@ For each food, a country's footprint adds up:
 
 The total is divided by the country's population in the base year. With the levers, the diet shift and less food waste change the food eaten. The farm's intensities change with the farm practices. The chain after the farm and the clearing per tonne do not change.
 
-In CO₂e per person a year, France's footprint is 2.04 t, the United States' 2.51 t, China's 2.09 t, India's 0.92 t and Brazil's 4.39 t. The refrigerants are 0.05 t of France's and 0.15 t of the United States'. In Brazil, clearing for farming is about half, 2.19 t. In France it is 0.04 t. France's imported beef comes mostly from its neighbours, the Netherlands, Ireland and the United Kingdom first. Much of its soy arrives as cake, which takes the world's average. With the whole diet shifted, France's footprint falls to 0.90 t.
+In CO₂e per person a year, France's footprint is 2.20 t, the United States' 2.67 t, China's 2.12 t, India's 0.93 t and Brazil's 4.40 t. The refrigerants are 0.05 t of France's and 0.15 t of the United States'. Drained organic soils are 0.16 t of France's, through the dairy and beef it imports from its neighbours and through palm oil. In Brazil, clearing for farming is about half, 2.19 t. In France it is 0.04 t. France's imported beef comes mostly from its neighbours, the Netherlands, Ireland and the United Kingdom first. Much of its soy arrives as cake, which takes the world's average. With the whole diet shifted, France's footprint falls to 0.95 t.
 
-Published estimates for France are often higher. Planetshift's intensities explain little of the difference. Its meat and milk, which make most of a French diet's footprint, are close to Poore and Nemecek's or above them once both are in the same unit and with the same factors. Its crops and eggs are 20% to 50% below theirs (see *Per kilogram, against Poore and Nemecek*). Drained organic soils are left out too.
+Published estimates for France are often higher. Planetshift's intensities explain little of the difference. Its meat and milk, which make most of a French diet's footprint, are close to Poore and Nemecek's or above them once both are in the same unit and with the same factors. Its crops and eggs are 20% to 50% below theirs (see *Per kilogram, against Poore and Nemecek*).
 
 ## Proxies
 
@@ -355,7 +355,7 @@ From FAOSTAT's data alone (tier 3 everywhere, before the other tiers are merged)
 
 Farm-gate methane is within the published budgets. Enteric fermentation and manure management together give 114 Mt: 98 and 9 Mt from the animals raised for food, and 6 Mt from the animals that are not. The Global Methane Budget gives 112 (107–118) Tg a year for 2010–2019 (Saunois et al., 2025).
 
-FAO's farm-gate total for 2023 is 8.1 Gt CO₂-equivalent (FAOSTAT Analytical Brief 115). It includes drained organic soils, which Planetshift leaves out, and the farm's energy use, fuel and electricity, which Planetshift counts from cradle to farm gate only.
+FAO's farm-gate total for 2023 is 8.1 Gt CO₂-equivalent (FAOSTAT Analytical Brief 115). It includes drained organic soils, which Planetshift counts under land use (see [Deforestation](#method-deforestation)), and the farm's energy use, fuel and electricity, which Planetshift counts from cradle to farm gate only.
 
 Direct agricultural N₂O was 6.1 Mt in 2020 (3.9 Tg N, Tian et al., 2024). Planetshift's 8.4 Mt also includes indirect emissions, as FAOSTAT's figure does.
 

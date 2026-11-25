@@ -87,7 +87,7 @@ The classification is by term id (`category_of`). A term added to the glossary l
 
 A test checks the sum of all three gases against each aggregation's own GWP100, as HESTIA computes it with the IPCC AR6 factors (GWP100 is the 100-year weighting behind CO₂e; see [Climate](#method-climate)). Wheat in France gives 0.407 kg CO₂e/kg by both sums, which shows that no row is counted twice.
 
-Land use is left out here because land-use change has its own lever, [Deforestation](#method-deforestation). Drained organic soils are left out too, as in FAOSTAT's domains.
+Land use is left out here because land-use change has its own lever, [Deforestation](#method-deforestation). Drained organic soils are left out too: they are counted from FAOSTAT with deforestation.
 
 ## The two scopes, and why feed is excluded
 

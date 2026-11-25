@@ -77,10 +77,22 @@ const chainRows = (c: CountryResult, gas: GasChoice, t: T, locale: string): [str
       ]
     : [];
 
-/** The CO₂ of clearing forest for farming, in a gas that has CO₂ only. */
+/** The CO₂ of the drained organic soils under the country's farming, today and with the levers. */
+const drainedRow = (c: CountryResult, t: T, locale: string): [string, string] => [
+  t('map.tooltip.drainedCo2'),
+  t('map.tooltip.beforeAfter', {
+    before: formatMass(locale, c.drainedCo2 ?? 0),
+    after: formatMass(locale, (c.drainedCo2 ?? 0) + (c.drainedChange ?? 0)),
+  }),
+];
+
+/** The CO₂ of clearing forest for farming and of drained soils, in a gas that has CO₂ only. */
 const clearingRows = (c: CountryResult, gas: GasChoice, t: T, locale: string) =>
   c.deforestationCo2 !== undefined && (gas === 'co2' || gas === 'co2e')
-    ? [clearingCo2Row(c, t, locale, 'map.tooltip.clearingCo2')]
+    ? [
+        clearingCo2Row(c, t, locale, 'map.tooltip.clearingCo2'),
+        ...((c.drainedCo2 ?? 0) > 0 ? [drainedRow(c, t, locale)] : []),
+      ]
     : [];
 
 /** What the food eaten in the country emits per person, in a gas; none without a figure. */
@@ -205,6 +217,7 @@ const MEASURE_TOOLTIPS: Record<
     extra: (c, t, locale) => ({
       rows: [
         clearingCo2Row(c, t, locale, 'map.tooltip.clearing'),
+        ...((c.drainedCo2 ?? 0) > 0 ? [drainedRow(c, t, locale)] : []),
         ...(c.regrowthCo2 === undefined
           ? []
           : [[t('map.tooltip.regrowth'), formatMass(locale, c.regrowthCo2)] as [string, string]]),

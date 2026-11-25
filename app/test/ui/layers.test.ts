@@ -118,6 +118,7 @@ describe('layers', () => {
     });
     const regrowing = countryResult({ deforestationChange: -2e9, regrowthCo2: 1e9 });
     expect(landCo2Change(regrowing)).toBe(-3e9);
+    expect(landCo2Change({ ...regrowing, drainedChange: -0.5e9 })).toBe(-3.5e9);
     expect(landCo2Change(countryResult())).toBe(0);
     expect(
       layerValue(countryResult({ iso3: 'USA' }), spec({ layer: 'landCo2' }), landUse),
