@@ -174,6 +174,11 @@ export interface Land {
   pasture: Record<string, { ha: number; shares: Partial<Record<AnimalGroup, number>> }>;
   regrowth: Record<string, { median: number; low: number; high: number }>;
   regrowthYears: number;
+  /**
+   * The albedo forcing of a hectare of farmland in the country, W/m² of global mean (negative:
+   * farmland reflects more sunlight than the vegetation it replaced), by its latitude band.
+   */
+  albedoPerHa?: Record<string, number>;
 }
 
 /** A median with a likely range. */
@@ -215,7 +220,7 @@ export type GasLeverCause = LeverCause | 'waste' | 'other';
  * The causes the levers' effects are counted in: those a lever acts on, and air pollution, which
  * the energy levers change with the fossil fuel they cut.
  */
-export type CountedCause = LeverCause | 'waste' | 'airPollution' | 'other';
+export type CountedCause = LeverCause | 'landAlbedo' | 'waste' | 'airPollution' | 'other';
 
 export type Cause =
   | 'fossilIndustry'

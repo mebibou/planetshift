@@ -288,8 +288,11 @@ def attribution_runs(
     land = combined(taken, ("agriculture", "landUse"))
     later = {k: v * (years >= FOOD_FUTURE_FROM) for k, v in land.items()}
     by_gas, alone = gas_removals(taken, emissions, baseline, burning)
+    land = emissions.get(climate_fair.LAND_USE)
+    flat = {} if land is None else {NO_LAND_FORCING: emissions | {climate_fair.LAND_USE: 0 * land}}
     scenarios = (
         {"full": emissions}
+        | flat
         | {cause: without(emissions, taken[cause]) for cause in CAUSES}
         | {name: without(emissions, removed) for name, removed in by_gas.items()}
         | (
@@ -303,12 +306,7 @@ def attribution_runs(
     )
     result = climate_fair.run(setup, scenarios, end)
     runs = {name: result.temperature[:, i, :] for i, name in enumerate(result.scenarios)}
-    surface = climate_fair.run(setup, {NO_LAND_FORCING: emissions}, end, land_forcing=False)
-    return (
-        runs
-        | {name: runs[cause] for name, cause in alone.items()}
-        | {NO_LAND_FORCING: surface.temperature[:, 0, :]}
-    )
+    return runs | {name: runs[cause] for name, cause in alone.items()}
 
 
 def contributions(
@@ -318,16 +316,15 @@ def contributions(
     (the run with natural forcing only), and other: what is left, the other human emissions and
     the causes' non-additivity."""
     total = anomaly(years, runs["full"])
-    albedo = land_albedo(years, runs)
     causes = {c: anomaly(years, runs["full"] - runs[c]) for c in CAUSES}
-    causes = causes | {"landUse": causes["landUse"] - albedo, LAND_ALBEDO: albedo}
+    causes = causes | {LAND_ALBEDO: land_albedo(years, runs)}
     other = total - sum(causes.values()) - natural
     return {"total": total, **causes, "natural": natural, "other": other}
 
 
 def land_albedo(years: np.ndarray, runs: dict[str, np.ndarray]) -> np.ndarray:
-    """Per member, °C: the forcing FaIR derives from cumulative land-use CO₂ (surface albedo and
-    irrigation, a cooling), full run less the same run without it; zero without that run."""
+    """Per member, °C: land use's prescribed albedo forcing (and irrigation, a cooling), the full
+    run less the same run without it; zero without that run."""
     return (
         anomaly(years, runs["full"] - runs[NO_LAND_FORCING])
         if NO_LAND_FORCING in runs
@@ -340,17 +337,13 @@ def gas_contributions(
 ) -> dict[str, dict[str, np.ndarray]]:
     """Per gas and member, °C vs 1850–1900: the gas's total (full − every source of it), each
     greenhouse cause's part (full − that cause's part of the gas), and other: the gas's other
-    sources and the causes' non-additivity. Taking land-use CO₂ out also takes out the albedo
-    change FaIR derives from it, which is no greenhouse effect: CO₂'s total and land use's part
-    leave it out."""
-    albedo = land_albedo(years, runs)
+    sources and the causes' non-additivity. Land use's albedo change is prescribed, so taking
+    its CO₂ out leaves it in place."""
 
     def one(gas: str) -> dict[str, np.ndarray]:
-        surface = albedo if gas == "co2" else 0
-        total = anomaly(years, runs["full"] - runs[gas_key(ALL_SOURCES, gas)]) - surface
+        total = anomaly(years, runs["full"] - runs[gas_key(ALL_SOURCES, gas)])
         causes = {
             c: anomaly(years, runs["full"] - runs[gas_key(c, gas)])
-            - (surface if c == "landUse" else 0)
             for c in (*GREENHOUSE, BURNING)
             if gas_key(c, gas) in runs
         }
@@ -468,6 +461,7 @@ def build(
     runs only they read."""
     setup = climate_fair.load_setup(cache_dir, members)
     rcmip_df = rcmip.load(cache_dir)
+    forcing = rcmip.load_forcing(cache_dir)
     primap_df = primap.load(cache_dir)
     fair_years = np.arange(climate_fair.START, max(PULSE_YEARS) + HORIZON + 1)
     history = fair_history.load(cache_dir)
@@ -488,7 +482,8 @@ def build(
     runs = {
         ssp: attribution_runs(
             setup,
-            {k: v[: len(years)] for k, v in by_ssp[ssp].items()},
+            {k: v[: len(years)] for k, v in by_ssp[ssp].items()}
+            | {climate_fair.LAND_USE: rcmip.albedo_forcing(forcing, ssp, years)},
             sector[ssp]["agriculture"],
             sector[ssp]["fossilIndustry"],
             SCENARIO_END + 1,

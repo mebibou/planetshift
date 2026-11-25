@@ -96,9 +96,40 @@ def _natural(setup: Setup, specie: str, timebounds: np.ndarray) -> np.ndarray:
     return np.interp(timebounds, values.index.astype(float), values.to_numpy())
 
 
+def at_bounds(annual: np.ndarray, timebounds: np.ndarray) -> np.ndarray:
+    """Calendar-year values from START, read at FaIR's year boundaries (each year's at mid-year)."""
+    mid = START + 0.5 + np.arange(len(annual))
+    return np.interp(timebounds, mid, annual)
+
+
 def annual_means(bounds: np.ndarray) -> np.ndarray:
     """Calendar-year means from values at year boundaries (trapezoid)."""
     return 0.5 * (bounds[1:] + bounds[:-1])
+
+
+def prescribed_land(setup: Setup, emissions: dict[str, dict[str, np.ndarray]]) -> dict:
+    """The species properties, with the land-use forcing prescribed when every scenario carries a
+    `LAND_USE` series (W/m², calendar years from START) rather than FaIR's cumulative-CO₂ proxy."""
+    given = [LAND_USE in e for e in emissions.values()]
+    if any(given) and not all(given):
+        raise ValueError("either every scenario of a batch prescribes the land-use forcing or none")
+    land = {**setup.properties[LAND_USE], "input_mode": "forcing"}
+    return {**setup.properties, LAND_USE: land} if all(given) else setup.properties
+
+
+def fill_forcing(f: FAIR, setup: Setup, emissions: dict, properties: dict) -> None:
+    """The prescribed forcing: volcanic and solar, and land use where the batch prescribes it,
+    each times its member's forcing scale."""
+    scales = pd.read_csv(setup.parameters, index_col=0).loc[setup.configs]
+    for specie in ("Volcanic", "Solar"):
+        forcing = _natural(setup, specie, f.timebounds)
+        scale = scales[f"forcing_scale[{specie}]"].to_numpy()
+        fill(f.forcing, forcing[:, None, None] * scale[None, None, :], specie=specie)
+    prescribed = properties[LAND_USE]["input_mode"] == "forcing"
+    scale = scales[f"forcing_scale[{LAND_USE}]"].to_numpy()
+    for scenario, by_specie in emissions.items() if prescribed else ():
+        forcing = at_bounds(by_specie[LAND_USE], f.timebounds)
+        fill(f.forcing, forcing[:, None] * scale[None, :], scenario=scenario, specie=LAND_USE)
 
 
 def _run_batch(
@@ -106,30 +137,24 @@ def _run_batch(
     emissions: dict[str, dict[str, np.ndarray]],
     end: int,
     carbon_feedback: bool,
-    land_forcing: bool = True,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     scenarios = list(emissions)
     f = FAIR(ch4_method=CH4_METHOD)
     f.define_time(START, end, 1)
     f.define_scenarios(scenarios)
     f.define_configs(setup.configs)
-    f.define_species(setup.species, setup.properties)
+    properties = prescribed_land(setup, emissions)
+    f.define_species(setup.species, properties)
     f.allocate()
     for scenario, by_specie in emissions.items():
         for specie in setup.emitted:
             values = by_specie[specie][: len(f.timepoints), None]
             fill(f.emissions, values, scenario=scenario, specie=specie)
-    scales = pd.read_csv(setup.parameters, index_col=0).loc[setup.configs]
-    for specie in ("Volcanic", "Solar"):
-        forcing = _natural(setup, specie, f.timebounds)
-        scale = scales[f"forcing_scale[{specie}]"].to_numpy()
-        fill(f.forcing, forcing[:, None, None] * scale[None, None, :], specie=specie)
+    fill_forcing(f, setup, emissions, properties)
     f.fill_species_configs(setup.species_file)
     f.override_defaults(setup.parameters)
     if not carbon_feedback:
         fill(f.species_configs["iirf_temperature"], 0, specie="CO2")
-    if not land_forcing:
-        fill(f.species_configs["forcing_scale"], 0, specie=LAND_USE)
     initialise(f.concentration, f.species_configs["baseline_concentration"])
     initialise(f.forcing, 0)
     initialise(f.temperature, 0)
@@ -163,12 +188,11 @@ def run_key(
     emitted: list[str],
     end: int,
     feedback: bool,
-    land_forcing: bool = True,
 ) -> str:
-    """The cache key of one scenario's run; runs with the land-use forcing keep their old keys."""
-    flags = f"{feedback}" if land_forcing else f"{feedback}|no land forcing"
-    key = hashlib.sha256(f"{digest}|{end}|{flags}".encode())
-    for specie in emitted:
+    """The cache key of one scenario's run: its emissions and, when it prescribes one, its
+    land-use forcing (runs without one keep their keys)."""
+    key = hashlib.sha256(f"{digest}|{end}|{feedback}".encode())
+    for specie in [*emitted, *([LAND_USE] if LAND_USE in by_specie else [])]:
         key.update(specie.encode())
         key.update(np.ascontiguousarray(by_specie[specie][: end - START], dtype=float).tobytes())
     return key.hexdigest()
@@ -192,10 +216,9 @@ def _run_batches(
     batches: list[dict[str, dict[str, np.ndarray]]],
     end: int,
     feedback: bool,
-    land_forcing: bool = True,
 ) -> list[tuple[np.ndarray, np.ndarray, np.ndarray]]:
     count = min(workers(), len(batches))
-    one = partial(_run_batch, setup, end=end, carbon_feedback=feedback, land_forcing=land_forcing)
+    one = partial(_run_batch, setup, end=end, carbon_feedback=feedback)
     if count <= 1:
         outputs = [one(batch) for batch in batches]
     else:
@@ -209,23 +232,22 @@ def run(
     emissions: dict[str, dict[str, np.ndarray]],
     end: int,
     carbon_feedback: bool = True,
-    land_forcing: bool = True,
 ) -> Result:
     """Run each scenario's emissions (per specie, one value per calendar year START..end-1).
 
     Each scenario's result is kept in `cache/fair/runs/`, keyed by everything it depends on, so
     only scenarios not run before go through FaIR: a few at a time to bound memory, in parallel
     processes (`workers`). `carbon_feedback=False` turns off the effect of warming on carbon
-    uptake, for diagnostics; `land_forcing=False` the forcing FaIR derives from cumulative
-    land-use CO₂ (surface albedo and irrigation), to measure it apart.
+    uptake, for diagnostics. A scenario with a `LAND_USE` series prescribes the land-use forcing
+    (surface albedo and irrigation) in place of FaIR's cumulative-CO₂ proxy; a batch prescribes it
+    for all its scenarios or none.
     """
     folder = setup.parameters.parent / RUNS_FOLDER
     folder.mkdir(parents=True, exist_ok=True)
     digest = setup_digest(setup)
     names = list(emissions)
     paths = {
-        n: folder
-        / f"{run_key(digest, emissions[n], setup.emitted, end, carbon_feedback, land_forcing)}.npz"
+        n: folder / f"{run_key(digest, emissions[n], setup.emitted, end, carbon_feedback)}.npz"
         for n in names
     }
     missing = [n for n in names if not paths[n].exists()]
@@ -235,7 +257,6 @@ def run(
         [{n: emissions[n] for n in batch} for batch in batches],
         end,
         carbon_feedback,
-        land_forcing,
     )
     for batch, output in zip(batches, outputs, strict=True):
         for i, name in enumerate(batch):

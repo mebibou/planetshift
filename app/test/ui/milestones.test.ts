@@ -26,6 +26,7 @@ const temperature = (
     fossilIndustry: [],
     agriculture: [],
     landUse: [],
+    landAlbedo: [],
     waste: [],
     airPollution: [],
     other: [],

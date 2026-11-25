@@ -194,6 +194,16 @@ Le tableau montre ce que change la compensation, sur les données réelles avec 
 
 Avec le changement complet, 14 pays cultivent au total plus de terres qu'avant, 41 Mha ensemble. Avec la substitution du poisson, 103 pays cultivent plus de terres qu'avant, 18 Mha ensemble. Sans la repousse, rien ne change.
 
+### L'albédo des terres qui repoussent
+
+La forêt est plus sombre que les terres agricoles : les terres qui repoussent renvoient moins de lumière et réchauffent un peu la planète. Avec la repousse, le modèle le compte dans *Usage des terres : albédo* sur le graphique des causes, face au CO₂ que ces terres absorbent.
+
+Jiao et al. (2017) ont mesuré, à partir de l'albédo vu par satellite, le forçage du passage de chaque type de forêt en culture. Par million d'hectares, en mW m⁻² de moyenne mondiale : environ 0,071 pour la forêt tropicale de feuillus, 0,097 pour les feuillus tempérés et 0,246 pour la forêt mixte, et 0,231 et 0,296 pour les deux forêts boréales. Chaque pays prend la valeur de sa bande de latitude, lue à l'endroit où son nom s'inscrit sur la carte : 0,071 sous les tropiques (moins de 23,5°), 0,17 entre 23,5° et 50°, et 0,26 au-delà. Comme pour le CO₂, un hectare libéré ne la prend que sur la part des terres agricoles du pays où la forêt repousserait : les parcours secs n'absorbent pas de CO₂ et ne s'assombrissent pas. Les terres libérées une année s'assombrissent entièrement en 30 ans de repousse.
+
+Ces valeurs n'ont été ajustées à aucun total. Appliquées à toutes les terres agricoles d'aujourd'hui, elles donnent −0,216 W m⁻², contre les −0,20 W m⁻² que RCMIP et l'AR6 donnent pour l'albédo de l'usage des terres en 2019.
+
+L'effet est important. Avec le changement complet et la repousse, sur SSP2-4.5, l'albédo retire 0,06 °C au réchauffement évité en 2100 : 0,39 °C au lieu de 0,45 °C. Le CO₂ qu'absorbe la repousse s'arrête au bout de 30 ans puis reste stocké, alors que la surface plus sombre continue de réchauffer. La plupart des terres libérées sont des pâturages hors des tropiques, là où le contraste avec la forêt est le plus fort. Jiao et al. trouvent les effets les plus forts dans les forêts boréales et mixtes, jusqu'à −80 W m⁻² localement, et presque aucun sous les tropiques. Leurs valeurs ne tiennent pas compte de la neige, qui rend le défrichement boréal plus refroidissant : l'effet y est peut-être plus grand encore.
+
 ## Le CO₂ de l'usage des terres par pays
 
 La couche CO₂ des terres de la carte, à côté de la part des terres cultivées de la couche Usage des terres, donne le CO₂ net de tout changement d'usage des terres dans chaque pays : forêts défrichées pour quelque raison que ce soit, tourbières drainées et autres changements, moins l'absorption de la forêt qui repousse sur les terres abandonnées. C'est l'estimation nationale du Global Carbon Budget 2025, la moyenne de ses trois modèles de comptabilité (BLUE, OSCAR et LUCE), sur 2015–2024. Le total mondial est de 5,03 Gt de CO₂ par an, les 5,0 ± 2,6 Gt que le Global Carbon Budget donne pour cette décennie ; les trois modèles donnent 5,75, 4,73 et 4,60.
@@ -248,6 +258,7 @@ Les données d'utilisation des terres de FAOSTAT que lit le pipeline donnent 1,5
 - Cook-Patton, S. C. et al. (2020). Mapping carbon accumulation potential from global natural forest regrowth. Nature 585, 545–550, données supplémentaires 1 (rythmes par pays) : <https://doi.org/10.1038/s41586-020-2686-x>. L'article est publié sous licence exclusive à Springer Nature ; les rythmes par pays sont réutilisés avec cette citation, et les cartes sous-jacentes sont sur Global Forest Watch sous licence CC BY 4.0.
 - Griscom, B. W. et al. (2017). Natural climate solutions. PNAS 114, 11645–11650 (la surface de reboisement derrière le scénario maximal de Cook-Patton et al.) : <https://doi.org/10.1073/pnas.1710465114>.
 - Hayek, M. N., Harwatt, H., Ripple, W. J., Mueller, N. D. (2021). The carbon opportunity cost of animal-sourced food production on land. Nature Sustainability 4, 21–24 : <https://doi.org/10.1038/s41893-020-00603-4>.
+- Jiao, Williams, Ghimire, Masek, Gao et Schaaf (2017). Global climate forcing from albedo change caused by large-scale deforestation and reforestation. Climatic Change 142, 463–476 (tableau 1) : [doi:10.1007/s10584-017-1962-8](https://doi.org/10.1007/s10584-017-1962-8).
 - Poore, J., Nemecek, T. (2018). Reducing food's environmental impacts through producers and consumers. Science 360, 987–992 : <https://doi.org/10.1126/science.aaq0216>.
 - FAOSTAT, Commerce, cultures et produits de l'élevage (valeur et quantité des exportations d'huiles et de tourteaux, 2021–2023) : <https://www.fao.org/faostat/en/#data/TCL>, CC BY 4.0.
 - FAO (2000). Technical Conversion Factors for Agricultural Commodities (huile et tourteau par tonne d'oléagineux trituré) : <https://www.fao.org/economic/the-statistics-division-ess/methodology/methodology-systems/technical-conversion-factors-for-agricultural-commodities/en/>.

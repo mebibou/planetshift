@@ -155,6 +155,7 @@ const temperature = (): ScenarioResult['temperature'] => {
       fossilIndustry: [],
       agriculture: [],
       landUse: [],
+      landAlbedo: [],
       waste: [],
       airPollution: [],
       other: [],

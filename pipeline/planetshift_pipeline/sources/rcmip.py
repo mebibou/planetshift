@@ -25,8 +25,25 @@ FAIR_NAMES = {
 }
 
 
+FORCING_URL = (
+    "https://rcmip-protocols-au.s3-ap-southeast-2.amazonaws.com/"
+    "v5.1.0/rcmip-radiative-forcing-annual-means-v5-1-0.csv"
+)
+#: The effective radiative forcing of land-cover change, from each SSP's land-use maps (LUH2).
+ALBEDO = "Effective Radiative Forcing|Anthropogenic|Albedo Change"
+
+
 def load(cache_dir: Path) -> pd.DataFrame:
     return pd.read_csv(fetched(cache_dir / "rcmip", EMISSIONS_URL))
+
+
+def load_forcing(cache_dir: Path) -> pd.DataFrame:
+    return pd.read_csv(fetched(cache_dir / "rcmip", FORCING_URL))
+
+
+def albedo_forcing(forcing: pd.DataFrame, scenario: str, years: np.ndarray) -> np.ndarray:
+    """W/m² of land use's albedo change in `scenario` on calendar `years`, held flat beyond."""
+    return series(forcing, scenario, ALBEDO, years)
 
 
 def rcmip_name(specie: str) -> str:
