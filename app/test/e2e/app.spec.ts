@@ -202,7 +202,7 @@ test('the gas switch stacks one gas by cause, kept in the URL and moved by the k
   await expect(page).toHaveURL(/causegas=ch4/);
   await expect(page.locator('.attribution-chart path.stack')).toHaveCount(4);
   await expect(page.locator('.attribution-chart .observed-line')).toHaveCount(0);
-  await expect(legend).toContainText('Other sources and interactions');
+  await expect(legend).toContainText('Interactions and other minor sources');
   await expect(legend).not.toContainText('Air pollution');
   await expect(legend).not.toContainText('Land use');
   await expect(page.locator('.attribution-chart svg[role="img"]')).toHaveAttribute(
@@ -250,7 +250,7 @@ test('a French reader gets the gas switch in French', async ({ page }) => {
   await open(page, `${START}&chart=cause&causegas=ch4&lang=fr`);
   await expect(page.locator('[data-control="causegas"]')).toContainText('Tous les gaz');
   await expect(page.locator('.attribution-chart .chart-legend')).toContainText(
-    'Autres sources et interactions',
+    'Interactions et autres sources mineures',
   );
 });
 

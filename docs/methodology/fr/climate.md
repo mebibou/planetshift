@@ -119,15 +119,15 @@ L'application montre la médiane et la fourchette de 5 à 95 % par rapport à 18
 
 | Scénario | 2015–2024 | 2050 | 2100 |
 | --- | --- | --- | --- |
-| SSP1-2.6 | 1,20 °C (0,98–1,37) | 1,77 °C (1,35–2,30) | 1,76 °C (1,23–2,54) |
-| SSP2-4.5 | 1,19 °C (0,97–1,37) | 1,90 °C (1,51–2,34) | 2,63 °C (1,94–3,63) |
-| SSP3-7.0 | 1,17 °C (0,92–1,36) | 1,90 °C (1,51–2,32) | 3,54 °C (2,74–4,52) |
+| SSP1-2.6 | 1,20 °C (1,01–1,36) | 1,79 °C (1,36–2,33) | 1,76 °C (1,22–2,56) |
+| SSP2-4.5 | 1,20 °C (1,01–1,36) | 1,89 °C (1,50–2,33) | 2,61 °C (1,91–3,61) |
+| SSP3-7.0 | 1,20 °C (1,01–1,36) | 1,88 °C (1,50–2,30) | 3,51 °C (2,68–4,48) |
 
-Le réchauffement observé sur 2015–2024 est de 1,27 °C dans HadCRUT5 et de 1,33 °C dans Berkeley Earth, tous deux ramenés ici à leur propre moyenne de 1850–1900. La médiane de FaIR est 0,08 °C sous HadCRUT5, dans sa fourchette, ce qu'un test vérifie. Les valeurs de 2100 sont proches des meilleures estimations de l'AR6 pour 2081–2100 : 1,8, 2,7 et 3,6 °C (tableau SPM.1).
+Le réchauffement observé sur 2015–2024 est de 1,27 °C dans HadCRUT5 et de 1,33 °C dans Berkeley Earth, tous deux ramenés ici à leur propre moyenne de 1850–1900. La médiane de FaIR est 0,06 °C sous HadCRUT5, dans sa fourchette, ce qu'un test vérifie. Les valeurs de 2100 sont proches des meilleures estimations de l'AR6 pour 2081–2100 : 1,8, 2,7 et 3,6 °C (tableau SPM.1).
 
 ### D'où viennent ces simulations et les courbes observées
 
-Les émissions des scénarios sont celles de RCMIP v5.1.0. Chaque année civile est la moyenne des valeurs de FaIR à son début et à sa fin.
+Jusqu'en 2022, les émissions sont l'historique sur lequel la calibration 1.4.1 de FaIR a été contrainte, tel que FaIR v2.2.5 le publie avec ses scénarios d'exemple. Ensuite, ce sont les SSP de RCMIP v5.1.0. L'écart entre les deux en 2022 s'efface sur 15 ans, au lieu que le SSP soit mis à l'échelle, si bien qu'une série qui passe par zéro garde son signe. L'historique propre de RCMIP diffère : son CO₂ de l'usage des terres est de 190 milliards de tonnes de carbone sur 1750–2019, contre 245 dans celui de la calibration, et son méthane de 1750 est de 19 Mt, contre 38 Mt de préindustriel dans la calibration. Chaque année civile est la moyenne des valeurs de FaIR à son début et à sa fin.
 
 Les courbes observées sont l'analyse HadCRUT5 du Met Office (série annuelle mondiale, années complètes seulement) et Berkeley Earth Land + Ocean (annuelle, température de l'air au-dessus de la banquise). Chacune est décalée pour que sa moyenne de 1850–1900 soit nulle.
 
@@ -325,7 +325,8 @@ Sans la règle sur le transport maritime, la référence est plus fraîche de 0,
 
 - FaIR, le modèle climatique Finite-amplitude Impulse Response, v2.2.5 : [github.com/OMS-NetZero/FAIR](https://github.com/OMS-NetZero/FAIR), [documentation](https://docs.fairmodel.net). Licence : Apache 2.0. Les fichiers de calibration sont lus dans ses données d'exemple à l'étiquette v2.2.5.
 - fair-calibrate v1.4.1, le jeu de paramètres calibré et contraint : [doi:10.5281/zenodo.10566813](https://doi.org/10.5281/zenodo.10566813). Licence : CC BY 4.0.
-- Protocole RCMIP v5.1.0, émissions des SSP avec leur historique : [rcmip.org](https://www.rcmip.org), [doi:10.5281/zenodo.4589756](https://doi.org/10.5281/zenodo.4589756), décrit dans [doi:10.5194/gmd-13-5175-2020](https://doi.org/10.5194/gmd-13-5175-2020). Licence : CC BY-SA 4.0.
+- Protocole RCMIP v5.1.0, émissions des SSP après 2022 : [rcmip.org](https://www.rcmip.org), [doi:10.5281/zenodo.4589756](https://doi.org/10.5281/zenodo.4589756), décrit dans [doi:10.5194/gmd-13-5175-2020](https://doi.org/10.5194/gmd-13-5175-2020). Licence : CC BY-SA 4.0.
+- Historique des émissions de la calibration 1.4.1 de FaIR, 1750–2022, tel que FaIR v2.2.5 le publie avec ses scénarios d'exemple : [github.com/OMS-NetZero/FAIR](https://github.com/OMS-NetZero/FAIR/tree/v2.2.5/examples/data/calibrated_constrained_ensemble). Licence : CC BY 4.0.
 - GIEC AR6 GT1, chapitre 7, *The Earth's Energy Budget, Climate Feedbacks and Climate Sensitivity*, et son matériel supplémentaire (7.SM.5, tableau 7.SM.7) : [doi:10.1017/9781009157896.009](https://doi.org/10.1017/9781009157896.009). Le code du chapitre : [github.com/IPCC-WG1/Chapter-7](https://github.com/IPCC-WG1/Chapter-7), licence MIT.
 - Les sources que cite l'AR6 pour ses constantes : la réponse impulsionnelle du CO₂, [doi:10.5194/acp-13-2793-2013](https://doi.org/10.5194/acp-13-2793-2013) ; les ajustements du forçage des gaz à effet de serre, [doi:10.5194/gmd-13-3571-2020](https://doi.org/10.5194/gmd-13-3571-2020) ; la rétroaction climat-carbone dans les métriques d'émission, [doi:10.5194/esd-8-235-2017](https://doi.org/10.5194/esd-8-235-2017).
 - GIEC AR6 GT1, chapitre 5, *Global Carbon and other Biogeochemical Cycles and Feedbacks*, encadré 5.1, section 5.4.3 et figure 5.29 (rétroaction du carbone du pergélisol) : [doi:10.1017/9781009157896.007](https://doi.org/10.1017/9781009157896.007).

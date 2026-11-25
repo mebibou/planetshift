@@ -21,6 +21,7 @@ KG_PER_GG = 1e6
 AGRICULTURE = "M.AG"
 ENERGY = "1"
 INDUSTRIAL_PROCESSES = "2"
+WASTE = "4"
 GASES = {"co2": "CO2", "ch4": "CH4", "n2o": "N2O"}
 
 

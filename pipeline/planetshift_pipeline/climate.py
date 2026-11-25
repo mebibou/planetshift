@@ -14,17 +14,19 @@ from . import climate_ar6, climate_fair
 from .cache import DEFAULT_CACHE
 from .climate_scenarios import (
     ATTRIBUTION_GASES,
+    BURNING,
     CAUSES,
     GASES,
     GREENHOUSE,
     all_of_gas,
+    burning_kg,
     cause_emissions,
     gas_causes,
     of_gas,
     removals,
     without,
 )
-from .sources import primap, rcmip, temperature
+from .sources import fair_history, primap, rcmip, temperature
 
 SOURCES = [
     {
@@ -36,7 +38,7 @@ SOURCES = [
     },
     {
         "id": "rcmip",
-        "name": "RCMIP emissions (SSP scenarios)",
+        "name": "RCMIP emissions (SSP scenarios after 2022, joined to the calibration's history)",
         "version": rcmip.VERSION,
         "url": "https://doi.org/10.5281/zenodo.4589756",
         "licence": rcmip.LICENCE,
@@ -47,6 +49,13 @@ SOURCES = [
         "version": "2.2.5",
         "url": "https://doi.org/10.5281/zenodo.10566813",
         "licence": "Apache 2.0 (model), CC BY 4.0 (calibration)",
+    },
+    {
+        "id": "fair-history",
+        "name": "FaIR calibration 1.4.1's emissions history, 1750-2022 (FaIR v2.2.5 example data)",
+        "version": "2.2.5",
+        "url": "https://github.com/OMS-NetZero/FAIR/tree/v2.2.5/examples/data/calibrated_constrained_ensemble",
+        "licence": "CC BY 4.0",
     },
     {
         "id": "hadcrut5",
@@ -226,12 +235,16 @@ def gas_key(cause: str, gas: str) -> str:
 
 
 ALL_SOURCES = "all"
+#: The full run without the land-use forcing, and the cause it measures.
+NO_LAND_FORCING = "noLandForcing"
+LAND_ALBEDO = "landAlbedo"
 
 
 def gas_removals(
     taken: dict[str, dict[str, np.ndarray]],
     emissions: dict[str, np.ndarray],
     baseline: dict[str, float],
+    burning: np.ndarray | None = None,
 ) -> tuple[dict[str, dict[str, np.ndarray]], dict[str, str]]:
     """What to take out for each gas: every source of it, and each greenhouse cause's part of it.
     A cause that emits that gas alone is its own run already, given as an alias."""
@@ -250,7 +263,8 @@ def gas_removals(
     totals = {
         gas_key(ALL_SOURCES, g): all_of_gas(emissions, baseline, g) for g in ATTRIBUTION_GASES
     }
-    return parts | totals, alone
+    fires = {} if burning is None else {gas_key(BURNING, "ch4"): {"CH4": burning}}
+    return parts | totals | fires, alone
 
 
 def attribution_runs(
@@ -260,17 +274,20 @@ def attribution_runs(
     fossil: dict[str, np.ndarray],
     end: int,
     diagnostics: bool = False,
+    waste: dict[str, np.ndarray] | None = None,
+    burning: np.ndarray | None = None,
 ) -> dict[str, np.ndarray]:
     """Temperature (year, member) with all emissions, each cause removed, and for each gas, all of
     it and each cause's part of it removed; with `diagnostics`, also the three greenhouse causes
     removed together and agriculture and land use removed from FOOD_FUTURE_FROM on (for the
     food-consumption study)."""
     baseline = climate_fair.baseline_emissions(setup)
-    taken = removals(emissions, agriculture, fossil, baseline)
+    nothing = {g: np.zeros(len(emissions["CH4"])) for g in GASES}
+    taken = removals(emissions, agriculture, fossil, baseline, nothing if waste is None else waste)
     years = np.arange(climate_fair.START, climate_fair.START + len(emissions["CH4"]))
     land = combined(taken, ("agriculture", "landUse"))
     later = {k: v * (years >= FOOD_FUTURE_FROM) for k, v in land.items()}
-    by_gas, alone = gas_removals(taken, emissions, baseline)
+    by_gas, alone = gas_removals(taken, emissions, baseline, burning)
     scenarios = (
         {"full": emissions}
         | {cause: without(emissions, taken[cause]) for cause in CAUSES}
@@ -286,7 +303,12 @@ def attribution_runs(
     )
     result = climate_fair.run(setup, scenarios, end)
     runs = {name: result.temperature[:, i, :] for i, name in enumerate(result.scenarios)}
-    return runs | {name: runs[cause] for name, cause in alone.items()}
+    surface = climate_fair.run(setup, {NO_LAND_FORCING: emissions}, end, land_forcing=False)
+    return (
+        runs
+        | {name: runs[cause] for name, cause in alone.items()}
+        | {NO_LAND_FORCING: surface.temperature[:, 0, :]}
+    )
 
 
 def contributions(
@@ -296,9 +318,21 @@ def contributions(
     (the run with natural forcing only), and other: what is left, the other human emissions and
     the causes' non-additivity."""
     total = anomaly(years, runs["full"])
+    albedo = land_albedo(years, runs)
     causes = {c: anomaly(years, runs["full"] - runs[c]) for c in CAUSES}
+    causes = causes | {"landUse": causes["landUse"] - albedo, LAND_ALBEDO: albedo}
     other = total - sum(causes.values()) - natural
     return {"total": total, **causes, "natural": natural, "other": other}
+
+
+def land_albedo(years: np.ndarray, runs: dict[str, np.ndarray]) -> np.ndarray:
+    """Per member, °C: the forcing FaIR derives from cumulative land-use CO₂ (surface albedo and
+    irrigation, a cooling), full run less the same run without it; zero without that run."""
+    return (
+        anomaly(years, runs["full"] - runs[NO_LAND_FORCING])
+        if NO_LAND_FORCING in runs
+        else np.zeros_like(runs["full"])
+    )
 
 
 def gas_contributions(
@@ -306,13 +340,18 @@ def gas_contributions(
 ) -> dict[str, dict[str, np.ndarray]]:
     """Per gas and member, °C vs 1850–1900: the gas's total (full − every source of it), each
     greenhouse cause's part (full − that cause's part of the gas), and other: the gas's other
-    sources and the causes' non-additivity."""
+    sources and the causes' non-additivity. Taking land-use CO₂ out also takes out the albedo
+    change FaIR derives from it, which is no greenhouse effect: CO₂'s total and land use's part
+    leave it out."""
+    albedo = land_albedo(years, runs)
 
     def one(gas: str) -> dict[str, np.ndarray]:
-        total = anomaly(years, runs["full"] - runs[gas_key(ALL_SOURCES, gas)])
+        surface = albedo if gas == "co2" else 0
+        total = anomaly(years, runs["full"] - runs[gas_key(ALL_SOURCES, gas)]) - surface
         causes = {
             c: anomaly(years, runs["full"] - runs[gas_key(c, gas)])
-            for c in GREENHOUSE
+            - (surface if c == "landUse" else 0)
+            for c in (*GREENHOUSE, BURNING)
             if gas_key(c, gas) in runs
         }
         return {"total": total, **causes, "other": total - sum(causes.values())}
@@ -339,7 +378,7 @@ def preindustrial_offset(years: np.ndarray, runs: dict[str, np.ndarray], cause: 
 
 
 def attribution_bands(
-    by_cause: dict[str, np.ndarray], named: tuple[str, ...] = (*CAUSES, "natural")
+    by_cause: dict[str, np.ndarray], named: tuple[str, ...] = (*CAUSES, LAND_ALBEDO, "natural")
 ) -> dict[str, dict[str, np.ndarray]]:
     """Bands per cause, with 'other''s median set so the medians add up to the total's."""
     bands = {c: band(by_cause[c]) for c in (*named, "other")}
@@ -431,7 +470,10 @@ def build(
     rcmip_df = rcmip.load(cache_dir)
     primap_df = primap.load(cache_dir)
     fair_years = np.arange(climate_fair.START, max(PULSE_YEARS) + HORIZON + 1)
-    by_ssp = {ssp: rcmip.fair_emissions(rcmip_df, ssp, setup.emitted, fair_years) for ssp in SSPS}
+    history = fair_history.load(cache_dir)
+    by_ssp = {
+        ssp: rcmip.fair_emissions(rcmip_df, ssp, setup.emitted, fair_years, history) for ssp in SSPS
+    }
 
     pulses = pulse_runs(setup, by_ssp[AGTP_SSP], pulse_plan(diagnostics), HORIZON)
 
@@ -439,7 +481,7 @@ def build(
     sector = {
         ssp: {
             cause: cause_emissions(primap_df, rcmip_df, ssp, cause, years, LAST_HISTORY)
-            for cause in ("agriculture", "fossilIndustry")
+            for cause in ("agriculture", "fossilIndustry", "waste")
         }
         for ssp in SSPS
     }
@@ -451,6 +493,8 @@ def build(
             sector[ssp]["fossilIndustry"],
             SCENARIO_END + 1,
             diagnostics,
+            sector[ssp]["waste"],
+            burning_kg(rcmip_df, ssp, years),
         )
         for ssp in SSPS
     }
@@ -472,7 +516,9 @@ def build(
             for ssp in SSPS
         },
         "attribution": {
-            ssp: attribution_document(years, to_end, by_cause[ssp], (*CAUSES, "natural"))
+            ssp: attribution_document(
+                years, to_end, by_cause[ssp], (*CAUSES, LAND_ALBEDO, "natural")
+            )
             for ssp in SSPS
         },
         "attributionByGas": {

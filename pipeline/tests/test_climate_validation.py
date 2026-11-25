@@ -60,9 +60,9 @@ def test_document_matches_the_contract(built):
             assert len(part["median"]) == len(part["years"])
         by_gas = document["attributionByGas"][ssp]
         assert set(by_gas["co2"]) == {"fossilIndustry", "agriculture", "landUse", "other"}
-        assert (
-            set(by_gas["ch4"]) == set(by_gas["n2o"]) == {"fossilIndustry", "agriculture", "other"}
-        )
+        assert set(by_gas["ch4"]) == {"fossilIndustry", "agriculture", "waste", "burning", "other"}
+        assert set(by_gas["n2o"]) == {"fossilIndustry", "agriculture", "waste", "other"}
+        assert {"waste", "landAlbedo"} <= set(document["attribution"][ssp])
         assert set(by_gas["hfc"]) == {"other"}
         assert by_gas["co2"]["landUse"] == document["attribution"][ssp]["landUse"]
     assert len(json.dumps(document, separators=(",", ":"))) < 1_000_000
@@ -101,6 +101,18 @@ def test_agriculture_share_of_present_warming_is_in_the_published_range(built):
     total = np.median(window_mean(diagnostics, "ssp245", "total", 2010, 2019))
     assert 0.12 < agriculture < 0.30
     assert 0.12 < agriculture / total < 0.30
+
+
+def test_waste_and_land_albedo_are_in_the_published_range(built):
+    """Reisinger (2024, for New Zealand's Parliamentary Commissioner for the Environment) finds
+    waste methane made about 0.08 °C of present warming with FaIR; waste here must make
+    0.04–0.10 °C over 2015–2024. AR6 WG1 assesses land use's albedo and irrigation forcing at
+    about −0.2 W m⁻² in 2019, so its effect must be a cooling of 0.04–0.15 °C."""
+    _, diagnostics = built
+    waste = np.median(window_mean(diagnostics, "ssp245", "waste", 2015, 2024))
+    albedo = np.median(window_mean(diagnostics, "ssp245", "landAlbedo", 2015, 2024))
+    assert 0.04 < waste < 0.10
+    assert -0.15 < albedo < -0.04
 
 
 def test_hfcs_warm_as_little_as_their_forcing_today(built):

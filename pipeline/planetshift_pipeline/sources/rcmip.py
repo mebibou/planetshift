@@ -1,4 +1,6 @@
-"""RCMIP v5.1.0 emissions: the SSP scenarios with their history, as FaIR's calibration expects."""
+"""RCMIP v5.1.0 emissions: the SSP scenarios with their history. FaIR runs them after its
+calibration's own history (`fair_history`), which RCMIP's history is only used for when none
+is given."""
 
 from pathlib import Path
 
@@ -7,6 +9,7 @@ import pandas as pd
 from fair.structure.units import compound_convert, desired_emissions_units, prefix_convert
 
 from ..cache import fetched
+from . import fair_history
 
 VERSION = "5.1.0"
 EMISSIONS_URL = (
@@ -69,14 +72,30 @@ def variable_of(df: pd.DataFrame, specie: str) -> str:
 
 
 def fair_emissions(
-    df: pd.DataFrame, scenario: str, species: list[str], years: np.ndarray
+    df: pd.DataFrame,
+    scenario: str,
+    species: list[str],
+    years: np.ndarray,
+    history: pd.DataFrame | None = None,
 ) -> dict[str, np.ndarray]:
-    """Emissions of each FaIR specie for `scenario`, in FaIR's units, on calendar `years`."""
+    """Emissions of each FaIR specie for `scenario`, in FaIR's units, on calendar `years`; with
+    `history` (`fair_history.load`), that history to its last year, then the scenario joined
+    to it."""
 
-    def one(specie: str) -> np.ndarray:
+    def one(specie: str, on: np.ndarray = years) -> np.ndarray:
         variable = variable_of(df, specie)
         return to_fair_units(
-            series(df, scenario, variable, years), unit(df, scenario, variable), specie
+            series(df, scenario, variable, on), unit(df, scenario, variable), specie
         )
 
-    return {specie: one(specie) for specie in species}
+    def kept(specie: str) -> np.ndarray:
+        last = np.array([fair_history.LAST_YEAR])
+        return (
+            fair_history.joined(
+                one(specie), history.loc[specie], float(one(specie, last)[0]), years
+            )
+            if history is not None and specie in history.index
+            else one(specie)
+        )
+
+    return {specie: kept(specie) for specie in species}

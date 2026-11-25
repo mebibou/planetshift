@@ -199,33 +199,38 @@ export type Ssp = 'ssp126' | 'ssp245' | 'ssp370';
 export type TemperatureSource = 'hadcrut5' | 'berkeley';
 export type ClimateMethod = 'fair' | 'ar6';
 /**
- * A cause of warming in `climate.attribution`: fossil fuels and industry, farming, land use, air
- * pollution (aerosols and their precursors, which cool), the natural factors (sun and volcanoes)
- * and the other human emissions with what the causes do not add up to. A build made before air
- * pollution and the natural factors were split has neither, and `other` holds them.
+ * A cause of warming in `climate.attribution`: fossil fuels and industry, farming, land use's
+ * CO₂ and its surface albedo change (which cools), waste, air pollution (aerosols and their
+ * precursors, which cool), the natural factors (sun and volcanoes) and the other human emissions
+ * with what the causes do not add up to. `burning` (forest, grassland and peat fires) is a part
+ * of methane's warming only. A build made before a cause was split has none, and `other` or land
+ * use holds it.
  */
 /** The causes some lever acts on. */
 export type LeverCause = 'fossilIndustry' | 'agriculture' | 'landUse';
 /** The causes the levers' avoided warming is split by gas in: their own and other human emissions. */
-export type GasLeverCause = LeverCause | 'other';
+export type GasLeverCause = LeverCause | 'waste' | 'other';
 
 /**
  * The causes the levers' effects are counted in: those a lever acts on, and air pollution, which
  * the energy levers change with the fossil fuel they cut.
  */
-export type CountedCause = LeverCause | 'airPollution' | 'other';
+export type CountedCause = LeverCause | 'waste' | 'airPollution' | 'other';
 
 export type Cause =
   | 'fossilIndustry'
   | 'agriculture'
   | 'landUse'
+  | 'landAlbedo'
+  | 'waste'
+  | 'burning'
   | 'airPollution'
   | 'natural'
   | 'permafrost'
   | 'other';
 
 /** A part of one gas's warming: a greenhouse cause that emits it, or its other sources. */
-export type GasCause = LeverCause | 'permafrost' | 'other';
+export type GasCause = LeverCause | 'waste' | 'burning' | 'permafrost' | 'other';
 
 /** Warming by cause of warming, and each gas's by the causes that emit it, °C by year. */
 export interface CauseWarming {

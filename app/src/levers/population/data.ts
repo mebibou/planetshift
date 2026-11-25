@@ -56,7 +56,9 @@ export interface PeopleData {
       Record<PeopleSpecies, number[]> & {
         erf: { median: number[]; low: number[]; high: number[] };
         /** The parts that are fossil fuels and industry, and land use, kg a year by gas. */
-        byCause?: Partial<Record<'fossilIndustry' | 'landUse', Partial<Record<Gas, number[]>>>>;
+        byCause?: Partial<
+          Record<'fossilIndustry' | 'landUse' | 'waste', Partial<Record<Gas, number[]>>>
+        >;
       }
     >
   >;

@@ -10,8 +10,12 @@ import {
 import type { Prepared, PreparedCountry } from './prepare';
 import { memoPer, type ItemVector } from './util';
 
-/** The causes food's emissions after the farm count in: energy, or waste and wastewater. */
-export const CHAIN_CAUSES = ['fossilIndustry', 'other'] as const satisfies readonly CountedCause[];
+/** The causes food's emissions after the farm count in: energy, waste and wastewater, refrigerants. */
+export const CHAIN_CAUSES = [
+  'fossilIndustry',
+  'waste',
+  'other',
+] as const satisfies readonly CountedCause[];
 export type ChainCause = (typeof CHAIN_CAUSES)[number];
 
 const CAUSE_OF: Record<ChainStage, ChainCause> = {
@@ -20,8 +24,8 @@ const CAUSE_OF: Record<ChainStage, ChainCause> = {
   packaging: 'fossilIndustry',
   retail: 'fossilIndustry',
   household: 'fossilIndustry',
-  waste: 'other',
-  wastewater: 'other',
+  waste: 'waste',
+  wastewater: 'waste',
 };
 
 /** kg of each gas per tonne of each item, after the farm, by the cause it counts in. */
@@ -55,7 +59,7 @@ export const chainIntensities = (pc: PreparedCountry, prepared: Prepared, chain:
     'chain',
     () =>
       Object.fromEntries(
-        [...new Set(Object.values(CAUSE_OF))].map((cause) => [
+        CHAIN_CAUSES.map((cause) => [
           cause,
           Object.fromEntries(
             GASES.map((gas) => [
@@ -84,12 +88,12 @@ export const chainEmissions = (
     GASES.map((g) => [g, production.reduce((a, t, i) => a + t * (intensities[g][i] as number), 0)]),
   ) as GasVector;
 
-/** The six sums of `chainSums`: each cause of CHAIN_CAUSES, then each gas of GASES. */
+/** The sums of `chainSums`: each cause of CHAIN_CAUSES, then each gas of GASES. */
 const SLOTS = CHAIN_CAUSES.length * GASES.length;
 
 /**
  * kg of each gas by cause from tonnes of production (or a change in it), as one flat vector of
- * CHAIN_CAUSES × GASES. One loop over the items fills all six sums in place, as this runs for
+ * CHAIN_CAUSES × GASES. One loop over the items fills all the sums in place, as this runs for
  * every country and production step of each pass.
  */
 export const chainSums = (production: ItemVector, ints: ChainIntensities): Float64Array => {
@@ -112,7 +116,7 @@ export const causeOf = (sums: Float64Array, cause: ChainCause): GasVector => {
   return Object.fromEntries(GASES.map((g, j) => [g, sums[base + j] as number])) as GasVector;
 };
 
-/** Both causes' gases together out of `chainSums`. */
+/** All the causes' gases together out of `chainSums`. */
 export const allCauses = (sums: Float64Array): GasVector =>
   Object.fromEntries(
     GASES.map((g, j) => [

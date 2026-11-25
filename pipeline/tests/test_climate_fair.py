@@ -27,7 +27,7 @@ def batches(monkeypatch):
     """A stand-in for FaIR that records each batch and returns its emissions as temperature."""
     seen: list[list[str]] = []
 
-    def fake(setup, emissions, end, carbon_feedback):
+    def fake(setup, emissions, end, carbon_feedback, land_forcing=True):
         seen.append(list(emissions))
         values = np.stack([e["CH4"][: end - climate_fair.START] for e in emissions.values()], 1)
         out = np.repeat(values[:, :, None], len(setup.configs), axis=2)
