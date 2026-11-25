@@ -2,7 +2,7 @@ import { area, line, scaleLinear, type ScaleLinear, type Selection } from 'd3';
 import { h } from '../app/dom';
 import type { T } from '../i18n/i18n';
 import { formatNumber, formatTemperature } from '../i18n/format';
-import type { BandSeries, Enso } from '../data/types';
+import type { BandSeries, Enso, Ssp } from '../data/types';
 import type { ScenarioResult } from '../model/api';
 import type { Range } from '../app/url';
 import { CURRENT_POLICIES, LEVELS, milestones, type Level } from '../app/milestones';
@@ -35,6 +35,7 @@ export interface TemperatureChart {
     end: number,
     natural?: BandSeries | undefined,
     enso?: Enso | undefined,
+    ssp?: Ssp,
   ) => void;
   /** A place under the chart for another small chart, such as population. */
   slot: HTMLElement;
@@ -234,6 +235,10 @@ const drawGap = (f: Frame, x: Scale, y: Scale, s: Shown, end: number, text: stri
   }
 };
 
+/** The emissions scenario the modelled lines follow. */
+export const scenarioSentence = (t: T, ssp: Ssp | undefined): string =>
+  ssp ? t('chart.scenarioNote', { scenario: t(`options.ssp.${ssp}`) }) : '';
+
 /** A series' value in a year, formatted, or a dash. */
 const valueIn = (locale: string, years: number[], values: (number | null)[], year: number) => {
   const v = values[years.indexOf(year)];
@@ -402,9 +407,11 @@ export const temperatureChart = (
     h('figcaption', {}, caption, notes.el),
     slot,
   );
-  let last: [ScenarioResult, Range, number, BandSeries | undefined, Enso | undefined] | null = null;
+  let last:
+    | [ScenarioResult, Range, number, BandSeries | undefined, Enso | undefined, Ssp | undefined]
+    | null = null;
   const linked = link && { link, id: 'temperature' };
-  const draw = ([result, range, end, natural, enso]: NonNullable<typeof last>) => {
+  const draw = ([result, range, end, natural, enso, ssp]: NonNullable<typeof last>) => {
     const tp = result.temperature;
     const from = RANGE_START[range];
     const { narrow, reaches2100, height, tight, ...layout } = layoutOf(plotEl, end);
@@ -442,7 +449,12 @@ export const temperatureChart = (
     if (gap !== null) {
       drawGap(f, x, y, s, end, t('chart.gap', { value: gapValue, year: end }));
     }
-    caption.textContent = t('chart.caption', { gap: gapValue, year: end });
+    caption.textContent = [
+      scenarioSentence(t, ssp),
+      t('chart.caption', { gap: gapValue, year: end }),
+    ]
+      .filter(Boolean)
+      .join(' ');
     notes.set(milestoneNotes(t, reaches2100, people.length > 0));
     showItem(legendItem('key-natural'), s.naturalLine.length > 0);
     showItem(legendItem('key-enso'), marks.length > 0);
@@ -466,8 +478,8 @@ export const temperatureChart = (
   onResize(plotEl, render);
   return {
     el,
-    update: (result, range, end, natural, enso) => {
-      last = [result, range, end, natural, enso];
+    update: (result, range, end, natural, enso, ssp) => {
+      last = [result, range, end, natural, enso, ssp];
       render();
     },
     slot,

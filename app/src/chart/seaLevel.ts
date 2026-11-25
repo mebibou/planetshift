@@ -2,9 +2,9 @@ import { area, line, scaleLinear } from 'd3';
 import { h } from '../app/dom';
 import type { T } from '../i18n/i18n';
 import { formatNumber } from '../i18n/format';
-import type { Series } from '../data/types';
+import type { Series, Ssp } from '../data/types';
 import type { ScenarioResult } from '../model/api';
-import type { Range } from './temperature';
+import { scenarioSentence, type Range } from './temperature';
 import type { SeaLevelBand } from '../model/seaLevel';
 import {
   addHover,
@@ -29,7 +29,7 @@ const PATHS_FROM = 2000;
 
 export interface SeaLevelChart {
   el: HTMLElement;
-  update: (result: ScenarioResult, end: number, range: Range, observed?: Series) => void;
+  update: (result: ScenarioResult, end: number, range: Range, observed?: Series, ssp?: Ssp) => void;
 }
 
 /** A path's median and likely band in cm, from `from` to `end`. */
@@ -93,6 +93,7 @@ export const seaLevelChart = (t: T, locale: string, currentYear: number): SeaLev
     style: '--plot-h: 340px; --plot-h-narrow: 260px',
     'data-loading': t('load.loading'),
   });
+  const caption = h('p', { class: 'chart-caption' }, t('seaLevelChart.caption'));
   const el = h(
     'figure',
     { class: 'chart sea-level-chart' },
@@ -103,10 +104,13 @@ export const seaLevelChart = (t: T, locale: string, currentYear: number): SeaLev
       { label: t('seaLevelChart.band'), className: 'key-band', toggle: 'band' },
     ]),
     plotEl,
-    h('figcaption', {}, h('p', { class: 'chart-caption' }, t('seaLevelChart.caption'))),
+    h('figcaption', {}, caption),
   );
-  let last: [ScenarioResult, number, Range, Series | undefined] | null = null;
-  const draw = ([result, end, range, observedSeries]: NonNullable<typeof last>) => {
+  let last: [ScenarioResult, number, Range, Series | undefined, Ssp | undefined] | null = null;
+  const draw = ([result, end, range, observedSeries, ssp]: NonNullable<typeof last>) => {
+    caption.textContent = [t('seaLevelChart.caption'), scenarioSentence(t, ssp)]
+      .filter(Boolean)
+      .join(' ');
     const sea = result.seaLevel;
     if (!sea) {
       return;
@@ -198,8 +202,8 @@ export const seaLevelChart = (t: T, locale: string, currentYear: number): SeaLev
   onResize(plotEl, render);
   return {
     el,
-    update: (result, end, range, observed) => {
-      last = [result, end, range, observed];
+    update: (result, end, range, observed, ssp) => {
+      last = [result, end, range, observed, ssp];
       render();
     },
   };

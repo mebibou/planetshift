@@ -112,13 +112,26 @@ const DRAW: Record<
   Exclude<ChartTab, 'cause'>,
   (d: Drawn, draw: Draw & { result: RunResult }) => void
 > = {
-  temperature: ({ temperature }, { result, ui, data }) => {
+  temperature: ({ temperature }, { result, ui, data, options }) => {
     const end = Number(ui.horizon);
-    temperature.chart.update(result, ui.range, end, data.climate.naturalOnly, data.enso);
+    temperature.chart.update(
+      result,
+      ui.range,
+      end,
+      data.climate.naturalOnly,
+      data.enso,
+      options.ssp,
+    );
   },
   avoided: ({ avoided }, { result, ui }) => avoided.update(result, Number(ui.horizon)),
-  sealevel: ({ sealevel }, { result, ui, data }) =>
-    sealevel.update(result, Number(ui.horizon), ui.range, data.climate.seaLevel?.observed),
+  sealevel: ({ sealevel }, { result, ui, data, options }) =>
+    sealevel.update(
+      result,
+      Number(ui.horizon),
+      ui.range,
+      data.climate.seaLevel?.observed,
+      options.ssp,
+    ),
 };
 
 /** The charts, drawn again from the latest result and choices. */
