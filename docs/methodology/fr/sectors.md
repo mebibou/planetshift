@@ -69,6 +69,8 @@ L'intensité carbone de l'électricité est le CO₂ émis par kWh produit, en k
 | SSP2-4.5 | 0,48 | 0,42 | 0,32 | 0,27 | 0,16 | 0 |
 | SSP3-7.0 | 0,48 | 0,49 | 0,50 | 0,51 | 0,53 | 0,55 |
 
+Pour vérifier, les données annuelles d'électricité d'Ember (CC BY 4.0), qu'utilise aussi l'électricité des fermes, donnent au monde 0,459 kg CO₂e/kWh en 2025. Les trajectoires donnent 0,453 (SSP1-2.6), 0,462 (SSP2-4.5) et 0,484 (SSP3-7.0) cette année-là. Le chiffre d'Ember compte le CO₂e de la construction et du fonctionnement de chaque centrale, solaire et nucléaire comprises, et ne sert donc pas à déplacer les trajectoires. Les véhicules électriques et les centres de données puisent dans le réseau mondial, si bien que les chiffres d'Ember par pays ne s'appliquent pas à eux.
+
 Dans SSP1-2.6, et dans SSP2-4.5 tout à la fin du siècle, les scénarios brûlent de la biomasse dans des centrales et enfouissent le CO₂. C'est la bioénergie avec captage et stockage du carbone. Elle fait passer les émissions nettes du secteur électrique sous zéro. Planetshift les arrête à zéro, pour deux raisons. Ces absorptions sont propres à ces centrales : un kWh de demande supplémentaire ne les apporterait pas. Et une intensité négative ferait de chaque voiture électrique un puits de carbone.
 
 ## Les leviers

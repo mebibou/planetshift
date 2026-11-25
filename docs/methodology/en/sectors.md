@@ -69,6 +69,8 @@ The carbon intensity of electricity is the CO₂ emitted per kWh generated, in k
 | SSP2-4.5 | 0.48 | 0.42 | 0.32 | 0.27 | 0.16 | 0 |
 | SSP3-7.0 | 0.48 | 0.49 | 0.50 | 0.51 | 0.53 | 0.55 |
 
+As a check, Ember's yearly electricity data (CC BY 4.0), which farm electricity also uses, gives the world 0.459 kg CO₂e/kWh in 2025. The paths give 0.453 (SSP1-2.6), 0.462 (SSP2-4.5) and 0.484 (SSP3-7.0) that year. Ember's figure counts the CO₂e of building and running every plant, solar and nuclear included, so it is not used to move the paths. The electric vehicles and data centres draw on the world's grid, so Ember's country figures do not apply to them.
+
 In SSP1-2.6, and in SSP2-4.5 at the very end of the century, the scenarios burn biomass in power stations and bury the CO₂. This is bioenergy with carbon capture and storage. It takes the electricity sector's net emissions below zero. Planetshift stops them at zero, for two reasons. The removals are a property of those plants, not something an extra kWh of demand would bring. And a negative intensity would make every electric car a carbon sink.
 
 ## The levers
