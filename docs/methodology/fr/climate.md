@@ -123,13 +123,13 @@ L'application montre la médiane et la fourchette de 5 à 95 % par rapport à 18
 | SSP2-4.5 | 1,20 °C (1,01–1,35) | 1,90 °C (1,50–2,33) | 2,62 °C (1,92–3,61) |
 | SSP3-7.0 | 1,20 °C (1,01–1,35) | 1,88 °C (1,50–2,29) | 3,50 °C (2,68–4,46) |
 
-Le réchauffement observé sur 2015–2024 est de 1,27 °C dans HadCRUT5 et de 1,33 °C dans Berkeley Earth, tous deux ramenés ici à leur propre moyenne de 1850–1900. La médiane de FaIR est 0,06 °C sous HadCRUT5, dans sa fourchette, ce qu'un test vérifie. Les valeurs de 2100 sont proches des meilleures estimations de l'AR6 pour 2081–2100 : 1,8, 2,7 et 3,6 °C (tableau SPM.1).
+Le réchauffement observé sur 2015–2024 est de 1,27 °C dans HadCRUT5 et de 1,33 °C dans Berkeley Earth, tous deux ramenés ici à leur propre moyenne de 1850–1900. La médiane de FaIR est 0,06 °C sous HadCRUT5, qui se situe dans la fourchette de 5 à 95 % de FaIR. Indicators of Global Climate Change 2024, qui combine quatre séries, évalue 2015–2024 à 1,24 °C (1,11–1,35) (Forster et al. 2025). Des tests comparent la médiane de FaIR à HadCRUT5 et à cette évaluation. Les valeurs de 2100 sont proches des meilleures estimations de l'AR6 pour 2081–2100 : 1,8, 2,7 et 3,6 °C (tableau SPM.1).
 
 ### D'où viennent ces simulations et les courbes observées
 
 Jusqu'en 2022, les émissions sont l'historique sur lequel la calibration 1.4.1 de FaIR a été contrainte, tel que FaIR v2.2.5 le publie avec ses scénarios d'exemple. Ensuite, ce sont les SSP de RCMIP v5.1.0. L'écart entre les deux en 2022 s'efface sur 15 ans, au lieu que le SSP soit mis à l'échelle, si bien qu'une série qui passe par zéro garde son signe. L'historique propre de RCMIP diffère : son CO₂ de l'usage des terres est de 190 milliards de tonnes de carbone sur 1750–2019, contre 245 dans celui de la calibration, et son méthane de 1750 est de 19 Mt, contre 38 Mt de préindustriel dans la calibration. Le changement d'albédo de l'usage des terres est imposé à partir du forçage d'albédo de RCMIP pour chaque SSP, qui suit les terres défrichées à chaque moment. Il n'est pas déduit du CO₂ d'usage des terres cumulé. Chaque année civile est la moyenne des valeurs de FaIR à son début et à sa fin.
 
-Les courbes observées sont l'analyse HadCRUT5 du Met Office (série annuelle mondiale, années complètes seulement) et Berkeley Earth Land + Ocean (annuelle, température de l'air au-dessus de la banquise). Chacune est décalée pour que sa moyenne de 1850–1900 soit nulle.
+Les courbes observées sont l'analyse HadCRUT5 du Met Office (série annuelle mondiale, années complètes seulement) et Berkeley Earth Land + Ocean (annuelle, température de l'air au-dessus de la banquise). Chacune est décalée pour que sa moyenne de 1850–1900 soit nulle. En choisir une ne change que la courbe observée, pas les simulations. L'autre variante de Berkeley Earth, avec la température de l'eau sous la banquise, donne 1,20 °C sur 2015–2024. Elle n'est pas utilisée. Berkeley Earth préfère la variante de l'air, qui selon lui décrit plus naturellement le changement en surface.
 
 ### Pour comparer : réchauffement récent, objectifs et budgets carbone
 
