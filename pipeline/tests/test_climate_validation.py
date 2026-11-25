@@ -116,7 +116,7 @@ def test_waste_and_land_albedo_are_in_the_published_range(built):
 
 
 def test_hfcs_warm_as_little_as_their_forcing_today(built):
-    """AR6 WG1 Table 7.8 puts the HFCs' effective radiative forcing in 2019 at 0.04 W m⁻², about
+    """AR6 WG1 Table 7.5 puts the HFCs' effective radiative forcing in 2019 at 0.04 W m⁻², about
     a fiftieth of CO₂'s; their warming over 2015–2024 must be 0.005–0.04 °C, and grow by 2100."""
     _, diagnostics = built
     hfc = diagnostics["by_gas"]["ssp245"]["hfc"]
