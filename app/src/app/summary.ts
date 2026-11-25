@@ -18,6 +18,9 @@ import { fishTotal, speciesTotal, type FishTotal, type SpeciesTotal } from './sp
 import { gasChange, landStat, type PerCapita } from './summaryModel';
 import type { Milestone, Milestones } from './milestones';
 
+/** The emissions figures, shown together under the year the levers are in full. */
+export const GAS_STAT = 'stat-gas';
+
 /** Quiet time after the last change before the live sentence is rewritten, so a slider drag is read once. */
 export const LIVE_DELAY_MS = 800;
 
@@ -205,13 +208,13 @@ export const summaryStats = (
       className: 'stat-hero',
     },
     {
-      label: t('summary.co2e', { year: completeYear }),
+      label: t('summary.co2e'),
       value: formatMass(locale, s.avoidedCo2e, massUnit(s.avoidedCo2e)),
-      detail: t('summary.co2eDetail'),
+      className: GAS_STAT,
     },
     ...(['ch4', 'n2o', 'co2'] as const).map((gas) => {
       const { key, value } = gasChange(gas, s.avoided[gas]);
-      return { label: t(key), value: formatMass(locale, value) };
+      return { label: t(key), value: formatMass(locale, value), className: GAS_STAT };
     }),
     {
       label: t(land.key),
@@ -233,11 +236,13 @@ export const summaryStats = (
       label: t('summary.protein'),
       value: beforeAfter(t, locale, perCapita.proteinBefore, perCapita.proteinAfter, 1),
       detail: t('summary.gPerDay'),
+      className: 'stat-protein',
     },
     {
       label: t('summary.kcal'),
       value: beforeAfter(t, locale, perCapita.kcalBefore, perCapita.kcalAfter, 0),
       detail: t('summary.kcalPerDay'),
+      className: 'stat-kcal',
     },
   ];
 };

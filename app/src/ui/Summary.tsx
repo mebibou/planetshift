@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react';
 import { milestones } from '../app/milestones';
-import { LIVE_DELAY_MS, parisLines, summaryNote, summaryStats, type Stat } from '../app/summary';
+import {
+  GAS_STAT,
+  LIVE_DELAY_MS,
+  parisLines,
+  summaryNote,
+  summaryStats,
+  type Stat,
+} from '../app/summary';
 import { causeGroups, type PerCapita } from '../app/summaryModel';
 import type { Horizon } from '../app/url';
 import { formatTemperature } from '../i18n/format';
@@ -34,14 +41,16 @@ const STAT = {
     value: 'text-[1.3rem] font-bold',
   },
   hero: {
-    item: 'col-span-2 border-l-4 border-l-[var(--series-scenario)] pl-3 max-xs:col-[1/-1]',
+    item: 'col-span-2 border-l-4 border-l-[var(--series-scenario)] pl-3 max-xs:col-[1/-1] xl:col-[1/-1]',
     label: 'text-[0.9rem] font-bold text-ink',
     value: 'text-[length:clamp(2rem,4vw,2.8rem)] leading-[1.05] font-black',
   },
 };
 const DETAIL = 'stat-detail text-[0.78rem] text-muted';
 const STATS =
-  'summary-stats m-0 grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-x-5 gap-y-3.5';
+  'summary-stats m-0 grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-x-5 gap-y-3.5 xl:grid-cols-2 xl:[&>*:not(.stat-protein):not(.stat-kcal)]:col-span-2';
+const GAS_STATS = 'gas-stats m-0 grid grid-cols-2 gap-x-5 gap-y-3.5';
+const GAS_YEAR = 'gas-year m-0 mb-1.5 text-[0.8rem] font-bold text-muted';
 const TITLE = 'breakdown-title m-0 mb-2 text-[0.9rem] font-bold';
 const ROW = 'breakdown-row grid grid-cols-[minmax(0,1fr)_auto] gap-x-2.5 gap-y-0.5 text-[0.82rem]';
 const VALUE = 'breakdown-value font-bold tabular-nums';
@@ -133,6 +142,26 @@ const useLive = (text: string): string => {
 
 type Shown = SummaryProps & { result: ScenarioResult; perCapita: PerCapita };
 
+/** The figures: the emissions ones together under the year the levers are in full. */
+const Stats = ({ t, completeYear, stats }: { t: T; completeYear: number; stats: Stat[] }) => {
+  const gas = stats.filter((s) => s.className === GAS_STAT);
+  const first = stats.slice(0, stats.indexOf(gas[0] as Stat));
+  const rest = stats.filter((s) => s.className !== GAS_STAT && !first.includes(s));
+  const items = (list: Stat[]) => list.map((s) => <StatItem key={s.label} {...s} />);
+  return (
+    <div className="grid gap-y-3.5">
+      <dl className={STATS}>{items(first)}</dl>
+      {gas.length > 0 && (
+        <div>
+          <p className={GAS_YEAR}>{t('summary.gasYear', { year: completeYear })}</p>
+          <dl className={GAS_STATS}>{items(gas)}</dl>
+        </div>
+      )}
+      <dl className={STATS}>{items(rest)}</dl>
+    </div>
+  );
+};
+
 /** The figures, the Paris Agreement's levels, the breakdown and the note, from a result. */
 const Body = (props: Shown) => {
   const {
@@ -149,8 +178,10 @@ const Body = (props: Shown) => {
   } = props;
   return (
     <>
-      <dl className={STATS}>
-        {summaryStats(
+      <Stats
+        t={t}
+        completeYear={completeYear}
+        stats={summaryStats(
           t,
           locale,
           result,
@@ -160,10 +191,8 @@ const Body = (props: Shown) => {
           options,
           wild,
           species,
-        ).map((s) => (
-          <StatItem key={s.label} {...s} />
-        ))}
-      </dl>
+        )}
+      />
       <div className="milestones-summary mt-4 border-t border-rule pt-3">
         <h3 className={TITLE}>{t('milestones.title')}</h3>
         <ul className="milestone-list m-0 grid gap-1 py-0 pr-0 pl-[1.1em] text-[0.82rem]">
