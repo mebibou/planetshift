@@ -67,6 +67,17 @@ export const formatArea = (locale: string, ha: number): string => {
 export const formatPerKm2 = (locale: string, tonnes: number): string =>
   `${formatSignificant(locale, tonnes, 2)}${NBSP}t/km²`;
 
+const SPECIES_WORD: Record<string, string> = { fr: 'espèces' };
+const speciesWord = (locale: string): string => SPECIES_WORD[locale.slice(0, 2)] ?? 'species';
+
+/** A count of species, two significant figures, with its unit. */
+export const formatSpecies = (locale: string, n: number): string =>
+  `${formatSignificant(locale, n, 2)}${NBSP}${speciesWord(locale)}`;
+
+/** Species per Mha of farmland. */
+export const formatSpeciesPerMha = (locale: string, n: number): string =>
+  `${formatSignificant(locale, n, 2)}${NBSP}${speciesWord(locale)}/Mha`;
+
 export const formatSignedArea = (locale: string, ha: number): string =>
   `${ha > 0 ? '+' : ''}${formatArea(locale, ha)}`;
 

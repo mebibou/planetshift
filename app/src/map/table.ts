@@ -1,6 +1,13 @@
 import type { Tier } from '../data/types';
 import type { CountryResult } from '../model/api';
-import { beforeAfter, measureOf, relativeChange, type LandUseCo2, type LayerSpec } from './layers';
+import {
+  beforeAfter,
+  measureOf,
+  relativeChange,
+  type Layer,
+  type LandUseCo2,
+  type LayerSpec,
+} from './layers';
 import type { TierSource } from './sources';
 
 /** One country of the table view and of the map's CSV: the layer's values before and after. */
@@ -52,11 +59,16 @@ const tierOf = (c: CountryResult, worst: TierSource | null) => ({
   source: worst?.source ?? (c.worstSource || null),
 });
 
-/** Whether the layer has data for a country: land-use CO₂ and farmed mammals only where the files do. */
+/** The layers listing only some countries: those the files give data for. */
+const LISTED: Partial<Record<Layer, (c: CountryResult, landUse: LandUseCo2) => boolean>> = {
+  landCo2: (c, landUse) => landUse.has(c.iso3),
+  mammals: (c) => c.mammals > 0 && c.landArea > 0,
+  species: (c) => c.species > 0,
+};
+
+/** Whether the layer has data for a country. */
 const listed = (c: CountryResult, spec: LayerSpec, landUse: LandUseCo2): boolean =>
-  spec.layer === 'landCo2'
-    ? landUse.has(c.iso3)
-    : spec.layer !== 'mammals' || (c.mammals > 0 && c.landArea > 0);
+  LISTED[spec.layer]?.(c, landUse) ?? true;
 
 export const tableRows = (
   countries: CountryResult[],

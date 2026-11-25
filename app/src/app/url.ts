@@ -4,10 +4,12 @@ import {
   CHANGE_OF,
   GAS_CHOICES,
   LAYERS,
+  SPECIES_PER,
   type ChangeOf,
   type GasChoice,
   type GroupChoice,
   type Layer,
+  type SpeciesPer,
 } from '../map/layers';
 
 export const VIEWS = ['explore', 'methodology', 'deeptime'] as const;
@@ -37,6 +39,7 @@ export interface UiState {
   mapView: MapView;
   range: Range;
   causeGas: CauseGas;
+  speciesPer: SpeciesPer;
 }
 
 export const DEFAULT_UI: UiState = {
@@ -50,6 +53,7 @@ export const DEFAULT_UI: UiState = {
   mapView: 'map',
   range: 'full',
   causeGas: 'all',
+  speciesPer: 'country',
 };
 
 /** Query parameters the interface owns; everything else belongs to the model's state. */
@@ -64,6 +68,7 @@ const UI_KEYS = {
   mapView: 'mapview',
   range: 'range',
   causeGas: 'causegas',
+  speciesPer: 'per',
 };
 const KEPT_KEYS = ['data'];
 const OWN_KEYS = [...Object.values(UI_KEYS), ...KEPT_KEYS];
@@ -88,6 +93,7 @@ export const parseUi = (query: string): UiState => {
     mapView: oneOf(MAP_VIEWS, p.get(UI_KEYS.mapView), DEFAULT_UI.mapView),
     range: oneOf(RANGES, p.get(UI_KEYS.range), DEFAULT_UI.range),
     causeGas: oneOf(CAUSE_GASES, p.get(UI_KEYS.causeGas), DEFAULT_UI.causeGas),
+    speciesPer: oneOf(SPECIES_PER, p.get(UI_KEYS.speciesPer), DEFAULT_UI.speciesPer),
   };
 };
 

@@ -186,10 +186,16 @@
       "deforestation": "Déforestation",
       "landCo2": "CO₂ des terres",
       "mammals": "Mammifères d'élevage",
+      "species": "Perte d'espèces",
       "change": "Variation",
       "quality": "Qualité des données"
     },
     "changeOf": "Variation de",
+    "speciesPer": {
+      "legend": "Compte",
+      "country": "Par pays",
+      "farmland": "Par Mha de terres agricoles"
+    },
     "gas": "Gaz",
     "group": "Aliment",
     "country": "Pays",
@@ -203,7 +209,9 @@
       "deforestation": "Forêt défrichée pour l'agriculture avec les leviers, par an",
       "landCo2": "CO₂ net du changement d'usage des terres avec les leviers, par an (aujourd'hui : moyenne {from}–{to})",
       "landShare": "Part des terres cultivées ou pâturées avec les leviers",
-      "mammals": "Poids vif des mammifères d'élevage par km² de terres avec les leviers"
+      "mammals": "Poids vif des mammifères d'élevage par km² de terres avec les leviers",
+      "species": "Espèces condamnées à l'extinction par les terres agricoles du pays, avec les leviers",
+      "speciesDensity": "Espèces condamnées à l'extinction par Mha de terres agricoles du pays, avec les leviers"
     },
     "notes": {
       "production": "Là où les aliments sont produits, pas là où ils sont consommés.",
@@ -213,7 +221,8 @@
       "quality": "Des pays voisins peuvent différer simplement parce que leurs chiffres viennent de sources différentes.",
       "deforestation": "Forêt défrichée pour les cultures et les pâturages dans chaque pays, une fois les leviers pleinement en place, en hectares par an. L'infobulle donne le défrichement d'aujourd'hui, la variation et le CO₂ qu'il libère.",
       "landCo2": "Le CO₂ net de tout changement d'usage des terres dans chaque pays : forêts défrichées pour quelque raison que ce soit, tourbières drainées et autres changements, moins la forêt qui repousse sur les terres abandonnées. Les pays en bleu absorbent plus qu'ils n'émettent. Le chiffre d'aujourd'hui est la moyenne des trois modèles de comptabilité du Global Carbon Budget sur les années indiquées. Les leviers en changent deux parts. L'une est la forêt défrichée pour l'agriculture (la couche Déforestation en montre la surface). L'autre est le CO₂ que les terres agricoles libérées absorbent en repoussant, quand Terres libérées est sur Végétation spontanée dans les options. Le reste du CO₂ des terres de chaque pays ne change pas.",
-      "mammals": "Bovins, buffles, moutons, chèvres, porcs, chameaux, lamas, chevaux, ânes et mulets comptés par FAOSTAT, multipliés par le poids vif type du GIEC dans chaque région, par km² de terres de chaque pays. Chaque troupeau suit la production de l'aliment qu'il donne. Les animaux de travail restent. Le résumé compare les mammifères d'élevage du monde à ses mammifères sauvages. L'infobulle donne les tonnes."
+      "mammals": "Bovins, buffles, moutons, chèvres, porcs, chameaux, lamas, chevaux, ânes et mulets comptés par FAOSTAT, multipliés par le poids vif type du GIEC dans chaque région, par km² de terres de chaque pays. Chaque troupeau suit la production de l'aliment qu'il donne. Les animaux de travail restent. Le résumé compare les mammifères d'élevage du monde à ses mammifères sauvages. L'infobulle donne les tonnes.",
+      "species": "Les espèces de plantes, mammifères, oiseaux, reptiles et amphibiens que les cultures et les prairies de chaque pays condamnent à l'extinction dans le monde. Chacune est le facteur de Scherer et al. (2023) pour la terre, multiplié par les espèces décrites dans chaque groupe. C'est une perte engagée dans le temps si la terre reste cultivée. Ce n'est pas le nombre d'espèces perdues à une date donnée. Les terres nouvellement cultivées condamnent plus d'espèces, au facteur de l'hectare suivant. Les terres agricoles libérées ne rendent des espèces que si Terres libérées est sur Végétation spontanée dans les options. Par Mha de terres agricoles divise le compte de chaque pays par ses cultures et ses prairies. Cela montre où un hectare condamne le plus d'espèces. L'infobulle donne les terres agricoles."
     },
     "tooltip": {
       "noData": "Pas de données pour ce pays",
@@ -234,6 +243,8 @@
       "deforestationCo2": "CO₂ du défrichement, par an",
       "landShare": "Part des terres cultivées ou pâturées",
       "mammals": "Mammifères d'élevage par km² de terres",
+      "species": "Espèces condamnées à l'extinction",
+      "speciesDensity": "Espèces condamnées par Mha de terres agricoles",
       "mammalsWeight": "Poids vif des mammifères d'élevage"
     },
     "noClearing": "Pas de défrichement ou pas de données",
@@ -307,6 +318,15 @@
       "label": "Mammifères d'élevage pour un sauvage, en poids",
       "ratio": "{value} pour 1",
       "detail": "élevage {before} → {after} de poids vif une fois les leviers en place ; sauvages, sur terre et en mer, {wild} (Greenspoon et al. 2023)"
+    },
+    "species": {
+      "label": "Espèces condamnées à l'extinction par les terres agricoles",
+      "detail": "{before} → {after} des {described} espèces décrites de plantes, mammifères, oiseaux, reptiles et amphibiens. Les terres libérées laissées en l'état n'en rendent aucune (Scherer et al. 2023)",
+      "detailRegrows": "{before} → {after} des {described} espèces décrites de plantes, mammifères, oiseaux, reptiles et amphibiens, une fois la végétation revenue sur les terres libérées (Scherer et al. 2023)"
+    },
+    "fish": {
+      "label": "Poissons visés par la pêche, par rapport à un océan sans pêche",
+      "detail": "{before} → {after} des {unfished} qu'il y aurait sans pêche, pour une pêche qui change de {change} (Bianchi et al. 2021)"
     },
     "protein": "Protéines par personne",
     "kcal": "Calories par personne",

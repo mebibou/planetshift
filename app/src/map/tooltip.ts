@@ -1,6 +1,14 @@
 import type { CountryResult } from '../model/api';
+import { speciesAfter } from '../model/species';
 import type { T } from '../i18n/i18n';
-import { formatArea, formatMass, formatPercent, formatPerKm2 } from '../i18n/format';
+import {
+  formatArea,
+  formatMass,
+  formatPercent,
+  formatPerKm2,
+  formatSpecies,
+  formatSpeciesPerMha,
+} from '../i18n/format';
 import {
   beforeAfter,
   farmland,
@@ -29,6 +37,8 @@ const FORMATS: Record<Measure, (locale: string, v: number) => string> = {
   landShare: formatShare,
   landCo2: formatMass,
   mammals: formatPerKm2,
+  species: formatSpecies,
+  speciesDensity: formatSpeciesPerMha,
 };
 
 /** A layer's quantity in its unit: tonnes of product, kg of gas, hectares, or a share of land. */
@@ -57,6 +67,15 @@ const mammalsRow = (c: CountryResult, t: T, locale: string): [string, string] =>
   t('map.tooltip.beforeAfter', {
     before: formatMass(locale, c.mammals * 1000),
     after: formatMass(locale, (c.mammals + c.mammalsChange) * 1000),
+  }),
+];
+
+/** The species the farmland commits, today and with the levers. */
+const speciesRow = (c: CountryResult, t: T, locale: string): [string, string] => [
+  t('map.tooltip.species'),
+  t('map.tooltip.beforeAfter', {
+    before: formatSpecies(locale, c.species),
+    after: formatSpecies(locale, speciesAfter(c)),
   }),
 ];
 
@@ -120,6 +139,14 @@ const MEASURE_TOOLTIPS: Record<
   mammals: {
     what: (t) => t('map.tooltip.mammals'),
     extra: (c, t, locale) => ({ rows: [mammalsRow(c, t, locale)] }),
+  },
+  species: {
+    what: (t) => t('map.tooltip.species'),
+    extra: (c, t, locale) => ({ rows: [farmlandRow(c, t, locale)] }),
+  },
+  speciesDensity: {
+    what: (t) => t('map.tooltip.speciesDensity'),
+    extra: (c, t, locale) => ({ rows: [speciesRow(c, t, locale), farmlandRow(c, t, locale)] }),
   },
   landCo2: {
     what: (t) => t('map.tooltip.landCo2'),

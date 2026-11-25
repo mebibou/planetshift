@@ -1,5 +1,5 @@
 import { decodeIntensities } from '../../src/data/load';
-import type { IntensitiesFile, ModelData } from '../../src/data/types';
+import type { IntensitiesFile, ModelData, Species } from '../../src/data/types';
 import climate from '../../public/fixtures/climate.json';
 import countries from '../../public/fixtures/countries.json';
 import feed from '../../public/fixtures/feed.json';
@@ -20,6 +20,7 @@ import industry from '../../public/fixtures/industry.json';
 import coemissions from '../../public/fixtures/coemissions.json';
 import people from '../../public/fixtures/people.json';
 import mammals from '../../public/fixtures/mammals.json';
+import species from '../../public/fixtures/species.json';
 
 /** The fixtures in public/fixtures, as the app loads them. */
 export const loadFixtures = (): ModelData =>
@@ -44,6 +45,7 @@ export const loadFixtures = (): ModelData =>
     coemissions,
     people,
     mammals,
+    species: species as unknown as Species,
   }) as unknown as ModelData;
 
 export const CURRENT_YEAR = 2026;

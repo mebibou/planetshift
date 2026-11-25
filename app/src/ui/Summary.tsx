@@ -6,7 +6,7 @@ import type { Horizon } from '../app/url';
 import { formatTemperature } from '../i18n/format';
 import type { T } from '../i18n/i18n';
 import { familyLabel } from '../levers/registry';
-import type { Mammals } from '../data/types';
+import type { Mammals, Species } from '../data/types';
 import type { Options, ScenarioResult } from '../model/api';
 import { MenuHead } from './MenuHead';
 
@@ -21,6 +21,8 @@ export interface SummaryProps {
   options: Options;
   /** The world's wild mammals, for the farmed mammals' figure. */
   wild?: Mammals['wild'] | undefined;
+  /** Species committed per hectare and the ocean's fish, for their figures. */
+  species?: Species | undefined;
   open: boolean;
   setOpen: (open: boolean) => void;
 }
@@ -133,15 +135,34 @@ type Shown = SummaryProps & { result: ScenarioResult; perCapita: PerCapita };
 
 /** The figures, the Paris Agreement's levels, the breakdown and the note, from a result. */
 const Body = (props: Shown) => {
-  const { t, locale, currentYear, result, perCapita, completeYear, horizon, options, wild } = props;
+  const {
+    t,
+    locale,
+    currentYear,
+    result,
+    perCapita,
+    completeYear,
+    horizon,
+    options,
+    wild,
+    species,
+  } = props;
   return (
     <>
       <dl className={STATS}>
-        {summaryStats(t, locale, result, perCapita, completeYear, horizon, options, wild).map(
-          (s) => (
-            <StatItem key={s.label} {...s} />
-          ),
-        )}
+        {summaryStats(
+          t,
+          locale,
+          result,
+          perCapita,
+          completeYear,
+          horizon,
+          options,
+          wild,
+          species,
+        ).map((s) => (
+          <StatItem key={s.label} {...s} />
+        ))}
       </dl>
       <div className="milestones-summary mt-4 border-t border-rule pt-3">
         <h3 className={TITLE}>{t('milestones.title')}</h3>

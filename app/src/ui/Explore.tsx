@@ -328,6 +328,7 @@ export const Explore = (props: ExploreProps) => {
           horizon={horizon}
           options={state.options}
           wild={data.mammals?.wild}
+          species={data.species}
           open={summaryOpen}
           setOpen={setSummaryOpen}
         />

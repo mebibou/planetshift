@@ -1,5 +1,6 @@
 import { bandRecord } from '../../model/bands';
 import { netFreedHa, uptakeAsEmissions } from '../../model/land';
+import { speciesRegained } from '../../model/species';
 import type { LeverModule } from '../types';
 import { regrowthSpec } from './spec';
 import { fullUptake, regrowthPaths } from './model';
@@ -14,6 +15,8 @@ declare module '../../model/api' {
   interface CountryResult {
     /** CO₂ the country's freed farmland takes up as it regrows, net, kg a year; regrowth on only. */
     regrowthCo2?: number;
+    /** Species the freed farmland gives back once grown back; regrowth on only. */
+    speciesRegained?: number;
   }
   interface Summary {
     /**
@@ -37,6 +40,10 @@ export const regrowth: LeverModule = {
                 [{ iso3: pc.country.iso3, ha: netFreedHa(landChange) }],
                 prepared.data.land,
                 'median',
+              ),
+              speciesRegained: speciesRegained(
+                prepared.data.species?.byCountry[pc.country.iso3],
+                landChange,
               ),
             },
           })

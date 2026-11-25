@@ -374,6 +374,7 @@ test('the map layers and tooltip work', async ({ page }) => {
     'deforestation',
     'landCo2',
     'mammals',
+    'species',
     'quality',
     'change',
     'emissions',
@@ -1052,6 +1053,43 @@ test('the farmed mammals layer shows live weight per km² of land, today and wit
   await expect(tooltip).not.toContainText('Least precise source');
   await page.locator('#map-tab-table').click();
   await expect(page.locator('.data-table tbody tr')).toHaveCount(4);
+});
+
+test("the species layer shows the species committed by each country's farmland", async ({
+  page,
+}) => {
+  await open(page, `${START}&shift=50`);
+  await page.locator('label[for="layer-species"]').click();
+  await expect(page).toHaveURL(/layer=species/);
+  await expect(page.locator('.legend-title')).toContainText('committed to extinction');
+  await expect(page.locator('.map-note')).toContainText('Scherer et al. (2023)');
+  await expect(page.locator('path.country[data-iso3="NGA"]')).not.toHaveClass(/has-data/);
+  await page.locator('path.country[data-iso3="FRA"]').click();
+  const tooltip = page.locator('.map-frame .tooltip');
+  await expect(tooltip).toContainText('Species committed to extinction');
+  await expect(tooltip).toContainText('Farmland');
+  await expect(tooltip).toContainText('species');
+  await page.locator('label[for="speciesPer-farmland"]').click();
+  await expect(page).toHaveURL(/per=farmland/);
+  await expect(page.locator('.legend-title')).toContainText('per Mha');
+  await expect(page.locator('.legend li').first()).toContainText('species/Mha');
+  await page.locator('#map-tab-table').click();
+  await expect(page.locator('.data-table tbody tr')).toHaveCount(4);
+});
+
+test('the summary gives the species committed and the fish left, and regrowth gives species back', async ({
+  page,
+}) => {
+  await open(page, `${START}&shift=100`);
+  const species = page.locator('.summary .stat-species');
+  await expect(species).toContainText('Species committed to extinction by farmland');
+  await expect(species).toContainText('gives none back');
+  const fish = page.locator('.summary .stat-fish');
+  await expect(fish).toContainText('Bianchi et al. 2021');
+  await expect(fish.locator('.stat-value')).toContainText('33% →');
+  await expect(fish.locator('.stat-value')).not.toHaveText('33% → 33%');
+  await open(page, `${START}&shift=100&regrow=natural`);
+  await expect(species).toContainText('once freed farmland has grown back');
 });
 
 test('the summary sets the farmed mammals against the wild ones, and a shift lowers it', async ({

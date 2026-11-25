@@ -68,6 +68,7 @@ import { animalUse, feedChange, feedSharesOf, groupProductionChange } from './fe
 import { addLand, countryLand, landChangeOf, NO_LAND, type CakeDemand } from './land';
 import { clipChange, locateAll } from './location';
 import { mammalsOf, NO_MAMMALS } from './mammals';
+import { speciesOf } from './species';
 import { groupTotals, prepare, type Prepared, type PreparedCountry } from './prepare';
 import { baselineScale, builtUp, ramp, tabulate, type Scale } from './timePath';
 import {
@@ -567,6 +568,7 @@ const countryParts = (
         landChange,
         landArea: prepared.data.land.landArea?.[pc.country.iso3] ?? 0,
         ...countryMammals(pc, change, prepared),
+        ...speciesOf(prepared.data.species?.byCountry[pc.country.iso3], land, landChange),
       },
       ...extra.map((e) => e.result ?? {}),
     ) as CountryResult,

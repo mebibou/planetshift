@@ -8,7 +8,7 @@ describe('url', () => {
   it('reads the interface choices, ignoring unknown values', () => {
     expect(
       parseUi(
-        '?view=methodology&layer=change&change=production&group=dairy&gas=ch4&chart=avoided&to=2100&mapview=table&range=recent&causegas=n2o',
+        '?view=methodology&layer=change&change=production&group=dairy&gas=ch4&chart=avoided&to=2100&mapview=table&range=recent&causegas=n2o&per=farmland',
       ),
     ).toEqual({
       view: 'methodology',
@@ -21,6 +21,7 @@ describe('url', () => {
       mapView: 'table',
       range: 'recent',
       causeGas: 'n2o',
+      speciesPer: 'farmland',
     });
     expect(parseUi('?view=nope&gas=xx&causegas=co2e')).toEqual(DEFAULT_UI);
     expect(parseUi('?layer=land&change=land')).toMatchObject({ layer: 'land', changeOf: 'land' });
