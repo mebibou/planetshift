@@ -2,7 +2,15 @@ import { describe, expect, it } from 'vitest';
 import { DEFAULT_OPTIONS, type Options, type Scenario } from '../../model/api';
 import { towards } from '../../model/bands';
 import { departuresOf } from '../../config';
-import { coChange, coMethane, noxMethane, vocMethane, withCoMethane } from './coemissions';
+import {
+  CO2_PER_CH4,
+  coChange,
+  coGases,
+  coMethane,
+  noxMethane,
+  vocMethane,
+  withCoMethane,
+} from './coemissions';
 import {
   CO_SPECIES,
   EMPTY_COEMISSIONS,
@@ -57,7 +65,12 @@ describe('energy levers', () => {
   });
 
   it('electric cars save their tailpipe CO₂ less the electricity they draw', () => {
-    const r = lever('electricCars');
+    const r = runScenario(
+      { ...data, departures: { ...departuresOf(data), fossilMethaneCo2: 'off' } },
+      { ...BASE_SCENARIO, levers: { electricCars: 1 } },
+      DEFAULT_OPTIONS,
+      CURRENT_YEAR,
+    );
     const tailpipe = tailpipe2035('roadPassenger');
     expect(r.summary.avoided.co2).toBeGreaterThan(0);
     expect(r.summary.avoided.co2).toBeLessThan(tailpipe * (1 + supply('roadPassenger')));
@@ -386,5 +399,31 @@ describe('the coMethane departure', () => {
       ).summary.avoidedWarming2050.median;
     expect(avoided('fair')).toBe(lever('electricCars').summary.avoidedWarming2050.median);
     expect(avoided('split')).not.toBe(avoided('fair'));
+  });
+});
+
+describe('the fossilMethaneCo2 departure', () => {
+  const co2 = { roadPassenger: -1e9 };
+  const year = { co2, change: coChange(data.coemissions, 'ssp245', 2040, co2) };
+
+  it('adds the CO₂ the co-emitted methane becomes, only when on', () => {
+    const [off, on] = [coGases([-1e9], [year]), coGases([-1e9], [year], true)];
+    expect(year.change.ch4).toBeLessThan(0);
+    expect((on[0]?.co2 as number) - (off[0]?.co2 as number)).toBeCloseTo(
+      year.change.ch4 * CO2_PER_CH4,
+      3,
+    );
+    expect(on[0]?.ch4).toBe(off[0]?.ch4);
+  });
+
+  it('makes a fuel lever avoid a little more warming', () => {
+    const avoided = (fossilMethaneCo2: 'on' | 'off') =>
+      runScenario(
+        { ...data, departures: { ...departuresOf(data), fossilMethaneCo2 } },
+        { ...BASE_SCENARIO, levers: { renewableElectricity: 1 } },
+        DEFAULT_OPTIONS,
+        CURRENT_YEAR,
+      ).summary.avoidedWarming2100.median;
+    expect(avoided('on')).toBeGreaterThan(avoided('off'));
   });
 });

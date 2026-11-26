@@ -1,4 +1,4 @@
-import { departuresOf } from '../../config';
+import { departs, departuresOf } from '../../config';
 import { bandRecord } from '../../model/bands';
 import {
   airPollutionPaths,
@@ -32,7 +32,9 @@ export const industry: LeverModule = {
         industryPaths(industry, sectors, coemissions, adoption, options.ssp, band, years, shareAt),
       );
       return {
-        extraEmissions: bandRecord((band) => coGases(paths[band].co2, paths[band].co)),
+        extraEmissions: bandRecord((band) =>
+          coGases(paths[band].co2, paths[band].co, departs(prepared.data, 'fossilMethaneCo2')),
+        ),
         warmingByCause:
           anyAdopted(adoption, LEVERS) && hasCoEmissions(coemissions)
             ? {

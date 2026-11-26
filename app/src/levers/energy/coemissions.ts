@@ -89,10 +89,19 @@ const coChangeOf = (
  * The greenhouse gases of each year's change: the levers' fossil CO₂ with the CO₂ of producing the
  * fuel, and the methane and N₂O that come with it.
  */
-export const coGases = (co2: readonly number[], co: readonly CoYear[]): GasVector[] =>
+/** kg of CO₂ a kg of methane becomes once oxidised: their molar masses. */
+export const CO2_PER_CH4 = 44.009 / 16.043;
+
+/** With `oxidised`, the co-emitted methane (all fossil) also brings the CO₂ it becomes, in the year emitted. */
+export const coGases = (
+  co2: readonly number[],
+  co: readonly CoYear[],
+  oxidised = false,
+): GasVector[] =>
   co2.map((v, i) => {
     const change = (co[i] as CoYear).change;
-    return { co2: v + change.co2, ch4: change.ch4, n2o: change.n2o, hfc: 0 };
+    const fromMethane = oxidised ? change.ch4 * CO2_PER_CH4 : 0;
+    return { co2: v + change.co2 + fromMethane, ch4: change.ch4, n2o: change.n2o, hfc: 0 };
   });
 
 const rangeAt = (co: CoEmissions, r: RangeSeries, year: number): Range3 => ({

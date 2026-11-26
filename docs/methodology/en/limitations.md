@@ -94,9 +94,9 @@ Each then follows FaIR's change with the scenario.
 
 | Electric cars and trucks, by 2100 | SSP3-7.0 | SSP2-4.5 |
 | --- | --- | --- |
-| Chemistry models (website default) | 0.027 and 0.016 °C avoided | 0.101 and 0.066 °C avoided |
-| FaIR's one coefficient | 0.026 and 0.019 °C added | 0.090 and 0.059 °C avoided |
-| FaIR's coefficient shared between land and sea by Hoor et al.'s ratio | 0.017 and 0.013 °C added | 0.095 and 0.063 °C avoided |
+| Chemistry models (website default) | 0.028 and 0.017 °C avoided | 0.102 and 0.067 °C avoided |
+| FaIR's one coefficient | 0.026 and 0.019 °C added | 0.090 and 0.060 °C avoided |
+| FaIR's coefficient shared between land and sea by Hoor et al.'s ratio | 0.016 and 0.012 °C added | 0.096 and 0.064 °C avoided |
 
 A fork can keep FaIR's one coefficient (`fair`) or the land and sea split of FaIR's total (`hoor`).
 

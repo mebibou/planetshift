@@ -306,7 +306,7 @@ Sur le CO₂ de FaIR, cela donne 8,08 en 2000, contre 8,07 ± 0,02 chez Jiang et
 
 La courbe observée du graphique est le pH moyen mondial en surface du service Copernicus Marine. C'est une reconstruction annuelle à partir des observations par le LSCE, de 1985 (8,108) à 2025 (8,040), avec une incertitude type d'environ 0,015. Le modèle est un peu en dessous, dans cette incertitude : il donne 8,081 contre 8,087 en 2000, et 8,034 contre 8,042 en 2024. La courbe observée est montrée telle que publiée, sans être décalée sur le modèle.
 
-Dans SSP2-4.5, tous les leviers en entier font passer le pH de 2100 de 7,94 à 8,07, à peu près celui de 2024 (8,03). Les voitures électriques seules le relèvent de 0,011, et l'électricité renouvelable de 0,033. Le changement d'alimentation, qui réduit le méthane et le N₂O, le laisse inchangé. La fourchette vient du CO₂ : le pH avec les leviers prend la variation médiane du CO₂ à chaque borne de la fourchette du scénario.
+Dans SSP2-4.5, tous les leviers en entier font passer le pH de 2100 de 7,94 à 8,07, à peu près celui de 2024 (8,03). Les voitures électriques seules le relèvent de 0,011, et l'électricité renouvelable de 0,034. Le changement d'alimentation, qui réduit le méthane et le N₂O, le laisse inchangé. La fourchette vient du CO₂ : le pH avec les leviers prend la variation médiane du CO₂ à chaque borne de la fourchette du scénario.
 
 ## Où Planetshift s'écarte de FaIR
 
@@ -318,6 +318,7 @@ Chaque écart est un interrupteur nommé de `planetshift.config.json`, le fichie
 | --- | --- | --- | --- |
 | Où les NOx sont émis (`noxMethane`) | le méthane par kg de NOx des modèles de chimie eux-mêmes, sur terre et en mer (Hoor et al. 2009), porté par l'évolution de FaIR avec le scénario ; une copie peut aussi partager le coefficient de FaIR entre terre et mer selon leur rapport, son total mondial conservé (`hoor`) | un seul coefficient pour toutes les sources | [Énergie et transports](#method-sectors), [Limites](#method-limitations) |
 | Le méthane du monoxyde de carbone (`coMethane`) | le coefficient des COV de FaIR partagé entre COV et CO selon le rapport par Tg d'ACCMIP (Stevenson et al. 2013), avec son effet de 2014 conservé, et le méthane du CO rendu aux chiffres des NOx des modèles de chimie (`split`) | le CO n'a aucun effet sur la durée de vie du méthane, et les COV le portent tout entier | [Énergie et transports](#method-sectors) |
+| Le CO₂ du méthane fossile (`fossilMethaneCo2`) | réduire un kg de méthane fossile avec les leviers d'énergie et d'industrie réduit aussi les 2,74 kg de CO₂ qu'il serait devenu, comptés l'année d'émission, comme dans les métriques du méthane fossile de l'AR6 (`on`) | aucun CO₂ n'est compté pour le méthane | [Énergie et transports](#method-sectors) |
 | Les effets de l'aviation hors CO₂ (`aviationNonCo2`) | le forçage de Lee et al. (2021), traînées comprises, réduit par moins d'avion | les NOx, le SO₂ et la suie propres à l'aviation par les coefficients de FaIR ; FaIR n'a pas de traînées | [Énergie et transports](#method-sectors) |
 | Pergélisol (`permafrost`) | proposé comme option, activée par défaut | l'option et son module retirés | Pergélisol, plus haut |
 | La règle de 2020 sur le soufre des navires (`shippingSulphur2020`) | son forçage publié, 0,12 (0,08–0,14) W/m² à partir de 2020, ajouté à la référence | le SO₂ des navires des scénarios, par la réponse mondiale des aérosols de FaIR | Pourquoi 2023 et 2024 ont été si chaudes, plus haut |
@@ -327,8 +328,8 @@ Chaque écart est un interrupteur nommé de `planetshift.config.json`, le fichie
 Avec chaque interrupteur sur FaIR tel quel, sur SSP2-4.5 :
 
 - moins d'avion à fond évite 0,007 °C en 2050 et 0,045 °C en 2100, au lieu de 0,055 et 0,125, car l'essentiel de son effet vient des traînées et FaIR n'en a pas ;
-- les voitures électriques évitent 0,025 et 0,087 °C au lieu de 0,039 et 0,101, et dans SSP3-7.0 ajoutent 0,026 °C d'ici 2100 au lieu d'en éviter 0,027 ;
-- les six leviers d'énergie ensemble évitent 0,161 et 0,531 °C au lieu de 0,250 et 0,652.
+- les voitures électriques évitent 0,025 et 0,087 °C au lieu de 0,039 et 0,102, et dans SSP3-7.0 ajoutent 0,026 °C d'ici 2100 au lieu d'en éviter 0,028 ;
+- les six leviers d'énergie ensemble évitent 0,161 et 0,531 °C au lieu de 0,252 et 0,657.
 
 Sans la règle sur le transport maritime, la référence est plus fraîche de 0,037 °C en 2024 et de 0,069 °C en 2100. Les leviers agricoles ne bougent pas.
 

@@ -1,6 +1,6 @@
 # Au-delà de la ferme : transport, électricité et centres de données
 
-L'alimentation n'est qu'une partie du problème climatique. Brûler du charbon, du pétrole et du gaz pour produire de l'électricité et se déplacer en est la plus grande. Pour que les leviers de l'alimentation et de l'agriculture puissent être comparés à d'autres actions, Planetshift propose six leviers sur les véhicules routiers, l'aviation, le transport maritime et l'électricité, qui atteint aussi les centres de données. Les six au maximum, de 2026 à 2035, évitent 0,253 °C de réchauffement en 2050 et 0,655 °C en 2100 (médiane, SSP2-4.5), une fois comptés le méthane et la pollution de l'air qui accompagnent le combustible.
+L'alimentation n'est qu'une partie du problème climatique. Brûler du charbon, du pétrole et du gaz pour produire de l'électricité et se déplacer en est la plus grande. Pour que les leviers de l'alimentation et de l'agriculture puissent être comparés à d'autres actions, Planetshift propose six leviers sur les véhicules routiers, l'aviation, le transport maritime et l'électricité, qui atteint aussi les centres de données. Les six au maximum, de 2026 à 2035, évitent 0,252 °C de réchauffement en 2050 et 0,657 °C en 2100 (médiane, SSP2-4.5), une fois comptés le méthane et la pollution de l'air qui accompagnent le combustible.
 
 ## Ce que ces leviers comptent
 
@@ -159,13 +159,15 @@ La réponse est linéaire autour du scénario. Cela tient bien pour de petites v
 
 ## Le méthane et la pollution de l'air qui accompagnent le combustible
 
-Brûler du charbon, du pétrole et du gaz émet plus que du CO₂. Un levier qui réduit le combustible réduit toutes ces émissions avec le CO₂. Le compter augmente le réchauffement qu'évitent les leviers d'énergie. Les six au maximum évitent 0,250 °C en 2050 en le comptant, contre 0,209 °C pour le CO₂ seul. De tous les leviers d'énergie, de chauffage et d'industrie, seule l'industrie propre, sur la page [Bâtiments et industrie](#method-industry), évite moins en le comptant (0,017 °C au lieu de 0,029 en 2050).
+Brûler du charbon, du pétrole et du gaz émet plus que du CO₂. Un levier qui réduit le combustible réduit toutes ces émissions avec le CO₂. Le compter augmente le réchauffement qu'évitent les leviers d'énergie. Les six au maximum évitent 0,252 °C en 2050 en le comptant, contre 0,209 °C pour le CO₂ seul. De tous les leviers d'énergie, de chauffage et d'industrie, seule l'industrie propre, sur la page [Bâtiments et industrie](#method-industry), évite moins en le comptant (0,017 °C au lieu de 0,029 en 2050).
 
 Ce qui accompagne le combustible :
 
 - **Produire le combustible** émet son propre CO₂. Les raffineries, les cokeries et les champs de pétrole et de gaz brûlent du combustible, et les champs brûlent leur gaz en torchère.
 - **Produire le combustible fait aussi fuir du méthane.** Les mines de charbon le rejettent, les champs pétroliers brûlent en torchère et rejettent leur gaz, et les puits et les conduites de gaz fuient. Cela fait au total environ un tiers du méthane d'origine humaine.
 - **Brûler le combustible** émet un peu de N₂O, et plusieurs polluants de l'air : du dioxyde de soufre (SO₂), du carbone noir (suie), du carbone organique, de l'ammoniac (NH₃), des oxydes d'azote (NOx), du monoxyde de carbone (CO) et des composés organiques volatils (COV).
+
+Ce méthane est fossile. Au cours de sa durée de vie d'environ une décennie (11,8 ans dans l'AR6 du GIEC), chaque kg de méthane s'oxyde en 2,74 kg de CO₂, et ce CO₂ reste dans l'air. FaIR le laisse de côté. Planetshift le compte, l'année où le méthane est émis, comme l'AR6 dans les métriques du méthane fossile (GT1, tableau 7.15 : un PRG à 100 ans de 29,8, contre 27,0 pour le méthane d'origine vivante). C'est la valeur `on` de l'écart `fossilMethaneCo2`. Il ajoute 0,27 Gt par an au CO₂ que réduisent les six leviers d'énergie. Le réchauffement qu'ils évitent augmente de 0,002 °C en 2050 et de 0,005 °C en 2100.
 
 Ces polluants agissent sur le climat dans des sens différents :
 
@@ -325,29 +327,29 @@ Réchauffement évité en °C, médiane (fourchette probable). Chaque levier est
 
 | Leviers | 2050, CO₂ seul | 2050, avec | 2100, CO₂ seul | 2100, avec |
 | --- | --- | --- | --- | --- |
-| Voitures électriques | 0,020 (0,010–0,035) | 0,039 (−0,017 à 0,116) | 0,071 (0,040–0,118) | 0,101 (0,019–0,206) |
-| Camions électriques | 0,013 (0,006–0,020) | 0,026 (−0,012 à 0,076) | 0,047 (0,026–0,073) | 0,066 (0,011–0,131) |
+| Voitures électriques | 0,020 (0,010–0,035) | 0,039 (−0,017 à 0,116) | 0,071 (0,040–0,118) | 0,102 (0,020–0,207) |
+| Camions électriques | 0,013 (0,006–0,020) | 0,026 (−0,012 à 0,076) | 0,047 (0,026–0,073) | 0,067 (0,012–0,132) |
 | Moins d'avion | 0,050 (0,014–0,123) | 0,055 (0,017–0,133) | 0,107 (0,039–0,259) | 0,125 (0,048–0,291) |
-| Carburant d'aviation propre | 0,009 (0,007–0,013) | 0,015 (0,010–0,022) | 0,043 (0,029–0,062) | 0,060 (0,038–0,093) |
-| Transport maritime propre | 0,007 (0,005–0,009) | 0,009 (0,006–0,015) | 0,024 (0,016–0,036) | 0,034 (0,021–0,053) |
-| Électricité renouvelable | 0,097 (0,070–0,134) | 0,099 (0,052–0,192) | 0,240 (0,156–0,362) | 0,282 (0,180–0,448) |
-| Les six | 0,209 (0,128–0,342) | 0,250 (0,077–0,539) | 0,528 (0,316–0,888) | 0,652 (0,325–1,167) |
-| Les six avec chauffage propre et industrie propre | 0,264 (0,168–0,423) | 0,299 (0,098–0,650) | 0,720 (0,443–1,182) | 0,863 (0,458–1,522) |
+| Carburant d'aviation propre | 0,009 (0,007–0,013) | 0,015 (0,010–0,023) | 0,043 (0,029–0,062) | 0,060 (0,038–0,094) |
+| Transport maritime propre | 0,007 (0,005–0,009) | 0,009 (0,006–0,015) | 0,024 (0,016–0,036) | 0,034 (0,022–0,054) |
+| Électricité renouvelable | 0,097 (0,070–0,134) | 0,100 (0,052–0,194) | 0,240 (0,156–0,362) | 0,284 (0,182–0,451) |
+| Les six | 0,209 (0,128–0,342) | 0,252 (0,079–0,541) | 0,528 (0,316–0,888) | 0,657 (0,328–1,175) |
+| Les six avec chauffage propre et industrie propre | 0,264 (0,168–0,423) | 0,301 (0,099–0,653) | 0,720 (0,443–1,182) | 0,870 (0,462–1,532) |
 
 Avec tous les leviers d'énergie, de chauffage et d'industrie au maximum, deux effets s'annulent à peu près au début. L'approvisionnement et le méthane du combustible ne sont plus émis, ce qui est un gain. Le refroidissement que masquait la pollution est perdu. Ensuite, les gains sont plus grands (médiane, °C, SSP2-4.5) :
 
 | Année | Réchauffement évité, CO₂ seul | Gain du CO₂, du méthane et du N₂O de l'approvisionnement | Perte due à la pollution de l'air | Réchauffement évité, avec |
 | --- | --- | --- | --- | --- |
 | 2030 | 0,012 | +0,004 | −0,016 | 0,001 |
-| 2040 | 0,131 | +0,063 | −0,079 | 0,115 |
-| 2050 | 0,264 | +0,119 | −0,084 | 0,299 |
-| 2100 | 0,720 | +0,192 | −0,049 | 0,863 |
+| 2040 | 0,131 | +0,064 | −0,079 | 0,116 |
+| 2050 | 0,264 | +0,122 | −0,084 | 0,301 |
+| 2100 | 0,720 | +0,198 | −0,049 | 0,870 |
 
 **Le CO₂ de l'approvisionnement** est ce qui change le plus les chiffres. Il ajoute environ un dixième au CO₂ de chaque levier sur le pétrole, chaque année : 0,150 kg par kg pour la route, 0,153 pour l'aviation et le transport maritime. Il ajoute 8 % à l'électricité qu'un levier réduit ou consomme.
 
 **Le CO et les COV** ajoutent un peu de réchauffement évité : leur ozone et leur méthane suivent le combustible. Le petit refroidissement de l'ammoniac va en sens inverse.
 
-**L'électricité renouvelable** perd le refroidissement du SO₂ des centrales à charbon, qui sont la plus grande source de SO₂. Mais elle gagne l'ozone et le méthane de leurs NOx, et l'approvisionnement de leur combustible. Elle évite 0,099 °C au lieu de 0,097 en 2050, et 0,282 contre 0,240 en 2100.
+**L'électricité renouvelable** perd le refroidissement du SO₂ des centrales à charbon, qui sont la plus grande source de SO₂. Mais elle gagne l'ozone et le méthane de leurs NOx, et l'approvisionnement de leur combustible. Elle évite 0,100 °C au lieu de 0,097 en 2050, et 0,284 contre 0,240 en 2100.
 
 **Moins d'avion, le carburant d'aviation propre et le chauffage propre** gagnent dès le départ : l'approvisionnement de leur combustible l'emporte sur le peu de SO₂ qu'ils retirent.
 
@@ -356,9 +358,9 @@ Avec tous les leviers d'énergie, de chauffage et d'industrie au maximum, deux e
 **Les véhicules électriques** gagnent. Leur suie, l'ozone de leurs NOx et l'approvisionnement de leur carburant disparaissent aussitôt. Le méthane que leurs NOx ne détruisent plus, environ la moitié de celui de FaIR sur terre, s'accumule lentement sur des décennies. Les voitures électriques évitent, en 2050 et 2100 :
 
 - SSP1-2.6 : 0,030 et 0,048 °C (CO₂ seul 0,016 et 0,036) ;
-- SSP2-4.5 : 0,039 et 0,101 (CO₂ seul 0,020 et 0,071).
+- SSP2-4.5 : 0,039 et 0,102 (CO₂ seul 0,020 et 0,071).
 
-Dans SSP3-7.0, le réseau reste sale et les NOx et le méthane sont élevés. Ce méthane reprend une partie du gain. Les véhicules électriques évitent plus que leur seul CO₂ en 2050, mais moins que lui d'ici 2100. Les voitures électriques évitent 0,019 °C en 2050 et 0,027 °C en 2100 (CO₂ seul 0,012 et 0,035). Les camions électriques évitent 0,012 et 0,016 (CO₂ seul 0,007 et 0,022). Avec le coefficient unique de FaIR pour toutes les sources, ils ajouteraient 0,026 et 0,019 °C d'ici 2100. Avec ce coefficient partagé entre terre et mer, ils ajouteraient 0,017 et 0,013 (voir [Limites](#method-limitations)).
+Dans SSP3-7.0, le réseau reste sale et les NOx et le méthane sont élevés. Ce méthane reprend une partie du gain. Les véhicules électriques évitent plus que leur seul CO₂ en 2050, mais moins que lui d'ici 2100. Les voitures électriques évitent 0,019 °C en 2050 et 0,028 °C en 2100 (CO₂ seul 0,012 et 0,035). Les camions électriques évitent 0,012 et 0,017 (CO₂ seul 0,007 et 0,022). Avec le coefficient unique de FaIR pour toutes les sources, ils ajouteraient 0,026 et 0,019 °C d'ici 2100. Avec ce coefficient partagé entre terre et mer, ils ajouteraient 0,016 et 0,012 (voir [Limites](#method-limitations)).
 
 ### Comparé aux sorties publiées des combustibles fossiles
 

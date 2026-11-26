@@ -306,7 +306,7 @@ On FaIR's CO₂ this gives 8.08 in 2000, against Jiang et al.'s 8.07 ± 0.02 fro
 
 The chart's observed line is the Copernicus Marine Service's global mean surface pH. It is a yearly reconstruction from observations by LSCE, from 1985 (8.108) to 2025 (8.040), with a standard uncertainty of about 0.015. The model is slightly below it, within that uncertainty: it gives 8.081 against 8.087 in 2000, and 8.034 against 8.042 in 2024. The observed line is shown as published, not shifted to match the model.
 
-In SSP2-4.5, every lever in full raises the 2100 pH from 7.94 to 8.07, about where it was in 2024 (8.03). Electric cars alone raise it by 0.011, and renewable electricity by 0.033. The diet shift, which cuts methane and N₂O, leaves it unchanged. The range comes from the CO₂: the pH with levers takes the median change in CO₂ at each end of the scenario's range.
+In SSP2-4.5, every lever in full raises the 2100 pH from 7.94 to 8.07, about where it was in 2024 (8.03). Electric cars alone raise it by 0.011, and renewable electricity by 0.034. The diet shift, which cuts methane and N₂O, leaves it unchanged. The range comes from the CO₂: the pH with levers takes the median change in CO₂ at each end of the scenario's range.
 
 ## Where Planetshift departs from FaIR
 
@@ -318,6 +318,7 @@ Each departure is a named switch in `planetshift.config.json`, the file a fork o
 | --- | --- | --- | --- |
 | Where NOx is emitted (`noxMethane`) | the chemistry models' own methane per kg of NOx on land and at sea (Hoor et al. 2009), carried by FaIR's change with the scenario; a fork can also share FaIR's coefficient between land and sea by their ratio, its world total kept (`hoor`) | one coefficient for every source | [Energy and transport](#method-sectors), [Limitations](#method-limitations) |
 | Carbon monoxide's methane (`coMethane`) | FaIR's VOC coefficient shared between VOCs and CO in ACCMIP's ratio per Tg (Stevenson et al. 2013), with its effect in 2014 kept, and CO's methane given back to the chemistry models' NOx figures (`split`) | CO has no effect on methane's lifetime, and the VOCs carry it all | [Energy and transport](#method-sectors) |
+| Fossil methane's CO₂ (`fossilMethaneCo2`) | cutting a kg of fossil methane with the energy and industry levers also cuts the 2.74 kg of CO₂ it would have become, counted in the year emitted, as in AR6's fossil-methane metrics (`on`) | no CO₂ is counted for the methane | [Energy and transport](#method-sectors) |
 | Aviation's non-CO₂ effects (`aviationNonCo2`) | Lee et al. (2021)'s forcing, contrails included, cut by less flying | aviation's own NOx, SO₂ and soot through FaIR's coefficients; FaIR has no contrails | [Energy and transport](#method-sectors) |
 | Permafrost (`permafrost`) | offered as an option, on by default | the option and its module left out | Permafrost, above |
 | The 2020 shipping sulphur rule (`shippingSulphur2020`) | its published forcing, 0.12 (0.08–0.14) W/m² from 2020, added to the baseline | the scenarios' own ships' SO₂ through FaIR's world-wide aerosol response | Why 2023 and 2024 were so warm, above |
@@ -327,8 +328,8 @@ Each departure is a named switch in `planetshift.config.json`, the file a fork o
 With every switch at its plain-FaIR value, on SSP2-4.5:
 
 - less flying in full avoids 0.007 °C in 2050 and 0.045 °C in 2100, instead of 0.055 and 0.125, as most of its effect is the contrails' and FaIR has none;
-- electric cars avoid 0.025 and 0.087 °C instead of 0.039 and 0.101, and in SSP3-7.0 add 0.026 °C by 2100 instead of avoiding 0.027;
-- the six energy levers together avoid 0.161 and 0.531 °C instead of 0.250 and 0.652.
+- electric cars avoid 0.025 and 0.087 °C instead of 0.039 and 0.102, and in SSP3-7.0 add 0.026 °C by 2100 instead of avoiding 0.028;
+- the six energy levers together avoid 0.161 and 0.531 °C instead of 0.252 and 0.657.
 
 Without the shipping rule, the baseline is 0.037 °C cooler in 2024 and 0.069 °C cooler in 2100. The farm levers do not move.
 
