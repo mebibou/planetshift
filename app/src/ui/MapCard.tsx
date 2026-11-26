@@ -50,6 +50,7 @@ import type { ScenarioResult } from '../model/api';
 import { DownloadButton, DownloadPanel, type DownloadSources } from './Download';
 import { FIELD, FIELD_LABEL, MAP_CARD } from './classes';
 import { IconTabs } from './IconTabs';
+import { ScrollTabs } from './ScrollTabs';
 import { Segmented } from './Segmented';
 import { TableView } from './TableView';
 import { useDrawn } from './useDrawn';
@@ -256,6 +257,9 @@ const usePaint = (props: MapCardProps, names: Map<string, string>, landUse: Land
 
 const LEGEND_ITEM = 'inline-flex items-center gap-[5px]';
 
+/** The panel the layer tabs control: the map and the table, both drawn from the layer. */
+const LAYER_PANEL = 'map-layer-panel';
+
 /** The note under the map: the layer's, or the waste layer's for the waste it shows. */
 const noteKey = (ui: UiState): string =>
   ui.layer === 'waste' ? `map.notes.waste.${ui.wasteOf}` : `map.notes.${ui.layer}`;
@@ -279,16 +283,24 @@ const MapControls = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui:
   const measure = measureOf(ui);
   return (
     <div className="map-controls flex min-w-0 flex-auto flex-wrap items-end gap-x-5 gap-y-3">
-      <Segmented<Layer>
-        name="layer"
-        legend={t('map.layer')}
-        options={LAYERS.map((v) => ({
-          value: v,
-          label: t(v === 'land' ? 'map.landUse' : `map.layers.${v}`),
-        }))}
-        value={ui.layer}
-        onChange={(layer) => setUi((u) => ({ ...u, layer }))}
-      />
+      <fieldset className="segmented m-0 w-full min-w-0 border-0 p-0" data-control="layer">
+        <legend id="layer-legend" className="mb-1.5 p-0 text-[0.92rem] font-bold">
+          {t('map.layer')}
+        </legend>
+        <ScrollTabs<Layer>
+          t={t}
+          prefix="layer"
+          look="pill"
+          labelledBy="layer-legend"
+          tabs={LAYERS.map((v) => ({
+            value: v,
+            label: t(v === 'land' ? 'map.landUse' : `map.layers.${v}`),
+          }))}
+          value={ui.layer}
+          onChange={(layer) => setUi((u) => ({ ...u, layer }))}
+          controls={() => LAYER_PANEL}
+        />
+      </fieldset>
       <Segmented<UiState['changeOf']>
         name="changeOf"
         legend={t('map.changeOf')}
@@ -400,34 +412,36 @@ export const MapCard = (props: MapCardProps) => {
         mapLicences={mapLicences(ui)}
         hidden={!downloading}
       />
-      <div
-        role="tabpanel"
-        id="map-panel-map"
-        aria-labelledby="map-tab-map"
-        hidden={ui.mapView !== 'map'}
-      >
-        <div className="drawn" ref={mapRef} />
-        <div className="legend-row mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
-          <p className="legend-title m-0 text-[0.85rem] font-bold">{legendTitle}</p>
-          <Legend t={t} locale={locale} ui={ui} palette={palette} />
+      <div role="tabpanel" id={LAYER_PANEL} aria-labelledby={`layer-tab-${ui.layer}`}>
+        <div
+          role="tabpanel"
+          id="map-panel-map"
+          aria-labelledby="map-tab-map"
+          hidden={ui.mapView !== 'map'}
+        >
+          <div className="drawn" ref={mapRef} />
+          <div className="legend-row mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+            <p className="legend-title m-0 text-[0.85rem] font-bold">{legendTitle}</p>
+            <Legend t={t} locale={locale} ui={ui} palette={palette} />
+          </div>
         </div>
+        <div
+          role="tabpanel"
+          id="map-panel-table"
+          aria-labelledby="map-tab-table"
+          hidden={ui.mapView !== 'table'}
+        >
+          <TableView
+            key={ui.layer}
+            t={t}
+            locale={locale}
+            rows={rowsOf(names)}
+            spec={ui}
+            caption={legendTitle}
+          />
+        </div>
+        <p className="map-note m-0 mt-2 text-[0.82rem] text-muted">{t(noteKey(ui))}</p>
       </div>
-      <div
-        role="tabpanel"
-        id="map-panel-table"
-        aria-labelledby="map-tab-table"
-        hidden={ui.mapView !== 'table'}
-      >
-        <TableView
-          key={ui.layer}
-          t={t}
-          locale={locale}
-          rows={rowsOf(names)}
-          spec={ui}
-          caption={legendTitle}
-        />
-      </div>
-      <p className="map-note m-0 mt-2 text-[0.82rem] text-muted">{t(noteKey(ui))}</p>
     </section>
   );
 };

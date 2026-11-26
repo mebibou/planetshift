@@ -565,6 +565,10 @@
     },
     "seeCauses": "See what causes the warming"
   },
+  "scrollTabs": {
+    "back": "Show the earlier tabs",
+    "more": "Show more tabs"
+  },
   "diet": {
     "title": "Diet",
     "none": "No shift yet",

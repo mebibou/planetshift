@@ -569,6 +569,10 @@
     },
     "seeCauses": "Voir ce qui cause le réchauffement"
   },
+  "scrollTabs": {
+    "back": "Afficher les onglets précédents",
+    "more": "Afficher plus d’onglets"
+  },
   "diet": {
     "title": "Alimentation",
     "none": "Pas encore de changement",

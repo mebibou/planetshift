@@ -141,7 +141,7 @@ test('a shared URL restores the state', async ({ page, browser }) => {
   await page.locator('label[for="basis-kcal"]').click();
   await page.locator('#panel-tab-options').click();
   await page.locator('label[for="option-ssp-ssp126"]').click();
-  await page.locator('label[for="layer-change"]').click();
+  await page.locator('#layer-tab-change').click();
   await expect.poll(() => page.url()).toContain('ssp=ssp126');
   const [url, summary] = [page.url(), await summaryText(page)];
   const other = await browser.newPage();
@@ -149,7 +149,7 @@ test('a shared URL restores the state', async ({ page, browser }) => {
   await expect(other.locator('main[data-ready]')).toBeAttached();
   await expect(other.locator('#basis-kcal')).toBeChecked();
   await expect(other.locator('#option-ssp-ssp126')).toBeChecked();
-  await expect(other.locator('#layer-change')).toBeChecked();
+  await expect(other.locator('#layer-tab-change')).toHaveAttribute('aria-selected', 'true');
   await expect(other.locator('#group-ruminantMeat')).toHaveValue('50');
   expect(await summaryText(other)).toBe(summary);
   await other.close();
@@ -392,7 +392,7 @@ test('the map layers and tooltip work', async ({ page }) => {
     'change',
     'emissions',
   ]) {
-    await page.locator(`label[for="layer-${layer}"]`).click();
+    await page.locator(`#layer-tab-${layer}`).click();
     await expect(page).toHaveURL(
       layer === 'emissions' ? /^(?!.*layer=)/ : new RegExp(`layer=${layer}`),
     );
@@ -591,6 +591,90 @@ test('the chart tabs and the chart values are reachable from the keyboard', asyn
   await expect(tooltip).toBeVisible();
 });
 
+/** Whether the tab `id` shows whole inside its scrolling row. */
+const tabInView = (page: Page, id: string) =>
+  page.locator(`#${id}`).evaluate((tab) => {
+    const row = tab.closest('.scroll-row')!.getBoundingClientRect();
+    const box = tab.getBoundingClientRect();
+    return box.left >= row.left - 1 && box.right <= row.right + 1;
+  });
+
+const LAYER_TABS = 'fieldset[data-control="layer"] .scroll-tabs';
+
+test('the map layers keep to one row and fade and arrow only the edge with more', async ({
+  page,
+  isMobile,
+}) => {
+  await open(page);
+  const frame = page.locator(LAYER_TABS);
+  const row = frame.locator('.scroll-row');
+  const rows = await frame
+    .locator('[role="tab"]')
+    .evaluateAll((tabs) => new Set(tabs.map((tab) => tab.getBoundingClientRect().top)).size);
+  expect(rows).toBe(1);
+  await expect(frame).not.toHaveAttribute('data-more-start');
+  await expect(frame).toHaveAttribute('data-more-end');
+  const mask = () => row.evaluate((el) => getComputedStyle(el).maskImage);
+  expect(await mask()).toMatch(
+    /^linear-gradient\(to right, rgb\(0, 0, 0\),.*rgba\(0, 0, 0, 0\)\)$/,
+  );
+  const [back, more] = [frame.locator('[data-edge="start"]'), frame.locator('[data-edge="end"]')];
+  await expect(back).toBeHidden();
+  if (isMobile) {
+    await expect(more).toBeHidden();
+  } else {
+    await expect(more).toHaveAccessibleName('Show more tabs');
+    await more.click();
+    await expect(frame).toHaveAttribute('data-more-start');
+    await expect(back).toBeVisible();
+  }
+  await row.evaluate((el) => el.scrollTo({ left: el.scrollWidth }));
+  await expect(frame).toHaveAttribute('data-more-start');
+  await expect(frame).not.toHaveAttribute('data-more-end');
+  await expect
+    .poll(mask)
+    .toMatch(/^linear-gradient\(to right, rgba\(0, 0, 0, 0\),.*rgb\(0, 0, 0\)\)$/);
+  await expect(more).toBeHidden();
+  await expect(back).toBeVisible({ visible: !isMobile });
+});
+
+test('a layer chosen off screen, from the URL or the keyboard, scrolls into view', async ({
+  page,
+}) => {
+  await open(page, `${START}&layer=quality`);
+  const quality = page.locator('#layer-tab-quality');
+  await expect(quality).toHaveAttribute('aria-selected', 'true');
+  await expect.poll(() => tabInView(page, 'layer-tab-quality')).toBe(true);
+  await expect(quality).toHaveAttribute('aria-controls', 'map-layer-panel');
+  await expect(page.locator('#map-layer-panel')).toHaveAttribute(
+    'aria-labelledby',
+    'layer-tab-quality',
+  );
+  await quality.focus();
+  await page.keyboard.press('Home');
+  const production = page.locator('#layer-tab-production');
+  await expect(production).toBeFocused();
+  await expect(production).toHaveAttribute('aria-selected', 'true');
+  await expect(production).toHaveAttribute('tabindex', '0');
+  await expect(quality).toHaveAttribute('tabindex', '-1');
+  await expect(page).toHaveURL(/layer=production/);
+  await expect.poll(() => tabInView(page, 'layer-tab-production')).toBe(true);
+  await expect(page.locator(LAYER_TABS)).not.toHaveAttribute('data-more-start');
+  await page.keyboard.press('ArrowLeft');
+  await expect(quality).toBeFocused();
+  await expect(page).toHaveURL(/layer=quality/);
+  await expect.poll(() => tabInView(page, 'layer-tab-quality')).toBe(true);
+  await page.keyboard.press('ArrowLeft');
+  await expect(page.locator('#layer-tab-change')).toBeFocused();
+  await expect.poll(() => tabInView(page, 'layer-tab-change')).toBe(true);
+  await page.keyboard.press('End');
+  await expect(quality).toBeFocused();
+  await expect(page.locator(LAYER_TABS)).not.toHaveAttribute('data-more-end');
+  await page.keyboard.press('ArrowRight');
+  await expect(production).toBeFocused();
+  await expect(page.locator('.legend li').first()).toBeVisible();
+});
+
 test('the summary announces one short sentence, not the whole section', async ({ page }) => {
   await open(page, `${START}&shift=50`);
   await expect(page.locator('.summary')).not.toHaveAttribute('aria-live');
@@ -603,8 +687,8 @@ test('the land use layer draws the share of land farmed and keeps its URL key', 
   page,
 }) => {
   await open(page, `${START}&shift=50`);
-  await expect(page.locator('label[for="layer-land"]')).toHaveText('Land use');
-  await page.locator('label[for="layer-land"]').click();
+  await expect(page.locator('#layer-tab-land')).toHaveText('Land use');
+  await page.locator('#layer-tab-land').click();
   await expect(page).toHaveURL(/layer=land/);
   await expect(page.locator('.legend-title')).toContainText('Share of the land farmed');
   await expect(page.locator('.legend li').first()).toContainText('%');
@@ -620,7 +704,7 @@ test('the land use layer draws the share of land farmed and keeps its URL key', 
   await expect(tooltip).toContainText('ha');
   const other = await page.context().newPage();
   await other.goto(`${START}&layer=land`);
-  await expect(other.locator('#layer-land')).toBeChecked();
+  await expect(other.locator('#layer-tab-land')).toHaveAttribute('aria-selected', 'true');
   await expect(other.locator('.legend-title')).toContainText('Share of the land farmed');
   await other.close();
 });
@@ -1055,7 +1139,7 @@ test('the deforestation layer shows the forest cleared, with its CO₂ in the to
   page,
 }) => {
   await open(page, `${START}&shift=50`);
-  await page.locator('label[for="layer-deforestation"]').click();
+  await page.locator('#layer-tab-deforestation').click();
   await expect(page).toHaveURL(/layer=deforestation/);
   await expect(page.locator('.legend-title')).toContainText('Forest cleared for farming');
   await expect(page.locator('.legend li').last()).toContainText('No clearing');
@@ -1074,7 +1158,7 @@ test('the land-use CO₂ layer shows net CO₂, sinks included, and what the lev
   page,
 }) => {
   await open(page, `${START}&shift=50&df=100`);
-  await page.locator('label[for="layer-landCo2"]').click();
+  await page.locator('#layer-tab-landCo2').click();
   await expect(page).toHaveURL(/layer=landCo2/);
   await expect(page.locator('.legend-title')).toContainText('land-use change');
   await expect(page.locator('.legend li').first()).toContainText('−100 Mt');
@@ -1093,7 +1177,7 @@ test('the farmed mammals layer shows live weight per km² of land, today and wit
   page,
 }) => {
   await open(page, `${START}&shift=50`);
-  await page.locator('label[for="layer-mammals"]').click();
+  await page.locator('#layer-tab-mammals').click();
   await expect(page).toHaveURL(/layer=mammals/);
   await expect(page.locator('.legend-title')).toContainText('per km² of land');
   await expect(page.locator('.legend li').first()).toContainText('t/km²');
@@ -1113,7 +1197,7 @@ test("the species layer shows the species committed by each country's farmland",
   page,
 }) => {
   await open(page, `${START}&shift=50`);
-  await page.locator('label[for="layer-species"]').click();
+  await page.locator('#layer-tab-species').click();
   await expect(page).toHaveURL(/layer=species/);
   await expect(page.locator('.legend-title')).toContainText('committed to extinction');
   await expect(page.locator('.map-note')).toContainText('Scherer et al. (2023)');
@@ -1160,7 +1244,7 @@ test('the freshwater layers give the litres withdrawn and, apart, the crops’ s
   page,
 }) => {
   await open(page, `${START}&shift=50`);
-  await page.locator('label[for="layer-water"]').click();
+  await page.locator('#layer-tab-water').click();
   await expect(page).toHaveURL(/layer=water/);
   await expect(page.locator('.legend-title')).toContainText('Freshwater withdrawn for farming');
   await expect(page.locator('.map-note')).toContainText('Poore & Nemecek (2018)');
@@ -1173,7 +1257,7 @@ test('the freshwater layers give the litres withdrawn and, apart, the crops’ s
   await page.locator('#map-tab-table').click();
   await expect(page.locator('.data-table tbody tr')).toHaveCount(4);
   await page.locator('#map-tab-map').click();
-  await page.locator('label[for="layer-waterScarcity"]').click();
+  await page.locator('#layer-tab-waterScarcity').click();
   await expect(page).toHaveURL(/layer=waterScarcity/);
   await expect(page.locator('.legend-title')).toContainText('(L eq)');
   await expect(page.locator('.legend li').first()).toContainText('eq');
@@ -1277,7 +1361,7 @@ test('the map card switches to a table and back, kept in the URL', async ({ page
   await expect(page.locator('#map-panel-map')).toBeHidden();
   const rows = page.locator('.data-table tbody tr');
   await expect(rows).toHaveCount(5);
-  await page.locator('label[for="layer-land"]').click();
+  await page.locator('#layer-tab-land').click();
   await expect(page.locator('.data-table thead th')).toHaveCount(4);
   await page.locator('#map-tab-table').focus();
   await page.keyboard.press('ArrowLeft');

@@ -50,6 +50,8 @@ const PATHS = {
   ],
   panelLeft: ['M4 5h16v14H4z', 'M9 5v14'],
   panelRight: ['M4 5h16v14H4z', 'M15 5v14'],
+  back: ['M15 5l-7 7l7 7'],
+  more: ['M9 5l7 7l-7 7'],
 } as const;
 export type IconName = keyof typeof PATHS;
 
