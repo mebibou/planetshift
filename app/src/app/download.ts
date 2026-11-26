@@ -256,16 +256,20 @@ export const oceanRows = (
 };
 
 /**
- * The observed sea level from 1900, and the rise without and with the levers from 2000 to 2100,
- * cm above 1900 (above 1995–2014 without the observed record), median and likely range.
+ * The observed sea level from 1900, the modelled rise from 2000 and the rise with levers from now
+ * to 2100, cm above 1900 (above 1995–2014 without the observed record), median and likely range.
  */
-export const seaLevelRows = (result: ScenarioResult, observed?: Series): Table => {
+export const seaLevelRows = (
+  result: ScenarioResult,
+  currentYear: number,
+  observed?: Series,
+): Table => {
   const s = result.seaLevel;
   const cm = (m: number | null | undefined) => (m === undefined || m === null ? null : m * 100);
   const columns = (name: string) =>
     ['median', 'p17', 'p83'].map((q) => `sea_level_${name}_${q}_cm`);
-  const at = (band: SeaLevelBand, i: number, year: number) =>
-    year < 2000 ? [null, null, null] : [band.median[i], band.low[i], band.high[i]].map(cm);
+  const at = (band: SeaLevelBand, i: number, year: number, from: number) =>
+    year < from ? [null, null, null] : [band.median[i], band.low[i], band.high[i]].map(cm);
   const seen = (year: number) => cm(observed?.values[observed.years.indexOf(year)]);
   return s
     ? {
@@ -281,8 +285,8 @@ export const seaLevelRows = (result: ScenarioResult, observed?: Series): Table =
           .map(({ year, i }) => [
             year,
             seen(year),
-            ...at(s.baseline, i, year),
-            ...at(s.scenario, i, year),
+            ...at(s.baseline, i, year, 2000),
+            ...at(s.scenario, i, year, Math.max(2000, currentYear)),
           ]),
       }
     : null;
@@ -364,7 +368,7 @@ const RUN_TABLES: Record<
 > = {
   temperature: (r, i) => temperatureRows(r, i.climate.naturalOnly, i.currentYear),
   avoided: (r, i) => avoidedRows(r, i.currentYear),
-  sealevel: (r, i) => seaLevelRows(r, i.climate.seaLevel?.observed),
+  sealevel: (r, i) => seaLevelRows(r, i.currentYear, i.climate.seaLevel?.observed),
   ocean: (r, i) => oceanRows(r, i.currentYear, i.climate.oceanPhObserved),
   waste: (r, i) => wasteRows(r, i.waste),
 };

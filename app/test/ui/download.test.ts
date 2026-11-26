@@ -218,7 +218,7 @@ describe('chart csv', () => {
     expect(rows).toEqual(['2026,0.5,-0.5,1.5', '2027,0.5,-0.5,1.5']);
   });
 
-  it('gives the sea-level rise without and with the levers in cm, or nothing without it', () => {
+  it('gives the modelled rise from 2000 and with levers from the current year in cm, or nothing without it', () => {
     const band = (k: number) => ({
       median: [k, 2 * k, 3 * k],
       low: [0, k, 2 * k],
@@ -226,7 +226,7 @@ describe('chart csv', () => {
     });
     const withSea = {
       ...result,
-      seaLevel: { years: [1999, 2000, 2001], baseline: band(0.01), scenario: band(0.005) },
+      seaLevel: { years: [1999, 2000, 2026], baseline: band(0.01), scenario: band(0.005) },
     } as unknown as ScenarioResult;
     const [header, ...rows] = lines(chart('sealevel', withSea)?.text ?? '');
     expect(header?.split(',')).toEqual([
@@ -236,7 +236,7 @@ describe('chart csv', () => {
         ['median', 'p17', 'p83'].map((q) => `sea_level_${w}_${q}_cm`),
       ),
     ]);
-    expect(rows).toEqual(['1999,,,,,,,', '2000,,2,1,3,1,0.5,1.5', '2001,,3,2,4,1.5,1,2']);
+    expect(rows).toEqual(['1999,,,,,,,', '2000,,2,1,3,,,', '2026,,3,2,4,1.5,1,2']);
     expect(chart('sealevel')).toBeNull();
   });
 
