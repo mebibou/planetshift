@@ -208,12 +208,12 @@ The threshold moves the baseline, but it hardly moves the effect of a shift. A h
 
 | Offtake threshold | Non-food baseline, Mt CO₂e | India | Niger | Ethiopia | Mali | Full shift: emissions avoided, Gt CO₂e | Full shift: warming avoided in 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 6.7% (southern Africa, used) | 211 | 113 | 18.1 | 6.9 | 1.1 | 6.95 | 0.342 |
-| 9% (median) | 245 | 113 | 19.5 | 26.0 | 4.0 | 6.90 | 0.340 |
-| 9.9% (mean) | 258 | 113 | 19.8 | 31.1 | 5.1 | 6.88 | 0.339 |
-| 12% (pastoral systems) | 286 | 113 | 20.4 | 40.0 | 7.1 | 6.85 | 0.337 |
+| 6.7% (southern Africa, used) | 211 | 113 | 18.1 | 6.9 | 1.1 | 6.95 | 0.357 |
+| 9% (median) | 245 | 113 | 19.5 | 26.0 | 4.0 | 6.90 | 0.354 |
+| 9.9% (mean) | 258 | 113 | 19.8 | 31.1 | 5.1 | 6.89 | 0.353 |
+| 12% (pastoral systems) | 286 | 113 | 20.4 | 40.0 | 7.1 | 6.85 | 0.351 |
 
-A half shift avoids half the emissions (3.42 to 3.46 Gt CO₂e) and a little more than half the warming (0.171 to 0.174 °C), because FaIR's response is not proportional. The likely range that the app shows covers only the climate response, not this choice.
+A half shift avoids half the emissions (3.42 to 3.46 Gt CO₂e) and a little less than half the warming (0.173 to 0.176 °C), because FaIR's response is not proportional. The likely range that the app shows covers only the climate response, not this choice.
 
 ### Limits of the rule
 
@@ -246,7 +246,7 @@ The making of fertilisers and the making of pesticides are left out, as they are
 
 In France, a tonne of beef has about 1.08 t CO₂e after the farm, and a tonne of wheat about 0.31 t. That is small compared with the beef's farm emissions, and close to the wheat's.
 
-**What the levers change.** A change in production (a diet shift, less food waste, fewer supply losses) also changes the emissions after the farm. It does so food by food, at the country's figures. Like the farm's emissions, they scale with the baseline and ramp in with the shift. They count in the [causes of warming](#method-link) they belong to today: the energy stages in *Fossil fuels and industry*; food waste and wastewater in *Waste*; the refrigerants in *Other human emissions*. With them, the whole diet shift avoids about 1.6 Gt CO₂e a year more. Once the levers are in full, it avoids 7.2 Gt in all. That includes 329 kt of HFC-134a, about 0.5 Gt CO₂e, and 0.27 Gt of CO₂ from drained soils. It avoids 0.35 °C by 2100 rather than 0.29 °C.
+**What the levers change.** A change in production (a diet shift, less food waste, fewer supply losses) also changes the emissions after the farm. It does so food by food, at the country's figures. Like the farm's emissions, they scale with the baseline and ramp in with the shift. They count in the [causes of warming](#method-link) they belong to today: the energy stages in *Fossil fuels and industry*; food waste and wastewater in *Waste*; the refrigerants in *Other human emissions*. With them, the whole diet shift avoids about 1.6 Gt CO₂e a year more. Once the levers are in full, it avoids 7.2 Gt in all. That includes 329 kt of HFC-134a, about 0.5 Gt CO₂e, and 0.27 Gt of CO₂ from drained soils. It avoids 0.36 °C by 2100 rather than 0.29 °C.
 
 **Simplifications.** Everything is placed where the food is produced, as for the farm's emissions, though shops and kitchens are where it is eaten. Cooking and food waste follow a food's mass, so a tonne of wheat and a tonne of beef have the same emissions at home. Less food waste also cuts the cooking emissions of the food no longer wasted. This slightly overstates the cut, because wasted food is not always cooked. The energy after the farm does not get cleaner over the years, unlike the scenario's grid.
 

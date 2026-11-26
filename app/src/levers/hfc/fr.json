@@ -1,0 +1,10 @@
+{
+  "title": "Réduction des HFC",
+  "description": "Remplacer les HFC des réfrigérateurs, des climatiseurs, des pompes à chaleur, des mousses et des aérosols par des gaz qui réchauffent bien moins. Arrêter le HFC-23 rejeté quand on fabrique d'autres produits chimiques.",
+  "family": "Réduction des HFC",
+  "page": "Réduction des HFC",
+  "hfcPhaseDown": {
+    "title": "Réduction des HFC",
+    "description": "À 100 %, les émissions de chaque HFC du scénario baissent de 90 %, réfrigérants de la chaîne alimentaire compris. L'amendement de Kigali réduit leur usage d'environ 80 à 85 % d'ici la fin des années 2040. Les scénarios comptent déjà une partie de cette baisse."
+  }
+}

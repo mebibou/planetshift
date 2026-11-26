@@ -22,6 +22,7 @@ from .sections import (
     fair,
     feed,
     fossil_methane,
+    hfc,
     impacts,
     industry,
     intensities,
@@ -84,6 +85,7 @@ SECTIONS: tuple[Section, ...] = (
     Section("industry", industry.build, ("industry.json",), ("industry",)),
     Section("coemissions", coemissions.build, ("coemissions.json",), ("coemissions",)),
     Section("fossilmethane", fossil_methane.build, ("fossilmethane.json",)),
+    Section("hfc", hfc.build, ("hfc.json",)),
     Section("waste", waste.build, ("waste.json",), ("waste", "food_loss")),
     Section(
         "solidwaste",

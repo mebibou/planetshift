@@ -37,7 +37,7 @@ The baseline is run once for each scenario and set of options, from 1750 to 2100
 
 The temperature, its range, the warming the levers avoid, the sea level and the ocean's pH all come from these runs. What the levers change besides those four gases is added from its own response: the energy levers' air pollution, aviation's contrails, the albedo of land that grows back and permafrost's release (see the levers' pages).
 
-The app used to add up the response to each kilogram instead (below). For large changes, that sum differs from FaIR. With every lever in full on SSP2-4.5, FaIR gives 1.39 °C of warming avoided in 2100 from those four gases, where the sum gave 1.32 °C, because methane decays faster and the carbon sinks are less saturated once emissions fall.
+The app used to add up the response to each kilogram instead (below). For large changes, that sum differs from FaIR. With every lever in full on SSP2-4.5, FaIR gives 1.47 °C of warming avoided in 2100 from those four gases, where the sum gave 1.40 °C, because methane decays faster and the carbon sinks are less saturated once emissions fall.
 
 ## The temperature response to one kilogram
 
@@ -364,7 +364,7 @@ Without the shipping rule, the baseline is 0.037 °C cooler in 2024 and 0.069 °
 ## Assumptions
 
 - The app runs FaIR on 50 of the calibrated ensemble's 841 members, chosen to keep its median and 5–95% range, without its internal variability. The pipeline's own runs (the causes of warming, the curves) use all 841 members, also without internal variability.
-- The levers change FaIR's fossil CO₂, methane, N₂O and HFC-134a; everything else they change is added from its own response.
+- The levers change FaIR's fossil CO₂, methane, N₂O and HFC-134a; everything else they change is added from its own response. The HFC phase-down's cut of every HFC is passed as the HFC-134a stream with the same forcing (see [HFC phase-down](#method-hfc)).
 - AGTP curves come from pulses on SSP2-4.5 in 2035 and are used under every scenario and for every year. The curves from 2025 and 2045 are within 5%. They only split FaIR's total, except with the AR6 option.
 - Agricultural methane is treated as biogenic: no CO₂ from its oxidation.
 - CO₂ from farming (urea and liming) is treated as fossil CO₂ in FaIR.

@@ -1464,6 +1464,23 @@ const emissionsPass = (
   };
 };
 
+/**
+ * A family's CO₂e avoided in a cause once the shift is complete, kg a year: its emissions' at
+ * GWP100, and, in its own cause, what its world part counts for beyond them.
+ */
+const avoidedCo2eAtEnd = (
+  atEnd: GasVector | undefined,
+  own: { module: LeverModule; part: WorldPart } | undefined,
+  cause: CountedCause,
+  completeIndex: number,
+): number => {
+  const beyond =
+    own && cause === causeOfModule(own.module)
+      ? (own.part.co2eAdjustment?.[completeIndex] ?? 0)
+      : 0;
+  return atEnd ? -co2eOf(atEnd) - beyond : 0;
+};
+
 /** The warming avoided at horizon `h`: the emissions' and the extra forcing's, with its sign. */
 const avoidedAtHorizon = (warming: readonly number[], extras: number[][], h: 0 | 1): number => {
   const year = HORIZON_YEARS[h] as number;
@@ -1492,11 +1509,10 @@ const familyValues = (pass: Pass, frame: PassFrame, family: string): number[] =>
       HORIZON_YEARS,
     );
     const extras = own ? warmingIn(own.module, own.part, c, 'median') : [];
-    const atEnd = path[completeIndex];
     return [
       avoidedAtHorizon(warming, extras, 0),
       avoidedAtHorizon(warming, extras, 1),
-      atEnd ? -co2eOf(atEnd) : 0,
+      avoidedCo2eAtEnd(path[completeIndex], own, c, completeIndex),
     ];
   });
 };
@@ -2066,7 +2082,8 @@ export const runPrepared = (
     summary: Object.assign(
       {
         avoided,
-        avoidedCo2e: co2eOf(avoided),
+        avoidedCo2e:
+          co2eOf(avoided) - sum(world.map((w) => w.part.co2eAdjustment?.[completeIndex] ?? 0)),
         avoidedWarming2050: avoidedIn(2050),
         avoidedWarming2100: avoidedIn(2100),
         seaLevel2100: seaPaths && seaLevel2100(seaPaths),

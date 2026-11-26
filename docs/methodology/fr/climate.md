@@ -37,7 +37,7 @@ La référence est lancée une fois pour chaque scénario et chaque jeu d'option
 
 La température, sa fourchette, le réchauffement évité par les leviers, le niveau de la mer et le pH de l'océan viennent tous de ces simulations. Ce que les leviers changent en dehors de ces quatre gaz est ajouté selon sa propre réponse : la pollution de l'air des leviers d'énergie, les traînées des avions, l'albédo des terres qui repoussent et les rejets du pergélisol (voir les pages des leviers).
 
-L'application additionnait auparavant la réponse à chaque kilogramme (ci-dessous). Pour de grands changements, cette somme s'écarte de FaIR. Avec tous les leviers au maximum sur SSP2-4.5, FaIR donne 1,39 °C de réchauffement évité en 2100 par ces quatre gaz, là où la somme donnait 1,32 °C, car le méthane disparaît plus vite et les puits de carbone sont moins saturés quand les émissions baissent.
+L'application additionnait auparavant la réponse à chaque kilogramme (ci-dessous). Pour de grands changements, cette somme s'écarte de FaIR. Avec tous les leviers au maximum sur SSP2-4.5, FaIR donne 1,47 °C de réchauffement évité en 2100 par ces quatre gaz, là où la somme donnait 1,40 °C, car le méthane disparaît plus vite et les puits de carbone sont moins saturés quand les émissions baissent.
 
 ## La réponse de la température à un kilogramme
 
@@ -364,7 +364,7 @@ Sans la règle sur le transport maritime, la référence est plus fraîche de 0,
 ## Hypothèses
 
 - L'application lance FaIR sur 50 des 841 membres de l'ensemble calibré, choisis pour garder sa médiane et sa fourchette de 5 à 95 %, sans sa variabilité interne. Les simulations du pipeline lui-même (les causes du réchauffement, les courbes) utilisent les 841 membres, eux aussi sans variabilité interne.
-- Les leviers changent le CO₂ fossile, le méthane, le N₂O et le HFC-134a de FaIR ; tout ce qu'ils changent d'autre est ajouté selon sa propre réponse.
+- Les leviers changent le CO₂ fossile, le méthane, le N₂O et le HFC-134a de FaIR ; tout ce qu'ils changent d'autre est ajouté selon sa propre réponse. La baisse de chaque HFC par la réduction des HFC passe comme le flux de HFC-134a de même forçage (voir [Réduction des HFC](#method-hfc)).
 - Les courbes d'AGTP viennent d'impulsions sur SSP2-4.5 en 2035 et servent pour tous les scénarios et toutes les années. Les courbes de 2025 et 2045 sont à 5 % près. Elles ne font que répartir le total de FaIR, sauf avec l'option AR6.
 - Le méthane agricole est traité comme biogénique : pas de CO₂ issu de son oxydation.
 - Le CO₂ agricole (urée et chaulage) est traité comme du CO₂ fossile dans FaIR.

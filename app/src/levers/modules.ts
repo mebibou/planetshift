@@ -5,6 +5,7 @@ import { deadfall } from './deadfall';
 import { deforestation } from './deforestation';
 import { energy } from './energy';
 import { fossilMethane } from './fossilMethane';
+import { hfc } from './hfc';
 import { industry } from './industry';
 import { permafrost } from './permafrost';
 import { population } from './population';
@@ -29,6 +30,7 @@ const ALL: readonly LeverModule[] = [
   energy,
   industry,
   fossilMethane,
+  hfc,
   shippingSulphur,
   permafrost,
 ].filter(kept);

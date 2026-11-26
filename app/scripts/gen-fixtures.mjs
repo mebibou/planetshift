@@ -1604,6 +1604,34 @@ write('wastemethane.json', {
   source: 'Planetshift test fixture: landfills.md values, straight lines between them',
 });
 
+// four of the HFCs, kt a year in 2020, 2050 and 2100 (hfc.md), with FaIR's gas cycles
+const hfcKt = {
+  'HFC-125': { ssp126: [112, 12, 10], ssp245: [112, 190, 208], ssp370: [112, 250, 360] },
+  'HFC-134a': { ssp126: [214, 14, 18], ssp245: [214, 136, 154], ssp370: [214, 201, 281] },
+  'HFC-23': { ssp126: [2.3, 0.1, 0], ssp245: [2.3, 0.1, 0], ssp370: [2.3, 0.4, 0.3] },
+  'HFC-32': { ssp126: [10, 0.3, 0], ssp245: [10, 0.3, 0], ssp370: [10, 1, 1] },
+};
+write('hfc.json', {
+  years: [2020, 2050, 2100],
+  cut: 0.9,
+  carrier: 'HFC-134a',
+  species: Object.keys(hfcKt),
+  cycles: {
+    'HFC-125': { decay: 0.9672161, relative: 1.2117172 },
+    'HFC-134a': { decay: 0.93106278, relative: 1 },
+    'HFC-23': { decay: 0.99562364, relative: 1.5460534 },
+    'HFC-32': { decay: 0.83095039, relative: 1.2368565 },
+  },
+  gwp100: { 'HFC-125': 3740, 'HFC-134a': 1530, 'HFC-23': 14600, 'HFC-32': 771 },
+  emissions: Object.fromEntries(
+    ['ssp126', 'ssp245', 'ssp370'].map((ssp) => [
+      ssp,
+      Object.fromEntries(Object.entries(hfcKt).map(([s, kt]) => [s, kt[ssp].map((v) => v * 1e6)])),
+    ]),
+  ),
+  source: 'Planetshift test fixture: hfc.md values, straight lines between them',
+});
+
 // A few points of each deep-time series, already on 1850–1900 (synthetic shapes).
 const MA = (m) => Math.round(1950 - m * 1e6);
 const stages = [

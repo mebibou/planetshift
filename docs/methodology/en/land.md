@@ -186,11 +186,11 @@ The table shows what netting changes, on the real data with FaIR, SSP2-4.5 and b
 
 | Scenario, regrowth on | Net uptake when complete (Gt CO₂ a year) | Avoided in 2050 (°C) | Avoided in 2100 (°C) |
 | --- | --- | --- | --- |
-| Full shift, before | 9.20 | 0.173 | 0.387 (0.242–0.769) |
-| Full shift, netted | 8.86 | 0.171 | 0.385 (0.242–0.757) |
-| Half shift, before → netted | 4.60 → 4.43 | 0.088 → 0.087 | 0.196 → 0.195 |
-| Dairy to plant milk, before → netted | 1.08 → 0.99 | 0.047 → 0.047 | 0.102 → 0.102 |
-| Half the fish to legumes, before → netted | 0.01 → −0.09 | 0.0019 → 0.0014 | 0.0049 → 0.0043 |
+| Full shift, before | 9.20 | 0.175 | 0.396 (0.249–0.785) |
+| Full shift, netted | 8.86 | 0.174 | 0.393 (0.248–0.772) |
+| Half shift, before → netted | 4.60 → 4.43 | 0.087 → 0.086 | 0.196 → 0.194 |
+| Dairy to plant milk, before → netted | 1.08 → 0.99 | 0.046 → 0.046 | 0.102 → 0.102 |
+| Half the fish to legumes, before → netted | 0.01 → −0.09 | 0.0019 → 0.0014 | 0.0049 → 0.0042 |
 
 Under the full shift, 14 countries farm more land overall than before, 41 Mha together. Under the fish swap, 103 countries farm more land than before, 18 Mha together. With regrowth off, nothing changes.
 
@@ -202,7 +202,7 @@ Jiao et al. (2017) measured the forcing of turning each kind of forest into crop
 
 These values were not fitted to any total. Applied to all of today's farmland, they give −0.216 W m⁻². RCMIP and AR6 give −0.20 W m⁻² for land use's albedo in 2019.
 
-The effect is large. With the full shift and regrowth on, the albedo lowers the warming avoided in 2100 on SSP2-4.5 by 0.07 °C: 0.39 °C instead of 0.45 °C. The CO₂ that regrowth takes up stops after 30 years and then stays stored, while the darker surface keeps warming. Most of the freed land is pasture outside the tropics, where the contrast with forest is strongest. Jiao et al. find the strongest effects in boreal and mixed forests, up to −80 W m⁻² locally. In the tropics they find nearly none. Their values do not include snow, which makes boreal clearing cool more, so the effect there may be larger still.
+The effect is large. With the full shift and regrowth on, the albedo lowers the warming avoided in 2100 on SSP2-4.5 by 0.07 °C: 0.40 °C instead of 0.46 °C. The CO₂ that regrowth takes up stops after 30 years and then stays stored, while the darker surface keeps warming. Most of the freed land is pasture outside the tropics, where the contrast with forest is strongest. Jiao et al. find the strongest effects in boreal and mixed forests, up to −80 W m⁻² locally. In the tropics they find nearly none. Their values do not include snow, which makes boreal clearing cool more, so the effect there may be larger still.
 
 ## Land-use CO₂ by country
 
