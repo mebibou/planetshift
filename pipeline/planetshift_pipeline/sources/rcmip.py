@@ -25,6 +25,20 @@ FAIR_NAMES = {
 }
 
 
+# RCMIP v5.1.0 counts these NOx categories as NO, not NO₂ like the rest; fair-calibrate corrects
+# them by this ratio of molar masses (its rcmip-5-1-0-corrected-nox.csv, fair-calibrate #87).
+BURNING_NOX = tuple(
+    f"Emissions|NOx|MAGICC AFOLU|{category}"
+    for category in (
+        "Agricultural Waste Burning",
+        "Forest Burning",
+        "Grassland Burning",
+        "Peat Burning",
+    )
+)
+NO2_PER_NO = 46.006 / 30.006
+
+
 FORCING_URL = (
     "https://rcmip-protocols-au.s3-ap-southeast-2.amazonaws.com/"
     "v5.1.0/rcmip-radiative-forcing-annual-means-v5-1-0.csv"
@@ -88,6 +102,11 @@ def variable_of(df: pd.DataFrame, specie: str) -> str:
     return matches[0]
 
 
+def burning_nox_as_no2(df: pd.DataFrame, scenario: str, years: np.ndarray) -> np.ndarray:
+    """What RCMIP's NOx lacks for its burning categories to be NO₂, in its own unit."""
+    return sum(series(df, scenario, v, years) for v in BURNING_NOX) * (NO2_PER_NO - 1)
+
+
 def fair_emissions(
     df: pd.DataFrame,
     scenario: str,
@@ -95,15 +114,15 @@ def fair_emissions(
     years: np.ndarray,
     history: pd.DataFrame | None = None,
 ) -> dict[str, np.ndarray]:
-    """Emissions of each FaIR specie for `scenario`, in FaIR's units, on calendar `years`; with
-    `history` (`fair_history.load`), that history to its last year, then the scenario joined
-    to it."""
+    """Emissions of each FaIR specie for `scenario`, in FaIR's units, on calendar `years`, NOx's
+    burning categories as NO₂; with `history` (`fair_history.load`), that history to its last
+    year, then the scenario joined to it."""
 
     def one(specie: str, on: np.ndarray = years) -> np.ndarray:
         variable = variable_of(df, specie)
-        return to_fair_units(
-            series(df, scenario, variable, on), unit(df, scenario, variable), specie
-        )
+        raw = series(df, scenario, variable, on)
+        missing = burning_nox_as_no2(df, scenario, on) if specie == "NOx" else 0
+        return to_fair_units(raw + missing, unit(df, scenario, variable), specie)
 
     def kept(specie: str) -> np.ndarray:
         last = np.array([fair_history.LAST_YEAR])
