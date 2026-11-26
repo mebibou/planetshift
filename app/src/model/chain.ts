@@ -8,7 +8,7 @@ import {
   type GasVector,
 } from '../data/types';
 import type { Prepared, PreparedCountry } from './prepare';
-import { memoPer, type ItemVector } from './util';
+import { memoPer, recordFrom, type ItemVector } from './util';
 
 /** The causes food's emissions after the farm count in: energy, waste and wastewater, refrigerants. */
 export const CHAIN_CAUSES = [
@@ -113,17 +113,14 @@ export const chainSums = (production: ItemVector, ints: ChainIntensities): Float
 /** A cause's gases out of `chainSums`. */
 export const causeOf = (sums: Float64Array, cause: ChainCause): GasVector => {
   const base = CHAIN_CAUSES.indexOf(cause) * GASES.length;
-  return Object.fromEntries(GASES.map((g, j) => [g, sums[base + j] as number])) as GasVector;
+  return recordFrom(GASES, (_, j) => sums[base + j] as number);
 };
 
 /** All the causes' gases together out of `chainSums`. */
 export const allCauses = (sums: Float64Array): GasVector =>
-  Object.fromEntries(
-    GASES.map((g, j) => [
-      g,
-      CHAIN_CAUSES.reduce((a, _, c) => a + (sums[c * GASES.length + j] as number), 0),
-    ]),
-  ) as GasVector;
+  recordFrom(GASES, (_, j) =>
+    CHAIN_CAUSES.reduce((a, _, c) => a + (sums[c * GASES.length + j] as number), 0),
+  );
 
 const baseCache = memoPer<PreparedCountry, GasVector>();
 

@@ -58,6 +58,7 @@ export const practices: LeverModule = {
           }
         : null;
     },
+    intensityKey: (ctx) => practicesKey(ctx.options.scope, ctx.adoption, gridNow(ctx)),
     intensity: (ctx) => {
       const { prepared, options, adoption } = ctx;
       const grid = gridNow(ctx);

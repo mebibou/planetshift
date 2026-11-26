@@ -10,6 +10,22 @@ const membersOf = <P>(players: readonly P[], mask: number): P[] =>
 
 const bitCount = (mask: number): number => (mask === 0 ? 0 : (mask & 1) + bitCount(mask >>> 1));
 
+/** `value` += w × (joined − without), element by element. */
+const addWeighted = (
+  value: number[],
+  w: number,
+  joined: readonly number[] | undefined,
+  without: readonly number[] | undefined,
+): void => {
+  for (let k = 0; k < value.length; k++) {
+    value[k] =
+      (value[k] as number) +
+      w *
+        (((joined as readonly number[])[k] as number) -
+          ((without as readonly number[])[k] as number));
+  }
+};
+
 /**
  * Each player's Shapley value of a game whose worth is a vector: the mean, over every order the
  * players can join in, of what the player adds to those before it. The values add up to the
@@ -27,19 +43,17 @@ export const shapley = <P>(
     (_, size) => (factorial(size) * factorial(n - size - 1)) / factorial(n),
   );
   const length = worths[0]?.length ?? 0;
+  const maskWeight = worths.map((_, mask) => weight[bitCount(mask)] ?? 0);
   return new Map(
     players.map((player, i) => {
       const bit = 1 << i;
       const value = new Array<number>(length).fill(0);
-      worths.forEach((without, mask) => {
+      // Loops: 2^n coalitions for each player.
+      for (let mask = 0; mask < worths.length; mask++) {
         if ((mask & bit) === 0) {
-          const w = weight[bitCount(mask)] as number;
-          const joined = worths[mask | bit] as readonly number[];
-          for (let k = 0; k < length; k++) {
-            value[k] = (value[k] as number) + w * ((joined[k] as number) - (without[k] as number));
-          }
+          addWeighted(value, maskWeight[mask] as number, worths[mask | bit], worths[mask]);
         }
-      });
+      }
       return [player, value];
     }),
   );

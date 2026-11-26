@@ -11,7 +11,13 @@ export type FoodWaste = Record<FoodStage, number>;
 
 type AfterShops = Exclude<FoodStage, 'losses'>;
 
-const sum = (v: ItemVector): number => v.reduce((a, b) => a + b, 0);
+const sum = (v: ItemVector): number => {
+  let t = 0;
+  for (let i = 0; i < v.length; i++) {
+    t += v[i] as number;
+  }
+  return t;
+};
 
 /** Tonnes wasted after shops shared out by each sector's part of the country's estimate. */
 export const afterShops = (
@@ -35,17 +41,16 @@ export const lostTonnes = (
   shares: ItemVector,
   supply: ItemVector,
   production?: { emitting: ItemVector; change: ItemVector },
-): number =>
-  shares.reduce(
-    (a, l, i) =>
-      a +
-      l *
-        (supply[i] as number) *
-        (production
-          ? productionRatio(production.emitting[i] as number, production.change[i] as number)
-          : 1),
-    0,
-  );
+): number => {
+  let t = 0;
+  for (let i = 0; i < shares.length; i++) {
+    const ratio = production
+      ? productionRatio(production.emitting[i] as number, production.change[i] as number)
+      : 1;
+    t += (shares[i] as number) * (supply[i] as number) * ratio;
+  }
+  return t;
+};
 
 /** What the levers act on: the waste share after shops, the cuts and the changes they meet. */
 export interface FoodWasteInput {

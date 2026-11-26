@@ -1,11 +1,5 @@
-import { respond, type Request } from './engine';
+import { serve } from './engine';
 
-let data: Parameters<typeof respond>[0] = null;
+const answer = serve((reply) => self.postMessage(reply));
 
-self.onmessage = (e: MessageEvent<Request>) => {
-  const out = respond(data, e.data);
-  data = out.data;
-  if (out.reply) {
-    self.postMessage(out.reply);
-  }
-};
+self.onmessage = (e: MessageEvent<Parameters<typeof answer>[0]>) => answer(e.data);

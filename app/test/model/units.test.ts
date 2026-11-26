@@ -10,7 +10,7 @@ import { feedChange, feedSharesOf } from '../../src/model/feed';
 import { clipChange, locate } from '../../src/model/location';
 import { prepare, valueOf, vectorFrom } from '../../src/model/prepare';
 import { MAX_SUPPLY_MULTIPLIER, supplyMultiplier } from '../../src/model/supplyChain';
-import { valueAt, type ItemVector } from '../../src/model/util';
+import { sumRows, valueAt, type ItemVector } from '../../src/model/util';
 import { loadFixtures } from './fixtures';
 
 const data = loadFixtures();
@@ -152,5 +152,20 @@ describe('valueAt', () => {
     expect(valueAt([2000, 2010], [0, 10], 1990)).toBe(0);
     expect(valueAt([2000, 2010], [0, 10], 2020)).toBe(10);
     expect(valueAt([], [], 2020)).toBeNaN();
+  });
+});
+
+describe('sumRows', () => {
+  it('adds rows element by element, zeros when there are none', () => {
+    expect(
+      sumRows(
+        [
+          [1, 2],
+          [3, 4],
+        ],
+        2,
+      ),
+    ).toEqual([4, 6]);
+    expect(sumRows([], 3)).toEqual([0, 0, 0]);
   });
 });

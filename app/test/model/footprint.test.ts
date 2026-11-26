@@ -3,7 +3,7 @@ import { ANIMAL_GROUPS, type GasVector } from '../../src/data/types';
 import { DEFAULT_OPTIONS, type Scenario } from '../../src/model/api';
 import { footprintOf, importShares, type FootprintFrame } from '../../src/model/footprint';
 import type { Prepared, PreparedCountry } from '../../src/model/prepare';
-import { runScenario } from '../../src/model/run';
+import { combinedCut, runScenario } from '../../src/model/run';
 import { BASE_SCENARIO } from '../../src/model/scenarios';
 import { CURRENT_YEAR, loadFixtures } from './fixtures';
 
@@ -87,5 +87,15 @@ describe('the food footprint in a run', () => {
       )!.footprint!.co2;
     const undrained = { ...data, deforestation: { ...data.deforestation, drainedByCountry: {} } };
     expect(fra(data)).toBeGreaterThan(fra(undrained));
+  });
+});
+
+describe('cuts combined', () => {
+  it('act one after the other on what the others leave', () => {
+    const cut = (x: number) => ({ co2: v(x, 0), ch4: v(0, x), n2o: v(0, 0), hfc: v(0, 0) });
+    const both = combinedCut([cut(0.5), cut(0.2)]);
+    expect(both.co2[0]).toBeCloseTo(1 - 0.5 * 0.8);
+    expect(both.ch4[1]).toBeCloseTo(1 - 0.5 * 0.8);
+    expect(both.co2[1]).toBe(0);
   });
 });

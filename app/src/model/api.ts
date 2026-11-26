@@ -209,5 +209,27 @@ export interface Summary {
   };
 }
 
+type Temperature = ScenarioResult['temperature'];
+
+/** What comes after the rest of a run: the by-family breakdown and the warming split by cause. */
+export interface Breakdown {
+  summary: Pick<Summary, 'byFamily' | 'byFamilyCause' | 'byCause'>;
+  temperature: Pick<Temperature, 'avoidedByCause' | 'avoidedByGas'>;
+}
+
+/** A run's result before its breakdown: what the sliders wait for. */
+export type FirstResult = Omit<ScenarioResult, 'summary' | 'temperature'> & {
+  summary: Omit<Summary, keyof Breakdown['summary']> & Partial<Breakdown['summary']>;
+  temperature: Omit<Temperature, keyof Breakdown['temperature']> &
+    Partial<Breakdown['temperature']>;
+};
+
+/** A result with its breakdown, its fields where a whole run puts them. */
+export const withBreakdown = (result: FirstResult, breakdown: Breakdown): ScenarioResult => ({
+  ...result,
+  summary: { ...result.summary, ...breakdown.summary },
+  temperature: { ...result.temperature, ...breakdown.temperature },
+});
+
 /** GWP100 (AR6, non-fossil CH₄), used only to show a CO₂e figure. */
 export const GWP100: GasVector = { co2: 1, ch4: 27.0, n2o: 273, hfc: 1530 };

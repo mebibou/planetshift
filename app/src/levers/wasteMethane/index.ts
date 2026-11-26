@@ -12,8 +12,13 @@ const foodOf = (countries: readonly CountryResult[]) =>
     countries.flatMap((c) => (c.wasteMethane ? [[c.iso3, c.wasteMethane.food]] : [])),
   );
 
-const tonnesOf = (change: ArrayLike<number> | undefined): number =>
-  Array.from(change ?? []).reduce((a, t) => a + t, 0);
+const tonnesOf = (change: ArrayLike<number> | undefined): number => {
+  let t = 0;
+  for (let i = 0; i < (change?.length ?? 0); i++) {
+    t += (change as ArrayLike<number>)[i] as number;
+  }
+  return t;
+};
 
 /**
  * Landfill gas captured, organic waste kept out of landfills and wastewater treated. Its country

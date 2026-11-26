@@ -52,6 +52,17 @@ export const addVectors = (first: ItemVector, ...rest: readonly ItemVector[]): I
   return out;
 };
 
+/** The element-wise sum of rows of `length` numbers, added in their order; zeros when none. */
+export const sumRows = (rows: readonly (readonly number[])[], length: number): number[] => {
+  const out = new Array<number>(length).fill(0);
+  for (const row of rows) {
+    for (let k = 0; k < length; k++) {
+      out[k] = (out[k] as number) + (row[k] as number);
+    }
+  }
+  return out;
+};
+
 export const dot = (a: ItemVector, b: ItemVector): number => {
   let acc = 0;
   for (let i = 0; i < a.length; i++) {

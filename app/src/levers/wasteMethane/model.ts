@@ -118,16 +118,22 @@ export interface YearCuts {
 }
 
 /** The countries' change in a year by the levers alone, kg (negative when avoided). */
-export const yearChange = (c: Columns, y: YearCuts): number =>
-  -c.landfill.reduce((a, landfill, i) => {
-    const lf = Math.max(0, landfill * y.scale + (c.foodLandfill[i] as number) * y.foodShare);
+export const yearChange = (c: Columns, y: YearCuts): number => {
+  let kg = 0;
+  for (let i = 0; i < c.landfill.length; i++) {
+    const lf = Math.max(
+      0,
+      (c.landfill[i] as number) * y.scale + (c.foodLandfill[i] as number) * y.foodShare,
+    );
     const ww = Math.max(
       0,
       (c.wastewater[i] as number) * y.scale + (c.foodWastewater[i] as number) * y.foodShare,
     );
     const cut = 1 - (1 - y.capture * (c.managed[i] as number)) * (1 - y.diversion);
-    return a + cut * lf + y.wastewater * ww;
-  }, 0);
+    kg = kg + cut * lf + y.wastewater * ww;
+  }
+  return -kg;
+};
 
 export interface PathInput {
   file: WasteMethane;

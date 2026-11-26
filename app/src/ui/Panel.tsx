@@ -51,6 +51,10 @@ interface Ordered {
   key: string;
 }
 
+/** Whether every group's figure is known, computed with the current data. */
+const allKnown = (values: ReadonlyMap<WorthId, Worth>, current: boolean): boolean =>
+  current && GROUPS.every((g) => values.has(g.worth));
+
 /** The order once the figures or the key change: kept while settled for this key. */
 const nextOrder = (
   ordered: Ordered,
@@ -58,8 +62,9 @@ const nextOrder = (
   values: ReadonlyMap<WorthId, Worth>,
   horizon: Horizon,
   key: string,
+  current: boolean,
 ): Ordered => {
-  const known = GROUPS.every((g) => values.has(g.worth));
+  const known = allKnown(values, current);
   const settled = ordered.settledFor === key || (!known && ordered.settledFor !== null);
   return {
     order: settled
@@ -80,6 +85,7 @@ const usePanelOrder = (
   values: ReadonlyMap<WorthId, Worth>,
   horizon: Horizon,
   key: string,
+  current: boolean,
 ): CauseSection[] => {
   const [ordered, setOrdered] = useState<Ordered>(() => ({
     order: panelOrder(GROUPS, sizes, () => undefined),
@@ -88,7 +94,7 @@ const usePanelOrder = (
     key,
   }));
   if (ordered.values !== values || ordered.key !== key) {
-    setOrdered(nextOrder(ordered, sizes, values, horizon, key));
+    setOrdered(nextOrder(ordered, sizes, values, horizon, key, current));
   }
   return ordered.order;
 };
@@ -100,6 +106,8 @@ export interface SidePanelProps extends PanelProps {
   currentYear: number;
   climate: Climate;
   values: ReadonlyMap<WorthId, Worth>;
+  /** Whether `values` were computed with the current data, not before a deferred file arrived. */
+  worthCurrent: boolean;
   /** Goes up each time a deferred lever file arrives. */
   dataVersion: number;
   available: (id: LeverId) => boolean;
@@ -244,6 +252,7 @@ export const SidePanel = (props: SidePanelProps) => {
     values,
     horizon,
     orderKey(options, horizon, props.dataVersion),
+    props.worthCurrent,
   );
   return (
     <aside
