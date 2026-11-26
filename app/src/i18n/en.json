@@ -190,11 +190,18 @@
       "species": "Species loss",
       "water": "Freshwater withdrawals",
       "waterScarcity": "Water scarcity (crops)",
+      "waste": "Waste",
       "change": "Change",
       "quality": "Data quality"
     },
     "changeOf": "Change in",
     "speciesPer": { "legend": "Count", "country": "By country", "farmland": "Per Mha of farmland" },
+    "wasteOf": {
+      "legend": "Waste",
+      "food": "Food lost and wasted",
+      "municipal": "Municipal waste",
+      "plastic": "Plastic to the ocean"
+    },
     "gas": "Gas",
     "group": "Food",
     "country": "Country",
@@ -212,7 +219,10 @@
       "landShare": "Share of the land farmed (cropland and pasture) with the levers",
       "mammals": "Farmed mammals' live weight per km² of land with the levers",
       "species": "Species committed to extinction by the country's farmland, with the levers",
-      "speciesDensity": "Species committed to extinction per Mha of the country's farmland, with the levers"
+      "speciesDensity": "Species committed to extinction per Mha of the country's farmland, with the levers",
+      "foodWaste": "Food lost before shops and wasted after them, with the levers, a year",
+      "municipalWaste": "Municipal solid waste, a year (no lever changes it)",
+      "oceanPlastic": "Plastic reaching the ocean through rivers, a year (no lever changes it)"
     },
     "notes": {
       "water": "Freshwater taken from rivers, lakes and aquifers to grow each country's crops, raise its animals and make the farm's inputs. It is each food's litres per tonne times its production. HESTIA gives the litres of the crops it covers. Poore & Nemecek (2018) give the rest. Animal products count the water used on the farm, not their concentrate feed, which is counted on the crops. Fish farms are left out. The litres per tonne do not change with the levers, so the water changes with production. Water does not change the warming. The tooltip gives the land equipped for irrigation.",
@@ -225,7 +235,12 @@
       "deforestation": "Forest cleared for crops and pasture in each country once the levers are fully in place, in hectares a year. The tooltip gives today's clearing, the change and the CO₂ it releases.",
       "landCo2": "Each country's net CO₂ from all land-use change: forest cleared for any reason, peat drained and other changes, less forest regrowing on abandoned land. Blue countries take up more than they release. Today's figure is the mean of the Global Carbon Budget's three bookkeeping models over the years shown. The levers change two parts of it. One is the forest cleared for farming (the Deforestation layer shows its area). The other is the CO₂ that freed farmland takes up as it grows back, when Freed farmland is set to Grows back in the options. The rest of each country's land-use CO₂ stays as it is.",
       "mammals": "Cattle, buffalo, sheep, goats, pigs, camels, llamas, horses, asses and mules as FAOSTAT counts them, times IPCC's typical live weight in each region, per km² of each country's land. Each herd grows or shrinks with the production of the food it gives. Animals kept for work stay. The summary sets the world's farmed mammals against its wild ones. The tooltip gives the tonnes.",
-      "species": "The species of plants, mammals, birds, reptiles and amphibians that each country's cropland and pasture commit to extinction worldwide. Each is Scherer et al. (2023)'s factor for the land, times the species described in each group. It is a loss committed over time if the land stays farmed. It is not the number of species lost by a given year. Land newly farmed commits more species, at the factor for the next hectare. Freed farmland gives species back only when Freed farmland is set to Grows back in the options. Per Mha of farmland divides each country's count by its cropland and pasture. It shows where a hectare commits the most species. The tooltip gives the farmland."
+      "species": "The species of plants, mammals, birds, reptiles and amphibians that each country's cropland and pasture commit to extinction worldwide. Each is Scherer et al. (2023)'s factor for the land, times the species described in each group. It is a loss committed over time if the land stays farmed. It is not the number of species lost by a given year. Land newly farmed commits more species, at the factor for the next hectare. Freed farmland gives species back only when Freed farmland is set to Grows back in the options. Per Mha of farmland divides each country's count by its cropland and pasture. It shows where a hectare commits the most species. The tooltip gives the farmland.",
+      "waste": {
+        "food": "Food lost from harvest up to shops, and wasted in shops, in restaurants and canteens, and at home, in tonnes a year. The levers Food wasted after shops and Losses before shops cut it, and a diet shift changes the food it is a share of. Waste after shops is UNEP's estimate of its edible part. Losses before shops are FAO's share of each food lost, applied to the food balance, and follow the country's production. The tooltip gives each stage. Losses are counted by fresh weight as harvested, so heavy, watery crops such as sugar cane weigh most, and the tonnes are higher than FAO's and UNEP's usual figures (see Methodology).",
+        "municipal": "The household and commercial waste each country's towns collect or should collect, in tonnes a year: the World Bank's estimate for 2022 from What a Waste 3.0. No lever changes it. The food levers cut food waste, but not the municipal waste shown here. The tooltip gives its largest types and where it goes. A country that reports neither takes its income group's shares.",
+        "plastic": "Plastic that reaches the ocean through rivers, in tonnes a year, from Meijer et al. (2021)'s model of the plastic that leaves each country's land by its rivers. No lever changes it. The estimates are uncertain: a river's true figure can be several times lower or higher."
+      }
     },
     "tooltip": {
       "water": "Freshwater withdrawn, a year",
@@ -256,7 +271,21 @@
       "mammals": "Farmed mammals per km² of land",
       "species": "Species committed to extinction",
       "speciesDensity": "Species committed per Mha of farmland",
-      "mammalsWeight": "Live weight of farmed mammals"
+      "mammalsWeight": "Live weight of farmed mammals",
+      "foodWaste": "Food lost and wasted, a year",
+      "municipalWaste": "Municipal solid waste, a year",
+      "oceanPlastic": "Plastic reaching the ocean, a year",
+      "unchanged": "No lever changes it",
+      "perPerson": "Per person, a year",
+      "largestTypes": "Largest types",
+      "largestTreatments": "Where it goes",
+      "filled": "Shares estimated from the country's income group",
+      "foodStages": {
+        "losses": "Lost before shops",
+        "retail": "Wasted in shops",
+        "foodService": "Wasted in food service",
+        "household": "Wasted at home"
+      }
     },
     "noClearing": "No clearing or no data",
     "views": {
@@ -275,6 +304,61 @@
       "none": "No country matches “{query}”"
     },
     "landUse": "Land use"
+  },
+  "waste": {
+    "stages": {
+      "losses": "Lost before shops",
+      "retail": "Shops",
+      "foodService": "Food service",
+      "household": "Homes"
+    },
+    "types": {
+      "foodGreen": "Food and green",
+      "paper": "Paper and cardboard",
+      "plastic": "Plastic",
+      "glass": "Glass",
+      "metal": "Metal",
+      "textiles": "Textiles",
+      "other": "Other"
+    },
+    "treatments": {
+      "landfill": "Landfill",
+      "openDump": "Open dump",
+      "incineration": "Incineration",
+      "recycling": "Recycling",
+      "composting": "Composting and digestion",
+      "other": "Other or unknown",
+      "uncollected": "Never collected"
+    },
+    "bars": {
+      "today": "Today",
+      "levers": "With the levers in place",
+      "world": "World",
+      "high": "High income",
+      "upperMiddle": "Upper-middle income",
+      "lowerMiddle": "Lower-middle income",
+      "low": "Low income"
+    }
+  },
+  "wasteChart": {
+    "view": "Show",
+    "views": {
+      "food": "Food by stage",
+      "types": "Municipal by type",
+      "treatment": "Municipal by treatment"
+    },
+    "label": {
+      "food": "The world's food lost and wasted by stage, today and with the levers, tonnes a year",
+      "types": "Municipal solid waste by type, for the world and each income group, tonnes a year",
+      "treatment": "Municipal solid waste by where it goes, for the world and each income group, tonnes a year"
+    },
+    "caption": {
+      "food": "Food lost from harvest up to shops, and wasted in shops, food service and homes, a year. The levers Food wasted after shops and Losses before shops cut it, and a diet shift changes the food it comes from. Waste after shops counts the edible part only. Losses are counted by fresh weight as harvested, so heavy, watery crops such as sugar cane weigh most, and the tonnes are higher than FAO's and UNEP's usual figures (see Methodology).",
+      "types": "Municipal solid waste in {year}, the World Bank's estimate (What a Waste 3.0), by what it is made of. No lever changes it. It counts the food waste of homes and shops a second time, with its inedible parts.",
+      "treatment": "Municipal solid waste in {year}, the World Bank's estimate (What a Waste 3.0), by where it goes. No lever changes it."
+    },
+    "plastic": "Plastic reaching the ocean through rivers: {mass} a year (Meijer et al. 2021, as of {year}). No lever changes it.",
+    "empty": "No municipal waste data in this build"
   },
   "oceanChart": {
     "title": "Ocean pH",
@@ -465,7 +549,8 @@
       "avoided": "Warming avoided",
       "cause": "Causes of warming",
       "sealevel": "Sea level",
-      "ocean": "Ocean pH"
+      "ocean": "Ocean pH",
+      "waste": "Waste"
     },
     "seeCauses": "See what causes the warming"
   },
@@ -636,7 +721,8 @@
     "chartText": {
       "temperature": "Each year from 1850 to 2100: observed temperature, temperature without and with the levers with their 5–95% ranges, and warming from natural factors only.",
       "avoided": "Each year to 2100: the warming the levers avoid, with its 5–95% range.",
-      "cause": "Each year from 1850 to 2100 under the chosen scenario: warming by cause with its range, observed temperature and farm emissions by gas."
+      "cause": "Each year from 1850 to 2100 under the chosen scenario: warming by cause with its range, observed temperature and farm emissions by gas.",
+      "waste": "The world's food lost and wasted by stage, today and with the levers; municipal solid waste by type and by where it goes, for the world and each income group; and the plastic reaching the ocean, in tonnes a year."
     },
     "scenario": "Scenario and settings as JSON",
     "scenarioTitle": "Scenario and settings",

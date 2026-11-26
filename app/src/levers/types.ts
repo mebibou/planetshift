@@ -85,6 +85,8 @@ export interface FarmGrid {
 
 export interface CountryContext {
   pc: PreparedCountry;
+  /** The diet's change in food supply, or null where the pass does not read the diet. */
+  food: ItemVector | null;
   /** The steps in order; the last is the change in production with every module. */
   stages: readonly Stage[];
   land: Farmland;
@@ -98,7 +100,7 @@ export interface CountryPart {
   jointCo2?: Readonly<Record<string, number>>;
   /** CO₂ a year by family that follows each change with a first-order lag of `years`. */
   buildUp?: { years: number; co2: Readonly<Record<string, number>> };
-  result?: Readonly<Record<string, number>>;
+  result?: Readonly<Record<string, number | object>>;
 }
 
 export interface WorldContext {

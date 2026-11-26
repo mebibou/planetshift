@@ -19,6 +19,7 @@ export const LAYERS = [
   'species',
   'water',
   'waterScarcity',
+  'waste',
   'change',
   'quality',
 ] as const;
@@ -29,7 +30,8 @@ export type ChangeOf = (typeof CHANGE_OF)[number];
  * What a layer measures: a quantity the Change layer also offers, the forest area cleared, the
  * share of a country's land that is farmed, its net land-use CO₂, its farmed mammals' live
  * weight per km² of land, the species its farmland commits to extinction, the freshwater its
- * farming withdraws, or the scarcity-weighted water use of the crops HESTIA covers.
+ * farming withdraws, the scarcity-weighted water use of the crops HESTIA covers, the food lost
+ * and wasted, the municipal solid waste or the plastic reaching the ocean.
  */
 export type Measure =
   | ChangeOf
@@ -40,7 +42,10 @@ export type Measure =
   | 'species'
   | 'speciesDensity'
   | 'water'
-  | 'waterScarcity';
+  | 'waterScarcity'
+  | 'foodWaste'
+  | 'municipalWaste'
+  | 'oceanPlastic';
 
 /** What each layer but Change measures, production where it is not listed. */
 const LAYER_MEASURES: Partial<Record<Layer, Measure>> = {
@@ -49,7 +54,6 @@ const LAYER_MEASURES: Partial<Record<Layer, Measure>> = {
   deforestation: 'deforestation',
   landCo2: 'landCo2',
   mammals: 'mammals',
-  species: 'species',
   water: 'water',
   waterScarcity: 'waterScarcity',
 };
@@ -62,12 +66,24 @@ export type GroupChoice = Group | 'all';
 export const SPECIES_PER = ['country', 'farmland'] as const;
 export type SpeciesPer = (typeof SPECIES_PER)[number];
 
+/** The waste layer: food lost and wasted, municipal solid waste, or plastic reaching the ocean. */
+export const WASTE_OF = ['food', 'municipal', 'plastic'] as const;
+export type WasteOf = (typeof WASTE_OF)[number];
+const WASTE_MEASURES: Record<WasteOf, Measure> = {
+  food: 'foodWaste',
+  municipal: 'municipalWaste',
+  plastic: 'oceanPlastic',
+};
+/** The measures no lever changes: their value with the levers is today's. */
+export const UNCHANGED: readonly Measure[] = ['municipalWaste', 'oceanPlastic'];
+
 export interface LayerSpec {
   layer: Layer;
   changeOf: ChangeOf;
   group: GroupChoice;
   gas: GasChoice;
   speciesPer?: SpeciesPer;
+  wasteOf?: WasteOf;
 }
 
 /** Each country's measured net land-use CO₂, kg a year. */
@@ -100,12 +116,17 @@ export interface BeforeAfter {
   after: number;
 }
 
-export const measureOf = (spec: Pick<LayerSpec, 'layer' | 'changeOf' | 'speciesPer'>): Measure =>
-  spec.layer === 'change'
-    ? spec.changeOf
-    : spec.layer === 'species' && spec.speciesPer === 'farmland'
-      ? 'speciesDensity'
-      : (LAYER_MEASURES[spec.layer] ?? 'production');
+type MeasureSpec = Pick<LayerSpec, 'layer' | 'changeOf' | 'speciesPer' | 'wasteOf'>;
+
+/** The layers whose measure depends on one of their choices. */
+const CHOSEN_MEASURES: Partial<Record<Layer, (spec: MeasureSpec) => Measure>> = {
+  change: (spec) => spec.changeOf,
+  species: (spec) => (spec.speciesPer === 'farmland' ? 'speciesDensity' : 'species'),
+  waste: (spec) => WASTE_MEASURES[spec.wasteOf ?? 'food'],
+};
+
+export const measureOf = (spec: MeasureSpec): Measure =>
+  CHOSEN_MEASURES[spec.layer]?.(spec) ?? LAYER_MEASURES[spec.layer] ?? 'production';
 
 /** The deforestation module's fields of a country: forest cleared a year, ha, and its change. */
 const clearing = (c: CountryResult): [number, number] => [
@@ -143,6 +164,25 @@ export const speciesDensity = (c: CountryResult): [number, number] => {
   return [before, perMha(speciesAfter(c), farmAfter) - before];
 };
 
+const total = (stages: Readonly<Record<string, number>> | undefined): number =>
+  Object.values(stages ?? {}).reduce((a, b) => a + b, 0);
+
+/** Food lost and wasted by every stage together, tonnes a year, and its change with the levers. */
+export const foodWasteTotal = (c: CountryResult): [number, number] => [
+  total(c.foodWaste),
+  total(c.foodWasteChange),
+];
+
+/** Whether a country has data for a waste measure. */
+const WASTE_DATA: Partial<Record<Measure, (c: CountryResult) => boolean>> = {
+  foodWaste: (c) => total(c.foodWaste) > 0,
+  municipalWaste: (c) => c.municipalWaste !== undefined,
+  oceanPlastic: (c) => c.oceanPlastic !== undefined,
+};
+
+export const hasWasteData = (c: CountryResult, kind: Measure): boolean =>
+  WASTE_DATA[kind]?.(c) ?? false;
+
 const MEASURES: Record<
   Measure,
   (c: CountryResult, spec: LayerSpec, landUse: LandUseCo2) => [number, number]
@@ -161,6 +201,9 @@ const MEASURES: Record<
   speciesDensity,
   water: (c) => [c.water, c.waterChange],
   waterScarcity: (c) => [c.waterScarcity, c.waterScarcityChange],
+  foodWaste: foodWasteTotal,
+  municipalWaste: (c) => [c.municipalWaste?.tonnes ?? 0, 0],
+  oceanPlastic: (c) => [c.oceanPlastic ?? 0, 0],
 };
 
 export const beforeAfter = (
@@ -189,6 +232,7 @@ const VALUES: Partial<Record<Layer, Value>> = {
   species: (c, ba) => (c.species > 0 ? ba.after : null),
   water: (c, ba) => (c.water > 0 ? ba.after : null),
   waterScarcity: (c, ba) => (c.waterScarcity > 0 ? ba.after : null),
+  waste: (c, ba) => (hasWasteData(c, ba.kind) ? ba.after : null),
 };
 
 /** The number the map colours a country by, or null for no data. */

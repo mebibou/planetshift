@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { expectOwnGases, lever, production, run } from '../../../test/levers';
 import { multiplierWith } from '../../model/supplyChain';
+import { afterShops, foodWasteOf, lostTonnes, productionRatio } from './foodWaste';
 import {
   avoidedSupply,
   foodWithLessWaste,
@@ -71,6 +72,57 @@ describe('food waste and losses', () => {
   it('leaves what people eat unchanged', () => {
     const r = run({ levers: { foodWaste: 1, supplyLosses: 1 } });
     r.countries.forEach((c) => expect(c.proteinAfter).toBe(c.proteinBefore));
+  });
+  it('share the waste after shops by sector and scale losses with production', () => {
+    expect(afterShops({ retail: 10, foodService: 30, household: 60 }, 50)).toEqual({
+      retail: 5,
+      foodService: 15,
+      household: 30,
+    });
+    expect(afterShops(undefined, 50)).toEqual({ retail: 0, foodService: 0, household: 0 });
+    expect(productionRatio(100, -25)).toBe(0.75);
+    expect(productionRatio(0, 10)).toBe(1);
+    const shares = Float64Array.from([0.1, 0.2]);
+    const supply = Float64Array.from([100, 50]);
+    expect(lostTonnes(shares, supply)).toBeCloseTo(20);
+    const production = {
+      emitting: Float64Array.from([100, 0]),
+      change: Float64Array.from([-50, 5]),
+    };
+    expect(lostTonnes(shares, supply, production)).toBeCloseTo(15);
+  });
+  it('count food lost and wasted today and less of it with the cuts', () => {
+    const fw = foodWasteOf(
+      {
+        share: 0.1,
+        food: Float64Array.from([800]),
+        dietFood: Float64Array.from([-200]),
+        lossShares: Float64Array.from([0.05]),
+        supply: Float64Array.from([1000]),
+        emitting: Float64Array.from([1000]),
+        change: Float64Array.from([-200]),
+        wasteCut: 0.5,
+        lossCut: 0.5,
+      },
+      { retail: 0, foodService: 0, household: 1 },
+    );
+    expect(fw.before).toEqual({ losses: 50, retail: 0, foodService: 0, household: 80 });
+    expect(fw.change.household).toBeCloseTo(0.1 * 0.5 * 600 - 80);
+    expect(fw.change.losses).toBeCloseTo(0.5 * 0.05 * 1000 * 0.8 - 50);
+  });
+  it.each([
+    ['foodWaste', 'household'],
+    ['supplyLosses', 'losses'],
+  ] as const)('%s cuts the world’s food %s', (id, stage) => {
+    const total = (r: ReturnType<typeof run>, after: boolean) =>
+      r.countries.reduce(
+        (a, c) => a + (c.foodWaste?.[stage] ?? 0) + (after ? (c.foodWasteChange?.[stage] ?? 0) : 0),
+        0,
+      );
+    const r = lever(id, 0.5);
+    expect(total(r, false)).toBeGreaterThan(0);
+    expect(total(r, true)).toBeLessThan(total(r, false));
+    expect(total(run(), true)).toBeCloseTo(total(run(), false));
   });
   it('lowers the production a shift needs', () =>
     expect(production(lever('foodWaste', 0.5, { shift: 0.5 }))).toBeLessThan(

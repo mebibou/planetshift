@@ -27,6 +27,8 @@ export const OPTIONAL_FILES = [
   'origins',
   'water',
   'fair',
+  'solidwaste',
+  'oceanplastic',
 ] as const;
 
 /**

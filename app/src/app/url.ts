@@ -5,11 +5,13 @@ import {
   GAS_CHOICES,
   LAYERS,
   SPECIES_PER,
+  WASTE_OF,
   type ChangeOf,
   type GasChoice,
   type GroupChoice,
   type Layer,
   type SpeciesPer,
+  type WasteOf,
 } from '../map/layers';
 
 export const VIEWS = ['explore', 'methodology', 'deeptime'] as const;
@@ -17,7 +19,7 @@ export type View = (typeof VIEWS)[number];
 /** The views the header lists by default; the deep-time prototype only once opened by its URL. */
 export const NAV_VIEWS: readonly View[] = ['explore', 'methodology'];
 
-export const CHARTS = ['temperature', 'cause', 'avoided', 'sealevel', 'ocean'] as const;
+export const CHARTS = ['temperature', 'cause', 'avoided', 'sealevel', 'ocean', 'waste'] as const;
 export type ChartTab = (typeof CHARTS)[number];
 export const HORIZONS = ['2050', '2100'] as const;
 export type Horizon = (typeof HORIZONS)[number];
@@ -27,6 +29,9 @@ export type MapView = (typeof MAP_VIEWS)[number];
 /** The temperature and causes charts' first year: 1850 or 2000. */
 export const RANGES = ['full', 'recent'] as const;
 export type Range = (typeof RANGES)[number];
+/** The Waste chart's views: food lost and wasted by stage, municipal waste by type or treatment. */
+export const WASTE_VIEWS = ['food', 'types', 'treatment'] as const;
+export type WasteView = (typeof WASTE_VIEWS)[number];
 
 export interface UiState {
   view: View;
@@ -40,6 +45,8 @@ export interface UiState {
   range: Range;
   causeGas: CauseGas;
   speciesPer: SpeciesPer;
+  wasteOf: WasteOf;
+  wasteView: WasteView;
 }
 
 export const DEFAULT_UI: UiState = {
@@ -54,6 +61,8 @@ export const DEFAULT_UI: UiState = {
   range: 'full',
   causeGas: 'all',
   speciesPer: 'country',
+  wasteOf: 'food',
+  wasteView: 'food',
 };
 
 /** Query parameters the interface owns; everything else belongs to the model's state. */
@@ -69,6 +78,8 @@ const UI_KEYS = {
   range: 'range',
   causeGas: 'causegas',
   speciesPer: 'per',
+  wasteOf: 'waste',
+  wasteView: 'wasteview',
 };
 const KEPT_KEYS = ['data'];
 const OWN_KEYS = [...Object.values(UI_KEYS), ...KEPT_KEYS];
@@ -94,6 +105,8 @@ export const parseUi = (query: string): UiState => {
     range: oneOf(RANGES, p.get(UI_KEYS.range), DEFAULT_UI.range),
     causeGas: oneOf(CAUSE_GASES, p.get(UI_KEYS.causeGas), DEFAULT_UI.causeGas),
     speciesPer: oneOf(SPECIES_PER, p.get(UI_KEYS.speciesPer), DEFAULT_UI.speciesPer),
+    wasteOf: oneOf(WASTE_OF, p.get(UI_KEYS.wasteOf), DEFAULT_UI.wasteOf),
+    wasteView: oneOf(WASTE_VIEWS, p.get(UI_KEYS.wasteView), DEFAULT_UI.wasteView),
   };
 };
 

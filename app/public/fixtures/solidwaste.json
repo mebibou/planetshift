@@ -1,0 +1,101 @@
+{
+  "year": 2022,
+  "byCountry": {
+    "FRA": {
+      "tonnes": 36000000,
+      "kgPerPerson": 400,
+      "income": "high",
+      "types": {
+        "foodGreen": 0.32,
+        "paper": 0.22,
+        "plastic": 0.12,
+        "glass": 0.08,
+        "metal": 0.05,
+        "textiles": 0.05,
+        "other": 0.16
+      },
+      "treatment": {
+        "landfill": 0.2,
+        "openDump": 0,
+        "incineration": 0.35,
+        "recycling": 0.3,
+        "composting": 0.15,
+        "other": 0,
+        "uncollected": 0
+      }
+    },
+    "USA": {
+      "tonnes": 270000000,
+      "kgPerPerson": 400,
+      "income": "high",
+      "types": {
+        "foodGreen": 0.34,
+        "paper": 0.23,
+        "plastic": 0.12,
+        "glass": 0.04,
+        "metal": 0.09,
+        "textiles": 0.06,
+        "other": 0.12
+      },
+      "treatment": {
+        "landfill": 0.5,
+        "openDump": 0,
+        "incineration": 0.12,
+        "recycling": 0.24,
+        "composting": 0.14,
+        "other": 0,
+        "uncollected": 0
+      }
+    },
+    "IND": {
+      "tonnes": 210000000,
+      "kgPerPerson": 400,
+      "income": "lowerMiddle",
+      "types": {
+        "foodGreen": 0.5,
+        "paper": 0.08,
+        "plastic": 0.1,
+        "glass": 0.02,
+        "metal": 0.02,
+        "textiles": 0.04,
+        "other": 0.24
+      },
+      "treatment": {
+        "landfill": 0.2,
+        "openDump": 0.2,
+        "incineration": 0.01,
+        "recycling": 0.05,
+        "composting": 0.04,
+        "other": 0.3,
+        "uncollected": 0.2
+      }
+    },
+    "BRA": {
+      "tonnes": 81000000,
+      "kgPerPerson": 400,
+      "income": "upperMiddle",
+      "types": {
+        "foodGreen": 0.51,
+        "paper": 0.13,
+        "plastic": 0.17,
+        "glass": 0.02,
+        "metal": 0.02,
+        "textiles": 0.03,
+        "other": 0.12
+      },
+      "treatment": {
+        "landfill": 0.6,
+        "openDump": 0.15,
+        "incineration": 0,
+        "recycling": 0.02,
+        "composting": 0.01,
+        "other": 0.1,
+        "uncollected": 0.12
+      },
+      "filled": [
+        "treatment"
+      ]
+    }
+  },
+  "source": "https://datacatalog.worldbank.org/search/dataset/0039597"
+}

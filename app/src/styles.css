@@ -81,6 +81,20 @@
   --seq-water-5: #3ba3c4;
   --seq-water-6: #1a7fa6;
   --seq-water-7: #0b5a7d;
+  --seq-waste-1: #f2f0f7;
+  --seq-waste-2: #dadaeb;
+  --seq-waste-3: #bcbddc;
+  --seq-waste-4: #9e9ac8;
+  --seq-waste-5: #807dba;
+  --seq-waste-6: #6a51a3;
+  --seq-waste-7: #4a1486;
+  --waste-1: #257de0;
+  --waste-2: #f47230;
+  --waste-3: #00b894;
+  --waste-4: #f2a600;
+  --waste-5: #ee7fac;
+  --waste-6: #008a17;
+  --waste-7: #6a4ce2;
   --series-natural: #a0672a;
   --enso-elNino: #b2182b;
   --enso-laNina: #2166ac;
@@ -194,6 +208,20 @@
     --seq-water-5: #3699b8;
     --seq-water-6: #1b7fa2;
     --seq-water-7: #05648a;
+    --seq-waste-1: #e2dbef;
+    --seq-waste-2: #c8bce0;
+    --seq-waste-3: #ae9dd1;
+    --seq-waste-4: #957fc2;
+    --seq-waste-5: #7c62b2;
+    --seq-waste-6: #6446a0;
+    --seq-waste-7: #4c2b8c;
+    --waste-1: #338ced;
+    --waste-2: #e76624;
+    --waste-3: #00a888;
+    --waste-4: #d28e05;
+    --waste-5: #e24d8b;
+    --waste-6: #0aac23;
+    --waste-7: #9887ef;
     --series-natural: #d9a05b;
     --enso-elNino: #f2a08e;
     --enso-laNina: #8fc1ea;
@@ -293,6 +321,20 @@
   --seq-water-5: #3699b8;
   --seq-water-6: #1b7fa2;
   --seq-water-7: #05648a;
+  --seq-waste-1: #e2dbef;
+  --seq-waste-2: #c8bce0;
+  --seq-waste-3: #ae9dd1;
+  --seq-waste-4: #957fc2;
+  --seq-waste-5: #7c62b2;
+  --seq-waste-6: #6446a0;
+  --seq-waste-7: #4c2b8c;
+  --waste-1: #338ced;
+  --waste-2: #e76624;
+  --waste-3: #00a888;
+  --waste-4: #d28e05;
+  --waste-5: #e24d8b;
+  --waste-6: #0aac23;
+  --waste-7: #9887ef;
   --series-natural: #d9a05b;
   --enso-elNino: #f2a08e;
   --enso-laNina: #8fc1ea;
@@ -622,6 +664,32 @@
 }
 .key-cause-landAlbedo {
   background: var(--cause-landAlbedo);
+}
+.key-waste-1 {
+  background: var(--waste-1);
+}
+.key-waste-2 {
+  background: var(--waste-2);
+}
+.key-waste-3 {
+  background: var(--waste-3);
+}
+.key-waste-4 {
+  background: var(--waste-4);
+}
+.key-waste-5 {
+  background: var(--waste-5);
+}
+.key-waste-6 {
+  background: var(--waste-6);
+}
+.key-waste-7 {
+  background: var(--waste-7);
+}
+.waste-bar-label {
+  fill: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
 }
 .key-outline {
   background: transparent;

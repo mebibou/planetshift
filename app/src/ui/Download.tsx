@@ -4,6 +4,7 @@ import type { AppState } from '../app/context';
 import {
   chartCsv,
   chartFileName,
+  chartLicences,
   citation,
   DOWNLOAD_LICENCES,
   licenceText,
@@ -12,6 +13,7 @@ import {
   saveFile,
   type DownloadFile,
   type Licence,
+  type WasteFiles,
 } from '../app/download';
 import { CHARTS, type ChartTab } from '../app/url';
 import type { Climate, Meta } from '../data/types';
@@ -83,6 +85,7 @@ export interface ChartData {
   state: AppState;
   climate: Climate;
   currentYear: number;
+  data?: WasteFiles;
 }
 
 /** The chart card's button that saves the current tab's data, and the line saying when it cannot. */
@@ -108,9 +111,19 @@ export const useChartDownload = (t: T, current: () => ChartData) => {
           id: 'csv',
           label: t('download.formats.csv'),
           onSelect: () => {
-            const { result, state, climate, currentYear } = current();
+            const { result, state, climate, currentYear, data } = current();
             const { ui, scenario, options } = state;
-            save(chartCsv({ tab: ui.chart, result, climate, scenario, options, currentYear }));
+            save(
+              chartCsv({
+                tab: ui.chart,
+                result,
+                climate,
+                scenario,
+                options,
+                currentYear,
+                waste: data,
+              }),
+            );
           },
         },
         { id: 'png', label: t('download.formats.png'), onSelect: image('png') },
@@ -151,6 +164,8 @@ export interface DownloadPanelProps {
   sources: DownloadSources;
   /** The map as an image: its file name in a format, and the card it is drawn in. */
   mapImage: { name: (format: ImageFormat) => string; card: () => Element | null; title: string };
+  /** The terms of the map layer's CSV. */
+  mapLicences?: Licence[];
   hidden: boolean;
 }
 
@@ -188,6 +203,7 @@ export const DownloadPanel = ({
   files,
   sources,
   mapImage,
+  mapLicences = DOWNLOAD_LICENCES.map,
   hidden,
 }: DownloadPanelProps) => {
   const { status, save, saveImage } = useSave(t);
@@ -229,7 +245,7 @@ export const DownloadPanel = ({
             </>
           }
           text={t('download.mapText')}
-          licences={DOWNLOAD_LICENCES.map}
+          licences={mapLicences}
         />
         {CHARTS.map((tab) => (
           <Item
@@ -245,7 +261,7 @@ export const DownloadPanel = ({
               />
             }
             text={t(`download.chartText.${tab}`)}
-            licences={DOWNLOAD_LICENCES.chart}
+            licences={chartLicences(tab)}
           />
         ))}
         <Item

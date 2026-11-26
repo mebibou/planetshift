@@ -10,15 +10,20 @@ import {
   formatSpeciesPerMha,
   formatVolume,
 } from '../i18n/format';
+import { WASTE_TREATMENTS, WASTE_TYPES } from '../data/types';
+import { FOOD_STAGES } from '../levers/waste/foodWaste';
 import {
   beforeAfter,
   farmland,
   gasValue,
+  hasWasteData,
+  measureOf,
   relativeChange,
   type GasChoice,
   type LandUseCo2,
   type LayerSpec,
   type Measure,
+  UNCHANGED,
 } from './layers';
 import { sourceInText, type TierSource } from './sources';
 
@@ -44,6 +49,9 @@ const FORMATS: Record<Measure, (locale: string, v: number) => string> = {
   speciesDensity: formatSpeciesPerMha,
   water: (locale, v) => formatVolume(locale, v),
   waterScarcity: (locale, v) => formatVolume(locale, v, true),
+  foodWaste: (locale, v) => formatMass(locale, v * 1000),
+  municipalWaste: (locale, v) => formatMass(locale, v * 1000),
+  oceanPlastic: (locale, v) => formatMass(locale, v * 1000),
 };
 
 /** A layer's quantity in its unit: tonnes of product, kg of gas, hectares, or a share of land. */
@@ -65,6 +73,9 @@ const clearingCo2Row = (
     after: formatMass(locale, (c.deforestationCo2 ?? 0) + (c.deforestationChange ?? 0)),
   }),
 ];
+
+const WHAT_A_WASTE = 'https://datacatalog.worldbank.org/search/dataset/0039597';
+const MEIJER = 'https://doi.org/10.1126/sciadv.aaz5803';
 
 /** Food's emissions after the farm in a gas, today and with the levers; none without the file. */
 const chainRows = (c: CountryResult, gas: GasChoice, t: T, locale: string): [string, string][] =>
@@ -168,6 +179,46 @@ const landRows = (c: CountryResult, t: T, locale: string): [string, string][] =>
     }),
   ]);
 
+/** Each stage's food lost or wasted, today and with the levers. */
+const foodStageRows = (c: CountryResult, t: T, locale: string): [string, string][] =>
+  FOOD_STAGES.map((stage) => {
+    const before = c.foodWaste?.[stage] ?? 0;
+    return [
+      t(`map.tooltip.foodStages.${stage}`),
+      t('map.tooltip.beforeAfter', {
+        before: formatMass(locale, before * 1000),
+        after: formatMass(locale, (before + (c.foodWasteChange?.[stage] ?? 0)) * 1000),
+      }),
+    ];
+  });
+
+/** The three largest shares of a record, as "name share" rows under a heading. */
+const largestShares = <K extends string>(
+  shares: Record<K, number>,
+  keys: readonly K[],
+  label: (k: K) => string,
+  locale: string,
+): [string, string][] =>
+  [...keys]
+    .sort((a, b) => shares[b] - shares[a])
+    .slice(0, 3)
+    .map((k) => [label(k), formatShare(locale, shares[k])]);
+
+/** Municipal waste per person, its largest types and treatments, and whether they were filled. */
+const municipalRows = (c: CountryResult, t: T, locale: string): [string, string][] => {
+  const m = c.municipalWaste;
+  return m
+    ? [
+        [t('map.tooltip.perPerson'), formatMass(locale, m.kgPerPerson)],
+        [t('map.tooltip.largestTypes'), ''],
+        ...largestShares(m.types, WASTE_TYPES, (k) => t(`waste.types.${k}`), locale),
+        [t('map.tooltip.largestTreatments'), ''],
+        ...largestShares(m.treatment, WASTE_TREATMENTS, (k) => t(`waste.treatments.${k}`), locale),
+        ...(m.filled?.length ? [[t('map.tooltip.filled'), ''] as [string, string]] : []),
+      ]
+    : [];
+};
+
 interface Extra {
   rows: [string, string][];
   source?: TooltipModel['source'];
@@ -227,6 +278,21 @@ const MEASURE_TOOLTIPS: Record<
     what: (t) => t('map.tooltip.waterScarcity'),
     extra: (_, t) => ({ rows: [[t('map.tooltip.waterScarcityCoverage'), '']] }),
   },
+  foodWaste: {
+    what: (t) => t('map.tooltip.foodWaste'),
+    extra: (c, t, locale) => ({ rows: foodStageRows(c, t, locale) }),
+  },
+  municipalWaste: {
+    what: (t) => t('map.tooltip.municipalWaste'),
+    extra: (c, t, locale) => ({
+      rows: municipalRows(c, t, locale),
+      source: { label: 'What a Waste 3.0', url: WHAT_A_WASTE },
+    }),
+  },
+  oceanPlastic: {
+    what: (t) => t('map.tooltip.oceanPlastic'),
+    extra: () => ({ rows: [], source: { label: 'Meijer et al. (2021)', url: MEIJER } }),
+  },
   landCo2: {
     what: (t) => t('map.tooltip.landCo2'),
     extra: (c, t, locale) => ({
@@ -270,6 +336,30 @@ const noData = (name: string, t: T): TooltipModel => ({
   rows: [[t('map.tooltip.noData'), '']],
 });
 
+/** The rows of a measure no lever changes: its value, and that the levers leave it as it is. */
+const unchangedRows = (what: string, value: string, t: T): [string, string][] => [
+  [what, ''],
+  [t('map.tooltip.before'), value],
+  [t('map.tooltip.unchanged'), ''],
+];
+
+/** The rows of a measure the levers change: today, with the levers and the change. */
+const changedRows = (
+  what: string,
+  measure: (v: number) => string,
+  ba: ReturnType<typeof beforeAfter>,
+  t: T,
+  locale: string,
+): [string, string][] => {
+  const change = relativeChange(ba);
+  return [
+    [what, ''],
+    [t('map.tooltip.before'), measure(ba.before)],
+    [t('map.tooltip.after'), measure(ba.after)],
+    [t('map.tooltip.change'), change === null ? '–' : formatPercent(locale, change, 1, true)],
+  ];
+};
+
 /** A country's before and after numbers, then the measure's own rows. */
 const countryTooltip = (
   name: string,
@@ -282,21 +372,24 @@ const countryTooltip = (
   const ba = beforeAfter(c, spec);
   const measure = formatMeasure(locale, ba.kind);
   const own = MEASURE_TOOLTIPS[ba.kind];
-  const change = relativeChange(ba);
   const extra = own.extra(c, t, locale, worst);
+  const what = own.what(t, spec);
   return {
     title: name,
     rows: [
-      [own.what(t, spec), ''],
-      [t('map.tooltip.before'), measure(ba.before)],
-      [t('map.tooltip.after'), measure(ba.after)],
-      [t('map.tooltip.change'), change === null ? '–' : formatPercent(locale, change, 1, true)],
+      ...(UNCHANGED.includes(ba.kind)
+        ? unchangedRows(what, measure(ba.before), t)
+        : changedRows(what, measure, ba, t, locale)),
       ...beyondFarmRows(c, spec, t, locale),
       ...extra.rows,
     ],
     ...(extra.source ? { source: extra.source } : {}),
   };
 };
+
+/** Whether the layer has data for a country: every layer but waste has it for every country. */
+const hasData = (c: CountryResult, spec: LayerSpec): boolean =>
+  spec.layer !== 'waste' || hasWasteData(c, measureOf(spec));
 
 /** Before and after numbers, then the measure's own rows: the tier and its source, or land's parts. */
 export const tooltipModel = (
@@ -310,6 +403,6 @@ export const tooltipModel = (
 ): TooltipModel =>
   spec.layer === 'landCo2'
     ? landCo2Tooltip(name, c, landUse, spec, t, locale)
-    : c
+    : c && hasData(c, spec)
       ? countryTooltip(name, c, spec, t, locale, worst)
       : noData(name, t);

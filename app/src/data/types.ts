@@ -327,6 +327,57 @@ export interface LandUse {
   source: string;
 }
 
+/** The types of municipal solid waste, in solidwaste.json's order. */
+export const WASTE_TYPES = [
+  'foodGreen',
+  'paper',
+  'plastic',
+  'glass',
+  'metal',
+  'textiles',
+  'other',
+] as const;
+export type WasteType = (typeof WASTE_TYPES)[number];
+/** Where municipal solid waste goes, the waste never collected last. */
+export const WASTE_TREATMENTS = [
+  'landfill',
+  'openDump',
+  'incineration',
+  'recycling',
+  'composting',
+  'other',
+  'uncollected',
+] as const;
+export type WasteTreatment = (typeof WASTE_TREATMENTS)[number];
+/** The World Bank's income groups, richest first. */
+export const INCOME_GROUPS = ['high', 'upperMiddle', 'lowerMiddle', 'low'] as const;
+export type IncomeGroup = (typeof INCOME_GROUPS)[number];
+
+/** A country's municipal solid waste: tonnes a year, and the shares of each type and treatment. */
+export interface SolidWasteCountry {
+  tonnes: number;
+  kgPerPerson: number;
+  income?: IncomeGroup;
+  types: Record<WasteType, number>;
+  treatment: Record<WasteTreatment, number>;
+  /** The shares taken from the country's income group, where it gives none. */
+  filled?: ('types' | 'treatment')[];
+}
+
+/** solidwaste.json: municipal solid waste by country in `year` (World Bank, What a Waste 3.0). */
+export interface SolidWaste {
+  year: number;
+  byCountry: Record<string, SolidWasteCountry>;
+  source: string;
+}
+
+/** oceanplastic.json: plastic reaching the ocean through rivers, t a year (Meijer et al. 2021). */
+export interface OceanPlastic {
+  year: number;
+  byCountry: Record<string, number>;
+  source: string;
+}
+
 /** How an impact is counted: times as often, a percentage, summers in a century, Mt a year. */
 export type ImpactUnit = 'times' | 'percent' | 'perCentury' | 'megatonnes';
 
@@ -468,6 +519,10 @@ export interface ModelData {
   water?: Water;
   /** Optional: without it the temperature adds up pulse responses (AGTP) instead of running FaIR. */
   fair?: FairFile;
+  /** Optional: a build without it has no municipal waste on the map or the Waste chart. */
+  solidwaste?: SolidWaste;
+  /** Optional: a build without it has no ocean plastic on the map or the Waste chart. */
+  oceanplastic?: OceanPlastic;
   /** Not a file: the build's departures from FaIR stand for it when it is unset. */
   departures?: Departures;
 }

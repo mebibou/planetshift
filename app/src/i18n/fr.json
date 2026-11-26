@@ -190,6 +190,7 @@
       "species": "Perte d'espèces",
       "water": "Prélèvements d'eau douce",
       "waterScarcity": "Rareté de l'eau (cultures)",
+      "waste": "Déchets",
       "change": "Variation",
       "quality": "Qualité des données"
     },
@@ -198,6 +199,12 @@
       "legend": "Compte",
       "country": "Par pays",
       "farmland": "Par Mha de terres agricoles"
+    },
+    "wasteOf": {
+      "legend": "Déchets",
+      "food": "Pertes et gaspillage alimentaires",
+      "municipal": "Déchets municipaux",
+      "plastic": "Plastique vers l'océan"
     },
     "gas": "Gaz",
     "group": "Aliment",
@@ -216,7 +223,10 @@
       "landShare": "Part des terres cultivées ou pâturées avec les leviers",
       "mammals": "Poids vif des mammifères d'élevage par km² de terres avec les leviers",
       "species": "Espèces condamnées à l'extinction par les terres agricoles du pays, avec les leviers",
-      "speciesDensity": "Espèces condamnées à l'extinction par Mha de terres agricoles du pays, avec les leviers"
+      "speciesDensity": "Espèces condamnées à l'extinction par Mha de terres agricoles du pays, avec les leviers",
+      "foodWaste": "Nourriture perdue avant les magasins et gaspillée après, avec les leviers, par an",
+      "municipalWaste": "Déchets municipaux solides, par an (aucun levier ne les change)",
+      "oceanPlastic": "Plastique qui atteint l'océan par les rivières, par an (aucun levier ne le change)"
     },
     "notes": {
       "water": "L'eau douce prélevée dans les rivières, les lacs et les nappes pour les cultures et les animaux de chaque pays et pour fabriquer les intrants de la ferme. Ce sont les litres par tonne de chaque aliment multipliés par sa production. HESTIA donne les litres des cultures qu'il couvre. Poore & Nemecek (2018) donnent le reste. Les produits animaux comptent l'eau utilisée à la ferme, pas leurs aliments concentrés, comptés sur les cultures. La pisciculture n'est pas comptée. Les litres par tonne ne changent pas avec les leviers : l'eau suit la production. L'eau ne change pas le réchauffement. L'infobulle donne la surface équipée pour l'irrigation.",
@@ -229,7 +239,12 @@
       "deforestation": "Forêt défrichée pour les cultures et les pâturages dans chaque pays, une fois les leviers pleinement en place, en hectares par an. L'infobulle donne le défrichement d'aujourd'hui, la variation et le CO₂ qu'il libère.",
       "landCo2": "Le CO₂ net de tout changement d'usage des terres dans chaque pays : forêts défrichées pour quelque raison que ce soit, tourbières drainées et autres changements, moins la forêt qui repousse sur les terres abandonnées. Les pays en bleu absorbent plus qu'ils n'émettent. Le chiffre d'aujourd'hui est la moyenne des trois modèles de comptabilité du Global Carbon Budget sur les années indiquées. Les leviers en changent deux parts. L'une est la forêt défrichée pour l'agriculture (la couche Déforestation en montre la surface). L'autre est le CO₂ que les terres agricoles libérées absorbent en repoussant, quand Terres libérées est sur Végétation spontanée dans les options. Le reste du CO₂ des terres de chaque pays ne change pas.",
       "mammals": "Bovins, buffles, moutons, chèvres, porcs, chameaux, lamas, chevaux, ânes et mulets comptés par FAOSTAT, multipliés par le poids vif type du GIEC dans chaque région, par km² de terres de chaque pays. Chaque troupeau suit la production de l'aliment qu'il donne. Les animaux de travail restent. Le résumé compare les mammifères d'élevage du monde à ses mammifères sauvages. L'infobulle donne les tonnes.",
-      "species": "Les espèces de plantes, mammifères, oiseaux, reptiles et amphibiens que les cultures et les prairies de chaque pays condamnent à l'extinction dans le monde. Chacune est le facteur de Scherer et al. (2023) pour la terre, multiplié par les espèces décrites dans chaque groupe. C'est une perte engagée dans le temps si la terre reste cultivée. Ce n'est pas le nombre d'espèces perdues à une date donnée. Les terres nouvellement cultivées condamnent plus d'espèces, au facteur de l'hectare suivant. Les terres agricoles libérées ne rendent des espèces que si Terres libérées est sur Végétation spontanée dans les options. Par Mha de terres agricoles divise le compte de chaque pays par ses cultures et ses prairies. Cela montre où un hectare condamne le plus d'espèces. L'infobulle donne les terres agricoles."
+      "species": "Les espèces de plantes, mammifères, oiseaux, reptiles et amphibiens que les cultures et les prairies de chaque pays condamnent à l'extinction dans le monde. Chacune est le facteur de Scherer et al. (2023) pour la terre, multiplié par les espèces décrites dans chaque groupe. C'est une perte engagée dans le temps si la terre reste cultivée. Ce n'est pas le nombre d'espèces perdues à une date donnée. Les terres nouvellement cultivées condamnent plus d'espèces, au facteur de l'hectare suivant. Les terres agricoles libérées ne rendent des espèces que si Terres libérées est sur Végétation spontanée dans les options. Par Mha de terres agricoles divise le compte de chaque pays par ses cultures et ses prairies. Cela montre où un hectare condamne le plus d'espèces. L'infobulle donne les terres agricoles.",
+      "waste": {
+        "food": "La nourriture perdue de la récolte jusqu'aux magasins, puis gaspillée dans les magasins, dans les restaurants et cantines, et à la maison, en tonnes par an. Les leviers Gaspillage après les magasins et Pertes avant les magasins la réduisent, et un changement de régime change la nourriture dont elle est une part. Le gaspillage après les magasins est l'estimation du PNUE de sa partie comestible. Les pertes avant les magasins sont la part de chaque aliment perdue selon la FAO, appliquée au bilan alimentaire, et suivent la production du pays. L'infobulle donne chaque étape. Les pertes sont comptées au poids frais à la récolte : les cultures lourdes et riches en eau comme la canne à sucre pèsent le plus, et les tonnes dépassent les chiffres habituels de la FAO et du PNUE (voir la Méthodologie).",
+        "municipal": "Les déchets des ménages et des commerces que les villes de chaque pays collectent ou devraient collecter, en tonnes par an : l'estimation de la Banque mondiale pour 2022, tirée de What a Waste 3.0. Aucun levier ne les change. Les leviers alimentaires réduisent le gaspillage de nourriture, mais pas les déchets municipaux montrés ici. L'infobulle donne leurs principaux types et où ils vont. Un pays qui ne donne ni l'un ni l'autre prend les parts de son groupe de revenu.",
+        "plastic": "Le plastique qui atteint l'océan par les rivières, en tonnes par an, d'après le modèle de Meijer et al. (2021) du plastique que les rivières emportent des terres de chaque pays. Aucun levier ne le change. Les estimations sont incertaines : le chiffre réel d'une rivière peut être plusieurs fois plus bas ou plus haut."
+      }
     },
     "tooltip": {
       "water": "Eau douce prélevée, par an",
@@ -260,7 +275,21 @@
       "mammals": "Mammifères d'élevage par km² de terres",
       "species": "Espèces condamnées à l'extinction",
       "speciesDensity": "Espèces condamnées par Mha de terres agricoles",
-      "mammalsWeight": "Poids vif des mammifères d'élevage"
+      "mammalsWeight": "Poids vif des mammifères d'élevage",
+      "foodWaste": "Nourriture perdue et gaspillée, par an",
+      "municipalWaste": "Déchets municipaux solides, par an",
+      "oceanPlastic": "Plastique qui atteint l'océan, par an",
+      "unchanged": "Aucun levier ne le change",
+      "perPerson": "Par personne, par an",
+      "largestTypes": "Principaux types",
+      "largestTreatments": "Où ils vont",
+      "filled": "Parts estimées d'après le groupe de revenu du pays",
+      "foodStages": {
+        "losses": "Perdue avant les magasins",
+        "retail": "Gaspillée dans les magasins",
+        "foodService": "Gaspillée en restauration",
+        "household": "Gaspillée à la maison"
+      }
     },
     "noClearing": "Pas de défrichement ou pas de données",
     "views": {
@@ -279,6 +308,61 @@
       "none": "Aucun pays ne correspond à « {query} »"
     },
     "landUse": "Usage des terres"
+  },
+  "waste": {
+    "stages": {
+      "losses": "Pertes avant les magasins",
+      "retail": "Magasins",
+      "foodService": "Restauration",
+      "household": "Ménages"
+    },
+    "types": {
+      "foodGreen": "Alimentaires et verts",
+      "paper": "Papier et carton",
+      "plastic": "Plastique",
+      "glass": "Verre",
+      "metal": "Métal",
+      "textiles": "Textiles",
+      "other": "Autres"
+    },
+    "treatments": {
+      "landfill": "Décharge",
+      "openDump": "Décharge sauvage",
+      "incineration": "Incinération",
+      "recycling": "Recyclage",
+      "composting": "Compostage et méthanisation",
+      "other": "Autre ou inconnu",
+      "uncollected": "Jamais collectés"
+    },
+    "bars": {
+      "today": "Aujourd'hui",
+      "levers": "Avec les leviers en place",
+      "world": "Monde",
+      "high": "Revenu élevé",
+      "upperMiddle": "Revenu intermédiaire supérieur",
+      "lowerMiddle": "Revenu intermédiaire inférieur",
+      "low": "Revenu faible"
+    }
+  },
+  "wasteChart": {
+    "view": "Afficher",
+    "views": {
+      "food": "Nourriture par étape",
+      "types": "Municipaux par type",
+      "treatment": "Municipaux par destination"
+    },
+    "label": {
+      "food": "La nourriture perdue et gaspillée dans le monde par étape, aujourd'hui et avec les leviers, en tonnes par an",
+      "types": "Les déchets municipaux solides par type, pour le monde et chaque groupe de revenu, en tonnes par an",
+      "treatment": "Les déchets municipaux solides par destination, pour le monde et chaque groupe de revenu, en tonnes par an"
+    },
+    "caption": {
+      "food": "La nourriture perdue de la récolte jusqu'aux magasins, puis gaspillée dans les magasins, en restauration et à la maison, par an. Les leviers Gaspillage après les magasins et Pertes avant les magasins la réduisent, et un changement de régime change la nourriture dont elle vient. Le gaspillage après les magasins ne compte que la partie comestible. Les pertes sont comptées au poids frais à la récolte : les cultures lourdes et riches en eau comme la canne à sucre pèsent le plus, et les tonnes dépassent les chiffres habituels de la FAO et du PNUE (voir la Méthodologie).",
+      "types": "Les déchets municipaux solides en {year}, estimation de la Banque mondiale (What a Waste 3.0), par ce dont ils sont faits. Aucun levier ne les change. Ils comptent une seconde fois les déchets alimentaires des ménages et des magasins, avec leurs parties non comestibles.",
+      "treatment": "Les déchets municipaux solides en {year}, estimation de la Banque mondiale (What a Waste 3.0), par destination. Aucun levier ne les change."
+    },
+    "plastic": "Plastique qui atteint l'océan par les rivières : {mass} par an (Meijer et al. 2021, en {year}). Aucun levier ne le change.",
+    "empty": "Pas de données de déchets municipaux dans cette version"
   },
   "oceanChart": {
     "title": "pH de l'océan",
@@ -469,7 +553,8 @@
       "avoided": "Réchauffement évité",
       "cause": "Causes du réchauffement",
       "sealevel": "Niveau de la mer",
-      "ocean": "pH de l'océan"
+      "ocean": "pH de l'océan",
+      "waste": "Déchets"
     },
     "seeCauses": "Voir ce qui cause le réchauffement"
   },
@@ -640,7 +725,8 @@
     "chartText": {
       "temperature": "Chaque année de 1850 à 2100 : température observée, température sans et avec les leviers avec leurs fourchettes de 5 à 95 %, et réchauffement dû aux seuls facteurs naturels.",
       "avoided": "Chaque année jusqu’en 2100 : le réchauffement évité par les leviers, avec sa fourchette de 5 à 95 %.",
-      "cause": "Chaque année de 1850 à 2100 selon le scénario choisi : réchauffement par cause avec sa fourchette, température observée et émissions agricoles par gaz."
+      "cause": "Chaque année de 1850 à 2100 selon le scénario choisi : réchauffement par cause avec sa fourchette, température observée et émissions agricoles par gaz.",
+      "waste": "La nourriture perdue et gaspillée dans le monde par étape, aujourd’hui et avec les leviers ; les déchets municipaux solides par type et par destination, pour le monde et chaque groupe de revenu ; et le plastique qui atteint l’océan, en tonnes par an."
     },
     "scenario": "Scénario et réglages en JSON",
     "scenarioTitle": "Scénario et réglages",
