@@ -7,6 +7,8 @@ import {
   formatSignificant,
   formatSignedArea,
   formatTemperature,
+  formatBillionM3,
+  formatVolume,
   massUnit,
 } from '../i18n/format';
 import { SUMMARY_MODULES } from '../levers/registry';
@@ -15,6 +17,7 @@ import type { Mammals, Species } from '../data/types';
 import type { Options, ScenarioResult } from '../model/api';
 import { mammalRatio, type MammalRatio } from './mammals';
 import { fishTotal, speciesTotal, type FishTotal, type SpeciesTotal } from './species';
+import { waterTotal, type WaterTotal } from './water';
 import { gasChange, landStat, type PerCapita } from './summaryModel';
 import type { Milestone, Milestones } from './milestones';
 
@@ -190,6 +193,24 @@ const seaLevelStats = (t: T, locale: string, result: ScenarioResult): Stat[] => 
     : [];
 };
 
+/** Freshwater withdrawn for farming a year, today and with the levers, and the change. */
+export const waterStat = (t: T, locale: string, w: WaterTotal): Stat => ({
+  label: t('summary.water.label'),
+  value: t('summary.beforeAfter', {
+    before: formatBillionM3(locale, w.before),
+    after: formatVolume(locale, w.after),
+  }),
+  detail: t('summary.water.detail', {
+    change: formatPercent(locale, (w.after - w.before) / w.before, 1, true),
+  }),
+  className: 'stat-water',
+});
+
+const waterStats = (t: T, locale: string, result: ScenarioResult): Stat[] => {
+  const w = waterTotal(result.countries);
+  return w ? [waterStat(t, locale, w)] : [];
+};
+
 /** The mammals' figure, where the data has farmed and wild mammals. */
 const mammalStats = (t: T, locale: string, result: ScenarioResult, wild?: Mammals['wild']) => {
   const m = mammalRatio(result.countries, wild);
@@ -198,7 +219,7 @@ const mammalStats = (t: T, locale: string, result: ScenarioResult, wild?: Mammal
 
 /**
  * The summary's figures: the warming avoided by the horizon, the emissions avoided as CO₂e and by
- * gas, the land freed, farmed against wild mammals, species committed to extinction and the
+ * gas, the land freed, the freshwater withdrawn, farmed against wild mammals, species committed to extinction and the
  * fish left in the ocean, each module's own figure, and the protein and
  * calories per person.
  */
@@ -251,6 +272,7 @@ export const summaryStats = (
       className: 'stat-land',
     },
     ...seaLevelStats(t, locale, result),
+    ...waterStats(t, locale, result),
     ...mammalStats(t, locale, result, wild),
     ...natureStats(t, locale, result, options, species),
     ...SUMMARY_MODULES.flatMap((m) => {

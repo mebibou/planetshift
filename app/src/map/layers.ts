@@ -17,6 +17,8 @@ export const LAYERS = [
   'landCo2',
   'mammals',
   'species',
+  'water',
+  'waterScarcity',
   'change',
   'quality',
 ] as const;
@@ -26,10 +28,19 @@ export type ChangeOf = (typeof CHANGE_OF)[number];
 /**
  * What a layer measures: a quantity the Change layer also offers, the forest area cleared, the
  * share of a country's land that is farmed, its net land-use CO₂, its farmed mammals' live
- * weight per km² of land, or the species its farmland commits to extinction.
+ * weight per km² of land, the species its farmland commits to extinction, the freshwater its
+ * farming withdraws, or the scarcity-weighted water use of the crops HESTIA covers.
  */
 export type Measure =
-  ChangeOf | 'deforestation' | 'landShare' | 'landCo2' | 'mammals' | 'species' | 'speciesDensity';
+  | ChangeOf
+  | 'deforestation'
+  | 'landShare'
+  | 'landCo2'
+  | 'mammals'
+  | 'species'
+  | 'speciesDensity'
+  | 'water'
+  | 'waterScarcity';
 
 /** What each layer but Change measures, production where it is not listed. */
 const LAYER_MEASURES: Partial<Record<Layer, Measure>> = {
@@ -39,6 +50,8 @@ const LAYER_MEASURES: Partial<Record<Layer, Measure>> = {
   landCo2: 'landCo2',
   mammals: 'mammals',
   species: 'species',
+  water: 'water',
+  waterScarcity: 'waterScarcity',
 };
 export type GasChoice = Gas | 'co2e';
 /** The farm's gases and CO₂e, which also counts the refrigerants after the farm. */
@@ -146,6 +159,8 @@ const MEASURES: Record<
   mammals: mammalDensity,
   species: (c) => [c.species, speciesAfter(c) - c.species],
   speciesDensity,
+  water: (c) => [c.water, c.waterChange],
+  waterScarcity: (c) => [c.waterScarcity, c.waterScarcityChange],
 };
 
 export const beforeAfter = (
@@ -172,6 +187,8 @@ const VALUES: Partial<Record<Layer, Value>> = {
   landCo2: (c, ba, landUse) => (landUse.has(c.iso3) ? ba.after : null),
   mammals: (c, ba) => (c.mammals > 0 && c.landArea > 0 ? ba.after : null),
   species: (c, ba) => (c.species > 0 ? ba.after : null),
+  water: (c, ba) => (c.water > 0 ? ba.after : null),
+  waterScarcity: (c, ba) => (c.waterScarcity > 0 ? ba.after : null),
 };
 
 /** The number the map colours a country by, or null for no data. */

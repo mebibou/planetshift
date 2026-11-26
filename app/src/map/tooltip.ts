@@ -8,6 +8,7 @@ import {
   formatPerKm2,
   formatSpecies,
   formatSpeciesPerMha,
+  formatVolume,
 } from '../i18n/format';
 import {
   beforeAfter,
@@ -41,6 +42,8 @@ const FORMATS: Record<Measure, (locale: string, v: number) => string> = {
   mammals: formatPerKm2,
   species: formatSpecies,
   speciesDensity: formatSpeciesPerMha,
+  water: (locale, v) => formatVolume(locale, v),
+  waterScarcity: (locale, v) => formatVolume(locale, v, true),
 };
 
 /** A layer's quantity in its unit: tonnes of product, kg of gas, hectares, or a share of land. */
@@ -143,6 +146,10 @@ const speciesRow = (c: CountryResult, t: T, locale: string): [string, string] =>
   }),
 ];
 
+/** The land equipped for irrigation, where FAOSTAT gives it. */
+const irrigationRows = (c: CountryResult, t: T, locale: string): [string, string][] =>
+  c.irrigatedHa ? [[t('map.tooltip.irrigated'), formatArea(locale, c.irrigatedHa)]] : [];
+
 /** Cropland and pasture together, hectares today and with the levers. */
 const farmlandRow = (c: CountryResult, t: T, locale: string): [string, string] => [
   t('map.tooltip.land'),
@@ -211,6 +218,14 @@ const MEASURE_TOOLTIPS: Record<
   speciesDensity: {
     what: (t) => t('map.tooltip.speciesDensity'),
     extra: (c, t, locale) => ({ rows: [speciesRow(c, t, locale), farmlandRow(c, t, locale)] }),
+  },
+  water: {
+    what: (t) => t('map.tooltip.water'),
+    extra: (c, t, locale) => ({ rows: irrigationRows(c, t, locale) }),
+  },
+  waterScarcity: {
+    what: (t) => t('map.tooltip.waterScarcity'),
+    extra: (_, t) => ({ rows: [[t('map.tooltip.waterScarcityCoverage'), '']] }),
   },
   landCo2: {
     what: (t) => t('map.tooltip.landCo2'),

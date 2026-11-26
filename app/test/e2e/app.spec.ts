@@ -375,6 +375,8 @@ test('the map layers and tooltip work', async ({ page }) => {
     'landCo2',
     'mammals',
     'species',
+    'water',
+    'waterScarcity',
     'quality',
     'change',
     'emissions',
@@ -1100,6 +1102,39 @@ test('the Emissions tooltip gives food after the farm and the footprint per pers
   const tooltip = page.locator('.map-frame .tooltip');
   await expect(tooltip).toContainText('After the farm');
   await expect(tooltip).toContainText('Food footprint per person, a year');
+});
+
+test('the freshwater layers give the litres withdrawn and, apart, the crops’ scarcity-weighted use', async ({
+  page,
+}) => {
+  await open(page, `${START}&shift=50`);
+  await page.locator('label[for="layer-water"]').click();
+  await expect(page).toHaveURL(/layer=water/);
+  await expect(page.locator('.legend-title')).toContainText('Freshwater withdrawn for farming');
+  await expect(page.locator('.map-note')).toContainText('Poore & Nemecek (2018)');
+  await expect(page.locator('path.country[data-iso3="NGA"]')).not.toHaveClass(/has-data/);
+  await page.locator('path.country[data-iso3="FRA"]').click();
+  const tooltip = page.locator('.map-frame .tooltip');
+  await expect(tooltip).toContainText('Freshwater withdrawn, a year');
+  await expect(tooltip).toContainText('billion m³');
+  await expect(tooltip).toContainText('Land equipped for irrigation');
+  await page.locator('#map-tab-table').click();
+  await expect(page.locator('.data-table tbody tr')).toHaveCount(4);
+  await page.locator('#map-tab-map').click();
+  await page.locator('label[for="layer-waterScarcity"]').click();
+  await expect(page).toHaveURL(/layer=waterScarcity/);
+  await expect(page.locator('.legend-title')).toContainText('(L eq)');
+  await expect(page.locator('.legend li').first()).toContainText('eq');
+  await expect(page.locator('path.country[data-iso3="BRA"]')).not.toHaveClass(/has-data/);
+});
+
+test('the summary gives the freshwater withdrawn, today and with the levers', async ({ page }) => {
+  await open(page, `${START}&shift=100`);
+  const stat = page.locator('.summary .stat-water');
+  await expect(stat).toContainText('Freshwater withdrawn for farming');
+  await expect(stat.locator('.stat-value')).toContainText('→');
+  await expect(stat.locator('.stat-value')).toContainText('billion m³');
+  await expect(stat).toContainText('Water does not change the warming');
 });
 
 test('the summary sets the farmed mammals against the wild ones, and a shift lowers it', async ({

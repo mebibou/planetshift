@@ -875,6 +875,49 @@ write('species.json', {
   source: 'Synthetic fixture',
 });
 
+// freshwater withdrawn, litres per tonne [L/t, tier, source]: HESTIA for the crops in FRA, USA
+// and IND, Poore & Nemecek for the rest; scarcity-weighted use only where HESTIA has it; NGA
+// left without water
+const litresPerTonne = {
+  2511: 300e3,
+  2514: 120e3,
+  2807: 1.1e6,
+  2555: 25e3,
+  2531: 60e3,
+  2601: 200e3,
+  2615: 115e3,
+  2536: 70e3,
+  2731: 400e3,
+  2733: 300e3,
+  2734: 200e3,
+  2848: 150e3,
+  2744: 100e3,
+};
+const animalCodes = new Set([2731, 2733, 2734, 2848, 2744]);
+const waterOf = (iso3, hestia) =>
+  Object.fromEntries(
+    Object.entries(litresPerTonne).map(([code, l]) => {
+      const fromHestia = hestia && !animalCodes.has(Number(code));
+      return [code, [l * (iso3 === 'IND' ? 1.6 : 1), fromHestia ? 1 : 4, fromHestia ? 0 : 1]];
+    }),
+  );
+write('water.json', {
+  sources: ['https://hestia.earth/cycle/fixture', 'https://doi.org/10.1126/science.aaq0216'],
+  byCountry: {
+    FRA: waterOf('FRA', true),
+    USA: waterOf('USA', true),
+    IND: waterOf('IND', true),
+    BRA: waterOf('BRA', false),
+  },
+  scarcity: {
+    FRA: { 2511: 4.2e6, 2514: 2.0e6 },
+    USA: { 2511: 9.5e6, 2514: 3.1e6 },
+    IND: { 2511: 3.0e7, 2807: 5.4e7 },
+  },
+  oilcake: { BRA: { 2555: 2.4e11 } },
+  irrigatedHa: { FRA: 2.9e6, USA: 2.67e7, IND: 7.6e7, BRA: 8.2e6 },
+});
+
 // food's emissions after the farm: each food's Poore & Nemecek weight at the shared stages, and
 // kg of each gas per weighted tonne by country and stage; IND left to the world's
 write('chain.json', {

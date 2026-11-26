@@ -118,6 +118,8 @@ const LISTED: Partial<Record<Layer, (c: CountryResult, landUse: LandUseCo2) => b
   landCo2: (c, landUse) => landUse.has(c.iso3),
   mammals: (c) => c.mammals > 0 && c.landArea > 0,
   species: (c) => c.species > 0,
+  water: (c) => c.water > 0,
+  waterScarcity: (c) => c.waterScarcity > 0,
 };
 
 /** Whether the layer has data for a country. */

@@ -22,6 +22,8 @@ HESTIA publishes its data in releases. A release is restricted to priority-acces
 
 Planetshift keeps three gases: carbon dioxide (CO₂), methane (CH₄) and nitrous oxide (N₂O). It counts them in kg of each gas, not added up into one figure. It keeps the emissions of the farm itself and, in the wider scope, those of making the farm's inputs such as fertilisers and fuel (the two scopes are below and on the [Emissions](#method-emissions) page). It leaves out land-use change, which has its own lever, and the emissions of producing feed, which the model already counts through the feed crops.
 
+The same aggregations give the freshwater withdrawn on the farm and in making its inputs, and AWARE 2.0's scarcity-weighted water use. They are kept apart from the gases and read for the [Freshwater](#method-water) page, with the same tiers.
+
 ### Coverage in brief
 
 With release v1.3, 39 FBS items get a HESTIA value, in 61 countries and for the World. Eggs are the only animal product with a validated aggregation, for Canada and the United States. Meat and milk, vegetable oils, sugar and a few crops therefore take their intensities from the other tiers. The full list is under *Coverage in detail* below.
@@ -38,7 +40,7 @@ With release v1.3, 39 FBS items get a HESTIA value, in 61 countries and for the 
 Every response is cached in `pipeline/cache/hestia/<release>/`:
 
 - the search results as `aggregations.json`;
-- each aggregation in `nodes/<key>/`, trimmed to its CO₂, CH₄ and N₂O rows without their distributions. A whole node is about 10 MB, the trimmed one under 100 kB. The key is a hash of the code that trims them, so a change to what is kept fetches the nodes anew.
+- each aggregation in `nodes/<key>/`, trimmed to its CO₂, CH₄ and N₂O rows, its freshwater withdrawal rows and its GWP100 and AWARE 2.0 scarcity-weighted water use, without their distributions. A whole node is about 10 MB, the trimmed one under 100 kB. The key is a hash of the code that trims them, so a change to what is kept fetches the nodes anew.
 
 The glossary's region terms are cached in `pipeline/cache/hestia/glossary/`.
 

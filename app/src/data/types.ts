@@ -376,6 +376,17 @@ export interface Species {
   source: string;
 }
 
+export type WaterIntensity = [litresPerTonne: number, tier: Tier, source: number];
+
+/** `scarcity` is L eq per tonne, never added to the litres. */
+export interface Water {
+  sources: string[];
+  byCountry: Record<string, Record<string, WaterIntensity>>;
+  scarcity: Record<string, Record<string, number>>;
+  oilcake: Record<string, Record<string, number>>;
+  irrigatedHa: Record<string, number>;
+}
+
 /** A stage after the farm: shared between foods by Poore & Nemecek's weight, or by mass. */
 export const CHAIN_STAGES = [
   'processing',
@@ -436,6 +447,7 @@ export interface ModelData {
   chain?: Chain;
   /** Optional: without it, every import takes the world's average intensity. */
   origins?: Origins;
+  water?: Water;
   /** Not a file: the build's departures from FaIR stand for it when it is unset. */
   departures?: Departures;
 }

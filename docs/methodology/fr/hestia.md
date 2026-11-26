@@ -22,6 +22,8 @@ HESTIA publie ses données par versions. Une version est réservée aux utilisat
 
 Planetshift garde trois gaz : le dioxyde de carbone (CO₂), le méthane (CH₄) et le protoxyde d'azote (N₂O). Il les compte en kg de chaque gaz, sans les additionner en un seul chiffre. Il garde les émissions de la ferme elle-même et, dans le périmètre le plus large, celles de la fabrication des intrants de la ferme, comme les engrais et le carburant (les deux périmètres sont décrits plus bas et sur la page [Émissions par tonne d'aliment](#method-emissions)). Il laisse de côté le changement d'usage des terres, qui a son propre levier, et les émissions de la production des aliments pour animaux, que le modèle compte déjà par les cultures fourragères.
 
+Les mêmes agrégations donnent l'eau douce prélevée à la ferme et pour fabriquer ses intrants, et la consommation d'eau pondérée par la rareté selon AWARE 2.0. Elles sont gardées à part des gaz et lues pour la page [Eau douce](#method-water), avec les mêmes niveaux.
+
 ### La couverture en bref
 
 Avec la version v1.3, 39 produits des bilans ont une valeur HESTIA, dans 61 pays et pour le Monde. Les œufs sont le seul produit animal avec une agrégation validée, pour le Canada et les États-Unis. La viande et le lait, les huiles végétales, le sucre et quelques cultures prennent donc leurs intensités dans les autres niveaux. La liste complète est sous *La couverture en détail*, plus bas.
@@ -38,7 +40,7 @@ Avec la version v1.3, 39 produits des bilans ont une valeur HESTIA, dans 61 pays
 Chaque réponse est mise en cache dans `pipeline/cache/hestia/<release>/` :
 
 - les résultats de la recherche dans `aggregations.json` ;
-- chaque agrégation dans `nodes/<clé>/`, réduite à ses lignes de CO₂, de CH₄ et de N₂O sans leurs distributions. Un nœud entier fait environ 10 Mo, le nœud réduit moins de 100 ko. La clé est une empreinte du code qui les réduit, si bien qu'un changement de ce qui est gardé les télécharge à nouveau.
+- chaque agrégation dans `nodes/<clé>/`, réduite à ses lignes de CO₂, de CH₄ et de N₂O, à ses lignes de prélèvements d'eau douce, à son GWP100 et à sa consommation d'eau pondérée par la rareté selon AWARE 2.0, sans leurs distributions. Un nœud entier fait environ 10 Mo, le nœud réduit moins de 100 ko. La clé est une empreinte du code qui les réduit, si bien qu'un changement de ce qui est gardé les télécharge à nouveau.
 
 Les termes de régions du glossaire sont mis en cache dans `pipeline/cache/hestia/glossary/`.
 

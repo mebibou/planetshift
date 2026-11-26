@@ -108,6 +108,8 @@ const MEASURE_TITLES: Record<Measure, (t: T, ui: UiState, years: readonly number
   mammals: (t) => t('map.legend.mammals'),
   species: (t) => t('map.legend.species'),
   speciesDensity: (t) => t('map.legend.speciesDensity'),
+  water: (t) => t('map.legend.water'),
+  waterScarcity: (t) => t('map.legend.waterScarcity'),
 };
 
 const legendTitleOf = (t: T, ui: UiState, years: readonly number[]): string => {

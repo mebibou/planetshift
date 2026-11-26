@@ -12,6 +12,8 @@ export const LAYER_COLOURS: Record<Layer, string[]> = {
   landCo2: ramp('diverging', 7),
   mammals: ramp('seq-mammals', 7),
   species: ramp('seq-species', 7),
+  water: ramp('seq-water', 7),
+  waterScarcity: ramp('seq-water', 7),
   change: ramp('diverging', 7),
   quality: ramp('tier', 6),
 };
