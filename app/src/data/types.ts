@@ -286,6 +286,12 @@ export interface Climate {
   permafrost: Permafrost;
   /** Optional until the pipeline builds it. */
   seaLevel?: SeaLevel;
+  /** Each SSP's CO₂ in the air, ppm, from FaIR, 1850–2100; optional until the pipeline builds it. */
+  co2?: Record<Ssp, BandSeries>;
+  /** ppm of CO₂ in the air per kg emitted, year 0..200 after; optional with `co2`. */
+  co2PpmPerKg?: { median: number[]; p05: number[]; p95: number[] };
+  /** Observed global mean surface ocean pH, total scale, 1985 on (Copernicus Marine Service); optional. */
+  oceanPhObserved?: Series;
 }
 
 /** Rise in mm a year per °C above the balance temperature (°C), fitted to the median and to each likely end of AR6 Table 9.9. */

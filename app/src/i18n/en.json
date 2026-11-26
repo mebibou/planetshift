@@ -276,6 +276,14 @@
     },
     "landUse": "Land use"
   },
+  "oceanChart": {
+    "title": "Ocean pH",
+    "label": "Surface ocean pH from 1850 to {year}: modelled and modelled with levers, with their ranges",
+    "unit": "pH",
+    "band": "Likely range (5–95%)",
+    "value": "{value}",
+    "caption": "The pH of the surface ocean, from FaIR's CO₂ in the air and the chemistry of seawater. A lower pH is a more acidic ocean. Only the CO₂ the levers avoid changes the pH. Methane and air pollution do not. The observed line is the Copernicus Marine Service's global mean since 1985 (Generated using E.U. Copernicus Marine Service Information; doi:10.48670/moi-00224)."
+  },
   "seaLevelChart": {
     "title": "Sea-level rise",
     "label": "Sea-level rise to {year}: observed, modelled, and modelled with levers, with their likely ranges",
@@ -456,7 +464,8 @@
       "temperature": "Global temperature",
       "avoided": "Warming avoided",
       "cause": "Causes of warming",
-      "sealevel": "Sea level"
+      "sealevel": "Sea level",
+      "ocean": "Ocean pH"
     },
     "seeCauses": "See what causes the warming"
   },
@@ -529,7 +538,7 @@
     "range": "{name}: {parts}.",
     "rangeWithout": "{range} without the levers",
     "rangeWith": "{range} with them",
-    "note": "The ranges in the (i) are the sources' own, not the range of the warming. Economic damages and ocean acidity are left out. The sea-level rise avoided is in the summary.",
+    "note": "The ranges in the (i) are the sources' own, not the range of the warming. Economic damages are left out. The sea-level rise avoided is in the summary, and the ocean's pH has its own chart.",
     "more": "How it is read",
     "units": {
       "times": "{value}×",

@@ -12,7 +12,7 @@ import { worldPerCapita } from '../app/summaryModel';
 import { tabKeys } from '../app/tabs';
 import { CHARTS, type ChartTab, type Horizon } from '../app/url';
 import { avoidedChart } from '../chart/avoided';
-import { seaLevelChart } from '../chart/seaLevel';
+import { OCEAN_PH, pathsChart, SEA_LEVEL } from '../chart/paths';
 import { causeGasesOf, type CauseGas } from '../chart/series';
 import { RANGE_START, temperatureChart, type Range } from '../chart/temperature';
 import { dataFolder } from '../data/load';
@@ -67,7 +67,7 @@ const ChartTabs = ({ ctx, chart }: { ctx: ViewContext; chart: ChartTab }) => {
   const select = (tab: ChartTab) => ctx.setUi((u) => ({ ...u, chart: tab }));
   return (
     <div
-      className="chart-tabs flex gap-1 self-end border-b border-rule"
+      className="chart-tabs flex max-w-full gap-1 self-end overflow-x-auto overflow-y-hidden border-b border-rule [scrollbar-width:none]"
       role="tablist"
       aria-label={ctx.t('charts.title')}
     >
@@ -77,7 +77,7 @@ const ChartTabs = ({ ctx, chart }: { ctx: ViewContext; chart: ChartTab }) => {
           type="button"
           role="tab"
           id={`chart-tab-${tab}`}
-          className="chart-tab -mb-px cursor-pointer border-0 border-b-3 border-solid border-transparent bg-transparent px-3 py-2 text-[1.05rem] font-bold text-muted aria-selected:border-accent aria-selected:text-ink max-sm:px-2 max-sm:text-[0.92rem]"
+          className="chart-tab -mb-px shrink-0 cursor-pointer whitespace-nowrap border-0 border-b-3 border-solid border-transparent bg-transparent px-3 py-2 text-[1.05rem] font-bold text-muted aria-selected:border-accent aria-selected:text-ink max-sm:px-2 max-sm:text-[0.92rem]"
           aria-controls={`chart-panel-${tab}`}
           aria-selected={tab === chart}
           tabIndex={tab === chart ? 0 : -1}
@@ -104,7 +104,8 @@ interface Draw {
 interface Drawn {
   temperature: ReturnType<typeof makeTemperature>;
   avoided: ReturnType<typeof avoidedChart>;
-  sealevel: ReturnType<typeof seaLevelChart>;
+  sealevel: ReturnType<typeof pathsChart>;
+  ocean: ReturnType<typeof pathsChart>;
 }
 
 /** How each chart that a run draws is drawn from it. */
@@ -132,21 +133,28 @@ const DRAW: Record<
       data.climate.seaLevel?.observed,
       options.ssp,
     ),
+  ocean: ({ ocean }, { result, ui, data, options }) =>
+    ocean.update(result, Number(ui.horizon), ui.range, data.climate.oceanPhObserved, options.ssp),
 };
 
 /** The charts, drawn again from the latest result and choices. */
 const useCharts = ({ ctx, state, result, data }: ExploreProps) => {
   const [temperature, temperatureRef] = useDrawn(() => makeTemperature(ctx));
   const [avoided, avoidedRef] = useDrawn(() => avoidedChart(ctx.t, ctx.locale, ctx.currentYear));
-  const [sealevel, sealevelRef] = useDrawn(() => seaLevelChart(ctx.t, ctx.locale, ctx.currentYear));
+  const [sealevel, sealevelRef] = useDrawn(() =>
+    pathsChart(ctx.t, ctx.locale, ctx.currentYear, SEA_LEVEL),
+  );
+  const [ocean, oceanRef] = useDrawn(() =>
+    pathsChart(ctx.t, ctx.locale, ctx.currentYear, OCEAN_PH),
+  );
   const { ui, options } = state;
   useEffect(() => {
     const draw = { result, ui, options, data, currentYear: ctx.currentYear };
     if (result && ui.chart !== 'cause') {
-      DRAW[ui.chart]({ temperature, avoided, sealevel }, { ...draw, result });
+      DRAW[ui.chart]({ temperature, avoided, sealevel, ocean }, { ...draw, result });
     }
-  }, [result, ui, options, data, temperature, avoided, sealevel, ctx.currentYear]);
-  return { temperatureRef, avoidedRef, sealevelRef };
+  }, [result, ui, options, data, temperature, avoided, sealevel, ocean, ctx.currentYear]);
+  return { temperatureRef, avoidedRef, sealevelRef, oceanRef };
 };
 
 /** The gas the Causes of warming tab shows: every emission when the build has no split for it. */
@@ -206,7 +214,7 @@ const RUN_ERROR = 'run-error m-0 mt-2 font-bold text-danger';
 const ChartCard = (props: ExploreProps) => {
   const { ctx, state, result } = props;
   const { t } = ctx;
-  const { temperatureRef, avoidedRef, sealevelRef } = useCharts(props);
+  const { temperatureRef, avoidedRef, sealevelRef, oceanRef } = useCharts(props);
   const latest = useLatest({ result, state, climate: props.data.climate });
   const download = useChartDownload(t, () => ({
     ...latest.current,
@@ -259,6 +267,14 @@ const ChartCard = (props: ExploreProps) => {
         hidden={chart !== 'sealevel'}
       >
         <span className="drawn" ref={sealevelRef} />
+      </div>
+      <div
+        role="tabpanel"
+        id="chart-panel-ocean"
+        aria-labelledby="chart-tab-ocean"
+        hidden={chart !== 'ocean'}
+      >
+        <span className="drawn" ref={oceanRef} />
       </div>
       <div
         role="tabpanel"

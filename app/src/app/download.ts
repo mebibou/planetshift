@@ -220,6 +220,28 @@ export const avoidedRows = (
 
 type Table = { header: string[]; rows: Cell[][] } | null;
 
+/** The surface ocean's pH each year to 2100, modelled and modelled with levers (from now), median and range. */
+export const oceanRows = (
+  result: ScenarioResult,
+  currentYear: number,
+  observed?: Series,
+): Table => {
+  const o = result.ocean;
+  const columns = (name: string) => ['median', 'p05', 'p95'].map((q) => `ph_${name}_${q}`);
+  const at = (band: SeaLevelBand, i: number) => [band.median[i], band.low[i], band.high[i]];
+  return o
+    ? {
+        header: ['year', 'ph_observed', ...columns('without_levers'), ...columns('with_levers')],
+        rows: o.years.map((year, i) => [
+          year,
+          observed?.values[observed.years.indexOf(year)] ?? null,
+          ...at(o.baseline, i),
+          ...(year < currentYear ? [null, null, null] : at(o.scenario, i)),
+        ]),
+      }
+    : null;
+};
+
 /**
  * The observed sea level from 1900, and the rise without and with the levers from 2000 to 2100,
  * cm above 1900 (above 1995–2014 without the observed record), median and likely range.
@@ -307,6 +329,7 @@ const RUN_TABLES: Record<
   temperature: (r, i) => temperatureRows(r, i.climate.naturalOnly, i.currentYear),
   avoided: (r, i) => avoidedRows(r, i.currentYear),
   sealevel: (r, i) => seaLevelRows(r, i.climate.seaLevel?.observed),
+  ocean: (r, i) => oceanRows(r, i.currentYear, i.climate.oceanPhObserved),
 };
 
 /** The data of one chart tab as CSV, or null when the model has not run. */

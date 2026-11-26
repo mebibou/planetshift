@@ -529,7 +529,7 @@ test('the chart tabs and the chart values are reachable from the keyboard', asyn
   await expect(page.locator('#chart-tab-cause')).toHaveAttribute('aria-selected', 'true');
   await expect(page).toHaveURL(/chart=cause/);
   await page.keyboard.press('End');
-  await expect(page.locator('#chart-tab-sealevel')).toBeFocused();
+  await expect(page.locator('#chart-tab-ocean')).toBeFocused();
   await page.keyboard.press('ArrowRight');
   await expect(page.locator('#chart-tab-temperature')).toBeFocused();
   await expect(page.locator('#chart-panel-temperature')).toBeVisible();

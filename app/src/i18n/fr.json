@@ -280,6 +280,14 @@
     },
     "landUse": "Usage des terres"
   },
+  "oceanChart": {
+    "title": "pH de l'océan",
+    "label": "pH de l'océan en surface de 1850 à {year} : modélisé et modélisé avec les leviers, avec leurs fourchettes",
+    "unit": "pH",
+    "band": "Fourchette probable (5–95 %)",
+    "value": "{value}",
+    "caption": "Le pH de l'océan en surface, d'après le CO₂ de l'air selon FaIR et la chimie de l'eau de mer. Un pH plus bas est un océan plus acide. Seul le CO₂ que les leviers évitent change le pH. Le méthane et la pollution de l'air non. La courbe observée est la moyenne mondiale du service Copernicus Marine depuis 1985 (Generated using E.U. Copernicus Marine Service Information; doi:10.48670/moi-00224)."
+  },
   "seaLevelChart": {
     "title": "Hausse du niveau de la mer",
     "label": "Hausse du niveau de la mer jusqu'en {year} : observée, modélisée, et modélisée avec les leviers, avec leurs fourchettes probables",
@@ -460,7 +468,8 @@
       "temperature": "Température mondiale",
       "avoided": "Réchauffement évité",
       "cause": "Causes du réchauffement",
-      "sealevel": "Niveau de la mer"
+      "sealevel": "Niveau de la mer",
+      "ocean": "pH de l'océan"
     },
     "seeCauses": "Voir ce qui cause le réchauffement"
   },
@@ -533,7 +542,7 @@
     "range": "{name} : {parts}.",
     "rangeWithout": "{range} sans les leviers",
     "rangeWith": "{range} avec eux",
-    "note": "Les fourchettes du (i) sont celles des sources, pas celle du réchauffement. Les dommages économiques et l'acidité des océans sont laissés de côté. La hausse du niveau de la mer évitée est dans le résumé.",
+    "note": "Les fourchettes du (i) sont celles des sources, pas celle du réchauffement. Les dommages économiques sont laissés de côté. La hausse du niveau de la mer évitée est dans le résumé, et le pH de l'océan a son propre graphique.",
     "more": "Comment c'est lu",
     "units": {
       "times": "{value} fois",

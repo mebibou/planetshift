@@ -155,6 +155,8 @@ export interface ScenarioResult {
   };
   /** The sea-level rise each year to 2100 without and with the levers, m; absent without the data. */
   seaLevel?: SeaLevelPaths;
+  /** The surface ocean's pH each year to 2100 without and with the levers; absent without the data. */
+  ocean?: SeaLevelPaths;
   summary: Summary;
 }
 
