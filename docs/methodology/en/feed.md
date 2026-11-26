@@ -24,13 +24,13 @@ A single published split of the world's concentrate feed between species is appl
 
 | Group | Share of concentrate feed |
 | --- | --- |
-| Ruminant meat | 11% |
-| Dairy | 16% |
-| Pig meat | 28% |
-| Poultry meat | 28% |
-| Eggs | 17% |
+| Ruminant meat | 12% |
+| Dairy | 13% |
+| Pig meat | 29% |
+| Poultry meat | 33% |
+| Eggs | 13% |
 
-This split (`feed_species.csv`) is rounded from two sources: FAO's GLEAM assessment of livestock feed intake (Mottet et al., 2017), and the industry's annual survey of compound feed by species (Alltech Agri-Food Outlook). They agree that pigs and poultry eat a little over half of the concentrates.
+This split (`feed_species.csv`) is the world's compound feed by species in 2024, from the feed industry's annual survey (Alltech Agri-Food Outlook 2025, table "Feed Tonnage by Sector" and the layer table): 157.7 Mt for beef cattle and other ruminants, 165.5 Mt for dairy, 369.3 Mt for pigs, 422.8 Mt for poultry other than layers and 173.0 Mt for layers. Pet food, horses and other species are left out. FAO's GLEAM assessment of livestock feed intake (Mottet et al., 2017) gives about the same share to ruminants together and to pigs.
 
 A region's split follows what it produces. Each group's world share is divided by its world production and multiplied by the region's production. A region that raises mostly cattle therefore gives most of its feed to cattle.
 
@@ -82,7 +82,7 @@ The code is `pipeline/planetshift_pipeline/feed.py` and the tables are `pipeline
 - FAOSTAT, Food Balances (2010–), feed use by item and country: <https://www.fao.org/faostat/en/#data/FBS>.
 - FAO, Global Livestock Environmental Assessment Model (GLEAM): <https://www.fao.org/gleam/en/>.
 - Mottet, A., de Haan, C., Falcucci, A., Tempio, G., Opio, C., Gerber, P. (2017). Livestock: on our plates or eating at our table? A new analysis of the feed/food debate. Global Food Security 14, 1–8: <https://doi.org/10.1016/j.gfs.2017.01.001>.
-- Alltech Agri-Food Outlook (world compound feed production by species): <https://www.alltech.com/agri-food-outlook>.
-- Tacon, A. G. J. et al. (2025), compound aquafeed production in 2023 (69.4 Mt): <https://doi.org/10.1080/23308249.2025.2568830>.
+- Alltech (2025). Agri-Food Outlook 2025, world compound feed production by species in 2024 (table "Feed Tonnage by Sector"; layer feed production table): <https://www.alltech.com/agri-food-outlook>.
+- Tacon, A. G. J., Metian, M., Parsons, G., Shumway, S. (2025). A Global Aquaculture and Aquafeed Production Update: 2010 to 2023. Reviews in Fisheries Science & Aquaculture; abstract: commercial aquafeed 69.42 Mt in 2023: <https://doi.org/10.1080/23308249.2025.2568830>.
 - Tacon, A. G. J. (2020). Trends in global aquaculture and aquafeed production: 2000–2017. Reviews in Fisheries Science & Aquaculture 28, 43–56: <https://doi.org/10.1080/23308249.2019.1649634>.
 - FAO FishStat, Global production by production source: <https://www.fao.org/fishery/en/collection/global_production>.

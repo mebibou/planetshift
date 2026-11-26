@@ -1,6 +1,6 @@
 # Au-delà de la ferme : transport, électricité et centres de données
 
-L'alimentation n'est qu'une partie du problème climatique. Brûler du charbon, du pétrole et du gaz pour produire de l'électricité et se déplacer en est la plus grande. Pour que les leviers de l'alimentation et de l'agriculture puissent être comparés à d'autres actions, Planetshift propose six leviers sur les véhicules routiers, l'aviation, le transport maritime et l'électricité, qui atteint aussi les centres de données. Les six au maximum, de 2026 à 2035, évitent 0,263 °C de réchauffement en 2050 et 0,646 °C en 2100 (médiane, SSP2-4.5), une fois comptés le méthane et la pollution de l'air qui accompagnent le combustible.
+L'alimentation n'est qu'une partie du problème climatique. Brûler du charbon, du pétrole et du gaz pour produire de l'électricité et se déplacer en est la plus grande. Pour que les leviers de l'alimentation et de l'agriculture puissent être comparés à d'autres actions, Planetshift propose six leviers sur les véhicules routiers, l'aviation, le transport maritime et l'électricité, qui atteint aussi les centres de données. Les six au maximum, de 2026 à 2035, évitent 0,253 °C de réchauffement en 2050 et 0,655 °C en 2100 (médiane, SSP2-4.5), une fois comptés le méthane et la pollution de l'air qui accompagnent le combustible.
 
 ## Ce que ces leviers comptent
 
@@ -26,10 +26,10 @@ Pour le transport, la forme vient des émissions de scénario avec lesquelles to
 
 | Secteur | SSP1-2.6 | SSP2-4.5 | SSP3-7.0 |
 | --- | --- | --- | --- |
-| Route, passagers | 3,66 / 2,81 / 0,09 | 3,66 / 5,01 / 2,35 | 3,66 / 4,31 / 3,33 |
-| Route, marchandises | 2,44 / 1,87 / 0,06 | 2,44 / 3,34 / 1,57 | 2,44 / 2,88 / 2,22 |
+| Route, passagers | 3,56 / 2,73 / 0,09 | 3,66 / 5,01 / 2,36 | 3,64 / 4,29 / 3,31 |
+| Route, marchandises | 2,38 / 1,82 / 0,06 | 2,44 / 3,34 / 1,57 | 2,43 / 2,86 / 2,21 |
 | Aviation | 0,95 / 0,91 / 0,56 | 0,95 / 1,47 / 1,80 | 0,95 / 1,81 / 3,00 |
-| Transport maritime | 0,85 / 0,62 / 0,35 | 0,85 / 0,80 / 0,89 | 0,85 / 0,84 / 0,62 |
+| Transport maritime | 0,97 / 0,71 / 0,40 | 0,98 / 0,92 / 1,02 | 0,99 / 0,98 / 0,72 |
 | Électricité | 14,15 / 4,53 / 0 | 14,15 / 13,07 / 0 | 14,15 / 23,71 / 40,55 |
 | Centres de données (supplément) | 0 / 0,08 / 0 | 0 / 0,21 / 0 | 0 / 0,40 / 0,43 |
 
@@ -37,7 +37,7 @@ Pour le transport, la forme vient des émissions de scénario avec lesquelles to
 
 Le transport routier a émis 5,97 milliards de tonnes de CO₂ fossile en 2022, dernière année de CEDS (le Community Emissions Data System). C'est le secteur routier de CEDS, pour les combustibles autres que la biomasse. Cela représente environ les trois quarts du CO₂ de tous les transports. La forme de chaque scénario porte cette valeur jusqu'en 2023, où elle vaut de 5,9 à 6,1 milliards de tonnes selon le SSP.
 
-Les passagers (voitures, deux- et trois-roues, bus) en représentent 60 % et les marchandises (camions et utilitaires) 40 %. Cette répartition suit le suivi par l'AIE des voitures et utilitaires d'une part, des camions et bus d'autre part. Camions et bus font ensemble plus du tiers du CO₂ routier.
+Les passagers (voitures et bus) en représentent 60 % et les marchandises (camions) 40 %. En 2018, les voitures et les bus ont émis 45,1 % du CO₂ des transports et les camions de marchandises 29,4 %, soit 61 % et 39 % de celui de la route (Our World in Data, d'après les données de l'AIE).
 
 La forme est celle du transport terrestre du scénario. Elle comprend aussi le rail et la navigation intérieure, qui en font quelques pour cent. Dans SSP1-2.6, les émissions routières tombent presque à zéro en 2100, à mesure que les véhicules s'électrifient. Dans SSP2-4.5, elles augmentent d'un tiers jusqu'en 2050, puis baissent. Dans SSP3-7.0, elles restent élevées tout le siècle.
 
@@ -47,7 +47,7 @@ L'aviation, vols intérieurs et internationaux réunis, a émis environ 0,95 mil
 
 ### Le transport maritime
 
-Le transport maritime, international et intérieur, a émis environ 0,85 milliard de tonnes (AIE, et la quatrième étude de l'OMI sur les gaz à effet de serre pour la répartition). Le chiffre dépend des navires comptés. La quatrième étude de l'OMI estime le transport maritime international à 740 millions de tonnes en 2018, sur la base des trajets. Elle estime l'ensemble du transport maritime, intérieur et pêche compris, à 1 056 millions de tonnes. Les 0,85 se situent entre les deux. Ils sont proches de la navigation internationale et intérieure sans la pêche. Le carburant de la pêche est compté ici avec les produits de la mer.
+Le transport maritime, international et intérieur, a émis 0,98 milliard de tonnes de CO₂ fossile en 2022 : le transport maritime international (0,80) et la navigation intérieure (0,17) de CEDS, pour les combustibles autres que la biomasse. La forme de chaque scénario le porte jusqu'en 2023, où il vaut de 0,97 à 0,99 milliard de tonnes. Les bateaux de pêche sont un secteur à part dans CEDS ; leur carburant est compté ici avec les produits de la mer. Le chiffre dépend des navires comptés. La quatrième étude de l'OMI estime le transport maritime international à 740 millions de tonnes en 2018, sur la base des trajets, et l'ensemble du transport maritime, intérieur et pêche compris, à 1 056 millions de tonnes.
 
 Le transport maritime suit le transport maritime international des scénarios. Le levier « Transport maritime propre » en retire une part en passant à des carburants sans carbone fossile, comme l'ammoniac ou le méthanol verts.
 
@@ -159,7 +159,7 @@ La réponse est linéaire autour du scénario. Cela tient bien pour de petites v
 
 ## Le méthane et la pollution de l'air qui accompagnent le combustible
 
-Brûler du charbon, du pétrole et du gaz émet plus que du CO₂. Un levier qui réduit le combustible réduit toutes ces émissions avec le CO₂. Le compter augmente le réchauffement qu'évitent les leviers d'énergie. Les six au maximum évitent 0,263 °C en 2050 en le comptant, contre 0,205 °C pour le CO₂ seul. De tous les leviers d'énergie, de chauffage et d'industrie, seule l'industrie propre, sur la page [Bâtiments et industrie](#method-industry), évite moins en le comptant (0,017 °C au lieu de 0,026 en 2050).
+Brûler du charbon, du pétrole et du gaz émet plus que du CO₂. Un levier qui réduit le combustible réduit toutes ces émissions avec le CO₂. Le compter augmente le réchauffement qu'évitent les leviers d'énergie. Les six au maximum évitent 0,253 °C en 2050 en le comptant, contre 0,209 °C pour le CO₂ seul. De tous les leviers d'énergie, de chauffage et d'industrie, seule l'industrie propre, sur la page [Bâtiments et industrie](#method-industry), évite moins en le comptant (0,017 °C au lieu de 0,026 en 2050).
 
 Ce qui accompagne le combustible :
 
@@ -329,19 +329,19 @@ Réchauffement évité en °C, médiane (fourchette probable). Chaque levier est
 | Camions électriques | 0,013 (0,006–0,019) | 0,029 (−0,010 à 0,075) | 0,046 (0,026–0,067) | 0,068 (0,014–0,126) |
 | Moins d'avion | 0,049 (0,014–0,115) | 0,054 (0,017–0,124) | 0,104 (0,040–0,237) | 0,122 (0,049–0,267) |
 | Carburant d'aviation propre | 0,009 (0,007–0,012) | 0,015 (0,010–0,022) | 0,042 (0,029–0,057) | 0,059 (0,038–0,087) |
-| Transport maritime propre | 0,006 (0,004–0,008) | 0,008 (0,005–0,013) | 0,021 (0,014–0,028) | 0,029 (0,019–0,043) |
+| Transport maritime propre | 0,007 (0,005–0,009) | 0,009 (0,006–0,015) | 0,024 (0,016–0,036) | 0,034 (0,021–0,054) |
 | Électricité renouvelable | 0,096 (0,070–0,128) | 0,105 (0,057–0,192) | 0,234 (0,157–0,331) | 0,279 (0,184–0,416) |
-| Les six | 0,205 (0,129–0,323) | 0,263 (0,090–0,532) | 0,512 (0,316–0,810) | 0,646 (0,335–1,091) |
-| Les six avec chauffage propre et industrie propre | 0,260 (0,163–0,403) | 0,317 (0,111–0,649) | 0,703 (0,430–1,096) | 0,862 (0,458–1,445) |
+| Les six | 0,209 (0,128–0,343) | 0,253 (0,079–0,543) | 0,529 (0,316–0,889) | 0,655 (0,327–1,175) |
+| Les six avec chauffage propre et industrie propre | 0,264 (0,162–0,426) | 0,304 (0,098–0,660) | 0,723 (0,429–1,198) | 0,873 (0,449–1,551) |
 
 Avec tous les leviers d'énergie, de chauffage et d'industrie au maximum, deux effets s'annulent à peu près au début. L'approvisionnement et le méthane du combustible ne sont plus émis, ce qui est un gain. Le refroidissement que masquait la pollution est perdu. Ensuite, les gains sont plus grands (médiane, °C, SSP2-4.5) :
 
 | Année | Réchauffement évité, CO₂ seul | Gain du CO₂, du méthane et du N₂O de l'approvisionnement | Perte due à la pollution de l'air | Réchauffement évité, avec |
 | --- | --- | --- | --- | --- |
-| 2030 | 0,012 | +0,004 | −0,014 | 0,003 |
-| 2040 | 0,131 | +0,064 | −0,068 | 0,127 |
-| 2050 | 0,260 | +0,124 | −0,067 | 0,317 |
-| 2100 | 0,703 | +0,197 | −0,038 | 0,862 |
+| 2030 | 0,012 | +0,004 | −0,015 | 0,001 |
+| 2040 | 0,131 | +0,064 | −0,077 | 0,117 |
+| 2050 | 0,264 | +0,122 | −0,083 | 0,304 |
+| 2100 | 0,723 | +0,199 | −0,049 | 0,873 |
 
 **Le CO₂ de l'approvisionnement** est ce qui change le plus les chiffres. Il ajoute environ un dixième au CO₂ de chaque levier sur le pétrole, chaque année : 0,150 kg par kg pour la route, 0,153 pour l'aviation et le transport maritime. Il ajoute 8 % à l'électricité qu'un levier réduit ou consomme.
 
@@ -410,7 +410,7 @@ Le gain du levier des voitures électriques est d'environ 47 % du CO₂ d'échap
 
 ## Hypothèses
 
-- Les émissions de chaque secteur suivent la forme de leur scénario, ramenée à un inventaire : route 5,97 milliards de tonnes de CO₂ en 2022 (CEDS), aviation 0,95, transport maritime 0,85 et électricité 14,15 en 2023.
+- Les émissions de chaque secteur suivent la forme de leur scénario, ramenée à un inventaire : route 5,97 et transport maritime 0,98 milliard de tonnes de CO₂ en 2022 (CEDS), aviation 0,95 et électricité 14,15 en 2023.
 - Passagers et marchandises se partagent la route à 60/40 chaque année et dans chaque scénario. Les deux suivent le transport terrestre du scénario (route, rail et navigation intérieure ensemble).
 - Le transport maritime, international et intérieur, suit le transport maritime international du scénario.
 - L'électricité ne comprend que la production. La chaleur des centrales est laissée de côté. Son CO₂ et l'intensité du réseau s'arrêtent à zéro là où la bioénergie avec captage du carbone du scénario les rendrait négatifs.
@@ -431,6 +431,7 @@ Le gain du levier des voitures électriques est d'environ 47 % du CO₂ d'échap
 - Ember (2024). Global Electricity Review 2024 : demande d'électricité et CO₂ du secteur électrique en 2023, [ember-energy.org](https://ember-energy.org/latest-insights/global-electricity-review-2024/). Licence : CC BY 4.0.
 - Ember (2025). Global Electricity Review 2025 (2023 révisé à 484 g/kWh ; 2024 : 14,6 Gt, 30 856 TWh, 473 g/kWh), [ember-energy.org](https://ember-energy.org/latest-insights/global-electricity-review-2025/). Licence : CC BY 4.0.
 - AIE (2023–2024). Tracking Clean Energy Progress : voitures et utilitaires, camions et bus, aviation, transport maritime international, [iea.org/energy-system/transport](https://www.iea.org/energy-system/transport) ; et Global EV Outlook. Licence : CC BY 4.0.
+- Ritchie, H. (2020). Cars, planes, trains: where do CO₂ emissions from transport come from? Our World in Data, graphique du CO₂ mondial des transports en 2018 d'après les données de l'AIE (route, passagers 45,1 % ; route, marchandises 29,4 %), [ourworldindata.org/co2-emissions-from-transport](https://ourworldindata.org/co2-emissions-from-transport). Licence : CC BY 4.0.
 - OMI (2020). Fourth IMO Greenhouse Gas Study : transport maritime international 740 Mt de CO₂ en 2018 (sur la base des trajets), ensemble du transport maritime 1 056 Mt, intérieur et pêche compris.
 - AIE (2025). Energy and AI, [iea.org/reports/energy-and-ai](https://www.iea.org/reports/energy-and-ai). Licence : CC BY 4.0.
 - Lee, D. S. et al. (2021). The contribution of global aviation to anthropogenic climate forcing for 2000 to 2018. Atmospheric Environment 244, 117834, [doi:10.1016/j.atmosenv.2020.117834](https://doi.org/10.1016/j.atmosenv.2020.117834). Licence : CC BY 4.0.

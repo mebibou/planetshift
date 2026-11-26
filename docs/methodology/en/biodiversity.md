@@ -53,7 +53,7 @@ with $B_{c,g}$ the farmed mammals of country $c$ that follow group $g$ and $P_{c
 
 Each herd is shared between the groups as its emissions are (see [Emissions](#method-emissions)):
 
-- **Dairy cattle**: 85% to milk and 15% to beef, the culled cows.
+- **Dairy cattle**: 88% to milk and 12% to beef, the culled cows.
 - **Other cattle**: beef.
 - **Buffalo, sheep, goats and camels**: milk and meat, by the protein each country's herd produces. Where it produces neither, meat.
 - **Pigs**: pig meat.

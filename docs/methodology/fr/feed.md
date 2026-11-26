@@ -24,13 +24,13 @@ Une seule répartition publiée des aliments concentrés du monde entre les esp�
 
 | Groupe | Part des aliments concentrés |
 | --- | --- |
-| Viande de ruminants | 11 % |
-| Produits laitiers | 16 % |
-| Viande porcine | 28 % |
-| Volaille | 28 % |
-| Œufs | 17 % |
+| Viande de ruminants | 12 % |
+| Produits laitiers | 13 % |
+| Viande porcine | 29 % |
+| Volaille | 33 % |
+| Œufs | 13 % |
 
-Cette répartition (`feed_species.csv`) est arrondie à partir de deux sources : l'évaluation GLEAM de la FAO sur la consommation d'aliments par le bétail (Mottet et al., 2017), et l'enquête annuelle de la filière sur les aliments composés par espèce (Alltech Agri-Food Outlook). Elles s'accordent pour dire que les porcs et les volailles mangent un peu plus de la moitié des concentrés.
+Cette répartition (`feed_species.csv`) est celle des aliments composés du monde par espèce en 2024, d'après l'enquête annuelle de la filière (Alltech Agri-Food Outlook 2025, tableau « Feed Tonnage by Sector » et tableau des pondeuses) : 157,7 Mt pour les bovins à viande et les autres ruminants, 165,5 Mt pour les laitières, 369,3 Mt pour les porcs, 422,8 Mt pour les volailles autres que les pondeuses et 173,0 Mt pour les pondeuses. Les aliments pour animaux de compagnie, les chevaux et les autres espèces sont laissés de côté. L'évaluation GLEAM de la FAO sur la consommation d'aliments par le bétail (Mottet et al., 2017) donne à peu près la même part aux ruminants ensemble et aux porcs.
 
 La répartition d'une région suit ce qu'elle produit. La part mondiale de chaque groupe est divisée par sa production mondiale et multipliée par la production de la région. Une région qui élève surtout des bovins donne donc l'essentiel de ses aliments aux bovins.
 
@@ -82,7 +82,7 @@ Le code est `pipeline/planetshift_pipeline/feed.py` et les tables sont `pipeline
 - FAOSTAT, Bilans alimentaires (2010–), usage fourrager par produit et par pays : <https://www.fao.org/faostat/en/#data/FBS>.
 - FAO, Global Livestock Environmental Assessment Model (GLEAM) : <https://www.fao.org/gleam/en/>.
 - Mottet, A., de Haan, C., Falcucci, A., Tempio, G., Opio, C., Gerber, P. (2017). Livestock: on our plates or eating at our table? A new analysis of the feed/food debate. Global Food Security 14, 1–8 : <https://doi.org/10.1016/j.gfs.2017.01.001>.
-- Alltech Agri-Food Outlook (production mondiale d'aliments composés par espèce) : <https://www.alltech.com/agri-food-outlook>.
-- Tacon, A. G. J. et al. (2025), production d'aliments aquacoles composés en 2023 (69,4 Mt) : <https://doi.org/10.1080/23308249.2025.2568830>.
+- Alltech (2025). Agri-Food Outlook 2025, production mondiale d'aliments composés par espèce en 2024 (tableau « Feed Tonnage by Sector » ; tableau de la production d'aliments pour pondeuses) : <https://www.alltech.com/agri-food-outlook>.
+- Tacon, A. G. J., Metian, M., Parsons, G., Shumway, S. (2025). A Global Aquaculture and Aquafeed Production Update: 2010 to 2023. Reviews in Fisheries Science & Aquaculture ; résumé : aliments aquacoles commerciaux 69,42 Mt en 2023 : <https://doi.org/10.1080/23308249.2025.2568830>.
 - Tacon, A. G. J. (2020). Trends in global aquaculture and aquafeed production: 2000–2017. Reviews in Fisheries Science & Aquaculture 28, 43–56 : <https://doi.org/10.1080/23308249.2019.1649634>.
 - FAO FishStat, Global production by production source : <https://www.fao.org/fishery/en/collection/global_production>.

@@ -1,6 +1,6 @@
 # Beyond the farm: transport, electricity and data centres
 
-Food is one part of the climate problem. Burning coal, oil and gas for power and transport is the larger part. So that diet and farming levers can be compared with other actions, Planetshift has six levers on road vehicles, aviation, shipping and electricity, which also reaches data centres. With all six in full from 2026 to 2035, they avoid 0.263 °C of warming in 2050 and 0.646 °C in 2100 (median, SSP2-4.5), once the methane and air pollution that come with the fuel are counted.
+Food is one part of the climate problem. Burning coal, oil and gas for power and transport is the larger part. So that diet and farming levers can be compared with other actions, Planetshift has six levers on road vehicles, aviation, shipping and electricity, which also reaches data centres. With all six in full from 2026 to 2035, they avoid 0.253 °C of warming in 2050 and 0.655 °C in 2100 (median, SSP2-4.5), once the methane and air pollution that come with the fuel are counted.
 
 ## What these levers count
 
@@ -26,10 +26,10 @@ Emissions in billion tonnes of CO₂ a year (2023 / 2050 / 2100):
 
 | Sector | SSP1-2.6 | SSP2-4.5 | SSP3-7.0 |
 | --- | --- | --- | --- |
-| Road, passengers | 3.66 / 2.81 / 0.09 | 3.66 / 5.01 / 2.35 | 3.66 / 4.31 / 3.33 |
-| Road, freight | 2.44 / 1.87 / 0.06 | 2.44 / 3.34 / 1.57 | 2.44 / 2.88 / 2.22 |
+| Road, passengers | 3.56 / 2.73 / 0.09 | 3.66 / 5.01 / 2.36 | 3.64 / 4.29 / 3.31 |
+| Road, freight | 2.38 / 1.82 / 0.06 | 2.44 / 3.34 / 1.57 | 2.43 / 2.86 / 2.21 |
 | Aviation | 0.95 / 0.91 / 0.56 | 0.95 / 1.47 / 1.80 | 0.95 / 1.81 / 3.00 |
-| Shipping | 0.85 / 0.62 / 0.35 | 0.85 / 0.80 / 0.89 | 0.85 / 0.84 / 0.62 |
+| Shipping | 0.97 / 0.71 / 0.40 | 0.98 / 0.92 / 1.02 | 0.99 / 0.98 / 0.72 |
 | Electricity | 14.15 / 4.53 / 0 | 14.15 / 13.07 / 0 | 14.15 / 23.71 / 40.55 |
 | Data centres (extra) | 0 / 0.08 / 0 | 0 / 0.21 / 0 | 0 / 0.40 / 0.43 |
 
@@ -37,7 +37,7 @@ Emissions in billion tonnes of CO₂ a year (2023 / 2050 / 2100):
 
 Road transport emitted 5.97 billion tonnes of fossil CO₂ in 2022, the last year of CEDS (the Community Emissions Data System). This is CEDS's road sector, for fuels other than biomass. It is about three quarters of all transport CO₂. Each scenario's shape carries that value to 2023, where it is 5.9 to 6.1 billion tonnes depending on the SSP.
 
-Passengers (cars, two- and three-wheelers, buses) take 60% and freight (trucks and vans) 40%. This split follows the IEA's tracking of cars and vans and of trucks and buses. Trucks and buses together are over a third of road CO₂.
+Passengers (cars and buses) take 60% and freight (trucks) 40%. In 2018, cars and buses emitted 45.1% of transport's CO₂ and trucks carrying freight 29.4%, so 61% and 39% of road's (Our World in Data, from the IEA's data).
 
 The shape is the scenario's surface transport. It also includes rail and domestic boats, which are a few percent of it. Under SSP1-2.6, road emissions fall to almost nothing by 2100 as vehicles electrify. Under SSP2-4.5 they grow by a third to 2050, then fall. Under SSP3-7.0 they stay high all century.
 
@@ -47,7 +47,7 @@ Aviation, domestic and international flights together, emitted about 0.95 billio
 
 ### Shipping
 
-Shipping, international and domestic, emitted about 0.85 billion tonnes (IEA, and the IMO's Fourth GHG Study for its split). The figure depends on which ships are counted. The Fourth IMO GHG Study puts international shipping at 740 million tonnes in 2018 on a voyage basis. It puts all shipping, domestic and fishing included, at 1,056 million tonnes. The 0.85 lies between the two. It is close to international and domestic navigation without fishing. Fishing's fuel is counted with seafood here.
+Shipping, international and domestic, emitted 0.98 billion tonnes of fossil CO₂ in 2022: CEDS's international shipping (0.80) and domestic navigation (0.17), for fuels other than biomass. Each scenario's shape carries it to 2023, where it is 0.97 to 0.99 billion tonnes. Fishing boats are a sector of their own in CEDS; their fuel is counted with seafood here. The figure depends on which ships are counted. The Fourth IMO GHG Study puts international shipping at 740 million tonnes in 2018 on a voyage basis, and all shipping, domestic and fishing included, at 1,056 million tonnes.
 
 Shipping follows the scenarios' international shipping. The clean-shipping lever removes a share of it by switching to fuels that have no fossil carbon, such as green ammonia or methanol.
 
@@ -159,7 +159,7 @@ The response is linear around the scenario. This holds well for small changes. I
 
 ## Methane and air pollution that come with the fuel
 
-Burning coal, oil and gas emits more than CO₂. A lever that cuts fuel cuts all of these emissions along with the CO₂. Counting it raises the warming the energy levers avoid. All six in full avoid 0.263 °C in 2050 with it, against 0.205 °C counting CO₂ only. Of all the energy, heating and industry levers, only clean industry, on the [Buildings and industry](#method-industry) page, avoids less when it is counted (0.017 °C instead of 0.026 in 2050).
+Burning coal, oil and gas emits more than CO₂. A lever that cuts fuel cuts all of these emissions along with the CO₂. Counting it raises the warming the energy levers avoid. All six in full avoid 0.253 °C in 2050 with it, against 0.209 °C counting CO₂ only. Of all the energy, heating and industry levers, only clean industry, on the [Buildings and industry](#method-industry) page, avoids less when it is counted (0.017 °C instead of 0.026 in 2050).
 
 What comes with the fuel:
 
@@ -329,19 +329,19 @@ Warming avoided in °C, median (likely range). Each lever is at 100% from 2026 t
 | Electric trucks | 0.013 (0.006–0.019) | 0.029 (−0.010–0.075) | 0.046 (0.026–0.067) | 0.068 (0.014–0.126) |
 | Less flying | 0.049 (0.014–0.115) | 0.054 (0.017–0.124) | 0.104 (0.040–0.237) | 0.122 (0.049–0.267) |
 | Clean aviation fuel | 0.009 (0.007–0.012) | 0.015 (0.010–0.022) | 0.042 (0.029–0.057) | 0.059 (0.038–0.087) |
-| Clean shipping | 0.006 (0.004–0.008) | 0.008 (0.005–0.013) | 0.021 (0.014–0.028) | 0.029 (0.019–0.043) |
+| Clean shipping | 0.007 (0.005–0.009) | 0.009 (0.006–0.015) | 0.024 (0.016–0.036) | 0.034 (0.021–0.054) |
 | Renewable electricity | 0.096 (0.070–0.128) | 0.105 (0.057–0.192) | 0.234 (0.157–0.331) | 0.279 (0.184–0.416) |
-| All six | 0.205 (0.129–0.323) | 0.263 (0.090–0.532) | 0.512 (0.316–0.810) | 0.646 (0.335–1.091) |
-| All six with clean heating and clean industry | 0.260 (0.163–0.403) | 0.317 (0.111–0.649) | 0.703 (0.430–1.096) | 0.862 (0.458–1.445) |
+| All six | 0.209 (0.128–0.343) | 0.253 (0.079–0.543) | 0.529 (0.316–0.889) | 0.655 (0.327–1.175) |
+| All six with clean heating and clean industry | 0.264 (0.162–0.426) | 0.304 (0.098–0.660) | 0.723 (0.429–1.198) | 0.873 (0.449–1.551) |
 
 With every energy, heating and industry lever in full, two effects roughly cancel at first. The fuel's supply and methane are no longer emitted, which is a gain. The cooling the pollution masked is lost. After that, the gains are larger (median, °C, SSP2-4.5):
 
 | Year | Warming avoided, CO₂ only | Supply CO₂, methane and N₂O gain | Air pollution loss | Warming avoided, with |
 | --- | --- | --- | --- | --- |
-| 2030 | 0.012 | +0.004 | −0.014 | 0.003 |
-| 2040 | 0.131 | +0.064 | −0.068 | 0.127 |
-| 2050 | 0.260 | +0.124 | −0.067 | 0.317 |
-| 2100 | 0.703 | +0.197 | −0.038 | 0.862 |
+| 2030 | 0.012 | +0.004 | −0.015 | 0.001 |
+| 2040 | 0.131 | +0.064 | −0.077 | 0.117 |
+| 2050 | 0.264 | +0.122 | −0.083 | 0.304 |
+| 2100 | 0.723 | +0.199 | −0.049 | 0.873 |
 
 **The supply's CO₂** makes the largest difference. It adds about a tenth to every oil lever's CO₂, in every year: 0.150 kg per kg for road, 0.153 for aviation and shipping. It adds 8% to the electricity a lever cuts or draws.
 
@@ -410,7 +410,7 @@ The electric car lever's saving is about 47% of tailpipe CO₂ on today's world 
 
 ## Assumptions
 
-- Each sector's emissions are its scenario's shape scaled to an inventory: road 5.97 billion tonnes of CO₂ in 2022 (CEDS), aviation 0.95, shipping 0.85 and electricity 14.15 in 2023.
+- Each sector's emissions are its scenario's shape scaled to an inventory: road 5.97 and shipping 0.98 billion tonnes of CO₂ in 2022 (CEDS), aviation 0.95 and electricity 14.15 in 2023.
 - Road passengers and freight split 60/40 in every year and scenario. Both follow the scenario's surface transport (road, rail and domestic boats together).
 - Shipping, international and domestic, follows the scenario's international shipping.
 - Electricity is generation only. Heat from power stations is left out. Its CO₂ and the grid's intensity stop at zero where the scenario's bioenergy with carbon capture would make them negative.
@@ -431,6 +431,7 @@ The electric car lever's saving is about 47% of tailpipe CO₂ on today's world 
 - Ember (2024). Global Electricity Review 2024: 2023 electricity demand and power-sector CO₂, [ember-energy.org](https://ember-energy.org/latest-insights/global-electricity-review-2024/). Licence: CC BY 4.0.
 - Ember (2025). Global Electricity Review 2025 (2023 revised to 484 g/kWh; 2024: 14.6 Gt, 30,856 TWh, 473 g/kWh), [ember-energy.org](https://ember-energy.org/latest-insights/global-electricity-review-2025/). Licence: CC BY 4.0.
 - IEA (2023–2024). Tracking Clean Energy Progress: cars and vans, trucks and buses, aviation, international shipping, [iea.org/energy-system/transport](https://www.iea.org/energy-system/transport); and Global EV Outlook. Licence: CC BY 4.0.
+- Ritchie, H. (2020). Cars, planes, trains: where do CO₂ emissions from transport come from? Our World in Data, chart of global transport CO₂ in 2018 from the IEA's data (road passengers 45.1%, road freight 29.4%), [ourworldindata.org/co2-emissions-from-transport](https://ourworldindata.org/co2-emissions-from-transport). Licence: CC BY 4.0.
 - IMO (2020). Fourth IMO Greenhouse Gas Study: international shipping 740 Mt CO₂ in 2018 (voyage-based), all shipping 1,056 Mt including domestic and fishing.
 - IEA (2025). Energy and AI, [iea.org/reports/energy-and-ai](https://www.iea.org/reports/energy-and-ai). Licence: CC BY 4.0.
 - Lee, D. S. et al. (2021). The contribution of global aviation to anthropogenic climate forcing for 2000 to 2018. Atmospheric Environment 244, 117834, [doi:10.1016/j.atmosenv.2020.117834](https://doi.org/10.1016/j.atmosenv.2020.117834). Licence: CC BY 4.0.
