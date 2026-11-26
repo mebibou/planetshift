@@ -40,14 +40,7 @@ def compact(values: np.ndarray) -> dict:
 
 def configured(setup: climate_fair.Setup, end: int) -> FAIR:
     """A FaIR filled as `climate_fair` fills it, every member, no emissions."""
-    f = FAIR(ch4_method=climate_fair.CH4_METHOD)
-    f.define_time(climate_fair.START, end, 1)
-    f.define_scenarios(["none"])
-    f.define_configs(setup.configs)
-    f.define_species(setup.species, setup.properties)
-    f.allocate()
-    f.fill_species_configs(setup.species_file)
-    f.override_defaults(setup.parameters)
+    f = climate_fair.configured(setup, ["none"], end, setup.properties)
     f._make_ebms()
     return f
 

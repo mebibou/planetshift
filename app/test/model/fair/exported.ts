@@ -47,6 +47,3 @@ const rows = (values: Float64Array, width: number): Float64Array[] =>
 /** Python FaIR's annual-mean temperature, one row per member. */
 export const readPython = (name: string): Float64Array[] =>
   rows(floats(`${name}.temperature.f64`), STEPS);
-
-/** FaIR's internal variability, one [timebound × 4] row per member. */
-export const readNoise = (): Float64Array[] => rows(floats('stochastic.f64'), (STEPS + 1) * 4);

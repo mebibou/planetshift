@@ -42,7 +42,7 @@ const runBatch = (
   const base = prepareScenario(model, inputs[0] as ScenarioInput, STEPS);
   inputs.forEach((input, i) => {
     const prepared = i === 0 ? base : prepareScenario(model, input, STEPS, base);
-    members.forEach((m, k) => runMember(model, m, prepared, null, history?.[k]));
+    members.forEach((m, k) => runMember(model, m, prepared, history?.[k]));
   });
 };
 
@@ -63,9 +63,7 @@ describe.skipIf(!exported)('FaIR port speed', () => {
       );
       const prepared = prepareScenario(model, ssp245, STEPS);
       const members = model.members.map((p) => memberOf(model, p));
-      const history = members.map(
-        (m) => runMember(model, m, prepared, null, undefined, FROM).state,
-      );
+      const history = members.map((m) => runMember(model, m, prepared, undefined, FROM).state);
       return (['1750', '2025'] as const).map((start) => {
         const from = start === '2025' ? history : null;
         const one = median(

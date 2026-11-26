@@ -4,7 +4,7 @@ TypeScript port's prototype (issue #66) to read: not part of the app's data.
 Run with `uv run python -m planetshift_pipeline.fair_ts_export [--out <folder>]`; the app's
 validation test reads `pipeline/cache/fair/ts-prototype/` by default. `--fixture <file>` writes
 instead the small, self-contained case the app's unit tests keep: a few members, a made-up
-scenario, and Python FaIR's temperatures for it with the internal variability off.
+scenario, and Python FaIR's temperatures for it.
 """
 
 import argparse
@@ -14,7 +14,6 @@ from pathlib import Path
 
 import numpy as np
 from fair import FAIR
-from fair.interface import fill, initialise
 
 from . import climate_fair, fair_app
 from .cache import DEFAULT_CACHE
@@ -88,9 +87,6 @@ def export(cache_dir: Path, out: Path) -> None:
     setup = climate_fair.load_setup(cache_dir)
     f = configured(setup, SCENARIO_END + 1)
     (out / "calibration.json").write_text(json.dumps(calibration(setup, f)))
-    # FaIR's internal variability, drawn once per member from its seed: (config, timebound, 4).
-    noise = np.ascontiguousarray(f.ebms["stochastic_d"].to_numpy().transpose(1, 0, 2), "<f8")
-    (out / "stochastic.f64").write_bytes(noise.tobytes())
     write_scenarios(setup, scenarios(setup, cache_dir), out)
     log.info("wrote %s", out)
 
@@ -123,24 +119,8 @@ def fixture_scenario(setup: climate_fair.Setup) -> dict[str, np.ndarray]:
 
 
 def fixture_temperature(setup: climate_fair.Setup, scenario: dict) -> np.ndarray:
-    """Python FaIR's surface temperature at each timebound, by member, stochastic part off."""
-    f = FAIR(ch4_method=climate_fair.CH4_METHOD)
-    f.define_time(climate_fair.START, FIXTURE_END, 1)
-    f.define_scenarios(["fixture"])
-    f.define_configs(setup.configs)
-    properties = climate_fair.prescribed_land(setup, {"fixture": scenario})
-    f.define_species(setup.species, properties)
-    f.allocate()
-    for specie in setup.emitted:
-        fill(f.emissions, scenario[specie][:, None], scenario="fixture", specie=specie)
-    climate_fair.fill_forcing(f, setup, {"fixture": scenario}, properties)
-    f.fill_species_configs(setup.species_file)
-    f.override_defaults(setup.parameters)
-    fill(f.climate_configs["stochastic_run"], False)
-    initialise(f.concentration, f.species_configs["baseline_concentration"])
-    for var in (f.forcing, f.temperature, f.cumulative_emissions, f.airborne_emissions):
-        initialise(var, 0)
-    initialise(f.ocean_heat_content_change, 0)
+    """Python FaIR's surface temperature at each timebound, by member."""
+    f = climate_fair.filled(setup, {"fixture": scenario}, FIXTURE_END)
     f.run(progress=False)
     return f.temperature.sel(layer=0, scenario="fixture").to_numpy().T
 

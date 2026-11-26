@@ -131,7 +131,7 @@ The table gives the warming avoided in °C, as a median with the likely range in
 
 | Levers | 2050 | 2100 |
 | --- | --- | --- |
-| Clean heating | 0.013 (0.001–0.036); CO₂ alone 0.008 | 0.060 (0.037–0.109); CO₂ alone 0.044 |
+| Clean heating | 0.013 (0.001–0.035); CO₂ alone 0.008 | 0.060 (0.037–0.109); CO₂ alone 0.044 |
 | Clean industry | 0.016 (−0.005–0.070); CO₂ alone 0.028 | 0.105 (0.052–0.225); CO₂ alone 0.104 |
 | Renewable electricity alone | 0.096 (0.060–0.187); CO₂ alone 0.093 | 0.286 (0.180–0.464); CO₂ alone 0.236 |
 | Clean heating with renewable electricity | 0.115 (0.070–0.225); CO₂ alone 0.108 | 0.367 (0.235–0.590); CO₂ alone 0.297 |

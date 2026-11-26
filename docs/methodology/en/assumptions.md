@@ -168,7 +168,7 @@ The URL keys of the options, the diet controls and the levers are listed under [
 - **The temperature is computed from each gas separately.** CO₂e (GWP100 from the IPCC's Sixth Assessment Report, AR6: 27 for CH₄, 273 for N₂O) is only shown as a total. See [Climate](#method-climate).
 - **The temperature comes from FaIR v2.2.5 run in the app**, on 50 members of the fair-calibrate v1.4.1 ensemble chosen to keep its median and 5–95% range, without internal variability. The levers change its CO₂, methane, N₂O and HFC-134a. See [Climate](#method-climate).
 - **The warming per kilogram (AGTP) comes from the same ensemble**, all 841 members. It splits FaIR's total between causes, gases and lever families, and is the AR6 option's method. See [Climate](#method-climate).
-- **Pulses of 1 Gt CO₂, 1 Mt CH₄ and 0.1 Mt N₂O on SSP2-4.5 in 2035** are used for every year and every scenario. Pulses in 2025 and 2045 give curves within 7%. See [Climate](#method-climate).
+- **Pulses of 1 Gt CO₂, 1 Mt CH₄ and 0.1 Mt N₂O on SSP2-4.5 in 2035** are used for every year and every scenario. Pulses in 2025 and 2045 give curves within 5%. See [Climate](#method-climate).
 - **The breakdown is proportional**: each family's Shapley value on the sum of responses, scaled to FaIR's total. It stays within 0.015 °C of the Shapley values of FaIR runs. See [Levers](#method-levers).
 - **Agricultural methane is biogenic** (no CO₂ from its oxidation), **and farm CO₂ (urea, liming) is fossil CO₂** in FaIR. See [Climate](#method-climate).
 - **A year's emissions are spread evenly over the year.** A calendar year's temperature is the mean of FaIR's values at its two ends. See [Climate](#method-climate).
