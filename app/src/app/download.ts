@@ -371,12 +371,14 @@ export const LICENCES: Record<string, Licence> = {
 const pick = (...keys: (keyof typeof LICENCES)[]): Licence[] =>
   keys.map((k) => LICENCES[k]).filter((l): l is Licence => l !== undefined);
 
+const SHARE_ALIKE = new Set(['industry', 'fair']);
+
 /** A data file's terms, as DATA-LICENCES.md gives them. */
 export const fileLicences = (file: string): Licence[] => {
   const base = file.replace(/\.json$/, '');
   return base === 'climate' || base === 'sectors'
     ? pick('ccByNcSa')
-    : base === 'industry'
+    : SHARE_ALIKE.has(base)
       ? pick('ccBySa')
       : base === 'population'
         ? pick('ccByIgo', 'ccBy')

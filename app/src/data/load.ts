@@ -26,6 +26,7 @@ export const OPTIONAL_FILES = [
   'chain',
   'origins',
   'water',
+  'fair',
 ] as const;
 
 /**
