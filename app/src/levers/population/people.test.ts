@@ -175,6 +175,7 @@ describe.skipIf(real === null)('people on Earth on the real data', () => {
     const early = at(0, 2035);
     const path = early.population?.people;
     expect(path?.values[path.years.indexOf(2035)]).toBeCloseTo(0, 0);
-    expect(baselineIn(early, 2040)).toBeLessThan(baselineIn(at(0), 2040));
+    // Earlier is warmer at first, as the aerosols' cooling goes sooner; by 2050 it is cooler.
+    expect(baselineIn(early, PEOPLE_YEAR)).toBeLessThan(baselineIn(at(0), PEOPLE_YEAR) - 0.05);
   });
 });
