@@ -65,7 +65,7 @@ La fourchette va de 0,5 t d'un charbon mal carbonisé à 2 t d'un charbon produi
 
 ### Poudre de roche (expérimentale)
 
-La poudre de roche (l'altération forcée des roches) est de la roche silicatée broyée, en général du basalte, épandue sur les champs. En se dissolvant, elle transforme le CO₂ de l'air du sol en bicarbonate. Le bicarbonate s'écoule vers les rivières et l'océan, où il reste pendant plusieurs milliers d'années.
+La poudre de roche (l'altération forcée des roches, ou ERW en anglais) est de la roche silicatée broyée, en général du basalte, épandue sur les champs. En se dissolvant, elle transforme le CO₂ de l'air du sol en bicarbonate. Le bicarbonate s'écoule vers les rivières et l'océan, où il reste pendant plusieurs milliers d'années.
 
 La poudre de roche est expérimentale. Le sixième rapport d'évaluation du GIEC la juge démontrée en laboratoire et dans de petits essais au champ (niveau de maturité technologique 3–4), mais pas encore à grande échelle (groupe de travail III, chapitre 12). Planetshift la propose avec des rythmes fixés sur ce que les essais au champ ont mesuré.
 

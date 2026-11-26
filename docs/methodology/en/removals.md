@@ -65,7 +65,7 @@ At that rate, the sustainable feedstock of Woolf et al. (2010) can supply at mos
 
 ### Rock dust (experimental)
 
-Rock dust (enhanced weathering) is crushed silicate rock, usually basalt, spread on fields. As it dissolves, it turns CO₂ from the air in the soil into bicarbonate. The bicarbonate drains to rivers and the ocean, where it stays for many thousands of years.
+Rock dust (enhanced rock weathering, ERW) is crushed silicate rock, usually basalt, spread on fields. As it dissolves, it turns CO₂ from the air in the soil into bicarbonate. The bicarbonate drains to rivers and the ocean, where it stays for many thousands of years.
 
 Rock dust is experimental. The IPCC's Sixth Assessment Report finds it demonstrated in the laboratory and in small field trials (technology readiness level 3–4), but not yet at scale (Working Group III, chapter 12). Planetshift offers it with rates set to what field trials have measured.
 
