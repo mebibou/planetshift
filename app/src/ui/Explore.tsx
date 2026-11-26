@@ -1,15 +1,6 @@
-import {
-  lazy,
-  Suspense,
-  useEffect,
-  useMemo,
-  useState,
-  type KeyboardEvent,
-  type ReactNode,
-} from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { AppState, ViewContext } from '../app/context';
 import { worldPerCapita } from '../app/summaryModel';
-import { tabKeys } from '../app/tabs';
 import { CHARTS, WASTE_VIEWS, type ChartTab, type Horizon, type WasteView } from '../app/url';
 import { avoidedChart } from '../chart/avoided';
 import { OCEAN_PH, pathsChart, SEA_LEVEL } from '../chart/paths';
@@ -29,6 +20,7 @@ import { CARD, LINK_BUTTON, MAP_CARD } from './classes';
 import { ChartLoading } from './ChartLoading';
 import { Info } from './Info';
 import { Segmented } from './Segmented';
+import { ScrollTabs } from './ScrollTabs';
 import { useChartDownload } from './Download';
 import { useDrawn } from './useDrawn';
 import { useLatest } from './useLatest';
@@ -65,35 +57,18 @@ const makeTemperature = (ctx: ViewContext) => {
   return { el: chart.el, chart };
 };
 
-const ChartTabs = ({ ctx, chart }: { ctx: ViewContext; chart: ChartTab }) => {
-  const select = (tab: ChartTab) => ctx.setUi((u) => ({ ...u, chart: tab }));
-  return (
-    <div
-      className="chart-tabs flex max-w-full gap-1 self-end overflow-x-auto overflow-y-hidden border-b border-rule [scrollbar-width:none]"
-      role="tablist"
-      aria-label={ctx.t('charts.title')}
-    >
-      {CHARTS.map((tab) => (
-        <button
-          key={tab}
-          type="button"
-          role="tab"
-          id={`chart-tab-${tab}`}
-          className="chart-tab -mb-px shrink-0 cursor-pointer whitespace-nowrap border-0 border-b-3 border-solid border-transparent bg-transparent px-3 py-2 text-[1.05rem] font-bold text-muted aria-selected:border-accent aria-selected:text-ink max-sm:px-2 max-sm:text-[0.92rem]"
-          aria-controls={`chart-panel-${tab}`}
-          aria-selected={tab === chart}
-          tabIndex={tab === chart ? 0 : -1}
-          onClick={() => select(tab)}
-          onKeyDown={(e: KeyboardEvent) =>
-            tabKeys(CHARTS, tab, select, (target) => `chart-tab-${target}`)(e.nativeEvent)
-          }
-        >
-          {ctx.t(`charts.tabs.${tab}`)}
-        </button>
-      ))}
-    </div>
-  );
-};
+const ChartTabs = ({ ctx, chart }: { ctx: ViewContext; chart: ChartTab }) => (
+  <ScrollTabs<ChartTab>
+    t={ctx.t}
+    prefix="chart"
+    look="underline"
+    label={ctx.t('charts.title')}
+    tabs={CHARTS.map((tab) => ({ value: tab, label: ctx.t(`charts.tabs.${tab}`) }))}
+    value={chart}
+    onChange={(tab) => ctx.setUi((u) => ({ ...u, chart: tab }))}
+    controls={(tab) => `chart-panel-${tab}`}
+  />
+);
 
 interface Draw {
   result: RunResult | null | undefined;
