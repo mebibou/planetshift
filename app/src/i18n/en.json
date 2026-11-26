@@ -215,7 +215,7 @@
       "speciesDensity": "Species committed to extinction per Mha of the country's farmland, with the levers"
     },
     "notes": {
-      "water": "Freshwater taken from rivers, lakes and aquifers to grow each country's crops and raise its animals, and to make the farm's inputs: each food's litres per tonne times its production. HESTIA gives the litres of the crops it covers. Poore & Nemecek (2018) give the rest. Animal products count the water used on the farm, not their concentrate feed, which is counted on the crops. Fish farms are left out. The litres per tonne do not change with the levers, so the water changes with production. Water does not change the warming. The tooltip gives the land equipped for irrigation.",
+      "water": "Freshwater taken from rivers, lakes and aquifers to grow each country's crops, raise its animals and make the farm's inputs. It is each food's litres per tonne times its production. HESTIA gives the litres of the crops it covers. Poore & Nemecek (2018) give the rest. Animal products count the water used on the farm, not their concentrate feed, which is counted on the crops. Fish farms are left out. The litres per tonne do not change with the levers, so the water changes with production. Water does not change the warming. The tooltip gives the land equipped for irrigation.",
       "waterScarcity": "Water use weighted by how scarce water is where it is used (AWARE 2.0), in litres-equivalent. It covers only the crops for which HESTIA has the country's own aggregation, so countries are not complete and cannot be compared on it. It is not added to the litres withdrawn.",
       "production": "Where food is grown, not where it is eaten.",
       "emissions": "Emissions on the farm from growing food and raising animals. CO₂e weighs methane and nitrous oxide over 100 years, for comparison only.",
@@ -343,7 +343,7 @@
     },
     "water": {
       "label": "Freshwater withdrawn for farming",
-      "detail": "a year, once the levers are in full: {change}. Litres per tonne from HESTIA for the crops it covers and Poore & Nemecek (2018) for the rest; fish farms left out. Water does not change the warming."
+      "detail": "a year, once the levers are in full: {change}. Litres per tonne come from HESTIA for the crops it covers and from Poore & Nemecek (2018) for the rest. Fish farms are left out. Water does not change the warming."
     },
     "mammals": {
       "label": "Farmed mammals to wild ones, by weight",

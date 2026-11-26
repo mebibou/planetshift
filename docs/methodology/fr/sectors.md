@@ -47,7 +47,7 @@ L'aviation, vols intérieurs et internationaux réunis, a émis environ 0,95 mil
 
 ### Le transport maritime
 
-Le transport maritime, international et intérieur, a émis 0,98 milliard de tonnes de CO₂ fossile en 2022 : le transport maritime international (0,80) et la navigation intérieure (0,17) de CEDS, pour les combustibles autres que la biomasse. La forme de chaque scénario le porte jusqu'en 2023, où il vaut de 0,97 à 0,99 milliard de tonnes. Les bateaux de pêche sont un secteur à part dans CEDS ; leur carburant est compté ici avec les produits de la mer. Le chiffre dépend des navires comptés. La quatrième étude de l'OMI estime le transport maritime international à 740 millions de tonnes en 2018, sur la base des trajets, et l'ensemble du transport maritime, intérieur et pêche compris, à 1 056 millions de tonnes.
+Le transport maritime, international et intérieur, a émis 0,98 milliard de tonnes de CO₂ fossile en 2022 : le transport maritime international (0,80) et la navigation intérieure (0,17) de CEDS, pour les combustibles autres que la biomasse. La forme de chaque scénario le prolonge jusqu'en 2023, où il vaut de 0,97 à 0,99 milliard de tonnes. Les bateaux de pêche sont un secteur à part dans CEDS ; leur carburant est compté ici avec les produits de la mer. Le chiffre dépend des navires comptés. La quatrième étude de l'OMI estime le transport maritime international à 740 millions de tonnes en 2018, sur la base des trajets, et l'ensemble du transport maritime, intérieur et pêche compris, à 1 056 millions de tonnes.
 
 Le transport maritime suit le transport maritime international des scénarios. Le levier « Transport maritime propre » en retire une part en passant à des carburants sans carbone fossile, comme l'ammoniac ou le méthanol verts.
 
@@ -159,7 +159,7 @@ La réponse est linéaire autour du scénario. Cela tient bien pour de petites v
 
 ## Le méthane et la pollution de l'air qui accompagnent le combustible
 
-Brûler du charbon, du pétrole et du gaz émet plus que du CO₂. Un levier qui réduit le combustible réduit toutes ces émissions avec le CO₂. Le compter augmente le réchauffement qu'évitent les leviers d'énergie. Les six au maximum évitent 0,253 °C en 2050 en le comptant, contre 0,209 °C pour le CO₂ seul. De tous les leviers d'énergie, de chauffage et d'industrie, seule l'industrie propre, sur la page [Bâtiments et industrie](#method-industry), évite moins en le comptant (0,017 °C au lieu de 0,026 en 2050).
+Brûler du charbon, du pétrole et du gaz émet plus que du CO₂. Un levier qui réduit le combustible réduit toutes ces émissions avec le CO₂. Le compter augmente le réchauffement qu'évitent les leviers d'énergie. Les six au maximum évitent 0,250 °C en 2050 en le comptant, contre 0,209 °C pour le CO₂ seul. De tous les leviers d'énergie, de chauffage et d'industrie, seule l'industrie propre, sur la page [Bâtiments et industrie](#method-industry), évite moins en le comptant (0,017 °C au lieu de 0,026 en 2050).
 
 Ce qui accompagne le combustible :
 
@@ -243,8 +243,8 @@ L'effet aérosols-nuages est un logarithme de tout le SO₂, le carbone noir et 
 
 Dans SSP2-4.5 en 2023, le forçage médian par million de tonnes par an est de :
 
-- SO₂ : −5,9 mW/m² (de −11,1 à −1,8 selon les membres) ;
-- carbone noir : +27 (de −123 à +65). Les membres de FaIR ne s'accordent même pas sur son signe une fois son effet sur les nuages compté ;
+- SO₂ : −6,0 mW/m² (de −11,2 à −2,0 selon les membres) ;
+- carbone noir : +26 (de −147 à +65). Les membres de FaIR ne s'accordent même pas sur son signe une fois son effet sur les nuages compté ;
 - carbone organique : −6,9 ;
 - ammoniac : −0,62 (de −0,69 à −0,56) ;
 - NOx : +1,2 ;
@@ -259,13 +259,13 @@ Moins de NOx, c'est un méthane qui dure plus longtemps. FaIR multiplie la duré
 
 Dans FaIR, un kilogramme de NOx en moins laisse dans l'air :
 
-- SSP2-4.5 : 2,0 kg de méthane en 2023, 1,1 kg en 2100 ;
-- SSP1-2.6 : 1,7, en baisse jusqu'à 0,4 ;
-- SSP3-7.0 : 2,6, en hausse jusqu'à 4,0.
+- SSP2-4.5 : 1,7 kg de méthane en 2023, 1,1 kg en 2100 ;
+- SSP1-2.6 : 1,6, en baisse jusqu'à 0,4 ;
+- SSP3-7.0 : 1,7, en hausse jusqu'à 4,3.
 
 Ce méthane est traduit en réchauffement avec la courbe d'AGTP du méthane. Il l'emporte sur l'ozone des NOx : dans FaIR, une tonne de NOx en moins réchauffe à peu près autant, quelques décennies plus tard, qu'une tonne de méthane en moins refroidit.
 
-Les COV agissent en sens inverse, avec s = +0,0002 par million de tonnes. Un kilogramme en moins laisse 0,058 kg de méthane en moins dans l'air en 2023 dans SSP2-4.5 (0,051 en 2100). Dans SSP1-2.6, c'est 0,057, en baisse jusqu'à 0,020. Dans SSP3-7.0, c'est 0,059, en hausse jusqu'à 0,13. Une seule valeur vaut pour toutes les sources (`vocCh4PerKgCo2`). Le site partage ce coefficient avec le monoxyde de carbone (ci-dessous), et les COV en gardent 41 %. Pour la route, cela fait 3 % du méthane de ses NOx par kg de CO₂, de signe opposé.
+Les COV agissent en sens inverse, avec s = +0,0002 par million de tonnes. Un kilogramme en moins laisse 0,059 kg de méthane en moins dans l'air en 2023 dans SSP2-4.5 (0,051 en 2100). Dans SSP1-2.6, c'est 0,058, en baisse jusqu'à 0,020. Dans SSP3-7.0, c'est 0,059, en hausse jusqu'à 0,13. Une seule valeur vaut pour toutes les sources (`vocCh4PerKgCo2`). Le site partage ce coefficient avec le monoxyde de carbone (ci-dessous), et les COV en gardent 41 %. Pour la route, cela fait 3 % du méthane de ses NOx par kg de CO₂, de signe opposé.
 
 FaIR ne donne au monoxyde de carbone aucun effet sur la durée de vie du méthane. Son coefficient des COV porte aussi celui du CO. Ce coefficient est ajusté sur des simulations AerChemMIP qui perturbaient ensemble le CO et les COV, si bien que la calibration met tout leur effet sur les COV (question n° 111 de fair-calibrate). Les modèles de chimie donnent au CO un effet propre : ACCMIP trouve 0,11 mW/m² de forçage du méthane par Tg de CO, contre 0,27 par Tg de COV et 2,2 par Mt de méthane (Stevenson et al. 2013). Planetshift partage le coefficient des COV de FaIR entre les deux selon le rapport d'ACCMIP, en gardant son effet aux émissions de 2014, la dernière année de son ajustement. C'est la valeur `split` de l'écart `coMethane`. Un kilogramme de CO en moins laisse alors 0,0097 kg de méthane en moins dans l'air en 2023 dans SSP2-4.5 (0,0084 en 2100), environ un cinquième des 0,05 kg d'ACCMIP. Le coefficient ajusté des COV est près du bas de sa fourchette : la calibration de FaIR laisse donc peu de place au CO, et la valeur entière d'ACCMIP ajoutée par-dessus en compterait une partie deux fois. Avec le CO rendu aux chiffres des modèles de chimie (ci-dessous), le partage retire environ 0,005 °C à ce qu'évitent chacun les voitures électriques et l'électricité renouvelable d'ici 2050 dans SSP2-4.5, et 0,016 °C à tous les leviers ensemble. FaIR tel quel garde le CO à zéro (`fair`).
 
@@ -283,11 +283,11 @@ Le coefficient de FaIR est une seule valeur pour tous les NOx du monde. Mais un 
 
 Avec `coMethane` à `fair`, le méthane du CO reste compris dans le chiffre de la route, car FaIR n'a alors aucun méthane du CO à compter à part. Les NOx de la route donnent −3,95 mW/m² par Tg N, et ceux des navires 3,05 fois plus (de 2,15 à 4,46).
 
-**Pourquoi les modèles de chimie.** Une étude multimodèle de chaque secteur du transport est plus réaliste qu'une seule valeur pour tous les NOx du monde. La réponse de FaIR, environ 2 kg de méthane par kg de NO₂ (SSP2-4.5, 2023), vaut plusieurs fois ce que les modèles de chimie trouvent pour le trafic routier. Avec la réponse de FaIR, les véhicules électriques semblaient ajouter du réchauffement dans SSP3-7.0 (voir *Résultats* ci-dessous).
+**Pourquoi les modèles de chimie.** Une étude multimodèle de chaque secteur du transport est plus réaliste qu'une seule valeur pour tous les NOx du monde. La réponse de FaIR, environ 1,7 kg de méthane par kg de NO₂ (SSP2-4.5, 2023), vaut plus de deux fois ce que les modèles de chimie trouvent pour le trafic routier. Avec la réponse de FaIR, les véhicules électriques semblaient ajouter du réchauffement dans SSP3-7.0 (voir *Résultats* ci-dessous).
 
 **Les facteurs utilisés.** Planetshift convertit le forçage du méthane et de l'ozone lié au méthane par kg de NO₂ chez Hoor et al., le méthane des COV et du CO rendu, en l'émission de méthane qui donnerait le même forçage. La conversion utilise les 2,9 mW/m² par million de tonnes par an d'ACCMIP (Stevenson et al. 2013). Le résultat est de 0,70 kg de méthane pour le trafic routier (0,63–0,76 selon les cinq modèles) et de 1,27 pour les navires (1,0–1,9). FaIR donne 1,49 pour toute source en 2000, l'année des modèles. Les facteurs valent donc 0,47 du coefficient de FaIR sur terre et 0,85 en mer. Avec `coMethane` à `fair`, celui de la route est de 0,41 kg (0,35–0,47), 0,28 du coefficient de FaIR.
 
-Chaque facteur suit l'évolution de FaIR avec le scénario. Dans SSP2-4.5, un kilogramme de NOx en moins laisse 0,79 kg de méthane sur terre et 1,43 en mer en 2023, et 0,52 et 0,95 en 2100. Dans SSP3-7.0, celui de la terre monte à 1,93 en 2100.
+Chaque facteur suit l'évolution de FaIR avec le scénario. Dans SSP2-4.5, un kilogramme de NOx en moins laisse 0,79 kg de méthane sur terre et 1,43 en mer en 2023, et 0,53 et 0,96 en 2100. Dans SSP3-7.0, celui de la terre monte à 2,01 en 2100.
 
 **Ce que l'on abandonne.** Le total mondial de FaIR est abandonné : le méthane de tous les NOx du monde vaut environ un tiers de celui de FaIR (voir [Limites](#method-limitations)). C'est un écart au coefficient unique de FaIR. Une copie de Planetshift peut revenir en arrière de deux façons (voir la [page sur la température](#method-climate)) :
 
@@ -325,48 +325,48 @@ Réchauffement évité en °C, médiane (fourchette probable). Chaque levier est
 
 | Leviers | 2050, CO₂ seul | 2050, avec | 2100, CO₂ seul | 2100, avec |
 | --- | --- | --- | --- | --- |
-| Voitures électriques | 0,021 (0,011–0,034) | 0,045 (−0,011 à 0,116) | 0,072 (0,042–0,110) | 0,106 (0,025–0,199) |
-| Camions électriques | 0,013 (0,006–0,019) | 0,029 (−0,010 à 0,075) | 0,046 (0,026–0,067) | 0,068 (0,014–0,126) |
-| Moins d'avion | 0,049 (0,014–0,115) | 0,054 (0,017–0,124) | 0,104 (0,040–0,237) | 0,122 (0,049–0,267) |
-| Carburant d'aviation propre | 0,009 (0,007–0,012) | 0,015 (0,010–0,022) | 0,042 (0,029–0,057) | 0,059 (0,038–0,087) |
-| Transport maritime propre | 0,007 (0,005–0,009) | 0,009 (0,006–0,015) | 0,024 (0,016–0,036) | 0,034 (0,021–0,054) |
-| Électricité renouvelable | 0,096 (0,070–0,128) | 0,105 (0,057–0,192) | 0,234 (0,157–0,331) | 0,279 (0,184–0,416) |
-| Les six | 0,209 (0,128–0,343) | 0,253 (0,079–0,543) | 0,529 (0,316–0,889) | 0,655 (0,327–1,175) |
-| Les six avec chauffage propre et industrie propre | 0,264 (0,162–0,426) | 0,304 (0,098–0,660) | 0,723 (0,429–1,198) | 0,873 (0,449–1,551) |
+| Voitures électriques | 0,022 (0,011–0,035) | 0,040 (−0,015 à 0,116) | 0,074 (0,042–0,120) | 0,103 (0,022–0,207) |
+| Camions électriques | 0,013 (0,006–0,020) | 0,026 (−0,012 à 0,076) | 0,047 (0,026–0,073) | 0,066 (0,011–0,131) |
+| Moins d'avion | 0,050 (0,014–0,123) | 0,055 (0,017–0,133) | 0,107 (0,039–0,259) | 0,125 (0,048–0,291) |
+| Carburant d'aviation propre | 0,009 (0,007–0,013) | 0,015 (0,010–0,022) | 0,043 (0,029–0,062) | 0,060 (0,038–0,093) |
+| Transport maritime propre | 0,007 (0,005–0,009) | 0,009 (0,006–0,015) | 0,024 (0,016–0,036) | 0,034 (0,021–0,053) |
+| Électricité renouvelable | 0,097 (0,070–0,134) | 0,099 (0,052–0,192) | 0,240 (0,156–0,362) | 0,282 (0,180–0,448) |
+| Les six | 0,209 (0,128–0,342) | 0,250 (0,077–0,539) | 0,529 (0,316–0,888) | 0,652 (0,325–1,167) |
+| Les six avec chauffage propre et industrie propre | 0,264 (0,162–0,426) | 0,301 (0,096–0,655) | 0,723 (0,429–1,196) | 0,868 (0,446–1,541) |
 
 Avec tous les leviers d'énergie, de chauffage et d'industrie au maximum, deux effets s'annulent à peu près au début. L'approvisionnement et le méthane du combustible ne sont plus émis, ce qui est un gain. Le refroidissement que masquait la pollution est perdu. Ensuite, les gains sont plus grands (médiane, °C, SSP2-4.5) :
 
 | Année | Réchauffement évité, CO₂ seul | Gain du CO₂, du méthane et du N₂O de l'approvisionnement | Perte due à la pollution de l'air | Réchauffement évité, avec |
 | --- | --- | --- | --- | --- |
-| 2030 | 0,012 | +0,004 | −0,015 | 0,001 |
-| 2040 | 0,131 | +0,064 | −0,077 | 0,117 |
-| 2050 | 0,264 | +0,122 | −0,083 | 0,304 |
-| 2100 | 0,723 | +0,199 | −0,049 | 0,873 |
+| 2030 | 0,012 | +0,004 | −0,016 | 0,001 |
+| 2040 | 0,131 | +0,063 | −0,078 | 0,116 |
+| 2050 | 0,264 | +0,121 | −0,084 | 0,301 |
+| 2100 | 0,723 | +0,194 | −0,049 | 0,868 |
 
 **Le CO₂ de l'approvisionnement** est ce qui change le plus les chiffres. Il ajoute environ un dixième au CO₂ de chaque levier sur le pétrole, chaque année : 0,150 kg par kg pour la route, 0,153 pour l'aviation et le transport maritime. Il ajoute 8 % à l'électricité qu'un levier réduit ou consomme.
 
 **Le CO et les COV** ajoutent un peu de réchauffement évité : leur ozone et leur méthane suivent le combustible. Le petit refroidissement de l'ammoniac va en sens inverse.
 
-**L'électricité renouvelable** perd le refroidissement du SO₂ des centrales à charbon, qui sont la plus grande source de SO₂. Mais elle gagne l'ozone et le méthane de leurs NOx, et l'approvisionnement de leur combustible. Elle évite 0,105 °C au lieu de 0,096 en 2050, et 0,279 contre 0,234 en 2100.
+**L'électricité renouvelable** perd le refroidissement du SO₂ des centrales à charbon, qui sont la plus grande source de SO₂. Mais elle gagne l'ozone et le méthane de leurs NOx, et l'approvisionnement de leur combustible. Elle évite 0,099 °C au lieu de 0,097 en 2050, et 0,282 contre 0,240 en 2100.
 
 **Moins d'avion, le carburant d'aviation propre et le chauffage propre** gagnent dès le départ : l'approvisionnement de leur combustible l'emporte sur le peu de SO₂ qu'ils retirent.
 
-**L'industrie propre** est seule à perdre : 0,017 au lieu de 0,026 en 2050. Ses usines émettent du SO₂, et les filières hydrogène consomment beaucoup d'électricité du réseau.
+**L'industrie propre** est seule à perdre : 0,016 au lieu de 0,027 en 2050. Ses usines émettent du SO₂, et les filières hydrogène consomment beaucoup d'électricité du réseau.
 
-**Les véhicules électriques** gagnent. Leur suie, l'ozone de leurs NOx et l'approvisionnement de leur carburant disparaissent aussitôt. Le méthane que leurs NOx ne détruisent plus, environ un quart de celui de FaIR sur terre, s'accumule lentement sur des décennies. Les voitures électriques évitent, en 2050 et 2100 :
+**Les véhicules électriques** gagnent. Leur suie, l'ozone de leurs NOx et l'approvisionnement de leur carburant disparaissent aussitôt. Le méthane que leurs NOx ne détruisent plus, environ la moitié de celui de FaIR sur terre, s'accumule lentement sur des décennies. Les voitures électriques évitent, en 2050 et 2100 :
 
-- SSP1-2.6 : 0,033 et 0,049 °C (CO₂ seul 0,016 et 0,036) ;
-- SSP2-4.5 : 0,045 et 0,106 (CO₂ seul 0,021 et 0,072).
+- SSP1-2.6 : 0,031 et 0,049 °C (CO₂ seul 0,016 et 0,037) ;
+- SSP2-4.5 : 0,040 et 0,103 (CO₂ seul 0,022 et 0,074).
 
-Dans SSP3-7.0, le réseau reste sale et les NOx et le méthane sont élevés. Ce méthane reprend une partie du gain, mais les véhicules électriques évitent encore plus que leur seul CO₂. Les voitures électriques évitent 0,030 °C en 2050 et 0,054 °C en 2100 (CO₂ seul 0,013 et 0,041). Les camions électriques évitent 0,018 et 0,029 (CO₂ seul 0,007 et 0,022). Avec le coefficient unique de FaIR pour toutes les sources, ils ajouteraient 0,018 et 0,026 °C d'ici 2100. Avec ce coefficient partagé entre terre et mer, ils ajouteraient 0,009 et 0,020 (voir [Limites](#method-limitations)).
+Dans SSP3-7.0, le réseau reste sale et les NOx et le méthane sont élevés. Ce méthane reprend une partie du gain. Les véhicules électriques évitent plus que leur seul CO₂ en 2050, mais moins que lui d'ici 2100. Les voitures électriques évitent 0,021 °C en 2050 et 0,034 °C en 2100 (CO₂ seul 0,013 et 0,042). Les camions électriques évitent 0,012 et 0,016 (CO₂ seul 0,007 et 0,022). Avec le coefficient unique de FaIR pour toutes les sources, ils ajouteraient 0,020 et 0,019 °C d'ici 2100. Avec ce coefficient partagé entre terre et mer, ils ajouteraient 0,010 et 0,013 (voir [Limites](#method-limitations)).
 
 ### Comparé aux sorties publiées des combustibles fossiles
 
 Shindell et Smith (2019, *Nature* 573, 408–411) ont fait tourner FaIR sur les 42 trajectoires du rapport du GIEC sur 1,5 °C. Celles-ci réduisent le CO₂ fossile et le SO₂ de 75 à 85 % d'ici 2050. Ils trouvent que « les effets sur la température des baisses de CO₂, de SO₂ et de CH₄ s'équilibrent à peu près jusque vers 2040 ». Ensuite, le refroidissement dû au CO₂ domine. En comptant toutes les émissions liées aux combustibles fossiles, toute brève pénalité climatique n'est « pas supérieure à 0,05 °C » (0,19 °C au 95e centile). Avec le CO₂ et le SO₂ seuls, elle est de 0,02 à 0,10 °C.
 
-Planetshift concorde. Ses leviers au maximum sont une sortie plus rapide, complète en 2035 pour les secteurs qu'ils couvrent. Ils ne donnent de réchauffement net aucune année (+0,003 °C évité en 2030). Vers 2030, les gains de méthane et de CO₂ égalent à peu près le refroidissement perdu. Ensuite, ils le dépassent. La montée plus rapide amène l'équilibre une décennie plus tôt que dans leurs trajectoires.
+Planetshift concorde. Ses leviers au maximum sont une sortie plus rapide, complète en 2035 pour les secteurs qu'ils couvrent. Ils ne donnent de réchauffement net aucune année (+0,001 °C évité en 2030). Vers 2030, les gains de méthane et de CO₂ égalent à peu près le refroidissement perdu. Ensuite, ils le dépassent. La montée plus rapide amène l'équilibre une décennie plus tôt que dans leurs trajectoires.
 
-Shindell et Smith comptent le méthane des NOx avec le coefficient unique de FaIR. Planetshift prend les chiffres des modèles de chimie, environ un quart de celui de FaIR sur terre et quatre cinquièmes en mer. Cela rend les co-émissions plus favorables, surtout celles des secteurs terrestres.
+Shindell et Smith comptent le méthane des NOx avec le coefficient unique de FaIR. Planetshift prend les chiffres des modèles de chimie, environ la moitié de celui de FaIR sur terre et 85 % en mer. Cela rend les co-émissions plus favorables, surtout celles des secteurs terrestres.
 
 ## La réponse de la température à un forçage
 

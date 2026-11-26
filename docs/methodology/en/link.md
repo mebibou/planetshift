@@ -36,11 +36,11 @@ On SSP2-4.5, median and 5–95% range, relative to 1850–1900:
 | Farming | 0.20 °C | 0.21 °C (0.14–0.30) | 0.29 °C (0.20–0.42) |
 | Land use: CO₂ | 0.24 °C | 0.25 °C (0.18–0.36) | 0.26 °C (0.16–0.39) |
 | Land use: albedo (cooling) | −0.09 °C | −0.09 °C (−0.16–−0.04) | −0.10 °C (−0.19–−0.04) |
-| Waste | 0.06 °C | 0.07 °C (0.05–0.10) | 0.09 °C (0.06–0.13) |
-| Air pollution (cooling) | −0.68 °C | −0.67 °C (−1.26–−0.26) | −0.67 °C (−1.29–−0.28) |
+| Waste | 0.06 °C | 0.07 °C (0.05–0.10) | 0.08 °C (0.06–0.12) |
+| Air pollution (cooling) | −0.68 °C | −0.67 °C (−1.26–−0.26) | −0.67 °C (−1.30–−0.28) |
 | Natural factors | 0.06 °C | 0.06 °C (−0.05–0.17) | 0.04 °C (−0.13–0.19) |
-| Other human emissions | 0.56 °C | 0.60 °C (0.41–0.84) | 0.76 °C (0.51–1.07) |
-| Total | 1.07 °C | 1.20 °C (1.01–1.35) | 1.90 °C (1.50–2.33) |
+| Other human emissions | 0.56 °C | 0.60 °C (0.41–0.84) | 0.76 °C (0.52–1.08) |
+| Total | 1.07 °C | 1.20 °C (1.01–1.35) | 1.89 °C (1.50–2.33) |
 
 The 2010–2019 column is the mean of each year's median.
 
@@ -58,21 +58,21 @@ On SSP2-4.5, median and 5–95% range of the mean over 2015–2024, and in 2100,
 
 | Gas and cause | 2015–2024 | 2100 |
 | --- | --- | --- |
-| **CO₂** | 0.94 °C (0.70–1.24) | 1.91 °C (1.37–2.71) |
+| **CO₂** | 0.94 °C (0.70–1.23) | 1.90 °C (1.36–2.68) |
 | Fossil fuels and industry | 0.65 °C (0.49–0.84) | 1.66 °C (1.18–2.29) |
 | Farming (urea and liming) | 0.002 °C (0.001–0.002) | 0.006 °C (0.004–0.008) |
 | Land use | 0.25 °C (0.18–0.36) | 0.19 °C (0.08–0.35) |
-| Interactions and other minor sources | 0.03 °C (0.00–0.08) | 0.04 °C (−0.03–0.16) |
-| **Methane** | 0.41 °C (0.28–0.59) | 0.53 °C (0.35–0.81) |
+| Interactions and other minor sources | 0.03 °C (0.00–0.08) | 0.03 °C (−0.04–0.15) |
+| **Methane** | 0.41 °C (0.28–0.59) | 0.51 °C (0.34–0.79) |
 | Fossil fuels and industry | 0.11 °C (0.07–0.15) | 0.12 °C (0.08–0.19) |
-| Farming | 0.14 °C (0.09–0.21) | 0.19 °C (0.12–0.31) |
+| Farming | 0.14 °C (0.09–0.21) | 0.19 °C (0.12–0.30) |
 | Waste | 0.06 °C (0.04–0.09) | 0.06 °C (0.04–0.10) |
-| Forest, grassland and peat fires | 0.005 °C (0.003–0.007) | 0.008 °C (0.005–0.011) |
-| Interactions and other minor sources | 0.10 °C (0.07–0.14) | 0.14 °C (0.09–0.21) |
+| Forest, grassland and peat fires | 0.005 °C (0.003–0.007) | 0.007 °C (0.005–0.011) |
+| Interactions and other minor sources | 0.10 °C (0.07–0.14) | 0.14 °C (0.09–0.20) |
 | **N₂O** | 0.11 °C (0.07–0.15) | 0.19 °C (0.13–0.30) |
 | Fossil fuels and industry | 0.02 °C (0.01–0.03) | 0.03 °C (0.02–0.05) |
-| Farming | 0.06 °C (0.04–0.09) | 0.12 °C (0.08–0.18) |
-| Waste | 0.004 °C (0.003–0.005) | 0.009 °C (0.006–0.013) |
+| Farming | 0.06 °C (0.04–0.09) | 0.12 °C (0.08–0.19) |
+| Waste | 0.004 °C (0.003–0.005) | 0.009 °C (0.006–0.014) |
 | Interactions and other minor sources | 0.02 °C (0.02–0.03) | 0.03 °C (0.02–0.05) |
 
 Most of farming's warming is methane, and most of the rest is N₂O. Its CO₂ is small. Land use emits only CO₂ here, so it appears under CO₂ alone. Its albedo change is not a greenhouse gas, so it appears under *All gases* only, and CO₂'s figures leave it out.
@@ -102,7 +102,7 @@ No lever in Planetshift targets air pollution. The energy, heating and industry 
 
 So when those levers act, the air-pollution band's cooling shrinks after today. That change is the warming air pollution no longer masks. The levers also cut the CO₂ emitted and the methane leaked while producing the fuel, which shrinks the fossil band.
 
-With every energy, heating and industry lever in full on SSP2-4.5, the cooling lost about equals the gains around 2030. After that, the gains are larger. In 2050, −0.07 °C of cooling is lost. Against it, the fuel's supply, methane and N₂O give +0.12 °C, and the levers' own CO₂ gives +0.26 °C (see [Energy and transport](#method-sectors)). In the breakdown under the chart, these levers show under *air pollution* with the warming they add there.
+With every energy, heating and industry lever in full on SSP2-4.5, the cooling lost about equals the gains around 2030. After that, the gains are larger. In 2050, −0.08 °C of cooling is lost. Against it, the fuel's supply, methane and N₂O give +0.12 °C, and the levers' own CO₂ gives +0.26 °C (see [Energy and transport](#method-sectors)). In the breakdown under the chart, these levers show under *air pollution* with the warming they add there.
 
 ## How each cause is computed
 
@@ -144,7 +144,7 @@ Some of what the energy levers change is not a greenhouse gas: aviation's non-CO
 
 - **Livestock, 2010.** A 2018 study found direct livestock CH₄ and N₂O caused about 19% of the modelled warming in 2010. Here all of agriculture causes about 19% of the 2010–2019 warming.
 - **Agricultural methane, 2010–2019.** A 2024 report used an earlier FaIR calibration (1.3.1). It put agricultural methane alone at about 0.19 °C of about 1.06 °C of warming in 2010–2019, about 40% of the 0.5 °C from all methane. Here methane, N₂O and CO₂ from agriculture together give 0.20 °C. The difference comes mostly from the calibration. v1.4.1 gives all methane emissions 0.39 °C of warming in 2010–2019, against 0.49 °C for v1.3.1 and 0.5 °C (0.3 to 0.8) in AR6's assessment. The 0.10 °C already in the 1850–1900 baseline also lowers agriculture's figure more than the other causes' figures. A test checks that agriculture's warming over 2010–2019 is between 0.12 and 0.30 °C and between 12% and 30% of the total.
-- **Food, by 2100.** A 2023 study held today's diets per person and let food consumption grow with population. It found that this "could add nearly 1 °C to warming by 2100" from emissions after 2020 (0.7 to 0.9 °C in its preprint). Three quarters of it came from ruminant meat, dairy and rice, and more than 55% of it was avoidable. Run the same way (agriculture and land-use emissions taken out from 2020 only), Planetshift finds 0.31 °C (0.22–0.45) on SSP2-4.5 and 0.57 °C (0.42–0.80) on SSP3-7.0. The gap is expected, for three reasons:
+- **Food, by 2100.** A 2023 study held today's diets per person and let food consumption grow with population. It found that this "could add nearly 1 °C to warming by 2100" from emissions after 2020 (0.7 to 0.9 °C in its preprint). Three quarters of it came from ruminant meat, dairy and rice, and more than 55% of it was avoidable. Run the same way (agriculture and land-use emissions taken out from 2020 only), Planetshift finds 0.31 °C (0.21–0.44) on SSP2-4.5 and 0.56 °C (0.41–0.78) on SSP3-7.0. The gap is expected, for three reasons:
   - that study counts the whole food chain, including about 5 billion tonnes a year of CO₂ from energy, processing and transport, which here sits under fossil fuels;
   - it holds diets per person fixed while population grows, whereas SSP2-4.5's agricultural methane grows by only 4% to 2050 and its land-use CO₂ falls to near zero by 2100;
   - it uses another climate model (MAGICC6).

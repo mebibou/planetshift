@@ -89,7 +89,7 @@ La somme des parts est égale au total de chaque pays. La partie qui tombe sur d
 
 Le domaine *Emissions from Livestock* (GLE) donne, par espèce, le CH₄ de la fermentation entérique et de la gestion des effluents, et le N₂O de la gestion des effluents, des effluents au pâturage et des effluents épandus. Il va aux produits comme suit :
 
-- **Vaches laitières** : 88 % au lait et 12 % au bœuf, celui des vaches de réforme et des veaux en surplus. C'est l'allocation physique de la Fédération internationale de laiterie, 1 − 6,04 × les kilogrammes de poids vif vendus par kilogramme de lait, au rapport typique de 0,02 kg qu'elle donne (IDF Bulletin 479/2015, section 6.3.3, p. 29). Sa norme de 2022 garde la formule ; son exemple chiffré donne 85,1 % pour une ferme.
+- **Vaches laitières** : 88 % au lait et 12 % au bœuf, celui des vaches de réforme et des veaux en surplus. C'est l'allocation physique de la Fédération internationale de laiterie, 1 − 6,04 × les kilogrammes de poids vif vendus par kilogramme de lait, au rapport typique de 0,02 kg qu'elle donne (IDF Bulletin 479/2015, section 6.3.3, p. 29). Sa norme de 2022 garde la formule. Son exemple chiffré donne 85,1 % pour une ferme.
 - **Autres bovins** : le bœuf, moins les animaux qui ne sont pas élevés pour l'alimentation (voir plus bas).
 - **Buffles, moutons, chèvres et chameaux** : répartis entre lait et viande selon les protéines que produit le cheptel de chaque pays (production FAOSTAT × teneur en protéines). Là où aucun lait n'est enregistré, tout va à la viande. Pour les buffles, les animaux qui ne sont pas élevés pour l'alimentation sont d'abord retirés.
 - Les **porcs** vont à la viande porcine, les **poulets de chair, canards et dindes** à la volaille, les **poules pondeuses** aux œufs, et les **lamas** aux autres viandes.
@@ -208,12 +208,12 @@ Le seuil change la base, mais à peine l'effet d'un changement de régime. Un tr
 
 | Seuil de taux d'exploitation | Base hors alimentation, Mt CO₂e | Inde | Niger | Éthiopie | Mali | Changement complet : émissions évitées, Gt CO₂e | Changement complet : réchauffement évité en 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 6,7 % (Afrique australe, retenu) | 211 | 113 | 18,1 | 6,9 | 1,1 | 5,17 | 0,281 |
-| 9 % (médiane) | 245 | 113 | 19,4 | 26,0 | 4,0 | 5,12 | 0,278 |
-| 9,9 % (moyenne) | 257 | 113 | 19,8 | 31,1 | 5,1 | 5,11 | 0,277 |
-| 12 % (systèmes pastoraux) | 285 | 113 | 20,4 | 39,9 | 7,1 | 5,08 | 0,275 |
+| 6,7 % (Afrique australe, retenu) | 211 | 113 | 18,1 | 6,9 | 1,1 | 7,03 | 0,346 |
+| 9 % (médiane) | 245 | 113 | 19,5 | 26,0 | 4,0 | 6,98 | 0,343 |
+| 9,9 % (moyenne) | 258 | 113 | 19,8 | 31,1 | 5,1 | 6,96 | 0,342 |
+| 12 % (systèmes pastoraux) | 286 | 113 | 20,4 | 40,0 | 7,1 | 6,93 | 0,341 |
 
-Un demi-changement évite la moitié (de 2,53 à 2,58 Gt CO₂e, de 0,137 à 0,140 °C). La fourchette probable que montre l'application ne couvre que la réponse du climat, pas ce choix.
+Un demi-changement évite la moitié (de 3,46 à 3,50 Gt CO₂e, de 0,170 à 0,173 °C). La fourchette probable que montre l'application ne couvre que la réponse du climat, pas ce choix.
 
 ### Les limites de la règle
 

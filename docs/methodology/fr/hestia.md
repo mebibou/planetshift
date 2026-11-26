@@ -22,7 +22,7 @@ HESTIA publie ses données par versions. Une version est réservée aux utilisat
 
 Planetshift garde trois gaz : le dioxyde de carbone (CO₂), le méthane (CH₄) et le protoxyde d'azote (N₂O). Il les compte en kg de chaque gaz, sans les additionner en un seul chiffre. Il garde les émissions de la ferme elle-même et, dans le périmètre le plus large, celles de la fabrication des intrants de la ferme, comme les engrais et le carburant (les deux périmètres sont décrits plus bas et sur la page [Émissions par tonne d'aliment](#method-emissions)). Il laisse de côté le changement d'usage des terres, qui a son propre levier, et les émissions de la production des aliments pour animaux, que le modèle compte déjà par les cultures fourragères.
 
-Les mêmes agrégations donnent l'eau douce prélevée à la ferme et pour fabriquer ses intrants, et la consommation d'eau pondérée par la rareté selon AWARE 2.0. Elles sont gardées à part des gaz et lues pour la page [Eau douce](#method-water), avec les mêmes niveaux.
+Les mêmes agrégations donnent l'eau douce prélevée à la ferme et pour fabriquer ses intrants, et la consommation d'eau pondérée par la rareté selon AWARE 2.0. Elles sont gardées à part des gaz. La page [Eau douce](#method-water) les lit, avec les mêmes niveaux.
 
 ### La couverture en bref
 

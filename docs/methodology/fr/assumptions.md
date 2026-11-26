@@ -79,7 +79,7 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 - **Les estimations de niveau 1 propres à FAOSTAT, et non les inventaires des pays**, pour l'année d'émissions la plus proche de 2024, pour que chaque pays soit estimé de la même façon. Voir [Émissions](#method-emissions).
 - **L'azote de synthèse est réparti selon la surface récoltée × une dose mondiale par classe de cultures.** Les doses viennent des parts de l'azote utilisé dans le monde selon Heffer et al. (2017) : blé 18 %, maïs 18 %, riz 15 %, légumes 7 %, fruits 6 %, etc. Les doses réelles varient d'un pays à l'autre. Voir [Émissions](#method-emissions).
 - **4,7 % de l'azote de synthèse de chaque pays va aux prairies**, comme dans la moyenne mondiale de la même enquête. Il est attribué aux produits des ruminants en proportion de leur méthane. Voir [Émissions](#method-emissions).
-- **Les émissions d'un troupeau laitier vont à 88 % au lait et à 12 % au bœuf** partout. C'est l'allocation physique de la Fédération internationale de laiterie au rapport typique qu'elle donne, 0,02 kg de poids vif vendu par kg de lait ; une ferme qui vend plus ou moins de viande par litre aurait une autre part. Voir [Émissions](#method-emissions).
+- **Les émissions d'un troupeau laitier sont partagées à 88 % pour le lait et à 12 % pour le bœuf** partout. C'est l'allocation physique de la Fédération internationale de laiterie au rapport typique qu'elle donne, 0,02 kg de poids vif vendu par kg de lait ; une ferme qui vend plus ou moins de viande par litre aurait une autre part. Voir [Émissions](#method-emissions).
 - **Les cheptels mixtes (buffles, moutons, chèvres, chameaux) sont répartis entre lait et viande selon les protéines**, avec 15 % de protéines dans la viande en carcasse et de 3,2 à 5,5 % dans le lait selon l'espèce. Voir [Émissions](#method-emissions).
 - **Les chevaux, les ânes et les mulets sont laissés de côté** : ils sont surtout gardés pour le travail. Voir [Émissions](#method-emissions).
 - **Les abats et les graisses animales portent les mêmes émissions par tonne que la carcasse**, partageant les émissions de la viande au prorata de la masse. Voir [Émissions](#method-emissions).
@@ -108,11 +108,11 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 
 ## Eau douce
 
-- **Les prélèvements par tonne ne changent pas avec les leviers.** L'eau suit la production. L'eau ne change pas le réchauffement. Voir [Eau douce](#method-water).
+- **Les prélèvements par tonne ne changent pas avec les leviers.** L'eau varie avec la production. Elle ne change pas le réchauffement. Voir [Eau douce](#method-water).
 - **Les niveaux sont ceux des émissions** : le pays dans HESTIA, puis sa moyenne mondiale, puis la valeur mondiale de Poore & Nemecek, puis un substitut ou le produit primaire divisé par le taux d'extraction, puis la médiane du groupe. Voir [Eau douce](#method-water).
-- **Les prélèvements de HESTIA comptent la ferme et la fabrication de ses intrants non agricoles**, comme les émissions du berceau à la sortie de la ferme. Voir [Eau douce](#method-water).
+- **Les prélèvements de HESTIA comprennent l'eau utilisée à la ferme et pour fabriquer ses intrants non agricoles**, comme les émissions du berceau à la sortie de la ferme. Voir [Eau douce](#method-water).
 - **Les litres par kg de produit vendu de Poore & Nemecek deviennent des litres par tonne du poste FBS** par le rapport des émissions de l'étape agricole de l'étude par unité FBS à celles par kg de produit vendu, puis par le `kg_product_per_kg_item` des émissions. Voir [Eau douce](#method-water).
-- **Les produits animaux portent la valeur de l'étude moins l'eau de leurs aliments concentrés**, aux rations de type GLEAM et aux litres des cultures du modèle pondérés par l'usage fourrager, jamais en dessous de zéro. Voir [Eau douce](#method-water).
+- **Les produits animaux prennent la valeur de l'étude moins l'eau de leurs aliments concentrés**, aux rations de type GLEAM et aux litres des cultures du modèle pondérés par l'usage fourrager. Le résultat n'est jamais inférieur à zéro. Voir [Eau douce](#method-water).
 - **La consommation pondérée par la rareté (AWARE 2.0) n'est gardée que là où un pays a sa propre agrégation HESTIA**, et ne s'ajoute jamais aux litres. Voir [Eau douce](#method-water).
 
 ## Le changement
@@ -206,7 +206,7 @@ Les autres sources sont sous CC BY 4.0, dans le domaine public, sous Open Govern
 
 - Les consommations de concentrés et les rations de type GLEAM, qu'aucun tableau publié ne donne sous cette forme, et la ration 30/40/5/25 de l'aquaculture. Voir [Alimentation animale](#method-feed).
 - Les grains par tonne de boissons fermentées (0,25 t) et alcoolisées (1,1 t), que les facteurs de conversion techniques de la FAO ne donnent pas. Voir [Émissions](#method-emissions).
-- Le même taux des cultures intermédiaires sous tous les climats humides : la méta-analyse n'a pu être lue que dans son résumé, qui cite l'altitude et la profondeur d'échantillonnage comme ce qui explique les taux, et non le climat. Voir [Carbone dans les terres agricoles](#method-removals).
+- Le même taux des cultures intermédiaires sous tous les climats humides : la méta-analyse n'a pu être lue que dans son résumé, qui dit que l'altitude et la profondeur d'échantillonnage expliquent les taux, et non le climat. Voir [Carbone dans les terres agricoles](#method-removals).
 - Les 0,15–0,22 kWh/km d'une voiture électrique. Les mesures de l'EPA américaine pour les modèles 2023–2025, pertes de recharge comprises, donnent une médiane de 0,22 kWh/km pour les voitures (0,17–0,27 du 10e au 90e centile), mais elles ne sont pas pondérées par les ventes et ne couvrent que le marché américain. Voir [Énergie et transports](#method-sectors).
 - Les baisses de l'acier et du ciment à adoption complète (90 %, 80 %) et l'électricité du ciment par kg évité. Voir [Bâtiments et industrie](#method-industry).
 - Les 3,0 Gt de CO₂ direct des bâtiments en 2022, lues seulement dans un résumé de recherche de la page de l'AIE. Le *Special Report on Buildings Efficiency* de l'AIE donne 2,8 Gt sans année, et CEDS 2,68 Gt pour les combustibles résidentiels, commerciaux et institutionnels en 2022. Voir [Bâtiments et industrie](#method-industry).
@@ -214,7 +214,7 @@ Les autres sources sont sous CC BY 4.0, dans le domaine public, sous Open Govern
 
 ### Hypothèses qu'aucune source ne donne
 
-Ces valeurs sont des jugements propres à Planetshift. Aucune source ne les fixe, si bien qu'aucune ne peut être vérifiée ; elles restent des hypothèses.
+Ces valeurs sont des jugements propres à Planetshift. Aucune source ne les fixe, si bien qu'aucune ne peut être vérifiée. Elles restent des hypothèses.
 
 - Le mélange de légumineuses (60 % de légumineuses, 20 % de soja, 20 % de céréales). Voir [Le changement](#method-shift).
 - Le mélange de boissons végétales (50 % de soja, 50 % d'avoine). Voir [Le changement](#method-shift).

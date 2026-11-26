@@ -47,7 +47,7 @@ The details and figures are in *Air pollution and NOx's methane in detail*, belo
 
 **Health.** Planetshift keeps protein or calories equal. It does not check the diet against health guidelines or estimate health outcomes.
 
-**Freshwater.** Withdrawals are counted, not the water consumed, except on the crops-only scarcity layer. HESTIA's litres cover 35 crops in 56 countries and its World averages 15 more. The rest are Poore & Nemecek's world values, so a country's irrigation counts only where HESTIA has its own aggregation. Animal products carry the study's value less the water of their concentrate feed, an estimate of the farm's own water that depends on the GLEAM-style rations. Fish farms' water is not counted. Countries differ from AQUASTAT more than the world does (the median country is 1.7 times its figure, Bangladesh almost six). See [Freshwater](#method-water).
+**Freshwater.** Withdrawals are counted, not the water consumed, except on the crops-only scarcity layer. HESTIA's litres cover 35 crops in 56 countries, and HESTIA's World averages cover 15 more. The rest are Poore & Nemecek's world values, so a country's irrigation counts only where HESTIA has its own aggregation. Animal products take the study's value less the water of their concentrate feed, an estimate of the farm's own water that depends on the GLEAM-style rations. Fish farms' water is not counted. Countries differ from AQUASTAT more than the world does (the median country is 1.7 times its figure, Bangladesh almost six). See [Freshwater](#method-water).
 
 **Non-food crops.** Cotton, tobacco, rubber and biofuel crops are not in the model.
 
@@ -82,11 +82,11 @@ FaIR's methane response to NOx is about 2 kg of methane per kg of NO₂. This is
 
 ### How the value is derived
 
-Hoor et al. give the forcing of methane and methane-ozone per kg of NO₂, with the VOCs' methane given back. That forcing is turned into the methane emission that would cause it, at ACCMIP's 2.9 mW/m² per million tonnes a year (Stevenson et al. 2013). The result is:
+Hoor et al. give the forcing of methane and methane-ozone per kg of NO₂, with the VOCs' and CO's methane given back. That forcing is turned into the methane emission that would cause it, at ACCMIP's 2.9 mW/m² per million tonnes a year (Stevenson et al. 2013). The result is:
 
-- 0.41 kg of methane for road traffic (0.35–0.47 across the five models);
+- 0.70 kg of methane for road traffic (0.63–0.76 across the five models);
 - 1.27 kg for ships;
-- against FaIR's 1.53 for every source in 2000, the models' year.
+- against FaIR's 1.49 for every source in 2000, the models' year.
 
 Each then follows FaIR's change with the scenario.
 
@@ -94,18 +94,18 @@ Each then follows FaIR's change with the scenario.
 
 | Electric cars and trucks, by 2100 | SSP3-7.0 | SSP2-4.5 |
 | --- | --- | --- |
-| Chemistry models (website default) | 0.054 and 0.020 °C avoided | 0.106 and 0.065 °C avoided |
-| FaIR's one coefficient | 0.018 and 0.026 °C added | 0.091 and 0.055 °C avoided |
-| FaIR's coefficient shared between land and sea by Hoor et al.'s ratio | 0.009 and 0.020 °C added | 0.097 and 0.059 °C avoided |
+| Chemistry models (website default) | 0.034 and 0.016 °C avoided | 0.103 and 0.066 °C avoided |
+| FaIR's one coefficient | 0.020 and 0.019 °C added | 0.092 and 0.059 °C avoided |
+| FaIR's coefficient shared between land and sea by Hoor et al.'s ratio | 0.010 and 0.013 °C added | 0.098 and 0.063 °C avoided |
 
 A fork can keep FaIR's one coefficient (`fair`) or the land and sea split of FaIR's total (`hoor`).
 
 ### What remains uncertain
 
 - The values come from one study, five models and one year.
-- They are carried to other years and scenarios by FaIR's own change, which grows with the scenario's methane. Road's 0.41 kg becomes 1.1 kg by 2100 in SSP3-7.0.
+- They are carried to other years and scenarios by FaIR's own change, which grows with the scenario's methane. Road's 0.70 kg becomes 2.0 kg by 2100 in SSP3-7.0.
 - Power plants, buildings and industry take road's value.
-- The choice does not keep FaIR's world total, which FaIR's calibration constrains with the rest of its methane budget. It cuts the methane of all the world's NOx to about a third of FaIR's.
+- The choice does not keep FaIR's world total. FaIR's calibration constrains that total with the rest of its methane budget. It cuts the methane of all the world's NOx to about half of FaIR's.
 
 ## Assumptions
 

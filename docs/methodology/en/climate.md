@@ -1,6 +1,6 @@
 # From emissions to temperature
 
-Planetshift turns a change in emissions into a change in global temperature. It follows carbon dioxide, methane and nitrous oxide separately, through FaIR, a simple climate model used by the IPCC, instead of adding them up as "CO₂-equivalent". In FaIR's median for the middle-of-the-road scenario, before any lever acts, the world is 1.90 °C above 1850–1900 in 2050 and 2.63 °C in 2100. The app measures the levers' effect against a baseline like this one.
+Planetshift turns a change in emissions into a change in global temperature. It follows carbon dioxide, methane and nitrous oxide separately, through FaIR, a simple climate model used by the IPCC, instead of adding them up as "CO₂-equivalent". In FaIR's median for the middle-of-the-road scenario, before any lever acts, the world is 1.89 °C above 1850–1900 in 2050 and 2.61 °C in 2100. The app measures the levers' effect against a baseline like this one.
 
 This page also explains the uncertainty band, the line for natural factors only, why 2023 and 2024 were so warm, the permafrost option, and the few places where Planetshift departs from FaIR.
 
@@ -32,11 +32,11 @@ The table gives FaIR's median, with its 5–95% range, in °C per kg. Beside it 
 
 | Gas | FaIR, 20 years | FaIR, 100 years | AR6, 20 / 50 / 100 years | Shape (FaIR) |
 | --- | --- | --- | --- | --- |
-| CO₂ | 3.7 × 10⁻¹⁶ (2.7–5.1) | 3.5 × 10⁻¹⁶ (2.1–5.3) | 4.95 × 10⁻¹⁶ / 4.28 × 10⁻¹⁶ / 3.95 × 10⁻¹⁶ | rises over about 11 years, then stays nearly flat |
-| CH₄ | 3.3 × 10⁻¹⁴ (2.2–4.9) | 4.1 × 10⁻¹⁵ (1.5–10.4) | 2.59 × 10⁻¹⁴ / 4.73 × 10⁻¹⁵ / 2.12 × 10⁻¹⁵ | peaks after 6 years, a tenth of the peak by 100 years |
-| N₂O | 1.7 × 10⁻¹³ (1.1–2.4) | 1.0 × 10⁻¹³ (0.7–1.8) | 1.47 × 10⁻¹³ / 1.24 × 10⁻¹³ / 9.19 × 10⁻¹⁴ | peaks after 12 years, decays over a century |
+| CO₂ | 3.7 × 10⁻¹⁶ (2.6–5.1) | 3.5 × 10⁻¹⁶ (2.0–5.3) | 4.95 × 10⁻¹⁶ / 4.28 × 10⁻¹⁶ / 3.95 × 10⁻¹⁶ | rises over about 11 years, then stays nearly flat |
+| CH₄ | 3.2 × 10⁻¹⁴ (2.1–4.7) | 3.9 × 10⁻¹⁵ (1.4–9.8) | 2.59 × 10⁻¹⁴ / 4.73 × 10⁻¹⁵ / 2.12 × 10⁻¹⁵ | peaks after 5 years, a tenth of the peak by 100 years |
+| N₂O | 1.7 × 10⁻¹³ (1.1–2.4) | 1.1 × 10⁻¹³ (0.7–1.8) | 1.47 × 10⁻¹³ / 1.24 × 10⁻¹³ / 9.19 × 10⁻¹⁴ | peaks after 12 years, decays over a century |
 
-At 100 years, FaIR's CO₂ curve is 11% below AR6's and its N₂O curve 9% above. Its methane curve is about twice AR6's, close to AR6's value at 50 years. "The AR6 alternative" below explains why.
+At 100 years, FaIR's CO₂ curve is 12% below AR6's and its N₂O curve 15% above. Its methane curve is about twice AR6's, close to AR6's value at 50 years. "The AR6 alternative" below explains why.
 
 ### How the app uses the curves
 
@@ -80,7 +80,7 @@ Under *Other options*, you can switch the curves to the analytic expressions of 
 
 Every constant is the one AR6's own code used for its Table 7.SM.7. The pipeline reproduces that table's AGTP at 50 and 100 years within 0.2% for all three gases. AR6 gives a single curve, so its median and its 5th and 95th percentiles are the same. Its curves for an instantaneous pulse are averaged the same way as FaIR's: an emission spread over year 0, and the mean over each calendar year.
 
-The two give curves of similar size. At 20 years, FaIR's median is 0.75 times AR6's for CO₂, 1.3 times for methane and 1.1 times for N₂O. They differ more at long horizons: FaIR's methane curve at 50 and 100 years is about twice AR6's. That tail does not come from FaIR's carbon cycle, because it stays with the climate-carbon feedback switched off. It comes from the slower part of FaIR's climate response, which is larger in the calibrated ensemble than in AR6's two-timescale fit. For a diet shift up to 2050, the first few decades matter most, and there the two are close.
+The two give curves of similar size. At 20 years, FaIR's median is 0.75 times AR6's for CO₂, 1.2 times for methane and 1.1 times for N₂O. They differ more at long horizons: FaIR's methane curve at 50 and 100 years is about twice AR6's. That tail does not come from FaIR's carbon cycle, because it stays with the climate-carbon feedback switched off. It comes from the slower part of FaIR's climate response, which is larger in the calibrated ensemble than in AR6's two-timescale fit. For a diet shift up to 2050, the first few decades matter most, and there the two are close.
 
 ## The uncertainty band
 
@@ -119,9 +119,9 @@ The app shows the median and the 5–95% range relative to 1850–1900. The tabl
 
 | Scenario | 2015–2024 | 2050 | 2100 |
 | --- | --- | --- | --- |
-| SSP1-2.6 | 1.20 °C (1.01–1.36) | 1.79 °C (1.36–2.34) | 1.77 °C (1.23–2.57) |
-| SSP2-4.5 | 1.20 °C (1.01–1.35) | 1.90 °C (1.50–2.33) | 2.62 °C (1.92–3.61) |
-| SSP3-7.0 | 1.20 °C (1.01–1.35) | 1.88 °C (1.50–2.29) | 3.50 °C (2.68–4.46) |
+| SSP1-2.6 | 1.20 °C (1.01–1.36) | 1.79 °C (1.36–2.34) | 1.76 °C (1.22–2.56) |
+| SSP2-4.5 | 1.20 °C (1.01–1.35) | 1.89 °C (1.49–2.33) | 2.61 °C (1.91–3.60) |
+| SSP3-7.0 | 1.20 °C (1.01–1.35) | 1.86 °C (1.49–2.28) | 3.47 °C (2.67–4.43) |
 
 Observed warming over 2015–2024 is 1.27 °C in HadCRUT5 and 1.33 °C in Berkeley Earth, both re-baselined here to their own 1850–1900 means. The FaIR median is 0.06 °C below HadCRUT5, which lies inside FaIR's 5–95% range. Indicators of Global Climate Change 2024, which combines four records, assesses 2015–2024 at 1.24 °C (1.11–1.35) (Forster et al. 2025). Tests check FaIR's median against HadCRUT5 and against this assessment. The 2100 values are close to AR6's assessed best estimates for 2081–2100: 1.8, 2.7 and 3.6 °C (Table SPM.1).
 
@@ -136,12 +136,12 @@ The observed lines are the Met Office HadCRUT5 analysis (global annual series, c
 - **Human-induced warming.** Forster et al. (2026) put human-induced warming at 1.37 °C in 2025, rising by about 0.27 °C a decade.
 - **Single years.** WMO put 2024 at 1.55 ± 0.13 °C above 1850–1900, the first calendar year above 1.5 °C, and 2025 at 1.44 ± 0.13 °C. A warming level, in the IPCC's sense, is a 20-year average: "the occurrence of individual years with global surface temperature change above a certain level does not imply that this global warming level has been reached" (AR6 Synthesis Report, SPM, footnote 28).
 - **The Paris Agreement.** Its goal (Article 2.1(a)) is to hold warming "well below 2°C above pre-industrial levels" and to pursue efforts to limit it to 1.5 °C.
-- **Where current policies lead.** Current policies lead to about 2.6 to 2.8 °C by 2100: 2.7 °C for the Climate Action Tracker (November 2026) and 2.8 °C in the UNEP Emissions Gap Report 2026. This is close to SSP2-4.5's 2.63 °C here. With all pledges kept, net zero included, warming reaches about 2.1 °C.
+- **Where current policies lead.** Current policies lead to about 2.6 to 2.8 °C by 2100: 2.7 °C for the Climate Action Tracker (November 2026) and 2.8 °C in the UNEP Emissions Gap Report 2026. This is close to SSP2-4.5's 2.61 °C here. With all pledges kept, net zero included, warming reaches about 2.1 °C.
 - **Remaining carbon budgets.** For a 50% chance of staying under 1.5, 1.7 and 2 °C, the remaining CO₂ budgets are 130, 500 and 1,050 Gt from the start of 2026 (Forster et al. 2026). The Global Carbon Budget 2025 gives 170, 525 and 1,055 Gt as of January 2026. These budgets assume a pathway for the other gases, so they cannot be compared one for one with levers that mostly cut methane.
 
 ## Why 2023 and 2024 were so warm
 
-HadCRUT5 puts 2023 at 1.48 °C and 2024 at 1.55 °C above 1850–1900 (Berkeley Earth: 1.54 and 1.62 °C). FaIR's SSP2-4.5 median gives 1.29 and 1.30 °C, with 5–95% ranges of 1.03–1.51 and 1.05–1.55 °C. The two years sit 0.19 and 0.25 °C above the median, at the top of its range.
+HadCRUT5 puts 2023 at 1.48 °C and 2024 at 1.55 °C above 1850–1900 (Berkeley Earth: 1.54 and 1.62 °C). FaIR's SSP2-4.5 median gives 1.31 and 1.34 °C, with 5–95% ranges of 1.06–1.51 and 1.08–1.55 °C. The two years sit 0.17 and 0.21 °C above the median, at the top of its range.
 
 Several factors together explain the gap. FaIR includes some of them and not others. With the shipping effect, El Niño and the cloud changes added, the observed temperatures of the two years are what the literature expects. No single factor accounts for all of 2023.
 
@@ -206,7 +206,7 @@ What it adds, and its effect:
 - **The forcing.** From 2020 it adds an effective radiative forcing of 0.12 W/m². This is Gettelman et al.'s (2024) estimate, the one made with FaIR. Its likely range is 0.08–0.14 W/m², the range Forster et al. (2025) give in their review of the estimates above. Yuan et al.'s 0.2 W/m², over the oceans only, and Hansen et al.'s 0.5 are left outside it.
 - **Over time.** Each year the forcing follows the scenario's international shipping CO₂ relative to 2020, because the sulphur no longer emitted is in proportion to the fuel burnt.
 - **Into temperature.** It is turned into temperature with FaIR's response to a year of forcing (see [Energy and transport](#method-sectors)). The low end is paired with the 5% response and the high end with the 95%. The result is added to the baseline temperature, and so to the scenario's.
-- **The effect.** On SSP2-4.5 it warms 2023 by 0.034 °C (0.014–0.056), 2024 by 0.037 °C (0.015–0.062) and 2030 by 0.047 °C (0.018–0.083). This is close to Forster et al.'s 0.03 and 0.04 °C for 2023 and 2024, and to Jordan and Henry's 0.046 °C over 2020–2029. By 2050 and 2100 it adds 0.054 and 0.067 °C on SSP2-4.5, 0.043 and 0.030 on SSP1-2.6, whose ships burn less fuel, and 0.058 and 0.052 on SSP3-7.0.
+- **The effect.** On SSP2-4.5 it warms 2023 by 0.034 °C (0.014–0.056), 2024 by 0.037 °C (0.015–0.062) and 2030 by 0.048 °C (0.018–0.085). This is close to Forster et al.'s 0.03 and 0.04 °C for 2023 and 2024, and to Jordan and Henry's 0.046 °C over 2020–2029. By 2050 and 2100 it adds 0.056 and 0.069 °C on SSP2-4.5, 0.044 and 0.030 on SSP1-2.6, whose ships burn less fuel, and 0.060 and 0.053 on SSP3-7.0.
 - **What it leaves unchanged.** It leaves the warming the levers avoid unchanged. FaIR's own runs are left as they are: the scenario temperatures in the table above, the AGTP curves and the causes of warming do not include it.
 
 With it off, the scenarios keep their own ships' SO₂, cut from 2015 on, and FaIR's response to it.
@@ -271,7 +271,7 @@ With the 20-year spread, the release from 2026 to 2100 on SSP2-4.5 is about 27 P
 
 ### Why it adds little by 2100
 
-The feedback adds about 0.02 °C to the baseline in 2050 and 0.05 °C in 2100 on SSP2-4.5 (medians). In 2100 it adds 0.03 °C on SSP1-2.6 and 0.07 °C on SSP3-7.0, where there is more warming to thaw the ground. The range is wide: in 2100 on SSP2-4.5 it runs from under 0.01 °C to 0.25 °C, as the high end pairs AR6's largest release per degree with the warmest climate response.
+The feedback adds about 0.02 °C to the baseline in 2050 and 0.05 °C in 2100 on SSP2-4.5 (medians). In 2100 it adds 0.03 °C on SSP1-2.6 and 0.06 °C on SSP3-7.0, where there is more warming to thaw the ground. The range is wide: in 2100 on SSP2-4.5 it runs from under 0.01 °C to 0.24 °C, as the high end pairs AR6's largest release per degree with the warmest climate response.
 
 The median is small for four reasons:
 
@@ -288,9 +288,9 @@ The median is small for four reasons:
 
 ## Sea-level rise
 
-The Sea level tab shows the rise each year to 2100 without and with the levers. The summary gives the rise the levers avoid by 2100. The rise follows a rate proportional to the warming above a balance temperature, dH/dt = a·(T − T₀), as in semi-empirical models of sea level. The rate is fitted to the medians of IPCC AR6 WG1 Table 9.9 for SSP1-2.6, SSP2-4.5 and SSP3-7.0 in 2030, 2050, 2090 and 2100, relative to 1995–2014. It is fitted against FaIR's median warming of each scenario. The fit gives a = 4.2 mm a year per °C and T₀ = 0.40 °C. A test checks that it stays within 4 cm of the table in every year and scenario. Each end of the table's likely range has its own fit, against the median warming. The rate's likely range is 3.4–5.6 mm a year per °C, with T₀ = 0.43 and 0.39 °C. Grinsted and Christensen (2021) find 0.40 m per century per °C (likely 0.35–0.44) in the observed record, close to this rate.
+The Sea level tab shows the rise each year to 2100 without and with the levers. The summary gives the rise the levers avoid by 2100. The rise follows a rate proportional to the warming above a balance temperature, dH/dt = a·(T − T₀), as in semi-empirical models of sea level. The rate is fitted to the medians of IPCC AR6 WG1 Table 9.9 for SSP1-2.6, SSP2-4.5 and SSP3-7.0 in 2030, 2050, 2090 and 2100, relative to 1995–2014. It is fitted against FaIR's median warming of each scenario. The fit gives a = 4.2 mm a year per °C and T₀ = 0.41 °C. A test checks that it stays within 4 cm of the table in every year and scenario. Each end of the table's likely range has its own fit, against the median warming. The rate's likely range is 3.4–5.7 mm a year per °C, with T₀ = 0.44 and 0.41 °C. Grinsted and Christensen (2021) find 0.40 m per century per °C (likely 0.35–0.44) in the observed record, close to this rate.
 
-The rise is linear in the warming. So the rise avoided is the rate times the warming avoided, summed over the years to 2100, and T₀ drops out. If warming is 0.1 °C lower from 2050 on, after a linear ramp from 2025, the rise avoided is about 2.6 cm by 2100. Its likely range is the rate's likely range, applied to the median warming avoided.
+The rise is linear in the warming. So the rise avoided is the rate times the warming avoided, summed over the years to 2100, and T₀ drops out. If warming is 0.1 °C lower from 2050 on, after a linear ramp from 2025, the rise avoided is about 2.7 cm by 2100. Its likely range is the rate's likely range, applied to the median warming avoided.
 
 This emulates AR6's projections for this century. It is not a model of sea level checked against history. Fitted to the future, it gives almost no rise over 1901–2018, while 0.20 m (very likely 0.15–0.25 m) was observed. Grinsted and Christensen describe the same gap between the projections and the observed record. The chart's observed line joins two records. The first is AR6's assessed tide-gauge record to 1992 (Cross-Chapter Box 9.1), already relative to 1995–2014. The second is NASA's satellite altimetry from 1993 (Willis, Hamlington and Fournier), shifted to its own 1995–2014 mean. The satellite series has no glacial isostatic adjustment, which leaves it about 0.3 mm a year below AR6's. Together they give 0.20 m over 1901–2018, as AR6 does, and 7.1 cm above 1995–2014 in 2025. The chart and the summary measure the rise from the 1900 level, 15.8 cm below the 1995–2014 mean in this record, so each of their values is 15.8 cm higher than the same rise relative to 1995–2014. Sea level keeps rising for centuries after the warming. So the rise the levers avoid keeps growing after 2100, and the figure leaves that out. Without the levers, the rise follows the same fit on the run's own baseline temperature, which includes Planetshift's departures from FaIR such as permafrost. On FaIR's warming alone, the fit gives 0.58 m (likely 0.46–0.78) by 2100 in SSP2-4.5, against Table 9.9's 0.56 m (0.44–0.76). Table 9.9 gives 0.44 m (0.32–0.62) in SSP1-2.6 and 0.68 m (0.55–0.90) in SSP3-7.0.
 
@@ -312,11 +312,11 @@ Each departure is a named switch in `planetshift.config.json`, the file a fork o
 
 With every switch at its plain-FaIR value, on SSP2-4.5:
 
-- less flying in full avoids 0.007 °C in 2050 and 0.045 °C in 2100, instead of 0.054 and 0.122, as most of its effect is the contrails' and FaIR has none;
-- electric cars avoid 0.027 and 0.091 °C instead of 0.045 and 0.106, and in SSP3-7.0 add 0.018 °C by 2100 instead of avoiding 0.054;
-- the six energy levers together avoid 0.165 and 0.534 °C instead of 0.253 and 0.655.
+- less flying in full avoids 0.007 °C in 2050 and 0.045 °C in 2100, instead of 0.055 and 0.125, as most of its effect is the contrails' and FaIR has none;
+- electric cars avoid 0.026 and 0.090 °C instead of 0.040 and 0.103, and in SSP3-7.0 add 0.019 °C by 2100 instead of avoiding 0.034;
+- the six energy levers together avoid 0.161 and 0.531 °C instead of 0.250 and 0.652.
 
-Without the shipping rule, the baseline is 0.037 °C cooler in 2024 and 0.067 °C cooler in 2100. The farm levers do not move.
+Without the shipping rule, the baseline is 0.037 °C cooler in 2024 and 0.069 °C cooler in 2100. The farm levers do not move.
 
 ## Assumptions
 

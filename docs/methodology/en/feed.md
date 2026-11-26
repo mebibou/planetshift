@@ -30,7 +30,7 @@ A single published split of the world's concentrate feed between species is appl
 | Poultry meat | 33% |
 | Eggs | 13% |
 
-This split (`feed_species.csv`) is the world's compound feed by species in 2024, from the feed industry's annual survey (Alltech Agri-Food Outlook 2025, table "Feed Tonnage by Sector" and the layer table): 157.7 Mt for beef cattle and other ruminants, 165.5 Mt for dairy, 369.3 Mt for pigs, 422.8 Mt for poultry other than layers and 173.0 Mt for layers. Pet food, horses and other species are left out. FAO's GLEAM assessment of livestock feed intake (Mottet et al., 2017) gives about the same share to ruminants together and to pigs.
+This split (`feed_species.csv`) is the world's compound feed by species in 2024, from the feed industry's annual survey (Alltech Agri-Food Outlook 2025, table "Feed Tonnage by Sector" and the layer table): 157.7 Mt for beef cattle and other ruminants, 165.5 Mt for dairy, 369.3 Mt for pigs, 422.8 Mt for poultry other than layers and 173.0 Mt for layers. Pet food, horses and other species are left out. FAO's GLEAM assessment of livestock feed intake (Mottet et al., 2017) gives about the same shares to ruminants as a group and to pigs.
 
 A region's split follows what it produces. Each group's world share is divided by its world production and multiplied by the region's production. A region that raises mostly cattle therefore gives most of its feed to cattle.
 

@@ -94,15 +94,15 @@ Planetshift utilise plutôt la **valeur de Shapley**, une règle de la théorie 
 
 Un levier qui n'agit qu'avec un autre partage cet effet commun à moitié avec lui. La repousse sur les terres libérées est un tel levier.
 
-**Exemple.** Avec la moitié des aliments d'origine animale remplacés par des végétaux (alimentation à 50 %) et la repousse naturelle activée, l'exécution de test enregistrée (`app/test/golden/real.json`) donne ces médianes du réchauffement évité en 2100 :
+**Exemple.** Avec la moitié des aliments d'origine animale remplacés par des végétaux (alimentation à 50 %), la repousse naturelle activée et le pergélisol désactivé, le modèle donne ces médianes du réchauffement évité en 2100 :
 
 | Groupes actifs | Réchauffement évité en 2100 |
 | --- | --- |
-| Alimentation seule | 0,1436 °C |
+| Alimentation seule | 0,1700 °C |
 | Repousse seule | 0 (elle ne libère aucune terre) |
-| Alimentation et repousse | 0,1909 °C |
+| Alimentation et repousse | 0,1842 °C |
 
-L'effet commun de la repousse est de 0,1909 − 0,1436 = 0,0473 °C. La valeur de Shapley le partage à parts égales entre les deux. La repousse obtient 0,0237 °C et l'alimentation 0,1436 + 0,0237 = 0,1673 °C, ce que montre le résumé (au dernier chiffre arrondi près).
+L'effet commun de la repousse est de 0,1842 − 0,1700 = 0,0142 °C. La valeur de Shapley le partage à parts égales entre les deux. La repousse obtient 0,0071 °C et l'alimentation 0,1700 + 0,0071 = 0,1771 °C, ce que montre le résumé (au dernier chiffre arrondi près). Avec le pergélisol activé, la variation de son rejet est répartie en plus de ces parts (voir plus bas) : les parts du résumé s'écartent alors un peu de celles-ci.
 
 ### Comment Planetshift les calcule vite
 

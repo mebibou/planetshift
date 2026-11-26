@@ -219,7 +219,7 @@
       "speciesDensity": "Espèces condamnées à l'extinction par Mha de terres agricoles du pays, avec les leviers"
     },
     "notes": {
-      "water": "L'eau douce prélevée dans les rivières, les lacs et les nappes pour les cultures et les animaux de chaque pays, et pour fabriquer les intrants de la ferme : les litres par tonne de chaque aliment multipliés par sa production. HESTIA donne les litres des cultures qu'il couvre. Poore & Nemecek (2018) donnent le reste. Les produits animaux comptent l'eau utilisée à la ferme, pas leurs aliments concentrés, comptés sur les cultures. La pisciculture n'est pas comptée. Les litres par tonne ne changent pas avec les leviers : l'eau suit la production. L'eau ne change pas le réchauffement. L'infobulle donne la surface équipée pour l'irrigation.",
+      "water": "L'eau douce prélevée dans les rivières, les lacs et les nappes pour les cultures et les animaux de chaque pays et pour fabriquer les intrants de la ferme. Ce sont les litres par tonne de chaque aliment multipliés par sa production. HESTIA donne les litres des cultures qu'il couvre. Poore & Nemecek (2018) donnent le reste. Les produits animaux comptent l'eau utilisée à la ferme, pas leurs aliments concentrés, comptés sur les cultures. La pisciculture n'est pas comptée. Les litres par tonne ne changent pas avec les leviers : l'eau suit la production. L'eau ne change pas le réchauffement. L'infobulle donne la surface équipée pour l'irrigation.",
       "waterScarcity": "La consommation d'eau pondérée par la rareté de l'eau là où elle est utilisée (AWARE 2.0), en litres-équivalent. Elle ne couvre que les cultures pour lesquelles HESTIA a une agrégation du pays lui-même : les pays sont incomplets et ne se comparent pas sur ce chiffre. Elle ne s'ajoute pas aux litres prélevés.",
       "production": "Là où les aliments sont produits, pas là où ils sont consommés.",
       "emissions": "Émissions à la ferme, des cultures et des élevages. Le CO₂e pondère le méthane et le protoxyde d'azote sur 100 ans, pour comparaison seulement.",
@@ -347,7 +347,7 @@
     },
     "water": {
       "label": "Eau douce prélevée pour l'agriculture",
-      "detail": "par an, une fois les leviers en place : {change}. Litres par tonne de HESTIA pour les cultures qu'il couvre et de Poore & Nemecek (2018) pour le reste ; pisciculture non comptée. L'eau ne change pas le réchauffement."
+      "detail": "par an, une fois les leviers en place : {change}. Les litres par tonne viennent de HESTIA pour les cultures qu'il couvre et de Poore & Nemecek (2018) pour le reste. La pisciculture n'est pas comptée. L'eau ne change pas le réchauffement."
     },
     "mammals": {
       "label": "Mammifères d'élevage pour un sauvage, en poids",

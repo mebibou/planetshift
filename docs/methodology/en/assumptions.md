@@ -79,7 +79,7 @@ The URL keys of the options, the diet controls and the levers are listed under [
 - **FAOSTAT's own Tier 1 estimates, not countries' inventories**, for the emissions year closest to 2024, so that every country is estimated the same way. See [Emissions](#method-emissions).
 - **Synthetic nitrogen is shared by harvested area × a world rate per crop class.** The rates come from the shares of world nitrogen use in Heffer et al. (2017): wheat 18%, maize 18%, rice 15%, vegetables 7%, fruit 6%, and so on. Real rates vary between countries. See [Emissions](#method-emissions).
 - **4.7% of each country's synthetic nitrogen goes on grassland**, as in the world average of the same survey. It is given to ruminant products in proportion to their methane. See [Emissions](#method-emissions).
-- **A dairy herd's emissions go 88% to milk and 12% to beef** everywhere. This is the International Dairy Federation's physical allocation at the typical ratio it gives, 0.02 kg of live weight sold per kg of milk; a farm that sells more or less meat per litre would get another share. See [Emissions](#method-emissions).
+- **A dairy herd's emissions are split 88% to milk and 12% to beef** everywhere. This is the International Dairy Federation's physical allocation at the typical ratio it gives, 0.02 kg of live weight sold per kg of milk; a farm that sells more or less meat per litre would get another share. See [Emissions](#method-emissions).
 - **Mixed herds (buffalo, sheep, goats, camels) are split between milk and meat by protein**, with 15% protein in carcass meat and 3.2–5.5% in milk depending on the species. See [Emissions](#method-emissions).
 - **Horses, asses and mules are left out**: they are kept mainly for work. See [Emissions](#method-emissions).
 - **Offal and animal fats carry the same emissions per tonne as the carcass**, sharing the meat's emissions by mass. See [Emissions](#method-emissions).
@@ -108,11 +108,11 @@ The URL keys of the options, the diet controls and the levers are listed under [
 
 ## Freshwater
 
-- **Withdrawals per tonne do not change with the levers.** The water follows production. Water changes no warming. See [Freshwater](#method-water).
-- **The tiers are the emissions'**: HESTIA's country, then its World average, then Poore & Nemecek's world value, then a proxy or the primary item over its extraction rate, then the group's median. See [Freshwater](#method-water).
-- **HESTIA's withdrawals count the farm and the making of its non-agricultural inputs**, as the cradle-to-farm-gate emissions do. See [Freshwater](#method-water).
+- **Withdrawals per tonne do not change with the levers.** The water moves with production. It does not change the warming. See [Freshwater](#method-water).
+- **The tiers are the same as for emissions**: HESTIA's country, then its World average, then Poore & Nemecek's world value, then a proxy or the primary item over its extraction rate, then the group's median. See [Freshwater](#method-water).
+- **HESTIA's withdrawals include the water used on the farm and in making its non-agricultural inputs**, as the cradle-to-farm-gate emissions do. See [Freshwater](#method-water).
 - **Poore & Nemecek's litres per kg of retail product become litres per tonne of the FBS item** by the ratio of the study's farm-stage emissions per FBS unit to those per kg of retail product, then by the emissions' `kg_product_per_kg_item`. See [Freshwater](#method-water).
-- **Animal products carry the study's value less the water of their concentrate feed**, at GLEAM-style rations and the model's crop litres weighted by feed use, never below zero. See [Freshwater](#method-water).
+- **Animal products take the study's value less the water of their concentrate feed**, at GLEAM-style rations and the model's crop litres weighted by feed use. The result is never below zero. See [Freshwater](#method-water).
 - **Scarcity-weighted use (AWARE 2.0) is kept only where a country has its own HESTIA aggregation**, and never added to litres. See [Freshwater](#method-water).
 
 ## The shift
@@ -206,7 +206,7 @@ The other sources are CC BY 4.0, public domain, the Open Government Licence, Apa
 
 - The GLEAM-style concentrate intakes and rations, which no published table gives in this form, and aquafeed's 30/40/5/25 ration. See [Feed](#method-feed).
 - The grain per tonne of fermented (0.25 t) and alcoholic (1.1 t) beverages, which FAO's technical conversion factors do not give. See [Emissions](#method-emissions).
-- Cover crops' rate being the same in every moist climate: the meta-analysis could be read only in its abstract, which names elevation and sampling depth as what explains the rates, not climate. See [Carbon in farmland](#method-removals).
+- Cover crops' one rate for every moist climate: the meta-analysis could be read only in its abstract, which says elevation and sampling depth explain the rates, not climate. See [Carbon in farmland](#method-removals).
 - An electric car's 0.15–0.22 kWh/km. The US EPA's ratings of the 2023–2025 models, charging losses included, give a median of 0.22 kWh/km for cars (0.17–0.27 from the 10th to the 90th percentile), but they are not weighted by sales and cover the US market only. See [Energy and transport](#method-sectors).
 - Steel's and cement's cuts at full adoption (90%, 80%) and cement's electricity per kg avoided. See [Buildings and industry](#method-industry).
 - Buildings' 3.0 Gt of direct CO₂ in 2022, read only in a search summary of the IEA's page. The IEA's *Special Report on Buildings Efficiency* gives 2.8 Gt without a year, and CEDS gives 2.68 Gt for residential, commercial and institutional fuel in 2022. See [Buildings and industry](#method-industry).
@@ -214,7 +214,7 @@ The other sources are CC BY 4.0, public domain, the Open Government Licence, Apa
 
 ### Assumptions no source gives
 
-These values are Planetshift's own judgements. No source sets them, so none can be checked; they stay assumptions.
+These values are Planetshift's own judgements. No source sets them, so none can be checked. They stay assumptions.
 
 - The legume mix (60% pulses, 20% soybeans, 20% cereals). See [The shift](#method-shift).
 - The plant-milk mix (50% soybeans, 50% oats). See [The shift](#method-shift).

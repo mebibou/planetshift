@@ -186,11 +186,11 @@ Le tableau montre ce que change la compensation, sur les données réelles avec 
 
 | Scénario, repousse activée | Absorption nette une fois complet (Gt de CO₂ par an) | Évité en 2050 (°C) | Évité en 2100 (°C) |
 | --- | --- | --- | --- |
-| Changement complet, avant | 9,20 | 0,186 | 0,379 (0,196–0,836) |
-| Changement complet, net | 8,86 | 0,184 | 0,376 (0,196–0,822) |
-| Moitié du changement, avant → net | 4,60 → 4,43 | 0,093 → 0,092 | 0,189 → 0,188 |
-| Lait végétal pour le lait, avant → net | 1,11 → 1,03 | 0,041 → 0,040 | 0,083 → 0,082 |
-| Moitié du poisson en légumineuses, avant → net | 0,01 → −0,09 | 0,0006 → −0,0002 | 0,0017 → 0,0006 |
+| Changement complet, avant | 9,20 | 0,184 | 0,378 (0,204–0,816) |
+| Changement complet, net | 8,86 | 0,182 | 0,375 (0,204–0,804) |
+| Moitié du changement, avant → net | 4,60 → 4,43 | 0,092 → 0,091 | 0,189 → 0,187 |
+| Lait végétal pour le lait, avant → net | 1,08 → 0,99 | 0,049 → 0,049 | 0,100 → 0,101 |
+| Moitié du poisson en légumineuses, avant → net | 0,01 → −0,09 | 0,0020 → 0,0014 | 0,0049 → 0,0043 |
 
 Avec le changement complet, 14 pays cultivent au total plus de terres qu'avant, 41 Mha ensemble. Avec la substitution du poisson, 103 pays cultivent plus de terres qu'avant, 18 Mha ensemble. Sans la repousse, rien ne change.
 
@@ -202,7 +202,7 @@ Jiao et al. (2017) ont mesuré le forçage du passage de chaque type de forêt e
 
 Ces valeurs n'ont été ajustées à aucun total. Appliquées à toutes les terres agricoles d'aujourd'hui, elles donnent −0,216 W m⁻². RCMIP et l'AR6 donnent −0,20 W m⁻² pour l'albédo de l'usage des terres en 2019.
 
-L'effet est important. Avec le changement complet et la repousse, l'albédo réduit de 0,06 °C le réchauffement évité en 2100 sur SSP2-4.5 : 0,39 °C au lieu de 0,45 °C. Le CO₂ qu'absorbe la repousse s'arrête au bout de 30 ans puis reste stocké, alors que la surface plus sombre continue de réchauffer. La plupart des terres libérées sont des pâturages hors des tropiques, là où le contraste avec la forêt est le plus fort. Jiao et al. trouvent les effets les plus forts dans les forêts boréales et mixtes, jusqu'à −80 W m⁻² localement. Sous les tropiques, ils n'en trouvent presque aucun. Leurs valeurs ne tiennent pas compte de la neige, qui rend le défrichement boréal plus refroidissant : l'effet y est peut-être plus grand encore.
+L'effet est important. Avec le changement complet et la repousse, l'albédo réduit de 0,06 °C le réchauffement évité en 2100 sur SSP2-4.5 : 0,38 °C au lieu de 0,44 °C. Le CO₂ qu'absorbe la repousse s'arrête au bout de 30 ans puis reste stocké, alors que la surface plus sombre continue de réchauffer. La plupart des terres libérées sont des pâturages hors des tropiques, là où le contraste avec la forêt est le plus fort. Jiao et al. trouvent les effets les plus forts dans les forêts boréales et mixtes, jusqu'à −80 W m⁻² localement. Sous les tropiques, ils n'en trouvent presque aucun. Leurs valeurs ne tiennent pas compte de la neige, qui rend le défrichement boréal plus refroidissant : l'effet y est peut-être plus grand encore.
 
 ## Le CO₂ de l'usage des terres par pays
 
