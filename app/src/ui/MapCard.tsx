@@ -343,8 +343,8 @@ export const MapCard = (props: MapCardProps) => {
       <h2 id="map-title" className="visually-hidden">
         {t('map.title')}
       </h2>
-      <div className="map-head mb-2 flex items-start justify-between gap-x-5 gap-y-3 max-md:flex-col max-md:items-stretch">
-        <div className="card-tools order-2 ml-auto flex flex-none items-center justify-end gap-2 max-md:order-none">
+      <div className="map-head mb-2 flex flex-col items-stretch gap-y-3">
+        <div className="card-tools ml-auto flex flex-none items-center justify-end gap-2">
           <ViewTabs t={t} ui={ui} setUi={setUi} />
           <DownloadButton
             label={t('download.button')}
