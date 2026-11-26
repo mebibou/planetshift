@@ -26,7 +26,7 @@ from .climate_scenarios import (
     removals,
     without,
 )
-from .sources import fair_history, primap, rcmip, temperature
+from .sources import fair_history, ocean_ph, primap, rcmip, temperature
 from .sources import sea_level as sea_level_obs
 
 SOURCES = [
@@ -78,6 +78,13 @@ SOURCES = [
         "version": sea_level_obs.NASA_VERSION,
         "url": sea_level_obs.NASA_DOI,
         "licence": sea_level_obs.LICENCE,
+    },
+    {
+        "id": "cmems-ocean-ph",
+        "name": "Copernicus Marine global mean surface ocean pH (LSCE reconstruction)",
+        "version": ocean_ph.VERSION,
+        "url": ocean_ph.DOI,
+        "licence": ocean_ph.LICENCE,
     },
     {
         "id": "ar6-gmsl-tide-gauge",
@@ -211,6 +218,30 @@ def pulse_runs(
         pulse_key(gas, year, scale): agtp(i + 1, gas, year, scale)
         for i, (gas, year, scale) in enumerate(pulses)
     }
+
+
+def co2_ppm_per_kg(
+    setup: climate_fair.Setup, base: dict[str, np.ndarray], horizon: int
+) -> np.ndarray:
+    """ppm of CO₂ in the air per kg of CO₂ emitted, (horizon, member), from the same pulse as the
+    AGTP: what turns a change in emissions into a change in concentration, for ocean pH."""
+    pulse = pulsed(base, "co2", PULSE_YEAR, PULSES["co2"])
+    result = climate_fair.run(
+        setup, {"base": base, pulse_key("co2", PULSE_YEAR, 1.0): pulse}, PULSE_YEAR + horizon + 1
+    )
+    start = PULSE_YEAR - climate_fair.START
+    window = slice(start, start + horizon + 1)
+    return (result.co2[window, 1, :] - result.co2[window, 0, :]) / (
+        PULSES["co2"] * KG_PER_UNIT["co2"]
+    )
+
+
+def scenario_co2(
+    setup: climate_fair.Setup, emissions: dict[str, dict[str, np.ndarray]], end: int
+) -> dict[str, np.ndarray]:
+    """Each scenario's CO₂ concentration, ppm, (year, member)."""
+    result = climate_fair.run(setup, emissions, end)
+    return {name: result.co2[:, i, :] for i, name in enumerate(result.scenarios)}
 
 
 def year_spread(pulses: dict[str, np.ndarray], gas: str) -> float:
@@ -499,11 +530,15 @@ def build(
         }
         for ssp in SSPS
     }
+    full = {
+        ssp: {k: v[: len(years)] for k, v in by_ssp[ssp].items()}
+        | {climate_fair.LAND_USE: rcmip.albedo_forcing(forcing, ssp, years)}
+        for ssp in SSPS
+    }
     runs = {
         ssp: attribution_runs(
             setup,
-            {k: v[: len(years)] for k, v in by_ssp[ssp].items()}
-            | {climate_fair.LAND_USE: rcmip.albedo_forcing(forcing, ssp, years)},
+            full[ssp],
             sector[ssp]["agriculture"],
             sector[ssp]["fossilIndustry"],
             SCENARIO_END + 1,
@@ -543,6 +578,14 @@ def build(
         "naturalOnly": band_series(years[shown], band(natural[shown])),
         "permafrost": permafrost(),
         "shippingSulphur2020": shipping_sulphur(rcmip_df),
+        "co2": {
+            ssp: band_series(years[shown], band(co2[shown]))
+            for ssp, co2 in scenario_co2(setup, full, SCENARIO_END + 1).items()
+        },
+        "oceanPhObserved": series(*ocean_ph.observed(cache_dir)),
+        "co2PpmPerKg": {
+            k: rounded(v) for k, v in band(co2_ppm_per_kg(setup, by_ssp[AGTP_SSP], HORIZON)).items()
+        },
         "seaLevel": {
             **sea_level.section(
                 years[shown], {ssp: band(by_cause[ssp]["total"][shown])["median"] for ssp in SSPS}

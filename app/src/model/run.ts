@@ -1,3 +1,4 @@
+import { oceanPaths } from './ocean';
 import { seaLevel2100, seaLevelPaths } from './seaLevel';
 import {
   ANIMAL_GROUPS,
@@ -1823,6 +1824,12 @@ export const runPrepared = (
     baselineEmissions: baselinePath,
     scenarioEmissions: baselinePath.map((e, i) => addGas(e, farmDifference[i] as GasVector)),
     seaLevel: seaPaths,
+    ocean: oceanPaths(
+      climate,
+      options.ssp,
+      differenceIn.median.map((v) => v.co2),
+      currentYear,
+    ),
     temperature: {
       years: tYears,
       observed: observedOn(climate.observed[options.temperature], tYears),

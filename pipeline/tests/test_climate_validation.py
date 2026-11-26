@@ -46,6 +46,9 @@ def test_document_matches_the_contract(built):
         "permafrost",
         "shippingSulphur2020",
         "seaLevel",
+        "co2",
+        "co2PpmPerKg",
+        "oceanPhObserved",
     }
     for method in ("fair", "ar6"):
         for gas in climate.AGTP_GASES:
@@ -295,3 +298,14 @@ def test_the_sea_level_fit_follows_ar6_table_9_9(built):
             balance = sea["balanceTemperature"]["median"]
             fitted = rate["median"] / 1000 * (warming[i] - balance * elapsed[i])
             assert abs(fitted - median) < 0.05, (ssp, year)
+
+
+def test_the_co2_in_the_air_and_its_response_to_a_kg_are_plausible(built):
+    """FaIR's CO₂ in 2024 is near the observed annual mean (about 424 ppm), and a tonne emitted
+    raises it by 1/7.8 ppm per Gt at first, about half of that staying a century on."""
+    document, _ = built
+    co2 = document["co2"]["ssp245"]
+    assert 415 < co2["median"][co2["years"].index(2024)] < 430
+    per_gt = [v * 1e12 for v in document["co2PpmPerKg"]["median"]]
+    assert 0.09 < per_gt[1] < 0.13
+    assert 0.4 < per_gt[100] / per_gt[1] < 0.7
