@@ -23,6 +23,12 @@
           "default": "split",
           "plainFair": "fair"
         },
+        "fossilMethaneCo2": {
+          "description": "The CO₂ that fossil methane becomes. on: cutting a kg of fossil methane with the energy and industry levers also cuts the 2.74 kg of CO₂ it would have oxidised to. That CO₂ is counted in the year the methane is emitted, as IPCC AR6 does in fossil methane's metrics (WG1 Table 7.15). off: no CO₂ is counted for the methane, as in FaIR.",
+          "enum": ["on", "off"],
+          "default": "on",
+          "plainFair": "off"
+        },
         "aviationNonCo2": {
           "description": "What less flying cuts besides CO₂. lee2021: Lee et al. (2021)'s non-CO₂ forcing (contrails, NOx, soot, sulphate, water vapour) per kg of aviation CO₂. fair: aviation's own NOx, SO₂, black and organic carbon as co-emissions through FaIR's coefficients, and no contrails, which FaIR does not have.",
           "enum": ["lee2021", "fair"],

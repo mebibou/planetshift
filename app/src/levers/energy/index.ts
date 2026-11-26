@@ -1,4 +1,4 @@
-import { departuresOf } from '../../config';
+import { departs, departuresOf } from '../../config';
 import { bandRecord } from '../../model/bands';
 import { convolve, sumOfGases, totalWarming, warmingByGas } from '../../model/climate';
 import { END_YEAR, range, zerosOn } from '../../model/util';
@@ -60,7 +60,15 @@ const dataCentreWarming = (
     const electricity = { electricity: co2[i] as number };
     return { co2: electricity, change: coChange(coemissions, options.ssp, y, electricity) };
   });
-  const byGas = warmingByGas(coGases(co2, co), dcStart, climate, options.climate, band, tYears);
+  const oxidised = departs(prepared.data, 'fossilMethaneCo2');
+  const byGas = warmingByGas(
+    coGases(co2, co, oxidised),
+    dcStart,
+    climate,
+    options.climate,
+    band,
+    tYears,
+  );
   return {
     byCause: {
       fossilIndustry: sumOfGases(byGas),
@@ -124,7 +132,9 @@ export const energy: LeverModule = {
       );
       const acting = anyAdopted(adoption, LEVERS);
       return {
-        extraEmissions: bandRecord((band) => coGases(paths[band].co2, paths[band].co)),
+        extraEmissions: bandRecord((band) =>
+          coGases(paths[band].co2, paths[band].co, departs(prepared.data, 'fossilMethaneCo2')),
+        ),
         extraWarming: acting
           ? bandRecord((band) =>
               convolve(paths[band].forcing, currentYear, forcingResponseOf(sectors, band), tYears),

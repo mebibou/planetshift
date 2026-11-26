@@ -3,6 +3,7 @@
   "departures": {
     "noxMethane": "chemistry",
     "coMethane": "split",
+    "fossilMethaneCo2": "on",
     "aviationNonCo2": "lee2021",
     "permafrost": "on",
     "shippingSulphur2020": "on"

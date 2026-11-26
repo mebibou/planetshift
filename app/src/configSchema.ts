@@ -5,6 +5,7 @@
 export interface Departures {
   noxMethane: 'chemistry' | 'fair' | 'hoor';
   coMethane: 'split' | 'fair';
+  fossilMethaneCo2: 'on' | 'off';
   aviationNonCo2: 'lee2021' | 'fair';
   permafrost: 'on' | 'off';
   shippingSulphur2020: 'on' | 'off';

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { data, lever, run, supply, w2050, w2100 } from '../../../test/levers';
+import { departuresOf } from '../../config';
 import { DEFAULT_OPTIONS } from '../../model/api';
 import { runScenario } from '../../model/run';
 import { BASE_SCENARIO } from '../../model/scenarios';
@@ -30,6 +31,15 @@ const avoidedOn = (d: typeof data, id: string) =>
   runScenario(d, { ...BASE_SCENARIO, levers: { [id]: 1 } }, DEFAULT_OPTIONS, CURRENT_YEAR).summary
     .avoided.co2;
 
+/** A lever alone without the fossilMethaneCo2 departure, to check the CO₂ accounting by itself. */
+const withoutMethaneCo2 = (id: string) =>
+  runScenario(
+    { ...data, departures: { ...departuresOf(data), fossilMethaneCo2: 'off' } },
+    { ...BASE_SCENARIO, levers: { [id]: 1 } },
+    DEFAULT_OPTIONS,
+    CURRENT_YEAR,
+  );
+
 describe('industry levers', () => {
   it.each(INDUSTRY_LEVERS)('%s alone avoids CO₂ and methane, attributed to its family', (id) => {
     const r = lever(id);
@@ -50,7 +60,7 @@ describe('industry levers', () => {
   });
 
   it('heat pumps save the boilers’ CO₂ less the electricity they draw', () => {
-    const r = lever('cleanHeating');
+    const r = withoutMethaneCo2('cleanHeating');
     const boilers = at2035('buildings');
     expect(r.summary.avoided.co2).toBeLessThan(boilers * (1 + supply('buildings')));
     expect(r.summary.avoided.co2).toBeCloseTo(
@@ -60,7 +70,7 @@ describe('industry levers', () => {
   });
 
   it('clean industry cuts steel’s, cement’s and chemicals’ share of industry, less their electricity', () => {
-    const r = lever('cleanIndustry');
+    const r = withoutMethaneCo2('cleanIndustry');
     const g = grid2035();
     const expected =
       at2035('industry') *
