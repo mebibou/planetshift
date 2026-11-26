@@ -17,7 +17,7 @@
   },
   "enhancedWeathering": {
     "title": "Poudre de roche (expérimental)",
-    "description": "Du basalte broyé épandu sur les champs capte du CO₂ en s'altérant. Montré jusqu'ici seulement dans de petits essais au champ, qui mesurent bien moins que ce que prévoient les modèles."
+    "description": "Du basalte broyé épandu sur les champs capte du CO₂ en s'altérant (altération forcée des roches, ou ERW en anglais). Montré jusqu'ici seulement dans de petits essais au champ, qui mesurent bien moins que ce que prévoient les modèles."
   },
   "summary": {
     "title": "CO₂ stocké dans les terres en {year}",

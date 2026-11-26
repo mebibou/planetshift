@@ -17,7 +17,7 @@
   },
   "enhancedWeathering": {
     "title": "Rock dust (experimental)",
-    "description": "Crushed basalt spread on fields takes up CO₂ as it weathers. Shown so far only in small field trials, which measure far less than models predict."
+    "description": "Crushed basalt spread on fields takes up CO₂ as it weathers (enhanced rock weathering, ERW). Shown so far only in small field trials, which measure far less than models predict."
   },
   "summary": {
     "title": "CO₂ stored in farmland in {year}",
