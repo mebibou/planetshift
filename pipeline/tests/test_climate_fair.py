@@ -3,6 +3,7 @@ import pandas as pd
 import pytest
 
 from planetshift_pipeline import climate_fair
+from planetshift_pipeline.cache import DEFAULT_CACHE
 
 
 @pytest.fixture
@@ -101,3 +102,17 @@ def test_the_run_key_holds_a_prescribed_land_use_forcing_and_no_other_key_change
 def test_annual_values_are_read_at_the_year_boundaries():
     bounds = np.array([climate_fair.START, climate_fair.START + 1.0, climate_fair.START + 2.0])
     assert climate_fair.at_bounds(np.array([0.0, 2.0]), bounds) == pytest.approx([0.0, 1.0, 2.0])
+
+
+@pytest.mark.network
+def test_a_run_leaves_out_the_internal_variability_the_calibration_turns_on():
+    folder = DEFAULT_CACHE / "fair"
+    if not (folder / climate_fair.PARAMETERS_URL.rsplit("/", 1)[1]).exists():
+        pytest.skip("the FaIR calibration is not downloaded")
+    setup = climate_fair.load_setup(DEFAULT_CACHE, members=3)
+    calibrated = pd.read_csv(setup.parameters, index_col=0).loc[setup.configs]
+    f = climate_fair.filled(setup, {"a": {s: np.zeros(5) for s in setup.emitted}}, 1755)
+    f._make_ebms()
+    assert calibrated["stochastic_run"].all()
+    assert not f.climate_configs["stochastic_run"].to_numpy().any()
+    assert not f.ebms["stochastic_d"].to_numpy().any()

@@ -125,7 +125,7 @@ const historyRun = (ensemble: Ensemble, input: ScenarioInput): History => {
   const prepared = prepareScenario(model, input, STEPS);
   const fixed = members.map(() => new Float64Array(STEPS));
   const runs = members.map((m, k) =>
-    runMember(model, m, prepared, null, undefined, HISTORY, {
+    runMember(model, m, prepared, undefined, HISTORY, {
       values: fixed[k] as Float64Array,
       known: false,
     }),
@@ -165,8 +165,8 @@ export const fairBaseline = (
   const prepared = prepareScenario(model, input, STEPS, history.prepared, HISTORY);
   const runs = members.map((m, k) => {
     const fixed = { values: Float64Array.from(history.fixed[k] as Float64Array), known: false };
-    const before = runMember(model, m, prepared, null, history.states[k], bound, fixed);
-    const after = runMember(model, m, prepared, null, before.state, STEPS, fixed);
+    const before = runMember(model, m, prepared, history.states[k], bound, fixed);
+    const after = runMember(model, m, prepared, before.state, STEPS, fixed);
     return {
       temperature: joined(
         history.temperature[k] as Float64Array,
@@ -220,7 +220,7 @@ export const fairScenario = (
   const prepared = prepareScenario(model, input, STEPS, baseline.prepared, bound);
   const reuse = sameFixed(ensemble, input, baseline.input);
   const runs = members.map((m, k) =>
-    runMember(model, m, prepared, null, baseline.states[k] as MemberState, STEPS, {
+    runMember(model, m, prepared, baseline.states[k] as MemberState, STEPS, {
       values: reuse ? (baseline.fixed[k] as Float64Array) : new Float64Array(STEPS),
       known: reuse,
     }),

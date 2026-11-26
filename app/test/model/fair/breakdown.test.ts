@@ -104,13 +104,13 @@ describe.skipIf(!exported || real === null)(
       const ssp = readScenario(options.ssp);
       const base = prepareScenario(model, ssp, STEPS);
       const history: MemberState[] = members.map(
-        (m) => runMember(model, m, base, null, undefined, FROM).state,
+        (m) => runMember(model, m, base, undefined, FROM).state,
       );
       const at = (temperature: Float64Array, year: number) =>
         0.5 * ((temperature[year - START] as number) + (temperature[year - START + 1] as number));
       const runOf = (input: ScenarioInput) => {
         const p = prepareScenario(model, input, STEPS, base);
-        return members.map((m, k) => runMember(model, m, p, null, history[k]).temperature);
+        return members.map((m, k) => runMember(model, m, p, history[k]).temperature);
       };
       const baseline = runOf(ssp);
       let worst = 0;

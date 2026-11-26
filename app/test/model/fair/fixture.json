@@ -3027,7 +3027,7 @@
         "perConfig": true,
         "values": [1.294581664, 1.180094836, 1.68738262]
       },
-      "stochastic_run": { "perConfig": false, "values": 1.0 },
+      "stochastic_run": { "perConfig": false, "values": 0.0 },
       "sigma_eta": { "perConfig": true, "values": [0.534051853, 0.647172235, 1.216485343] },
       "sigma_xi": { "perConfig": true, "values": [0.440173728, 0.283346705, 0.708414328] },
       "gamma_autocorrelation": {

@@ -1,6 +1,6 @@
 # Causes du réchauffement climatique
 
-L'agriculture a causé environ 17 % du réchauffement sur 2015–2024. Avec l'usage des terres, elle en a causé environ 31 %. Les combustibles fossiles et l'industrie en causent le plus. La pollution de l'air refroidit la planète, ce qui masque une partie du réchauffement.
+L'agriculture a causé environ 18 % du réchauffement sur 2015–2024. Avec l'usage des terres, elle en a causé environ 31 %. Les combustibles fossiles et l'industrie en causent le plus. La pollution de l'air refroidit la planète, ce qui masque une partie du réchauffement.
 
 ## Ce que montre le graphique
 
@@ -32,21 +32,21 @@ Sur SSP2-4.5, médiane et fourchette de 5 à 95 %, par rapport à 1850–1900 :
 
 | Cause | 2010–2019 | 2015–2024 | 2050 |
 | --- | --- | --- | --- |
-| Combustibles fossiles et industrie | 0,71 °C | 0,78 °C (0,58–1,01) | 1,24 °C (0,93–1,64) |
+| Combustibles fossiles et industrie | 0,71 °C | 0,78 °C (0,58–1,01) | 1,24 °C (0,92–1,64) |
 | Agriculture | 0,20 °C | 0,21 °C (0,14–0,30) | 0,29 °C (0,20–0,42) |
 | Usage des terres : CO₂ | 0,24 °C | 0,25 °C (0,18–0,36) | 0,26 °C (0,16–0,39) |
-| Usage des terres : albédo (refroidit) | −0,09 °C | −0,09 °C (−0,16 à −0,04) | −0,10 °C (−0,19 à −0,04) |
+| Usage des terres : albédo (refroidit) | −0,08 °C | −0,09 °C (−0,16 à −0,04) | −0,10 °C (−0,18 à −0,04) |
 | Déchets | 0,06 °C | 0,07 °C (0,05–0,10) | 0,08 °C (0,06–0,12) |
 | Pollution de l'air (refroidit) | −0,68 °C | −0,67 °C (−1,26 à −0,26) | −0,67 °C (−1,30 à −0,28) |
-| Facteurs naturels | 0,06 °C | 0,06 °C (−0,05 à 0,17) | 0,04 °C (−0,13 à 0,19) |
-| Autres émissions humaines | 0,56 °C | 0,60 °C (0,41–0,84) | 0,76 °C (0,52–1,08) |
-| Total | 1,07 °C | 1,20 °C (1,01–1,35) | 1,89 °C (1,50–2,33) |
+| Facteurs naturels | 0,05 °C | 0,05 °C (0,03–0,09) | 0,02 °C (0,00–0,06) |
+| Autres émissions humaines | 0,56 °C | 0,60 °C (0,41–0,84) | 0,77 °C (0,52–1,08) |
+| Total | 1,06 °C | 1,19 °C (0,99–1,36) | 1,88 °C (1,50–2,30) |
 
 La colonne 2010–2019 est la moyenne des médianes de chaque année.
 
 ### La part de l'agriculture
 
-**L'agriculture a causé environ 0,21 °C des 1,20 °C de réchauffement sur 2015–2024, soit environ 17 %.** Avec l'usage des terres, qui consiste surtout à défricher pour cultiver et élever, les deux font environ 0,37 °C, soit 31 %. Le CO₂ de l'usage des terres réchauffe de 0,25 °C, et son changement d'albédo refroidit de 0,09 °C.
+**L'agriculture a causé environ 0,21 °C des 1,19 °C de réchauffement sur 2015–2024, soit environ 18 %.** Avec l'usage des terres, qui consiste surtout à défricher pour cultiver et élever, les deux font environ 0,37 °C, soit 31 %. Le CO₂ de l'usage des terres réchauffe de 0,25 °C, et son changement d'albédo refroidit de 0,09 °C.
 
 Jusqu'en 2050, la part de l'agriculture reste proche de 15 % sur SSP2-4.5, et son réchauffement monte à 0,29 °C. Sur SSP1-2.6, le méthane agricole baisse d'un tiers d'ici 2050, et le réchauffement dû à l'agriculture atteint 0,27 °C. Sur SSP3-7.0, le méthane agricole augmente de 45 %, mais l'effet n'a pas encore eu le temps de se voir : le réchauffement dû à l'agriculture atteint 0,28 °C.
 
@@ -58,17 +58,17 @@ Sur SSP2-4.5, médiane et intervalle de 5 à 95 % de la moyenne sur 2015–2024,
 
 | Gaz et cause | 2015–2024 | 2100 |
 | --- | --- | --- |
-| **CO₂** | 0,94 °C (0,70–1,23) | 1,90 °C (1,36–2,68) |
-| Combustibles fossiles et industrie | 0,65 °C (0,49–0,84) | 1,66 °C (1,18–2,29) |
+| **CO₂** | 0,93 °C (0,70–1,23) | 1,90 °C (1,36–2,68) |
+| Combustibles fossiles et industrie | 0,65 °C (0,49–0,84) | 1,66 °C (1,18–2,30) |
 | Agriculture (urée et chaulage) | 0,002 °C (0,001–0,002) | 0,006 °C (0,004–0,008) |
 | Usage des terres | 0,25 °C (0,18–0,36) | 0,19 °C (0,08–0,35) |
-| Interactions et autres sources mineures | 0,03 °C (0,00–0,08) | 0,03 °C (−0,04–0,15) |
+| Interactions et autres sources mineures | 0,03 °C (−0,01–0,08) | 0,03 °C (−0,04–0,15) |
 | **Méthane** | 0,41 °C (0,28–0,59) | 0,51 °C (0,34–0,79) |
 | Combustibles fossiles et industrie | 0,11 °C (0,07–0,15) | 0,12 °C (0,08–0,19) |
 | Agriculture | 0,14 °C (0,09–0,21) | 0,19 °C (0,12–0,30) |
 | Déchets | 0,06 °C (0,04–0,09) | 0,06 °C (0,04–0,10) |
 | Feux de forêts, de prairies et de tourbières | 0,005 °C (0,003–0,007) | 0,007 °C (0,005–0,011) |
-| Interactions et autres sources mineures | 0,10 °C (0,07–0,14) | 0,14 °C (0,09–0,20) |
+| Interactions et autres sources mineures | 0,10 °C (0,07–0,14) | 0,14 °C (0,09–0,21) |
 | **N₂O** | 0,11 °C (0,07–0,15) | 0,19 °C (0,13–0,30) |
 | Combustibles fossiles et industrie | 0,02 °C (0,01–0,03) | 0,03 °C (0,02–0,05) |
 | Agriculture | 0,06 °C (0,04–0,09) | 0,12 °C (0,08–0,19) |
@@ -150,7 +150,7 @@ Une partie de ce que changent les leviers de l'énergie n'est pas un gaz à effe
   - elle utilise un autre modèle climatique (MAGICC6).
 
   SSP3-7.0, le plus proche de la référence à forte population de l'étude, s'en approche le plus. Un test vérifie que le chiffre de SSP2-4.5 se situe entre le quart de sa borne basse et sa borne haute, et que celui de SSP3-7.0 est plus élevé.
-- **Réchauffement par gaz, 2024.** Our World in Data présente le réchauffement par gaz et par source de Jones et al. (2023, données mises à jour en 2025). Face aux médianes de Planetshift en 2024 sur SSP2-4.5 : CO₂ fossile 0,81 °C là et 0,72 °C ici, méthane agricole 0,16 et 0,15 °C, N₂O agricole 0,061 et 0,066 °C. Le CO₂ d'usage des terres est de 0,41 °C là et de 0,25 °C ici, sans compter son changement d'albédo. L'historique explique une partie de l'écart : 220 milliards de tonnes de carbone sur 1850–2023 dans celui de la calibration, contre 243 dans le Global Carbon Budget 2025. Le méthane fossile est de 0,22 °C là et de 0,11 °C ici. Planetshift compte 0,07 °C de méthane sous les déchets et 0,11 °C sous les interactions et autres sources mineures.
+- **Réchauffement par gaz, 2024.** Our World in Data présente le réchauffement par gaz et par source de Jones et al. (2023, données mises à jour en 2025). Face aux médianes de Planetshift en 2024 sur SSP2-4.5 : CO₂ fossile 0,81 °C là et 0,71 °C ici, méthane agricole 0,16 et 0,15 °C, N₂O agricole 0,061 et 0,066 °C. Le CO₂ d'usage des terres est de 0,41 °C là et de 0,25 °C ici, sans compter son changement d'albédo. L'historique explique une partie de l'écart : 220 milliards de tonnes de carbone sur 1850–2023 dans celui de la calibration, contre 243 dans le Global Carbon Budget 2025. Le méthane fossile est de 0,22 °C là et de 0,11 °C ici. Planetshift compte 0,07 °C de méthane sous les déchets et 0,11 °C sous les interactions et autres sources mineures.
 
 ## Hypothèses
 

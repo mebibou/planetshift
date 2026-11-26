@@ -131,7 +131,7 @@ Le tableau donne le réchauffement évité en °C : la médiane, puis la fourche
 
 | Leviers | 2050 | 2100 |
 | --- | --- | --- |
-| Chauffage propre | 0,013 (0,001–0,036) ; CO₂ seul 0,008 | 0,060 (0,037–0,109) ; CO₂ seul 0,044 |
+| Chauffage propre | 0,013 (0,001–0,035) ; CO₂ seul 0,008 | 0,060 (0,037–0,109) ; CO₂ seul 0,044 |
 | Industrie propre | 0,016 (−0,005 à 0,070) ; CO₂ seul 0,028 | 0,105 (0,052–0,225) ; CO₂ seul 0,104 |
 | Électricité renouvelable seule | 0,096 (0,060–0,187) ; CO₂ seul 0,093 | 0,286 (0,180–0,464) ; CO₂ seul 0,236 |
 | Chauffage propre avec électricité renouvelable | 0,115 (0,070–0,225) ; CO₂ seul 0,108 | 0,367 (0,235–0,590) ; CO₂ seul 0,297 |

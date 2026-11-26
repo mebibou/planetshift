@@ -38,6 +38,9 @@ FIELDS = ("temperature", "co2", "ch4_airborne")
 #: FaIR's specie for the forcing of land-use change other than its CO₂: surface albedo, irrigation.
 LAND_USE = "Land use"
 RUNS_FOLDER = "runs"
+#: FaIR's year-to-year internal variability (Cummins et al. 2020), which the calibration turns on
+#: with a seed per member: off, so a run differs from another only by what the levers change.
+INTERNAL_VARIABILITY = False
 WORKERS_VARIABLE = "PLANETSHIFT_FAIR_WORKERS"
 
 
@@ -132,35 +135,55 @@ def fill_forcing(f: FAIR, setup: Setup, emissions: dict, properties: dict) -> No
         fill(f.forcing, forcing[:, None] * scale[None, :], scenario=scenario, specie=LAND_USE)
 
 
+def configured(setup: Setup, scenarios: list[str], end: int, properties: dict) -> FAIR:
+    """A FaIR holding the members' calibration, with their internal variability off."""
+    f = FAIR(ch4_method=CH4_METHOD)
+    f.define_time(START, end, 1)
+    f.define_scenarios(scenarios)
+    f.define_configs(setup.configs)
+    f.define_species(setup.species, properties)
+    f.allocate()
+    f.fill_species_configs(setup.species_file)
+    f.override_defaults(setup.parameters)
+    fill(f.climate_configs["stochastic_run"], INTERNAL_VARIABILITY)
+    return f
+
+
+def filled(
+    setup: Setup,
+    emissions: dict[str, dict[str, np.ndarray]],
+    end: int,
+    carbon_feedback: bool = True,
+) -> FAIR:
+    """A FaIR ready to run each scenario's emissions and prescribed forcing."""
+    properties = prescribed_land(setup, emissions)
+    f = configured(setup, list(emissions), end, properties)
+    for scenario, by_specie in emissions.items():
+        for specie in setup.emitted:
+            values = by_specie[specie][: len(f.timepoints), None]
+            fill(f.emissions, values, scenario=scenario, specie=specie)
+    fill_forcing(f, setup, emissions, properties)
+    if not carbon_feedback:
+        fill(f.species_configs["iirf_temperature"], 0, specie="CO2")
+    initialise(f.concentration, f.species_configs["baseline_concentration"])
+    for state in (
+        f.forcing,
+        f.temperature,
+        f.cumulative_emissions,
+        f.airborne_emissions,
+        f.ocean_heat_content_change,
+    ):
+        initialise(state, 0)
+    return f
+
+
 def _run_batch(
     setup: Setup,
     emissions: dict[str, dict[str, np.ndarray]],
     end: int,
     carbon_feedback: bool,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    scenarios = list(emissions)
-    f = FAIR(ch4_method=CH4_METHOD)
-    f.define_time(START, end, 1)
-    f.define_scenarios(scenarios)
-    f.define_configs(setup.configs)
-    properties = prescribed_land(setup, emissions)
-    f.define_species(setup.species, properties)
-    f.allocate()
-    for scenario, by_specie in emissions.items():
-        for specie in setup.emitted:
-            values = by_specie[specie][: len(f.timepoints), None]
-            fill(f.emissions, values, scenario=scenario, specie=specie)
-    fill_forcing(f, setup, emissions, properties)
-    f.fill_species_configs(setup.species_file)
-    f.override_defaults(setup.parameters)
-    if not carbon_feedback:
-        fill(f.species_configs["iirf_temperature"], 0, specie="CO2")
-    initialise(f.concentration, f.species_configs["baseline_concentration"])
-    initialise(f.forcing, 0)
-    initialise(f.temperature, 0)
-    initialise(f.cumulative_emissions, 0)
-    initialise(f.airborne_emissions, 0)
-    initialise(f.ocean_heat_content_change, 0)
+    f = filled(setup, emissions, end, carbon_feedback)
     f.run(progress=False)
     temperature = f.temperature.sel(layer=0).to_numpy()
     co2 = f.concentration.sel(specie="CO2").to_numpy()
@@ -170,13 +193,14 @@ def _run_batch(
 
 def setup_digest(setup: Setup) -> str:
     """What a run's result depends on besides its emissions: the calibration, the natural
-    forcing (which a forcing pulse changes), the members and FaIR's version."""
+    forcing (which a forcing pulse changes), the members, FaIR's version and whether the internal
+    variability is on."""
     digest = hashlib.sha256()
     for part in (
         setup.parameters.read_bytes(),
         setup.species_file.read_bytes(),
         setup.natural_forcing.to_csv(index=False).encode(),
-        repr((setup.configs, fair.__version__, CH4_METHOD)).encode(),
+        repr((setup.configs, fair.__version__, CH4_METHOD, INTERNAL_VARIABILITY)).encode(),
     ):
         digest.update(part)
     return digest.hexdigest()

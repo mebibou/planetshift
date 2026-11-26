@@ -158,8 +158,8 @@ describe('FaIR port against Python FaIR on the fixture', () => {
   it('carries a run on from a state to the same bits', () => {
     const m = members[1] as (typeof members)[number];
     const whole = runMember(model, m, prepared).temperature;
-    const first = runMember(model, m, prepared, null, undefined, 275);
-    const rest = runMember(model, m, prepared, null, first.state).temperature;
+    const first = runMember(model, m, prepared, undefined, 275);
+    const rest = runMember(model, m, prepared, first.state).temperature;
     expect(Array.from(rest.subarray(275))).toEqual(Array.from(whole.subarray(275)));
   });
 

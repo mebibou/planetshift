@@ -31,7 +31,7 @@ FaIR's forward model is ported to TypeScript (`app/src/model/fair/`) and runs in
 
 On the same emissions, it gives every member's temperature within 6 × 10⁻⁹ °C of FaIR 2.2.5 itself, every year from 1750 to 2100. A test checks this on the three SSPs and on SSP2-4.5 with agriculture, air pollution or every emission taken out.
 
-The app runs 50 of the 841 members (`pipeline/fair_members.csv`, shipped in `fair.json`). They were chosen to keep the full ensemble's median and 5–95% range on SSP1-2.6, SSP2-4.5 and SSP3-7.0, and on SSP2-4.5 without air pollution and with every emission stopped from 2025, every tenth year from 2030 to 2100. On those, the 50 stay within 0.024 °C of the 841. On the cases they were not chosen for, they stay within 0.034 °C in the years in between, 0.035 °C for the warming avoided by taking agriculture out, and 0.054 °C for the warming air pollution masks. Fifty members drawn at random are off by 0.17 °C. FaIR's internal variability, the year-to-year noise its calibration can add, is left off. It moves a single year by up to a tenth of a degree, and it cancels between a baseline and a scenario.
+The app runs 50 of the 841 members (`pipeline/fair_members.csv`, shipped in `fair.json`). They were chosen to keep the full ensemble's median and 5–95% range on SSP1-2.6, SSP2-4.5 and SSP3-7.0, and on SSP2-4.5 without air pollution and with every emission stopped from 2025, every tenth year from 2030 to 2100. On those, the 50 stay within 0.024 °C of the 841. On the cases they were not chosen for, they stay within 0.034 °C in the years in between, 0.035 °C for the warming avoided by taking agriculture out, and 0.054 °C for the warming air pollution masks. Fifty members drawn at random are off by 0.17 °C. FaIR's internal variability is left off, in the app and in the pipeline's runs alike. It is the year-to-year noise the calibration adds to each member, and it moves a single year by up to a tenth of a degree. The app shows what the levers change, and that noise would blur those changes: every line would move up and down from year to year, and a subset of members would add its own sample of the noise to the 5–95% range.
 
 The baseline is run once for each scenario and set of options, from 1750 to 2100: the SSP's emissions of every gas and aerosol, its land-use albedo and, with the default baseline, the farm emissions that population adds (see [Options](#method-options)). The levers then change CO₂, methane, N₂O and HFC-134a from the current year. Each member carries on from where the baseline stood at the start of that year, so only the years from now on are run again. That takes about 4 ms for the 50 members.
 
@@ -52,7 +52,7 @@ The table gives FaIR's median, with its 5–95% range, in °C per kg. Beside it 
 | Gas | FaIR, 20 years | FaIR, 100 years | AR6, 20 / 50 / 100 years | Shape (FaIR) |
 | --- | --- | --- | --- | --- |
 | CO₂ | 3.7 × 10⁻¹⁶ (2.6–5.1) | 3.5 × 10⁻¹⁶ (2.0–5.3) | 4.95 × 10⁻¹⁶ / 4.28 × 10⁻¹⁶ / 3.95 × 10⁻¹⁶ | rises over about 11 years, then stays nearly flat |
-| CH₄ | 3.2 × 10⁻¹⁴ (2.1–4.7) | 3.9 × 10⁻¹⁵ (1.4–9.8) | 2.59 × 10⁻¹⁴ / 4.73 × 10⁻¹⁵ / 2.12 × 10⁻¹⁵ | peaks after 5 years, a tenth of the peak by 100 years |
+| CH₄ | 3.2 × 10⁻¹⁴ (2.1–4.7) | 3.8 × 10⁻¹⁵ (1.4–9.8) | 2.59 × 10⁻¹⁴ / 4.73 × 10⁻¹⁵ / 2.12 × 10⁻¹⁵ | peaks after 6 years, a tenth of the peak by 100 years |
 | N₂O | 1.7 × 10⁻¹³ (1.1–2.4) | 1.1 × 10⁻¹³ (0.7–1.8) | 1.47 × 10⁻¹³ / 1.24 × 10⁻¹³ / 9.19 × 10⁻¹⁴ | peaks after 12 years, decays over a century |
 
 At 100 years, FaIR's CO₂ curve is 12% below AR6's and its N₂O curve 15% above. Its methane curve is about twice AR6's, close to AR6's value at 50 years. "The AR6 alternative" below explains why.
@@ -75,7 +75,7 @@ This sum is exact for a model whose response is proportional to its input, and c
 
 Each AGTP value is the change in a calendar year's mean temperature from a year's worth of emission spread evenly over that year. AGTP(0) is therefore the same-year effect.
 
-The build checks this sum against FaIR itself. Adding up agriculture's historical emissions with the curves gives agriculture's warming in 2010–2019 within about 6% of what FaIR gives when it is run with and without those emissions.
+The build checks this sum against FaIR itself. Adding up agriculture's historical emissions with the curves gives agriculture's warming in 2010–2019 within about 4% of what FaIR gives when it is run with and without those emissions.
 
 ### How the curves are computed
 
@@ -88,7 +88,7 @@ The pulses are 1 billion tonnes of CO₂, 1 million tonnes of methane and 0.1 mi
 The build runs these checks:
 
 - **Proportional**: a pulse ten times larger gives an AGTP within 0.2% of the small one, for every gas.
-- **Stable in time**: pulses in 2025, 2035 and 2045 give curves within 4% (CO₂), 7% (CH₄) and 2% (N₂O) of each other. The 2035 curve is kept, because 2035 is in the middle of the years the app's diet shift covers.
+- **Stable in time**: pulses in 2025, 2035 and 2045 give curves within 4% (CO₂), 5% (CH₄) and 2% (N₂O) of each other. The 2035 curve is kept, because 2035 is in the middle of the years the app's diet shift covers.
 - **Methane is biogenic.** Fossil methane adds CO₂ when it breaks down. Methane from cattle, manure and rice does not, because plants took its carbon from the air a few months before. FaIR does not turn methane into CO₂, which a test confirms: with the effect of warming on carbon uptake switched off, a methane pulse leaves the CO₂ concentration exactly unchanged. With that effect on, as in the curves, the warming from a methane pulse slows the uptake of CO₂ already in the air. This is a real climate-carbon feedback, and AR6 includes it in its metrics too.
 - **Methane's indirect effects are on**: the extra ozone and stratospheric water vapour that methane makes, and the way methane's lifetime changes with its own concentration, temperature and other gases.
 - CO₂ pulses are fossil CO₂ (FaIR's "CO₂ FFI"), not land-use CO₂, which in FaIR also changes surface albedo.
@@ -117,9 +117,9 @@ It does not cover the uncertainty in the emissions per tonne of food, in diets o
 
 The temperature chart can show the warming from natural factors only. It is the temperature FaIR gives when every human emission is held at its 1750 level, so that only the sun and volcanoes change the climate.
 
-Over 2010–2019 it gives +0.06 °C (−0.04 to +0.17). IPCC AR6 (WG1 SPM A.1.3, Figure SPM.2) assesses the change from natural drivers between 1850–1900 and 2010–2019 at −0.1 to +0.1 °C. A test checks that the median lies inside that range.
+Over 2010–2019 it gives +0.05 °C (+0.03 to +0.09). IPCC AR6 (WG1 SPM A.1.3, Figure SPM.2) assesses the change from natural drivers between 1850–1900 and 2010–2019 at −0.1 to +0.1 °C. A test checks that the median lies inside that range.
 
-The line dips after large eruptions, such as Krakatoa in 1883, and stays near zero after 2050. Its range includes the ensemble's internal variability, which is why a single year can stray by more than a tenth of a degree.
+The line dips after large eruptions, such as Krakatoa in 1883, and stays near zero after 2050. Its range is the spread of the members' responses to the sun and volcanoes. It is at most 0.14 °C wide in any year since 1900.
 
 It is labelled "natural factors only", not "a world without humans". Land cover and everything before 1750 are left as they are, and people had already warmed the 1850–1900 baseline slightly. The future solar and volcanic forcing is a placeholder. A large eruption would cool the world by a few tenths of a degree for one to three years, and no one can forecast one.
 
@@ -140,18 +140,18 @@ Under each future, the total temperature curve comes from FaIR run on one of thr
 - SSP2-4.5: middle of the road, the default;
 - SSP3-7.0: regional rivalry, high emissions.
 
-The app shows the median and the 5–95% range relative to 1850–1900. The table gives FaIR's own values on the 50 members the app runs, and in the row below each, the full 841 members as the pipeline runs them, with their internal variability. The app's baseline adds the forcing of the 2020 shipping rule to them, 0.04 °C today (see "Why 2023 and 2024 were so warm").
+The app shows the median and the 5–95% range relative to 1850–1900. The table gives FaIR's own values on the 50 members the app runs. The row below each gives the full 841 members, as the pipeline runs them. The app's baseline adds the forcing of the 2020 shipping rule to them, 0.04 °C today (see "Why 2023 and 2024 were so warm").
 
 | Scenario | 2015–2024 | 2050 | 2100 |
 | --- | --- | --- | --- |
 | SSP1-2.6 | 1.18 °C (1.00–1.35) | 1.79 °C (1.38–2.30) | 1.77 °C (1.25–2.55) |
-| 841 members | 1.20 °C (1.01–1.36) | 1.79 °C (1.36–2.34) | 1.76 °C (1.22–2.56) |
+| 841 members | 1.19 °C (0.99–1.36) | 1.78 °C (1.36–2.30) | 1.75 °C (1.25–2.56) |
 | SSP2-4.5 | 1.18 °C (1.00–1.35) | 1.88 °C (1.51–2.31) | 2.59 °C (1.93–3.55) |
-| 841 members | 1.20 °C (1.01–1.35) | 1.89 °C (1.49–2.33) | 2.61 °C (1.91–3.60) |
+| 841 members | 1.19 °C (0.99–1.36) | 1.88 °C (1.50–2.30) | 2.61 °C (1.92–3.58) |
 | SSP3-7.0 | 1.18 °C (1.00–1.35) | 1.86 °C (1.51–2.24) | 3.45 °C (2.67–4.46) |
-| 841 members | 1.20 °C (1.01–1.35) | 1.86 °C (1.49–2.28) | 3.47 °C (2.67–4.43) |
+| 841 members | 1.19 °C (0.99–1.36) | 1.86 °C (1.51–2.25) | 3.47 °C (2.67–4.43) |
 
-Observed warming over 2015–2024 is 1.27 °C in HadCRUT5 and 1.33 °C in Berkeley Earth, both re-baselined here to their own 1850–1900 means. The app's FaIR median is 0.09 °C below HadCRUT5, and the 841 members' median 0.06 °C below it. HadCRUT5 lies inside both 5–95% ranges. Indicators of Global Climate Change 2024, which combines four records, assesses 2015–2024 at 1.24 °C (1.11–1.35) (Forster et al. 2025). Tests check FaIR's median against HadCRUT5 and against this assessment. The 2100 values are close to AR6's assessed best estimates for 2081–2100: 1.8, 2.7 and 3.6 °C (Table SPM.1).
+Observed warming over 2015–2024 is 1.27 °C in HadCRUT5 and 1.33 °C in Berkeley Earth, both re-baselined here to their own 1850–1900 means. The app's FaIR median is 0.09 °C below HadCRUT5, and the 841 members' median 0.08 °C below it. HadCRUT5 lies inside both 5–95% ranges. Indicators of Global Climate Change 2024, which combines four records, assesses 2015–2024 at 1.24 °C (1.11–1.35) (Forster et al. 2025). Tests check FaIR's median against HadCRUT5 and against this assessment. The 2100 values are close to AR6's assessed best estimates for 2081–2100: 1.8, 2.7 and 3.6 °C (Table SPM.1).
 
 ### Where these runs and the observed lines come from
 
@@ -169,7 +169,7 @@ The observed lines are the Met Office HadCRUT5 analysis (global annual series, c
 
 ## Why 2023 and 2024 were so warm
 
-HadCRUT5 puts 2023 at 1.48 °C and 2024 at 1.55 °C above 1850–1900 (Berkeley Earth: 1.54 and 1.62 °C). FaIR's SSP2-4.5 median gives 1.31 and 1.34 °C, with 5–95% ranges of 1.06–1.51 and 1.08–1.55 °C. The two years sit 0.17 and 0.21 °C above the median, at the top of its range.
+HadCRUT5 puts 2023 at 1.48 °C and 2024 at 1.55 °C above 1850–1900 (Berkeley Earth: 1.54 and 1.62 °C). FaIR's SSP2-4.5 median gives 1.29 and 1.33 °C, with 5–95% ranges of 1.08–1.49 and 1.10–1.53 °C. The two years are 0.18 and 0.22 °C above the median. 2023 is at the top of its range, and 2024 is just above it.
 
 Several factors together explain the gap. FaIR includes some of them and not others. With the shipping effect, El Niño and the cloud changes added, the observed temperatures of the two years are what the literature expects. No single factor accounts for all of 2023.
 
@@ -197,7 +197,7 @@ The January 2022 eruption put about 0.5 Tg of sulphur dioxide and some 146 Tg of
 - A multi-model study gives −0.19 ± 0.06 W/m² for 2022–2023 (Quaglia et al. 2026).
 - Forster et al. (2025) estimate −0.02 °C with FaIR.
 
-The volcanic forcing here falls by 0.10 W/m² in 2022 and stays there in 2023. In FaIR, this cools 2023–2025 by 0.01–0.015 °C against the forcing of 2021 held to 2024. The eruption did not cause the warmth. The natural-only line stays at 0.05–0.06 °C through 2020–2025: the solar rise is partly offset by the eruption and by the volcanic forcing returning to its mean.
+The volcanic forcing here falls by 0.10 W/m² in 2022 and stays there in 2023. In FaIR, this cools 2023–2025 by 0.01–0.015 °C against the forcing of 2021 held to 2024. The eruption did not cause the warmth. The natural-only line stays at 0.04–0.05 °C through 2020–2025: the solar rise is partly offset by the eruption and by the volcanic forcing returning to its mean.
 
 ### The 2020 limit on sulphur in ships' fuel: missing from the scenarios
 
@@ -316,7 +316,7 @@ The median is small for four reasons:
 
 ## Sea-level rise
 
-The Sea level tab shows the rise each year to 2100 without and with the levers. The summary gives the rise the levers avoid by 2100. The rise follows a rate proportional to the warming above a balance temperature, dH/dt = a·(T − T₀), as in semi-empirical models of sea level. The rate is fitted to the medians of IPCC AR6 WG1 Table 9.9 for SSP1-2.6, SSP2-4.5 and SSP3-7.0 in 2030, 2050, 2090 and 2100, relative to 1995–2014. It is fitted against FaIR's median warming of each scenario. The fit gives a = 4.2 mm a year per °C and T₀ = 0.41 °C. A test checks that it stays within 4 cm of the table in every year and scenario. Each end of the table's likely range has its own fit, against the median warming. The rate's likely range is 3.4–5.7 mm a year per °C, with T₀ = 0.44 and 0.41 °C. Grinsted and Christensen (2021) find 0.40 m per century per °C (likely 0.35–0.44) in the observed record, close to this rate.
+The Sea level tab shows the rise each year to 2100 without and with the levers. The summary gives the rise the levers avoid by 2100. The rise follows a rate proportional to the warming above a balance temperature, dH/dt = a·(T − T₀), as in semi-empirical models of sea level. The rate is fitted to the medians of IPCC AR6 WG1 Table 9.9 for SSP1-2.6, SSP2-4.5 and SSP3-7.0 in 2030, 2050, 2090 and 2100, relative to 1995–2014. It is fitted against FaIR's median warming of each scenario. The fit gives a = 4.2 mm a year per °C and T₀ = 0.40 °C. A test checks that it stays within 4 cm of the table in every year and scenario. Each end of the table's likely range has its own fit, against the median warming. The rate's likely range is 3.4–5.7 mm a year per °C, with T₀ = 0.43 and 0.40 °C. Grinsted and Christensen (2021) find 0.40 m per century per °C (likely 0.35–0.44) in the observed record, close to this rate.
 
 The rise is linear in the warming. So the rise avoided is the rate times the warming avoided, summed over the years to 2100, and T₀ drops out. If warming is 0.1 °C lower from 2050 on, after a linear ramp from 2025, the rise avoided is about 2.7 cm by 2100. Its likely range is the rate's likely range, applied to the median warming avoided.
 
@@ -356,16 +356,16 @@ Each departure is a named switch in `planetshift.config.json`, the file a fork o
 With every switch at its plain-FaIR value, on SSP2-4.5:
 
 - less flying in full avoids 0.006 °C in 2050 and 0.043 °C in 2100, instead of 0.055 and 0.124, because most of its effect comes from contrails, which FaIR does not include;
-- electric cars avoid 0.023 and 0.086 °C instead of 0.038 and 0.100, and in SSP3-7.0 add 0.035 °C by 2100 instead of avoiding 0.018;
+- electric cars avoid 0.023 and 0.086 °C instead of 0.038 and 0.100, and in SSP3-7.0 add 0.034 °C by 2100 instead of avoiding 0.018;
 - the six energy levers together avoid 0.154 and 0.538 °C instead of 0.246 and 0.666.
 
 Without the shipping rule, the baseline is 0.037 °C cooler in 2024 and 0.069 °C cooler in 2100. The farm levers do not move.
 
 ## Assumptions
 
-- The app runs FaIR on 50 of the calibrated ensemble's 841 members, chosen to keep its median and 5–95% range, without its internal variability. The pipeline's own runs (the causes of warming, the curves) use all 841, with their internal variability (seeded, so paired runs get the same noise and it cancels in differences).
+- The app runs FaIR on 50 of the calibrated ensemble's 841 members, chosen to keep its median and 5–95% range, without its internal variability. The pipeline's own runs (the causes of warming, the curves) use all 841 members, also without internal variability.
 - The levers change FaIR's fossil CO₂, methane, N₂O and HFC-134a; everything else they change is added from its own response.
-- AGTP curves come from pulses on SSP2-4.5 in 2035 and are used under every scenario and for every year. The curves from 2025 and 2045 are within 7%. They only split FaIR's total, except with the AR6 option.
+- AGTP curves come from pulses on SSP2-4.5 in 2035 and are used under every scenario and for every year. The curves from 2025 and 2045 are within 5%. They only split FaIR's total, except with the AR6 option.
 - Agricultural methane is treated as biogenic: no CO₂ from its oxidation.
 - CO₂ from farming (urea and liming) is treated as fossil CO₂ in FaIR.
 - A year's emissions are spread evenly over the year. A calendar year's temperature is the mean of FaIR's values at its two ends.

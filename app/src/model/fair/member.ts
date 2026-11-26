@@ -425,8 +425,6 @@ const stepTemperature = (
   old: Float64Array,
   m: Member,
   forcing: number,
-  noise: Float64Array | null,
-  at: number,
 ): void => {
   const { matrix: a, vector: v } = m.p.ebm;
   const x0 = old[0] as number;
@@ -440,8 +438,7 @@ const stepTemperature = (
       (a[k + 1] as number) * x1 +
       (a[k + 2] as number) * x2 +
       (a[k + 3] as number) * x3 +
-      (v[r] as number) * forcing +
-      (noise ? (noise[at + r] as number) : 0);
+      (v[r] as number) * forcing;
   }
 };
 
@@ -475,8 +472,7 @@ export type MemberRun = {
 
 /**
  * One member's run on a prepared scenario from `from` (the start by default) to timebound
- * `until` (the end by default). `noise` is FaIR's internal variability for the member,
- * [timebound × 4] as its `stochastic_d`; without it the run is FaIR's with `stochastic_run` off.
+ * `until` (the end by default), FaIR's internal variability off (`stochastic_run`).
  * A run carried on from a state is the same, to the last bit, as one run in one go.
  */
 /** Each timepoint's `fixedForcing`: filled by a run, or `known` to it from a run on the same
@@ -500,7 +496,6 @@ export const runMember = (
   model: Model,
   m: Member,
   prepared: PreparedScenario,
-  noise: Float64Array | null = null,
   from: MemberState = initialState(m),
   until: number = prepared.steps,
   fixed: FixedForcing | null = null,
@@ -527,7 +522,7 @@ export const runMember = (
     const swap = old;
     old = state;
     state = swap;
-    stepTemperature(state, old, m, forcing, noise, (t + 1) * SIZE);
+    stepTemperature(state, old, m, forcing);
     out[t + 1] = state[1] as number;
     co2[t + 1] = gases.next[m.co2] as number;
     const before = gases.conc;

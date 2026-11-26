@@ -31,7 +31,7 @@ Le modèle de FaIR est porté en TypeScript (`app/src/model/fair/`) et tourne da
 
 Sur les mêmes émissions, il donne la température de chaque membre à 6 × 10⁻⁹ °C près de celle de FaIR 2.2.5 lui-même, chaque année de 1750 à 2100. Un test le vérifie sur les trois SSP et sur SSP2-4.5 sans l'agriculture, sans la pollution de l'air ou avec toutes les émissions retirées.
 
-L'application lance 50 des 841 membres (`pipeline/fair_members.csv`, livrés dans `fair.json`). Ils ont été choisis pour garder la médiane et la fourchette de 5 à 95 % de l'ensemble complet sur SSP1-2.6, SSP2-4.5 et SSP3-7.0, et sur SSP2-4.5 sans pollution de l'air et avec toutes les émissions arrêtées à partir de 2025, toutes les dix ans de 2030 à 2100. Sur ces cibles, les 50 restent à 0,024 °C des 841. Sur les cas pour lesquels ils n'ont pas été choisis, ils restent à 0,034 °C près les années intermédiaires, à 0,035 °C pour le réchauffement évité en retirant l'agriculture et à 0,054 °C pour le réchauffement que masque la pollution de l'air. Cinquante membres tirés au hasard s'écartent de 0,17 °C. La variabilité interne de FaIR, le bruit d'une année à l'autre que sa calibration peut ajouter, est désactivée. Elle déplace une année isolée jusqu'à un dixième de degré, et elle s'annule entre une référence et un scénario.
+L'application lance 50 des 841 membres (`pipeline/fair_members.csv`, livrés dans `fair.json`). Ils ont été choisis pour garder la médiane et la fourchette de 5 à 95 % de l'ensemble complet sur SSP1-2.6, SSP2-4.5 et SSP3-7.0, et sur SSP2-4.5 sans pollution de l'air et avec toutes les émissions arrêtées à partir de 2025, toutes les dix ans de 2030 à 2100. Sur ces cibles, les 50 restent à 0,024 °C des 841. Sur les cas pour lesquels ils n'ont pas été choisis, ils restent à 0,034 °C près les années intermédiaires, à 0,035 °C pour le réchauffement évité en retirant l'agriculture et à 0,054 °C pour le réchauffement que masque la pollution de l'air. Cinquante membres tirés au hasard s'écartent de 0,17 °C. La variabilité interne de FaIR est désactivée, dans l'application comme dans les simulations du pipeline. C'est le bruit d'une année à l'autre que la calibration ajoute à chaque membre, et elle déplace une année isolée jusqu'à un dixième de degré. L'application montre ce que changent les leviers, et ce bruit brouillerait ces changements : chaque courbe monterait et descendrait d'une année à l'autre, et un sous-ensemble de membres ajouterait son propre échantillon de ce bruit à la fourchette de 5 à 95 %.
 
 La référence est lancée une fois pour chaque scénario et chaque jeu d'options, de 1750 à 2100 : les émissions du SSP pour chaque gaz et aérosol, l'albédo de son usage des terres et, avec la référence par défaut, les émissions agricoles qu'ajoute la population (voir [Options](#method-options)). Les leviers changent ensuite le CO₂, le méthane, le N₂O et le HFC-134a à partir de l'année en cours. Chaque membre repart de l'état de la référence au début de cette année, si bien que seules les années à venir sont recalculées. Cela prend environ 4 ms pour les 50 membres.
 
@@ -52,7 +52,7 @@ Le tableau donne la médiane de FaIR, avec sa fourchette de 5 à 95 %, en °C pa
 | Gaz | FaIR, 20 ans | FaIR, 100 ans | AR6, 20 / 50 / 100 ans | Forme (FaIR) |
 | --- | --- | --- | --- | --- |
 | CO₂ | 3,7 × 10⁻¹⁶ (2,6–5,1) | 3,5 × 10⁻¹⁶ (2,0–5,3) | 4,95 × 10⁻¹⁶ / 4,28 × 10⁻¹⁶ / 3,95 × 10⁻¹⁶ | monte pendant environ 11 ans, puis reste presque plate |
-| CH₄ | 3,2 × 10⁻¹⁴ (2,1–4,7) | 3,9 × 10⁻¹⁵ (1,4–9,8) | 2,59 × 10⁻¹⁴ / 4,73 × 10⁻¹⁵ / 2,12 × 10⁻¹⁵ | culmine après 5 ans, un dixième du pic à 100 ans |
+| CH₄ | 3,2 × 10⁻¹⁴ (2,1–4,7) | 3,8 × 10⁻¹⁵ (1,4–9,8) | 2,59 × 10⁻¹⁴ / 4,73 × 10⁻¹⁵ / 2,12 × 10⁻¹⁵ | culmine après 6 ans, un dixième du pic à 100 ans |
 | N₂O | 1,7 × 10⁻¹³ (1,1–2,4) | 1,1 × 10⁻¹³ (0,7–1,8) | 1,47 × 10⁻¹³ / 1,24 × 10⁻¹³ / 9,19 × 10⁻¹⁴ | culmine après 12 ans, décroît sur un siècle |
 
 À 100 ans, la courbe du CO₂ de FaIR est 12 % sous celle de l'AR6, et celle du N₂O 15 % au-dessus. Celle du méthane vaut environ le double de celle de l'AR6, proche de la valeur de l'AR6 à 50 ans. « L'alternative AR6 », plus bas, explique pourquoi.
@@ -75,7 +75,7 @@ Cette somme est exacte pour un modèle dont la réponse est proportionnelle à c
 
 Chaque valeur d'AGTP est la variation de la température moyenne d'une année civile due à une année d'émission répartie uniformément sur cette année. AGTP(0) est donc l'effet dans l'année même.
 
-La construction vérifie cette somme par rapport à FaIR lui-même. Additionner ainsi les émissions historiques de l'agriculture avec les courbes donne le réchauffement dû à l'agriculture en 2010–2019 à environ 6 % près de ce que donne FaIR lancé avec et sans ces émissions.
+La construction vérifie cette somme par rapport à FaIR lui-même. Additionner ainsi les émissions historiques de l'agriculture avec les courbes donne le réchauffement dû à l'agriculture en 2010–2019 à environ 4 % près de ce que donne FaIR lancé avec et sans ces émissions.
 
 ### Comment les courbes sont calculées
 
@@ -88,7 +88,7 @@ Les impulsions sont de 1 milliard de tonnes de CO₂, 1 million de tonnes de mé
 La construction fait ces vérifications :
 
 - **Proportionnalité** : une impulsion dix fois plus grande donne un AGTP à 0,2 % près de celui de la petite, pour chaque gaz.
-- **Stabilité dans le temps** : des impulsions en 2025, 2035 et 2045 donnent des courbes à 4 % (CO₂), 7 % (CH₄) et 2 % (N₂O) près les unes des autres. La courbe de 2035 est gardée, parce que 2035 est au milieu des années que couvre le changement d'alimentation de l'application.
+- **Stabilité dans le temps** : des impulsions en 2025, 2035 et 2045 donnent des courbes à 4 % (CO₂), 5 % (CH₄) et 2 % (N₂O) près les unes des autres. La courbe de 2035 est gardée, parce que 2035 est au milieu des années que couvre le changement d'alimentation de l'application.
 - **Le méthane est biogénique.** Le méthane fossile ajoute du CO₂ en se décomposant. Celui des bovins, des effluents et du riz non, car les plantes ont prélevé son carbone dans l'air quelques mois plus tôt. FaIR ne transforme pas le méthane en CO₂, ce qu'un test confirme : quand l'effet du réchauffement sur l'absorption du carbone est désactivé, une impulsion de méthane laisse la concentration de CO₂ exactement inchangée. Quand cet effet est activé, comme dans les courbes, le réchauffement dû à une impulsion de méthane ralentit l'absorption du CO₂ déjà présent dans l'air. C'est une véritable rétroaction climat-carbone, que l'AR6 inclut aussi dans ses métriques.
 - **Les effets indirects du méthane sont activés** : l'ozone et la vapeur d'eau stratosphérique supplémentaires que produit le méthane, et la variation de sa durée de vie avec sa propre concentration, la température et les autres gaz.
 - Les impulsions de CO₂ sont du CO₂ fossile (le « CO₂ FFI » de FaIR), et non du CO₂ d'usage des terres, qui dans FaIR modifie aussi l'albédo de surface.
@@ -117,9 +117,9 @@ Elle ne couvre pas l'incertitude sur les émissions par tonne d'aliment, sur les
 
 Le graphique de température peut montrer le réchauffement dû aux seuls facteurs naturels. C'est la température que donne FaIR quand toutes les émissions humaines restent à leur niveau de 1750 : seuls le soleil et les volcans font alors varier le climat.
 
-Sur 2010–2019, cela donne +0,06 °C (de −0,04 à +0,17). L'AR6 du GIEC (résumé à l'intention des décideurs du GT1, A.1.3, figure SPM.2) évalue la variation due aux facteurs naturels entre 1850–1900 et 2010–2019 entre −0,1 et +0,1 °C. Un test vérifie que la médiane se trouve dans cette fourchette.
+Sur 2010–2019, cela donne +0,05 °C (de +0,03 à +0,09). L'AR6 du GIEC (résumé à l'intention des décideurs du GT1, A.1.3, figure SPM.2) évalue la variation due aux facteurs naturels entre 1850–1900 et 2010–2019 entre −0,1 et +0,1 °C. Un test vérifie que la médiane se trouve dans cette fourchette.
 
-La courbe plonge après les grandes éruptions, comme celle du Krakatoa en 1883, et reste proche de zéro après 2050. Sa fourchette comprend la variabilité interne de l'ensemble : c'est pourquoi une année isolée peut s'écarter de plus d'un dixième de degré.
+La courbe plonge après les grandes éruptions, comme celle du Krakatoa en 1883, et reste proche de zéro après 2050. Sa fourchette est l'écart entre les réponses des membres au soleil et aux volcans. Elle est large d'au plus 0,14 °C chaque année depuis 1900.
 
 Elle s'appelle « facteurs naturels seuls » et non « un monde sans humains ». La couverture des terres et tout ce qui précède 1750 restent tels quels, et l'homme avait déjà légèrement réchauffé la référence de 1850–1900. Le forçage solaire et volcanique futur est une valeur provisoire. Une grande éruption refroidirait le monde de quelques dixièmes de degré pendant un à trois ans, et personne ne peut la prévoir.
 
@@ -140,18 +140,18 @@ Pour chaque avenir, la courbe de température totale vient de FaIR lancé sur l'
 - SSP2-4.5 : voie intermédiaire, par défaut ;
 - SSP3-7.0 : rivalité régionale, émissions élevées.
 
-L'application montre la médiane et la fourchette de 5 à 95 % par rapport à 1850–1900. Le tableau donne les valeurs de FaIR lui-même sur les 50 membres que lance l'application et, à la ligne sous chacune, celles des 841 membres tels que les lance le pipeline, avec leur variabilité interne. La référence de l'application y ajoute le forçage de la règle de 2020 sur le transport maritime, 0,04 °C aujourd'hui (voir « Pourquoi 2023 et 2024 ont été si chaudes »).
+L'application montre la médiane et la fourchette de 5 à 95 % par rapport à 1850–1900. Le tableau donne les valeurs de FaIR lui-même sur les 50 membres que lance l'application. La ligne sous chacune donne celles des 841 membres, tels que les lance le pipeline. La référence de l'application y ajoute le forçage de la règle de 2020 sur le transport maritime, 0,04 °C aujourd'hui (voir « Pourquoi 2023 et 2024 ont été si chaudes »).
 
 | Scénario | 2015–2024 | 2050 | 2100 |
 | --- | --- | --- | --- |
 | SSP1-2.6 | 1,18 °C (1,00–1,35) | 1,79 °C (1,38–2,30) | 1,77 °C (1,25–2,55) |
-| 841 membres | 1,20 °C (1,01–1,36) | 1,79 °C (1,36–2,34) | 1,76 °C (1,22–2,56) |
+| 841 membres | 1,19 °C (0,99–1,36) | 1,78 °C (1,36–2,30) | 1,75 °C (1,25–2,56) |
 | SSP2-4.5 | 1,18 °C (1,00–1,35) | 1,88 °C (1,51–2,31) | 2,59 °C (1,93–3,55) |
-| 841 membres | 1,20 °C (1,01–1,35) | 1,89 °C (1,49–2,33) | 2,61 °C (1,91–3,60) |
+| 841 membres | 1,19 °C (0,99–1,36) | 1,88 °C (1,50–2,30) | 2,61 °C (1,92–3,58) |
 | SSP3-7.0 | 1,18 °C (1,00–1,35) | 1,86 °C (1,51–2,24) | 3,45 °C (2,67–4,46) |
-| 841 membres | 1,20 °C (1,01–1,35) | 1,86 °C (1,49–2,28) | 3,47 °C (2,67–4,43) |
+| 841 membres | 1,19 °C (0,99–1,36) | 1,86 °C (1,51–2,25) | 3,47 °C (2,67–4,43) |
 
-Le réchauffement observé sur 2015–2024 est de 1,27 °C dans HadCRUT5 et de 1,33 °C dans Berkeley Earth, tous deux ramenés ici à leur propre moyenne de 1850–1900. La médiane de FaIR dans l'application est 0,09 °C sous HadCRUT5, et celle des 841 membres 0,06 °C sous elle. HadCRUT5 se situe dans les deux fourchettes de 5 à 95 %. Indicators of Global Climate Change 2024, qui combine quatre séries, évalue 2015–2024 à 1,24 °C (1,11–1,35) (Forster et al. 2025). Des tests comparent la médiane de FaIR à HadCRUT5 et à cette évaluation. Les valeurs de 2100 sont proches des meilleures estimations de l'AR6 pour 2081–2100 : 1,8, 2,7 et 3,6 °C (tableau SPM.1).
+Le réchauffement observé sur 2015–2024 est de 1,27 °C dans HadCRUT5 et de 1,33 °C dans Berkeley Earth, tous deux ramenés ici à leur propre moyenne de 1850–1900. La médiane de FaIR dans l'application est 0,09 °C sous HadCRUT5, et celle des 841 membres 0,08 °C sous elle. HadCRUT5 se situe dans les deux fourchettes de 5 à 95 %. Indicators of Global Climate Change 2024, qui combine quatre séries, évalue 2015–2024 à 1,24 °C (1,11–1,35) (Forster et al. 2025). Des tests comparent la médiane de FaIR à HadCRUT5 et à cette évaluation. Les valeurs de 2100 sont proches des meilleures estimations de l'AR6 pour 2081–2100 : 1,8, 2,7 et 3,6 °C (tableau SPM.1).
 
 ### D'où viennent ces simulations et les courbes observées
 
@@ -169,7 +169,7 @@ Les courbes observées sont l'analyse HadCRUT5 du Met Office (série annuelle mo
 
 ## Pourquoi 2023 et 2024 ont été si chaudes
 
-HadCRUT5 place 2023 à 1,48 °C et 2024 à 1,55 °C au-dessus de 1850–1900 (Berkeley Earth : 1,54 et 1,62 °C). La médiane de FaIR sur SSP2-4.5 donne 1,31 et 1,34 °C, avec des fourchettes de 5 à 95 % de 1,06–1,51 et 1,08–1,55 °C. Les deux années se situent 0,17 et 0,21 °C au-dessus de la médiane, en haut de sa fourchette.
+HadCRUT5 place 2023 à 1,48 °C et 2024 à 1,55 °C au-dessus de 1850–1900 (Berkeley Earth : 1,54 et 1,62 °C). La médiane de FaIR sur SSP2-4.5 donne 1,29 et 1,33 °C, avec des fourchettes de 5 à 95 % de 1,08–1,49 et 1,10–1,53 °C. Les deux années se situent 0,18 et 0,22 °C au-dessus de la médiane. 2023 est en haut de sa fourchette, et 2024 juste au-dessus.
 
 Plusieurs facteurs expliquent ensemble cet écart. FaIR en inclut certains et pas d'autres. Une fois ajoutés l'effet du transport maritime, El Niño et les changements des nuages, les températures observées des deux années sont celles qu'attend la littérature. Aucun facteur ne rend compte à lui seul de tout 2023.
 
@@ -197,7 +197,7 @@ L'éruption de janvier 2022 a injecté environ 0,5 Tg de dioxyde de soufre et qu
 - Une étude multimodèle donne −0,19 ± 0,06 W/m² pour 2022–2023 (Quaglia et al. 2026).
 - Forster et al. (2025) estiment −0,02 °C avec FaIR.
 
-Le forçage volcanique utilisé ici baisse de 0,10 W/m² en 2022 et y reste en 2023. Dans FaIR, cela refroidit 2023–2025 de 0,01 à 0,015 °C par rapport au forçage de 2021 maintenu jusqu'en 2024. L'éruption n'a pas causé la chaleur. La courbe des facteurs naturels seuls reste à 0,05–0,06 °C sur 2020–2025 : la hausse solaire est en partie compensée par l'éruption et par le retour du forçage volcanique à sa moyenne.
+Le forçage volcanique utilisé ici baisse de 0,10 W/m² en 2022 et y reste en 2023. Dans FaIR, cela refroidit 2023–2025 de 0,01 à 0,015 °C par rapport au forçage de 2021 maintenu jusqu'en 2024. L'éruption n'a pas causé la chaleur. La courbe des facteurs naturels seuls reste à 0,04–0,05 °C sur 2020–2025 : la hausse solaire est en partie compensée par l'éruption et par le retour du forçage volcanique à sa moyenne.
 
 ### La limite de 2020 sur le soufre du carburant des navires : absente des scénarios
 
@@ -316,7 +316,7 @@ La médiane est faible pour quatre raisons :
 
 ## La hausse du niveau de la mer
 
-L'onglet Niveau de la mer montre la hausse chaque année jusqu'en 2100 sans et avec les leviers. Le résumé donne la hausse que les leviers évitent d'ici 2100. La hausse suit une vitesse proportionnelle au réchauffement au-dessus d'une température d'équilibre, dH/dt = a·(T − T₀), comme dans les modèles semi-empiriques du niveau de la mer. La vitesse est ajustée sur les médianes du tableau 9.9 du GT1 de l'AR6 du GIEC pour SSP1-2.6, SSP2-4.5 et SSP3-7.0 en 2030, 2050, 2090 et 2100, par rapport à 1995–2014. Elle est ajustée avec le réchauffement médian de FaIR pour chaque scénario. L'ajustement donne a = 4,2 mm par an et par °C et T₀ = 0,41 °C. Un test vérifie qu'il reste à moins de 4 cm du tableau pour chaque année et chaque scénario. Chaque borne de la fourchette probable du tableau a son propre ajustement, avec le réchauffement médian. La fourchette probable de la vitesse est de 3,4 à 5,7 mm par an et par °C, avec T₀ = 0,44 et 0,41 °C. Grinsted et Christensen (2021) trouvent 0,40 m par siècle et par °C (fourchette probable 0,35–0,44) dans les observations, proche de cette vitesse.
+L'onglet Niveau de la mer montre la hausse chaque année jusqu'en 2100 sans et avec les leviers. Le résumé donne la hausse que les leviers évitent d'ici 2100. La hausse suit une vitesse proportionnelle au réchauffement au-dessus d'une température d'équilibre, dH/dt = a·(T − T₀), comme dans les modèles semi-empiriques du niveau de la mer. La vitesse est ajustée sur les médianes du tableau 9.9 du GT1 de l'AR6 du GIEC pour SSP1-2.6, SSP2-4.5 et SSP3-7.0 en 2030, 2050, 2090 et 2100, par rapport à 1995–2014. Elle est ajustée avec le réchauffement médian de FaIR pour chaque scénario. L'ajustement donne a = 4,2 mm par an et par °C et T₀ = 0,40 °C. Un test vérifie qu'il reste à moins de 4 cm du tableau pour chaque année et chaque scénario. Chaque borne de la fourchette probable du tableau a son propre ajustement, avec le réchauffement médian. La fourchette probable de la vitesse est de 3,4 à 5,7 mm par an et par °C, avec T₀ = 0,43 et 0,40 °C. Grinsted et Christensen (2021) trouvent 0,40 m par siècle et par °C (fourchette probable 0,35–0,44) dans les observations, proche de cette vitesse.
 
 La hausse est linéaire dans le réchauffement. La hausse évitée est donc la vitesse multipliée par le réchauffement évité, additionné sur les années jusqu'en 2100, et T₀ disparaît. Si le réchauffement est plus bas de 0,1 °C à partir de 2050, après une rampe linéaire depuis 2025, la hausse évitée est d'environ 2,7 cm d'ici 2100. Sa fourchette probable est celle de la vitesse, appliquée au réchauffement médian évité.
 
@@ -356,16 +356,16 @@ Chaque écart est un interrupteur nommé de `planetshift.config.json`, le fichie
 Avec chaque interrupteur sur FaIR tel quel, sur SSP2-4.5 :
 
 - moins d'avion à fond évite 0,006 °C en 2050 et 0,043 °C en 2100, au lieu de 0,055 et 0,124, car l'essentiel de son effet vient des traînées, que FaIR ne compte pas ;
-- les voitures électriques évitent 0,023 et 0,086 °C au lieu de 0,038 et 0,100, et dans SSP3-7.0 ajoutent 0,035 °C d'ici 2100 au lieu d'en éviter 0,018 ;
+- les voitures électriques évitent 0,023 et 0,086 °C au lieu de 0,038 et 0,100, et dans SSP3-7.0 ajoutent 0,034 °C d'ici 2100 au lieu d'en éviter 0,018 ;
 - les six leviers d'énergie ensemble évitent 0,154 et 0,538 °C au lieu de 0,246 et 0,666.
 
 Sans la règle sur le transport maritime, la référence est plus fraîche de 0,037 °C en 2024 et de 0,069 °C en 2100. Les leviers agricoles ne bougent pas.
 
 ## Hypothèses
 
-- L'application lance FaIR sur 50 des 841 membres de l'ensemble calibré, choisis pour garder sa médiane et sa fourchette de 5 à 95 %, sans sa variabilité interne. Les simulations du pipeline lui-même (les causes du réchauffement, les courbes) utilisent les 841, avec leur variabilité interne (avec une graine fixe : les simulations appariées reçoivent le même bruit, qui s'annule dans les différences).
+- L'application lance FaIR sur 50 des 841 membres de l'ensemble calibré, choisis pour garder sa médiane et sa fourchette de 5 à 95 %, sans sa variabilité interne. Les simulations du pipeline lui-même (les causes du réchauffement, les courbes) utilisent les 841 membres, eux aussi sans variabilité interne.
 - Les leviers changent le CO₂ fossile, le méthane, le N₂O et le HFC-134a de FaIR ; tout ce qu'ils changent d'autre est ajouté selon sa propre réponse.
-- Les courbes d'AGTP viennent d'impulsions sur SSP2-4.5 en 2035 et servent pour tous les scénarios et toutes les années. Les courbes de 2025 et 2045 sont à 7 % près. Elles ne font que répartir le total de FaIR, sauf avec l'option AR6.
+- Les courbes d'AGTP viennent d'impulsions sur SSP2-4.5 en 2035 et servent pour tous les scénarios et toutes les années. Les courbes de 2025 et 2045 sont à 5 % près. Elles ne font que répartir le total de FaIR, sauf avec l'option AR6.
 - Le méthane agricole est traité comme biogénique : pas de CO₂ issu de son oxydation.
 - Le CO₂ agricole (urée et chaulage) est traité comme du CO₂ fossile dans FaIR.
 - Les émissions d'une année sont réparties uniformément sur l'année. La température d'une année civile est la moyenne des valeurs de FaIR à ses deux extrémités.

@@ -4,10 +4,8 @@
 // and on scenarios they were not.
 
 import { describe, expect, it } from 'vitest';
-import { loadModel } from '../../../src/model/fair/calibration';
-import { anomaly, bandAt, runEnsemble, type Band } from '../../../src/model/fair/ensemble';
-import { prepareScenario } from '../../../src/model/fair/scenario';
-import { exported, readCalibration, readPython, readScenario, SCENARIOS, STEPS } from './exported';
+import { anomaly, bandAt, type Band } from '../../../src/model/fair/ensemble';
+import { exported, readPython, SCENARIOS } from './exported';
 
 type Runs = Record<string, Float64Array[]>;
 type Target = { name: string; year: number; of: (runs: Runs, members: readonly number[]) => Band };
@@ -179,19 +177,8 @@ const analyse = (label: string, runs: Runs): number[][] => {
 };
 
 describe.skipIf(!exported)('member subsets (option B)', () => {
-  it('on the pipeline’s runs, internal variability on', () => {
+  it('on the pipeline’s runs', () => {
     const runs: Runs = Object.fromEntries(SCENARIOS.map((s) => [s, readPython(s).map(anomaly)]));
-    expect(analyse('Python FaIR, internal variability on', runs)).toHaveLength(SIZES.length);
-  });
-
-  it('on the port’s runs, internal variability off', () => {
-    const model = loadModel(readCalibration());
-    const runs: Runs = Object.fromEntries(
-      SCENARIOS.map((s) => [
-        s,
-        runEnsemble(model, prepareScenario(model, readScenario(s), STEPS)).map(anomaly),
-      ]),
-    );
-    expect(analyse('TypeScript port, internal variability off', runs)).toHaveLength(SIZES.length);
+    expect(analyse('Python FaIR', runs)).toHaveLength(SIZES.length);
   });
 });

@@ -1,6 +1,6 @@
 # Causes of global warming
 
-Farming has caused about 17% of the warming over 2015–2024. Together with land use, it has caused about 31%. Fossil fuels and industry cause the most warming. Air pollution cools the planet, which masks part of the warming.
+Farming has caused about 18% of the warming over 2015–2024. Together with land use, it has caused about 31%. Fossil fuels and industry cause the most warming. Air pollution cools the planet, which masks part of the warming.
 
 ## What the chart shows
 
@@ -32,21 +32,21 @@ On SSP2-4.5, median and 5–95% range, relative to 1850–1900:
 
 | Cause | 2010–2019 | 2015–2024 | 2050 |
 | --- | --- | --- | --- |
-| Fossil fuels and industry | 0.71 °C | 0.78 °C (0.58–1.01) | 1.24 °C (0.93–1.64) |
+| Fossil fuels and industry | 0.71 °C | 0.78 °C (0.58–1.01) | 1.24 °C (0.92–1.64) |
 | Farming | 0.20 °C | 0.21 °C (0.14–0.30) | 0.29 °C (0.20–0.42) |
 | Land use: CO₂ | 0.24 °C | 0.25 °C (0.18–0.36) | 0.26 °C (0.16–0.39) |
-| Land use: albedo (cooling) | −0.09 °C | −0.09 °C (−0.16–−0.04) | −0.10 °C (−0.19–−0.04) |
+| Land use: albedo (cooling) | −0.08 °C | −0.09 °C (−0.16–−0.04) | −0.10 °C (−0.18–−0.04) |
 | Waste | 0.06 °C | 0.07 °C (0.05–0.10) | 0.08 °C (0.06–0.12) |
 | Air pollution (cooling) | −0.68 °C | −0.67 °C (−1.26–−0.26) | −0.67 °C (−1.30–−0.28) |
-| Natural factors | 0.06 °C | 0.06 °C (−0.05–0.17) | 0.04 °C (−0.13–0.19) |
-| Other human emissions | 0.56 °C | 0.60 °C (0.41–0.84) | 0.76 °C (0.52–1.08) |
-| Total | 1.07 °C | 1.20 °C (1.01–1.35) | 1.89 °C (1.50–2.33) |
+| Natural factors | 0.05 °C | 0.05 °C (0.03–0.09) | 0.02 °C (0.00–0.06) |
+| Other human emissions | 0.56 °C | 0.60 °C (0.41–0.84) | 0.77 °C (0.52–1.08) |
+| Total | 1.06 °C | 1.19 °C (0.99–1.36) | 1.88 °C (1.50–2.30) |
 
 The 2010–2019 column is the mean of each year's median.
 
 ### Farming's share
 
-**Agriculture has caused about 0.21 °C of the 1.20 °C of warming over 2015–2024, about 17%.** With land use, which is mostly clearing land for farming, the two add up to about 0.37 °C, or 31%. Land use's CO₂ warms by 0.25 °C, and its albedo change cools by 0.09 °C.
+**Agriculture has caused about 0.21 °C of the 1.19 °C of warming over 2015–2024, about 18%.** With land use, which is mostly clearing land for farming, the two add up to about 0.37 °C, or 31%. Land use's CO₂ warms by 0.25 °C, and its albedo change cools by 0.09 °C.
 
 Up to 2050, agriculture's share stays near 15% on SSP2-4.5, and its warming grows to 0.29 °C. On SSP1-2.6, agricultural methane falls by a third by 2050, and agriculture's warming reaches 0.27 °C. On SSP3-7.0, agricultural methane grows by 45%, but the effect has not had time to show yet: agriculture's warming reaches 0.28 °C.
 
@@ -58,17 +58,17 @@ On SSP2-4.5, median and 5–95% range of the mean over 2015–2024, and in 2100,
 
 | Gas and cause | 2015–2024 | 2100 |
 | --- | --- | --- |
-| **CO₂** | 0.94 °C (0.70–1.23) | 1.90 °C (1.36–2.68) |
-| Fossil fuels and industry | 0.65 °C (0.49–0.84) | 1.66 °C (1.18–2.29) |
+| **CO₂** | 0.93 °C (0.70–1.23) | 1.90 °C (1.36–2.68) |
+| Fossil fuels and industry | 0.65 °C (0.49–0.84) | 1.66 °C (1.18–2.30) |
 | Farming (urea and liming) | 0.002 °C (0.001–0.002) | 0.006 °C (0.004–0.008) |
 | Land use | 0.25 °C (0.18–0.36) | 0.19 °C (0.08–0.35) |
-| Interactions and other minor sources | 0.03 °C (0.00–0.08) | 0.03 °C (−0.04–0.15) |
+| Interactions and other minor sources | 0.03 °C (−0.01–0.08) | 0.03 °C (−0.04–0.15) |
 | **Methane** | 0.41 °C (0.28–0.59) | 0.51 °C (0.34–0.79) |
 | Fossil fuels and industry | 0.11 °C (0.07–0.15) | 0.12 °C (0.08–0.19) |
 | Farming | 0.14 °C (0.09–0.21) | 0.19 °C (0.12–0.30) |
 | Waste | 0.06 °C (0.04–0.09) | 0.06 °C (0.04–0.10) |
 | Forest, grassland and peat fires | 0.005 °C (0.003–0.007) | 0.007 °C (0.005–0.011) |
-| Interactions and other minor sources | 0.10 °C (0.07–0.14) | 0.14 °C (0.09–0.20) |
+| Interactions and other minor sources | 0.10 °C (0.07–0.14) | 0.14 °C (0.09–0.21) |
 | **N₂O** | 0.11 °C (0.07–0.15) | 0.19 °C (0.13–0.30) |
 | Fossil fuels and industry | 0.02 °C (0.01–0.03) | 0.03 °C (0.02–0.05) |
 | Farming | 0.06 °C (0.04–0.09) | 0.12 °C (0.08–0.19) |
@@ -150,7 +150,7 @@ Some of what the energy levers change is not a greenhouse gas: aviation's non-CO
   - it uses another climate model (MAGICC6).
 
   SSP3-7.0, the closest to the study's high-population baseline, comes nearest. A test checks the SSP2-4.5 figure lies between a quarter of its lower bound and its upper bound, and that SSP3-7.0 is higher.
-- **Warming by gas, 2024.** Our World in Data shows the warming by gas and source of Jones et al. (2023, data updated in 2025). Against Planetshift's medians in 2024 on SSP2-4.5: fossil CO₂ 0.81 °C there and 0.72 °C here, agricultural methane 0.16 and 0.15 °C, agricultural N₂O 0.061 and 0.066 °C. Land-use CO₂ is 0.41 °C there and 0.25 °C here, not counting its albedo change. The history explains part of the gap: 220 billion tonnes of carbon over 1850–2023 in the calibration's, against 243 in the Global Carbon Budget 2025. Fossil methane is 0.22 °C there and 0.11 °C here. Planetshift counts 0.07 °C of methane under waste and 0.11 °C under interactions and other minor sources.
+- **Warming by gas, 2024.** Our World in Data shows the warming by gas and source of Jones et al. (2023, data updated in 2025). Against Planetshift's medians in 2024 on SSP2-4.5: fossil CO₂ 0.81 °C there and 0.71 °C here, agricultural methane 0.16 and 0.15 °C, agricultural N₂O 0.061 and 0.066 °C. Land-use CO₂ is 0.41 °C there and 0.25 °C here, not counting its albedo change. The history explains part of the gap: 220 billion tonnes of carbon over 1850–2023 in the calibration's, against 243 in the Global Carbon Budget 2025. Fossil methane is 0.22 °C there and 0.11 °C here. Planetshift counts 0.07 °C of methane under waste and 0.11 °C under interactions and other minor sources.
 
 ## Assumptions
 

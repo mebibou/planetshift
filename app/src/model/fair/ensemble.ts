@@ -9,16 +9,9 @@ export const START = 1750;
 const BASELINE_FIRST = 1850;
 const BASELINE_LAST = 1900;
 
-/** Each member's annual-mean surface temperature from 1750; `noise(k)` gives member k's internal
- * variability, or null to run without it. */
-export const runEnsemble = (
-  model: Model,
-  prepared: PreparedScenario,
-  noise: (k: number) => Float64Array | null = () => null,
-): Float64Array[] =>
-  model.members.map((p, k) =>
-    annualMeans(runMember(model, memberOf(model, p), prepared, noise(k)).temperature),
-  );
+/** Each member's annual-mean surface temperature from 1750. */
+export const runEnsemble = (model: Model, prepared: PreparedScenario): Float64Array[] =>
+  model.members.map((p) => annualMeans(runMember(model, memberOf(model, p), prepared).temperature));
 
 /** °C relative to the member's 1850–1900 mean, years from START. */
 export const anomaly = (annual: Float64Array): Float64Array => {
