@@ -31,6 +31,7 @@ import species from '../../public/fixtures/species.json';
 import chain from '../../public/fixtures/chain.json';
 import origins from '../../public/fixtures/origins.json';
 import water from '../../public/fixtures/water.json';
+import fossilmethane from '../../public/fixtures/fossilmethane.json';
 
 /** The fixtures in public/fixtures, as the app loads them. */
 export const loadFixtures = (): ModelData =>
@@ -59,6 +60,7 @@ export const loadFixtures = (): ModelData =>
     chain: chain as unknown as Chain,
     origins: origins as unknown as Origins,
     water: water as unknown as Water,
+    fossilmethane,
   }) as unknown as ModelData;
 
 export const CURRENT_YEAR = 2026;

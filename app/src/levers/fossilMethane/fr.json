@@ -1,0 +1,14 @@
+{
+  "title": "Fuites de méthane",
+  "description": "Arrêter le méthane qui fuit des puits de pétrole et de gaz, des gazoducs et des mines de charbon : par kg, il réchauffe bien plus que le CO₂, mais une dizaine d'années seulement.",
+  "family": "Fuites de méthane",
+  "page": "Fuites de méthane",
+  "oilGasMethane": {
+    "title": "Fuites de pétrole et de gaz",
+    "description": "Trouver et réparer les fuites, cesser le dégazage et le torchage de routine : 75 % du méthane du pétrole et du gaz disparaît à 100 % (AIE). Brûler moins de pétrole et de gaz laisse alors moins de méthane à éviter."
+  },
+  "coalMineMethane": {
+    "title": "Méthane des mines de charbon",
+    "description": "Drainer le méthane des veines avant l'extraction et brûler celui qui reste dans l'air de ventilation : 50 % du méthane des mines de charbon disparaît à 100 %."
+  }
+}

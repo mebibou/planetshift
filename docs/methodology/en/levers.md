@@ -12,7 +12,7 @@ Each lever is a slider from 0 to 100%, which sets the share adopted. The diet's 
 
 The **Levers** section of Explore groups the levers under the cause of warming each mainly acts on (see [Causes of global warming](#method-link)):
 
-- fossil fuels and industry: energy and transport, buildings and industry;
+- fossil fuels and industry: energy and transport, buildings and industry, methane leaks;
 - farming: diet, farm practices, food waste;
 - land use: deforestation, carbon in farmland.
 
@@ -110,7 +110,7 @@ Computed directly, the Shapley value needs one run of the model for every set of
 
 Instead, Planetshift makes use of how the groups interact. Farming's groups interact only through the production they change. The diet and less waste change what is produced. Practices, deforestation, regrowth and carbon in farmland act on the production those two leave, but not on each other. So the worth of any set of farming groups is read from one pass of the farm emissions for the production groups in that set: none, the diet, less waste, or both. That is at most four passes, three more than the run itself. Each pass is kept and reused while you move sliders that do not change it.
 
-The groups outside farming (energy and transport, buildings and industry) interact with each other through the grid that renewable electricity leaves. They do not interact with farming. Their worth is their own emissions, recomputed with the other group's levers off.
+The groups outside farming (energy and transport, buildings and industry, methane leaks) interact with each other through the grid that renewable electricity leaves, and through the methane per kg of fuel that the leak levers leave. They do not interact with farming. Their worth is their own emissions, recomputed with the other group's levers off.
 
 A test checks, on the fixtures and on the real data, that this gives the Shapley values of full runs to nine digits, on the sum of each gas's response.
 

@@ -52,6 +52,7 @@ const FORMATS: Record<Measure, (locale: string, v: number) => string> = {
   foodWaste: (locale, v) => formatMass(locale, v * 1000),
   municipalWaste: (locale, v) => formatMass(locale, v * 1000),
   oceanPlastic: (locale, v) => formatMass(locale, v * 1000),
+  fossilMethane: formatMass,
 };
 
 /** A layer's quantity in its unit: tonnes of product, kg of gas, hectares, or a share of land. */
@@ -219,6 +220,15 @@ const municipalRows = (c: CountryResult, t: T, locale: string): [string, string]
     : [];
 };
 
+/** A country's leaked methane from oil and gas, and from coal mines. */
+const leakRows = (c: CountryResult, t: T, locale: string): [string, string][] =>
+  c.fossilMethane
+    ? [
+        [t('map.tooltip.oilGasMethane'), formatMass(locale, c.fossilMethane.oilGas)],
+        [t('map.tooltip.coalMineMethane'), formatMass(locale, c.fossilMethane.coal)],
+      ]
+    : [];
+
 interface Extra {
   rows: [string, string][];
   source?: TooltipModel['source'];
@@ -292,6 +302,10 @@ const MEASURE_TOOLTIPS: Record<
   oceanPlastic: {
     what: (t) => t('map.tooltip.oceanPlastic'),
     extra: () => ({ rows: [], source: { label: 'Meijer et al. (2021)', url: MEIJER } }),
+  },
+  fossilMethane: {
+    what: (t) => t('map.tooltip.fossilMethane'),
+    extra: (c, t, locale) => ({ rows: leakRows(c, t, locale) }),
   },
   landCo2: {
     what: (t) => t('map.tooltip.landCo2'),
@@ -387,9 +401,11 @@ const countryTooltip = (
   };
 };
 
-/** Whether the layer has data for a country: every layer but waste has it for every country. */
+/** Whether the layer has data for a country: every layer but waste and leaked methane has it for every country. */
 const hasData = (c: CountryResult, spec: LayerSpec): boolean =>
-  spec.layer !== 'waste' || hasWasteData(c, measureOf(spec));
+  spec.layer === 'fossilMethane'
+    ? c.fossilMethane !== undefined
+    : spec.layer !== 'waste' || hasWasteData(c, measureOf(spec));
 
 /** Before and after numbers, then the measure's own rows: the tier and its source, or land's parts. */
 export const tooltipModel = (

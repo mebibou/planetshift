@@ -1575,7 +1575,8 @@ const familyShares = (
   /**
    * The values of the families outside farming with only `inPlay` of them acting: their world
    * hooks again, each lever of another family read as not adopted, as they interact with each
-   * other (the grid renewable electricity leaves) but not with farming.
+   * other (the grid renewable electricity leaves, the methane per kg of fuel the leak levers
+   * leave) but not with farming.
    */
   const outsideValues = (inPlay: readonly string[]): Map<string, number[]> => {
     const key = inPlay.join('|');

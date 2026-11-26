@@ -5,6 +5,7 @@ import type { Band } from '../../model/climate';
 import { dataValueAt, recordFrom } from '../../model/util';
 import { coChange, NO_CO_CHANGE, type CoYear, type KeepsNox } from './coemissions';
 import type { CoEmissions, CoSector, Sector, Sectors } from './data';
+import { NO_LEAKS, withLeaks, type LeaksOf } from '../fossilMethane/model';
 import { ENERGY_LEVERS, hasSectors, type DataCentres, type EnergyLever } from './data';
 export { ENERGY_LEVERS, hasSectors, type DataCentres, type EnergyLever };
 
@@ -144,9 +145,10 @@ export const energyPaths = (
   years: readonly number[],
   shareAt: (year: number) => number,
   aviation: AviationNonCo2,
+  leaks: LeaksOf = NO_LEAKS,
 ): EnergyPaths =>
   hasSectors(sectors) && ENERGY_LEVERS.some((id) => adoption(id) > 0)
-    ? actingPaths(sectors, co, adoption, ssp, dataCentres, band, years, shareAt, aviation)
+    ? actingPaths(sectors, co, adoption, ssp, dataCentres, band, years, shareAt, aviation, leaks)
     : {
         co2: years.map(() => 0),
         co: years.map(() => ({ co2: {}, change: NO_CO_CHANGE })),
@@ -164,6 +166,7 @@ const actingPaths = (
   years: readonly number[],
   shareAt: (year: number) => number,
   aviation: AviationNonCo2,
+  leaks: LeaksOf,
 ): EnergyPaths => {
   const ctx: YearContext = { sectors, ssp, dataCentres, band };
   const full = energyAdoption(adoption, 1);
@@ -178,7 +181,7 @@ const actingPaths = (
       };
       return {
         co2,
-        change: coChange(co, ssp, y, co2, CLEAN_FUEL_KEEPS_NOX),
+        change: withLeaks(coChange(co, ssp, y, co2, CLEAN_FUEL_KEEPS_NOX), leaks(y, co2)),
         keepsNox: CLEAN_FUEL_KEEPS_NOX,
       };
     }),

@@ -61,7 +61,13 @@ const breakdownAgainstShapley = (data: NonNullable<typeof real>) => {
   const sample = sampleById('everything').scenario;
   const scenario = {
     ...sample,
-    levers: { ...sample.levers, cleanHeating: 0.5, cleanIndustry: 0.5 },
+    levers: {
+      ...sample.levers,
+      cleanHeating: 0.5,
+      cleanIndustry: 0.5,
+      oilGasMethane: 0.5,
+      coalMineMethane: 0.5,
+    },
   };
   const run = (s: Scenario, o: Partial<Options>) =>
     runScenario(data, s, { ...DEFAULT_OPTIONS, permafrost: 'off', ...o }, CURRENT_YEAR).summary;

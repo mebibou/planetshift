@@ -1,5 +1,5 @@
 """CEDS (Community Emissions Data System) v_2024_07_08: world emissions of each species by CEDS
-sector and fuel, 1750–2022, from the aggregate summary files."""
+sector and fuel, and each country's by sector, 1750–2022, from the aggregate summary files."""
 
 import zipfile
 from pathlib import Path
@@ -39,6 +39,24 @@ def by_sector_fuel(archive: Path, species: str, year: int = LAST_YEAR) -> pd.Dat
         {
             "sector": frame["sector"],
             "fuel": frame["fuel"],
+            "kg": frame[f"X{year}"].astype(float) * KG_PER_UNIT[units[0]],
+        }
+    )
+
+
+def by_country_sector(archive: Path, species: str, year: int = LAST_YEAR) -> pd.DataFrame:
+    """Each country's emissions of `species` in `year`, kg, one row per country and CEDS sector:
+    columns country (CEDS's lower-case ISO3, or `global` for no country), sector, kg."""
+    name = f"{species}_CEDS_emissions_by_country_sector_{FILE_VERSION}.csv"
+    with zipfile.ZipFile(archive) as z, z.open(name) as f:
+        frame = pd.read_csv(f)
+    units = frame["units"].unique()
+    if len(units) != 1 or units[0] not in KG_PER_UNIT:
+        raise ValueError(f"{species}: units {units}")
+    return pd.DataFrame(
+        {
+            "country": frame["country"],
+            "sector": frame["sector"],
             "kg": frame[f"X{year}"].astype(float) * KG_PER_UNIT[units[0]],
         }
     )

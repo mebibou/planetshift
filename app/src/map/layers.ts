@@ -20,6 +20,7 @@ export const LAYERS = [
   'water',
   'waterScarcity',
   'waste',
+  'fossilMethane',
   'change',
   'quality',
 ] as const;
@@ -31,7 +32,8 @@ export type ChangeOf = (typeof CHANGE_OF)[number];
  * share of a country's land that is farmed, its net land-use CO₂, its farmed mammals' live
  * weight per km² of land, the species its farmland commits to extinction, the freshwater its
  * farming withdraws, the scarcity-weighted water use of the crops HESTIA covers, the food lost
- * and wasted, the municipal solid waste or the plastic reaching the ocean.
+ * and wasted, the municipal solid waste, the plastic reaching the ocean or the methane leaked by
+ * oil, gas and coal.
  */
 export type Measure =
   | ChangeOf
@@ -45,7 +47,8 @@ export type Measure =
   | 'waterScarcity'
   | 'foodWaste'
   | 'municipalWaste'
-  | 'oceanPlastic';
+  | 'oceanPlastic'
+  | 'fossilMethane';
 
 /** What each layer but Change measures, production where it is not listed. */
 const LAYER_MEASURES: Partial<Record<Layer, Measure>> = {
@@ -56,6 +59,7 @@ const LAYER_MEASURES: Partial<Record<Layer, Measure>> = {
   mammals: 'mammals',
   water: 'water',
   waterScarcity: 'waterScarcity',
+  fossilMethane: 'fossilMethane',
 };
 export type GasChoice = Gas | 'co2e';
 /** The farm's gases and CO₂e, which also counts the refrigerants after the farm. */
@@ -180,6 +184,10 @@ const WASTE_DATA: Partial<Record<Measure, (c: CountryResult) => boolean>> = {
   oceanPlastic: (c) => c.oceanPlastic !== undefined,
 };
 
+/** Methane leaked by the country's oil, gas and coal in CEDS's year, kg. */
+export const leakedMethane = (c: CountryResult): number =>
+  c.fossilMethane ? c.fossilMethane.oilGas + c.fossilMethane.coal : 0;
+
 export const hasWasteData = (c: CountryResult, kind: Measure): boolean =>
   WASTE_DATA[kind]?.(c) ?? false;
 
@@ -204,6 +212,7 @@ const MEASURES: Record<
   foodWaste: foodWasteTotal,
   municipalWaste: (c) => [c.municipalWaste?.tonnes ?? 0, 0],
   oceanPlastic: (c) => [c.oceanPlastic ?? 0, 0],
+  fossilMethane: (c) => [leakedMethane(c), c.fossilMethaneChange ?? 0],
 };
 
 export const beforeAfter = (
@@ -233,6 +242,7 @@ const VALUES: Partial<Record<Layer, Value>> = {
   water: (c, ba) => (c.water > 0 ? ba.after : null),
   waterScarcity: (c, ba) => (c.waterScarcity > 0 ? ba.after : null),
   waste: (c, ba) => (hasWasteData(c, ba.kind) ? ba.after : null),
+  fossilMethane: (c, ba) => (c.fossilMethane ? ba.after : null),
 };
 
 /** The number the map colours a country by, or null for no data. */

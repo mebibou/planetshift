@@ -5,6 +5,7 @@ import { END_YEAR, range, zerosOn } from '../../model/util';
 import { anyAdopted, lever } from '../define';
 import type { LeverModule } from '../types';
 import { energySpec } from './spec';
+import { leaksOf } from '../fossilMethane/model';
 import type { Options } from '../../model/api';
 import type { Prepared } from '../../model/prepare';
 import type { Band } from '../../model/climate';
@@ -128,6 +129,7 @@ export const energy: LeverModule = {
           years,
           shareAt,
           departuresOf(prepared.data).aviationNonCo2,
+          leaksOf(prepared.data.fossilmethane, adoption, options.ssp, shareAt),
         ),
       );
       const acting = anyAdopted(adoption, LEVERS);

@@ -12,7 +12,7 @@ Chaque levier est un curseur de 0 à 100 %, qui fixe la part adoptée. Le curseu
 
 La section **Leviers** d'Explorer range les leviers sous la cause du réchauffement sur laquelle chacun agit surtout (voir [Causes du réchauffement climatique](#method-link)) :
 
-- combustibles fossiles et industrie : énergie et transport, bâtiments et industrie ;
+- combustibles fossiles et industrie : énergie et transport, bâtiments et industrie, fuites de méthane ;
 - agriculture : alimentation, pratiques agricoles, gaspillage alimentaire ;
 - usage des terres : déforestation, carbone dans les terres agricoles.
 
@@ -110,7 +110,7 @@ Calculée directement, la valeur de Shapley demande une exécution du modèle po
 
 Planetshift s'appuie plutôt sur la façon dont les groupes interagissent. Les groupes agricoles n'interagissent que par la production qu'ils changent. L'alimentation et la baisse du gaspillage changent ce qui est produit. Les pratiques, la déforestation, la repousse et le carbone dans les terres agricoles agissent sur la production que ces deux-là laissent, mais pas les uns sur les autres. La valeur de n'importe quel ensemble de groupes agricoles se lit donc à partir d'un passage des émissions agricoles pour les groupes de production de cet ensemble : aucun, l'alimentation, le gaspillage, ou les deux. Cela fait au plus quatre passages, trois de plus que l'exécution elle-même. Chaque passage est conservé et réutilisé tant qu'on déplace des curseurs qui ne le changent pas.
 
-Les groupes hors de l'agriculture (énergie et transport, bâtiments et industrie) interagissent entre eux par le réseau que laisse l'électricité renouvelable. Ils n'interagissent pas avec l'agriculture. Leur valeur est leurs propres émissions, recalculées avec les leviers de l'autre groupe à zéro.
+Les groupes hors de l'agriculture (énergie et transport, bâtiments et industrie, fuites de méthane) interagissent entre eux par le réseau que laisse l'électricité renouvelable, et par le méthane par kg de combustible que laissent les leviers sur les fuites. Ils n'interagissent pas avec l'agriculture. Leur valeur est leurs propres émissions, recalculées avec les leviers de l'autre groupe à zéro.
 
 Un test vérifie, sur les données de test et sur les données réelles, que cela donne les valeurs de Shapley des exécutions complètes à neuf chiffres près, sur la somme des réponses de chaque gaz.
 

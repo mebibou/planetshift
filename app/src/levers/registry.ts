@@ -7,6 +7,7 @@ import type { Levers } from '../model/api';
 import { deadfallSpec as deadfall } from './deadfall/spec';
 import { deforestationSpec as deforestation } from './deforestation/spec';
 import { energySpec as energy } from './energy/spec';
+import { fossilMethaneSpec as fossilMethane } from './fossilMethane/spec';
 import { industrySpec as industry } from './industry/spec';
 import { permafrostSpec as permafrost } from './permafrost/spec';
 import { populationSpec as population } from './population/spec';
@@ -36,6 +37,7 @@ export const MODULES: readonly LeverSpec[] = [
   removals,
   energy,
   industry,
+  fossilMethane,
   shippingSulphur,
   permafrost,
 ].filter(kept);

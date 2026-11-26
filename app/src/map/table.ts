@@ -140,6 +140,7 @@ const LISTED: Partial<
   water: (c) => c.water > 0,
   waterScarcity: (c) => c.waterScarcity > 0,
   waste: (c, _, spec) => hasWasteData(c, measureOf(spec)),
+  fossilMethane: (c) => c.fossilMethane !== undefined,
 };
 
 /** Whether the layer has data for a country. */

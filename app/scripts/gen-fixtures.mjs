@@ -1376,6 +1376,45 @@ write('coemissions.json', {
   source: 'Planetshift test fixture: sectors.md values, air pollution falling by a third',
 });
 
+// leaked methane: 60% of each sector's methane from oil and gas, 30% from coal mines; CEDS's
+// world totals in 2022, falling a little
+const leakShare = { oilGas: 0.6, coal: 0.3 };
+const leakCountries = {
+  USA: { oilGas: 13e9, coal: 0.9e9 },
+  IND: { oilGas: 1.5e9, coal: 6e9 },
+  BRA: { oilGas: 0.6e9, coal: 0.03e9 },
+  NGA: { oilGas: 2.5e9, coal: 0 },
+};
+write('fossilmethane.json', {
+  years: coYears,
+  cedsYear: 2022,
+  avoidable: { oilGas: 0.75, coal: 0.5 },
+  emissions: Object.fromEntries(
+    Object.keys(sectorGt).map((ssp) => [
+      ssp,
+      { oilGas: [84.8e9, 76e9, 60e9], coal: [46.1e9, 41.3e9, 30e9] },
+    ]),
+  ),
+  perKgCo2: Object.fromEntries(
+    Object.keys(sectorGt).map((ssp) => [
+      ssp,
+      Object.fromEntries(
+        Object.entries(coGrams).map(([sector, g]) => [
+          sector,
+          Object.fromEntries(
+            Object.entries(leakShare).map(([group, share]) => [
+              group,
+              [1, 0.85, 0.8].map((k) => Number((g.ch4 * share * k * 1e-3).toPrecision(4))),
+            ]),
+          ),
+        ]),
+      ),
+    ]),
+  ),
+  byCountry: leakCountries,
+  source: 'Planetshift test fixture: CEDS 2022 totals, sectors.md shares',
+});
+
 // world population: a smooth history to 2023, then the medium variant peaking near 10.3 billion
 // and the low and high ones apart from it by up to ~30% and ~40% in 2100; country ratios for
 // all but Nigeria, which takes the world's

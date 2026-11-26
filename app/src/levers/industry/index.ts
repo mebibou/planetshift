@@ -11,6 +11,7 @@ import { forcingResponseOf } from '../energy/model';
 import { anyAdopted, lever } from '../define';
 import type { LeverModule } from '../types';
 import { industrySpec } from './spec';
+import { leaksOf } from '../fossilMethane/model';
 import { INDUSTRY_LEVERS, industryPaths, type IndustryLever } from './model';
 
 const ID = 'industry';
@@ -29,7 +30,17 @@ export const industry: LeverModule = {
       const { industry, sectors, climate } = prepared.data;
       const coemissions = coemissionsOf(prepared.data);
       const paths = bandRecord((band) =>
-        industryPaths(industry, sectors, coemissions, adoption, options.ssp, band, years, shareAt),
+        industryPaths(
+          industry,
+          sectors,
+          coemissions,
+          adoption,
+          options.ssp,
+          band,
+          years,
+          shareAt,
+          leaksOf(prepared.data.fossilmethane, adoption, options.ssp, shareAt),
+        ),
       );
       return {
         extraEmissions: bandRecord((band) =>
