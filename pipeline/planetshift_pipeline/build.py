@@ -38,6 +38,7 @@ from .sections import (
     species,
     supply,
     waste,
+    water,
 )
 
 __all__ = ["OUT_DIR", "SECTIONS", "Build", "Section", "main"]
@@ -89,6 +90,7 @@ SECTIONS: tuple[Section, ...] = (
     Section("impacts", impacts.build, ("impacts.json",), ("impacts",)),
     Section("mammals", mammals.build, ("mammals.json",), ("mammals",)),
     Section("species", species.build, ("species.json",), ("species",)),
+    Section("water", water.build, ("water.json",), ("water",)),
     Section("chain", chain.build, ("chain.json",), ("sources.food_stages",)),
     Section("origins", origins.build, ("origins.json",)),
     Section("map", map.build, ("world.topo.json",)),

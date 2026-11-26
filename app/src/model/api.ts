@@ -95,6 +95,14 @@ export interface CountryResult {
   /** Species its farmland commits to extinction; the change leaves out regrowth on freed land. */
   species: number;
   speciesChange: number;
+  /** Freshwater withdrawn, litres a year, and its change at the full shift; 0 without water.json. */
+  water: number;
+  waterChange: number;
+  /** Scarcity-weighted water use of the crops HESTIA covers, L eq a year, never added to litres. */
+  waterScarcity: number;
+  waterScarcityChange: number;
+  /** Land equipped for irrigation, ha, where FAOSTAT gives it. */
+  irrigatedHa?: number;
   /** Food's emissions after the farm, kg a year, and their change at the full shift; none without chain.json. */
   chain?: GasVector;
   chainChange?: GasVector;

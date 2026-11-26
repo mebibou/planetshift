@@ -106,6 +106,15 @@ The URL keys of the options, the diet controls and the levers are listed under [
 - **Feed falls in proportion to each group's production in the same country.** A group a country does not raise has no feed to lose. See [The shift](#method-shift).
 - **Milk and fish fed to animals change once, when the animals they feed change.** The fish caught for meal are wild and eat no feed, so their change does not change feed again. See [The shift](#method-shift) and [Fish and seafood](#method-seafood).
 
+## Freshwater
+
+- **Withdrawals per tonne do not change with the levers.** The water follows production. Water changes no warming. See [Freshwater](#method-water).
+- **The tiers are the emissions'**: HESTIA's country, then its World average, then Poore & Nemecek's world value, then a proxy or the primary item over its extraction rate, then the group's median. See [Freshwater](#method-water).
+- **HESTIA's withdrawals count the farm and the making of its non-agricultural inputs**, as the cradle-to-farm-gate emissions do. See [Freshwater](#method-water).
+- **Poore & Nemecek's litres per kg of retail product become litres per tonne of the FBS item** by the ratio of the study's farm-stage emissions per FBS unit to those per kg of retail product, then by the emissions' `kg_product_per_kg_item`. See [Freshwater](#method-water).
+- **Animal products carry the study's value less the water of their concentrate feed**, at GLEAM-style rations and the model's crop litres weighted by feed use, never below zero. See [Freshwater](#method-water).
+- **Scarcity-weighted use (AWARE 2.0) is kept only where a country has its own HESTIA aggregation**, and never added to litres. See [Freshwater](#method-water).
+
 ## The shift
 
 - **Protein is kept equal by default** (calories as the alternative), exactly, in every country. The other nutrient moves. See [The shift](#method-shift).

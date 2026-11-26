@@ -47,6 +47,8 @@ Le détail et les chiffres sont dans *La pollution de l'air et le méthane des N
 
 **La santé.** Planetshift maintient les protéines ou les calories égales. Il ne vérifie pas le régime au regard des recommandations de santé et n'estime pas les effets sur la santé.
 
+**L'eau douce.** Les prélèvements sont comptés, pas l'eau consommée, sauf dans la couche de rareté limitée aux cultures. Les litres de HESTIA couvrent 35 cultures dans 56 pays, et ses moyennes mondiales 15 de plus. Le reste vient des valeurs mondiales de Poore & Nemecek : l'irrigation d'un pays n'est comptée que là où HESTIA a sa propre agrégation. Les produits animaux portent la valeur de l'étude moins l'eau de leurs aliments concentrés, une estimation de l'eau de la ferme elle-même qui dépend des rations de type GLEAM. L'eau de la pisciculture n'est pas comptée. Les pays s'écartent d'AQUASTAT plus que le monde (le pays médian fait 1,7 fois son chiffre, le Bangladesh presque six). Voir [Eau douce](#method-water).
+
 **Les cultures non alimentaires.** Le coton, le tabac, le caoutchouc et les cultures pour biocarburants ne sont pas pris en compte.
 
 **L'échelle infranationale.** La production et les émissions sont par pays. Il n'y a pas de carte de l'endroit où, dans un pays, les aliments sont produits.

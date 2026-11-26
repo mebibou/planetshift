@@ -9,6 +9,7 @@ const TAIL = [
   'link',
   'impacts',
   'biodiversity',
+  'water',
   'deeptime',
   'options',
   'assumptions',

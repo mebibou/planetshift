@@ -84,6 +84,14 @@ AGRICULTURAL_INPUT_TYPES = frozenset(
 )
 
 
+DURING_CYCLE = "freshwaterWithdrawalsDuringCycle"
+INPUTS_PRODUCTION = "freshwaterWithdrawalsInputsProduction"
+WITHDRAWALS = (DURING_CYCLE, INPUTS_PRODUCTION)
+SCARCITY = "scarcityWeightedWaterUse"
+SCARCITY_MODEL = "aware2-0"
+WATER_COLUMNS = ["fbs_item_code", "area", "litres", "scarcity", "url"]
+
+
 #: The emission source (EmissionSource in app/src/data/types.ts) of an on-farm term, by the
 #: first marker its id contains; an on-farm term matching none is `other` (lime, aquaculture,
 #: waste treatment, soil flux, reservoirs, industrial processes).
@@ -205,8 +213,13 @@ def latest_aggregations(hits: Iterable[dict], term_ids: set[str]) -> list[str]:
     return sorted(entry["id"] for entry in best.values())
 
 
+def is_water(term_id: str) -> bool:
+    return term_id in WITHDRAWALS
+
+
 def trim_node(node: dict) -> dict:
-    """Keeps what the intensities need: the gas rows without their distributions."""
+    """Keeps what the intensities and the water need: the gas and withdrawal rows, GWP100 and
+    AWARE's scarcity-weighted water use, without their distributions."""
     rows = [
         {
             "term": {"@id": row["term"]["@id"]},
@@ -219,10 +232,20 @@ def trim_node(node: dict) -> dict:
         for row in node.get("emissionsResourceUse", [])
         if gas_of(row["term"]["@id"])
     ]
+    water = [
+        {
+            "term": {"@id": row["term"]["@id"]},
+            "value": row.get("value"),
+            "inputs": [{"termType": i.get("termType")} for i in row.get("inputs", [])],
+        }
+        for row in node.get("emissionsResourceUse", [])
+        if is_water(row["term"]["@id"])
+    ]
     impacts = [
         {"term": {"@id": i["term"]["@id"]}, "value": i.get("value")}
         for i in node.get("impacts", [])
         if i["term"]["@id"] == "gwp100"
+        or (i["term"]["@id"] == SCARCITY and i.get("methodModel", {}).get("@id") == SCARCITY_MODEL)
     ]
     product = node.get("product", {})
     return {
@@ -239,6 +262,7 @@ def trim_node(node: dict) -> dict:
             }
         },
         "emissionsResourceUse": rows,
+        "resourceUse": water,
         "impacts": impacts,
     }
 
@@ -440,6 +464,7 @@ NODE_FIELDS = ",".join(
         "emissionsResourceUse.inputs.termType",
         "impacts.term.@id",
         "impacts.value",
+        "impacts.methodModel.@id",
     ]
 )
 
@@ -524,6 +549,79 @@ def fetch_breakdown(cache_dir: Path) -> pd.DataFrame:
         [row for n in nodes for row in node_rows(n, terms)],
         [row for n in nodes for row in node_source_rows(n, terms)],
     )
+
+
+def withdrawn(rows: Iterable[dict]) -> float:
+    """Litres withdrawn per unit of product: on the farm, and in making its inputs but for the
+    agricultural ones (seed, feed, animals), which their own items count."""
+    return sum(
+        row.get("value") or 0.0
+        for row in rows
+        if row["term"]["@id"] == DURING_CYCLE
+        or not AGRICULTURAL_INPUT_TYPES.intersection(input_types(row))
+    )
+
+
+def scarcity_of(impacts: Iterable[dict]) -> float | None:
+    """AWARE 2.0's scarcity-weighted water use per unit of product, L eq, or None."""
+    return next((i.get("value") for i in impacts if i["term"]["@id"] == SCARCITY), None)
+
+
+def node_water_rows(node: dict, terms: pd.DataFrame) -> list[dict]:
+    """Litres withdrawn (and L eq of scarcity-weighted use) per tonne of each FBS item the
+    aggregation is mapped to; none for an aggregation without on-farm withdrawals."""
+    area = area_of(node.get("country", {}).get("@id") or "")
+    rows = node.get("resourceUse", [])
+    covered = area is not None and any(r["term"]["@id"] == DURING_CYCLE for r in rows)
+    return item_water_rows(node, terms, area, rows) if covered else []
+
+
+def item_water_rows(node: dict, terms: pd.DataFrame, area: str, rows: list[dict]) -> list[dict]:
+    term = node["product"]["term"]["@id"]
+    litres = withdrawn(rows)
+    scarcity = scarcity_of(node.get("impacts", []))
+    return [
+        {
+            "fbs_item_code": int(mapping.fbs_item_code),
+            "area": area,
+            "term": term,
+            "priority": int(mapping.priority),
+            "litres": litres * float(mapping.kg_product_per_kg_item) * 1000,
+            "scarcity": None
+            if scarcity is None
+            else scarcity * float(mapping.kg_product_per_kg_item) * 1000,
+            "url": f"{SITE}/cycle/{node['@id']}",
+        }
+        for mapping in terms[terms.hestia_term_id == term].itertuples()
+    ]
+
+
+def combine_water(rows: list[dict]) -> pd.DataFrame:
+    """The products of the best priority of each item and area, averaged."""
+    return (
+        best_water(pd.DataFrame(rows))
+        if rows
+        else pd.DataFrame(columns=WATER_COLUMNS).astype({"fbs_item_code": int})
+    )
+
+
+def best_water(frame: pd.DataFrame) -> pd.DataFrame:
+    keys = ["fbs_item_code", "area"]
+    frame = frame.sort_values([*keys, "priority", "term"])
+    best = frame[frame.priority == frame.groupby(keys).priority.transform("min")]
+    return (
+        best.astype({"scarcity": float})
+        .groupby(keys, as_index=False)
+        .agg(litres=("litres", "mean"), scarcity=("scarcity", "mean"), url=("url", "first"))
+        .astype({"fbs_item_code": int})[WATER_COLUMNS]
+        .reset_index(drop=True)
+    )
+
+
+def fetch_water(cache_dir: Path) -> pd.DataFrame:
+    """Litres withdrawn and L eq of scarcity-weighted use per tonne of each FBS item, by area."""
+    terms = load_terms()
+    return combine_water([row for n in fetch_nodes(cache_dir) for row in node_water_rows(n, terms)])
 
 
 def region_members(cache_dir: Path) -> dict[str, list[str]]:

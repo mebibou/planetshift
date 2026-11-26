@@ -106,6 +106,15 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 - **L'alimentation animale baisse en proportion de la production de chaque groupe dans le même pays.** Un groupe qu'un pays n'élève pas n'a pas d'alimentation à perdre. Voir [Le changement](#method-shift).
 - **Le lait et le poisson donnés aux animaux changent une fois, quand les animaux qu'ils nourrissent changent.** Le poisson pêché pour la farine est sauvage et ne mange aucun aliment : sa variation ne change donc pas de nouveau l'alimentation animale. Voir [Le changement](#method-shift) et [Poissons et fruits de mer](#method-seafood).
 
+## Eau douce
+
+- **Les prélèvements par tonne ne changent pas avec les leviers.** L'eau suit la production. L'eau ne change pas le réchauffement. Voir [Eau douce](#method-water).
+- **Les niveaux sont ceux des émissions** : le pays dans HESTIA, puis sa moyenne mondiale, puis la valeur mondiale de Poore & Nemecek, puis un substitut ou le produit primaire divisé par le taux d'extraction, puis la médiane du groupe. Voir [Eau douce](#method-water).
+- **Les prélèvements de HESTIA comptent la ferme et la fabrication de ses intrants non agricoles**, comme les émissions du berceau à la sortie de la ferme. Voir [Eau douce](#method-water).
+- **Les litres par kg de produit vendu de Poore & Nemecek deviennent des litres par tonne du poste FBS** par le rapport des émissions de l'étape agricole de l'étude par unité FBS à celles par kg de produit vendu, puis par le `kg_product_per_kg_item` des émissions. Voir [Eau douce](#method-water).
+- **Les produits animaux portent la valeur de l'étude moins l'eau de leurs aliments concentrés**, aux rations de type GLEAM et aux litres des cultures du modèle pondérés par l'usage fourrager, jamais en dessous de zéro. Voir [Eau douce](#method-water).
+- **La consommation pondérée par la rareté (AWARE 2.0) n'est gardée que là où un pays a sa propre agrégation HESTIA**, et ne s'ajoute jamais aux litres. Voir [Eau douce](#method-water).
+
 ## Le changement
 
 - **Les protéines sont maintenues égales par défaut** (les calories en alternative), exactement, dans chaque pays. L'autre nutriment varie. Voir [Le changement](#method-shift).

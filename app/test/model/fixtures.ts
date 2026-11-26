@@ -1,5 +1,12 @@
 import { decodeIntensities } from '../../src/data/load';
-import type { Chain, IntensitiesFile, ModelData, Origins, Species } from '../../src/data/types';
+import type {
+  Chain,
+  IntensitiesFile,
+  ModelData,
+  Origins,
+  Species,
+  Water,
+} from '../../src/data/types';
 import climate from '../../public/fixtures/climate.json';
 import countries from '../../public/fixtures/countries.json';
 import feed from '../../public/fixtures/feed.json';
@@ -23,6 +30,7 @@ import mammals from '../../public/fixtures/mammals.json';
 import species from '../../public/fixtures/species.json';
 import chain from '../../public/fixtures/chain.json';
 import origins from '../../public/fixtures/origins.json';
+import water from '../../public/fixtures/water.json';
 
 /** The fixtures in public/fixtures, as the app loads them. */
 export const loadFixtures = (): ModelData =>
@@ -50,6 +58,7 @@ export const loadFixtures = (): ModelData =>
     species: species as unknown as Species,
     chain: chain as unknown as Chain,
     origins: origins as unknown as Origins,
+    water: water as unknown as Water,
   }) as unknown as ModelData;
 
 export const CURRENT_YEAR = 2026;

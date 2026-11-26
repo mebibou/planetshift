@@ -25,6 +25,7 @@ export const OPTIONAL_FILES = [
   'species',
   'chain',
   'origins',
+  'water',
 ] as const;
 
 /**

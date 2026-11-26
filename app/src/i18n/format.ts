@@ -67,6 +67,33 @@ export const formatArea = (locale: string, ha: number): string => {
 export const formatPerKm2 = (locale: string, tonnes: number): string =>
   `${formatSignificant(locale, tonnes, 2)}${NBSP}t/km²`;
 
+const BILLION_M3: Record<string, string> = {
+  en: `billion${NBSP}m³`,
+  fr: `milliards${NBSP}de${NBSP}m³`,
+};
+const SMALL = 0.01;
+
+/** A number in E notation, e.g. 3.2E-4. */
+const formatExponent = (locale: string, value: number, digits: number): string => {
+  const exponent = Math.floor(Math.log10(Math.abs(value)));
+  return `${formatSignificant(locale, value / 10 ** exponent, digits)}E${exponent}`;
+};
+
+const formatBillions = (locale: string, value: number): string =>
+  value !== 0 && Math.abs(value) < SMALL
+    ? formatExponent(locale, value, 2)
+    : formatSignificant(locale, value, 3);
+
+/** Litres in billion m³ (km³), one unit for every water figure so sizes compare; `eq` adds "eq". */
+/** Litres as a number of billion m³, without the unit. */
+export const formatBillionM3 = (locale: string, litres: number): string =>
+  formatBillions(locale, litres / 1e12);
+
+export const formatVolume = (locale: string, litres: number, eq = false): string => {
+  const name = BILLION_M3[locale.slice(0, 2)] ?? BILLION_M3.en;
+  return `${formatBillions(locale, litres / 1e12)}${NBSP}${name}${eq ? `${NBSP}eq` : ''}`;
+};
+
 const SPECIES_WORD: Record<string, string> = { fr: 'espèces' };
 const speciesWord = (locale: string): string => SPECIES_WORD[locale.slice(0, 2)] ?? 'species';
 

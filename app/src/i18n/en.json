@@ -188,6 +188,8 @@
       "landCo2": "Land-use CO₂",
       "mammals": "Farmed mammals",
       "species": "Species loss",
+      "water": "Freshwater withdrawals",
+      "waterScarcity": "Water scarcity (crops)",
       "change": "Change",
       "quality": "Data quality"
     },
@@ -201,6 +203,8 @@
       "production": "Production of {group} with the levers, a year",
       "emissions": "Farm emissions of {gas} with the levers, a year",
       "land": "Farmland (cropland and pasture) with the levers",
+      "water": "Freshwater withdrawn for farming with the levers, a year",
+      "waterScarcity": "Scarcity-weighted water use of the crops HESTIA covers with the levers, a year (L eq)",
       "change": "{what}: change once the levers are fully in place",
       "quality": "Least precise source of emission data used",
       "deforestation": "Forest cleared for farming with the levers, a year",
@@ -211,6 +215,8 @@
       "speciesDensity": "Species committed to extinction per Mha of the country's farmland, with the levers"
     },
     "notes": {
+      "water": "Freshwater taken from rivers, lakes and aquifers to grow each country's crops and raise its animals, and to make the farm's inputs: each food's litres per tonne times its production. HESTIA gives the litres of the crops it covers. Poore & Nemecek (2018) give the rest. Animal products count the water used on the farm, not their concentrate feed, which is counted on the crops. Fish farms are left out. The litres per tonne do not change with the levers, so the water changes with production. Water does not change the warming. The tooltip gives the land equipped for irrigation.",
+      "waterScarcity": "Water use weighted by how scarce water is where it is used (AWARE 2.0), in litres-equivalent. It covers only the crops for which HESTIA has the country's own aggregation, so countries are not complete and cannot be compared on it. It is not added to the litres withdrawn.",
       "production": "Where food is grown, not where it is eaten.",
       "emissions": "Emissions on the farm from growing food and raising animals. CO₂e weighs methane and nitrous oxide over 100 years, for comparison only.",
       "land": "Cropland harvested for the foods in the model and permanent pasture, as a share of each country's land area. That is how much of the land farming takes. Eating less meat frees pasture and the cropland that grows feed. The tooltip gives the hectares.",
@@ -222,6 +228,10 @@
       "species": "The species of plants, mammals, birds, reptiles and amphibians that each country's cropland and pasture commit to extinction worldwide. Each is Scherer et al. (2023)'s factor for the land, times the species described in each group. It is a loss committed over time if the land stays farmed. It is not the number of species lost by a given year. Land newly farmed commits more species, at the factor for the next hectare. Freed farmland gives species back only when Freed farmland is set to Grows back in the options. Per Mha of farmland divides each country's count by its cropland and pasture. It shows where a hectare commits the most species. The tooltip gives the farmland."
     },
     "tooltip": {
+      "water": "Freshwater withdrawn, a year",
+      "waterScarcity": "Scarcity-weighted water use, a year",
+      "waterScarcityCoverage": "Crops HESTIA covers only",
+      "irrigated": "Land equipped for irrigation",
       "noData": "No data for this country",
       "production": "Production of {group}",
       "emissions": "Emissions of {gas}",
@@ -331,6 +341,10 @@
       "value": "{value} cm",
       "detail": "Likely {low} to {high} cm. Without the levers, the sea is {baseline} m above its 1900 level by 2100 (likely {baselineLow} to {baselineHigh} m), from a rate fitted to IPCC AR6. The rise the levers avoid keeps growing after 2100. This figure leaves that out."
     },
+    "water": {
+      "label": "Freshwater withdrawn for farming",
+      "detail": "a year, once the levers are in full: {change}. Litres per tonne from HESTIA for the crops it covers and Poore & Nemecek (2018) for the rest; fish farms left out. Water does not change the warming."
+    },
     "mammals": {
       "label": "Farmed mammals to wild ones, by weight",
       "ratio": "{value} to 1",
@@ -430,6 +444,7 @@
       "deeptime": "Deep time",
       "impacts": "What the warming means",
       "biodiversity": "Biodiversity",
+      "water": "Freshwater",
       "options": "Options",
       "assumptions": "Assumptions",
       "limitations": "Limitations"
