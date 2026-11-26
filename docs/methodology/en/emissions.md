@@ -89,7 +89,7 @@ The shares add up to each country's total. The part that falls on non-food crops
 
 The *Emissions from Livestock* domain (GLE) gives, by species, the CH₄ of enteric fermentation and manure management, and the N₂O of manure management, manure on pasture and manure applied. It goes to the products as follows:
 
-- **Dairy cattle**: 85% to milk and 15% to beef, the beef of culled cows and surplus calves. This is a physical allocation, as the International Dairy Federation's standard asks; its worked example gives 85.1% for one farm, but the standard sets no global default.
+- **Dairy cattle**: 88% to milk and 12% to beef, the beef of culled cows and surplus calves. This is the International Dairy Federation's physical allocation, 1 − 6.04 × the kilograms of live weight sold per kilogram of milk, at the typical 0.02 kg it gives (IDF Bulletin 479/2015, section 6.3.3, p. 29). Its 2022 standard keeps the formula; its worked example gives 85.1% for one farm.
 - **Other cattle**: beef, less the animals not raised for food (see below).
 - **Buffalo, sheep, goats and camels**: split between milk and meat by the protein each country's herd produces (FAOSTAT production × protein content). Where no milk is recorded, all goes to meat. For buffalo, the animals not raised for food are taken off first.
 - **Pigs** go to pig meat, **broilers, ducks and turkeys** to poultry meat, **laying hens** to eggs, and **llamas** to other meat.
@@ -377,12 +377,12 @@ Poore and Nemecek (2018) give each food's emissions by stage of the supply chain
 
 | Item | Planetshift | Poore and Nemecek, AR5 | Poore and Nemecek, AR6 | Ratio |
 | --- | --- | --- | --- | --- |
-| Beef | 24.6 | 29.0 | 24.0 | 1.03 |
+| Beef | 24.4 | 29.0 | 24.0 | 1.02 |
 | Sheep and goat meat | 21.2 | 19.5 | 16.4 | 1.29 |
 | Pig meat | 1.68 | 1.69 | 1.46 | 1.15 |
 | Poultry meat | 0.87 | 0.67 | 0.63 | 1.39 |
 | Eggs | 0.77 | 1.32 | 1.22 | 0.64 |
-| Milk | 1.18 | 1.46 | 1.21 | 0.98 |
+| Milk | 1.20 | 1.46 | 1.21 | 1.00 |
 | Rice (paddy) | 1.23 | 2.37 | 2.01 | 0.61 |
 | Wheat | 0.49 | 0.85 | 0.80 | 0.61 |
 | Maize | 0.37 | 0.48 | 0.45 | 0.82 |
@@ -406,7 +406,7 @@ The code is `pipeline/planetshift_pipeline/intensities.py`. Its tables are `pipe
 - FAOSTAT's Tier 1 estimates stand for every country, rather than the countries' own inventories.
 - Synthetic nitrogen is shared by area × a world rate per crop class. Real rates vary between countries.
 - 4.7% of each country's synthetic nitrogen goes on grassland, as in the world average.
-- 85% of a dairy herd's emissions go to milk everywhere.
+- 88% of a dairy herd's emissions go to milk everywhere.
 - Mixed herds (buffalo, sheep, goats, camels) are split by protein, with 15% protein in carcass meat.
 - Energy use is shared by the value of production, pesticide manufacture by area.
 - Offal and fats carry the same emissions per tonne as the carcass.

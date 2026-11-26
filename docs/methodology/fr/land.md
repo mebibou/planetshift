@@ -113,7 +113,7 @@ Les terres du tourteau varient avec la production des groupes animaux qui le man
 
 Les prairies de chaque pays sont réparties entre la viande de ruminants et les produits laitiers, en proportion des unités de bétail de chacun, d'après les Livestock Patterns de FAOSTAT. Une unité de bétail pondère les animaux par leurs besoins alimentaires. Ses coefficients varient selon la région : une vache en Amérique du Nord compte plus qu'une vache en Afrique subsaharienne, et un mouton ou une chèvre compte environ un dixième de vache.
 
-- Bovins : le troupeau laitier est la part des bovins qui sont des vaches traites (les « animaux laitiers » de FAOSTAT sur les effectifs de bovins). Comme pour les émissions, 85 % en vont aux produits laitiers et 15 % à la viande des vaches de réforme et des veaux. Le reste du troupeau va à la viande de ruminants.
+- Bovins : le troupeau laitier est la part des bovins qui sont des vaches traites (les « animaux laitiers » de FAOSTAT sur les effectifs de bovins). Comme pour les émissions, 88 % en vont aux produits laitiers et 12 % à la viande des vaches de réforme et des veaux. Le reste du troupeau va à la viande de ruminants.
 - Buffles, moutons, chèvres et chameaux : répartis entre lait et viande selon les protéines que produit le troupeau de chaque pays, comme pour leurs émissions.
 - Les chevaux, les ânes et les mulets pâturent aussi, mais sont laissés de côté comme pour les émissions (ils sont gardés pour le travail). Les prairies qu'ils utilisent sont réparties entre les ruminants alimentaires. Les porcs et les volailles n'ont pas de prairies.
 
@@ -242,7 +242,7 @@ Les données d'utilisation des terres de FAOSTAT que lit le pipeline donnent 1,5
 - Un produit transformé porte les terres de la culture dont il est tiré, aux taux d'extraction mondiaux. Les terres d'un oléagineux trituré sont partagées entre son huile et son tourteau selon leur valeur, et la part du tourteau change avec les animaux qui le mangent.
 - Les prairies temporaires sont un fourrage des ruminants, réparti et modifié comme leurs prairies.
 - Les pays empruntent la médiane des hectares par tonne de leur région, puis du monde, pondérée par la production, pour les produits qu'ils ne cultivent pas.
-- Les prairies sont réparties entre la viande de ruminants et les produits laitiers selon les unités de bétail de FAOSTAT. 85 % du troupeau laitier va au lait. Les chevaux, les ânes et les mulets sont laissés de côté.
+- Les prairies sont réparties entre la viande de ruminants et les produits laitiers selon les unités de bétail de FAOSTAT. 88 % du troupeau laitier va au lait. Les chevaux, les ânes et les mulets sont laissés de côté.
 - Les prairies d'un pays varient en proportion de la production des groupes de ruminants qui les pâturent.
 - Les rythmes de repousse sont les moyennes par pays et la fourchette de Cook-Patton et al. pour les 30 premières années de repousse naturelle de la forêt, aériennes et souterraines, sans le carbone du sol ni le bois mort.
 - La forêt repousse sur la surface que Cook-Patton et al. cartographient comme capable de la porter, et sur une part des terres cultivées allant de rien à la totalité. Ailleurs (prairies naturelles, parcours secs), les terres libérées n'absorbent rien.

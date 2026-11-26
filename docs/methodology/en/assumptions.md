@@ -79,7 +79,7 @@ The URL keys of the options, the diet controls and the levers are listed under [
 - **FAOSTAT's own Tier 1 estimates, not countries' inventories**, for the emissions year closest to 2024, so that every country is estimated the same way. See [Emissions](#method-emissions).
 - **Synthetic nitrogen is shared by harvested area × a world rate per crop class.** The rates come from the shares of world nitrogen use in Heffer et al. (2017): wheat 18%, maize 18%, rice 15%, vegetables 7%, fruit 6%, and so on. Real rates vary between countries. See [Emissions](#method-emissions).
 - **4.7% of each country's synthetic nitrogen goes on grassland**, as in the world average of the same survey. It is given to ruminant products in proportion to their methane. See [Emissions](#method-emissions).
-- **A dairy herd's emissions go 85% to milk and 15% to beef** everywhere. This is a physical allocation, as the International Dairy Federation's standard asks; its worked example gives 85.1% for one farm, but the standard sets no global default. See [Emissions](#method-emissions).
+- **A dairy herd's emissions go 88% to milk and 12% to beef** everywhere. This is the International Dairy Federation's physical allocation at the typical ratio it gives, 0.02 kg of live weight sold per kg of milk; a farm that sells more or less meat per litre would get another share. See [Emissions](#method-emissions).
 - **Mixed herds (buffalo, sheep, goats, camels) are split between milk and meat by protein**, with 15% protein in carcass meat and 3.2–5.5% in milk depending on the species. See [Emissions](#method-emissions).
 - **Horses, asses and mules are left out**: they are kept mainly for work. See [Emissions](#method-emissions).
 - **Offal and animal fats carry the same emissions per tonne as the carcass**, sharing the meat's emissions by mass. See [Emissions](#method-emissions).
@@ -97,7 +97,7 @@ The URL keys of the options, the diet controls and the levers are listed under [
 ## Feed
 
 - **Only Food Balance Sheet items are split.** Grass, hay, crop residues and oil cakes are not items, so they are outside the split, although grass and residues are most of what ruminants eat. See [Feed](#method-feed).
-- **By species (default): one world split for every feed item**: ruminant meat 11%, dairy 16%, pig meat 28%, poultry meat 28%, eggs 17%. These are rounded from GLEAM (FAO's livestock model) and the industry's compound feed survey. A region's split follows what it produces. See [Feed](#method-feed).
+- **By species (default): one world split for every feed item**: ruminant meat 12%, dairy 13%, pig meat 29%, poultry meat 33%, eggs 13%. These are the world's compound feed by species in 2024, from the feed industry's survey (Alltech Agri-Food Outlook 2025). A region's split follows what it produces. See [Feed](#method-feed).
 - **GLEAM-style rations give the concentrate feed per tonne of product**, in high-income countries / elsewhere: beef 3.0 / 0.8 t, milk 0.35 / 0.12 t, pig meat 3.3 / 2.5 t, poultry meat 2.6 / 2.3 t, eggs 2.2 / 2.0 t. See [Feed](#method-feed).
 - **Ration shares by feed class**: grain is 55–70% of each group's concentrate and oilseeds 12–30%. The rest is pulses, roots, sugar crops and milk (milk is fed only to cattle and pigs). The shares broadly follow GLEAM 2.0. They are not a copy of its tables. See [Feed](#method-feed).
 - **Two income levels stand for the many production systems GLEAM distinguishes.** See [Feed](#method-feed).
@@ -137,7 +137,7 @@ The URL keys of the options, the diet controls and the levers are listed under [
 
 ## Energy and transport
 
-- **The sectors are part of each SSP's fossil CO₂, scaled to 2023 inventories**: road 6.1 (passengers 60%, freight 40%), aviation 0.95, shipping 0.85 and electricity 14.15 Gt CO₂. A lever takes a share of a sector's emissions away. See [Energy and transport](#method-sectors).
+- **The sectors are part of each SSP's fossil CO₂, scaled to 2023 inventories**: road 6.1 (passengers 60%, freight 40%), aviation 0.95, shipping 0.98 and electricity 14.15 Gt CO₂. A lever takes a share of a sector's emissions away. See [Energy and transport](#method-sectors).
 - **An electric vehicle saves its tailpipe CO₂ × (1 − kWh per kg avoided × the grid's intensity after renewable electricity).** The kWh per kg avoided are 1.11 for passengers and 1.47 for freight, in every year. Making vehicles and batteries is not counted. See [Energy and transport](#method-sectors).
 - **Renewable electricity lowers the electricity sector's CO₂ and the grid's intensity by the share adopted.** The intensity never goes below zero. See [Energy and transport](#method-sectors).
 - **Aviation's non-CO₂ forcing is 6.44 × 10⁻¹⁴ W/m² per kg a year of aviation CO₂**, the 2018 ratio. It comes from the flights themselves, so less flying cuts it and clean fuel does not. See [Energy and transport](#method-sectors).
@@ -195,19 +195,22 @@ The other sources are CC BY 4.0, public domain, the Open Government Licence, Apa
 
 ### Values recalled rather than checked against the source
 
-- The feed split by species (11/16/28/28/17). GLEAM's grain intakes (Mottet et al., 2017, Table SI 2) and the feed industry's survey give about the same share to ruminants together and to pigs, but neither gives dairy 16% or poultry meat as little as 28%. See [Feed](#method-feed).
 - The GLEAM-style concentrate intakes and rations, which no published table gives in this form, and aquafeed's 30/40/5/25 ration. See [Feed](#method-feed).
-- Compound aquafeed in 2023 (69.4 Mt, Tacon et al., 2025), behind seafood's 5.5% of concentrate feed: the article could not be read. See [Fish and seafood](#method-seafood).
-- The 85% of a dairy herd's emissions given to milk. The International Dairy Federation's 2022 standard gives the allocation formula and an 85.1% worked example for one farm, but no global default; its 2015 bulletin could not be read. See [Emissions](#method-emissions).
 - The grain per tonne of fermented (0.25 t) and alcoholic (1.1 t) beverages, which FAO's technical conversion factors do not give. See [Emissions](#method-emissions).
+- Cover crops' rate being the same in every moist climate: the meta-analysis could be read only in its abstract, which names elevation and sampling depth as what explains the rates, not climate. See [Carbon in farmland](#method-removals).
+- An electric car's 0.15–0.22 kWh/km. The US EPA's ratings of the 2023–2025 models, charging losses included, give a median of 0.22 kWh/km for cars (0.17–0.27 from the 10th to the 90th percentile), but they are not weighted by sales and cover the US market only. See [Energy and transport](#method-sectors).
+- Steel's and cement's cuts at full adoption (90%, 80%) and cement's electricity per kg avoided. See [Buildings and industry](#method-industry).
+- Buildings' 3.0 Gt of direct CO₂ in 2022, read only in a search summary of the IEA's page. The IEA's *Special Report on Buildings Efficiency* gives 2.8 Gt without a year, and CEDS gives 2.68 Gt for residential, commercial and institutional fuel in 2022. See [Buildings and industry](#method-industry).
+- Chemicals' capture route at 0.1 kWh/kg, taken from cement kilns. See [Buildings and industry](#method-industry).
+
+### Assumptions no source gives
+
+These values are Planetshift's own judgements. No source sets them, so none can be checked; they stay assumptions.
+
 - The legume mix (60% pulses, 20% soybeans, 20% cereals). See [The shift](#method-shift).
 - The plant-milk mix (50% soybeans, 50% oats). See [The shift](#method-shift).
-- Each practice's applicable share by country, a judgement no source gives. See [Farm practices](#method-practices).
-- Cover crops' quarter of cropland and their rate's independence from climate, and enhanced weathering's ratios between climate zones (1.5 in the moist tropics, 0.4–0.5 in dry croplands): the meta-analysis could be read only in its abstract, and the weathering studies give no such ratio. See [Carbon in farmland](#method-removals).
-- Shipping's 0.85 Gt, read only where others quote the IEA, and the road split of 60% passengers and 40% freight, which the IEA's shares bound (over 60% for cars and vans, about a third for trucks) without giving vans'. See [Energy and transport](#method-sectors).
-- An electric car's 0.15–0.22 kWh/km. See [Energy and transport](#method-sectors).
-- Steel's and cement's cuts at full adoption (90%, 80%) and cement's electricity per kg avoided, and buildings' 3.0 Gt of direct CO₂, read only in a search summary of the IEA's page. See [Buildings and industry](#method-industry).
-- Chemicals' median and low cuts (80%, 60%), a judgement, and their capture route's 0.1 kWh/kg, taken from cement kilns. See [Buildings and industry](#method-industry).
+- Each practice's applicable share by income group and country. See [Farm practices](#method-practices).
+- Chemicals' median and low cuts at full adoption (80%, 60%). See [Buildings and industry](#method-industry).
 
 ### HESTIA has no animal products yet
 

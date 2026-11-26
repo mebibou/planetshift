@@ -79,7 +79,7 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 - **Les estimations de niveau 1 propres à FAOSTAT, et non les inventaires des pays**, pour l'année d'émissions la plus proche de 2024, pour que chaque pays soit estimé de la même façon. Voir [Émissions](#method-emissions).
 - **L'azote de synthèse est réparti selon la surface récoltée × une dose mondiale par classe de cultures.** Les doses viennent des parts de l'azote utilisé dans le monde selon Heffer et al. (2017) : blé 18 %, maïs 18 %, riz 15 %, légumes 7 %, fruits 6 %, etc. Les doses réelles varient d'un pays à l'autre. Voir [Émissions](#method-emissions).
 - **4,7 % de l'azote de synthèse de chaque pays va aux prairies**, comme dans la moyenne mondiale de la même enquête. Il est attribué aux produits des ruminants en proportion de leur méthane. Voir [Émissions](#method-emissions).
-- **Les émissions d'un troupeau laitier vont à 85 % au lait et à 15 % au bœuf** partout. C'est une allocation physique, comme le demande la norme de la Fédération internationale de laiterie ; son exemple chiffré donne 85,1 % pour une ferme, mais la norme ne fixe aucune valeur mondiale par défaut. Voir [Émissions](#method-emissions).
+- **Les émissions d'un troupeau laitier vont à 88 % au lait et à 12 % au bœuf** partout. C'est l'allocation physique de la Fédération internationale de laiterie au rapport typique qu'elle donne, 0,02 kg de poids vif vendu par kg de lait ; une ferme qui vend plus ou moins de viande par litre aurait une autre part. Voir [Émissions](#method-emissions).
 - **Les cheptels mixtes (buffles, moutons, chèvres, chameaux) sont répartis entre lait et viande selon les protéines**, avec 15 % de protéines dans la viande en carcasse et de 3,2 à 5,5 % dans le lait selon l'espèce. Voir [Émissions](#method-emissions).
 - **Les chevaux, les ânes et les mulets sont laissés de côté** : ils sont surtout gardés pour le travail. Voir [Émissions](#method-emissions).
 - **Les abats et les graisses animales portent les mêmes émissions par tonne que la carcasse**, partageant les émissions de la viande au prorata de la masse. Voir [Émissions](#method-emissions).
@@ -97,7 +97,7 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 ## Alimentation animale
 
 - **Seuls les produits des bilans alimentaires sont répartis.** L'herbe, le foin, les résidus de culture et les tourteaux ne sont pas des produits : ils sont donc hors de la répartition, bien que l'herbe et les résidus soient l'essentiel de ce que mangent les ruminants. Voir [Alimentation animale](#method-feed).
-- **Par espèce (par défaut) : une seule répartition mondiale pour chaque produit** : viande de ruminants 11 %, produits laitiers 16 %, viande porcine 28 %, volaille 28 %, œufs 17 %. Ces parts sont arrondies à partir de GLEAM (le modèle de l'élevage de la FAO) et de l'enquête de la filière sur les aliments composés. La répartition d'une région suit ce qu'elle produit. Voir [Alimentation animale](#method-feed).
+- **Par espèce (par défaut) : une seule répartition mondiale pour chaque produit** : viande de ruminants 12 %, produits laitiers 13 %, viande porcine 29 %, volaille 33 %, œufs 13 %. Ce sont les aliments composés du monde par espèce en 2024, d'après l'enquête de la filière (Alltech Agri-Food Outlook 2025). La répartition d'une région suit ce qu'elle produit. Voir [Alimentation animale](#method-feed).
 - **Les rations de type GLEAM donnent les aliments concentrés par tonne de produit**, dans les pays à revenu élevé / ailleurs : bœuf 3,0 / 0,8 t, lait 0,35 / 0,12 t, viande porcine 3,3 / 2,5 t, volaille 2,6 / 2,3 t, œufs 2,2 / 2,0 t. Voir [Alimentation animale](#method-feed).
 - **Parts des rations par classe d'aliments** : le grain fait 55 à 70 % des concentrés de chaque groupe et les graines oléagineuses 12 à 30 %. Le reste est fait de légumineuses, de racines, de plantes sucrières et de lait (le lait n'est donné qu'aux bovins et aux porcs). Ces parts suivent GLEAM 2.0 dans les grandes lignes. Elles ne copient pas ses tables. Voir [Alimentation animale](#method-feed).
 - **Deux niveaux de revenu représentent les nombreux systèmes de production que GLEAM distingue.** Voir [Alimentation animale](#method-feed).
@@ -137,7 +137,7 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 
 ## Énergie et transport
 
-- **Les secteurs font partie du CO₂ fossile de chaque SSP, ramené aux inventaires de 2023** : route 6,1 (passagers 60 %, marchandises 40 %), aviation 0,95, transport maritime 0,85 et électricité 14,15 Gt de CO₂. Un levier retire une part des émissions d'un secteur. Voir [Énergie et transport](#method-sectors).
+- **Les secteurs font partie du CO₂ fossile de chaque SSP, ramené aux inventaires de 2023** : route 6,1 (passagers 60 %, marchandises 40 %), aviation 0,95, transport maritime 0,98 et électricité 14,15 Gt de CO₂. Un levier retire une part des émissions d'un secteur. Voir [Énergie et transport](#method-sectors).
 - **Un véhicule électrique économise son CO₂ d'échappement × (1 − kWh par kg évité × l'intensité du réseau après l'électricité renouvelable).** Les kWh par kg évité sont 1,11 pour les passagers et 1,47 pour les marchandises, chaque année. La fabrication des véhicules et des batteries n'est pas comptée. Voir [Énergie et transport](#method-sectors).
 - **L'électricité renouvelable réduit le CO₂ du secteur électrique et l'intensité du réseau de la part adoptée.** L'intensité ne descend jamais sous zéro. Voir [Énergie et transport](#method-sectors).
 - **Le forçage de l'aviation hors CO₂ est de 6,44 × 10⁻¹⁴ W/m² par kg par an de CO₂ de l'aviation**, le rapport de 2018. Il vient des vols eux-mêmes : moins d'avion le réduit donc, et le carburant propre non. Voir [Énergie et transport](#method-sectors).
@@ -195,19 +195,22 @@ Les autres sources sont sous CC BY 4.0, dans le domaine public, sous Open Govern
 
 ### Valeurs reprises de mémoire plutôt que vérifiées à la source
 
-- La répartition de l'alimentation animale par espèce (11/16/28/28/17). Les consommations de grains de GLEAM (Mottet et al., 2017, tableau SI 2) et l'enquête de l'industrie des aliments du bétail donnent à peu près la même part aux ruminants ensemble et aux porcs, mais aucune ne donne 16 % au lait ni aussi peu que 28 % à la volaille. Voir [Alimentation animale](#method-feed).
 - Les consommations de concentrés et les rations de type GLEAM, qu'aucun tableau publié ne donne sous cette forme, et la ration 30/40/5/25 de l'aquaculture. Voir [Alimentation animale](#method-feed).
-- Les aliments composés pour l'aquaculture en 2023 (69,4 Mt, Tacon et al., 2025), d'où vient la part de 5,5 % des concentrés donnée aux produits de la mer : l'article n'a pas pu être lu. Voir [Poissons et fruits de mer](#method-seafood).
-- Les 85 % des émissions d'un troupeau laitier attribués au lait. La norme 2022 de la Fédération internationale de laiterie donne la formule d'allocation et un exemple à 85,1 % pour une ferme, mais aucune valeur mondiale par défaut ; son bulletin de 2015 n'a pas pu être lu. Voir [Émissions](#method-emissions).
 - Les grains par tonne de boissons fermentées (0,25 t) et alcoolisées (1,1 t), que les facteurs de conversion techniques de la FAO ne donnent pas. Voir [Émissions](#method-emissions).
+- Le même taux des cultures intermédiaires sous tous les climats humides : la méta-analyse n'a pu être lue que dans son résumé, qui cite l'altitude et la profondeur d'échantillonnage comme ce qui explique les taux, et non le climat. Voir [Carbone dans les terres agricoles](#method-removals).
+- Les 0,15–0,22 kWh/km d'une voiture électrique. Les mesures de l'EPA américaine pour les modèles 2023–2025, pertes de recharge comprises, donnent une médiane de 0,22 kWh/km pour les voitures (0,17–0,27 du 10e au 90e centile), mais elles ne sont pas pondérées par les ventes et ne couvrent que le marché américain. Voir [Énergie et transports](#method-sectors).
+- Les baisses de l'acier et du ciment à adoption complète (90 %, 80 %) et l'électricité du ciment par kg évité. Voir [Bâtiments et industrie](#method-industry).
+- Les 3,0 Gt de CO₂ direct des bâtiments en 2022, lues seulement dans un résumé de recherche de la page de l'AIE. Le *Special Report on Buildings Efficiency* de l'AIE donne 2,8 Gt sans année, et CEDS 2,68 Gt pour les combustibles résidentiels, commerciaux et institutionnels en 2022. Voir [Bâtiments et industrie](#method-industry).
+- Les 0,1 kWh/kg de la voie par captage de la chimie, pris des fours de cimenterie. Voir [Bâtiments et industrie](#method-industry).
+
+### Hypothèses qu'aucune source ne donne
+
+Ces valeurs sont des jugements propres à Planetshift. Aucune source ne les fixe, si bien qu'aucune ne peut être vérifiée ; elles restent des hypothèses.
+
 - Le mélange de légumineuses (60 % de légumineuses, 20 % de soja, 20 % de céréales). Voir [Le changement](#method-shift).
 - Le mélange de boissons végétales (50 % de soja, 50 % d'avoine). Voir [Le changement](#method-shift).
-- La part applicable de chaque pratique par pays, un jugement qu'aucune source ne donne. Voir [Pratiques agricoles](#method-practices).
-- Le quart des terres cultivées des cultures intermédiaires et l'indépendance de leur taux vis-à-vis du climat, ainsi que les rapports entre zones climatiques de l'altération forcée (1,5 sous les tropiques humides, 0,4–0,5 dans les cultures en climat sec) : la méta-analyse n'a pu être lue que dans son résumé, et les études sur l'altération ne donnent pas ces rapports. Voir [Carbone dans les terres agricoles](#method-removals).
-- Les 0,85 Gt du transport maritime, lues seulement là où d'autres citent l'AIE, et la répartition de la route entre 60 % de passagers et 40 % de marchandises, que les parts de l'AIE encadrent (plus de 60 % pour les voitures et utilitaires, environ un tiers pour les camions) sans donner celle des utilitaires. Voir [Énergie et transports](#method-sectors).
-- Les 0,15–0,22 kWh/km d'une voiture électrique. Voir [Énergie et transports](#method-sectors).
-- Les baisses de l'acier et du ciment à adoption complète (90 %, 80 %) et l'électricité du ciment par kg évité, ainsi que les 3,0 Gt de CO₂ direct des bâtiments, lues seulement dans un résumé de recherche de la page de l'AIE. Voir [Bâtiments et industrie](#method-industry).
-- Les baisses médiane et basse de la chimie (80 %, 60 %), un jugement, et les 0,1 kWh/kg de sa voie par captage, pris des fours de cimenterie. Voir [Bâtiments et industrie](#method-industry).
+- La part applicable de chaque pratique par groupe de revenu et par pays. Voir [Pratiques agricoles](#method-practices).
+- Les baisses médiane et basse de la chimie à adoption complète (80 %, 60 %). Voir [Bâtiments et industrie](#method-industry).
 
 ### HESTIA n'a pas encore de produits animaux
 

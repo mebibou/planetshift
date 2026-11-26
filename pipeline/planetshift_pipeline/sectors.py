@@ -30,20 +30,21 @@ KWH_PER_TWH = 1e9
 TWH_PER_EJ = 1e6 / 3.6
 
 # Recent inventory (2023, kg CO₂/yr) each sector's SSP trajectory is scaled to meet.
-# Road: CEDS's fossil CO₂ of road transport in its last year, 2022 (`road_kg`), carried to 2023
-# by each SSP's transport shape; split 60/40 between passengers (cars, two- and three-wheelers,
-# buses) and freight (trucks and vans) after the IEA's tracking of cars and vans and of trucks and
-# buses. Aviation (domestic and international): IEA tracking, "almost 950 Mt". Shipping
-# (international and domestic navigation): IEA tracking, about 0.85 Gt. Electricity: Ember Global
+# Road and shipping: CEDS's fossil CO₂ in its last year, 2022 (`fossil_kg`), carried to 2023 by
+# each SSP's shape. Road is split 60/40 between passengers (cars and buses) and freight (trucks):
+# 45.1% and 29.4% of transport CO₂ in 2018 (Our World in Data, after the IEA). Shipping is
+# international shipping and domestic navigation; fishing is CEDS's 1A4c and stays with seafood.
+# Aviation (domestic and international): IEA tracking, "almost 950 Mt". Electricity: Ember Global
 # Electricity Review 2024, 14,153 Mt for 29,471 TWh of demand, the basis of Ember's 480 g/kWh.
 PASSENGER_SHARE = 0.6
 ROAD_SHARES = {"roadPassenger": PASSENGER_SHARE, "roadFreight": 1 - PASSENGER_SHARE}
 INVENTORY = {
     "aviation": 0.95 * KG_PER_GT,
-    "shipping": 0.85 * KG_PER_GT,
     "electricity": 14_153 * KG_PER_MT,
 }
 GENERATION_2023_TWH = 29_471
+SHIPPING_SECTORS = ("1A3di_International-shipping", "1A3dii_Domestic-navigation")
+CEDS_SECTORS = {"road": ROAD_SECTORS, "shipping": SHIPPING_SECTORS}
 
 # The RCMIP (CMIP6 harmonised) variable whose shape each transport sector follows.
 RCMIP_SHAPE = {
@@ -116,18 +117,26 @@ SOURCES = [
         "licence": "CC BY 4.0",
     },
     {
-        "id": "ceds-road",
-        "name": "Community Emissions Data System (CEDS), road transport's fossil CO₂",
+        "id": "ceds-road-shipping",
+        "name": "Community Emissions Data System (CEDS), road transport's and shipping's fossil "
+        "CO₂",
         "version": ceds.VERSION,
         "url": f"https://doi.org/{ceds.DOI}",
         "licence": ceds.LICENCE,
     },
     {
-        "id": "iea-tracking-transport",
-        "name": "IEA, Tracking Clean Energy Progress: cars and vans, trucks and buses, aviation, "
-        "international shipping",
+        "id": "iea-tracking-aviation",
+        "name": "IEA, Tracking Clean Energy Progress: aviation",
         "version": "2023",
         "url": "https://www.iea.org/energy-system/transport",
+        "licence": "CC BY 4.0",
+    },
+    {
+        "id": "owid-transport-co2",
+        "name": "Our World in Data, Cars, planes, trains: where do CO₂ emissions from transport "
+        "come from? (IEA data, 2018)",
+        "version": "2020",
+        "url": "https://ourworldindata.org/co2-emissions-from-transport",
         "licence": "CC BY 4.0",
     },
     {
@@ -159,19 +168,25 @@ def ramp(points: dict[int, float], years: np.ndarray) -> np.ndarray:
     return np.interp(years, known, [points[y] for y in known])
 
 
-def road_kg(table: pd.DataFrame) -> float:
-    """Road transport's fossil CO₂ in a CEDS table of CO₂ by sector and fuel, kg."""
-    rows = table[table["sector"].isin(ROAD_SECTORS) & table["fuel"].isin(FOSSIL_FUELS)]
-    return float(rows["kg"].sum())
+def fossil_kg(table: pd.DataFrame) -> dict[str, float]:
+    """Road transport's and shipping's fossil CO₂ in a CEDS table of CO₂ by sector and fuel, kg."""
+    fossil = table[table["fuel"].isin(FOSSIL_FUELS)]
+    return {
+        name: float(fossil.loc[fossil["sector"].isin(sectors), "kg"].sum())
+        for name, sectors in CEDS_SECTORS.items()
+    }
 
 
 def transport(
-    rcmip_df: pd.DataFrame, ssp: str, years: np.ndarray, road: float
+    rcmip_df: pd.DataFrame, ssp: str, years: np.ndarray, measured: dict[str, float]
 ) -> dict[str, np.ndarray]:
-    """kg CO₂/yr of each transport sector: its SSP shape scaled to its inventory, road's to
-    `road` in CEDS's last year."""
-    targets = {s: (ceds.LAST_YEAR, road * share) for s, share in ROAD_SHARES.items()} | {
-        s: (BASE_YEAR, INVENTORY[s]) for s in ("aviation", "shipping")
+    """kg CO₂/yr of each transport sector: its SSP shape scaled to its inventory, road's and
+    shipping's to `measured` in CEDS's last year."""
+    targets = {
+        s: (ceds.LAST_YEAR, measured["road"] * share) for s, share in ROAD_SHARES.items()
+    } | {
+        "aviation": (BASE_YEAR, INVENTORY["aviation"]),
+        "shipping": (ceds.LAST_YEAR, measured["shipping"]),
     }
 
     def one(sector: str) -> np.ndarray:
@@ -208,14 +223,14 @@ def series(years: np.ndarray, values: np.ndarray) -> dict:
 
 
 def sector_co2(
-    rcmip_df: pd.DataFrame, rows: list[dict], years: np.ndarray, road: float
+    rcmip_df: pd.DataFrame, rows: list[dict], years: np.ndarray, measured: dict[str, float]
 ) -> tuple[dict, dict, dict]:
     """kg CO₂/yr by SSP and sector, kg CO₂/kWh by SSP, and data-centre TWh/yr."""
     centres = data_centres_twh(years)
     power = {ssp: electricity(rows, ssp, years) for ssp in SSPS}
     intensity = {ssp: kg / (twh * KWH_PER_TWH) for ssp, (kg, twh) in power.items()}
     co2 = {
-        ssp: transport(rcmip_df, ssp, years, road)
+        ssp: transport(rcmip_df, ssp, years, measured)
         | {
             "electricity": power[ssp][0],
             "dataCentres": centres["median"] * KWH_PER_TWH * intensity[ssp],
@@ -285,8 +300,8 @@ def build(cache_dir: Path, members: int | None = None) -> tuple[dict, dict]:
     years = np.arange(BASE_YEAR, END_YEAR + 1)
     rcmip_df = rcmip.load(cache_dir)
     rows = ar6db.load(cache_dir)
-    road = road_kg(ceds.by_sector_fuel(ceds.path(cache_dir), "CO2"))
-    co2, intensity, centres = sector_co2(rcmip_df, rows, years, road)
+    measured = fossil_kg(ceds.by_sector_fuel(ceds.path(cache_dir), "CO2"))
+    co2, intensity, centres = sector_co2(rcmip_df, rows, years, measured)
 
     setup = climate_fair.load_setup(cache_dir, members)
     fair_years = np.arange(climate_fair.START, PULSE_YEAR + HORIZON + 1)

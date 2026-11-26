@@ -18,12 +18,12 @@ REQUIRED = [
     DEFAULT_CACHE / "ceds" / ceds.FILE,
 ]
 GT = 1e12
-# Recent world totals, Gt CO₂/yr, and how far the base year may sit from them: road ~6 (CEDS
-# 2022), aviation ~0.95 and shipping ~0.85 (IEA tracking), electricity ~14.2 (Ember 2024).
+# Recent world totals, Gt CO₂/yr, and how far the base year may sit from them: road ~6 and
+# shipping ~0.98 (CEDS 2022), aviation ~0.95 (IEA tracking), electricity ~14.2 (Ember 2024).
 RECENT = {
     "road": (6.0, 0.15),
     "aviation": (0.95, 0.1),
-    "shipping": (0.85, 0.15),
+    "shipping": (0.98, 0.1),
     "electricity": (14.2, 0.1),
 }
 

@@ -53,7 +53,7 @@ avec $B_{c,g}$ les mammifères d'élevage du pays $c$ qui suivent le groupe $g$ 
 
 Chaque troupeau est partagé entre les groupes comme ses émissions (voir [Émissions](#method-emissions)) :
 
-- **Vaches laitières** : 85 % au lait et 15 % à la viande bovine, les vaches de réforme.
+- **Vaches laitières** : 88 % au lait et 12 % à la viande bovine, les vaches de réforme.
 - **Autres bovins** : la viande bovine.
 - **Buffles, moutons, chèvres et chameaux** : le lait et la viande, selon les protéines que produit le troupeau de chaque pays. S'il ne produit ni l'un ni l'autre, la viande.
 - **Porcs** : la viande de porc.

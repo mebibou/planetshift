@@ -89,7 +89,7 @@ La somme des parts est égale au total de chaque pays. La partie qui tombe sur d
 
 Le domaine *Emissions from Livestock* (GLE) donne, par espèce, le CH₄ de la fermentation entérique et de la gestion des effluents, et le N₂O de la gestion des effluents, des effluents au pâturage et des effluents épandus. Il va aux produits comme suit :
 
-- **Vaches laitières** : 85 % au lait et 15 % au bœuf, celui des vaches de réforme et des veaux en surplus. C'est une allocation physique, comme le demande la norme de la Fédération internationale de laiterie ; son exemple chiffré donne 85,1 % pour une ferme, mais la norme ne fixe aucune valeur mondiale par défaut.
+- **Vaches laitières** : 88 % au lait et 12 % au bœuf, celui des vaches de réforme et des veaux en surplus. C'est l'allocation physique de la Fédération internationale de laiterie, 1 − 6,04 × les kilogrammes de poids vif vendus par kilogramme de lait, au rapport typique de 0,02 kg qu'elle donne (IDF Bulletin 479/2015, section 6.3.3, p. 29). Sa norme de 2022 garde la formule ; son exemple chiffré donne 85,1 % pour une ferme.
 - **Autres bovins** : le bœuf, moins les animaux qui ne sont pas élevés pour l'alimentation (voir plus bas).
 - **Buffles, moutons, chèvres et chameaux** : répartis entre lait et viande selon les protéines que produit le cheptel de chaque pays (production FAOSTAT × teneur en protéines). Là où aucun lait n'est enregistré, tout va à la viande. Pour les buffles, les animaux qui ne sont pas élevés pour l'alimentation sont d'abord retirés.
 - Les **porcs** vont à la viande porcine, les **poulets de chair, canards et dindes** à la volaille, les **poules pondeuses** aux œufs, et les **lamas** aux autres viandes.
@@ -377,12 +377,12 @@ Poore et Nemecek (2018) donnent les émissions de chaque aliment par étape de l
 
 | Produit | Planetshift | Poore et Nemecek, AR5 | Poore et Nemecek, AR6 | Rapport |
 | --- | --- | --- | --- | --- |
-| Bœuf | 24,6 | 29,0 | 24,0 | 1,03 |
+| Bœuf | 24,4 | 29,0 | 24,0 | 1,02 |
 | Viande ovine et caprine | 21,2 | 19,5 | 16,4 | 1,29 |
 | Viande de porc | 1,68 | 1,69 | 1,46 | 1,15 |
 | Volaille | 0,87 | 0,67 | 0,63 | 1,39 |
 | Œufs | 0,77 | 1,32 | 1,22 | 0,64 |
-| Lait | 1,18 | 1,46 | 1,21 | 0,98 |
+| Lait | 1,20 | 1,46 | 1,21 | 1,00 |
 | Riz (paddy) | 1,23 | 2,37 | 2,01 | 0,61 |
 | Blé | 0,49 | 0,85 | 0,80 | 0,61 |
 | Maïs | 0,37 | 0,48 | 0,45 | 0,82 |
@@ -406,7 +406,7 @@ Le code est dans `pipeline/planetshift_pipeline/intensities.py`. Ses tables sont
 - Les estimations de niveau 1 de FAOSTAT valent pour chaque pays, plutôt que les inventaires propres aux pays.
 - L'azote de synthèse est réparti selon la surface × une dose mondiale par classe de cultures. Les doses réelles varient d'un pays à l'autre.
 - 4,7 % de l'azote de synthèse de chaque pays va aux prairies, comme dans la moyenne mondiale.
-- 85 % des émissions d'un troupeau laitier vont au lait partout.
+- 88 % des émissions d'un troupeau laitier vont au lait partout.
 - Les cheptels mixtes (buffles, moutons, chèvres, chameaux) sont répartis selon les protéines, avec 15 % de protéines dans la viande en carcasse.
 - L'énergie est répartie selon la valeur de la production, la fabrication des pesticides selon la surface.
 - Les abats et les graisses portent les mêmes émissions par tonne que la carcasse.

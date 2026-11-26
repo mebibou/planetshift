@@ -70,9 +70,9 @@ NITROGEN_SHARES = {
 GRASSLAND_SHARE = 0.047
 
 #: Share of a dairy herd's emissions given to milk; the rest goes to the beef of culled cows
-#: and surplus calves. A physical allocation: the IDF's 2022 standard (Bulletin 520, eq. 2) gives
-#: 85.1% for the farm of its worked example (appendix 10.5), and no global default.
-DAIRY_MILK_SHARE = 0.85
+#: and surplus calves. A physical allocation, AF milk = 1 − 6.04 × the meat-to-milk ratio, at the
+#: typical ratio of 0.02 kg meat per kg milk: 88% (IDF Bulletin 479/2015, section 6.3.3, p. 29).
+DAIRY_MILK_SHARE = 0.88
 #: Protein, tonnes per tonne, to split mixed herds between milk and meat.
 MILK_PROTEIN = {951: 0.042, 982: 0.055, 1020: 0.035, 1130: 0.032}
 MEAT_PROTEIN = 0.15

@@ -111,8 +111,8 @@ def test_cattle_split_follows_the_dairy_herd_and_its_emission_share():
     ek, q = stock_rows()
     lsu = L.lsu_by_group(ek, q, 2023)
     dairy_cattle = 100.0 * 50 / 200
-    assert lsu.loc[1, "dairy"] == pytest.approx(0.85 * dairy_cattle)
-    assert lsu.loc[1, "ruminantMeat"] == pytest.approx(110.0 - 0.85 * dairy_cattle)
+    assert lsu.loc[1, "dairy"] == pytest.approx(0.88 * dairy_cattle)
+    assert lsu.loc[1, "ruminantMeat"] == pytest.approx(110.0 - 0.88 * dairy_cattle)
 
 
 def test_areas_missing_from_livestock_patterns_use_the_world_units_per_head():

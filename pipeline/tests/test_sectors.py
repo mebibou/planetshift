@@ -13,16 +13,25 @@ def test_scaled_to_meets_the_target_in_the_year():
     assert scaled == pytest.approx([0.5, 1, 2, 4, 8])
 
 
-def test_road_is_cedss_fossil_road_co2_split_and_carried_by_the_ssp_shape():
+def test_road_and_shipping_are_cedss_fossil_co2_carried_by_the_ssp_shape():
     table = pd.DataFrame(
         {
-            "sector": ["1A3b_Road", "1A3b_Road", "1A3b_Road", "1A3ai_International-aviation"],
-            "fuel": ["diesel_oil", "light_oil", "biomass", "light_oil"],
-            "kg": [3e12, 2e12, 0.4e12, 0.6e12],
+            "sector": [
+                "1A3b_Road",
+                "1A3b_Road",
+                "1A3b_Road",
+                "1A3ai_International-aviation",
+                "1A3di_International-shipping",
+                "1A3dii_Domestic-navigation",
+                "1A4c_Agriculture-forestry-fishing",
+            ],
+            "fuel": ["diesel_oil", "light_oil", "biomass", "light_oil", "heavy_oil"]
+            + ["diesel_oil"] * 2,
+            "kg": [3e12, 2e12, 0.4e12, 0.6e12, 0.8e12, 0.2e12, 0.3e12],
         }
     )
-    road = sectors.road_kg(table)
-    assert road == pytest.approx(5e12)
+    measured = sectors.fossil_kg(table)
+    assert measured == pytest.approx({"road": 5e12, "shipping": 1e12})
     variables = set(sectors.RCMIP_SHAPE.values())
     rcmip_df = pd.DataFrame(
         {
@@ -36,9 +45,10 @@ def test_road_is_cedss_fossil_road_co2_split_and_carried_by_the_ssp_shape():
         }
     )
     years = np.arange(2023, 2026)
-    out = sectors.transport(rcmip_df, "ssp245", years, road)
+    out = sectors.transport(rcmip_df, "ssp245", years, measured)
     assert out["roadPassenger"][0] == pytest.approx(5e12 * 0.6 * 1.1)
     assert out["roadFreight"][0] == pytest.approx(5e12 * 0.4 * 1.1)
+    assert out["shipping"][0] == pytest.approx(1e12 * 1.1)
     assert out["aviation"][0] == pytest.approx(sectors.INVENTORY["aviation"])
 
 

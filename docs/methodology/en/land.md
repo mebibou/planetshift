@@ -113,7 +113,7 @@ The cake's land changes with the production of the animal groups that eat it, we
 
 Each country's pasture is shared between ruminant meat and dairy, in proportion to the livestock units of each, from FAOSTAT's Livestock Patterns. A livestock unit weighs animals by their feed needs. Its coefficients vary by region: a cow in North America counts more than a cow in sub-Saharan Africa, and a sheep or a goat counts about a tenth of a cow.
 
-- Cattle: the dairy herd is the share of cattle that are milked cows (FAOSTAT's "milk animals" over cattle stocks). As for emissions, 85% of it goes to dairy and 15% to the beef of culled cows and calves. The rest of the herd goes to ruminant meat.
+- Cattle: the dairy herd is the share of cattle that are milked cows (FAOSTAT's "milk animals" over cattle stocks). As for emissions, 88% of it goes to dairy and 12% to the beef of culled cows and calves. The rest of the herd goes to ruminant meat.
 - Buffalo, sheep, goats and camels: split between milk and meat by the protein each country's herd produces, as for their emissions.
 - Horses, asses and mules also graze, but are left out as they are for emissions (they are kept for work). The pasture they use is shared between the food ruminants. Pigs and poultry get no pasture.
 
@@ -242,7 +242,7 @@ The FAOSTAT land-use data the pipeline reads give 1.58 billion hectares of cropl
 - A processed item carries the land of the crop it is made from, at world extraction rates. A crushed oilseed's land is shared between its oil and its cake by their value, and the cake's part changes with the animals that eat it.
 - Temporary meadows are fodder for ruminants, shared and changed as their pasture is.
 - Countries borrow their region's, then the world's, production-weighted median hectares per tonne for items they do not grow.
-- Pasture is shared between ruminant meat and dairy by FAOSTAT's livestock units. 85% of the dairy herd goes to milk. Horses, asses and mules are left out.
+- Pasture is shared between ruminant meat and dairy by FAOSTAT's livestock units. 88% of the dairy herd goes to milk. Horses, asses and mules are left out.
 - A country's pasture changes in proportion to the production of the ruminant groups that graze it.
 - Regrowth rates are Cook-Patton et al.'s country means and range for the first 30 years of natural forest regrowth, above and below ground, without soil carbon or dead wood.
 - Forest grows back on the area Cook-Patton et al. map as able to support it, and on between none and all of the cropland. Elsewhere (natural grassland, dry rangeland) freed land takes up nothing.
