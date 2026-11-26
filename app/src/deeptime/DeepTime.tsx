@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ViewContext } from '../app/context';
-import { dataFolder } from '../data/load';
+import { dataFolder, dataUrl } from '../data/load';
+import { SITE_ROOT } from '../app/entry';
 import { formatNumber, formatSignificant, formatTemperature } from '../i18n/format';
 import type { RunResult } from '../model/engine';
 import { deepTimeChart, type ChartTexts, type DeepTimeChart } from './chart';
@@ -53,7 +54,7 @@ const useDeepTimeFile = (): Loaded => {
   const [file, setFile] = useState<Loaded>('loading');
   useEffect(() => {
     let live = true;
-    fetch(`${dataFolder(location.search)}deeptime.json`)
+    fetch(`${dataUrl(dataFolder(location.search), SITE_ROOT)}deeptime.json`)
       .then((r) => (r.ok ? (r.json() as Promise<DeepTimeFile>) : Promise.reject(r.status)))
       .then((f) => live && setFile(f))
       .catch(() => live && setFile('failed'));

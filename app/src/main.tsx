@@ -7,8 +7,8 @@ import { stateFromQuery } from './app/shell';
 import { applyTheme, effectiveTheme, prefersDark, readStoredTheme } from './app/theme';
 import { parseTourFlag, readTourSeen, shouldShowTour } from './app/tour';
 import { parseUi, type View } from './app/url';
-import { parseEntry, withEntryView } from './app/entry';
-import { dataFolder, loadAll, LoadError, type Loaded } from './data/load';
+import { parseEntry, SITE_ROOT, withEntryView } from './app/entry';
+import { dataFolder, dataUrl, loadAll, LoadError, type Loaded } from './data/load';
 import { browserLang, parseLang, readStoredLang, translator } from './i18n/i18n';
 
 /** Shown on a first visit only, so loaded then, in its own file. */
@@ -108,7 +108,7 @@ if (element) {
         )}
       </StartError>,
     );
-  const data = loadAll(dataFolder(location.search));
+  const data = loadAll(dataUrl(dataFolder(location.search), SITE_ROOT));
   // The app shows once its view is ready, and again with the data when that arrives.
   let shown = false;
   let current: Loaded | null = null;

@@ -25,6 +25,22 @@ export const parseEntry = (content: string | null | undefined): Entry | null => 
   return isEntry(e) ? { view: e.view, root: e.root, ...(e.lang ? { lang: e.lang } : {}) } : null;
 };
 
+/** The site's root as an absolute URL, from the page's address and its entry's way back. */
+export const siteRoot = (content: string | null | undefined, href: string): string =>
+  new URL(parseEntry(content)?.root ?? './', href).href;
+
+/**
+ * The root, read once as the app loads, before it moves its URL: data is fetched from it, so no
+ * entry page's path (`/fr/`…) ends up in a data file's URL.
+ */
+export const SITE_ROOT =
+  typeof document === 'undefined'
+    ? './'
+    : siteRoot(
+        document.querySelector('meta[name="planetshift:entry"]')?.getAttribute('content'),
+        location.href,
+      );
+
 /** The query with the entry's view added when the query names none. */
 export const withEntryView = (search: string, entry: Entry | null): string => {
   const params = new URLSearchParams(search);

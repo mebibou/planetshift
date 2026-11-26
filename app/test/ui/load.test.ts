@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   DATA_FILES,
   dataFolder,
+  dataUrl,
   decodeIntensities,
   DEFERRED_FILES,
   EMPTY_LEVER_DATA,
@@ -30,6 +31,12 @@ describe('data loading', () => {
     expect(dataFolder('?data=fixtures')).toBe('fixtures/');
     expect(dataFolder('?data=other')).toBe('data/');
     expect(dataFolder('')).toBe('data/');
+  });
+
+  it('reads the data under the site root, whatever page it is opened from', () => {
+    expect(dataUrl('data/', 'https://planetshift.org/')).toBe('https://planetshift.org/data/');
+    expect(dataUrl('fixtures/', 'http://localhost:5173/')).toBe('http://localhost:5173/fixtures/');
+    expect(dataUrl('data/', './')).toBe('data/');
   });
 
   it('loads every file from the folder but the deferred ones', async () => {
