@@ -893,6 +893,11 @@ write('deforestation.json', {
     FRA: { 2731: 2.0e6, 2511: 1.0e6 },
     BRA: { 2731: 1.0e7 },
   },
+  // N₂O of the same soils, tonnes a year
+  drainedN2oByCountry: {
+    FRA: { 2731: 1.0e3, 2511: 5.0e2 },
+    BRA: { 2731: 4.0e3 },
+  },
   // CH₄ the same soils would emit once rewetted, tonnes a year
   rewettedCh4ByCountry: {
     FRA: { 2731: 2.0e4, 2511: 1.0e4 },

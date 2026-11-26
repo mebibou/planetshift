@@ -101,6 +101,9 @@ export interface CountryPart {
   /** CH₄ a year by family as a constant stream (rewetted peat's), and its joint part. */
   ch4?: Readonly<Record<string, number>>;
   jointCh4?: Readonly<Record<string, number>>;
+  /** N₂O a year by family as a constant stream (drained peat's), and its joint part. */
+  n2o?: Readonly<Record<string, number>>;
+  jointN2o?: Readonly<Record<string, number>>;
   /** CO₂ a year by family that follows each change with a first-order lag of `years`. */
   buildUp?: { years: number; co2: Readonly<Record<string, number>> };
   result?: Readonly<Record<string, number | object>>;

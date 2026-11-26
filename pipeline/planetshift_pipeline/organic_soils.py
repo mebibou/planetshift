@@ -1,12 +1,12 @@
-"""CO₂ from drained organic soils under farming, by country and the item it is shared to.
+"""CO₂ and N₂O from drained organic soils under farming, by country and the item they are shared to.
 
-FAOSTAT's *Emissions from Drained organic soils* (GV) gives each country's CO₂ on cropland and on
-grassland. Cropland's goes to the crops by DeDuCE's peat drainage by commodity where DeDuCE has
-any for the country (mostly oil palm in Indonesia and Malaysia), else by harvested area;
-grassland's goes to the ruminant products by their methane. The N₂O, about a tenth of it in CO₂e,
-is left out.
+FAOSTAT's *Emissions from Drained organic soils* (GV) gives each country's CO₂ and N₂O on cropland
+and on grassland. Cropland's go to the crops by DeDuCE's peat drainage by commodity where DeDuCE
+has any for the country (mostly oil palm in Indonesia and Malaysia), else by harvested area;
+grassland's go to the ruminant products by their methane.
 
-Rewetted, the same land emits methane (IPCC 2013 Wetlands Supplement, Table 3.3): its area in
+Rewetted, the same land emits no N₂O at Tier 1 (IPCC 2013 Wetlands Supplement, section 3.2.3)
+but emits methane (Table 3.3): its area in
 FAOSTAT times the factor of its climate zone. The tropical share is read from FAOSTAT's own CO₂
 per hectare, which is IPCC's temperate or tropical factor or a mix of the two. The methane is
 shared to the items as the CO₂ is.
@@ -16,6 +16,7 @@ import pandas as pd
 
 LAND = {6727: "cropland", 6728: "grassland"}
 CO2 = 7273
+N2O = 7230
 AREA = 5026
 AREA_HARVESTED = 5312
 T_PER_KT = 1e3
@@ -47,6 +48,11 @@ def country_rows(
 def country_co2(gv: pd.DataFrame, iso3: dict[int, str]) -> pd.DataFrame:
     """t of CO₂ a year by country and land (cropland, grassland)."""
     return country_rows(gv, iso3, CO2, T_PER_KT)
+
+
+def country_n2o(gv: pd.DataFrame, iso3: dict[int, str]) -> pd.DataFrame:
+    """t of N₂O a year by country and land (cropland, grassland)."""
+    return country_rows(gv, iso3, N2O, T_PER_KT)
 
 
 def country_area(gv: pd.DataFrame, iso3: dict[int, str]) -> pd.DataFrame:

@@ -29,7 +29,7 @@ L'alimentation change les émissions agricoles, qui comptent dans l'agriculture.
 Le réchauffement évité d'un tel groupe est réparti entre les causes selon le gaz et sa source :
 
 - le méthane, le protoxyde d'azote et le CO₂ des fermes comptent dans l'agriculture ;
-- le CO₂ du défrichement et de la tourbe drainée, le méthane de la tourbe remouillée, la repousse et le carbone stocké dans les terres agricoles comptent dans l'usage des terres ;
+- le CO₂ du défrichement, le CO₂ et le N₂O de la tourbe drainée, le méthane de la tourbe remouillée, la repousse et le carbone stocké dans les terres agricoles comptent dans l'usage des terres ;
 - le CO₂ fossile et le forçage de l'aviation hors CO₂ comptent dans les combustibles fossiles et l'industrie. Le forçage est la variation de l'énergie que la Terre retient, qui la réchauffe (voir [Des émissions à la température](#method-climate)).
 
 Après aujourd'hui, le graphique Causes du réchauffement retire la part de chaque cause de la bande de cette cause. Le résumé liste les parts sous les mêmes causes, avec les mêmes noms et les mêmes couleurs.
@@ -53,7 +53,7 @@ Pour un pays, un produit et un gaz, la part des émissions supprimée est une so
 
 Moins d'offre demande moins de production, qui occupe moins de terres et émet moins. La variation passe par la même chaîne d'approvisionnement que le changement de régime, alimentation animale comprise. Ce que les gens mangent ne change pas : les protéines et les calories affichées sont celles du régime.
 
-**Déforestation** (voir [Déforestation](#method-deforestation)). Défricher la forêt pour l'agriculture libère environ 2 Gt de CO₂ par an (`deforestation.json`, par pays et par produit). Le modèle garde ce montant annuel constant et n'en compte que la variation. Le défrichement lié à un produit varie avec la production de ce produit dans le pays où la forêt est défrichée. Se détourner du bœuf réduit donc, par le commerce, le défrichement pour les pâturages au Brésil, même avec le levier à 0. Cette variation est bornée entre zéro et le double du défrichement actuel. Le levier empêche ensuite sa part du défrichement qui reste. Ces deux effets sont des variations de CO₂, et ils entrent dans la réponse du climat comme les autres. Le CO₂ des sols organiques drainés, environ 0,8 Gt par an, varie lui aussi avec la production, et les terres que la production libère sont supposées remises en eau, ce qui émet du méthane. Le levier de remouillage des tourbières remet en eau sa part des terres drainées qui restent : leur CO₂ s'arrête et leur méthane commence.
+**Déforestation** (voir [Déforestation](#method-deforestation)). Défricher la forêt pour l'agriculture libère environ 2 Gt de CO₂ par an (`deforestation.json`, par pays et par produit). Le modèle garde ce montant annuel constant et n'en compte que la variation. Le défrichement lié à un produit varie avec la production de ce produit dans le pays où la forêt est défrichée. Se détourner du bœuf réduit donc, par le commerce, le défrichement pour les pâturages au Brésil, même avec le levier à 0. Cette variation est bornée entre zéro et le double du défrichement actuel. Le levier empêche ensuite sa part du défrichement qui reste. Ces deux effets sont des variations de CO₂, et ils entrent dans la réponse du climat comme les autres. Le CO₂ des sols organiques drainés, environ 0,8 Gt par an, et leur N₂O, environ 0,34 Mt, varient eux aussi avec la production. Les terres que la production libère sont supposées remises en eau, et une terre remise en eau émet du méthane. Le levier de remouillage des tourbières remet en eau sa part des terres drainées qui restent : leur CO₂ et leur N₂O s'arrêtent et leur méthane commence.
 
 **Carbone dans les terres agricoles** (voir [Carbone stocké dans les terres agricoles](#method-removals)). Les couverts végétaux, les arbres dans les fermes, le biochar et la poudre de roche, qui est expérimentale, stockent du CO₂. La quantité stockée est adoption × la plus grande part des terres que la pratique peut atteindre (`maxShare`) × les hectares de cultures, de prairies ou des deux une fois le changement complet × le taux du pays. Chaque hectare stocke du carbone pendant `years` ans à partir de l'année où la pratique y commence. Les couverts et les arbres saturent après 20 ans. Le biochar et la poudre de roche continuent de stocker du carbone jusqu'en 2100.
 
@@ -100,11 +100,11 @@ Un levier qui n'agit qu'avec un autre partage cet effet commun à moitié avec l
 
 | Groupes actifs | Réchauffement évité en 2100 |
 | --- | --- |
-| Alimentation seule | 0,1677 °C |
+| Alimentation seule | 0,1685 °C |
 | Repousse seule | 0 (elle ne libère aucune terre) |
-| Alimentation et repousse | 0,1819 °C |
+| Alimentation et repousse | 0,1827 °C |
 
-L'effet commun de la repousse est de 0,1819 − 0,1677 = 0,0142 °C. La valeur de Shapley le partage à parts égales entre les deux. La repousse obtient 0,0071 °C et l'alimentation 0,1677 + 0,0071 = 0,1748 °C. Avec le pergélisol activé, la variation de son rejet est répartie en plus de ces parts (voir plus bas). Le résumé met ensuite les parts à l'échelle pour qu'elles s'additionnent au réchauffement évité que donne FaIR (voir *Répartir le total de FaIR* plus bas).
+L'effet commun de la repousse est de 0,1827 − 0,1685 = 0,0142 °C. La valeur de Shapley le partage à parts égales entre les deux. La repousse obtient 0,0071 °C et l'alimentation 0,1685 + 0,0071 = 0,1756 °C. Avec le pergélisol activé, la variation de son rejet est répartie en plus de ces parts (voir plus bas). Le résumé met ensuite les parts à l'échelle pour qu'elles s'additionnent au réchauffement évité que donne FaIR (voir *Répartir le total de FaIR* plus bas).
 
 ### Comment Planetshift les calcule vite
 
@@ -120,7 +120,7 @@ Un test vérifie, sur les données de test et sur les données réelles, que cel
 
 Le réchauffement évité vient de FaIR lancé dans l'application, dont la réponse n'est pas proportionnelle aux émissions (voir [Climat](#method-climate)). Ses valeurs de Shapley demanderaient de lancer FaIR sur chaque ensemble de groupes actifs, jusqu'à 256 simulations. Cela prend environ une seconde à chaque mouvement de curseur. Les parts sont donc les valeurs de Shapley sur la somme des réponses, toutes multipliées par le même facteur pour s'additionner au total de FaIR. Les causes et les gaz sont répartis de la même façon, année par année.
 
-Sur les données réelles, cela reste à 0,017 °C des valeurs de Shapley de FaIR lancé sur chaque ensemble de groupes, 1,1 % du total, avec tous les leviers au maximum sur SSP2-4.5 en 2100. Le plus grand écart est celui de l'énergie et du transport : 0,570 °C contre 0,553 °C. Avec un seul groupe actif, les deux sont identiques.
+Sur les données réelles, cela reste à 0,017 °C des valeurs de Shapley de FaIR lancé sur chaque ensemble de groupes, 1,2 % du total, avec tous les leviers au maximum sur SSP2-4.5 en 2100. Le plus grand écart est celui de l'énergie et du transport : 0,570 °C contre 0,553 °C. Avec un seul groupe actif, les deux sont identiques.
 
 ### Une méthode envisagée et écartée
 

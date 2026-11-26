@@ -161,7 +161,11 @@ describe('the avoided warming by gas', () => {
       Math.abs(gasSum('fossilIndustry', i) - (avoidedByCause.fossilIndustry[i] ?? 0)),
     ).toBeGreaterThan(0);
     expect(avoidedByGas.ch4.agriculture[i]).toBeGreaterThan(0);
-    expect(avoidedByGas.n2o.landUse[i]).toBe(0);
+  });
+  it('counts the N₂O of the drained soils the shift frees in land use', () => {
+    const i = years.indexOf(2100);
+    expect(avoidedByGas.n2o.landUse[i]).toBeGreaterThan(0);
+    expect(avoidedByGas.hfc.landUse[i]).toBe(0);
   });
   it("counts the food chain's refrigerants in other human emissions and its waste methane in waste", () => {
     const i = years.indexOf(2100);

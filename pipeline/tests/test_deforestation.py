@@ -135,6 +135,7 @@ def test_built_file_matches_the_contract_and_published_totals():
         "byCountry",
         "areaByCountry",
         "drainedByCountry",
+        "drainedN2oByCountry",
         "rewettedCh4ByCountry",
         "years",
         "source",
@@ -163,6 +164,10 @@ def test_built_file_matches_the_contract_and_published_totals():
     # IPCC 2013 Wetlands Supplement: 55 to 290 kg CH4 a hectare on about 24 Mha
     assert 1.3e6 < ch4 < 7e6
     assert set(data["rewettedCh4ByCountry"]) <= set(drained)
+    n2o = sum(v for items in data["drainedN2oByCountry"].values() for v in items.values())
+    # FAOSTAT: about 0.35 Mt N2O a year from all drained organic soils
+    assert 0.3e6 < n2o < 0.4e6
+    assert set(data["drainedN2oByCountry"]) <= set(drained)
     assert path.stat().st_size < 1_000_000
 
 

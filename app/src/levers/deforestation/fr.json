@@ -9,7 +9,7 @@
   },
   "peatRewetting": {
     "title": "Tourbières drainées remouillées",
-    "description": "Part des tourbes et autres sols organiques drainés pour l'agriculture qui est remouillée. Environ 24 millions d'hectares émettent 0,8 Gt de CO₂ par an. Remouillés, ils émettent à la place environ 5 Mt de méthane. Sur les terres remouillées, l'agriculture s'arrête ou passe à des cultures qui poussent dans l'eau."
+    "description": "Part des tourbes et autres sols organiques drainés pour l'agriculture qui est remouillée. Environ 24 millions d'hectares émettent 0,8 Gt de CO₂ et 0,34 Mt de N₂O par an. Une fois remouillés, ils émettent à la place environ 5 Mt de méthane. Sur les terres remouillées, l'agriculture s'arrête ou passe à des cultures qui poussent dans l'eau."
   },
   "summary": {
     "avoided": "CO₂ de déforestation évité",

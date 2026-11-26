@@ -142,7 +142,7 @@ The URL keys of the options, the diet controls and the levers are listed under [
 - **Farm practices cut a share of the sources they act on** (`breakdown.json`). The cut is adoption × the share of the emissions that could adopt them in each country (a judgement) × a published reduction. Practices on the same source multiply. See [Farm practices](#method-practices).
 - **Food waste and losses**: waste after shops lowers the food supply by the lever × each country's waste share. Losses before shops lower each item's loss share. What people eat does not change. See [Food loss and waste](#method-waste).
 - **Deforestation CO₂ is a constant stream** that moves with each item's production in the country cleared, between none and double today's. The lever stops its share of what remains. See [Deforestation](#method-deforestation).
-- **Drained peat's CO₂ is a constant stream too**, moving with production. When production frees drained land or the peat rewetting lever rewets it, the land stops emitting CO₂ and emits the IPCC's default methane of rewetted peat instead. See [Deforestation](#method-deforestation).
+- **Drained peat's CO₂ and N₂O are a constant stream too**, moving with production. When production frees drained land or the peat rewetting lever rewets it, the land stops emitting CO₂ and N₂O and emits the IPCC's default methane of rewetted peat instead. See [Deforestation](#method-deforestation).
 - **Carbon in farmland**: adoption × the largest share of the land a practice can reach × hectares × the country's rate. It lasts 20 years from each hectare's adoption (cover crops, trees) or runs to 2100 (biochar, rock dust). See [Carbon in farmland](#method-removals).
 
 ## Energy and transport

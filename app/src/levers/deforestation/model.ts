@@ -24,6 +24,13 @@ export const rewettedCh4Of = (pc: PreparedCountry, prepared: Prepared): ItemVect
     return Float64Array.from(prepared.items, (item) => (byCode[String(item.code)] ?? 0) * 1000);
   });
 
+/** The N₂O of a country's drained organic soils by the item they are shared to, kg a year. */
+export const drainedN2oOf = (pc: PreparedCountry, prepared: Prepared): ItemVector =>
+  cache(pc, 'drainedN2o', () => {
+    const byCode = prepared.data.deforestation.drainedN2oByCountry?.[pc.country.iso3] ?? {};
+    return Float64Array.from(prepared.items, (item) => (byCode[String(item.code)] ?? 0) * 1000);
+  });
+
 /** A country's forest area cleared by the item it serves, hectares a year. */
 export const clearedAreaOf = (pc: PreparedCountry, prepared: Prepared): ItemVector =>
   cache(pc, 'clearedArea', () => {
