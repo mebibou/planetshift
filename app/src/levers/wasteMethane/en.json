@@ -1,0 +1,14 @@
+{
+  "title": "Landfills and wastewater",
+  "description": "Cut the methane rotting waste gives off: capture landfill gas, compost or digest food and garden waste, and treat sewage. The lever acts on the waste methane that the food levers leave.",
+  "family": "Landfills and wastewater",
+  "page": "Landfills and wastewater",
+  "landfills": {
+    "title": "Landfills",
+    "description": "Gas collected at landfills and burnt, and organic waste composted or digested rather than buried. At 100%, about 70% of landfill methane goes. Capture acts at once; waste already buried keeps rotting for decades."
+  },
+  "wastewater": {
+    "title": "Wastewater",
+    "description": "Sewers and treatment plants in place of latrines, septic tanks and raw sewage, and the gas of sludge and lagoons burnt. At 100%, about 45% of wastewater's methane goes."
+  }
+}

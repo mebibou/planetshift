@@ -1,15 +1,15 @@
-import type { LeverCause } from '../data/types';
+import type { ModuleCause } from '../data/types';
 import type { WorthId } from './worth';
 
 /** A lever group of the panel: its id, the cause it mainly acts on and its worth figure. */
 export interface PanelGroup {
   id: string;
-  cause: LeverCause;
+  cause: ModuleCause;
   worth: WorthId;
 }
 
 export interface CauseSection {
-  cause: LeverCause;
+  cause: ModuleCause;
   groups: string[];
 }
 
@@ -21,12 +21,12 @@ export interface CauseSection {
  */
 export const panelOrder = (
   groups: readonly PanelGroup[],
-  causeSize: Readonly<Record<LeverCause, number>>,
+  causeSize: Readonly<Partial<Record<ModuleCause, number>>>,
   avoided: (worth: WorthId) => number | undefined,
 ): CauseSection[] =>
-  (Object.keys(causeSize) as LeverCause[])
+  (Object.keys(causeSize) as ModuleCause[])
     .map((cause, i) => ({ cause, i }))
-    .sort((a, b) => causeSize[b.cause] - causeSize[a.cause] || a.i - b.i)
+    .sort((a, b) => (causeSize[b.cause] ?? 0) - (causeSize[a.cause] ?? 0) || a.i - b.i)
     .map(({ cause }) => ({
       cause,
       groups: groups

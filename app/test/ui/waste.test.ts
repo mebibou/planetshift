@@ -106,6 +106,27 @@ describe('the waste layer', () => {
     ]);
   });
 
+  it('measures landfill and wastewater methane before and after the levers', () => {
+    const c = countryResult({
+      wasteMethane: {
+        before: { landfill: 8e8, wastewater: 2e8 },
+        food: { landfill: -1e8, wastewater: 0 },
+        change: { landfill: -6e8, wastewater: -0.9e8 },
+      },
+    });
+    expect(beforeAfter(c, spec('methane'))).toEqual({
+      kind: 'wasteMethane',
+      before: 1e9,
+      after: 3.1e8,
+    });
+    expect(layerValue(countryResult(), spec('methane'))).toBeNull();
+    const m = tooltipModel('France', c, spec('methane'), t, 'en-GB');
+    expect(m.rows.find(([k]) => k === 'Landfills and dumps')?.[1]).toMatch(/^800\skt → 200\skt$/);
+    expect(m.source?.label).toBe('CEDS v_2024_07_08');
+    expect(layerSlug(spec('methane'))).toBe('waste-methane');
+    expect(fileLicences('wastemethane.json').map((l) => l.name)).toEqual(['CC BY-NC-SA 4.0']);
+  });
+
   it('names its CSV after the waste shown, under that data’s terms', () => {
     expect(layerSlug(spec('plastic'))).toBe('waste-plastic');
     expect(mapLicences(spec('plastic')).map((l) => l.name)).toEqual(['CC BY-NC 4.0']);

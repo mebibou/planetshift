@@ -12,6 +12,7 @@ import {
 } from '../i18n/format';
 import { WASTE_TREATMENTS, WASTE_TYPES } from '../data/types';
 import { FOOD_STAGES } from '../levers/waste/foodWaste';
+import { WASTE_SECTORS } from '../levers/wasteMethane/data';
 import {
   beforeAfter,
   farmland,
@@ -53,6 +54,7 @@ const FORMATS: Record<Measure, (locale: string, v: number) => string> = {
   municipalWaste: (locale, v) => formatMass(locale, v * 1000),
   oceanPlastic: (locale, v) => formatMass(locale, v * 1000),
   fossilMethane: formatMass,
+  wasteMethane: formatMass,
 };
 
 /** A layer's quantity in its unit: tonnes of product, kg of gas, hectares, or a share of land. */
@@ -77,6 +79,7 @@ const clearingCo2Row = (
 
 const WHAT_A_WASTE = 'https://datacatalog.worldbank.org/search/dataset/0039597';
 const MEIJER = 'https://doi.org/10.1126/sciadv.aaz5803';
+const CEDS = 'https://doi.org/10.5281/zenodo.12803197';
 
 /** Food's emissions after the farm in a gas, today and with the levers; none without the file. */
 const chainRows = (c: CountryResult, gas: GasChoice, t: T, locale: string): [string, string][] =>
@@ -228,6 +231,18 @@ const leakRows = (c: CountryResult, t: T, locale: string): [string, string][] =>
         [t('map.tooltip.coalMineMethane'), formatMass(locale, c.fossilMethane.coal)],
       ]
     : [];
+/** Landfills' and wastewater's methane, today and with the levers. */
+const wasteSectorRows = (c: CountryResult, t: T, locale: string): [string, string][] =>
+  WASTE_SECTORS.map((sector) => {
+    const before = c.wasteMethane?.before[sector] ?? 0;
+    return [
+      t(`map.tooltip.wasteSectors.${sector}`),
+      t('map.tooltip.beforeAfter', {
+        before: formatMass(locale, before),
+        after: formatMass(locale, before + (c.wasteMethane?.change[sector] ?? 0)),
+      }),
+    ];
+  });
 
 interface Extra {
   rows: [string, string][];
@@ -306,6 +321,13 @@ const MEASURE_TOOLTIPS: Record<
   fossilMethane: {
     what: (t) => t('map.tooltip.fossilMethane'),
     extra: (c, t, locale) => ({ rows: leakRows(c, t, locale) }),
+  },
+  wasteMethane: {
+    what: (t) => t('map.tooltip.wasteMethane'),
+    extra: (c, t, locale) => ({
+      rows: wasteSectorRows(c, t, locale),
+      source: { label: 'CEDS v_2024_07_08', url: CEDS },
+    }),
   },
   landCo2: {
     what: (t) => t('map.tooltip.landCo2'),

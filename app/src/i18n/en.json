@@ -201,7 +201,8 @@
       "legend": "Waste",
       "food": "Food lost and wasted",
       "municipal": "Municipal waste",
-      "plastic": "Plastic to the ocean"
+      "plastic": "Plastic to the ocean",
+      "methane": "Landfill and wastewater methane"
     },
     "gas": "Gas",
     "group": "Food",
@@ -224,7 +225,8 @@
       "foodWaste": "Food lost before shops and wasted after them, with the levers, a year",
       "municipalWaste": "Municipal solid waste, a year (no lever changes it)",
       "oceanPlastic": "Plastic reaching the ocean through rivers, a year (no lever changes it)",
-      "fossilMethane": "Methane leaked by oil, gas and coal with the levers, a year"
+      "fossilMethane": "Methane leaked by oil, gas and coal with the levers, a year",
+      "wasteMethane": "Methane of landfills and wastewater with the levers, a year"
     },
     "notes": {
       "fossilMethane": "Methane leaked producing oil, gas and coal in each country in 2022, from CEDS: oil and gas wells, their venting and flaring, gas pipelines, and coal mines. It is where the fuel is produced, not where it is burnt. With the levers, it is that methane less the share the two leak levers remove: at 100%, 75% of oil and gas methane and 50% of coal mines'. The levers that burn less fuel cut the world's leaks too, but the map does not split that cut by country. The tooltip gives each part.",
@@ -242,7 +244,8 @@
       "waste": {
         "food": "Food lost from harvest up to shops, and wasted in shops, in restaurants and canteens, and at home, in tonnes a year. The levers Food wasted after shops and Losses before shops cut it, and a diet shift changes the food it is a share of. Waste after shops is UNEP's estimate of its edible part. Losses before shops are FAO's share of each food lost, applied to the food balance, and follow the country's production. The tooltip gives each stage. Losses are counted by fresh weight as harvested, so heavy, watery crops such as sugar cane weigh most, and the tonnes are higher than FAO's and UNEP's usual figures (see Methodology).",
         "municipal": "The household and commercial waste each country's towns collect or should collect, in tonnes a year: the World Bank's estimate for 2022 from What a Waste 3.0. No lever changes it. The food levers cut food waste, but not the municipal waste shown here. The tooltip gives its largest types and where it goes. A country that reports neither takes its income group's shares.",
-        "plastic": "Plastic that reaches the ocean through rivers, in tonnes a year, from Meijer et al. (2021)'s model of the plastic that leaves each country's land by its rivers. No lever changes it. The estimates are uncertain: a river's true figure can be several times lower or higher."
+        "plastic": "Plastic that reaches the ocean through rivers, in tonnes a year, from Meijer et al. (2021)'s model of the plastic that leaves each country's land by its rivers. No lever changes it. The estimates are uncertain: a river's true figure can be several times lower or higher.",
+        "methane": "The methane of landfills, open dumps and wastewater in each country, in kg a year, from CEDS for 2022. The Landfills and Wastewater levers cut it: gas captured at landfills, organic waste composted or digested, sewage treated. The levers that grow less food cut it too, as less food is wasted. A country's room to capture landfill gas is the share of its buried waste that goes to landfills rather than open dumps or is never collected (What a Waste 3.0). With the levers, the map shows the cut once the levers are in full and the waste already buried has rotted away. The tooltip shows landfills and wastewater separately."
       }
     },
     "tooltip": {
@@ -281,6 +284,8 @@
       "fossilMethane": "Methane leaked by oil, gas and coal, a year",
       "oilGasMethane": "Of which oil and gas, today",
       "coalMineMethane": "Of which coal mines, today",
+      "wasteMethane": "Methane of landfills and wastewater, a year",
+      "wasteSectors": { "landfill": "Landfills and dumps", "wastewater": "Wastewater" },
       "unchanged": "No lever changes it",
       "perPerson": "Per person, a year",
       "largestTypes": "Largest types",

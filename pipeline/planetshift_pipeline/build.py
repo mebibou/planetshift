@@ -41,6 +41,7 @@ from .sections import (
     species,
     supply,
     waste,
+    wastemethane,
     water,
 )
 
@@ -90,6 +91,7 @@ SECTIONS: tuple[Section, ...] = (
         ("solidwaste.json", "oceanplastic.json"),
         ("sources.what_a_waste", "sources.ocean_plastic"),
     ),
+    Section("wastemethane", wastemethane.build, ("wastemethane.json",), ("wastemethane",)),
     Section("land", land.build, ("land.json",), ("land",)),
     Section("practices", practices.build, ("practices.json",), ("practices", "sources.ember")),
     Section("deforestation", deforestation.build, ("deforestation.json",), ("deforestation",)),

@@ -23,6 +23,7 @@ export const GOLDEN_LEVERS = [...PRACTICES, ...WASTE, 'deforestation', ...REMOVA
 /** Recorded on their own, so the settings above keep their results. */
 const INDUSTRY = ['cleanHeating', 'cleanIndustry'];
 const LEAKS = ['oilGasMethane', 'coalMineMethane'];
+const WASTE_METHANE = ['landfills', 'wastewater'];
 
 const BASE: Scenario = {
   shift: 0,
@@ -141,6 +142,12 @@ export const GRID: Setting[] = [
   ),
   setting('allLeaks', { levers: all(LEAKS) }),
   setting('allLeaks+fuel', { levers: all([...LEAKS, ...ENERGY, ...INDUSTRY]) }),
+  ...WASTE_METHANE.flatMap((id) =>
+    [0.5, 1].map((a) => setting(`${id}@${a * 100}`, { levers: { [id]: a } })),
+  ),
+  setting('allWasteMethane', { levers: all(WASTE_METHANE) }),
+  setting('allWasteMethane+food', { shift: 1, levers: all([...WASTE, ...WASTE_METHANE]) }),
+  setting('allWasteMethane+ssp370', { levers: all(WASTE_METHANE) }, { ssp: 'ssp370' }),
 ];
 
 /** Run with every departure from FaIR at its plain-FaIR value (planetshift.config.schema.json). */

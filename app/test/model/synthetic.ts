@@ -194,5 +194,6 @@ export const syntheticData = (nCountries = 180, nItems = 100): ModelData => {
     coemissions: fixture.coemissions,
     people: fixture.people,
     fossilmethane: fixture.fossilmethane,
+    wastemethane: fixture.wastemethane,
   };
 };

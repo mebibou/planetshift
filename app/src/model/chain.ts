@@ -32,7 +32,7 @@ const CAUSE_OF: Record<ChainStage, ChainCause> = {
 export type ChainIntensities = Record<ChainCause, Record<Gas, ItemVector>>;
 
 /** A country's factor at a stage: its own, or the world's when FAOSTAT has no figures for it. */
-const factorOf = (chain: Chain, iso3: string, stage: ChainStage, gas: Gas): number => {
+export const factorOf = (chain: Chain, iso3: string, stage: ChainStage, gas: Gas): number => {
   const own = chain.byCountry[iso3];
   return (own ? own[stage]?.[gas] : chain.world[stage]?.[gas]) ?? 0;
 };

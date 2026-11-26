@@ -35,6 +35,8 @@ const LEVERS_ON = {
   renewableElectricity: 0.5,
   oilGasMethane: 0.5,
   coalMineMethane: 0.5,
+  landfills: 0.5,
+  wastewater: 0.5,
 };
 
 describe('the breakdown by family', () => {

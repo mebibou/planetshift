@@ -205,7 +205,8 @@
       "legend": "Déchets",
       "food": "Pertes et gaspillage alimentaires",
       "municipal": "Déchets municipaux",
-      "plastic": "Plastique vers l'océan"
+      "plastic": "Plastique vers l'océan",
+      "methane": "Méthane des décharges et eaux usées"
     },
     "gas": "Gaz",
     "group": "Aliment",
@@ -228,7 +229,8 @@
       "foodWaste": "Nourriture perdue avant les magasins et gaspillée après, avec les leviers, par an",
       "municipalWaste": "Déchets municipaux solides, par an (aucun levier ne les change)",
       "oceanPlastic": "Plastique qui atteint l'océan par les rivières, par an (aucun levier ne le change)",
-      "fossilMethane": "Méthane qui fuit du pétrole, du gaz et du charbon avec les leviers, par an"
+      "fossilMethane": "Méthane qui fuit du pétrole, du gaz et du charbon avec les leviers, par an",
+      "wasteMethane": "Méthane des décharges et des eaux usées avec les leviers, par an"
     },
     "notes": {
       "fossilMethane": "Le méthane qui fuit en produisant le pétrole, le gaz et le charbon dans chaque pays en 2022, d'après CEDS : puits de pétrole et de gaz, leur dégazage et leur torchage, gazoducs, et mines de charbon. C'est là où le combustible est produit, pas là où il est brûlé. Avec les leviers, c'est ce méthane moins la part qu'enlèvent les deux leviers sur les fuites : à 100 %, 75 % du méthane du pétrole et du gaz et 50 % de celui des mines de charbon. Les leviers qui brûlent moins de combustible réduisent aussi les fuites du monde, mais la carte ne répartit pas cette baisse par pays. L'infobulle donne chaque part.",
@@ -246,7 +248,8 @@
       "waste": {
         "food": "La nourriture perdue de la récolte jusqu'aux magasins, puis gaspillée dans les magasins, dans les restaurants et cantines, et à la maison, en tonnes par an. Les leviers Gaspillage après les magasins et Pertes avant les magasins la réduisent, et un changement de régime change la nourriture dont elle est une part. Le gaspillage après les magasins est l'estimation du PNUE de sa partie comestible. Les pertes avant les magasins sont la part de chaque aliment perdue selon la FAO, appliquée au bilan alimentaire, et suivent la production du pays. L'infobulle donne chaque étape. Les pertes sont comptées au poids frais à la récolte : les cultures lourdes et riches en eau comme la canne à sucre pèsent le plus, et les tonnes dépassent les chiffres habituels de la FAO et du PNUE (voir la Méthodologie).",
         "municipal": "Les déchets des ménages et des commerces que les villes de chaque pays collectent ou devraient collecter, en tonnes par an : l'estimation de la Banque mondiale pour 2022, tirée de What a Waste 3.0. Aucun levier ne les change. Les leviers alimentaires réduisent le gaspillage de nourriture, mais pas les déchets municipaux montrés ici. L'infobulle donne leurs principaux types et où ils vont. Un pays qui ne donne ni l'un ni l'autre prend les parts de son groupe de revenu.",
-        "plastic": "Le plastique qui atteint l'océan par les rivières, en tonnes par an, d'après le modèle de Meijer et al. (2021) du plastique que les rivières emportent des terres de chaque pays. Aucun levier ne le change. Les estimations sont incertaines : le chiffre réel d'une rivière peut être plusieurs fois plus bas ou plus haut."
+        "plastic": "Le plastique qui atteint l'océan par les rivières, en tonnes par an, d'après le modèle de Meijer et al. (2021) du plastique que les rivières emportent des terres de chaque pays. Aucun levier ne le change. Les estimations sont incertaines : le chiffre réel d'une rivière peut être plusieurs fois plus bas ou plus haut.",
+        "methane": "Le méthane des décharges, des dépôts sauvages et des eaux usées de chaque pays, en kg par an, d'après CEDS pour 2022. Les leviers Décharges et Eaux usées le réduisent : gaz capté dans les décharges, déchets organiques compostés ou méthanisés, eaux usées traitées. Les leviers qui font produire moins de nourriture le réduisent aussi, car moins de nourriture est gaspillée. La marge d'un pays pour capter le gaz de décharge est la part de ses déchets enfouis qui va en décharge plutôt qu'en dépôt sauvage ou qui n'est jamais collectée (What a Waste 3.0). Avec les leviers, la carte montre la réduction une fois les leviers en place et les déchets déjà enfouis décomposés. L'infobulle montre les décharges et les eaux usées séparément."
       }
     },
     "tooltip": {
@@ -285,6 +288,8 @@
       "fossilMethane": "Méthane qui fuit du pétrole, du gaz et du charbon, par an",
       "oilGasMethane": "Dont pétrole et gaz, aujourd'hui",
       "coalMineMethane": "Dont mines de charbon, aujourd'hui",
+      "wasteMethane": "Méthane des décharges et des eaux usées, par an",
+      "wasteSectors": { "landfill": "Décharges et dépôts", "wastewater": "Eaux usées" },
       "unchanged": "Aucun levier ne le change",
       "perPerson": "Par personne, par an",
       "largestTypes": "Principaux types",

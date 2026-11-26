@@ -8,6 +8,7 @@ import {
 } from '../data/types';
 import { GWP100, type CountryResult } from '../model/api';
 import { speciesAfter } from '../model/species';
+import { wasteMethaneTotal } from '../levers/wasteMethane/data';
 
 export const LAYERS = [
   'production',
@@ -48,7 +49,8 @@ export type Measure =
   | 'foodWaste'
   | 'municipalWaste'
   | 'oceanPlastic'
-  | 'fossilMethane';
+  | 'fossilMethane'
+  | 'wasteMethane';
 
 /** What each layer but Change measures, production where it is not listed. */
 const LAYER_MEASURES: Partial<Record<Layer, Measure>> = {
@@ -70,13 +72,14 @@ export type GroupChoice = Group | 'all';
 export const SPECIES_PER = ['country', 'farmland'] as const;
 export type SpeciesPer = (typeof SPECIES_PER)[number];
 
-/** The waste layer: food lost and wasted, municipal solid waste, or plastic reaching the ocean. */
-export const WASTE_OF = ['food', 'municipal', 'plastic'] as const;
+/** The waste layer: food, municipal waste, ocean plastic, or landfill and wastewater methane. */
+export const WASTE_OF = ['food', 'municipal', 'plastic', 'methane'] as const;
 export type WasteOf = (typeof WASTE_OF)[number];
 const WASTE_MEASURES: Record<WasteOf, Measure> = {
   food: 'foodWaste',
   municipal: 'municipalWaste',
   plastic: 'oceanPlastic',
+  methane: 'wasteMethane',
 };
 /** The measures no lever changes: their value with the levers is today's. */
 export const UNCHANGED: readonly Measure[] = ['municipalWaste', 'oceanPlastic'];
@@ -182,6 +185,7 @@ const WASTE_DATA: Partial<Record<Measure, (c: CountryResult) => boolean>> = {
   foodWaste: (c) => total(c.foodWaste) > 0,
   municipalWaste: (c) => c.municipalWaste !== undefined,
   oceanPlastic: (c) => c.oceanPlastic !== undefined,
+  wasteMethane: (c) => c.wasteMethane !== undefined,
 };
 
 /** Methane leaked by the country's oil, gas and coal in CEDS's year, kg. */
@@ -213,6 +217,7 @@ const MEASURES: Record<
   municipalWaste: (c) => [c.municipalWaste?.tonnes ?? 0, 0],
   oceanPlastic: (c) => [c.oceanPlastic ?? 0, 0],
   fossilMethane: (c) => [leakedMethane(c), c.fossilMethaneChange ?? 0],
+  wasteMethane: wasteMethaneTotal,
 };
 
 export const beforeAfter = (
