@@ -7,3 +7,5 @@ pipeline/cache
 .DS_Store
 playwright-report/
 test-results/
+issue.md
+research.md
