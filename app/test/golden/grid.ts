@@ -22,6 +22,7 @@ const ENERGY = [
 export const GOLDEN_LEVERS = [...PRACTICES, ...WASTE, 'deforestation', ...REMOVALS, ...ENERGY];
 /** Recorded on their own, so the settings above keep their results. */
 const INDUSTRY = ['cleanHeating', 'cleanIndustry'];
+const LEAKS = ['oilGasMethane', 'coalMineMethane'];
 
 const BASE: Scenario = {
   shift: 0,
@@ -135,6 +136,11 @@ export const GRID: Setting[] = [
       },
     ),
   ),
+  ...LEAKS.flatMap((id) =>
+    [0.5, 1].map((a) => setting(`${id}@${a * 100}`, { levers: { [id]: a } })),
+  ),
+  setting('allLeaks', { levers: all(LEAKS) }),
+  setting('allLeaks+fuel', { levers: all([...LEAKS, ...ENERGY, ...INDUSTRY]) }),
 ];
 
 /** Run with every departure from FaIR at its plain-FaIR value (planetshift.config.schema.json). */
@@ -155,6 +161,8 @@ export const PLAIN_GRID: Setting[] = [
   ),
   setting('shift100', { shift: 1 }),
   setting('permafrostOffAlone', {}, { permafrost: 'off' }),
+  ...LEAKS.map((id) => setting(`${id}@100`, { levers: { [id]: 1 } })),
+  setting('allLeaks+fuel', { levers: all([...LEAKS, ...ENERGY, ...INDUSTRY]) }),
   setting(
     'everythingAllOptions',
     { shift: 0.5, levers: all(GOLDEN_LEVERS, 0.7) },
@@ -179,4 +187,5 @@ export const QUERIES = [
   'pop=x',
   'deadfall=on',
   'deadfall=x',
+  'ogm=50&cmm=x',
 ];

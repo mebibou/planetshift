@@ -191,6 +191,7 @@
       "water": "Freshwater withdrawals",
       "waterScarcity": "Water scarcity (crops)",
       "waste": "Waste",
+      "fossilMethane": "Methane leaks",
       "change": "Change",
       "quality": "Data quality"
     },
@@ -222,9 +223,11 @@
       "speciesDensity": "Species committed to extinction per Mha of the country's farmland, with the levers",
       "foodWaste": "Food lost before shops and wasted after them, with the levers, a year",
       "municipalWaste": "Municipal solid waste, a year (no lever changes it)",
-      "oceanPlastic": "Plastic reaching the ocean through rivers, a year (no lever changes it)"
+      "oceanPlastic": "Plastic reaching the ocean through rivers, a year (no lever changes it)",
+      "fossilMethane": "Methane leaked by oil, gas and coal with the levers, a year"
     },
     "notes": {
+      "fossilMethane": "Methane leaked producing oil, gas and coal in each country in 2022, from CEDS: oil and gas wells, their venting and flaring, gas pipelines, and coal mines. It is where the fuel is produced, not where it is burnt. With the levers, it is that methane less the share the two leak levers remove: at 100%, 75% of oil and gas methane and 50% of coal mines'. The levers that burn less fuel cut the world's leaks too, but the map does not split that cut by country. The tooltip gives each part.",
       "water": "Freshwater taken from rivers, lakes and aquifers to grow each country's crops, raise its animals and make the farm's inputs. It is each food's litres per tonne times its production. HESTIA gives the litres of the crops it covers. Poore & Nemecek (2018) give the rest. Animal products count the water used on the farm, not their concentrate feed, which is counted on the crops. Fish farms are left out. The litres per tonne do not change with the levers, so the water changes with production. Water does not change the warming. The tooltip gives the land equipped for irrigation.",
       "waterScarcity": "Water use weighted by how scarce water is where it is used (AWARE 2.0), in litres-equivalent. It covers only the crops for which HESTIA has the country's own aggregation, so countries are not complete and cannot be compared on it. It is not added to the litres withdrawn.",
       "production": "Where food is grown, not where it is eaten.",
@@ -275,6 +278,9 @@
       "foodWaste": "Food lost and wasted, a year",
       "municipalWaste": "Municipal solid waste, a year",
       "oceanPlastic": "Plastic reaching the ocean, a year",
+      "fossilMethane": "Methane leaked by oil, gas and coal, a year",
+      "oilGasMethane": "Of which oil and gas, today",
+      "coalMineMethane": "Of which coal mines, today",
       "unchanged": "No lever changes it",
       "perPerson": "Per person, a year",
       "largestTypes": "Largest types",

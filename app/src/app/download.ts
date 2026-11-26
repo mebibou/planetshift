@@ -93,6 +93,7 @@ const UNITS: Record<Measure, (spec: LayerSpec) => string> = {
   foodWaste: () => 't of food lost before shops and wasted after them',
   municipalWaste: () => 't of municipal solid waste (no lever changes it)',
   oceanPlastic: () => 't of plastic reaching the ocean through rivers (no lever changes it)',
+  fossilMethane: () => 'kg CH4 leaked by oil, gas and coal (CEDS 2022)',
 };
 
 export const unitOf = (measure: Measure, spec: LayerSpec): string => UNITS[measure](spec);
@@ -418,6 +419,7 @@ const FILE_LICENCES: Readonly<Record<string, readonly string[]>> = {
   climate: ['ccByNcSa'],
   sectors: ['ccByNcSa'],
   industry: ['ccBySa'],
+  fossilmethane: ['ccBySa'],
   fair: ['ccBySa'],
   population: ['ccByIgo', 'ccBy'],
   waste: ['unTerms'],

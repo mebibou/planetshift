@@ -5,6 +5,7 @@ import { dataValueAt, sum } from '../../model/util';
 import { coChange, NO_CO_CHANGE, type CoYear } from '../energy/coemissions';
 import type { CoEmissions, Sectors } from '../energy/data';
 import { gridAt, hasSectors } from '../energy/model';
+import { NO_LEAKS, withLeaks, type LeaksOf } from '../fossilMethane/model';
 import { INDUSTRY_PARTS, type Industry, type IndustrySector, type PartDef } from './data';
 import { hasIndustry, INDUSTRY_LEVERS, type IndustryLever } from './data';
 export { hasIndustry, INDUSTRY_LEVERS, type IndustryLever };
@@ -85,9 +86,10 @@ export const industryPaths = (
   band: Band,
   years: readonly number[],
   shareAt: (year: number) => number,
+  leaks: LeaksOf = NO_LEAKS,
 ): IndustryPaths =>
   hasIndustry(industry) && hasSectors(sectors) && INDUSTRY_LEVERS.some((id) => adoption(id) > 0)
-    ? actingPaths({ industry, sectors, ssp, band }, co, adoption, years, shareAt)
+    ? actingPaths({ industry, sectors, ssp, band }, co, adoption, years, shareAt, leaks)
     : { co2: years.map(() => 0), co: years.map(() => ({ co2: {}, change: NO_CO_CHANGE })) };
 
 /** The paths once some industry lever acts on the data. */
@@ -97,6 +99,7 @@ const actingPaths = (
   adoption: (id: string) => number,
   years: readonly number[],
   shareAt: (year: number) => number,
+  leaks: LeaksOf,
 ): IndustryPaths => {
   const { ssp } = ctx;
   const bySource = years.map((y) =>
@@ -110,7 +113,7 @@ const actingPaths = (
     co2: bySource.map((s) => s.buildings + s.industry + s.electricity),
     co: years.map((y, i) => {
       const co2 = bySource[i] as Record<IndustrySource, number>;
-      return { co2, change: coChange(co, ssp, y, co2) };
+      return { co2, change: withLeaks(coChange(co, ssp, y, co2), leaks(y, co2)) };
     }),
   };
 };

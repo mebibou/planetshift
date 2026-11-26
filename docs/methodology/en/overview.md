@@ -6,6 +6,7 @@ The levers are treated as equals. None is presented as the way to limit warming.
 
 - energy and transport moving off fossil fuels;
 - cleaner buildings and industry;
+- fewer methane leaks from oil, gas and coal;
 - what people eat;
 - farm practices;
 - less food wasted;
@@ -20,7 +21,7 @@ What warmed the planet so far is still warming it, so each lever is shown under 
 
 On the left is the panel. At the top is the year by which every lever is fully in place. Then come the lever groups, under the cause of warming each acts on, the biggest cause first:
 
-- fossil fuels and industry: energy and transport, buildings and industry;
+- fossil fuels and industry: energy and transport, buildings and industry, methane leaks;
 - farming: diet, farm practices, food waste;
 - land use: deforestation, carbon in farmland.
 

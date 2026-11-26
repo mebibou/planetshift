@@ -164,7 +164,7 @@ Burning coal, oil and gas emits more than CO₂. A lever that cuts fuel cuts all
 What comes with the fuel:
 
 - **Producing the fuel** emits CO₂ of its own. Refineries, coke ovens and oil and gas fields burn fuel, and fields flare their gas.
-- **Producing the fuel also leaks methane.** Coal mines vent it, oil fields flare and vent their gas, and gas wells and pipes leak. Together this is about a third of human methane.
+- **Producing the fuel also leaks methane.** Coal mines vent it, oil fields flare and vent their gas, and gas wells and pipes leak. Together this is about a third of human methane. The [methane leak](#method-leaks) levers cut it at the source. They also cut the part of it that the fuel levers avoid.
 - **Burning the fuel** emits a little N₂O, and several air pollutants: sulphur dioxide (SO₂), black carbon (soot), organic carbon, ammonia (NH₃), nitrogen oxides (NOx), carbon monoxide (CO) and volatile organic compounds (VOCs).
 
 That methane is fossil. Over its lifetime of about a decade (11.8 years in IPCC AR6), each kg of methane oxidises to 2.74 kg of CO₂, and that CO₂ stays in the air. FaIR leaves it out. Planetshift counts it, in the year the methane is emitted, as AR6 does in fossil methane's metrics (WG1 Table 7.15: a GWP-100 of 29.8, against 27.0 for methane from living sources). This is the `on` value of the `fossilMethaneCo2` departure. It adds 0.27 Gt a year to the CO₂ all six energy levers cut. The warming they avoid rises by 0.002 °C in 2050 and 0.005 °C in 2100.

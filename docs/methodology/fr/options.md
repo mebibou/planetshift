@@ -108,6 +108,7 @@ L'adoption de chaque levier va de 0 à 100, en pour cent. Elle est omise de l'ad
 | Carbone dans les terres agricoles | couverts végétaux (`cc`), arbres dans les fermes (`af`), biochar (`bc`), poudre de roche, expérimentale (`ew`) |
 | Énergie et transport | voitures électriques (`ev`), camions électriques (`et`), moins d'avion (`fl`), carburant d'aviation propre (`saf`), transport maritime propre (`cs`), électricité renouvelable (`re`) |
 | Bâtiments et industrie | chauffage propre (`ch`), industrie propre (`ci`) |
+| Fuites de méthane | fuites de pétrole et de gaz (`ogm`), méthane des mines de charbon (`cmm`) |
 
 Une valeur que la page ne reconnaît pas revient à sa valeur par défaut.
 

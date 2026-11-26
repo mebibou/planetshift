@@ -191,6 +191,7 @@
       "water": "Prélèvements d'eau douce",
       "waterScarcity": "Rareté de l'eau (cultures)",
       "waste": "Déchets",
+      "fossilMethane": "Fuites de méthane",
       "change": "Variation",
       "quality": "Qualité des données"
     },
@@ -226,9 +227,11 @@
       "speciesDensity": "Espèces condamnées à l'extinction par Mha de terres agricoles du pays, avec les leviers",
       "foodWaste": "Nourriture perdue avant les magasins et gaspillée après, avec les leviers, par an",
       "municipalWaste": "Déchets municipaux solides, par an (aucun levier ne les change)",
-      "oceanPlastic": "Plastique qui atteint l'océan par les rivières, par an (aucun levier ne le change)"
+      "oceanPlastic": "Plastique qui atteint l'océan par les rivières, par an (aucun levier ne le change)",
+      "fossilMethane": "Méthane qui fuit du pétrole, du gaz et du charbon avec les leviers, par an"
     },
     "notes": {
+      "fossilMethane": "Le méthane qui fuit en produisant le pétrole, le gaz et le charbon dans chaque pays en 2022, d'après CEDS : puits de pétrole et de gaz, leur dégazage et leur torchage, gazoducs, et mines de charbon. C'est là où le combustible est produit, pas là où il est brûlé. Avec les leviers, c'est ce méthane moins la part qu'enlèvent les deux leviers sur les fuites : à 100 %, 75 % du méthane du pétrole et du gaz et 50 % de celui des mines de charbon. Les leviers qui brûlent moins de combustible réduisent aussi les fuites du monde, mais la carte ne répartit pas cette baisse par pays. L'infobulle donne chaque part.",
       "water": "L'eau douce prélevée dans les rivières, les lacs et les nappes pour les cultures et les animaux de chaque pays et pour fabriquer les intrants de la ferme. Ce sont les litres par tonne de chaque aliment multipliés par sa production. HESTIA donne les litres des cultures qu'il couvre. Poore & Nemecek (2018) donnent le reste. Les produits animaux comptent l'eau utilisée à la ferme, pas leurs aliments concentrés, comptés sur les cultures. La pisciculture n'est pas comptée. Les litres par tonne ne changent pas avec les leviers : l'eau suit la production. L'eau ne change pas le réchauffement. L'infobulle donne la surface équipée pour l'irrigation.",
       "waterScarcity": "La consommation d'eau pondérée par la rareté de l'eau là où elle est utilisée (AWARE 2.0), en litres-équivalent. Elle ne couvre que les cultures pour lesquelles HESTIA a une agrégation du pays lui-même : les pays sont incomplets et ne se comparent pas sur ce chiffre. Elle ne s'ajoute pas aux litres prélevés.",
       "production": "Là où les aliments sont produits, pas là où ils sont consommés.",
@@ -279,6 +282,9 @@
       "foodWaste": "Nourriture perdue et gaspillée, par an",
       "municipalWaste": "Déchets municipaux solides, par an",
       "oceanPlastic": "Plastique qui atteint l'océan, par an",
+      "fossilMethane": "Méthane qui fuit du pétrole, du gaz et du charbon, par an",
+      "oilGasMethane": "Dont pétrole et gaz, aujourd'hui",
+      "coalMineMethane": "Dont mines de charbon, aujourd'hui",
       "unchanged": "Aucun levier ne le change",
       "perPerson": "Par personne, par an",
       "largestTypes": "Principaux types",

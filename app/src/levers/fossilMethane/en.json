@@ -1,0 +1,14 @@
+{
+  "title": "Methane leaks",
+  "description": "Stop the methane that leaks from oil and gas wells, pipelines and coal mines: per kg it warms far more than CO₂, but for only about a decade.",
+  "family": "Methane leaks",
+  "page": "Methane leaks",
+  "oilGasMethane": {
+    "title": "Oil and gas leaks",
+    "description": "Find and fix leaks, and stop venting and routine flaring: 75% of the methane of oil and gas goes at 100% (IEA). Burning less oil and gas then leaves less methane to avoid."
+  },
+  "coalMineMethane": {
+    "title": "Coal-mine methane",
+    "description": "Drain the methane from coal seams before mining and burn what is left in the ventilation air: 50% of coal mines' methane goes at 100%."
+  }
+}
