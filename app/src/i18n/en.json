@@ -272,6 +272,7 @@
       "chain": "After the farm (processing to waste), a year",
       "clearingCo2": "CO₂ from clearing forest for farming, a year",
       "drainedCo2": "CO₂ from drained organic soils, a year",
+      "rewettedCh4": "Methane from rewetted soils, a year",
       "footprint": "Food footprint per person, a year",
       "landShare": "Share of the land farmed",
       "mammals": "Farmed mammals per km² of land",

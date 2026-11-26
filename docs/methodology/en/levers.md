@@ -4,7 +4,7 @@ Each lever is the share of a change that is adopted, from 0 to 100%, reached in 
 
 ## What a lever is
 
-Every way Planetshift offers to limit warming is a lever, and none is preferred over another. The levers cover energy and transport, buildings and industry, what people eat, farm practices, less food wasted, an end to clearing forest, and carbon stored in farmland.
+Every way Planetshift offers to limit warming is a lever, and none is preferred over another. The levers cover energy and transport, buildings and industry, what people eat, farm practices, less food wasted, an end to clearing forest, the rewetting of drained peat, and carbon stored in farmland.
 
 Each lever is a slider from 0 to 100%, which sets the share adopted. The diet's main slider is the share of animal foods moved to plant foods. Every lever ramps up from today and is fully in place in the year set at the top of the panel, *All levers fully in place by*.
 
@@ -28,7 +28,7 @@ The diet changes farm emissions, which count under farming. It also changes the 
 The avoided warming of such a group is split by cause according to the gas and its source:
 
 - farm methane, nitrous oxide and CO₂ count in farming;
-- the CO₂ of forest clearing, regrowth and carbon stored in farmland count in land use;
+- the CO₂ of forest clearing and drained peat, the methane of rewetted peat, regrowth and carbon stored in farmland count in land use;
 - fossil CO₂ and aviation's non-CO₂ forcing count in fossil fuels and industry. Forcing is the change in the energy the Earth keeps, which warms it (see [From emissions to temperature](#method-climate)).
 
 After today, the Causes of warming chart takes each cause's part off that cause's band. The summary lists the parts under the same causes, with the same names and colours.
@@ -52,7 +52,7 @@ For a country, item and gas, the share of the emissions removed is a sum over so
 
 Less supply needs less production, which uses less land and emits less. The change goes through the same supply chain as the shift, feed included. What people eat does not change, so the protein and calories shown are those of the diet.
 
-**Deforestation** (see [Deforestation](#method-deforestation)). Clearing forest for farming releases about 2 Gt of CO₂ a year (`deforestation.json`, by country and item). The model keeps this yearly amount constant and counts only its change. The clearing tied to an item moves with the item's production in the country where the forest is cleared. A shift away from beef therefore lowers pasture clearing in Brazil, through trade, even with the lever at 0. This change is capped between none and double today's clearing. The lever then prevents its share of the clearing that is left. Both are changes in CO₂, and they go into the climate response like any other.
+**Deforestation** (see [Deforestation](#method-deforestation)). Clearing forest for farming releases about 2 Gt of CO₂ a year (`deforestation.json`, by country and item). The model keeps this yearly amount constant and counts only its change. The clearing tied to an item moves with the item's production in the country where the forest is cleared. A shift away from beef therefore lowers pasture clearing in Brazil, through trade, even with the lever at 0. This change is capped between none and double today's clearing. The lever then prevents its share of the clearing that is left. Both are changes in CO₂, and they go into the climate response like any other. The CO₂ of drained organic soils, about 0.8 Gt a year, moves with production too, and the land production frees is taken to be rewetted, which emits methane. The peat rewetting lever rewets its share of the drained land that is left: its CO₂ stops and its methane starts.
 
 **Carbon in farmland** (see [Carbon stored in farmland](#method-removals)). Cover crops, trees on farms, biochar and rock dust, which is experimental, store CO₂. The amount stored is adoption × the largest share of the land the practice can reach (`maxShare`) × the hectares of cropland, pasture or both once the shift is complete × the country's rate. Each hectare stores carbon for `years` years from the year the practice starts on it. Cover crops and trees saturate after 20 years. Biochar and rock dust keep storing carbon until 2100.
 
@@ -119,7 +119,7 @@ A test checks, on the fixtures and on the real data, that this gives the Shapley
 
 The warming avoided comes from FaIR run in the app, which does not respond in proportion to the emissions (see [Climate](#method-climate)). Its Shapley values would need FaIR run on every set of acting groups, up to 256 runs. That takes about a second for each move of a slider. So the parts are the Shapley values on the sum of responses, each scaled by the same factor so that they add up to FaIR's total. The causes and the gases are shared out the same way, year by year.
 
-On the real data, this stays within 0.015 °C of the Shapley values of FaIR run on every set of groups, 1.1% of the total, with every lever in full on SSP2-4.5 in 2100. The largest gap is the diet's: 0.358 °C, against 0.373 °C. With one group acting, the two are the same.
+On the real data, this stays within 0.018 °C of the Shapley values of FaIR run on every set of groups, 1.2% of the total, with every lever in full on SSP2-4.5 in 2100. The largest gap is energy and transport's: 0.572 °C, against 0.554 °C. With one group acting, the two are the same.
 
 ### A method considered and not used
 

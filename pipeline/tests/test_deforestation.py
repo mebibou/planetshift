@@ -131,7 +131,14 @@ def test_built_file_matches_the_contract_and_published_totals():
     if not path.exists():
         pytest.skip("deforestation.json not built")
     data = json.loads(path.read_text())
-    assert set(data) == {"byCountry", "areaByCountry", "drainedByCountry", "years", "source"}
+    assert set(data) == {
+        "byCountry",
+        "areaByCountry",
+        "drainedByCountry",
+        "rewettedCh4ByCountry",
+        "years",
+        "source",
+    }
     assert len(data["years"]) == 2 and data["years"][0] <= data["years"][1]
     countries = {c["iso3"] for c in json.loads((OUT / "countries.json").read_text())}
     assert set(data["byCountry"]) <= countries
@@ -152,6 +159,10 @@ def test_built_file_matches_the_contract_and_published_totals():
     assert 0.7e9 < sum(drained.values()) < 0.9e9
     assert max(drained, key=drained.__getitem__) == "IDN"
     assert set(drained) <= countries
+    ch4 = sum(v for items in data["rewettedCh4ByCountry"].values() for v in items.values())
+    # IPCC 2013 Wetlands Supplement: 55 to 290 kg CH4 a hectare on about 24 Mha
+    assert 1.3e6 < ch4 < 7e6
+    assert set(data["rewettedCh4ByCountry"]) <= set(drained)
     assert path.stat().st_size < 1_000_000
 
 

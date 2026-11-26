@@ -66,3 +66,32 @@ def test_ruminant_weights_are_the_farm_gate_methane_of_their_production():
     production = frame([("AAA", 2731, 2.0), ("AAA", 2511, 9.0)], ["iso3", "fbs_code", "production"])
     weights = O.ruminant_weights(merged, production, (2731,))
     assert weights.values.tolist() == [["AAA", 2731, 100.0]]
+
+
+def test_tropical_share_reads_faostat_co2_per_hectare_between_ipcc_factors():
+    assert O.tropical_share("cropland", 7.9 / O.C_PER_CO2) == pytest.approx(0.0)
+    assert O.tropical_share("cropland", 14.0 / O.C_PER_CO2) == pytest.approx(1.0)
+    assert O.tropical_share("grassland", 7.65 / O.C_PER_CO2) == pytest.approx(0.5)
+    assert O.tropical_share("cropland", 1.0) == 0.0
+
+
+def test_country_area_reads_the_hectares_of_each_land():
+    gv = frame(
+        [(1, 6727, 5026, 300.0), (1, 6728, 5026, 100.0), (1, 6727, 7273, 2.0)],
+        ["area_code", "item_code", "element_code", "value"],
+    )
+    rows = O.country_area(gv, {1: "AAA"}).set_index("land")["t"].to_dict()
+    assert rows == {"cropland": 300.0, "grassland": 100.0}
+
+
+def test_rewetted_ch4_is_the_area_times_ipcc_methane_of_its_climate_zone():
+    co2 = frame(
+        [("AAA", "cropland", 7.9 / O.C_PER_CO2 * 100), ("BBB", "cropland", 14.0 / O.C_PER_CO2)],
+        ["iso3", "land", "t"],
+    )
+    area = frame(
+        [("AAA", "cropland", 100.0), ("BBB", "cropland", 1.0), ("CCC", "cropland", 0.0)],
+        ["iso3", "land", "t"],
+    )
+    ch4 = O.rewetted_ch4(co2, area).set_index("iso3")["t"].to_dict()
+    assert ch4 == pytest.approx({"AAA": 100 * 216 * 16 / 12 / 1e3, "BBB": 41 * 16 / 12 / 1e3})

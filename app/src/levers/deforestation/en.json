@@ -1,11 +1,15 @@
 {
   "title": "Deforestation",
-  "description": "Clearing forest for crops and pasture releases CO₂. A diet shift already changes it with production.",
+  "description": "Clearing forest for crops and pasture releases CO₂, and so does peat drained for farming. A diet shift already changes both, through production.",
   "family": "Deforestation",
   "page": "Deforestation",
   "deforestation": {
     "title": "Deforestation stopped",
     "description": "Share of the forest clearing for farming that stops."
+  },
+  "peatRewetting": {
+    "title": "Drained peat rewetted",
+    "description": "Share of the peat and other organic soils drained for farming that is rewetted. About 24 million hectares emit 0.8 Gt of CO₂ a year. Rewetted, they emit about 5 Mt of methane instead. On rewetted land, farming stops or switches to crops that grow in water."
   },
   "summary": {
     "avoided": "Deforestation CO₂ avoided",

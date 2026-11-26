@@ -1,6 +1,6 @@
 # Déforestation
 
-Défricher la forêt pour faire place à des pâturages et à des cultures libère le carbone contenu dans les arbres, leurs racines et le sol en dessous. Pour les aliments du modèle, cela représente environ 2 Gt (milliards de tonnes) de CO₂ par an, dont la moitié est liée à la viande bovine. On voit ci-dessous d'où vient ce chiffre, sur quels aliments et quels pays il porte, et comment le changement de régime et le levier de la déforestation le réduisent.
+Défricher la forêt pour faire place à des pâturages et à des cultures libère le carbone contenu dans les arbres, leurs racines et le sol en dessous. Pour les aliments du modèle, cela représente environ 2 Gt (milliards de tonnes) de CO₂ par an, dont la moitié est liée à la viande bovine. On voit ci-dessous d'où vient ce chiffre, sur quels aliments et quels pays il porte, et comment le changement de régime et le levier de la déforestation le réduisent. La même page traite de la tourbe drainée pour l'agriculture, et du levier qui la remouille.
 
 ## Ce qu'émet le défrichement
 
@@ -54,14 +54,26 @@ La carte montre plutôt la surface de forêt défrichée : l'attribution non amo
 
 ### Sols organiques drainés
 
-Drainer les tourbières et autres sols organiques pour l'agriculture expose leur carbone à l'air. Ses émissions viennent de terres déjà défrichées et continuent que l'on coupe ou non davantage de forêt : le levier déforestation ne les arrête donc pas. Elles relèvent des terres que l'alimentation occupe, et suivent la production de chaque aliment.
+Drainer les tourbières et autres sols organiques pour l'agriculture expose leur carbone à l'air. Ses émissions viennent de terres déjà défrichées et continuent que l'on coupe ou non davantage de forêt : le levier déforestation ne les arrête donc pas. Elles relèvent des terres que l'alimentation occupe, et suivent la production de chaque aliment. Remouiller les terres les arrête, ce que fait le levier de remouillage des tourbières (voir *Remouiller la tourbe drainée* plus bas).
 
-Les *Emissions from Drained organic soils* de FAOSTAT donnent le CO₂ de chaque pays sur les terres cultivées et sur les prairies. Pour 2024, les pays du modèle émettent 0,81 Gt de CO₂ par an : 0,65 Gt sur les terres cultivées et 0,16 Gt sur les prairies. L'Indonésie vient en tête avec 0,24 Gt, puis la Russie, les États-Unis, la Biélorussie et le Canada.
+Les *Emissions from Drained organic soils* de FAOSTAT (CC BY 4.0) donnent la surface drainée et le CO₂ de chaque pays sur les terres cultivées et sur les prairies. Pour 2024, environ 24,6 millions d'hectares sont drainés pour l'agriculture. Les pays du modèle émettent 0,81 Gt de CO₂ par an : 0,65 Gt sur les terres cultivées et 0,16 Gt sur les prairies. L'Indonésie vient en tête avec 0,24 Gt, puis la Russie, les États-Unis, la Biélorussie et le Canada.
 
 - Le CO₂ des terres cultivées va aux cultures selon le drainage des tourbières de DeDuCE par produit, là où DeDuCE a ces données pour le pays : celui de l'Indonésie va donc surtout au palmier à huile (0,18 Gt). Ailleurs, il va aux cultures selon leur surface récoltée.
 - Le CO₂ des prairies va aux produits des ruminants (bœuf, viande ovine et caprine, autres viandes, lait) en proportion de leur méthane.
 
-Le CO₂ suit la production de chaque aliment, comme le défrichement, et compte dans la cause Usage des terres. Quand le changement de régime libère des terres drainées, le modèle les suppose remises en eau, si bien que leur émission s'arrête. Des terres restées drainées continueraient d'émettre : c'est donc le plus que le changement pourrait éviter. Le changement complet en évite 0,27 Gt par an. Le N₂O des sols drainés, 0,35 Mt par an, est laissé de côté. Le drainage des tourbières de DeDuCE (environ 0,23 Gt) ne sert pas d'émission, seulement à répartir le CO₂ des terres cultivées entre les cultures.
+Le CO₂ suit la production de chaque aliment, comme le défrichement, et compte dans la cause Usage des terres. Quand le changement de régime libère des terres drainées, le modèle les suppose remises en eau, si bien que leur CO₂ s'arrête. Des terres restées drainées continueraient d'émettre : c'est donc le plus que le changement pourrait éviter. Le changement complet en évite 0,27 Gt par an. Le N₂O des sols drainés, 0,35 Mt par an, est laissé de côté. Le drainage des tourbières de DeDuCE (environ 0,23 Gt) ne sert pas d'émission, seulement à répartir le CO₂ des terres cultivées entre les cultures.
+
+Une tourbe remise en eau redevient une zone humide, et les zones humides émettent du méthane. Le supplément 2013 du GIEC sur les zones humides (tableau 3.3) donne le méthane des sols organiques remis en eau, en kg de CH₄-C par hectare et par an : 216 (0–856) en zone tempérée là où le sol est riche en nutriments, comme l'est d'ordinaire la tourbe cultivée, et 41 (7–134) sous les tropiques. Cela fait 288 et 55 kg de CH₄. La zone boréale a ses propres facteurs, mais les chiffres de FAOSTAT ne la distinguent pas de la zone tempérée. La plupart de la tourbe agricole drainée de Russie, du Canada et des pays nordiques se trouve dans leur sud tempéré froid, si bien que chaque hectare drainé hors des tropiques prend le facteur tempéré, ce qui peut surestimer le méthane dans le Grand Nord. La part tropicale des terres de chaque pays se lit dans le CO₂ par hectare de FAOSTAT lui-même, qui correspond au facteur tempéré du GIEC, son facteur tropical ou un mélange des deux. Environ un tiers de la surface est tropicale. Remis en eau, les sols drainés des pays du modèle émettraient 5,0 Mt de méthane par an. La Russie, la Biélorussie, le Canada, le Royaume-Uni, l'Indonésie, l'Allemagne et les États-Unis en donnent chacun environ 0,3 à 0,55 Mt. Le méthane est réparti entre les aliments comme le CO₂.
+
+Les terres que le changement libère émettent donc du méthane à la place de leur CO₂. Le changement complet libère des terres qui émettraient 2,9 Mt de méthane par an une fois remises en eau, contre les 0,27 Gt de CO₂ qu'il arrête. Le méthane compte dans la cause Usage des terres, sous la famille de l'étape qui a libéré les terres. Il retire 0,0025 °C au réchauffement évité par le changement complet en 2050 (0,136 °C au lieu de 0,138 °C) et 0,005 °C en 2100 (0,345 °C au lieu de 0,350 °C), sur SSP2-4.5. Là où le changement fait monter la production sur des terres drainées, le modèle compte plus de CO₂ et pas de méthane.
+
+### Remouiller la tourbe drainée
+
+Le levier de remouillage des tourbières fixe la part des sols organiques drainés sous l'agriculture qui est remise en eau : 0 % les laisse drainés, 100 % les remouille tous. La nappe d'eau remonte jusqu'à la surface. L'agriculture s'y arrête, ou passe à des cultures qui poussent dans l'eau, comme les roseaux, la sphaigne ou le sagoutier, une pratique appelée paludiculture. Le levier agit sur les terres que le changement de régime et la réduction du gaspillage laissent drainées, comme le levier déforestation agit sur le défrichement qu'ils laissent. Comme tous les leviers, il monte en puissance jusqu'à l'année où le changement est complet.
+
+La part remise en eau arrête aussitôt son CO₂ et émet du méthane à la place, aux facteurs ci-dessus. Le modèle ignore les années qu'une tourbe remise en eau met à se stabiliser, et le CO₂ qu'elle peut absorber de nouveau quand la tourbe recommence à se former. À fond, le levier arrête 0,81 Gt de CO₂ par an et ajoute 5,0 Mt de méthane, soit 0,68 Gt CO₂e par an en net sur 100 ans. Le méthane réchauffe fortement au début, si bien que le réchauffement évité croît lentement : sur SSP2-4.5, le levier à fond évite 0,0013 °C en 2050 et 0,011 °C en 2100. Sans son méthane, il éviterait 0,0055 et 0,020 °C. Le GIEC estime le potentiel de la restauration des tourbières à 0,4 (0,2–0,6) Gt CO₂e par an pour un coût inférieur à 100 $ la tonne, et son potentiel technique à 0,79 Gt. Les deux chiffres portent sur toutes les tourbières, pas seulement les tourbières cultivées (AR6 GT3, tableau 7.3).
+
+La couche CO₂ de l'usage des terres de la carte donne le CO₂ des sols drainés de chaque pays, aujourd'hui et avec les leviers, et le méthane des sols que les leviers remouillent.
 
 ### Des produits de base aux aliments
 
@@ -91,6 +103,7 @@ Des totaux plus larges comptent davantage :
 
 - Les émissions de chaque année sont celles, amorties, de DeDuCE, moyennées sur 2019–2023 : les émissions du défrichement réparties sur les cinq années de récolte qui le suivent.
 - Le drainage des tourbières n'est pas de la déforestation. Les sols organiques drainés sont comptés à part, à partir de FAOSTAT, et supposés remis en eau quand le changement de régime les libère.
+- Les sols organiques remis en eau émettent le méthane par défaut du GIEC : le facteur tempéré des sols riches en nutriments hors des tropiques, terres boréales comprises, et le facteur tropical sous les tropiques. Ils n'émettent ni CO₂ ni N₂O, et n'en absorbent pas.
 - La déforestation due aux pâturages va entièrement à la viande bovine. Le cuir, les produits laitiers et les autres animaux qui pâturent n'en reçoivent aucune part.
 - Les produits de base non alimentaires (cuir, caoutchouc, fibres, tabac, la part de fibre du coton) et les plantations forestières sont laissés de côté.
 - Les cases nettes négatives (une culture arborée qui contient plus de carbone que la forêt qu'elle a remplacée) sont abandonnées, et non comptées comme des absorptions.
@@ -104,3 +117,6 @@ Des totaux plus larges comptent davantage :
 - FAO (2025). Greenhouse gas emissions from agrifood systems: global, regional and country trends, 2001–2023. FAOSTAT Analytical Brief 115, doi:10.4060/cd7300en.
 - Friedlingstein, P. et al. Global Carbon Budget 2025. Earth System Science Data 18, 3211 (2026) (émissions d'usage des terres 2015–2024).
 - FAO (2025). Évaluation des ressources forestières mondiales 2025 (déforestation 2015–2025).
+- FAOSTAT. Emissions from Drained organic soils (surface et CO₂ des sols organiques drainés sous les terres cultivées et les prairies, 2024). CC BY 4.0.
+- GIEC (2014). 2013 Supplement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories: Wetlands, chapitre 2 (tableau 2.1, CO₂ des sols organiques drainés) et chapitre 3 (tableau 3.3, CH₄ des sols organiques remis en eau).
+- Nabuurs, G.-J. et al. (2022). Agriculture, Forestry and Other Land Uses (AFOLU). Dans Climate Change 2022: Mitigation of Climate Change, GIEC AR6 GT3, chapitre 7 (tableau 7.3, restauration des tourbières), doi:10.1017/9781009157926.009.

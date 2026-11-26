@@ -893,6 +893,11 @@ write('deforestation.json', {
     FRA: { 2731: 2.0e6, 2511: 1.0e6 },
     BRA: { 2731: 1.0e7 },
   },
+  // CH₄ the same soils would emit once rewetted, tonnes a year
+  rewettedCh4ByCountry: {
+    FRA: { 2731: 2.0e4, 2511: 1.0e4 },
+    BRA: { 2731: 2.0e4 },
+  },
   years: [2018, 2022],
   source: 'https://doi.org/10.5281/zenodo.10633818',
 });

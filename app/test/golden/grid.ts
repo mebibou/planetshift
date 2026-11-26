@@ -148,6 +148,8 @@ export const GRID: Setting[] = [
   setting('allWasteMethane', { levers: all(WASTE_METHANE) }),
   setting('allWasteMethane+food', { shift: 1, levers: all([...WASTE, ...WASTE_METHANE]) }),
   setting('allWasteMethane+ssp370', { levers: all(WASTE_METHANE) }, { ssp: 'ssp370' }),
+  ...[0.5, 1].map((a) => setting(`peatRewetting@${a * 100}`, { levers: { peatRewetting: a } })),
+  setting('peatRewetting+shift100', { shift: 1, levers: { peatRewetting: 1 } }),
 ];
 
 /** Run with every departure from FaIR at its plain-FaIR value (planetshift.config.schema.json). */
@@ -195,4 +197,5 @@ export const QUERIES = [
   'deadfall=on',
   'deadfall=x',
   'ogm=50&cmm=x',
+  'pr=50&df=x',
 ];

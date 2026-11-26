@@ -3,20 +3,28 @@ import type { LeverSpec } from '../types';
 import { EMPTY_DEFORESTATION } from './data';
 
 const ID = 'deforestation';
+const REWETTING = 'peatRewetting';
+
+const hasAny = (byCountry: Record<string, unknown> | undefined): boolean =>
+  Object.keys(byCountry ?? {}).length > 0;
 
 /**
  * Forest cleared for farming: it follows the production of the items it serves at every step,
- * the lever at 0 included, and the lever stops a share of what is left.
+ * the lever at 0 included, and the lever stops a share of what is left. The peat rewetting lever
+ * rewets a share of the drained organic soils under farming.
  */
 export const deforestationSpec: LeverSpec = {
   id: ID,
   family: 'deforestation',
   farm: true,
   cause: 'landUse',
-  levers: [lever(ID, 'deforestation', 'df')],
+  levers: [lever(ID, 'deforestation', 'df'), lever(ID, REWETTING, 'pr')],
   options: [],
   files: [{ name: 'deforestation', empty: EMPTY_DEFORESTATION }],
-  available: (data) => Object.keys(data.deforestation.byCountry).length > 0,
+  available: (data, leverId) =>
+    hasAny(
+      leverId === REWETTING ? data.deforestation.drainedByCountry : data.deforestation.byCountry,
+    ),
   ui: {
     section: 'levers',
     stat: ({ summary: s }, _, __, f) => {

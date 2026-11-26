@@ -104,6 +104,12 @@ const drainedRow = (c: CountryResult, t: T, locale: string): [string, string] =>
   }),
 ];
 
+/** The methane of the drained soils the levers rewet, when they rewet any. */
+const rewettedRows = (c: CountryResult, t: T, locale: string): [string, string][] =>
+  (c.rewettedCh4 ?? 0) > 0
+    ? [[t('map.tooltip.rewettedCh4'), formatMass(locale, c.rewettedCh4 ?? 0)]]
+    : [];
+
 /** The CO₂ of clearing forest for farming and of drained soils, in a gas that has CO₂ only. */
 const clearingRows = (c: CountryResult, gas: GasChoice, t: T, locale: string) =>
   c.deforestationCo2 !== undefined && (gas === 'co2' || gas === 'co2e')
@@ -335,6 +341,7 @@ const MEASURE_TOOLTIPS: Record<
       rows: [
         clearingCo2Row(c, t, locale, 'map.tooltip.clearing'),
         ...((c.drainedCo2 ?? 0) > 0 ? [drainedRow(c, t, locale)] : []),
+        ...rewettedRows(c, t, locale),
         ...(c.regrowthCo2 === undefined
           ? []
           : [[t('map.tooltip.regrowth'), formatMass(locale, c.regrowthCo2)] as [string, string]]),

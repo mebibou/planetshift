@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { expectOwnGases, jointShare, lever, rampShare, run } from '../../../test/levers';
-import { clearingParts, MAX_RISE } from './model';
+import { expectOwnGases, jointShare, lever, rampShare, run, w2100 } from '../../../test/levers';
+import { clearingParts, MAX_RISE, rewettedParts } from './model';
 
 describe('deforestation', () => {
   it('alone cuts CO₂ only', () => expectOwnGases('deforestation', ['co2']));
@@ -48,6 +48,36 @@ describe('deforestation', () => {
     const beef = france(run({ groupShifts: { ruminantMeat: 1 } }));
     expect(beef.drainedChange).toBeLessThan(0);
     expect(beef.drainedChange).toBeGreaterThanOrEqual(-2.0e9);
+  });
+  it('rewets the drained land production frees, and the lever a share of what is left', () => {
+    const ch4 = Float64Array.from([10, 20]);
+    const emitting = Float64Array.from([10, 10]);
+    const diet = Float64Array.from([-5, 5]);
+    const all = Float64Array.from([-6, 5]);
+    const parts = rewettedParts(ch4, [diet, all], emitting, 0.5);
+    expect(parts.before).toBe(0);
+    expect(parts.steps[0]).toBeCloseTo(5);
+    expect(parts.steps[1]).toBeCloseTo(1);
+    expect(parts.lever).toBeCloseTo(15);
+    expect(parts.leverJoint).toBeCloseTo(2);
+    expect(rewettedParts(ch4, [all], emitting, 0).lever).toBe(0);
+  });
+  it('rewetting the peat stops its CO₂ and adds the methane rewetted peat emits', () => {
+    const r = lever('peatRewetting');
+    const france = r.countries.find((c) => c.iso3 === 'FRA') ?? expect.fail('no France');
+    expect(france.drainedChange).toBeCloseTo(-3.0e9, -3);
+    expect(france.rewettedCh4).toBeCloseTo(3.0e7, -1);
+    expect(france.deforestationChange).toBe(0);
+    expect(r.summary.avoided.co2).toBeGreaterThan(0);
+    expect(r.summary.avoided.ch4).toBeLessThan(0);
+    expect(w2100(r)).toBeGreaterThan(0);
+    expect(run().countries.find((c) => c.iso3 === 'FRA')?.rewettedCh4).toBe(0);
+  });
+  it('counts the methane of the drained land a shift away from beef frees', () => {
+    const beef = run({ groupShifts: { ruminantMeat: 1 } });
+    const france = beef.countries.find((c) => c.iso3 === 'FRA') ?? expect.fail('no France');
+    expect(france.rewettedCh4).toBeGreaterThan(0);
+    expect(france.rewettedCh4).toBeLessThanOrEqual(2.0e7);
   });
   it('moves the forest area cleared as it moves the CO₂', () => {
     const brazil = (s: Parameters<typeof run>[0]) =>

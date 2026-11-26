@@ -1,11 +1,15 @@
 {
   "title": "Déforestation",
-  "description": "Défricher la forêt pour les cultures et les prairies libère du CO₂. Un changement de régime le fait déjà varier avec la production.",
+  "description": "Défricher la forêt pour les cultures et les prairies libère du CO₂, tout comme drainer la tourbe pour l'agriculture. Un changement de régime les fait déjà varier, par la production.",
   "family": "Déforestation",
   "page": "Déforestation",
   "deforestation": {
     "title": "Déforestation arrêtée",
     "description": "Part du défrichement de forêts pour l'agriculture qui s'arrête."
+  },
+  "peatRewetting": {
+    "title": "Tourbières drainées remouillées",
+    "description": "Part des tourbes et autres sols organiques drainés pour l'agriculture qui est remouillée. Environ 24 millions d'hectares émettent 0,8 Gt de CO₂ par an. Remouillés, ils émettent à la place environ 5 Mt de méthane. Sur les terres remouillées, l'agriculture s'arrête ou passe à des cultures qui poussent dans l'eau."
   },
   "summary": {
     "avoided": "CO₂ de déforestation évité",

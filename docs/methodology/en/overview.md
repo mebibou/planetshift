@@ -45,7 +45,7 @@ Each lever is a share of adoption, from 0 to 100%. It ramps up from this year to
 
 - The energy and transport levers cut parts of the scenario's fossil CO₂: electric cars and trucks, less flying, clean aviation fuel, clean shipping and renewable electricity, which also cleans the extra demand of AI data centres (see [Energy and transport](#method-sectors)).
 - The buildings and industry levers cut the direct fossil CO₂ of heating, steel, cement and chemicals (see [Buildings and industry](#method-industry)).
-- Farm practices, less food waste, an end to deforestation and carbon stored in farmland act on farming and land (see [Levers](#method-levers)).
+- Farm practices, less food waste, an end to deforestation, the rewetting of drained peat and carbon stored in farmland act on farming and land (see [Levers](#method-levers)).
 
 The diet gets its own section below because it has the most steps, not because it is the biggest lever.
 

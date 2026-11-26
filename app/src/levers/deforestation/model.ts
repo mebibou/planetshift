@@ -17,6 +17,13 @@ export const drainedOf = (pc: PreparedCountry, prepared: Prepared): ItemVector =
     return Float64Array.from(prepared.items, (item) => (byCode[String(item.code)] ?? 0) * 1000);
   });
 
+/** The CH₄ a country's drained soils would emit once rewetted, by the item they are shared to, kg a year. */
+export const rewettedCh4Of = (pc: PreparedCountry, prepared: Prepared): ItemVector =>
+  cache(pc, 'rewettedCh4', () => {
+    const byCode = prepared.data.deforestation.rewettedCh4ByCountry?.[pc.country.iso3] ?? {};
+    return Float64Array.from(prepared.items, (item) => (byCode[String(item.code)] ?? 0) * 1000);
+  });
+
 /** A country's forest area cleared by the item it serves, hectares a year. */
 export const clearedAreaOf = (pc: PreparedCountry, prepared: Prepared): ItemVector =>
   cache(pc, 'clearedArea', () => {
@@ -44,19 +51,30 @@ const relativeAt = (change: ItemVector, emitting: ItemVector, i: number): number
   return base > 0 ? clamp((change[i] as number) / base, -1, MAX_RISE) : 0;
 };
 
+export interface Parts {
+  before: number;
+  steps: number[];
+  lever: number;
+  leverJoint: number;
+}
+
+const same = (rel: number): number => rel;
+
 /**
  * Deforestation CO₂ before, kg a year, and its change shared out: clearing tied to an item
- * moves with the item's production, step by step (the diet shift, then less waste…); the lever
- * then stops `adoption` of what is left, of the base year's clearing (`lever`) and of the
- * steps' change in it (`leverJoint`). The changes add up to the total. Only the items with
- * clearing are visited, as this runs for every country in every pass of the breakdown.
+ * moves with the item's production (`shape` of its relative change), step by step (the diet
+ * shift, then less waste…); the lever then stops `adoption` of what is left, of the base year's
+ * clearing (`lever`) and of the steps' change in it (`leverJoint`). The changes add up to the
+ * total. Only the items with clearing are visited, as this runs for every country in every pass
+ * of the breakdown.
  */
 export const clearingParts = (
   clearing: ItemVector,
   steps: readonly ItemVector[],
   emitting: ItemVector,
   adoption: number,
-): { before: number; steps: number[]; lever: number; leverJoint: number } => {
+  shape: (rel: number) => number = same,
+): Parts => {
   const items = clearedItems(clearing);
   const totals = steps.map(() => 0);
   let before = 0;
@@ -66,15 +84,35 @@ export const clearingParts = (
     const d = clearing[i] as number;
     before += d;
     let previous = 0;
+    let last = 0;
     for (let k = 0; k < steps.length; k++) {
-      const rel = relativeAt(steps[k] as ItemVector, emitting, i);
+      last = relativeAt(steps[k] as ItemVector, emitting, i);
+      const rel = shape(last);
       totals[k] = (totals[k] as number) + d * (rel - previous);
       previous = rel;
     }
     if (adoption > 0) {
       lever -= adoption * d;
-      leverJoint -= adoption * d * previous;
+      leverJoint -= adoption * d * last;
     }
   }
   return { before, steps: totals, lever, leverJoint };
+};
+
+const fallOnly = (rel: number): number => Math.min(0, rel);
+
+/**
+ * The CH₄ of rewetted drained soils, kg a year (`ch4`, what each item's drained soils would emit
+ * once rewetted): the land production frees is rewetted step by step, and the lever rewets
+ * `adoption` of the land left drained. Nothing is rewetted before.
+ */
+export const rewettedParts = (
+  ch4: ItemVector,
+  steps: readonly ItemVector[],
+  emitting: ItemVector,
+  adoption: number,
+): Parts => {
+  const p = clearingParts(ch4, steps, emitting, adoption, fallOnly);
+  const neg = (v: number) => 0 - v;
+  return { before: 0, steps: p.steps.map(neg), lever: neg(p.lever), leverJoint: neg(p.leverJoint) };
 };

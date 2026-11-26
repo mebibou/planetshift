@@ -138,6 +138,16 @@ describe('tooltip', () => {
     expect(none.rows[0]?.[0]).toBe('No data for this country');
   });
 
+  it('adds the methane of the drained soils the levers rewet on the land-use CO₂ layer', () => {
+    const landUse = new Map([['FRA', 1e9]]);
+    const c = countryResult({ drainedCo2: 3e9, drainedChange: -1e9, rewettedCh4: 2e7 });
+    const m = tooltipModel('France', c, { ...spec, layer: 'landCo2' }, t, 'en-GB', null, landUse);
+    expect(m.rows.map(([k, v]) => [k, v.replace(/\u00a0/g, ' ')]).slice(-2)).toEqual([
+      ['CO₂ from drained organic soils, a year', '3 Mt → 2 Mt'],
+      ['Methane from rewetted soils, a year', '20 kt'],
+    ]);
+  });
+
   it('adds food’s emissions after the farm and the clearing CO₂ on the Emissions layer', () => {
     const c = countryResult({
       chain: { co2: 2e8, ch4: 1e6, n2o: 0, hfc: 0 },
