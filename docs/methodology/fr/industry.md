@@ -127,17 +127,17 @@ Le tableau donne le réchauffement évité en °C : la médiane, puis la fourche
 
 | Leviers | 2050 | 2100 |
 | --- | --- | --- |
-| Chauffage propre | 0,015 (0,001–0,040) ; CO₂ seul 0,009 | 0,069 (0,042–0,119) ; CO₂ seul 0,052 |
-| Industrie propre | 0,017 (−0,009 à 0,071) ; CO₂ seul 0,026 | 0,100 (0,037–0,211) ; CO₂ seul 0,099 |
-| Électricité renouvelable seule | 0,105 (0,057–0,192) ; CO₂ seul 0,096 | 0,279 (0,184–0,416) ; CO₂ seul 0,234 |
-| Chauffage propre avec électricité renouvelable | 0,129 (0,068–0,236) ; CO₂ seul 0,113 | 0,369 (0,244–0,549) ; CO₂ seul 0,303 |
-| Industrie propre avec électricité renouvelable | 0,135 (0,066–0,266) ; CO₂ seul 0,134 | 0,405 (0,249–0,636) ; CO₂ seul 0,355 |
+| Chauffage propre | 0,015 (0,001–0,042) ; CO₂ seul 0,009 | 0,070 (0,041–0,127) ; CO₂ seul 0,053 |
+| Industrie propre | 0,016 (−0,009 à 0,072) ; CO₂ seul 0,027 | 0,101 (0,036–0,226) ; CO₂ seul 0,101 |
+| Électricité renouvelable seule | 0,099 (0,052–0,192) ; CO₂ seul 0,097 | 0,282 (0,180–0,448) ; CO₂ seul 0,240 |
+| Chauffage propre avec électricité renouvelable | 0,122 (0,062–0,237) ; CO₂ seul 0,114 | 0,372 (0,238–0,590) ; CO₂ seul 0,310 |
+| Industrie propre avec électricité renouvelable | 0,127 (0,060–0,267) ; CO₂ seul 0,135 | 0,409 (0,243–0,683) ; CO₂ seul 0,364 |
 
 Le chauffage propre gagne aux co-émissions dès le départ. Le gaz qu'il ne brûle plus aurait laissé fuir du méthane, et brûler du gaz émet peu de SO₂.
 
-L'industrie propre perd plus d'un tiers de son effet de 2050 aux co-émissions. Le SO₂ de leurs usines refroidit le climat, donc le supprimer réchauffe. Les filières hydrogène consomment aussi beaucoup d'électricité du réseau, dont elles ajoutent le CO₂ et le méthane. En 2100, elle gagne un peu. Le CO₂ des fours à coke et le CO qu'émettent les fours sont comptés avec le charbon qui n'est plus brûlé, et ils compensent cette perte.
+L'industrie propre perd plus d'un tiers de son effet de 2050 aux co-émissions. Le SO₂ de leurs usines refroidit le climat, donc le supprimer réchauffe. Les filières hydrogène consomment aussi beaucoup d'électricité du réseau, dont elles ajoutent le CO₂ et le méthane. En 2100, son effet avec les co-émissions égale à peu près celui de son seul CO₂. Le CO₂ des fours à coke et le CO qu'émettent les fours sont comptés avec le charbon qui n'est plus brûlé, et ils compensent cette perte.
 
-Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,024 °C en 2050 et 0,089 °C en 2100. L'industrie propre y ajoute 0,030 et 0,126 °C. Sur un réseau propre, chaque levier économise plus que lorsqu'il agit seul.
+Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,023 °C en 2050 et 0,090 °C en 2100. L'industrie propre y ajoute 0,028 et 0,127 °C. Sur un réseau propre, chaque levier économise plus que lorsqu'il agit seul.
 
 Les effets sont petits en 2050, pour deux raisons. Le CO₂ évité s'accumule lentement. Et sur le réseau actuel, l'électricité que consomment les procédés propres annule une grande partie de ce qu'ils économisent.
 

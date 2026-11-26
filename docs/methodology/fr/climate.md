@@ -1,6 +1,6 @@
 # Des émissions à la température
 
-Planetshift traduit une variation des émissions en variation de la température mondiale. Il suit séparément le dioxyde de carbone, le méthane et le protoxyde d'azote avec FaIR, un modèle climatique simple utilisé par le GIEC, au lieu de les additionner en « équivalent CO₂ ». Selon la médiane de FaIR pour le scénario intermédiaire, avant tout levier, le monde est 1,90 °C au-dessus de 1850–1900 en 2050 et 2,63 °C en 2100. L'application mesure l'effet des leviers par rapport à une référence de ce type.
+Planetshift traduit une variation des émissions en variation de la température mondiale. Il suit séparément le dioxyde de carbone, le méthane et le protoxyde d'azote avec FaIR, un modèle climatique simple utilisé par le GIEC, au lieu de les additionner en « équivalent CO₂ ». Selon la médiane de FaIR pour le scénario intermédiaire, avant tout levier, le monde est 1,89 °C au-dessus de 1850–1900 en 2050 et 2,61 °C en 2100. L'application mesure l'effet des leviers par rapport à une référence de ce type.
 
 Cette page explique aussi la bande d'incertitude, la courbe des facteurs naturels seuls, pourquoi 2023 et 2024 ont été si chaudes, l'option du pergélisol et les quelques endroits où Planetshift s'écarte de FaIR.
 
@@ -32,11 +32,11 @@ Le tableau donne la médiane de FaIR, avec sa fourchette de 5 à 95 %, en °C pa
 
 | Gaz | FaIR, 20 ans | FaIR, 100 ans | AR6, 20 / 50 / 100 ans | Forme (FaIR) |
 | --- | --- | --- | --- | --- |
-| CO₂ | 3,7 × 10⁻¹⁶ (2,7–5,1) | 3,5 × 10⁻¹⁶ (2,1–5,3) | 4,95 × 10⁻¹⁶ / 4,28 × 10⁻¹⁶ / 3,95 × 10⁻¹⁶ | monte pendant environ 11 ans, puis reste presque plate |
-| CH₄ | 3,3 × 10⁻¹⁴ (2,2–4,9) | 4,1 × 10⁻¹⁵ (1,5–10,4) | 2,59 × 10⁻¹⁴ / 4,73 × 10⁻¹⁵ / 2,12 × 10⁻¹⁵ | culmine après 6 ans, un dixième du pic à 100 ans |
-| N₂O | 1,7 × 10⁻¹³ (1,1–2,4) | 1,0 × 10⁻¹³ (0,7–1,8) | 1,47 × 10⁻¹³ / 1,24 × 10⁻¹³ / 9,19 × 10⁻¹⁴ | culmine après 12 ans, décroît sur un siècle |
+| CO₂ | 3,7 × 10⁻¹⁶ (2,6–5,1) | 3,5 × 10⁻¹⁶ (2,0–5,3) | 4,95 × 10⁻¹⁶ / 4,28 × 10⁻¹⁶ / 3,95 × 10⁻¹⁶ | monte pendant environ 11 ans, puis reste presque plate |
+| CH₄ | 3,2 × 10⁻¹⁴ (2,1–4,7) | 3,9 × 10⁻¹⁵ (1,4–9,8) | 2,59 × 10⁻¹⁴ / 4,73 × 10⁻¹⁵ / 2,12 × 10⁻¹⁵ | culmine après 5 ans, un dixième du pic à 100 ans |
+| N₂O | 1,7 × 10⁻¹³ (1,1–2,4) | 1,1 × 10⁻¹³ (0,7–1,8) | 1,47 × 10⁻¹³ / 1,24 × 10⁻¹³ / 9,19 × 10⁻¹⁴ | culmine après 12 ans, décroît sur un siècle |
 
-À 100 ans, la courbe du CO₂ de FaIR est 11 % sous celle de l'AR6, et celle du N₂O 9 % au-dessus. Celle du méthane vaut environ le double de celle de l'AR6, proche de la valeur de l'AR6 à 50 ans. « L'alternative AR6 », plus bas, explique pourquoi.
+À 100 ans, la courbe du CO₂ de FaIR est 12 % sous celle de l'AR6, et celle du N₂O 15 % au-dessus. Celle du méthane vaut environ le double de celle de l'AR6, proche de la valeur de l'AR6 à 50 ans. « L'alternative AR6 », plus bas, explique pourquoi.
 
 ### Comment l'application utilise les courbes
 
@@ -80,7 +80,7 @@ Dans *Autres options*, on peut remplacer les courbes par les expressions analyti
 
 Chaque constante est celle que le code de l'AR6 a utilisée pour son tableau 7.SM.7. Le pipeline reproduit l'AGTP de ce tableau à 50 et 100 ans à 0,2 % près pour les trois gaz. L'AR6 donne une seule courbe : sa médiane et ses 5e et 95e centiles sont donc identiques. Ses courbes pour une impulsion instantanée sont moyennées comme celles de FaIR : une émission répartie sur l'année 0, puis la moyenne sur chaque année civile.
 
-Les deux concordent en ordre de grandeur. À 20 ans, la médiane de FaIR vaut 0,75 fois celle de l'AR6 pour le CO₂, 1,3 fois pour le méthane et 1,1 fois pour le N₂O. Elles s'écartent davantage aux horizons lointains : à 50 et 100 ans, la courbe du méthane de FaIR fait environ le double de celle de l'AR6. Cette queue ne vient pas du cycle du carbone de FaIR, puisqu'elle reste quand la rétroaction climat-carbone est désactivée. Elle vient de la partie lente de la réponse climatique de FaIR, plus grande dans l'ensemble calibré que dans l'ajustement à deux échelles de temps de l'AR6. Pour un changement d'alimentation jusqu'en 2050, ce sont les premières décennies qui comptent le plus, et là les deux sont proches.
+Les deux concordent en ordre de grandeur. À 20 ans, la médiane de FaIR vaut 0,75 fois celle de l'AR6 pour le CO₂, 1,2 fois pour le méthane et 1,1 fois pour le N₂O. Elles s'écartent davantage aux horizons lointains : à 50 et 100 ans, la courbe du méthane de FaIR fait environ le double de celle de l'AR6. Cette queue ne vient pas du cycle du carbone de FaIR, puisqu'elle reste quand la rétroaction climat-carbone est désactivée. Elle vient de la partie lente de la réponse climatique de FaIR, plus grande dans l'ensemble calibré que dans l'ajustement à deux échelles de temps de l'AR6. Pour un changement d'alimentation jusqu'en 2050, ce sont les premières décennies qui comptent le plus, et là les deux sont proches.
 
 ## La bande d'incertitude
 
@@ -119,9 +119,9 @@ L'application montre la médiane et la fourchette de 5 à 95 % par rapport à 18
 
 | Scénario | 2015–2024 | 2050 | 2100 |
 | --- | --- | --- | --- |
-| SSP1-2.6 | 1,20 °C (1,01–1,36) | 1,79 °C (1,36–2,34) | 1,77 °C (1,23–2,57) |
-| SSP2-4.5 | 1,20 °C (1,01–1,35) | 1,90 °C (1,50–2,33) | 2,62 °C (1,92–3,61) |
-| SSP3-7.0 | 1,20 °C (1,01–1,35) | 1,88 °C (1,50–2,29) | 3,50 °C (2,68–4,46) |
+| SSP1-2.6 | 1,20 °C (1,01–1,36) | 1,79 °C (1,36–2,34) | 1,76 °C (1,22–2,56) |
+| SSP2-4.5 | 1,20 °C (1,01–1,35) | 1,89 °C (1,49–2,33) | 2,61 °C (1,91–3,60) |
+| SSP3-7.0 | 1,20 °C (1,01–1,35) | 1,86 °C (1,49–2,28) | 3,47 °C (2,67–4,43) |
 
 Le réchauffement observé sur 2015–2024 est de 1,27 °C dans HadCRUT5 et de 1,33 °C dans Berkeley Earth, tous deux ramenés ici à leur propre moyenne de 1850–1900. La médiane de FaIR est 0,06 °C sous HadCRUT5, qui se situe dans la fourchette de 5 à 95 % de FaIR. Indicators of Global Climate Change 2024, qui combine quatre séries, évalue 2015–2024 à 1,24 °C (1,11–1,35) (Forster et al. 2025). Des tests comparent la médiane de FaIR à HadCRUT5 et à cette évaluation. Les valeurs de 2100 sont proches des meilleures estimations de l'AR6 pour 2081–2100 : 1,8, 2,7 et 3,6 °C (tableau SPM.1).
 
@@ -136,12 +136,12 @@ Les courbes observées sont l'analyse HadCRUT5 du Met Office (série annuelle mo
 - **Le réchauffement d'origine humaine.** Forster et al. (2026) l'estiment à 1,37 °C en 2025, en hausse d'environ 0,27 °C par décennie.
 - **Les années isolées.** L'OMM a placé 2024 à 1,55 ± 0,13 °C au-dessus de 1850–1900, la première année civile au-delà de 1,5 °C, et 2025 à 1,44 ± 0,13 °C. Au sens du GIEC, un niveau de réchauffement est une moyenne sur 20 ans : « la survenue d'années isolées où la variation de la température à la surface du globe dépasse un certain niveau ne signifie pas que ce niveau de réchauffement planétaire a été atteint » (rapport de synthèse de l'AR6, résumé à l'intention des décideurs, note 28).
 - **L'Accord de Paris.** Son objectif (article 2.1 a) est de contenir le réchauffement « nettement en dessous de 2 °C par rapport aux niveaux préindustriels » et de poursuivre l'action menée pour le limiter à 1,5 °C.
-- **Où mènent les politiques actuelles.** Elles mènent à environ 2,6 à 2,8 °C en 2100 : 2,7 °C selon le Climate Action Tracker (novembre 2026) et 2,8 °C selon le rapport 2026 du PNUE sur l'écart entre les besoins et les perspectives. C'est proche des 2,63 °C de SSP2-4.5 ici. Si tous les engagements sont tenus, neutralité carbone comprise, le réchauffement atteint environ 2,1 °C.
+- **Où mènent les politiques actuelles.** Elles mènent à environ 2,6 à 2,8 °C en 2100 : 2,7 °C selon le Climate Action Tracker (novembre 2026) et 2,8 °C selon le rapport 2026 du PNUE sur l'écart entre les besoins et les perspectives. C'est proche des 2,61 °C de SSP2-4.5 ici. Si tous les engagements sont tenus, neutralité carbone comprise, le réchauffement atteint environ 2,1 °C.
 - **Les budgets carbone restants.** Pour une chance sur deux de rester sous 1,5, 1,7 et 2 °C, les budgets de CO₂ restants sont de 130, 500 et 1 050 Gt à partir du début de 2026 (Forster et al. 2026). Le Global Carbon Budget 2025 donne 170, 525 et 1 055 Gt au 1er janvier 2026. Ces budgets supposent une trajectoire pour les autres gaz : on ne peut donc pas les comparer un pour un avec des leviers qui réduisent surtout le méthane.
 
 ## Pourquoi 2023 et 2024 ont été si chaudes
 
-HadCRUT5 place 2023 à 1,48 °C et 2024 à 1,55 °C au-dessus de 1850–1900 (Berkeley Earth : 1,54 et 1,62 °C). La médiane de FaIR sur SSP2-4.5 donne 1,29 et 1,30 °C, avec des fourchettes de 5 à 95 % de 1,03–1,51 et 1,05–1,55 °C. Les deux années se situent 0,19 et 0,25 °C au-dessus de la médiane, en haut de sa fourchette.
+HadCRUT5 place 2023 à 1,48 °C et 2024 à 1,55 °C au-dessus de 1850–1900 (Berkeley Earth : 1,54 et 1,62 °C). La médiane de FaIR sur SSP2-4.5 donne 1,31 et 1,34 °C, avec des fourchettes de 5 à 95 % de 1,06–1,51 et 1,08–1,55 °C. Les deux années se situent 0,17 et 0,21 °C au-dessus de la médiane, en haut de sa fourchette.
 
 Plusieurs facteurs expliquent ensemble cet écart. FaIR en inclut certains et pas d'autres. Une fois ajoutés l'effet du transport maritime, El Niño et les changements des nuages, les températures observées des deux années sont celles qu'attend la littérature. Aucun facteur ne rend compte à lui seul de tout 2023.
 
@@ -206,7 +206,7 @@ Ce qu'il ajoute, et son effet :
 - **Le forçage.** À partir de 2020, il ajoute un forçage radiatif effectif de 0,12 W/m². C'est l'estimation de Gettelman et al. (2024), celle faite avec FaIR. Sa fourchette probable est de 0,08–0,14 W/m², celle que donnent Forster et al. (2025) dans leur revue des estimations ci-dessus. Les 0,2 W/m² de Yuan et al., au-dessus des océans seulement, et les 0,5 de Hansen et al. restent en dehors.
 - **Dans le temps.** Chaque année, le forçage suit le CO₂ du transport maritime international du scénario par rapport à 2020, car le soufre qui n'est plus émis est proportionnel au carburant brûlé.
 - **En température.** Il est traduit en température avec la réponse de FaIR à une année de forçage (voir [Énergie et transports](#method-sectors)). Le bas de la fourchette est associé à la réponse à 5 % et le haut à celle à 95 %. Le résultat est ajouté à la température de référence, donc à celle du scénario.
-- **L'effet.** Sur SSP2-4.5, il réchauffe 2023 de 0,034 °C (0,014–0,056), 2024 de 0,037 °C (0,015–0,062) et 2030 de 0,047 °C (0,018–0,083). C'est proche des 0,03 et 0,04 °C de Forster et al. pour 2023 et 2024, et des 0,046 °C de Jordan et Henry sur 2020–2029. En 2050 et en 2100, il ajoute 0,054 et 0,067 °C sur SSP2-4.5, 0,043 et 0,030 sur SSP1-2.6, dont les navires brûlent moins de carburant, et 0,058 et 0,052 sur SSP3-7.0.
+- **L'effet.** Sur SSP2-4.5, il réchauffe 2023 de 0,034 °C (0,014–0,056), 2024 de 0,037 °C (0,015–0,062) et 2030 de 0,048 °C (0,018–0,085). C'est proche des 0,03 et 0,04 °C de Forster et al. pour 2023 et 2024, et des 0,046 °C de Jordan et Henry sur 2020–2029. En 2050 et en 2100, il ajoute 0,056 et 0,069 °C sur SSP2-4.5, 0,044 et 0,030 sur SSP1-2.6, dont les navires brûlent moins de carburant, et 0,060 et 0,053 sur SSP3-7.0.
 - **Ce qu'il ne change pas.** Il laisse inchangé le réchauffement évité par les leviers. Les simulations de FaIR elles-mêmes restent telles quelles : les températures des scénarios du tableau ci-dessus, les courbes d'AGTP et les causes du réchauffement ne l'incluent pas.
 
 Quand il est désactivé, les scénarios gardent le SO₂ de leurs propres navires, réduit dès 2015, et la réponse de FaIR à celui-ci.
@@ -271,7 +271,7 @@ Avec l'étalement sur 20 ans, ce qui est libéré de 2026 à 2100 sur SSP2-4.5 e
 
 ### Pourquoi il ajoute peu d'ici 2100
 
-La rétroaction ajoute environ 0,02 °C à la référence en 2050 et 0,05 °C en 2100 sur SSP2-4.5 (médianes). En 2100, elle ajoute 0,03 °C sur SSP1-2.6 et 0,07 °C sur SSP3-7.0, où le réchauffement qui fait dégeler le sol est plus grand. La fourchette est large : en 2100 sur SSP2-4.5, elle va de moins de 0,01 °C à 0,25 °C, car son haut associe la plus forte libération par degré de l'AR6 à la réponse du climat la plus chaude.
+La rétroaction ajoute environ 0,02 °C à la référence en 2050 et 0,05 °C en 2100 sur SSP2-4.5 (médianes). En 2100, elle ajoute 0,03 °C sur SSP1-2.6 et 0,06 °C sur SSP3-7.0, où le réchauffement qui fait dégeler le sol est plus grand. La fourchette est large : en 2100 sur SSP2-4.5, elle va de moins de 0,01 °C à 0,24 °C, car son haut associe la plus forte libération par degré de l'AR6 à la réponse du climat la plus chaude.
 
 La médiane est faible pour quatre raisons :
 
@@ -288,9 +288,9 @@ La médiane est faible pour quatre raisons :
 
 ## La hausse du niveau de la mer
 
-L'onglet Niveau de la mer montre la hausse chaque année jusqu'en 2100 sans et avec les leviers. Le résumé donne la hausse que les leviers évitent d'ici 2100. La hausse suit une vitesse proportionnelle au réchauffement au-dessus d'une température d'équilibre, dH/dt = a·(T − T₀), comme dans les modèles semi-empiriques du niveau de la mer. La vitesse est ajustée sur les médianes du tableau 9.9 du GT1 de l'AR6 du GIEC pour SSP1-2.6, SSP2-4.5 et SSP3-7.0 en 2030, 2050, 2090 et 2100, par rapport à 1995–2014. Elle est ajustée avec le réchauffement médian de FaIR pour chaque scénario. L'ajustement donne a = 4,2 mm par an et par °C et T₀ = 0,40 °C. Un test vérifie qu'il reste à moins de 4 cm du tableau pour chaque année et chaque scénario. Chaque borne de la fourchette probable du tableau a son propre ajustement, avec le réchauffement médian. La fourchette probable de la vitesse est de 3,4 à 5,6 mm par an et par °C, avec T₀ = 0,43 et 0,39 °C. Grinsted et Christensen (2021) trouvent 0,40 m par siècle et par °C (fourchette probable 0,35–0,44) dans les observations, proche de cette vitesse.
+L'onglet Niveau de la mer montre la hausse chaque année jusqu'en 2100 sans et avec les leviers. Le résumé donne la hausse que les leviers évitent d'ici 2100. La hausse suit une vitesse proportionnelle au réchauffement au-dessus d'une température d'équilibre, dH/dt = a·(T − T₀), comme dans les modèles semi-empiriques du niveau de la mer. La vitesse est ajustée sur les médianes du tableau 9.9 du GT1 de l'AR6 du GIEC pour SSP1-2.6, SSP2-4.5 et SSP3-7.0 en 2030, 2050, 2090 et 2100, par rapport à 1995–2014. Elle est ajustée avec le réchauffement médian de FaIR pour chaque scénario. L'ajustement donne a = 4,2 mm par an et par °C et T₀ = 0,41 °C. Un test vérifie qu'il reste à moins de 4 cm du tableau pour chaque année et chaque scénario. Chaque borne de la fourchette probable du tableau a son propre ajustement, avec le réchauffement médian. La fourchette probable de la vitesse est de 3,4 à 5,7 mm par an et par °C, avec T₀ = 0,44 et 0,41 °C. Grinsted et Christensen (2021) trouvent 0,40 m par siècle et par °C (fourchette probable 0,35–0,44) dans les observations, proche de cette vitesse.
 
-La hausse est linéaire dans le réchauffement. La hausse évitée est donc la vitesse multipliée par le réchauffement évité, additionné sur les années jusqu'en 2100, et T₀ disparaît. Si le réchauffement est plus bas de 0,1 °C à partir de 2050, après une rampe linéaire depuis 2025, la hausse évitée est d'environ 2,6 cm d'ici 2100. Sa fourchette probable est celle de la vitesse, appliquée au réchauffement médian évité.
+La hausse est linéaire dans le réchauffement. La hausse évitée est donc la vitesse multipliée par le réchauffement évité, additionné sur les années jusqu'en 2100, et T₀ disparaît. Si le réchauffement est plus bas de 0,1 °C à partir de 2050, après une rampe linéaire depuis 2025, la hausse évitée est d'environ 2,7 cm d'ici 2100. Sa fourchette probable est celle de la vitesse, appliquée au réchauffement médian évité.
 
 Ce calcul émule les projections de l'AR6 pour ce siècle. Ce n'est pas un modèle du niveau de la mer vérifié sur l'histoire. Ajusté sur l'avenir, il ne donne presque aucune hausse sur 1901–2018, alors que 0,20 m (très probablement 0,15–0,25 m) ont été observés. Grinsted et Christensen décrivent le même écart entre les projections et les observations. La courbe observée du graphique joint deux séries. La première est la série des marégraphes évaluée par l'AR6 jusqu'en 1992 (encadré transversal 9.1), déjà rapportée à 1995–2014. La seconde est l'altimétrie satellitaire de la NASA à partir de 1993 (Willis, Hamlington et Fournier), décalée sur sa propre moyenne de 1995–2014. La série satellitaire n'a pas de correction de l'ajustement isostatique glaciaire, ce qui la laisse environ 0,3 mm par an sous celle de l'AR6. Ensemble, elles donnent 0,20 m sur 1901–2018, comme l'AR6, et 7,1 cm au-dessus de 1995–2014 en 2025. Le graphique et le résumé mesurent la hausse depuis le niveau de 1900, 15,8 cm sous la moyenne de 1995–2014 dans cette série : chacune de leurs valeurs est donc 15,8 cm plus haute que la même hausse rapportée à 1995–2014. Le niveau de la mer continue de monter pendant des siècles après le réchauffement. La hausse que les leviers évitent continue donc de croître après 2100, et le chiffre laisse cela de côté. Sans les leviers, la hausse suit le même ajustement sur la température de référence du calcul, qui comprend les écarts de Planetshift à FaIR comme le pergélisol. Sur le seul réchauffement de FaIR, l'ajustement donne 0,58 m (fourchette probable 0,46–0,78) d'ici 2100 dans SSP2-4.5, contre 0,56 m (0,44–0,76) au tableau 9.9. Le tableau 9.9 donne 0,44 m (0,32–0,62) dans SSP1-2.6 et 0,68 m (0,55–0,90) dans SSP3-7.0.
 
@@ -312,11 +312,11 @@ Chaque écart est un interrupteur nommé de `planetshift.config.json`, le fichie
 
 Avec chaque interrupteur sur FaIR tel quel, sur SSP2-4.5 :
 
-- moins d'avion à fond évite 0,007 °C en 2050 et 0,045 °C en 2100, au lieu de 0,054 et 0,122, car l'essentiel de son effet vient des traînées et FaIR n'en a pas ;
-- les voitures électriques évitent 0,027 et 0,091 °C au lieu de 0,045 et 0,106, et dans SSP3-7.0 ajoutent 0,018 °C d'ici 2100 au lieu d'en éviter 0,054 ;
-- les six leviers d'énergie ensemble évitent 0,165 et 0,534 °C au lieu de 0,253 et 0,655.
+- moins d'avion à fond évite 0,007 °C en 2050 et 0,045 °C en 2100, au lieu de 0,055 et 0,125, car l'essentiel de son effet vient des traînées et FaIR n'en a pas ;
+- les voitures électriques évitent 0,026 et 0,090 °C au lieu de 0,040 et 0,103, et dans SSP3-7.0 ajoutent 0,019 °C d'ici 2100 au lieu d'en éviter 0,034 ;
+- les six leviers d'énergie ensemble évitent 0,161 et 0,531 °C au lieu de 0,250 et 0,652.
 
-Sans la règle sur le transport maritime, la référence est plus fraîche de 0,037 °C en 2024 et de 0,067 °C en 2100. Les leviers agricoles ne bougent pas.
+Sans la règle sur le transport maritime, la référence est plus fraîche de 0,037 °C en 2024 et de 0,069 °C en 2100. Les leviers agricoles ne bougent pas.
 
 ## Hypothèses
 

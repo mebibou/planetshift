@@ -94,15 +94,15 @@ Planetshift uses the **Shapley value** instead, a rule from game theory for shar
 
 A lever that only acts together with another shares that joint effect half and half with it. Regrowth on freed land is such a lever.
 
-**Worked example.** With half of animal foods shifted to plants (diet at 50%) and natural regrowth on, the recorded test run (`app/test/golden/real.json`) gives these medians of the warming avoided in 2100:
+**Worked example.** With half of animal foods shifted to plants (diet at 50%), natural regrowth on and permafrost off, the model gives these medians of the warming avoided in 2100:
 
 | Groups acting | Warming avoided in 2100 |
 | --- | --- |
-| Diet alone | 0.1436 °C |
+| Diet alone | 0.1700 °C |
 | Regrowth alone | 0 (it frees no land) |
-| Diet and regrowth | 0.1909 °C |
+| Diet and regrowth | 0.1842 °C |
 
-The joint effect of regrowth is 0.1909 − 0.1436 = 0.0473 °C. The Shapley value splits it equally between the two. Regrowth gets 0.0237 °C and the diet gets 0.1436 + 0.0237 = 0.1673 °C, which is what the summary shows (the last digit is rounded).
+The joint effect of regrowth is 0.1842 − 0.1700 = 0.0142 °C. The Shapley value splits it equally between the two. Regrowth gets 0.0071 °C and the diet gets 0.1700 + 0.0071 = 0.1771 °C, which is what the summary shows (the last digit is rounded). With permafrost on, the change in its release is shared out on top of these parts (see below), so the summary's parts differ slightly from these.
 
 ### How Planetshift computes them quickly
 

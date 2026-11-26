@@ -47,7 +47,7 @@ Aviation, domestic and international flights together, emitted about 0.95 billio
 
 ### Shipping
 
-Shipping, international and domestic, emitted 0.98 billion tonnes of fossil CO₂ in 2022: CEDS's international shipping (0.80) and domestic navigation (0.17), for fuels other than biomass. Each scenario's shape carries it to 2023, where it is 0.97 to 0.99 billion tonnes. Fishing boats are a sector of their own in CEDS; their fuel is counted with seafood here. The figure depends on which ships are counted. The Fourth IMO GHG Study puts international shipping at 740 million tonnes in 2018 on a voyage basis, and all shipping, domestic and fishing included, at 1,056 million tonnes.
+Shipping, international and domestic, emitted 0.98 billion tonnes of fossil CO₂ in 2022: CEDS's international shipping (0.80) and domestic navigation (0.17), for fuels other than biomass. Each scenario's shape extends it to 2023, where it is 0.97 to 0.99 billion tonnes. Fishing boats are a sector of their own in CEDS; their fuel is counted with seafood here. The figure depends on which ships are counted. The Fourth IMO GHG Study puts international shipping at 740 million tonnes in 2018 on a voyage basis, and all shipping, domestic and fishing included, at 1,056 million tonnes.
 
 Shipping follows the scenarios' international shipping. The clean-shipping lever removes a share of it by switching to fuels that have no fossil carbon, such as green ammonia or methanol.
 
@@ -159,7 +159,7 @@ The response is linear around the scenario. This holds well for small changes. I
 
 ## Methane and air pollution that come with the fuel
 
-Burning coal, oil and gas emits more than CO₂. A lever that cuts fuel cuts all of these emissions along with the CO₂. Counting it raises the warming the energy levers avoid. All six in full avoid 0.253 °C in 2050 with it, against 0.209 °C counting CO₂ only. Of all the energy, heating and industry levers, only clean industry, on the [Buildings and industry](#method-industry) page, avoids less when it is counted (0.017 °C instead of 0.026 in 2050).
+Burning coal, oil and gas emits more than CO₂. A lever that cuts fuel cuts all of these emissions along with the CO₂. Counting it raises the warming the energy levers avoid. All six in full avoid 0.250 °C in 2050 with it, against 0.209 °C counting CO₂ only. Of all the energy, heating and industry levers, only clean industry, on the [Buildings and industry](#method-industry) page, avoids less when it is counted (0.017 °C instead of 0.026 in 2050).
 
 What comes with the fuel:
 
@@ -243,8 +243,8 @@ The aerosol-cloud effect is a logarithm of all the SO₂, black carbon and organ
 
 In SSP2-4.5 in 2023, the median forcing per million tonnes a year is:
 
-- SO₂: −5.9 mW/m² (−11.1 to −1.8 across the members);
-- black carbon: +27 (−123 to +65). FaIR's members disagree even on its sign once its cloud effect is counted;
+- SO₂: −6.0 mW/m² (−11.2 to −2.0 across the members);
+- black carbon: +26 (−147 to +65). FaIR's members disagree even on its sign once its cloud effect is counted;
 - organic carbon: −6.9;
 - ammonia: −0.62 (−0.69 to −0.56);
 - NOx: +1.2;
@@ -259,13 +259,13 @@ Less NOx means longer-lived methane. FaIR scales methane's lifetime by 1 + s × 
 
 In FaIR, a kilogram less NOx leaves this much methane in the air:
 
-- SSP2-4.5: 2.0 kg in 2023, 1.1 kg in 2100;
-- SSP1-2.6: 1.7, falling to 0.4;
-- SSP3-7.0: 2.6, rising to 4.0.
+- SSP2-4.5: 1.7 kg in 2023, 1.1 kg in 2100;
+- SSP1-2.6: 1.6, falling to 0.4;
+- SSP3-7.0: 1.7, rising to 4.3.
 
 That methane is turned into warming with methane's AGTP curve. It outweighs NOx's ozone: in FaIR, a tonne less NOx warms about as much, a few decades on, as a tonne less methane cools.
 
-VOCs work the other way, with s = +0.0002 per million tonnes. A kilogram less leaves 0.058 kg less methane in the air in 2023 in SSP2-4.5 (0.051 in 2100). In SSP1-2.6 it is 0.057, falling to 0.020. In SSP3-7.0 it is 0.059, rising to 0.13. There is one value for every source (`vocCh4PerKgCo2`). The website shares this coefficient with carbon monoxide (below), and the VOCs keep 41% of it. For road this is 3% of its NOx's methane per kg of CO₂, with the opposite sign.
+VOCs work the other way, with s = +0.0002 per million tonnes. A kilogram less leaves 0.059 kg less methane in the air in 2023 in SSP2-4.5 (0.051 in 2100). In SSP1-2.6 it is 0.058, falling to 0.020. In SSP3-7.0 it is 0.059, rising to 0.13. There is one value for every source (`vocCh4PerKgCo2`). The website shares this coefficient with carbon monoxide (below), and the VOCs keep 41% of it. For road this is 3% of its NOx's methane per kg of CO₂, with the opposite sign.
 
 FaIR gives carbon monoxide no effect on methane's lifetime. Its VOC coefficient carries CO's effect too. That coefficient is fitted to AerChemMIP runs that perturbed CO and VOCs together, so the calibration puts all of their effect on the VOCs (fair-calibrate issue #111). The chemistry models give CO an effect of its own: ACCMIP finds 0.11 mW/m² of methane forcing per Tg of CO, against 0.27 per Tg of VOCs and 2.2 per Mt of methane (Stevenson et al. 2013). Planetshift shares FaIR's VOC coefficient between the two in ACCMIP's ratio, keeping its effect at the emissions of 2014, the last year of its fit. This is the `split` value of the `coMethane` departure. A kilogram less CO then leaves 0.0097 kg less methane in the air in 2023 in SSP2-4.5 (0.0084 in 2100), about a fifth of ACCMIP's 0.05 kg. The fitted VOC coefficient sits near the bottom of its range, so FaIR's calibration leaves little room for CO, and ACCMIP's full value added on top would count part of it twice. With the CO given back to the chemistry models' figures (below), the split takes about 0.005 °C from what electric cars and renewable electricity each avoid by 2050 in SSP2-4.5, and 0.016 °C from every lever together. Plain FaIR keeps CO at zero (`fair`).
 
@@ -283,11 +283,11 @@ FaIR's coefficient is one value for all the world's NOx. But a kilogram of NOx d
 
 With `coMethane` set to `fair`, CO's methane stays netted in road's figure, because FaIR then has no CO methane to count separately. Road's NOx gives −3.95 mW/m² per Tg N, and ships' 3.05 times as much (2.15 to 4.46).
 
-**Why the chemistry models.** A multi-model study of each transport sector is more realistic than one value for all the world's NOx. FaIR's response, about 2 kg of methane per kg of NO₂ (SSP2-4.5, 2023), is several times what the chemistry models find for road traffic. With FaIR's response, electric vehicles appeared to add warming in SSP3-7.0 (see *Results* below).
+**Why the chemistry models.** A multi-model study of each transport sector is more realistic than one value for all the world's NOx. FaIR's response, about 1.7 kg of methane per kg of NO₂ (SSP2-4.5, 2023), is more than twice what the chemistry models find for road traffic. With FaIR's response, electric vehicles appeared to add warming in SSP3-7.0 (see *Results* below).
 
 **The factors used.** Planetshift turns Hoor et al.'s methane and methane-ozone forcing per kg of NO₂, with the VOCs' and CO's methane given back, into the methane emission that gives the same forcing. This uses ACCMIP's 2.9 mW/m² per million tonnes a year (Stevenson et al. 2013). The result is 0.70 kg of methane for road traffic (0.63–0.76 across the five models) and 1.27 for ships (1.0–1.9). FaIR gives 1.49 for every source in 2000, the models' year. So the factors are 0.47 of FaIR's coefficient on land and 0.85 at sea. With `coMethane` set to `fair`, road's is 0.41 kg (0.35–0.47), 0.28 of FaIR's coefficient.
 
-Each factor follows FaIR's change with the scenario. In SSP2-4.5, a kilogram less NOx leaves 0.79 kg of methane on land and 1.43 at sea in 2023, and 0.52 and 0.95 in 2100. In SSP3-7.0, land's rises to 1.93 by 2100.
+Each factor follows FaIR's change with the scenario. In SSP2-4.5, a kilogram less NOx leaves 0.79 kg of methane on land and 1.43 at sea in 2023, and 0.53 and 0.96 in 2100. In SSP3-7.0, land's rises to 2.01 by 2100.
 
 **What this gives up.** It gives up FaIR's world total: the methane of all the world's NOx is about a third of FaIR's (see [Limitations](#method-limitations)). It is a departure from FaIR's single coefficient. A fork can set it back in two ways (see the [temperature page](#method-climate)):
 
@@ -325,48 +325,48 @@ Warming avoided in °C, median (likely range). Each lever is at 100% from 2026 t
 
 | Levers | 2050, CO₂ only | 2050, with | 2100, CO₂ only | 2100, with |
 | --- | --- | --- | --- | --- |
-| Electric cars | 0.021 (0.011–0.034) | 0.045 (−0.011–0.116) | 0.072 (0.042–0.110) | 0.106 (0.025–0.199) |
-| Electric trucks | 0.013 (0.006–0.019) | 0.029 (−0.010–0.075) | 0.046 (0.026–0.067) | 0.068 (0.014–0.126) |
-| Less flying | 0.049 (0.014–0.115) | 0.054 (0.017–0.124) | 0.104 (0.040–0.237) | 0.122 (0.049–0.267) |
-| Clean aviation fuel | 0.009 (0.007–0.012) | 0.015 (0.010–0.022) | 0.042 (0.029–0.057) | 0.059 (0.038–0.087) |
-| Clean shipping | 0.007 (0.005–0.009) | 0.009 (0.006–0.015) | 0.024 (0.016–0.036) | 0.034 (0.021–0.054) |
-| Renewable electricity | 0.096 (0.070–0.128) | 0.105 (0.057–0.192) | 0.234 (0.157–0.331) | 0.279 (0.184–0.416) |
-| All six | 0.209 (0.128–0.343) | 0.253 (0.079–0.543) | 0.529 (0.316–0.889) | 0.655 (0.327–1.175) |
-| All six with clean heating and clean industry | 0.264 (0.162–0.426) | 0.304 (0.098–0.660) | 0.723 (0.429–1.198) | 0.873 (0.449–1.551) |
+| Electric cars | 0.022 (0.011–0.035) | 0.040 (−0.015–0.116) | 0.074 (0.042–0.120) | 0.103 (0.022–0.207) |
+| Electric trucks | 0.013 (0.006–0.020) | 0.026 (−0.012–0.076) | 0.047 (0.026–0.073) | 0.066 (0.011–0.131) |
+| Less flying | 0.050 (0.014–0.123) | 0.055 (0.017–0.133) | 0.107 (0.039–0.259) | 0.125 (0.048–0.291) |
+| Clean aviation fuel | 0.009 (0.007–0.013) | 0.015 (0.010–0.022) | 0.043 (0.029–0.062) | 0.060 (0.038–0.093) |
+| Clean shipping | 0.007 (0.005–0.009) | 0.009 (0.006–0.015) | 0.024 (0.016–0.036) | 0.034 (0.021–0.053) |
+| Renewable electricity | 0.097 (0.070–0.134) | 0.099 (0.052–0.192) | 0.240 (0.156–0.362) | 0.282 (0.180–0.448) |
+| All six | 0.209 (0.128–0.342) | 0.250 (0.077–0.539) | 0.529 (0.316–0.888) | 0.652 (0.325–1.167) |
+| All six with clean heating and clean industry | 0.264 (0.162–0.426) | 0.301 (0.096–0.655) | 0.723 (0.429–1.196) | 0.868 (0.446–1.541) |
 
 With every energy, heating and industry lever in full, two effects roughly cancel at first. The fuel's supply and methane are no longer emitted, which is a gain. The cooling the pollution masked is lost. After that, the gains are larger (median, °C, SSP2-4.5):
 
 | Year | Warming avoided, CO₂ only | Supply CO₂, methane and N₂O gain | Air pollution loss | Warming avoided, with |
 | --- | --- | --- | --- | --- |
-| 2030 | 0.012 | +0.004 | −0.015 | 0.001 |
-| 2040 | 0.131 | +0.064 | −0.077 | 0.117 |
-| 2050 | 0.264 | +0.122 | −0.083 | 0.304 |
-| 2100 | 0.723 | +0.199 | −0.049 | 0.873 |
+| 2030 | 0.012 | +0.004 | −0.016 | 0.001 |
+| 2040 | 0.131 | +0.063 | −0.078 | 0.116 |
+| 2050 | 0.264 | +0.121 | −0.084 | 0.301 |
+| 2100 | 0.723 | +0.194 | −0.049 | 0.868 |
 
 **The supply's CO₂** makes the largest difference. It adds about a tenth to every oil lever's CO₂, in every year: 0.150 kg per kg for road, 0.153 for aviation and shipping. It adds 8% to the electricity a lever cuts or draws.
 
 **CO and VOCs** add a little warming avoided: their ozone and methane scale with the fuel. Ammonia's small cooling works against this.
 
-**Renewable electricity** loses the cooling of coal power's SO₂, the largest source of SO₂. But it gains its NOx's ozone and methane, and its fuel's supply. It avoids 0.105 °C instead of 0.096 in 2050, and 0.279 against 0.234 in 2100.
+**Renewable electricity** loses the cooling of coal power's SO₂, the largest source of SO₂. But it gains its NOx's ozone and methane, and its fuel's supply. It avoids 0.099 °C instead of 0.097 in 2050, and 0.282 against 0.240 in 2100.
 
 **Less flying, clean aviation fuel and clean heating** gain from the start: their fuel's supply outweighs the little SO₂ they cut.
 
-**Clean industry** alone loses: 0.017 instead of 0.026 in 2050. Its plants emit SO₂, and the hydrogen routes draw a lot of grid power.
+**Clean industry** alone loses: 0.016 instead of 0.027 in 2050. Its plants emit SO₂, and the hydrogen routes draw a lot of grid power.
 
-**Electric vehicles** gain. Their soot, their NOx's ozone and their fuel's supply stop straight away. The methane their NOx no longer destroys, about a quarter of FaIR's on land, builds up slowly over decades. Electric cars avoid, in 2050 and 2100:
+**Electric vehicles** gain. Their soot, their NOx's ozone and their fuel's supply stop straight away. The methane their NOx no longer destroys, about half of FaIR's on land, builds up slowly over decades. Electric cars avoid, in 2050 and 2100:
 
-- SSP1-2.6: 0.033 and 0.049 °C (CO₂ alone 0.016 and 0.036);
-- SSP2-4.5: 0.045 and 0.106 (CO₂ alone 0.021 and 0.072).
+- SSP1-2.6: 0.031 and 0.049 °C (CO₂ alone 0.016 and 0.037);
+- SSP2-4.5: 0.040 and 0.103 (CO₂ alone 0.022 and 0.074).
 
-In SSP3-7.0, the grid stays dirty and NOx and methane are high. That methane takes back part of the gain, but electric vehicles still avoid more than their CO₂ alone. Electric cars avoid 0.030 °C in 2050 and 0.054 °C in 2100 (CO₂ alone 0.013 and 0.041). Electric trucks avoid 0.018 and 0.029 (CO₂ alone 0.007 and 0.022). With FaIR's one coefficient for every source, they would add 0.018 and 0.026 °C by 2100. With that coefficient shared between land and sea, they would add 0.009 and 0.020 (see [Limitations](#method-limitations)).
+In SSP3-7.0, the grid stays dirty and NOx and methane are high. That methane takes back part of the gain. Electric vehicles avoid more than their CO₂ alone in 2050, but less than it by 2100. Electric cars avoid 0.021 °C in 2050 and 0.034 °C in 2100 (CO₂ alone 0.013 and 0.042). Electric trucks avoid 0.012 and 0.016 (CO₂ alone 0.007 and 0.022). With FaIR's one coefficient for every source, they would add 0.020 and 0.019 °C by 2100. With that coefficient shared between land and sea, they would add 0.010 and 0.013 (see [Limitations](#method-limitations)).
 
 ### Against published phase-outs
 
 Shindell and Smith (2019, *Nature* 573, 408–411) ran FaIR on the 42 pathways of the IPCC's 1.5 °C report. These cut fossil CO₂ and SO₂ by 75–85% by 2050. They find that "the temperature effects of CO₂, SO₂ and CH₄ reductions roughly balance one another through about 2040". After that, the CO₂ cooling dominates. With all fossil-related emissions counted, any brief climate penalty is "no more than 0.05 °C" (0.19 °C at the 95th percentile). With CO₂ and SO₂ alone it is 0.02–0.10 °C.
 
-Planetshift agrees. Its levers in full are a faster phase-out, complete by 2035 for the sectors they cover. They give no net warming in any year (+0.003 °C avoided in 2030). Around 2030, the methane and CO₂ gains are about equal to the cooling lost. After that, they are larger. The faster ramp brings the balance a decade earlier than in their pathways.
+Planetshift agrees. Its levers in full are a faster phase-out, complete by 2035 for the sectors they cover. They give no net warming in any year (+0.001 °C avoided in 2030). Around 2030, the methane and CO₂ gains are about equal to the cooling lost. After that, they are larger. The faster ramp brings the balance a decade earlier than in their pathways.
 
-Shindell and Smith count NOx's methane through FaIR's single coefficient. Planetshift takes the chemistry models' figures, about a quarter of FaIR's on land and four fifths at sea. This makes the co-emissions more favourable, most of all for the land sectors.
+Shindell and Smith count NOx's methane through FaIR's single coefficient. Planetshift takes the chemistry models' figures, about half of FaIR's on land and 85% at sea. This makes the co-emissions more favourable, most of all for the land sectors.
 
 ## The temperature response to forcing
 

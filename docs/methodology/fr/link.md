@@ -36,11 +36,11 @@ Sur SSP2-4.5, médiane et fourchette de 5 à 95 %, par rapport à 1850–1900 :
 | Agriculture | 0,20 °C | 0,21 °C (0,14–0,30) | 0,29 °C (0,20–0,42) |
 | Usage des terres : CO₂ | 0,24 °C | 0,25 °C (0,18–0,36) | 0,26 °C (0,16–0,39) |
 | Usage des terres : albédo (refroidit) | −0,09 °C | −0,09 °C (−0,16 à −0,04) | −0,10 °C (−0,19 à −0,04) |
-| Déchets | 0,06 °C | 0,07 °C (0,05–0,10) | 0,09 °C (0,06–0,13) |
-| Pollution de l'air (refroidit) | −0,68 °C | −0,67 °C (−1,26 à −0,26) | −0,67 °C (−1,29 à −0,28) |
+| Déchets | 0,06 °C | 0,07 °C (0,05–0,10) | 0,08 °C (0,06–0,12) |
+| Pollution de l'air (refroidit) | −0,68 °C | −0,67 °C (−1,26 à −0,26) | −0,67 °C (−1,30 à −0,28) |
 | Facteurs naturels | 0,06 °C | 0,06 °C (−0,05 à 0,17) | 0,04 °C (−0,13 à 0,19) |
-| Autres émissions humaines | 0,56 °C | 0,60 °C (0,41–0,84) | 0,76 °C (0,51–1,07) |
-| Total | 1,07 °C | 1,20 °C (1,01–1,35) | 1,90 °C (1,50–2,33) |
+| Autres émissions humaines | 0,56 °C | 0,60 °C (0,41–0,84) | 0,76 °C (0,52–1,08) |
+| Total | 1,07 °C | 1,20 °C (1,01–1,35) | 1,89 °C (1,50–2,33) |
 
 La colonne 2010–2019 est la moyenne des médianes de chaque année.
 
@@ -58,21 +58,21 @@ Sur SSP2-4.5, médiane et intervalle de 5 à 95 % de la moyenne sur 2015–2024,
 
 | Gaz et cause | 2015–2024 | 2100 |
 | --- | --- | --- |
-| **CO₂** | 0,94 °C (0,70–1,24) | 1,91 °C (1,37–2,71) |
+| **CO₂** | 0,94 °C (0,70–1,23) | 1,90 °C (1,36–2,68) |
 | Combustibles fossiles et industrie | 0,65 °C (0,49–0,84) | 1,66 °C (1,18–2,29) |
 | Agriculture (urée et chaulage) | 0,002 °C (0,001–0,002) | 0,006 °C (0,004–0,008) |
 | Usage des terres | 0,25 °C (0,18–0,36) | 0,19 °C (0,08–0,35) |
-| Interactions et autres sources mineures | 0,03 °C (0,00–0,08) | 0,04 °C (−0,03–0,16) |
-| **Méthane** | 0,41 °C (0,28–0,59) | 0,53 °C (0,35–0,81) |
+| Interactions et autres sources mineures | 0,03 °C (0,00–0,08) | 0,03 °C (−0,04–0,15) |
+| **Méthane** | 0,41 °C (0,28–0,59) | 0,51 °C (0,34–0,79) |
 | Combustibles fossiles et industrie | 0,11 °C (0,07–0,15) | 0,12 °C (0,08–0,19) |
-| Agriculture | 0,14 °C (0,09–0,21) | 0,19 °C (0,12–0,31) |
+| Agriculture | 0,14 °C (0,09–0,21) | 0,19 °C (0,12–0,30) |
 | Déchets | 0,06 °C (0,04–0,09) | 0,06 °C (0,04–0,10) |
-| Feux de forêts, de prairies et de tourbières | 0,005 °C (0,003–0,007) | 0,008 °C (0,005–0,011) |
-| Interactions et autres sources mineures | 0,10 °C (0,07–0,14) | 0,14 °C (0,09–0,21) |
+| Feux de forêts, de prairies et de tourbières | 0,005 °C (0,003–0,007) | 0,007 °C (0,005–0,011) |
+| Interactions et autres sources mineures | 0,10 °C (0,07–0,14) | 0,14 °C (0,09–0,20) |
 | **N₂O** | 0,11 °C (0,07–0,15) | 0,19 °C (0,13–0,30) |
 | Combustibles fossiles et industrie | 0,02 °C (0,01–0,03) | 0,03 °C (0,02–0,05) |
-| Agriculture | 0,06 °C (0,04–0,09) | 0,12 °C (0,08–0,18) |
-| Déchets | 0,004 °C (0,003–0,005) | 0,009 °C (0,006–0,013) |
+| Agriculture | 0,06 °C (0,04–0,09) | 0,12 °C (0,08–0,19) |
+| Déchets | 0,004 °C (0,003–0,005) | 0,009 °C (0,006–0,014) |
 | Interactions et autres sources mineures | 0,02 °C (0,02–0,03) | 0,03 °C (0,02–0,05) |
 
 L'essentiel du réchauffement dû à l'agriculture vient du méthane, et l'essentiel du reste du N₂O. Son CO₂ est faible. L'usage des terres n'émet ici que du CO₂ : il n'apparaît que sous CO₂. Son changement d'albédo n'est pas un gaz à effet de serre : il n'apparaît que sous *Tous les gaz*, et les chiffres du CO₂ le laissent de côté.
@@ -102,7 +102,7 @@ Aucun levier de Planetshift ne vise la pollution de l'air. Les leviers d'énergi
 
 Quand ces leviers agissent, le refroidissement de la bande de la pollution de l'air diminue donc après aujourd'hui. Cette baisse est le réchauffement que la pollution de l'air ne masque plus. Les leviers réduisent aussi le CO₂ émis et le méthane qui fuit pendant la production du combustible, ce qui fait diminuer la bande des combustibles fossiles.
 
-Avec tous les leviers d'énergie, de chauffage et d'industrie en entier sur SSP2-4.5, le refroidissement perdu égale à peu près les gains vers 2030. Ensuite, les gains sont plus grands. En 2050, −0,07 °C de refroidissement est perdu. En face, l'approvisionnement en combustible, le méthane et le N₂O donnent +0,12 °C, et le CO₂ des leviers eux-mêmes +0,26 °C (voir [Énergie et transport](#method-sectors)). Dans la répartition sous le graphique, ces leviers apparaissent sous *pollution de l'air* avec le réchauffement qu'ils y ajoutent.
+Avec tous les leviers d'énergie, de chauffage et d'industrie en entier sur SSP2-4.5, le refroidissement perdu égale à peu près les gains vers 2030. Ensuite, les gains sont plus grands. En 2050, −0,08 °C de refroidissement est perdu. En face, l'approvisionnement en combustible, le méthane et le N₂O donnent +0,12 °C, et le CO₂ des leviers eux-mêmes +0,26 °C (voir [Énergie et transport](#method-sectors)). Dans la répartition sous le graphique, ces leviers apparaissent sous *pollution de l'air* avec le réchauffement qu'ils y ajoutent.
 
 ## Comment chaque cause est calculée
 
@@ -144,7 +144,7 @@ Une partie de ce que changent les leviers de l'énergie n'est pas un gaz à effe
 
 - **Élevage, 2010.** Une étude de 2018 a trouvé que le CH₄ et le N₂O directs de l'élevage causaient environ 19 % du réchauffement modélisé en 2010. Ici, toute l'agriculture cause environ 19 % du réchauffement de 2010–2019.
 - **Méthane agricole, 2010–2019.** Un rapport de 2024 utilisait une calibration plus ancienne de FaIR (1.3.1). Il attribuait au seul méthane agricole environ 0,19 °C sur environ 1,06 °C de réchauffement en 2010–2019, soit environ 40 % des 0,5 °C dus à l'ensemble du méthane. Ici, le méthane, le N₂O et le CO₂ de l'agriculture donnent ensemble 0,20 °C. La différence vient surtout de la calibration. La v1.4.1 attribue à toutes les émissions de méthane 0,39 °C de réchauffement en 2010–2019, contre 0,49 °C pour la v1.3.1 et 0,5 °C (0,3 à 0,8) dans l'évaluation de l'AR6. Les 0,10 °C déjà dans la référence 1850–1900 réduisent aussi davantage le chiffre de l'agriculture que celui des autres causes. Un test vérifie que le réchauffement dû à l'agriculture sur 2010–2019 est compris entre 0,12 et 0,30 °C et entre 12 % et 30 % du total.
-- **L'alimentation, d'ici 2100.** Une étude de 2023 a gardé les régimes actuels par personne et fait croître la consommation alimentaire avec la population. Elle a trouvé que cela « pourrait ajouter près de 1 °C au réchauffement d'ici 2100 » par les émissions postérieures à 2020 (de 0,7 à 0,9 °C dans sa prépublication). Les trois quarts venaient de la viande de ruminants, des produits laitiers et du riz, et plus de 55 % étaient évitables. Calculé de la même façon (émissions de l'agriculture et de l'usage des terres retirées à partir de 2020 seulement), Planetshift trouve 0,31 °C (0,22–0,45) sur SSP2-4.5 et 0,57 °C (0,42–0,80) sur SSP3-7.0. L'écart est attendu, pour trois raisons :
+- **L'alimentation, d'ici 2100.** Une étude de 2023 a gardé les régimes actuels par personne et fait croître la consommation alimentaire avec la population. Elle a trouvé que cela « pourrait ajouter près de 1 °C au réchauffement d'ici 2100 » par les émissions postérieures à 2020 (de 0,7 à 0,9 °C dans sa prépublication). Les trois quarts venaient de la viande de ruminants, des produits laitiers et du riz, et plus de 55 % étaient évitables. Calculé de la même façon (émissions de l'agriculture et de l'usage des terres retirées à partir de 2020 seulement), Planetshift trouve 0,31 °C (0,21–0,44) sur SSP2-4.5 et 0,56 °C (0,41–0,78) sur SSP3-7.0. L'écart est attendu, pour trois raisons :
   - cette étude compte toute la chaîne alimentaire, dont environ 5 milliards de tonnes par an de CO₂ de l'énergie, de la transformation et du transport, qui ici se trouvent sous les combustibles fossiles ;
   - elle garde les régimes par personne fixes pendant que la population augmente, alors que le méthane agricole de SSP2-4.5 n'augmente que de 4 % d'ici 2050 et que son CO₂ d'usage des terres tombe presque à zéro d'ici 2100 ;
   - elle utilise un autre modèle climatique (MAGICC6).

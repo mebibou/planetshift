@@ -47,7 +47,7 @@ Le détail et les chiffres sont dans *La pollution de l'air et le méthane des N
 
 **La santé.** Planetshift maintient les protéines ou les calories égales. Il ne vérifie pas le régime au regard des recommandations de santé et n'estime pas les effets sur la santé.
 
-**L'eau douce.** Les prélèvements sont comptés, pas l'eau consommée, sauf dans la couche de rareté limitée aux cultures. Les litres de HESTIA couvrent 35 cultures dans 56 pays, et ses moyennes mondiales 15 de plus. Le reste vient des valeurs mondiales de Poore & Nemecek : l'irrigation d'un pays n'est comptée que là où HESTIA a sa propre agrégation. Les produits animaux portent la valeur de l'étude moins l'eau de leurs aliments concentrés, une estimation de l'eau de la ferme elle-même qui dépend des rations de type GLEAM. L'eau de la pisciculture n'est pas comptée. Les pays s'écartent d'AQUASTAT plus que le monde (le pays médian fait 1,7 fois son chiffre, le Bangladesh presque six). Voir [Eau douce](#method-water).
+**L'eau douce.** Les prélèvements sont comptés, pas l'eau consommée, sauf dans la couche de rareté limitée aux cultures. Les litres de HESTIA couvrent 35 cultures dans 56 pays, et ses moyennes mondiales 15 de plus. Le reste vient des valeurs mondiales de Poore & Nemecek : l'irrigation d'un pays n'est comptée que là où HESTIA a sa propre agrégation. Les produits animaux prennent la valeur de l'étude moins l'eau de leurs aliments concentrés, une estimation de l'eau de la ferme elle-même qui dépend des rations de type GLEAM. L'eau de la pisciculture n'est pas comptée. Les pays s'écartent d'AQUASTAT plus que le monde (le pays médian fait 1,7 fois son chiffre, le Bangladesh presque six). Voir [Eau douce](#method-water).
 
 **Les cultures non alimentaires.** Le coton, le tabac, le caoutchouc et les cultures pour biocarburants ne sont pas pris en compte.
 
@@ -82,11 +82,11 @@ Dans FaIR, la réponse du méthane aux NOx est d'environ 2 kg de méthane par kg
 
 ### Comment la valeur est obtenue
 
-Hoor et al. donnent le forçage du méthane et de l'ozone qu'il entraîne par kg de NO₂, le méthane des COV rendu. Ce forçage est converti en l'émission de méthane qui le donnerait, à 2,9 mW/m² par million de tonnes par an (ACCMIP, Stevenson et al. 2013). On obtient :
+Hoor et al. donnent le forçage du méthane et de l'ozone qu'il entraîne par kg de NO₂, le méthane des COV et du CO rendu. Ce forçage est converti en l'émission de méthane qui le donnerait, à 2,9 mW/m² par million de tonnes par an (ACCMIP, Stevenson et al. 2013). On obtient :
 
-- 0,41 kg de méthane pour le trafic routier (0,35–0,47 selon les cinq modèles) ;
+- 0,70 kg de méthane pour le trafic routier (0,63–0,76 selon les cinq modèles) ;
 - 1,27 kg pour les navires ;
-- contre 1,53 pour toute source chez FaIR en 2000, l'année des modèles.
+- contre 1,49 pour toute source chez FaIR en 2000, l'année des modèles.
 
 Chacun suit ensuite l'évolution de FaIR avec le scénario.
 
@@ -94,18 +94,18 @@ Chacun suit ensuite l'évolution de FaIR avec le scénario.
 
 | Voitures et camions électriques, d'ici 2100 | SSP3-7.0 | SSP2-4.5 |
 | --- | --- | --- |
-| Modèles de chimie (réglage du site) | 0,054 et 0,020 °C évités | 0,106 et 0,065 °C évités |
-| Coefficient unique de FaIR | 0,018 et 0,026 °C ajoutés | 0,091 et 0,055 °C évités |
-| Coefficient de FaIR partagé entre terre et mer selon le rapport de Hoor et al. | 0,009 et 0,020 °C ajoutés | 0,097 et 0,059 °C évités |
+| Modèles de chimie (réglage du site) | 0,034 et 0,016 °C évités | 0,103 et 0,066 °C évités |
+| Coefficient unique de FaIR | 0,020 et 0,019 °C ajoutés | 0,092 et 0,059 °C évités |
+| Coefficient de FaIR partagé entre terre et mer selon le rapport de Hoor et al. | 0,010 et 0,013 °C ajoutés | 0,098 et 0,063 °C évités |
 
 Une copie de Planetshift peut garder le coefficient unique de FaIR (`fair`) ou le partage entre terre et mer du total de FaIR (`hoor`).
 
 ### Ce qui reste incertain
 
 - Ces valeurs viennent d'une seule étude, de cinq modèles et d'une seule année.
-- Elles sont portées aux autres années et scénarios par l'évolution propre de FaIR, qui croît avec le méthane du scénario. Les 0,41 kg de la route deviennent 1,1 kg en 2100 dans SSP3-7.0.
+- Elles sont portées aux autres années et scénarios par l'évolution propre de FaIR, qui croît avec le méthane du scénario. Les 0,70 kg de la route deviennent 2,0 kg en 2100 dans SSP3-7.0.
 - Les centrales, les bâtiments et l'industrie prennent la valeur de la route.
-- Ce choix ne garde pas le total mondial de FaIR, que sa calibration contraint avec le reste de son bilan de méthane. Il ramène le méthane de tous les NOx du monde à environ un tiers de celui de FaIR.
+- Ce choix ne garde pas le total mondial de FaIR. Sa calibration contraint ce total avec le reste de son bilan de méthane. Il ramène le méthane de tous les NOx du monde à environ la moitié de celui de FaIR.
 
 ## Hypothèses
 

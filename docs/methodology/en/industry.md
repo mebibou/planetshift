@@ -127,17 +127,17 @@ The table gives the warming avoided in °C, as a median with the likely range in
 
 | Levers | 2050 | 2100 |
 | --- | --- | --- |
-| Clean heating | 0.015 (0.001–0.040); CO₂ alone 0.009 | 0.069 (0.042–0.119); CO₂ alone 0.052 |
-| Clean industry | 0.017 (−0.009–0.071); CO₂ alone 0.026 | 0.100 (0.037–0.211); CO₂ alone 0.099 |
-| Renewable electricity alone | 0.105 (0.057–0.192); CO₂ alone 0.096 | 0.279 (0.184–0.416); CO₂ alone 0.234 |
-| Clean heating with renewable electricity | 0.129 (0.068–0.236); CO₂ alone 0.113 | 0.369 (0.244–0.549); CO₂ alone 0.303 |
-| Clean industry with renewable electricity | 0.135 (0.066–0.266); CO₂ alone 0.134 | 0.405 (0.249–0.636); CO₂ alone 0.355 |
+| Clean heating | 0.015 (0.001–0.042); CO₂ alone 0.009 | 0.070 (0.041–0.127); CO₂ alone 0.053 |
+| Clean industry | 0.016 (−0.009–0.072); CO₂ alone 0.027 | 0.101 (0.036–0.226); CO₂ alone 0.101 |
+| Renewable electricity alone | 0.099 (0.052–0.192); CO₂ alone 0.097 | 0.282 (0.180–0.448); CO₂ alone 0.240 |
+| Clean heating with renewable electricity | 0.122 (0.062–0.237); CO₂ alone 0.114 | 0.372 (0.238–0.590); CO₂ alone 0.310 |
+| Clean industry with renewable electricity | 0.127 (0.060–0.267); CO₂ alone 0.135 | 0.409 (0.243–0.683); CO₂ alone 0.364 |
 
 Clean heating gains from the co-emissions from the start. The gas it no longer burns would have leaked methane, and burning gas emits little SO₂.
 
-Clean industry loses over a third of its 2050 effect to the co-emissions. Their plants' SO₂ cools the climate, so removing it warms. The hydrogen routes also draw a lot of grid power, which adds that power's CO₂ and methane. By 2100 it gains a little. The coke ovens' CO₂ and the CO that the furnaces emit are counted with the coal no longer burnt, and they make up for the loss.
+Clean industry loses over a third of its 2050 effect to the co-emissions. Their plants' SO₂ cools the climate, so removing it warms. The hydrogen routes also draw a lot of grid power, which adds that power's CO₂ and methane. By 2100 its effect with the co-emissions about equals its CO₂ alone. The coke ovens' CO₂ and the CO that the furnaces emit are counted with the coal no longer burnt, and they make up for the loss.
 
-With renewable electricity in full, clean heating adds 0.024 °C in 2050 and 0.089 °C in 2100 to it. Clean industry adds 0.030 and 0.126 °C. On a clean grid, each lever saves more than it does alone.
+With renewable electricity in full, clean heating adds 0.023 °C in 2050 and 0.090 °C in 2100 to it. Clean industry adds 0.028 and 0.127 °C. On a clean grid, each lever saves more than it does alone.
 
 The effects are small in 2050 for two reasons. The CO₂ avoided adds up slowly. On today's grid, the electricity that the clean routes draw also cancels much of what they save.
 

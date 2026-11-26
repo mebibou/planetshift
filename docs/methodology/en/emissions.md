@@ -89,7 +89,7 @@ The shares add up to each country's total. The part that falls on non-food crops
 
 The *Emissions from Livestock* domain (GLE) gives, by species, the CH₄ of enteric fermentation and manure management, and the N₂O of manure management, manure on pasture and manure applied. It goes to the products as follows:
 
-- **Dairy cattle**: 88% to milk and 12% to beef, the beef of culled cows and surplus calves. This is the International Dairy Federation's physical allocation, 1 − 6.04 × the kilograms of live weight sold per kilogram of milk, at the typical 0.02 kg it gives (IDF Bulletin 479/2015, section 6.3.3, p. 29). Its 2022 standard keeps the formula; its worked example gives 85.1% for one farm.
+- **Dairy cattle**: 88% to milk and 12% to beef, the beef of culled cows and surplus calves. This is the International Dairy Federation's physical allocation, 1 − 6.04 × the kilograms of live weight sold per kilogram of milk, at the typical 0.02 kg it gives (IDF Bulletin 479/2015, section 6.3.3, p. 29). Its 2022 standard keeps the formula. Its worked example gives 85.1% for one farm.
 - **Other cattle**: beef, less the animals not raised for food (see below).
 - **Buffalo, sheep, goats and camels**: split between milk and meat by the protein each country's herd produces (FAOSTAT production × protein content). Where no milk is recorded, all goes to meat. For buffalo, the animals not raised for food are taken off first.
 - **Pigs** go to pig meat, **broilers, ducks and turkeys** to poultry meat, **laying hens** to eggs, and **llamas** to other meat.
@@ -208,12 +208,12 @@ The threshold moves the baseline, but it hardly moves the effect of a shift. A h
 
 | Offtake threshold | Non-food baseline, Mt CO₂e | India | Niger | Ethiopia | Mali | Full shift: emissions avoided, Gt CO₂e | Full shift: warming avoided in 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 6.7% (southern Africa, used) | 211 | 113 | 18.1 | 6.9 | 1.1 | 5.17 | 0.281 |
-| 9% (median) | 245 | 113 | 19.4 | 26.0 | 4.0 | 5.12 | 0.278 |
-| 9.9% (mean) | 257 | 113 | 19.8 | 31.1 | 5.1 | 5.11 | 0.277 |
-| 12% (pastoral systems) | 285 | 113 | 20.4 | 39.9 | 7.1 | 5.08 | 0.275 |
+| 6.7% (southern Africa, used) | 211 | 113 | 18.1 | 6.9 | 1.1 | 7.03 | 0.346 |
+| 9% (median) | 245 | 113 | 19.5 | 26.0 | 4.0 | 6.98 | 0.343 |
+| 9.9% (mean) | 258 | 113 | 19.8 | 31.1 | 5.1 | 6.96 | 0.342 |
+| 12% (pastoral systems) | 286 | 113 | 20.4 | 40.0 | 7.1 | 6.93 | 0.341 |
 
-A half shift avoids half as much (2.53 to 2.58 Gt CO₂e, 0.137 to 0.140 °C). The likely range that the app shows covers only the climate response, not this choice.
+A half shift avoids half as much (3.46 to 3.50 Gt CO₂e, 0.170 to 0.173 °C). The likely range that the app shows covers only the climate response, not this choice.
 
 ### Limits of the rule
 
