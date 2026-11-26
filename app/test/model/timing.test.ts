@@ -4,12 +4,13 @@ import { DEFAULT_OPTIONS, type Options } from '../../src/model/api';
 import { OPTIONS } from '../../src/model/options';
 import { BASE_SCENARIO } from '../../src/model/scenarios';
 import { prepare } from '../../src/model/prepare';
-import { runScenario } from '../../src/model/run';
+import { runScenario, startScenario } from '../../src/model/run';
 import { SAMPLES } from './samples';
 import { CURRENT_YEAR } from './fixtures';
 import { loadRealData } from './realData';
 import { syntheticData } from './synthetic';
 
+/** The sliders wait for a run's result alone: its breakdown follows in a message of its own. */
 describe('performance', () => {
   it('runs 180 countries × 100 items in under 30 ms once prepared', () => {
     const data = syntheticData();
@@ -19,7 +20,7 @@ describe('performance', () => {
     const times = SAMPLES.flatMap((p) =>
       [0, 1, 2].map(() => {
         const start = performance.now();
-        runScenario(data, p.scenario, DEFAULT_OPTIONS, CURRENT_YEAR);
+        startScenario(data, p.scenario, DEFAULT_OPTIONS, CURRENT_YEAR);
         return performance.now() - start;
       }),
     ).sort((a, b) => a - b);
@@ -43,7 +44,7 @@ describe.skipIf(real === null)('performance on the real data', () => {
       .flatMap(() => SAMPLES)
       .map((p) => {
         const start = performance.now();
-        runScenario(data, p.scenario, { ...DEFAULT_OPTIONS, ...p.options }, CURRENT_YEAR);
+        startScenario(data, p.scenario, { ...DEFAULT_OPTIONS, ...p.options }, CURRENT_YEAR);
         return performance.now() - start;
       })
       .sort((a, b) => a - b);
@@ -66,7 +67,7 @@ describe.skipIf(real === null)('performance on the real data', () => {
     runScenario(data, scenario, allOptions, CURRENT_YEAR);
     const times = [0.5, 0.6, 0.7, 0.8, 0.9].map((share) => {
       const start = performance.now();
-      runScenario(
+      startScenario(
         data,
         { ...scenario, levers: { ...everything, foodWaste: share } },
         allOptions,

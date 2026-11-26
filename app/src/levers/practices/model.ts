@@ -217,25 +217,25 @@ export const gridAddBack = (
   worldGrid: number,
 ): Record<Band, number> => {
   const co2 = countryIntensities(pc, prepared, scope).kgPerTonne.co2;
-  const kgFrom = (s: SourceShares): number =>
-    Array.from(s.items).reduce(
-      (a, i) =>
-        a +
+  const kgFrom = (s: SourceShares): number => {
+    let kg = 0;
+    for (const i of s.items) {
+      kg +=
         ((pc.emitting[i] as number) + (change?.[i] ?? 0)) *
-          (co2[i] as number) *
-          (s.shares[i] as number),
-      0,
-    );
+        (co2[i] as number) *
+        (s.shares[i] as number);
+    }
+    return kg;
+  };
   const split = countrySplit(pc, prepared, scope).filter((s) => s.gas === 'co2');
   const electrified = PRACTICES.flatMap((id) => {
     const practice = prepared.data.practices[id];
     const e = practice?.electrified;
-    const fuel = split
-      .filter((s) => practice?.sources.includes(s.source))
-      .reduce((a, s) => a + kgFrom(s), 0);
     const reach = practice ? adoption(id) * applicableIn(practice, pc.country.iso3) : 0;
+    const fuel = () =>
+      split.filter((s) => practice?.sources.includes(s.source)).reduce((a, s) => a + kgFrom(s), 0);
     return e && practice && reach > 0
-      ? [{ practice, kg: fuel * reach * co2PerFuelCo2(e, pc.country.iso3, worldGrid) }]
+      ? [{ practice, kg: fuel() * reach * co2PerFuelCo2(e, pc.country.iso3, worldGrid) }]
       : [];
   });
   return bandRecord((band) =>

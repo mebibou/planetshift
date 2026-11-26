@@ -8,8 +8,13 @@ import {
   rampShare,
   run,
   w2050,
+  CURRENT_YEAR,
 } from '../../../test/levers';
-import { groupIndicesOf } from '../../model/prepare';
+import { DEFAULT_OPTIONS, type Levers, type Options } from '../../model/api';
+import { groupIndicesOf, prepare } from '../../model/prepare';
+import { BASE_SCENARIO } from '../../model/scenarios';
+import type { RunContext } from '../types';
+import { practices } from './index';
 import { decodeState } from '../../model/state';
 import {
   gasSplitOf,
@@ -148,5 +153,20 @@ describe('practices', () => {
   });
   it('ignore the nitrification inhibitors of an old URL, now part of nitrogen efficiency', () => {
     expect(decodeState('ne=50&ni=100').scenario.levers).toEqual({ nitrogenEfficiency: 0.5 });
+  });
+  it('key their cuts by the scope, the grid and their own adoptions only', () => {
+    const ctx = (levers: Levers, options: Partial<Options> = {}): RunContext => ({
+      prepared: prepare(data),
+      scenario: { ...BASE_SCENARIO, levers },
+      options: { ...DEFAULT_OPTIONS, ...options },
+      currentYear: CURRENT_YEAR,
+      adoption: (id) => levers[id] ?? 0,
+    });
+    const key = (levers: Levers, options?: Partial<Options>) =>
+      practices.hooks.intensityKey?.(ctx(levers, options));
+    const full = key({ feedAdditives: 1 });
+    expect(key({ feedAdditives: 1, foodWaste: 0.5 }, { location: 'domestic' })).toBe(full);
+    expect(key({ feedAdditives: 0.5 })).not.toBe(full);
+    expect(key({ feedAdditives: 1 }, { scope: 'farmGate' })).not.toBe(full);
   });
 });

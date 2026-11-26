@@ -10,7 +10,7 @@ import { chainIntensities } from './chain';
 import { countryCakes, countryIntensities } from './emissions';
 import { feedByGroup, feedSharesOf } from './feed';
 import type { Prepared, PreparedCountry } from './prepare';
-import { memoLatest, memoPer, type ItemVector } from './util';
+import { memoLatest, memoPer, recordFrom, type ItemVector } from './util';
 
 /** kg of each gas per tonne of each item. */
 type ByGas = Record<Gas, ItemVector>;
@@ -67,17 +67,23 @@ const baseIntensity = (pc: PreparedCountry, prepared: Prepared, scope: Scope): B
     ) as ByGas;
   });
 
-/** t of land CO₂ a year by item: forest cleared for it and the drained organic soils under it. */
-const landCo2ByItem = (prepared: Prepared, iso3: string): Record<string, number> => {
-  const clearing = prepared.data.deforestation?.byCountry[iso3] ?? {};
-  const drained = prepared.data.deforestation?.drainedByCountry?.[iso3] ?? {};
-  return Object.fromEntries(
-    [...new Set([...Object.keys(clearing), ...Object.keys(drained)])].map((code) => [
-      code,
-      (clearing[code] ?? 0) + (drained[code] ?? 0),
-    ]),
-  );
-};
+const landCo2Cache = memoPer<Prepared, Record<string, number>>();
+
+/**
+ * t of land CO₂ a year by item: forest cleared for it and the drained organic soils under it;
+ * once per country.
+ */
+const landCo2ByItem = (prepared: Prepared, iso3: string): Record<string, number> =>
+  landCo2Cache(prepared, iso3, () => {
+    const clearing = prepared.data.deforestation?.byCountry[iso3] ?? {};
+    const drained = prepared.data.deforestation?.drainedByCountry?.[iso3] ?? {};
+    return Object.fromEntries(
+      [...new Set([...Object.keys(clearing), ...Object.keys(drained)])].map((code) => [
+        code,
+        (clearing[code] ?? 0) + (drained[code] ?? 0),
+      ]),
+    );
+  });
 
 /** kg of land CO₂ (clearing and drained soils) per tonne a country produces of each item. */
 const clearingPerTonne = (pc: PreparedCountry, prepared: Prepared): ItemVector => {
@@ -504,7 +510,7 @@ const eatenBase = (pc: PreparedCountry): ItemVector =>
   eatenCache(pc, 'eaten', () => pc.food.map((t, i) => t * (pc.multipliers[i] as number)));
 
 const perPerson = (v: GasVector, people: number): GasVector =>
-  Object.fromEntries(GASES.map((g) => [g, people > 0 ? v[g] / people : 0])) as GasVector;
+  recordFrom(GASES, (g) => (people > 0 ? v[g] / people : 0));
 
 /**
  * Each country's food footprint per person, kg of each gas a year, today and its change with the
@@ -541,9 +547,7 @@ export const foodFootprints = (
         pc.country.iso3,
         {
           footprint: before,
-          footprintChange: Object.fromEntries(
-            GASES.map((g) => [g, later[g] - before[g]]),
-          ) as GasVector,
+          footprintChange: recordFrom(GASES, (g) => later[g] - before[g]),
         },
       ];
     }),

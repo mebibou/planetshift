@@ -17,20 +17,26 @@ export const WorthContext = createContext<WorthState | null>(null);
 /**
  * What each lever, family and food is worth on its own, computed in the background one run at a
  * time; a new cache once `data` changes, as a deferred file arriving changes the figures.
+ * `current` is false while the figures shown are still those of the previous data.
  */
 export const useWorth = (
   run: (s: Scenario, o: Options) => Promise<Worth | null>,
   scenario: Scenario,
   options: Options,
   data: unknown,
-): ReadonlyMap<WorthId, Worth> => {
-  const [values, setValues] = useState<ReadonlyMap<WorthId, Worth>>(new Map());
-  // `run` reads the latest data itself; the cache starts anew only when the data changes.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const cache = useMemo(() => worthCache({ run, onChange: setValues }), [data]);
+): { values: ReadonlyMap<WorthId, Worth>; current: boolean } => {
+  const [tagged, setTagged] = useState<{ data: unknown; values: ReadonlyMap<WorthId, Worth> }>(
+    () => ({ data, values: new Map() }),
+  );
+  const cache = useMemo(
+    () => worthCache({ run, onChange: (values) => setTagged({ data, values }) }),
+    // `run` reads the latest data itself; the cache starts anew only when the data changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [data],
+  );
   useEffect(() => () => cache.stop(), [cache]);
   useEffect(() => cache.request(scenario, options), [cache, scenario, options]);
-  return values;
+  return { values: tagged.values, current: tagged.data === data };
 };
 
 interface Shown {

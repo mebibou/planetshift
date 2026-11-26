@@ -323,7 +323,7 @@ const ChartCard = (props: ExploreProps) => {
 export const Explore = (props: ExploreProps) => {
   const { ctx, state, data } = props;
   const { t, locale } = ctx;
-  const values = useWorth(
+  const { values, current: worthCurrent } = useWorth(
     (scenario, options) => {
       ctx.loadAll();
       return ctx.model.avoided(scenario, options, ctx.currentYear);
@@ -360,6 +360,7 @@ export const Explore = (props: ExploreProps) => {
           currentYear={ctx.currentYear}
           climate={data.climate}
           values={values}
+          worthCurrent={worthCurrent}
           dataVersion={dataVersion}
           available={(id) => leverAvailable(data, id)}
           population={data.population}

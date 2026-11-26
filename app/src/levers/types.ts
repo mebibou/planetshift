@@ -209,6 +209,8 @@ export interface Hooks {
   intensity?: (
     ctx: RunContext,
   ) => ((pc: PreparedCountry, band: Band) => Record<Gas, ItemVector>) | null;
+  /** What `intensity` reads, which the footprints are kept by; else the options and own levers. */
+  intensityKey?: (ctx: RunContext) => string;
   /** A country's CO₂ by family (a constant stream, like clearing) and its fields of the result. */
   country?: (ctx: RunContext) => ((c: CountryContext) => CountryPart) | null;
   /** The module's emissions, warming and summary over the years. */

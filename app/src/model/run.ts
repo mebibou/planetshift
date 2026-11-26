@@ -41,12 +41,14 @@ import type {
 } from '../levers/types';
 import {
   GWP100,
+  withBreakdown,
   type Baseline,
+  type Breakdown,
   type CountryResult,
   type Options,
   type Scenario,
+  type FirstResult,
   type ScenarioResult,
-  type Summary,
 } from './api';
 import { shapley } from './attribution';
 import { bandRecord } from './bands';
@@ -110,6 +112,7 @@ import {
   range,
   recordFrom,
   subtractPaths,
+  sumRows,
   sum,
   valueAt,
   zeros,
@@ -453,8 +456,7 @@ const cakeDemandOf = (
 
 type ByCause<T> = Record<CountedCause, T>;
 
-const causeRecord = <T>(f: (cause: CountedCause) => T): ByCause<T> =>
-  Object.fromEntries(COUNTED_CAUSES.map((c) => [c, f(c)])) as ByCause<T>;
+const causeRecord = <T>(f: (cause: CountedCause) => T): ByCause<T> => recordFrom(COUNTED_CAUSES, f);
 
 /** A country's full changes, kg a year, by the family that causes them. */
 interface CountryParts {
@@ -516,13 +518,23 @@ const STREAMS = [
   ['n2o', 'n2o', 'jointN2o'],
 ] as const;
 
-const addRecords = (parts: readonly CountryPart[], key: StreamKey): Record<string, number> => {
-  const out: Record<string, number> = {};
-  for (const p of parts) {
-    for (const [k, v] of Object.entries(p[key] ?? {})) {
-      out[k] = k in out ? (out[k] as number) + v : v;
+const STREAM_KEYS = STREAMS.flatMap(([, own, joint]) => [own, joint]);
+
+/** Each part's stream of `key` added into its cause's record, the parts in their order. */
+const addRecords = (
+  parts: readonly CountryPart[],
+  causes: readonly ModuleCause[],
+  key: StreamKey,
+): ByCause<Record<string, number>> => {
+  const out = causeRecord((): Record<string, number> => ({}));
+  parts.forEach((p, k) => {
+    const into = out[causes[k] as CountedCause] as Record<string, number> | undefined;
+    if (into) {
+      for (const [f, v] of Object.entries(p[key] ?? {})) {
+        into[f] = f in into ? (into[f] as number) + v : v;
+      }
     }
-  }
+  });
   return out;
 };
 
@@ -531,19 +543,8 @@ const streamsOf = (
   extra: readonly CountryPart[],
   countryHooks: readonly CountryHook[],
 ): Record<StreamKey, ByCause<Readonly<Record<string, number>>>> => {
-  const byKey = (key: StreamKey) =>
-    causeRecord((cause) =>
-      addRecords(
-        extra.filter((_, k) => countryHooks[k]?.cause === cause),
-        key,
-      ),
-    );
-  return Object.fromEntries(
-    STREAMS.flatMap(([, own, joint]) => [
-      [own, byKey(own)],
-      [joint, byKey(joint)],
-    ]),
-  ) as Record<StreamKey, ByCause<Readonly<Record<string, number>>>>;
+  const causes = countryHooks.map((h) => h.cause);
+  return recordFrom(STREAM_KEYS, (key) => addRecords(extra, causes, key));
 };
 
 /** What a cut removes from the base year's production, kept while the cut is. */
@@ -684,7 +685,7 @@ const chainOf = (
     byStep: Object.fromEntries(
       stages.map((s, k) => {
         const own = (totals[k] as Float64Array).map((v, i) => v - (totals[k - 1]?.[i] ?? 0));
-        return [s.family, Object.fromEntries(CHAIN_CAUSES.map((c) => [c, causeOf(own, c)]))];
+        return [s.family, recordFrom(CHAIN_CAUSES, (c) => causeOf(own, c))];
       }),
     ),
     result: { chain: chainBase(pc, ints), chainChange: last ? allCauses(last) : ZERO_GAS },
@@ -692,8 +693,13 @@ const chainOf = (
 };
 
 /** The grid electricity's part of a vector of production's CO₂, kg. */
-const gridCo2 = (change: ItemVector, co2: ItemVector, share: ItemVector): number =>
-  change.reduce((a, t, i) => a + t * (co2[i] as number) * (share[i] as number), 0);
+const gridCo2 = (change: ItemVector, co2: ItemVector, share: ItemVector): number => {
+  let kg = 0;
+  for (let i = 0; i < change.length; i++) {
+    kg += (change[i] as number) * (co2[i] as number) * (share[i] as number);
+  }
+  return kg;
+};
 
 /** Each step's own change in the grid electricity's CO₂, as `farm` gives each step's emissions. */
 const stepGridCo2 = (
@@ -1087,8 +1093,7 @@ const baselineTemperature = (
     });
   });
 
-const gasRecord = <T>(f: (g: Gas) => T): Record<Gas, T> =>
-  Object.fromEntries(GASES.map((g) => [g, f(g)])) as Record<Gas, T>;
+const gasRecord = <T>(f: (g: Gas) => T): Record<Gas, T> => recordFrom(GASES, f);
 
 const subtract = (a: readonly number[], b: readonly number[]): number[] =>
   a.map((v, i) => v - (b[i] ?? 0));
@@ -1446,11 +1451,13 @@ const emissionsPass = (
    * A family's own emissions, all in the cause it mainly acts on; a farm family's are added to its
    * farm paths (the grid's CO₂ that clean farm energy adds back as the grid changes).
    */
-  const ownPaths = (module: LeverModule, extra: GasVector[], f: string, band: Band) =>
-    causeRecord((c) => {
-      const farm = module.farm === false ? zeroPath(years) : farmPaths(f, band)[c];
+  const ownPaths = (module: LeverModule, extra: GasVector[], f: string, band: Band) => {
+    const onFarm = module.farm === false ? null : farmPaths(f, band);
+    return causeRecord((c) => {
+      const farm = onFarm ? onFarm[c] : zeroPath(years);
       return c === causeOfModule(module) ? (plusPath(farm, extra) as GasVector[]) : farm;
     });
+  };
   const pathsIn = (band: Band): Record<string, ByCause<GasVector[]>> =>
     Object.fromEntries(
       FAMILIES.map((f) => {
@@ -1575,9 +1582,14 @@ const familyShares = (
     MODULES.filter((m) => families.includes(familyOf(m))).flatMap((m) =>
       m.levers.map((l) => ctx.adoption(l.id)),
     );
+  const passes = new Map<string, Map<string, number[]>>([[fullKey, fullValues]]);
+  /** A pass's values, looked up once per set of production families rather than per coalition. */
   const passValues = (inPlay: readonly string[]): Map<string, number[]> => {
     const key = inPlay.join('|');
-    return key === fullKey ? fullValues : otherPass(inPlay, key);
+    if (!passes.has(key)) {
+      passes.set(key, otherPass(inPlay, key));
+    }
+    return passes.get(key) as Map<string, number[]>;
   };
   /** The values of a pass with only the production families `inPlay`, kept per set of them. */
   const otherPass = (inPlay: readonly string[], key: string): Map<string, number[]> => {
@@ -1670,10 +1682,10 @@ const familyShares = (
     const inPlay = production.filter((f) => coalition.includes(f));
     const farm = passValues(inPlay);
     const away = outsideValues(outside.filter((f) => coalition.includes(f)));
-    return coalition.reduce<number[]>((acc, f) => {
-      const v = (outside.includes(f) ? away : farm).get(f) ?? zero;
-      return acc.map((a, k) => a + (v[k] as number));
-    }, zero);
+    return sumRows(
+      coalition.map((f) => (outside.includes(f) ? away : farm).get(f) ?? zero),
+      size,
+    );
   });
 };
 
@@ -1681,36 +1693,50 @@ const familyShares = (
 const withPeopleYear = (options: Options, scenario: Scenario): Options =>
   options.people === undefined ? options : { ...options, peopleYear: scenario.rampEnd };
 
+/** The share of each item's intensity that cuts acting one after the other remove: 1 − Π(1 − cut). */
+export const combinedCut = (cuts: readonly Record<Gas, ItemVector>[]): Record<Gas, ItemVector> =>
+  gasRecord((g) => {
+    const out = new Float64Array((cuts[0] as Record<Gas, ItemVector>)[g].length);
+    for (let i = 0; i < out.length; i++) {
+      let left = 1;
+      for (const c of cuts) {
+        left = left * (1 - (c[g][i] as number));
+      }
+      out[i] = 1 - left;
+    }
+    return out;
+  });
+
+const INTENSITY_MODULES = MODULES.filter((m) => m.hooks.intensity);
+
 /**
  * The levers' share of each item's intensity removed in a country, median, combined, and what it
- * depends on (the levers and the options); none without an intensity lever.
+ * depends on (each module's intensity key, so moving another lever or option keeps the
+ * footprints' frame); none without an intensity lever.
  */
 const leverCut = (ctx: RunContext): { key: string; of: FootprintCut } | null => {
-  const hooks = MODULES.flatMap((m) => {
+  const hooks = INTENSITY_MODULES.flatMap((m) => {
     const hook = m.hooks.intensity?.(ctx);
     return hook ? [hook] : [];
   });
-  const of: FootprintCut = (pc) => {
-    const cuts = hooks.map((h) => h(pc, 'median'));
-    return Object.fromEntries(
-      GASES.map((g) => [
-        g,
-        (cuts[0] as Record<Gas, ItemVector>)[g].map(
-          (_, i) => 1 - cuts.reduce((left, c) => left * (1 - (c[g][i] as number)), 1),
-        ),
-      ]),
-    ) as Record<Gas, ItemVector>;
-  };
+  const keys = INTENSITY_MODULES.map(
+    (m) =>
+      m.hooks.intensityKey?.(ctx) ??
+      JSON.stringify([m.levers.map((l) => ctx.adoption(l.id)), ctx.options, ctx.currentYear]),
+  );
   return hooks.length === 0
     ? null
-    : { key: JSON.stringify([ctx.scenario.levers, ctx.options, ctx.currentYear]), of };
+    : {
+        key: keys.join('|'),
+        of: (pc) => combinedCut(hooks.map((h) => h(pc, 'median'))),
+      };
 };
 
 /** The countries' results with their food footprint per person, today and with the levers. */
 const withFootprints = (
   ctx: RunContext,
   steps: readonly Step[],
-  countries: readonly CountryResult[],
+  countries: CountryResult[],
 ): CountryResult[] => {
   const { prepared, options } = ctx;
   const last = steps[steps.length - 1];
@@ -1721,7 +1747,8 @@ const withFootprints = (
     last?.run.supply ?? {},
     leverCut(ctx),
   );
-  return countries.map((c) => ({ ...c, ...prints.get(c.iso3) }));
+  // Added in place: the results are this run's own, and copying their many fields is slow.
+  return countries.map((c) => Object.assign(c, prints.get(c.iso3)));
 };
 
 /** What a run works from: its context, the supply chains and production steps, and the frame of
@@ -1889,12 +1916,143 @@ const oceanOf = (
     ? oceanFromCo2(fair.co2.baseline, fair.co2.scenario)
     : oceanPaths(climate, ssp, co2Change, currentYear);
 
-export const runPrepared = (
+/** A run in two parts: the result, then its breakdown, which needs passes of its own. */
+export interface SplitRun {
+  result: FirstResult;
+  breakdown: () => Breakdown;
+}
+
+/** The breakdown's places in a result, held until it is filled, so a whole run's keys keep their order. */
+const PENDING: { [K in keyof Breakdown]: Partial<Breakdown[K]> } = {
+  summary: { byFamily: undefined, byFamilyCause: undefined, byCause: undefined },
+  temperature: { avoidedByCause: undefined, avoidedByGas: undefined },
+};
+
+/**
+ * The avoided warming split by cause and by each gas of a cause: the causes' pulse responses
+ * with the feedback shared out, scaled to FaIR's total when it runs.
+ */
+const causeSplit = (
+  frame: PassFrame,
+  full: Pass,
+  feedback: readonly number[],
+  avoided: readonly number[],
+  withFair: boolean,
+): Breakdown['temperature'] => {
+  const { ctx, tYears } = frame;
+  const { currentYear, options } = ctx;
+  const { climate } = ctx.prepared.data;
+  const { world } = full;
+  const causeGas = causeRecord((c) =>
+    warmingByGas(
+      sumPaths(FAMILIES.map((f) => full.paths.median?.[f]?.[c] ?? [])),
+      currentYear,
+      climate,
+      options.climate,
+      'median',
+      tYears,
+    ),
+  );
+  const causeChange = causeRecord((c) =>
+    addSeries(
+      sumOfGases(causeGas[c]),
+      sumSeries(
+        world.flatMap((w) => warmingIn(w.module, w.part, c, 'median')),
+        tYears,
+      ),
+    ),
+  );
+  // With FaIR, the causes' pulse responses only share its total out.
+  const linearShares = shareFeedback(
+    COUNTED_CAUSES.map((c) => causeChange[c]),
+    feedback,
+  );
+  const causeShares = scaledColumns(
+    linearShares,
+    avoided.map((v) => 0 - v),
+    withFair,
+  );
+  const avoidedByCause = causeRecord((c) =>
+    (causeShares[COUNTED_CAUSES.indexOf(c)] ?? []).map((v) => 0 - v),
+  );
+  const leverGas = Object.fromEntries(
+    GAS_LEVER_CAUSES.map((c) => [
+      c,
+      gasShares(causeGas[c], causeChange[c], causeShares[COUNTED_CAUSES.indexOf(c)] ?? []),
+    ]),
+  ) as Record<GasLeverCause, Record<Gas, number[]>>;
+  const avoidedByGas = Object.fromEntries(
+    GASES.map((g) => [
+      g,
+      Object.fromEntries(GAS_LEVER_CAUSES.map((c) => [c, leverGas[c][g].map((v) => 0 - v)])),
+    ]),
+  ) as Record<Gas, Record<GasLeverCause, number[]>>;
+
+  return { avoidedByCause, avoidedByGas };
+};
+
+/**
+ * The by-family breakdown from the families' Shapley values: the feedback at the horizons shared
+ * out, then scaled to FaIR's totals when it runs.
+ */
+const breakdownOf = (
+  shares: Map<string, number[]>,
+  feedbackAt: readonly number[],
+  totalsAt: readonly number[] | null,
+): Breakdown['summary'] => {
+  const players = [...shares.keys()];
+  const causes = COUNTED_CAUSES.length;
+  const sharedAt = HORIZON_YEARS.map((_, h) => {
+    const linear = shareOut(
+      players.flatMap((f) => COUNTED_CAUSES.map((_, c) => shares.get(f)?.[c * 3 + h] ?? 0)),
+      feedbackAt[h] as number,
+    );
+    return totalsAt ? scaledTo(linear, totalsAt[h] as number) : linear;
+  });
+  const warmingOf = (family: string, c: number, h: number): number => {
+    const k = players.indexOf(family);
+    return k < 0 ? 0 : (sharedAt[h]?.[k * causes + c] ?? 0);
+  };
+  const co2eOfFamily = (family: string, c: number): number => shares.get(family)?.[c * 3 + 2] ?? 0;
+  const perFamily = (f: (family: string) => number): Record<string, number> =>
+    Object.fromEntries(FAMILIES.map((family) => [family, f(family)]));
+  const byCauseOf = (f: (family: string, c: number) => number) =>
+    Object.fromEntries(
+      FAMILIES.map((family) => [family, causeRecord((c) => f(family, COUNTED_CAUSES.indexOf(c)))]),
+    ) as Record<string, ByCause<number>>;
+  const familyCause = {
+    avoidedCo2e: byCauseOf(co2eOfFamily),
+    avoidedWarming2050: byCauseOf((family, c) => warmingOf(family, c, 0)),
+    avoidedWarming2100: byCauseOf((family, c) => warmingOf(family, c, 1)),
+  };
+  const totalOf = (r: ByCause<number>) => sum(COUNTED_CAUSES.map((c) => r[c]));
+  const causeTotal = (r: Record<string, ByCause<number>>) =>
+    causeRecord((c) => sum(FAMILIES.map((f) => r[f]?.[c] ?? 0)));
+  return {
+    byFamily: {
+      avoidedCo2e: perFamily((f) => totalOf(familyCause.avoidedCo2e[f] as ByCause<number>)),
+      avoidedWarming2050: perFamily((f) =>
+        totalOf(familyCause.avoidedWarming2050[f] as ByCause<number>),
+      ),
+      avoidedWarming2100: perFamily((f) =>
+        totalOf(familyCause.avoidedWarming2100[f] as ByCause<number>),
+      ),
+    },
+    byFamilyCause: familyCause,
+    byCause: {
+      avoidedCo2e: causeTotal(familyCause.avoidedCo2e),
+      avoidedWarming2050: causeTotal(familyCause.avoidedWarming2050),
+      avoidedWarming2100: causeTotal(familyCause.avoidedWarming2100),
+    },
+  } as Breakdown['summary'];
+};
+
+export const startPrepared = (
   prepared: Prepared,
   scenario: Scenario,
   given: Options,
   currentYear: number,
-): ScenarioResult => {
+): SplitRun => {
   const { options, climate, ctx, chains, steps, years, tYears, scale, completeIndex, frame } =
     runFrame(prepared, scenario, given, currentYear);
   const full = emissionsPass(frame, steps, MODULES, BANDS);
@@ -1982,84 +2140,7 @@ export const runPrepared = (
     };
   };
 
-  const causeGas = causeRecord((c) =>
-    warmingByGas(
-      sumPaths(FAMILIES.map((f) => full.paths.median?.[f]?.[c] ?? [])),
-      currentYear,
-      climate,
-      options.climate,
-      'median',
-      tYears,
-    ),
-  );
-  const causeChange = causeRecord((c) =>
-    addSeries(
-      sumOfGases(causeGas[c]),
-      sumSeries(
-        world.flatMap((w) => warmingIn(w.module, w.part, c, 'median')),
-        tYears,
-      ),
-    ),
-  );
-  // With FaIR, the causes' pulse responses only share its total out.
-  const linearShares = shareFeedback(
-    COUNTED_CAUSES.map((c) => causeChange[c]),
-    feedbackDelta.median,
-  );
-  const causeShares = scaledColumns(
-    linearShares,
-    avoidedSeries.median.map((v) => 0 - v),
-    fair !== null,
-  );
-  const avoidedByCause = causeRecord((c) =>
-    (causeShares[COUNTED_CAUSES.indexOf(c)] ?? []).map((v) => 0 - v),
-  );
-  const leverGas = Object.fromEntries(
-    GAS_LEVER_CAUSES.map((c) => [
-      c,
-      gasShares(causeGas[c], causeChange[c], causeShares[COUNTED_CAUSES.indexOf(c)] ?? []),
-    ]),
-  ) as Record<GasLeverCause, Record<Gas, number[]>>;
-  const avoidedByGas = Object.fromEntries(
-    GASES.map((g) => [
-      g,
-      Object.fromEntries(GAS_LEVER_CAUSES.map((c) => [c, leverGas[c][g].map((v) => 0 - v)])),
-    ]),
-  ) as Record<Gas, Record<GasLeverCause, number[]>>;
-
-  const shares = familyShares(frame, full, chains);
-  const feedbackAt = HORIZON_YEARS.map((y) => 0 - (feedbackDelta.median[y - FIRST_YEAR] ?? 0));
-  const players = [...shares.keys()];
-  const causes = COUNTED_CAUSES.length;
-  const sharedAt = HORIZON_YEARS.map((year, h) => {
-    const linear = shareOut(
-      players.flatMap((f) => COUNTED_CAUSES.map((_, c) => shares.get(f)?.[c * 3 + h] ?? 0)),
-      feedbackAt[h] as number,
-    );
-    return fair ? scaledTo(linear, avoidedIn(year).median) : linear;
-  });
-  const warmingOf = (family: string, c: number, h: number): number => {
-    const k = players.indexOf(family);
-    return k < 0 ? 0 : (sharedAt[h]?.[k * causes + c] ?? 0);
-  };
-  const co2eOfFamily = (family: string, c: number): number => shares.get(family)?.[c * 3 + 2] ?? 0;
-  const listed = FAMILIES;
-  const perFamily = (f: (family: string) => number): Record<string, number> =>
-    Object.fromEntries(listed.map((family) => [family, f(family)]));
-  const byCauseOf = (f: (family: string, c: number) => number) =>
-    Object.fromEntries(
-      listed.map((family) => [family, causeRecord((c) => f(family, COUNTED_CAUSES.indexOf(c)))]),
-    ) as Record<string, ByCause<number>>;
-  const familyCause = {
-    avoidedCo2e: byCauseOf(co2eOfFamily),
-    avoidedWarming2050: byCauseOf((family, c) => warmingOf(family, c, 0)),
-    avoidedWarming2100: byCauseOf((family, c) => warmingOf(family, c, 1)),
-  };
-  const totalOf = (r: ByCause<number>) => sum(COUNTED_CAUSES.map((c) => r[c]));
-  const causeTotal = (r: Record<string, ByCause<number>>) =>
-    causeRecord((c) => sum(FAMILIES.map((f) => r[f]?.[c] ?? 0)));
-
-  const result: ScenarioResult = {
+  const result = {
     countries: withFootprints(ctx, steps, countries),
     years,
     baselineEmissions: baselinePath,
@@ -2078,8 +2159,7 @@ export const runPrepared = (
       baseline,
       scenario: scenarioBand,
       avoided: avoidedSeries,
-      avoidedByCause,
-      avoidedByGas,
+      ...PENDING.temperature,
       baselineChange: change,
     },
     summary: Object.assign(
@@ -2099,27 +2179,47 @@ export const runPrepared = (
           }),
           NO_LAND,
         ),
-        byFamily: {
-          avoidedCo2e: perFamily((f) => totalOf(familyCause.avoidedCo2e[f] as ByCause<number>)),
-          avoidedWarming2050: perFamily((f) =>
-            totalOf(familyCause.avoidedWarming2050[f] as ByCause<number>),
-          ),
-          avoidedWarming2100: perFamily((f) =>
-            totalOf(familyCause.avoidedWarming2100[f] as ByCause<number>),
-          ),
-        },
-        byFamilyCause: familyCause,
-        byCause: {
-          avoidedCo2e: causeTotal(familyCause.avoidedCo2e),
-          avoidedWarming2050: causeTotal(familyCause.avoidedWarming2050),
-          avoidedWarming2100: causeTotal(familyCause.avoidedWarming2100),
-        },
+        ...PENDING.summary,
       },
       ...world.map((w) => w.part.summary ?? {}),
-    ) as Summary,
+    ) as FirstResult['summary'],
   };
-  return Object.assign(result, ...world.map((w) => w.part.result ?? {})) as ScenarioResult;
+  const totalsAt = fair ? HORIZON_YEARS.map((y) => avoidedIn(y).median) : null;
+  return {
+    result: Object.assign(result, ...world.map((w) => w.part.result ?? {})) as FirstResult,
+    breakdown: () => ({
+      summary: breakdownOf(
+        familyShares(frame, full, chains),
+        HORIZON_YEARS.map((y) => 0 - (feedbackDelta.median[y - FIRST_YEAR] ?? 0)),
+        totalsAt,
+      ),
+      temperature: causeSplit(
+        frame,
+        full,
+        feedbackDelta.median,
+        avoidedSeries.median,
+        fair !== null,
+      ),
+    }),
+  };
 };
+
+const whole = (run: SplitRun): ScenarioResult => withBreakdown(run.result, run.breakdown());
+
+export const runPrepared = (
+  prepared: Prepared,
+  scenario: Scenario,
+  given: Options,
+  currentYear: number,
+): ScenarioResult => whole(startPrepared(prepared, scenario, given, currentYear));
+
+/** A run in its two parts, on data prepared once per data object. */
+export const startScenario = (
+  data: ModelData,
+  scenario: Scenario,
+  options: Options,
+  currentYear: number,
+): SplitRun => startPrepared(prepare(data), scenario, options, currentYear);
 
 /**
  * Runs a scenario end to end. The scenario-independent part is prepared once per data
@@ -2130,4 +2230,4 @@ export const runScenario = (
   scenario: Scenario,
   options: Options,
   currentYear: number,
-): ScenarioResult => runPrepared(prepare(data), scenario, options, currentYear);
+): ScenarioResult => whole(startScenario(data, scenario, options, currentYear));
