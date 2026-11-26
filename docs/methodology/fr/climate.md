@@ -37,7 +37,7 @@ La référence est lancée une fois pour chaque scénario et chaque jeu d'option
 
 La température, sa fourchette, le réchauffement évité par les leviers, le niveau de la mer et le pH de l'océan viennent tous de ces simulations. Ce que les leviers changent en dehors de ces quatre gaz est ajouté selon sa propre réponse : la pollution de l'air des leviers d'énergie, les traînées des avions, l'albédo des terres qui repoussent et les rejets du pergélisol (voir les pages des leviers).
 
-L'application additionnait auparavant la réponse à chaque kilogramme (ci-dessous). Pour de grands changements, cette somme s'écarte de FaIR. Avec tous les leviers au maximum sur SSP2-4.5, FaIR donne 1,47 °C de réchauffement évité en 2100 par ces quatre gaz, là où la somme donnait 1,40 °C, car le méthane disparaît plus vite et les puits de carbone sont moins saturés quand les émissions baissent.
+L'application additionnait auparavant la réponse à chaque kilogramme (ci-dessous). Pour de grands changements, cette somme s'écarte de FaIR. Avec tous les leviers au maximum sur SSP2-4.5, FaIR donne 1,48 °C de réchauffement évité en 2100 par ces quatre gaz, là où la somme donnait 1,40 °C, car le méthane disparaît plus vite et les puits de carbone sont moins saturés quand les émissions baissent.
 
 ## La réponse de la température à un kilogramme
 

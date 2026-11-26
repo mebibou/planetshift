@@ -30,6 +30,8 @@ export const countryResult = (over: Partial<CountryResult> = {}): CountryResult 
   deforestationHaChange: 0,
   drainedCo2: 0,
   drainedChange: 0,
+  drainedN2o: 0,
+  drainedN2oChange: 0,
   rewettedCh4: 0,
   ...over,
 });

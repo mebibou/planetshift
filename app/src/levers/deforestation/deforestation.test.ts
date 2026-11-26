@@ -73,6 +73,21 @@ describe('deforestation', () => {
     expect(w2100(r)).toBeGreaterThan(0);
     expect(run().countries.find((c) => c.iso3 === 'FRA')?.rewettedCh4).toBe(0);
   });
+  it('stops the N₂O of the drained soils the lever rewets or production frees', () => {
+    const france = (r: ReturnType<typeof run>) =>
+      r.countries.find((c) => c.iso3 === 'FRA') ?? expect.fail('no France');
+    const rewet = lever('peatRewetting');
+    expect(france(rewet).drainedN2o).toBe(1.5e6);
+    expect(france(rewet).drainedN2oChange).toBeCloseTo(-1.5e6, -1);
+    expect(rewet.summary.avoided.n2o).toBeGreaterThan(0);
+    expect(france(lever('deforestation')).drainedN2oChange).toBe(0);
+    const beef = france(run({ groupShifts: { ruminantMeat: 1 } }));
+    expect(beef.drainedN2oChange).toBeLessThan(0);
+    expect(beef.drainedN2oChange / beef.drainedN2o).toBeCloseTo(
+      beef.drainedChange / beef.drainedCo2,
+      9,
+    );
+  });
   it('counts the methane of the drained land a shift away from beef frees', () => {
     const beef = run({ groupShifts: { ruminantMeat: 1 } });
     const france = beef.countries.find((c) => c.iso3 === 'FRA') ?? expect.fail('no France');

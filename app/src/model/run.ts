@@ -469,9 +469,11 @@ interface CountryParts {
   /** CO₂ a year as a constant stream, such as clearing, by the cause it counts in and family. */
   co2: ByCause<Readonly<Record<string, number>>>;
   jointCo2: ByCause<Readonly<Record<string, number>>>;
-  /** CH₄ a year as a constant stream, such as rewetted peat's, by the cause and family. */
+  /** CH₄ and N₂O a year as constant streams, such as peat's, by the cause and family. */
   ch4: ByCause<Readonly<Record<string, number>>>;
   jointCh4: ByCause<Readonly<Record<string, number>>>;
+  n2o: ByCause<Readonly<Record<string, number>>>;
+  jointN2o: ByCause<Readonly<Record<string, number>>>;
   /** CO₂ a year that builds up after a change, by the cause it counts in, time constant and family. */
   builtUp: readonly BuiltUp[];
   /** The part of each production step's farm CO₂ that is grid electricity, kg a year. */
@@ -505,12 +507,13 @@ interface CountryHook {
   hook: (c: CountryContext) => CountryPart;
 }
 
-type StreamKey = 'co2' | 'jointCo2' | 'ch4' | 'jointCh4';
+type StreamKey = 'co2' | 'jointCo2' | 'ch4' | 'jointCh4' | 'n2o' | 'jointN2o';
 
 /** The constant streams of each gas: its key on the base year and on the production change. */
 const STREAMS = [
   ['co2', 'co2', 'jointCo2'],
   ['ch4', 'ch4', 'jointCh4'],
+  ['n2o', 'n2o', 'jointN2o'],
 ] as const;
 
 const addRecords = (parts: readonly CountryPart[], key: StreamKey): Record<string, number> => {
@@ -535,12 +538,12 @@ const streamsOf = (
         key,
       ),
     );
-  return {
-    co2: byKey('co2'),
-    jointCo2: byKey('jointCo2'),
-    ch4: byKey('ch4'),
-    jointCh4: byKey('jointCh4'),
-  };
+  return Object.fromEntries(
+    STREAMS.flatMap(([, own, joint]) => [
+      [own, byKey(own)],
+      [joint, byKey(joint)],
+    ]),
+  ) as Record<StreamKey, ByCause<Readonly<Record<string, number>>>>;
 };
 
 /** What a cut removes from the base year's production, kept while the cut is. */

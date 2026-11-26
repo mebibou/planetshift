@@ -23,6 +23,15 @@ def test_country_co2_reads_each_land_in_tonnes_for_the_model_countries():
     assert rows == {"cropland": 2000.0, "grassland": 500.0}
 
 
+def test_country_n2o_reads_each_land_in_tonnes():
+    gv = frame(
+        [(1, 6727, 7230, 0.25), (1, 6728, 7230, 0.5), (1, 6727, 7273, 9.0)],
+        ["area_code", "item_code", "element_code", "value"],
+    )
+    rows = O.country_n2o(gv, {1: "AAA"}).set_index("land")["t"].to_dict()
+    assert rows == {"cropland": 250.0, "grassland": 500.0}
+
+
 def test_harvested_area_maps_the_crops_to_their_food_items_by_share():
     qcl = frame(
         [(1, 15, 5312, 100.0), (1, 328, 5312, 40.0), (1, 15, 5510, 9e9)],

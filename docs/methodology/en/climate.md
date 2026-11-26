@@ -37,7 +37,7 @@ The baseline is run once for each scenario and set of options, from 1750 to 2100
 
 The temperature, its range, the warming the levers avoid, the sea level and the ocean's pH all come from these runs. What the levers change besides those four gases is added from its own response: the energy levers' air pollution, aviation's contrails, the albedo of land that grows back and permafrost's release (see the levers' pages).
 
-The app used to add up the response to each kilogram instead (below). For large changes, that sum differs from FaIR. With every lever in full on SSP2-4.5, FaIR gives 1.47 °C of warming avoided in 2100 from those four gases, where the sum gave 1.40 °C, because methane decays faster and the carbon sinks are less saturated once emissions fall.
+The app used to add up the response to each kilogram instead (below). For large changes, that sum differs from FaIR. With every lever in full on SSP2-4.5, FaIR gives 1.48 °C of warming avoided in 2100 from those four gases, where the sum gave 1.40 °C, because methane decays faster and the carbon sinks are less saturated once emissions fall.
 
 ## The temperature response to one kilogram
 

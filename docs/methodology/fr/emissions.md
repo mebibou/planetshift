@@ -208,12 +208,12 @@ Le seuil change la base, mais à peine l'effet d'un changement de régime. Un tr
 
 | Seuil de taux d'exploitation | Base hors alimentation, Mt CO₂e | Inde | Niger | Éthiopie | Mali | Changement complet : émissions évitées, Gt CO₂e | Changement complet : réchauffement évité en 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 6,7 % (Afrique australe, retenu) | 211 | 113 | 18,1 | 6,9 | 1,1 | 6,95 | 0,357 |
-| 9 % (médiane) | 245 | 113 | 19,5 | 26,0 | 4,0 | 6,90 | 0,354 |
-| 9,9 % (moyenne) | 258 | 113 | 19,8 | 31,1 | 5,1 | 6,89 | 0,353 |
-| 12 % (systèmes pastoraux) | 286 | 113 | 20,4 | 40,0 | 7,1 | 6,85 | 0,351 |
+| 6,7 % (Afrique australe, retenu) | 211 | 113 | 18,1 | 6,9 | 1,1 | 6,99 | 0,359 |
+| 9 % (médiane) | 245 | 113 | 19,5 | 26,0 | 4,0 | 6,94 | 0,356 |
+| 9,9 % (moyenne) | 258 | 113 | 19,8 | 31,1 | 5,1 | 6,93 | 0,355 |
+| 12 % (systèmes pastoraux) | 286 | 113 | 20,4 | 40,0 | 7,1 | 6,89 | 0,353 |
 
-Un demi-changement évite la moitié des émissions (de 3,42 à 3,46 Gt CO₂e) et un peu moins de la moitié du réchauffement (de 0,173 à 0,176 °C), car la réponse de FaIR n'est pas proportionnelle. La fourchette probable que montre l'application ne couvre que la réponse du climat, pas ce choix.
+Un demi-changement évite la moitié des émissions (de 3,44 à 3,49 Gt CO₂e) et un peu moins de la moitié du réchauffement (de 0,174 à 0,177 °C), car la réponse de FaIR n'est pas proportionnelle. La fourchette probable que montre l'application ne couvre que la réponse du climat, pas ce choix.
 
 ### Les limites de la règle
 
@@ -246,7 +246,7 @@ La fabrication des engrais et celle des pesticides sont laissées de côté, car
 
 En France, une tonne de bœuf a environ 1,08 t CO₂e après la ferme, et une tonne de blé environ 0,31 t. Pour le bœuf, c'est peu par rapport aux émissions de la ferme. Pour le blé, c'est proche.
 
-**Ce que changent les leviers.** Un changement de production (un changement de régime, moins de gaspillage, moins de pertes) change aussi les émissions après la ferme. Il le fait aliment par aliment, aux chiffres du pays. Comme les émissions de la ferme, elles suivent la référence et montent avec le changement. Elles comptent dans les [causes du réchauffement](#method-link) auxquelles elles appartiennent aujourd'hui : les étapes d'énergie dans *Combustibles fossiles et industrie* ; les déchets alimentaires et les eaux usées dans *Déchets* ; les réfrigérants dans *Autres émissions humaines*. Avec elles, le changement de régime complet évite environ 1,6 Gt CO₂e de plus par an. Une fois les leviers en place, il évite 7,2 Gt en tout. Cela comprend 329 kt de HFC-134a, environ 0,5 Gt CO₂e, et 0,27 Gt de CO₂ des sols drainés. Il évite 0,36 °C en 2100 au lieu de 0,29 °C.
+**Ce que changent les leviers.** Un changement de production (un changement de régime, moins de gaspillage, moins de pertes) change aussi les émissions après la ferme. Il le fait aliment par aliment, aux chiffres du pays. Comme les émissions de la ferme, elles suivent la référence et montent avec le changement. Elles comptent dans les [causes du réchauffement](#method-link) auxquelles elles appartiennent aujourd'hui : les étapes d'énergie dans *Combustibles fossiles et industrie* ; les déchets alimentaires et les eaux usées dans *Déchets* ; les réfrigérants dans *Autres émissions humaines*. Avec elles, le changement de régime complet évite environ 1,6 Gt CO₂e de plus par an. Une fois les leviers en place, il évite 7,3 Gt en tout. Cela comprend 329 kt de HFC-134a, environ 0,5 Gt CO₂e, et 0,27 Gt de CO₂ et 0,15 Mt de N₂O des sols drainés. Il évite 0,36 °C en 2100 au lieu de 0,29 °C.
 
 **Simplifications.** Tout est placé là où l'aliment est produit, comme les émissions de la ferme, bien que les magasins et les cuisines soient là où il est mangé. La cuisine et les déchets alimentaires suivent la masse d'un aliment, si bien qu'une tonne de blé et une tonne de bœuf ont les mêmes émissions à la maison. Moins de gaspillage réduit aussi les émissions de la cuisine des aliments qui ne sont plus gaspillés. Cela surestime un peu la réduction, car les aliments gaspillés ne sont pas toujours cuisinés. L'énergie après la ferme ne devient pas plus propre au fil des années, contrairement au réseau du scénario.
 

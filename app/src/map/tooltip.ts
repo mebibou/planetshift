@@ -95,14 +95,38 @@ const chainRows = (c: CountryResult, gas: GasChoice, t: T, locale: string): [str
       ]
     : [];
 
-/** The CO₂ of the drained organic soils under the country's farming, today and with the levers. */
-const drainedRow = (c: CountryResult, t: T, locale: string): [string, string] => [
-  t('map.tooltip.drainedCo2'),
+/** A mass today and with the levers, under a label. */
+const beforeAfterRow = (
+  label: string,
+  before: number,
+  change: number,
+  t: T,
+  locale: string,
+): [string, string] => [
+  label,
   t('map.tooltip.beforeAfter', {
-    before: formatMass(locale, c.drainedCo2 ?? 0),
-    after: formatMass(locale, (c.drainedCo2 ?? 0) + (c.drainedChange ?? 0)),
+    before: formatMass(locale, before),
+    after: formatMass(locale, before + change),
   }),
 ];
+
+/** The CO₂ of the drained organic soils under the country's farming, today and with the levers. */
+const drainedRow = (c: CountryResult, t: T, locale: string): [string, string] =>
+  beforeAfterRow(t('map.tooltip.drainedCo2'), c.drainedCo2 ?? 0, c.drainedChange ?? 0, t, locale);
+
+/** The N₂O of the same soils, when they emit any. */
+const drainedN2oRows = (c: CountryResult, t: T, locale: string): [string, string][] =>
+  (c.drainedN2o ?? 0) > 0
+    ? [
+        beforeAfterRow(
+          t('map.tooltip.drainedN2o'),
+          c.drainedN2o ?? 0,
+          c.drainedN2oChange ?? 0,
+          t,
+          locale,
+        ),
+      ]
+    : [];
 
 /** The methane of the drained soils the levers rewet, when they rewet any. */
 const rewettedRows = (c: CountryResult, t: T, locale: string): [string, string][] =>
@@ -341,6 +365,7 @@ const MEASURE_TOOLTIPS: Record<
       rows: [
         clearingCo2Row(c, t, locale, 'map.tooltip.clearing'),
         ...((c.drainedCo2 ?? 0) > 0 ? [drainedRow(c, t, locale)] : []),
+        ...drainedN2oRows(c, t, locale),
         ...rewettedRows(c, t, locale),
         ...(c.regrowthCo2 === undefined
           ? []

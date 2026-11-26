@@ -5,6 +5,7 @@ import {
   clearedAreaOf,
   clearingParts,
   deforestationOf,
+  drainedN2oOf,
   drainedOf,
   rewettedCh4Of,
   rewettedParts,
@@ -19,8 +20,8 @@ const total = (p: Parts): number => [...p.steps, p.lever, p.leverJoint].reduce((
 /**
  * Forest cleared for farming: it follows the production of the items it serves at every step,
  * the lever at 0 included, and the lever stops a share of what is left. The CO₂ of drained
- * organic soils follows production too; the land production frees is rewetted, and the peat
- * rewetting lever rewets a share of what is left, which then emits methane.
+ * organic soils, and their N₂O, follow production too; the land production frees is rewetted,
+ * and the peat rewetting lever rewets a share of what is left, which then emits methane.
  */
 export const deforestation: LeverModule = {
   ...deforestationSpec,
@@ -33,6 +34,7 @@ export const deforestation: LeverModule = {
         const parts = clearingParts(deforestationOf(pc, prepared), changes, pc.emitting, share);
         const area = clearingParts(clearedAreaOf(pc, prepared), changes, pc.emitting, share);
         const drained = clearingParts(drainedOf(pc, prepared), changes, pc.emitting, rewet);
+        const n2o = clearingParts(drainedN2oOf(pc, prepared), changes, pc.emitting, rewet);
         const ch4 = rewettedParts(rewettedCh4Of(pc, prepared), changes, pc.emitting, rewet);
         const byStep = (f: (k: number) => number) =>
           Object.fromEntries(stages.map((s, k) => [s.family, f(k)]));
@@ -44,6 +46,8 @@ export const deforestation: LeverModule = {
           jointCo2: { [ID]: parts.leverJoint + drained.leverJoint },
           ch4: { ...byStep((k) => ch4.steps[k] as number), [ID]: ch4.lever },
           jointCh4: { [ID]: ch4.leverJoint },
+          n2o: { ...byStep((k) => n2o.steps[k] as number), [ID]: n2o.lever },
+          jointN2o: { [ID]: n2o.leverJoint },
           result: {
             deforestationCo2: parts.before,
             deforestationChange: total(parts),
@@ -51,6 +55,8 @@ export const deforestation: LeverModule = {
             deforestationHaChange: total(area),
             drainedCo2: drained.before,
             drainedChange: total(drained),
+            drainedN2o: n2o.before,
+            drainedN2oChange: total(n2o),
             rewettedCh4: total(ch4),
           },
         };

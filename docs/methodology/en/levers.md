@@ -29,7 +29,7 @@ The diet changes farm emissions, which count under farming. It also changes the 
 The avoided warming of such a group is split by cause according to the gas and its source:
 
 - farm methane, nitrous oxide and CO₂ count in farming;
-- the CO₂ of forest clearing and drained peat, the methane of rewetted peat, regrowth and carbon stored in farmland count in land use;
+- the CO₂ of forest clearing, the CO₂ and N₂O of drained peat, the methane of rewetted peat, regrowth and carbon stored in farmland count in land use;
 - fossil CO₂ and aviation's non-CO₂ forcing count in fossil fuels and industry. Forcing is the change in the energy the Earth keeps, which warms it (see [From emissions to temperature](#method-climate)).
 
 After today, the Causes of warming chart takes each cause's part off that cause's band. The summary lists the parts under the same causes, with the same names and colours.
@@ -53,7 +53,7 @@ For a country, item and gas, the share of the emissions removed is a sum over so
 
 Less supply needs less production, which uses less land and emits less. The change goes through the same supply chain as the shift, feed included. What people eat does not change, so the protein and calories shown are those of the diet.
 
-**Deforestation** (see [Deforestation](#method-deforestation)). Clearing forest for farming releases about 2 Gt of CO₂ a year (`deforestation.json`, by country and item). The model keeps this yearly amount constant and counts only its change. The clearing tied to an item moves with the item's production in the country where the forest is cleared. A shift away from beef therefore lowers pasture clearing in Brazil, through trade, even with the lever at 0. This change is capped between none and double today's clearing. The lever then prevents its share of the clearing that is left. Both are changes in CO₂, and they go into the climate response like any other. The CO₂ of drained organic soils, about 0.8 Gt a year, moves with production too, and the land production frees is taken to be rewetted, which emits methane. The peat rewetting lever rewets its share of the drained land that is left: its CO₂ stops and its methane starts.
+**Deforestation** (see [Deforestation](#method-deforestation)). Clearing forest for farming releases about 2 Gt of CO₂ a year (`deforestation.json`, by country and item). The model keeps this yearly amount constant and counts only its change. The clearing tied to an item moves with the item's production in the country where the forest is cleared. A shift away from beef therefore lowers pasture clearing in Brazil, through trade, even with the lever at 0. This change is capped between none and double today's clearing. The lever then prevents its share of the clearing that is left. Both are changes in CO₂, and they go into the climate response like any other. The CO₂ of drained organic soils, about 0.8 Gt a year, and their N₂O, about 0.34 Mt, move with production too. The land production frees is taken to be rewetted, and rewetted land emits methane. The peat rewetting lever rewets its share of the drained land that is left: its CO₂ and N₂O stop and its methane starts.
 
 **Carbon in farmland** (see [Carbon stored in farmland](#method-removals)). Cover crops, trees on farms, biochar and rock dust, which is experimental, store CO₂. The amount stored is adoption × the largest share of the land the practice can reach (`maxShare`) × the hectares of cropland, pasture or both once the shift is complete × the country's rate. Each hectare stores carbon for `years` years from the year the practice starts on it. Cover crops and trees saturate after 20 years. Biochar and rock dust keep storing carbon until 2100.
 
@@ -100,11 +100,11 @@ A lever that only acts together with another shares that joint effect half and h
 
 | Groups acting | Warming avoided in 2100 |
 | --- | --- |
-| Diet alone | 0.1677 °C |
+| Diet alone | 0.1685 °C |
 | Regrowth alone | 0 (it frees no land) |
-| Diet and regrowth | 0.1819 °C |
+| Diet and regrowth | 0.1827 °C |
 
-The joint effect of regrowth is 0.1819 − 0.1677 = 0.0142 °C. The Shapley value splits it equally between the two. Regrowth gets 0.0071 °C and the diet gets 0.1677 + 0.0071 = 0.1748 °C. With permafrost on, the change in its release is shared out on top of these parts (see below). The summary then scales the parts so that they add up to the warming avoided that FaIR gives (see *Sharing out FaIR's total* below).
+The joint effect of regrowth is 0.1827 − 0.1685 = 0.0142 °C. The Shapley value splits it equally between the two. Regrowth gets 0.0071 °C and the diet gets 0.1685 + 0.0071 = 0.1756 °C. With permafrost on, the change in its release is shared out on top of these parts (see below). The summary then scales the parts so that they add up to the warming avoided that FaIR gives (see *Sharing out FaIR's total* below).
 
 ### How Planetshift computes them quickly
 
@@ -120,7 +120,7 @@ A test checks, on the fixtures and on the real data, that this gives the Shapley
 
 The warming avoided comes from FaIR run in the app, which does not respond in proportion to the emissions (see [Climate](#method-climate)). Its Shapley values would need FaIR run on every set of acting groups, up to 256 runs. That takes about a second for each move of a slider. So the parts are the Shapley values on the sum of responses, each scaled by the same factor so that they add up to FaIR's total. The causes and the gases are shared out the same way, year by year.
 
-On the real data, this stays within 0.017 °C of the Shapley values of FaIR run on every set of groups, 1.1% of the total, with every lever in full on SSP2-4.5 in 2100. The largest gap is energy and transport's: 0.570 °C, against 0.553 °C. With one group acting, the two are the same.
+On the real data, this stays within 0.017 °C of the Shapley values of FaIR run on every set of groups, 1.2% of the total, with every lever in full on SSP2-4.5 in 2100. The largest gap is energy and transport's: 0.570 °C, against 0.553 °C. With one group acting, the two are the same.
 
 ### A method considered and not used
 

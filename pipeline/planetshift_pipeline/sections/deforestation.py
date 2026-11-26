@@ -10,8 +10,8 @@ from ..inputs import Build, log, write
 
 
 def drained(b: Build, peat: dict) -> dict:
-    """t of CO₂ a year from drained organic soils, and of CH₄ once rewetted, by country and the
-    item it is shared to."""
+    """t of CO₂ and N₂O a year from drained organic soils, and of CH₄ once rewetted, by country
+    and the item they are shared to."""
     y = b.emissions_year
     area = O.harvested_area(b.read("QCL", y, y), I.load_crops(), b.iso3)
     peat_rows = [
@@ -28,6 +28,7 @@ def drained(b: Build, peat: dict) -> dict:
     drained_area = O.country_area(gv, b.iso3)
     food_crops = crops[crops["fbs_code"].isin(b.kept_codes)]
     kept, lost = O.drained(co2, food_crops, ruminants)
+    n2o, _ = O.drained(O.country_n2o(gv, b.iso3), food_crops, ruminants)
     ch4, _ = O.drained(O.rewetted_ch4(co2, drained_area), food_crops, ruminants)
     log.info(
         "drained organic soils %s: %.2f Gt CO2/yr on food items (cropland %.2f, grassland %.2f), "
@@ -39,14 +40,17 @@ def drained(b: Build, peat: dict) -> dict:
         lost / 1e6,
     )
     log.info(
-        "drained organic soils %s: %.1f Mha, %.2f Mt CH4/yr on food items once rewetted",
+        "drained organic soils %s: %.1f Mha, %.3f Mt N2O/yr on food items, %.2f Mt CH4/yr once "
+        "rewetted",
         y,
         drained_area["t"].sum() / 1e6,
+        n2o["t_co2"].sum() / 1e6,
         ch4["t_co2"].sum() / 1e6,
     )
     countries = set(b.iso3.values())
     return {
         "drainedByCountry": D.by_country(kept, countries),
+        "drainedN2oByCountry": D.by_country(n2o, countries),
         "rewettedCh4ByCountry": D.by_country(ch4, countries),
     }
 
