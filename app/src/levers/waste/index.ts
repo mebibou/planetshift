@@ -1,8 +1,29 @@
+import type { ModelData } from '../../data/types';
 import type { LeverModule } from '../types';
 import { wasteSpec } from './spec';
+import { countryFoodWaste } from './foodWaste';
 import { foodWithLessWaste, lossChain, wasteShareOf } from './model';
 
-/** Less food wasted after shops and lost before them: less to grow for the same meals. */
+const foodWasteFields = (fw: ReturnType<typeof countryFoodWaste>) => ({
+  foodWaste: fw.before,
+  foodWasteChange: fw.change,
+});
+
+/** A country's municipal waste and plastic reaching the ocean, where the files give them. */
+const unchangedWaste = (data: ModelData, iso3: string) => {
+  const municipal = data.solidwaste?.byCountry[iso3];
+  const plastic = data.oceanplastic?.byCountry[iso3];
+  return {
+    ...(municipal ? { municipalWaste: municipal } : {}),
+    ...(plastic === undefined ? {} : { oceanPlastic: plastic }),
+  };
+};
+
+/**
+ * Less food wasted after shops and lost before them: less to grow for the same meals. Its
+ * country hook gives the food lost and wasted by stage on the passes that read the diet (not the
+ * breakdown's), and the waste no lever changes.
+ */
 export const waste: LeverModule = {
   ...wasteSpec,
   hooks: {
@@ -20,6 +41,24 @@ export const waste: LeverModule = {
             avoidedLosses: (pc) => lossChain(pc, prepared, cut).avoided,
           }
         : null;
+    },
+    country: ({ prepared, adoption }) => {
+      const [wasteCut, lossCut] = [adoption('foodWaste'), adoption('supplyLosses')];
+      return ({ pc, food, stages }) => ({
+        result: {
+          ...(food
+            ? foodWasteFields(
+                countryFoodWaste(pc, prepared, {
+                  dietFood: food,
+                  change: (stages[stages.length - 1] as (typeof stages)[number]).change,
+                  wasteCut,
+                  lossCut,
+                }),
+              )
+            : {}),
+          ...unchangedWaste(prepared.data, pc.country.iso3),
+        },
+      });
     },
   },
 };

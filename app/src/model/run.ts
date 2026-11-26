@@ -592,7 +592,7 @@ const countryParts = (
     prepared,
     cakes[cakes.length - 1] as CakeDemand,
   );
-  const extra = countryHooks.map(({ hook }) => hook({ pc, stages, land, landChange }));
+  const extra = countryHooks.map(({ hook }) => hook({ pc, food, stages, land, landChange }));
   const chain = countryChain(pc, prepared, stages);
   return {
     result: Object.assign(

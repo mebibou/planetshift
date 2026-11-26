@@ -113,11 +113,22 @@ const groupCache = memoPer<Prepared, LossGroup[]>();
 const groupsOf = (prepared: Prepared): LossGroup[] =>
   groupCache(prepared, 'lossGroups', () => prepared.items.map((item) => lossGroupOf(item.group)));
 
+const lossShareCache = memoPer<PreparedCountry, ItemVector>();
+
+/** Each item's share of a country's supply lost before shops, computed once. */
+export const lossSharesOf = (pc: PreparedCountry, prepared: Prepared): ItemVector =>
+  lossShareCache(pc, 'lossShares', () =>
+    lossSharesWith(
+      pc.lossShares,
+      groupsOf(prepared),
+      prepared.data.waste.lossShares?.[pc.country.iso3],
+    ),
+  );
+
 /** A country's supply chain with its losses cut by `cut`, kept for its latest cut. */
 export const lossChain = (pc: PreparedCountry, prepared: Prepared, cut: number): LossChain =>
   chainCache(pc, String(cut), () => {
-    const fao = prepared.data.waste.lossShares?.[pc.country.iso3];
-    const shares = lossSharesWith(pc.lossShares, groupsOf(prepared), fao);
+    const shares = lossSharesOf(pc, prepared);
     const multipliers = multipliersWith(pc.multipliers, shares, pc.seedShares, cut);
     const losses = shares.map((l, i) => l * (pc.supply[i] as number));
     return { multipliers, avoided: avoidedSupply(losses, multipliers, cut) };

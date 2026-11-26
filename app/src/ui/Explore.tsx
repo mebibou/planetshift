@@ -10,11 +10,12 @@ import {
 import type { AppState, ViewContext } from '../app/context';
 import { worldPerCapita } from '../app/summaryModel';
 import { tabKeys } from '../app/tabs';
-import { CHARTS, type ChartTab, type Horizon } from '../app/url';
+import { CHARTS, WASTE_VIEWS, type ChartTab, type Horizon, type WasteView } from '../app/url';
 import { avoidedChart } from '../chart/avoided';
 import { OCEAN_PH, pathsChart, SEA_LEVEL } from '../chart/paths';
 import { causeGasesOf, type CauseGas } from '../chart/series';
 import { RANGE_START, temperatureChart, type Range } from '../chart/temperature';
+import { wasteChart } from '../chart/waste';
 import { dataFolder } from '../data/load';
 import type { ModelData } from '../data/types';
 import { leverAvailable } from '../levers/registry';
@@ -106,6 +107,7 @@ interface Drawn {
   avoided: ReturnType<typeof avoidedChart>;
   sealevel: ReturnType<typeof pathsChart>;
   ocean: ReturnType<typeof pathsChart>;
+  waste: ReturnType<typeof wasteChart>;
 }
 
 /** How each chart that a run draws is drawn from it. */
@@ -135,6 +137,13 @@ const DRAW: Record<
     ),
   ocean: ({ ocean }, { result, ui, data, options }) =>
     ocean.update(result, Number(ui.horizon), ui.range, data.climate.oceanPhObserved, options.ssp),
+  waste: ({ waste }, { result, ui, data }) =>
+    waste.update({
+      result,
+      view: ui.wasteView,
+      solidwaste: data.solidwaste,
+      oceanplastic: data.oceanplastic,
+    }),
 };
 
 /** The charts, drawn again from the latest result and choices. */
@@ -147,14 +156,15 @@ const useCharts = ({ ctx, state, result, data }: ExploreProps) => {
   const [ocean, oceanRef] = useDrawn(() =>
     pathsChart(ctx.t, ctx.locale, ctx.currentYear, OCEAN_PH),
   );
+  const [waste, wasteRef] = useDrawn(() => wasteChart(ctx.t, ctx.locale));
   const { ui, options } = state;
   useEffect(() => {
     const draw = { result, ui, options, data, currentYear: ctx.currentYear };
     if (result && ui.chart !== 'cause') {
-      DRAW[ui.chart]({ temperature, avoided, sealevel, ocean }, { ...draw, result });
+      DRAW[ui.chart]({ temperature, avoided, sealevel, ocean, waste }, { ...draw, result });
     }
-  }, [result, ui, options, data, temperature, avoided, sealevel, ocean, ctx.currentYear]);
-  return { temperatureRef, avoidedRef, sealevelRef, oceanRef };
+  }, [result, ui, options, data, temperature, avoided, sealevel, ocean, waste, ctx.currentYear]);
+  return { temperatureRef, avoidedRef, sealevelRef, oceanRef, wasteRef };
 };
 
 /** The gas the Causes of warming tab shows: every emission when the build has no split for it. */
@@ -184,8 +194,16 @@ const ChartSwitches = (props: {
           ),
         }))}
         value={ui.range}
-        hidden={ui.chart === 'avoided'}
+        hidden={ui.chart === 'avoided' || ui.chart === 'waste'}
         onChange={(r) => ctx.setUi((u) => ({ ...u, range: r }))}
+      />
+      <Segmented<WasteView>
+        name="wasteview"
+        legend={t('wasteChart.view')}
+        options={WASTE_VIEWS.map((value) => ({ value, label: t(`wasteChart.views.${value}`) }))}
+        value={ui.wasteView}
+        hidden={ui.chart !== 'waste'}
+        onChange={(v) => ctx.setUi((u) => ({ ...u, wasteView: v }))}
       />
       <Segmented<CauseGas>
         name="causegas"
@@ -214,8 +232,8 @@ const RUN_ERROR = 'run-error m-0 mt-2 font-bold text-danger';
 const ChartCard = (props: ExploreProps) => {
   const { ctx, state, result } = props;
   const { t } = ctx;
-  const { temperatureRef, avoidedRef, sealevelRef, oceanRef } = useCharts(props);
-  const latest = useLatest({ result, state, climate: props.data.climate });
+  const { temperatureRef, avoidedRef, sealevelRef, oceanRef, wasteRef } = useCharts(props);
+  const latest = useLatest({ result, state, climate: props.data.climate, data: props.data });
   const download = useChartDownload(t, () => ({
     ...latest.current,
     result: latest.current.result ?? null,
@@ -275,6 +293,14 @@ const ChartCard = (props: ExploreProps) => {
         hidden={chart !== 'ocean'}
       >
         <span className="drawn" ref={oceanRef} />
+      </div>
+      <div
+        role="tabpanel"
+        id="chart-panel-waste"
+        aria-labelledby="chart-tab-waste"
+        hidden={chart !== 'waste'}
+      >
+        <span className="drawn" ref={wasteRef} />
       </div>
       <div
         role="tabpanel"
@@ -399,6 +425,7 @@ export const Explore = (props: ExploreProps) => {
             folder={dataFolder(location.search)}
             files={__DATA_FILES__[dataFolder(location.search)] ?? []}
             result={shown}
+            waste={data}
             state={state}
             setUi={ctx.setUi}
           />

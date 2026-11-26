@@ -22,8 +22,16 @@ describe('url', () => {
       range: 'recent',
       causeGas: 'n2o',
       speciesPer: 'farmland',
+      wasteOf: 'food',
+      wasteView: 'food',
     });
-    expect(parseUi('?view=nope&gas=xx&causegas=co2e')).toEqual(DEFAULT_UI);
+    expect(parseUi('?view=nope&gas=xx&causegas=co2e&waste=paper')).toEqual(DEFAULT_UI);
+    expect(parseUi('?layer=waste&waste=plastic&chart=waste&wasteview=treatment')).toMatchObject({
+      layer: 'waste',
+      wasteOf: 'plastic',
+      chart: 'waste',
+      wasteView: 'treatment',
+    });
     expect(parseUi('?layer=land&change=land')).toMatchObject({ layer: 'land', changeOf: 'land' });
   });
 

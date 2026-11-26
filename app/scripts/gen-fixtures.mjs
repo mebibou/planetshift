@@ -819,6 +819,63 @@ write('waste.json', {
   source: 'https://wedocs.unep.org/20.500.11822/45230',
 });
 
+// municipal solid waste, tonnes a year, with the shares of each type and treatment; NGA has none
+const TYPE_KEYS = ['foodGreen', 'paper', 'plastic', 'glass', 'metal', 'textiles', 'other'];
+const TREATMENT_KEYS = [
+  'landfill',
+  'openDump',
+  'incineration',
+  'recycling',
+  'composting',
+  'other',
+  'uncollected',
+];
+const municipal = {
+  FRA: [3.6e7, 'high', [0.32, 0.22, 0.12, 0.08, 0.05, 0.05, 0.16], [0.2, 0, 0.35, 0.3, 0.15, 0, 0]],
+  USA: [
+    2.7e8,
+    'high',
+    [0.34, 0.23, 0.12, 0.04, 0.09, 0.06, 0.12],
+    [0.5, 0, 0.12, 0.24, 0.14, 0, 0],
+  ],
+  IND: [
+    2.1e8,
+    'lowerMiddle',
+    [0.5, 0.08, 0.1, 0.02, 0.02, 0.04, 0.24],
+    [0.2, 0.2, 0.01, 0.05, 0.04, 0.3, 0.2],
+  ],
+  BRA: [
+    8.1e7,
+    'upperMiddle',
+    [0.51, 0.13, 0.17, 0.02, 0.02, 0.03, 0.12],
+    [0.6, 0.15, 0, 0.02, 0.01, 0.1, 0.12],
+  ],
+};
+write('solidwaste.json', {
+  year: 2022,
+  byCountry: Object.fromEntries(
+    Object.entries(municipal).map(([iso3, [tonnes, income, types, treatment]]) => [
+      iso3,
+      {
+        tonnes,
+        kgPerPerson: 400,
+        income,
+        types: Object.fromEntries(TYPE_KEYS.map((k, i) => [k, types[i]])),
+        treatment: Object.fromEntries(TREATMENT_KEYS.map((k, i) => [k, treatment[i]])),
+        ...(iso3 === 'BRA' ? { filled: ['treatment'] } : {}),
+      },
+    ]),
+  ),
+  source: 'https://datacatalog.worldbank.org/search/dataset/0039597',
+});
+
+// plastic reaching the ocean through rivers, tonnes a year; USA and NGA have none in the fixture
+write('oceanplastic.json', {
+  year: 2019,
+  byCountry: { FRA: 2000, IND: 130000, BRA: 38000 },
+  source: 'https://doi.org/10.1126/sciadv.aaz5803',
+});
+
 // deforestation CO₂ attributed to commodities, tonnes a year, and the forest area cleared, ha a year
 write('deforestation.json', {
   byCountry: {

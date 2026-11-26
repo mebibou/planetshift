@@ -3,8 +3,10 @@ import type { CountryResult } from '../model/api';
 import {
   beforeAfter,
   gasValue,
+  hasWasteData,
   measureOf,
   relativeChange,
+  UNCHANGED,
   type GasChoice,
   type Layer,
   type LandUseCo2,
@@ -91,19 +93,34 @@ export interface Sort {
 export const hasTier = (spec: LayerSpec): boolean =>
   spec.layer === 'quality' || ['production', 'emissions'].includes(measureOf(spec));
 
-/** The columns a layer shows: data quality is only its tier and source, land-use CO₂ one value. */
+/** Whether no lever changes what the layer shows: it has today's value alone. */
+const unchanged = (spec: LayerSpec): boolean => UNCHANGED.includes(measureOf(spec));
+
+/** The layers with columns of their own: data quality its tier, land-use CO₂ no change. */
+const OWN_COLUMNS: Partial<Record<Layer, (spec: LayerSpec) => Column[]>> = {
+  quality: () => ['name', 'tier'],
+  landCo2: () => ['name', 'before', 'after'],
+  waste: (spec) => (unchanged(spec) ? ['name', 'before'] : ['name', 'before', 'after', 'change']),
+};
+
+/** The columns a layer shows: today, with the levers and the change, and the tier where it has one. */
 export const columnsOf = (spec: LayerSpec): Column[] =>
+  OWN_COLUMNS[spec.layer]?.(spec) ??
+  (hasTier(spec) ? [...COLUMNS] : ['name', 'before', 'after', 'change']);
+
+/** The column the map colours by: the tier, the change, or the value with the levers (today's). */
+const sortColumn = (spec: LayerSpec): Column =>
   spec.layer === 'quality'
-    ? ['name', 'tier']
-    : spec.layer === 'landCo2'
-      ? ['name', 'before', 'after']
-      : hasTier(spec)
-        ? [...COLUMNS]
-        : ['name', 'before', 'after', 'change'];
+    ? 'tier'
+    : spec.layer === 'change'
+      ? 'change'
+      : unchanged(spec)
+        ? 'before'
+        : 'after';
 
 /** The order the table opens in: the column the map colours by, largest first. */
 export const defaultSort = (spec: LayerSpec): Sort => ({
-  column: spec.layer === 'quality' ? 'tier' : spec.layer === 'change' ? 'change' : 'after',
+  column: sortColumn(spec),
   direction: 'descending',
 });
 
@@ -114,17 +131,20 @@ const tierOf = (c: CountryResult, worst: TierSource | null) => ({
 });
 
 /** The layers listing only some countries: those the files give data for. */
-const LISTED: Partial<Record<Layer, (c: CountryResult, landUse: LandUseCo2) => boolean>> = {
+const LISTED: Partial<
+  Record<Layer, (c: CountryResult, landUse: LandUseCo2, spec: LayerSpec) => boolean>
+> = {
   landCo2: (c, landUse) => landUse.has(c.iso3),
   mammals: (c) => c.mammals > 0 && c.landArea > 0,
   species: (c) => c.species > 0,
   water: (c) => c.water > 0,
   waterScarcity: (c) => c.waterScarcity > 0,
+  waste: (c, _, spec) => hasWasteData(c, measureOf(spec)),
 };
 
 /** Whether the layer has data for a country. */
 const listed = (c: CountryResult, spec: LayerSpec, landUse: LandUseCo2): boolean =>
-  LISTED[spec.layer]?.(c, landUse) ?? true;
+  LISTED[spec.layer]?.(c, landUse, spec) ?? true;
 
 export const tableRows = (
   countries: CountryResult[],

@@ -386,6 +386,7 @@ test('the map layers and tooltip work', async ({ page }) => {
     'species',
     'water',
     'waterScarcity',
+    'waste',
     'quality',
     'change',
     'emissions',
@@ -508,6 +509,33 @@ test('moving the shift recolours the map and raises the avoided warming', async 
   expect(await lastY(page, '.avoided-chart .scenario-line')).not.toBe(before.top);
 });
 
+test('the Waste tab stacks food by stage with the levers, and municipal waste the levers leave', async ({
+  page,
+}) => {
+  await open(page, `${START}&chart=waste&fw=50`);
+  const panel = page.locator('#chart-panel-waste');
+  await expect(panel.locator('.waste-bar')).toHaveCount(2);
+  const labels = panel.locator('.waste-bar-label');
+  await expect(labels.first()).toContainText('Today');
+  await expect(labels.nth(1)).toContainText('With the levers in place');
+  await expect(panel.locator('.waste-plastic')).toContainText('No lever changes it');
+  await page.locator('label[for="wasteview-treatment"]').click();
+  await expect(page).toHaveURL(/wasteview=treatment/);
+  await expect(panel.locator('.waste-bar')).toHaveCount(5);
+  await expect(panel.locator('.chart-legend')).toContainText('Never collected');
+  await expect(panel.locator('figcaption')).toContainText('No lever changes it');
+  const width = await page.evaluate(() => document.documentElement.scrollWidth);
+  expect(width).toBeLessThanOrEqual(page.viewportSize()?.width ?? width);
+});
+
+test('the waste layer says which waste the levers change', async ({ page }) => {
+  await open(page, `${START}&layer=waste&waste=municipal&mapview=table`);
+  await expect(page.locator('.map-note')).toContainText('No lever changes it');
+  await expect(page.locator('#map-panel-table tbody tr')).toHaveCount(4);
+  await page.locator('label[for="wasteOf-food"]').click();
+  await expect(page.locator('.map-note')).toContainText('cut it');
+});
+
 test('the charts are tabs, global temperature first, and reach 2100', async ({ page }) => {
   await open(page, `${START}&shift=50`);
   await expect(page.locator('#chart-tab-temperature')).toHaveAttribute('aria-selected', 'true');
@@ -538,7 +566,7 @@ test('the chart tabs and the chart values are reachable from the keyboard', asyn
   await expect(page.locator('#chart-tab-cause')).toHaveAttribute('aria-selected', 'true');
   await expect(page).toHaveURL(/chart=cause/);
   await page.keyboard.press('End');
-  await expect(page.locator('#chart-tab-ocean')).toBeFocused();
+  await expect(page.locator('#chart-tab-waste')).toBeFocused();
   await page.keyboard.press('ArrowRight');
   await expect(page.locator('#chart-tab-temperature')).toBeFocused();
   await expect(page.locator('#chart-panel-temperature')).toBeVisible();

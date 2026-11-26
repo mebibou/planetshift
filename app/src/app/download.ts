@@ -1,11 +1,19 @@
 import type { SeaLevelBand } from '../model/seaLevel';
-import { GASES, type BandSeries, type Climate, type Meta, type Series } from '../data/types';
+import {
+  GASES,
+  type BandSeries,
+  type Climate,
+  type Meta,
+  type ModelData,
+  type Series,
+} from '../data/types';
+import { oceanPlasticTotal, wasteBars } from '../chart/wasteBars';
 import { populationPath } from '../chart/populationArea';
 import type { Options, Scenario, ScenarioResult } from '../model/api';
 import { attributionFor, causeGasesOf, causesIn, type Attribution } from '../chart/series';
 import { measureOf, type LayerSpec, type Measure } from '../map/layers';
 import type { TableRow } from '../map/table';
-import type { ChartTab, UiState } from './url';
+import { WASTE_VIEWS, type ChartTab, type UiState } from './url';
 import { formatSignificant } from '../i18n/format';
 
 export type Cell = string | number | null | undefined;
@@ -52,19 +60,21 @@ export const scenarioSlug = (scenario: Scenario): string => {
     .join('-');
 };
 
+/** What a layer of a measure is of: the gas, the food group or the waste; '' for none. */
+const selectionOf = (spec: LayerSpec, measure: Measure): string =>
+  measure === 'emissions'
+    ? spec.gas
+    : measure === 'production'
+      ? spec.group
+      : spec.layer === 'waste'
+        ? (spec.wasteOf ?? 'food')
+        : '';
+
 /** The layer and what it is of: `change-emissions-ch4`, `production-dairy`, `land`. */
 export const layerSlug = (spec: LayerSpec): string => {
-  const measure = measureOf(spec);
-  const selection =
-    spec.layer === 'quality'
-      ? ''
-      : measure === 'emissions'
-        ? spec.gas
-        : measure === 'production' && spec.group !== 'all'
-          ? spec.group
-          : '';
+  const selection = spec.layer === 'quality' ? '' : selectionOf(spec, measureOf(spec));
   return [spec.layer, spec.layer === 'change' ? spec.changeOf : '', selection]
-    .filter(Boolean)
+    .filter((part) => part && part !== 'all')
     .join('-');
 };
 
@@ -80,6 +90,9 @@ const UNITS: Record<Measure, (spec: LayerSpec) => string> = {
   water: () => 'L of freshwater withdrawn',
   waterScarcity: () => 'L eq of scarcity-weighted water use (AWARE 2.0), crops HESTIA covers only',
   emissions: (spec) => (spec.gas === 'co2e' ? 'kg CO2e (GWP100)' : `kg ${spec.gas.toUpperCase()}`),
+  foodWaste: () => 't of food lost before shops and wasted after them',
+  municipalWaste: () => 't of municipal solid waste (no lever changes it)',
+  oceanPlastic: () => 't of plastic reaching the ocean through rivers (no lever changes it)',
 };
 
 export const unitOf = (measure: Measure, spec: LayerSpec): string => UNITS[measure](spec);
@@ -111,7 +124,7 @@ export const mapFileName = (spec: LayerSpec, scenario: Scenario, ext: string): s
 /** The map's layer, every country: its values before and after the shift, unit, tier and source. */
 export const mapCsv = (rows: TableRow[], spec: LayerSpec, scenario: Scenario): DownloadFile => {
   const measure = measureOf(spec);
-  const selection = measure === 'emissions' ? spec.gas : measure === 'production' ? spec.group : '';
+  const selection = selectionOf(spec, measure);
   return csvFile(
     mapFileName(spec, scenario, 'csv'),
     MAP_HEADER,
@@ -312,6 +325,9 @@ export const causeRows = (
   };
 };
 
+/** The files the Waste chart reads beside the run. */
+export type WasteFiles = Pick<ModelData, 'solidwaste' | 'oceanplastic'>;
+
 export interface ChartInput {
   tab: ChartTab;
   result: ScenarioResult | null;
@@ -319,7 +335,27 @@ export interface ChartInput {
   scenario: Scenario;
   options: Options;
   currentYear: number;
+  waste?: WasteFiles;
 }
+
+/**
+ * The Waste chart's three views, one row per part of each bar, tonnes a year, then the world's
+ * plastic reaching the ocean.
+ */
+export const wasteRows = (result: ScenarioResult, waste: WasteFiles = {}): Table => {
+  const plastic = oceanPlasticTotal(waste.oceanplastic);
+  return {
+    header: ['view', 'bar', 'part', 'tonnes', 'changed_by_levers'],
+    rows: [
+      ...WASTE_VIEWS.flatMap((view) =>
+        wasteBars(view, result.countries, waste.solidwaste).flatMap((bar) =>
+          bar.parts.map((p) => [view, bar.key, p.key, p.tonnes, view === 'food' ? 'yes' : 'no']),
+        ),
+      ),
+      ...(plastic === null ? [] : [['oceanPlastic', 'world', 'plastic', plastic, 'no']]),
+    ],
+  };
+};
 
 /** Each tab's table from a run; the causes' table is read from the data alone. */
 const RUN_TABLES: Record<
@@ -330,6 +366,7 @@ const RUN_TABLES: Record<
   avoided: (r, i) => avoidedRows(r, i.currentYear),
   sealevel: (r, i) => seaLevelRows(r, i.climate.seaLevel?.observed),
   ocean: (r, i) => oceanRows(r, i.currentYear, i.climate.oceanPhObserved),
+  waste: (r, i) => wasteRows(r, i.waste),
 };
 
 /** The data of one chart tab as CSV, or null when the model has not run. */
@@ -364,6 +401,7 @@ export const LICENCES: Record<string, Licence> = {
     name: 'CC BY-NC-SA 4.0',
     url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
   },
+  ccByNc: { name: 'CC BY-NC 4.0', url: 'https://creativecommons.org/licenses/by-nc/4.0/' },
   ccByIgo: { name: 'CC BY 3.0 IGO', url: 'https://creativecommons.org/licenses/by/3.0/igo/' },
   unTerms: { name: 'UN terms of use', url: 'https://www.un.org/en/about-us/terms-of-use' },
 };
@@ -371,21 +409,20 @@ export const LICENCES: Record<string, Licence> = {
 const pick = (...keys: (keyof typeof LICENCES)[]): Licence[] =>
   keys.map((k) => LICENCES[k]).filter((l): l is Licence => l !== undefined);
 
-const SHARE_ALIKE = new Set(['industry', 'fair']);
+/** The files whose terms are not CC BY 4.0. */
+const FILE_LICENCES: Readonly<Record<string, readonly string[]>> = {
+  climate: ['ccByNcSa'],
+  sectors: ['ccByNcSa'],
+  industry: ['ccBySa'],
+  fair: ['ccBySa'],
+  population: ['ccByIgo', 'ccBy'],
+  waste: ['unTerms'],
+  oceanplastic: ['ccByNc'],
+};
 
 /** A data file's terms, as DATA-LICENCES.md gives them. */
-export const fileLicences = (file: string): Licence[] => {
-  const base = file.replace(/\.json$/, '');
-  return base === 'climate' || base === 'sectors'
-    ? pick('ccByNcSa')
-    : SHARE_ALIKE.has(base)
-      ? pick('ccBySa')
-      : base === 'population'
-        ? pick('ccByIgo', 'ccBy')
-        : base === 'waste'
-          ? pick('unTerms')
-          : pick('ccBy');
-};
+export const fileLicences = (file: string): Licence[] =>
+  pick(...(FILE_LICENCES[file.replace(/\.json$/, '')] ?? ['ccBy']));
 
 /** LICENSE.txt of the data files' ZIP: each file with its licences, then how to cite. */
 export const licenceText = (files: readonly string[], cite: string): string =>
@@ -409,6 +446,20 @@ export const DOWNLOAD_LICENCES = {
   chart: pick('ccByNcSa'),
   scenario: pick('ccByNcSa'),
 };
+
+/** A map layer's CSV terms: the food waste layer's follow waste.json, ocean plastic's its file. */
+export const mapLicences = (spec: LayerSpec): Licence[] => {
+  const measure = measureOf(spec);
+  return measure === 'oceanPlastic'
+    ? pick('ccByNc')
+    : measure === 'foodWaste'
+      ? pick('ccBy', 'unTerms')
+      : DOWNLOAD_LICENCES.map;
+};
+
+/** A chart tab's CSV terms: the Waste chart's follow its three files, the others climate.json. */
+export const chartLicences = (tab: ChartTab): Licence[] =>
+  tab === 'waste' ? pick('unTerms', 'ccBy', 'ccByNc') : DOWNLOAD_LICENCES.chart;
 
 /** "Planetshift (2026), <address>. Data: <sources>." */
 export const citation = (meta: Meta, url: string): string =>

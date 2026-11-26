@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Topology } from 'topojson-specification';
 import type { AppState } from '../app/context';
-import { chartCsv, mapCsv, mapFileName, scenarioJson } from '../app/download';
+import {
+  chartCsv,
+  mapCsv,
+  mapFileName,
+  mapLicences,
+  scenarioJson,
+  type WasteFiles,
+} from '../app/download';
 import { GROUP_CHOICES } from '../app/groups';
 import { MAP_VIEWS, type UiState } from '../app/url';
 import type { Climate, Country, Intensities, LandUse, Meta } from '../data/types';
@@ -17,11 +24,13 @@ import {
   layerValues,
   measureOf,
   SPECIES_PER,
+  WASTE_OF,
   type LandUseCo2,
   type Layer,
   type LayerSpec,
   type Measure,
   type SpeciesPer,
+  type WasteOf,
 } from '../map/layers';
 import { shapeNames } from '../map/geo';
 import { legendBins } from '../map/legend';
@@ -61,6 +70,8 @@ export interface MapCardProps {
   folder: string;
   files: { name: string; bytes: number }[];
   result: ScenarioResult | null;
+  /** The files the Waste chart's CSV reads. */
+  waste?: WasteFiles;
   state: AppState;
   setUi: (change: (u: UiState) => UiState) => void;
 }
@@ -110,6 +121,9 @@ const MEASURE_TITLES: Record<Measure, (t: T, ui: UiState, years: readonly number
   speciesDensity: (t) => t('map.legend.speciesDensity'),
   water: (t) => t('map.legend.water'),
   waterScarcity: (t) => t('map.legend.waterScarcity'),
+  foodWaste: (t) => t('map.legend.foodWaste'),
+  municipalWaste: (t) => t('map.legend.municipalWaste'),
+  oceanPlastic: (t) => t('map.legend.oceanPlastic'),
 };
 
 const legendTitleOf = (t: T, ui: UiState, years: readonly number[]): string => {
@@ -190,6 +204,7 @@ const sourcesOf = (
         scenario: state.scenario,
         options: state.options,
         currentYear,
+        waste: props.waste,
       }),
     scenario: () =>
       scenarioJson({
@@ -239,6 +254,10 @@ const usePaint = (props: MapCardProps, names: Map<string, string>, landUse: Land
 
 const LEGEND_ITEM = 'inline-flex items-center gap-[5px]';
 
+/** The note under the map: the layer's, or the waste layer's for the waste it shows. */
+const noteKey = (ui: UiState): string =>
+  ui.layer === 'waste' ? `map.notes.waste.${ui.wasteOf}` : `map.notes.${ui.layer}`;
+
 const ViewTabs = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui: UiState }) => (
   <IconTabs<UiState['mapView']>
     label={t('map.views.label')}
@@ -283,6 +302,14 @@ const MapControls = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui:
         value={ui.speciesPer}
         hidden={ui.layer !== 'species'}
         onChange={(speciesPer) => setUi((u) => ({ ...u, speciesPer }))}
+      />
+      <Segmented<WasteOf>
+        name="wasteOf"
+        legend={t('map.wasteOf.legend')}
+        options={WASTE_OF.map((v) => ({ value: v, label: t(`map.wasteOf.${v}`) }))}
+        value={ui.wasteOf}
+        hidden={ui.layer !== 'waste'}
+        onChange={(wasteOf) => setUi((u) => ({ ...u, wasteOf }))}
       />
       <Segmented<UiState['gas']>
         name="gas"
@@ -368,6 +395,7 @@ export const MapCard = (props: MapCardProps) => {
           card: () => card.current,
           title: legendTitle,
         }}
+        mapLicences={mapLicences(ui)}
         hidden={!downloading}
       />
       <div
@@ -397,7 +425,7 @@ export const MapCard = (props: MapCardProps) => {
           caption={legendTitle}
         />
       </div>
-      <p className="map-note m-0 mt-2 text-[0.82rem] text-muted">{t(`map.notes.${ui.layer}`)}</p>
+      <p className="map-note m-0 mt-2 text-[0.82rem] text-muted">{t(noteKey(ui))}</p>
     </section>
   );
 };
