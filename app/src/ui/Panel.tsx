@@ -264,6 +264,22 @@ export const SidePanel = (props: SidePanelProps) => {
           </h2>
         }
       />
+      <div className={`panel-horizon ${props.open ? '' : 'lg:hidden'}`}>
+        <Segmented<Horizon>
+          compact
+          name="horizon"
+          legend={t('controls.horizon')}
+          options={HORIZONS.map((v) => ({ value: v, label: v }))}
+          value={horizon}
+          info={
+            <Info
+              label={t('controls.info', { name: t('controls.horizon') })}
+              text={t('controls.horizonHint')}
+            />
+          }
+          onChange={props.setHorizon}
+        />
+      </div>
       <div id="panel-content" className="grid gap-[18px]" hidden={!props.open}>
         <PanelTabs t={t} options={options} view={view} setView={setView} />
         <div
@@ -275,20 +291,6 @@ export const SidePanel = (props: SidePanelProps) => {
         >
           <div className="time-settings grid gap-3.5 border-b border-rule pb-3">
             <Timing {...props} />
-            <Segmented<Horizon>
-              compact
-              name="horizon"
-              legend={t('controls.horizon')}
-              options={HORIZONS.map((v) => ({ value: v, label: v }))}
-              value={horizon}
-              info={
-                <Info
-                  label={t('controls.info', { name: t('controls.horizon') })}
-                  text={t('controls.horizonHint')}
-                />
-              }
-              onChange={props.setHorizon}
-            />
           </div>
           {props.population && (
             <PeopleControl

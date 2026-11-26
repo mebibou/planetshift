@@ -334,7 +334,7 @@ export const Explore = (props: ExploreProps) => {
   const horizon = state.ui.horizon;
   const worth = useMemo(() => ({ values, horizon, t, locale }), [values, horizon, t, locale]);
   const shown = props.result ?? null;
-  const [panelOpen, setPanelOpen] = useMenu('panel');
+  const [panelOpen, setPanelOpen] = useMenu('panel', false);
   const [summaryOpen, setSummaryOpen] = useMenu('summary');
   return (
     <WorthContext.Provider value={worth}>
@@ -345,7 +345,6 @@ export const Explore = (props: ExploreProps) => {
           summary: [summaryOpen, 'minmax(260px,320px)'],
         })}
       >
-        <ChartCard {...props} />
         <SidePanel
           t={t}
           locale={locale}
@@ -365,6 +364,7 @@ export const Explore = (props: ExploreProps) => {
           open={panelOpen}
           setOpen={setPanelOpen}
         />
+        <ChartCard {...props} />
         <Summary
           t={t}
           locale={locale}

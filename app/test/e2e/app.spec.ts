@@ -21,12 +21,21 @@ const FONT_HOSTS = /fonts\.(googleapis|gstatic)\.com/;
 let errors: string[] = [];
 
 const TOUR = '@tour';
+const CLOSED_PANEL = '@closedPanel';
 
 test.beforeEach(async ({ page }, testInfo) => {
   errors = [];
   // The guided start opens on a first visit; every test but its own starts as a returning reader.
   if (!testInfo.tags.includes(TOUR)) {
     await page.context().addInitScript(() => localStorage.setItem('planetshift.tour', 'seen'));
+  }
+  // The panel opens collapsed on a phone; every test but its own starts with it opened.
+  if (!testInfo.tags.includes(CLOSED_PANEL)) {
+    await page.context().addInitScript(() => {
+      if (localStorage.getItem('planetshift.menu.panel') === null) {
+        localStorage.setItem('planetshift.menu.panel', 'open');
+      }
+    });
   }
   // The Lato font comes from Google Fonts with display=swap: offline, the page falls back to the
   // system font, so a failed font request is not an error of the app.
@@ -831,11 +840,16 @@ test('the panel is in groups, all closed, under their causes, with the time sett
   ]) {
     await expect(page.locator(`details[data-group="${id}"]`)).not.toHaveAttribute('open');
   }
+  const horizon = page.locator('.panel .panel-horizon');
+  await expect(horizon).toContainText('Results up to');
+  expect(
+    await horizon.evaluate((h) =>
+      Boolean(h.compareDocumentPosition(document.getElementById('panel-content') as Node) & 4),
+    ),
+  ).toBe(true);
   const time = page.locator('#panel-panel-levers > *').first();
   await expect(time).toHaveClass(/\btime-settings\b/);
   await expect(time.locator('> *').first()).toHaveAttribute('data-control', 'timing');
-  await expect(time.locator('> *').nth(1)).toHaveAttribute('data-control', 'horizon');
-  await expect(time).toContainText('Results up to');
   await expect(page.locator('details[data-group="diet"] #rampEnd')).toHaveCount(0);
   await expect(page.locator('.timing label')).toHaveText('All levers fully in place by');
   await expect(
@@ -973,31 +987,33 @@ test('the chart comes before the map', async ({ page }) => {
   expect(await top('.chart-card')).toBeLessThan(await top('.map-card'));
 });
 
-test('the chart opens the page and comes before the controls in the reading order', async ({
-  page,
-}) => {
-  await open(page);
-  const box = async (selector: string) =>
-    page.locator(selector).evaluate((el) => {
-      const r = el.getBoundingClientRect();
-      return { top: r.top, bottom: r.bottom };
-    });
-  const chart = await box('.chart-card');
-  expect(chart.top).toBeLessThan(page.viewportSize()!.height);
-  expect(
-    await page.evaluate(() =>
-      document
-        .querySelector('.chart-card')!
-        .compareDocumentPosition(document.querySelector('.panel')!),
-    ),
-  ).toBe(4);
-  const panel = await box('.panel');
-  if (page.viewportSize()!.width <= 860) {
-    expect(panel.top).toBeGreaterThanOrEqual(chart.bottom);
-  } else {
-    expect(panel.top).toBeLessThan(chart.bottom);
-  }
-});
+test(
+  'the chart opens the page, with the panel before it in the reading order',
+  { tag: CLOSED_PANEL },
+  async ({ page }) => {
+    await open(page);
+    const box = async (selector: string) =>
+      page.locator(selector).evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        return { top: r.top, bottom: r.bottom };
+      });
+    const chart = await box('.chart-card');
+    expect(chart.top).toBeLessThan(page.viewportSize()!.height);
+    expect(
+      await page.evaluate(() =>
+        document
+          .querySelector('.panel')!
+          .compareDocumentPosition(document.querySelector('.chart-card')!),
+      ),
+    ).toBe(4);
+    const panel = await box('.panel');
+    if (page.viewportSize()!.width <= 860) {
+      expect(panel.bottom).toBeLessThanOrEqual(chart.top);
+    } else {
+      expect(panel.top).toBeLessThan(chart.bottom);
+    }
+  },
+);
 
 test('the deforestation layer shows the forest cleared, with its CO₂ in the tooltip', async ({
   page,
@@ -1731,6 +1747,30 @@ test('the Explore panel and summary collapse, and stay as left after a reload', 
     'panel-content',
   );
 });
+
+/** A located element's top and bottom on the page, in pixels. */
+const extent = async (page: Page, selector: string) => {
+  const box = await page.locator(selector).boundingBox();
+  return box ? { top: box.y, bottom: box.y + box.height } : { top: Infinity, bottom: Infinity };
+};
+
+test(
+  'on a phone the panel opens collapsed, above the chart, with the horizon in the first screen',
+  { tag: CLOSED_PANEL },
+  async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'the panel sits beside the chart on a desktop');
+    await open(page);
+    await expect(page.locator('#panel-content')).toBeHidden();
+    await expect(page.locator('.panel .panel-horizon')).toBeVisible();
+    const horizon = await extent(page, '.panel .panel-horizon');
+    expect(horizon.bottom).toBeLessThan(page.viewportSize()?.height ?? 0);
+    expect(horizon.top).toBeLessThan((await extent(page, '.chart-card')).top);
+    const before = await page.locator('.summary .stat-hero').innerText();
+    await page.locator('label[for="horizon-2100"]').click();
+    await expect(page).toHaveURL(/to=2100/);
+    await expect(page.locator('.summary .stat-hero')).not.toHaveText(before);
+  },
+);
 
 test('a closed panel gives its room to the chart on a desktop', async ({ page, isMobile }) => {
   test.skip(isMobile, 'the panel sits beside the chart on a desktop only');
