@@ -102,6 +102,10 @@ export class LoadError extends Error {
 export const dataFolder = (query: string): string =>
   new URLSearchParams(query).get('data') === 'fixtures' ? 'fixtures/' : 'data/';
 
+/** A data folder's URL under the site's root. */
+export const dataUrl = (folder: string, root: string): string =>
+  root === './' ? folder : new URL(folder, root).href;
+
 type Fetch = (url: string) => Promise<Pick<Response, 'ok' | 'status' | 'json'>>;
 
 const MISSING = Symbol('missing');

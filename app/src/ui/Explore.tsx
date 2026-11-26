@@ -16,7 +16,8 @@ import { OCEAN_PH, pathsChart, SEA_LEVEL } from '../chart/paths';
 import { causeGasesOf, type CauseGas } from '../chart/series';
 import { RANGE_START, temperatureChart, type Range } from '../chart/temperature';
 import { wasteChart } from '../chart/waste';
-import { dataFolder } from '../data/load';
+import { dataFolder, dataUrl } from '../data/load';
+import { SITE_ROOT } from '../app/entry';
 import type { ModelData } from '../data/types';
 import { leverAvailable } from '../levers/registry';
 import type { Options } from '../model/api';
@@ -422,7 +423,7 @@ export const Explore = (props: ExploreProps) => {
             meta={data.meta}
             landUse={data.landuse}
             currentYear={ctx.currentYear}
-            folder={dataFolder(location.search)}
+            folder={dataUrl(dataFolder(location.search), SITE_ROOT)}
             files={__DATA_FILES__[dataFolder(location.search)] ?? []}
             result={shown}
             waste={data}
