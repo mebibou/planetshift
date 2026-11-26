@@ -41,7 +41,7 @@ With the default *today's diet × population* baseline, each year's farm emissio
 
 The option changes the baseline's farm emissions from the base year on, and so its temperature. With SSP2-4.5 and the FaIR response, the baseline is 2.83 °C in 2100 with the medium projection, 2.74 °C with the low and 2.92 °C with the high. In 2050 the low and the high projections are within 0.01 °C of the medium one.
 
-The diet shift and the farm levers change emissions that are scaled the same way. So what they avoid grows or shrinks with population. A 50% shift avoids 0.178 °C in 2100 with the medium projection, 0.151 °C with the low and 0.209 °C with the high (0.071, 0.068 and 0.073 °C in 2050).
+The diet shift and the farm levers change emissions that are scaled the same way. So what they avoid grows or shrinks with population. A 50% shift avoids 0.176 °C in 2100 with the medium projection, 0.149 °C with the low and 0.207 °C with the high (0.070, 0.067 and 0.072 °C in 2050).
 
 The less-waste lever acts on the same scaled supply. Clearing (deforestation), carbon stored in farmland, natural regrowth, the carbon of uncaught large fish and the energy levers are not scaled with population, so they do not change.
 
@@ -104,7 +104,7 @@ Each lever's adoption is 0–100, in percent. It is left out of the address at 0
 | --- | --- |
 | Farm practices | feed additives (`fa`), breeding and feed (`bf`), manure management (`mm`), rice paddies drained (`rw`), less nitrogen, better used (`ne`), clean farm energy (`fe`) |
 | Food waste | waste after shops (`fw`), losses before shops (`sl`) |
-| Deforestation | deforestation stopped (`df`) |
+| Deforestation | deforestation stopped (`df`), drained peat rewetted (`pr`) |
 | Carbon in farmland | cover crops (`cc`), trees on farms (`af`), biochar (`bc`), rock dust, experimental (`ew`) |
 | Energy and transport | electric cars (`ev`), electric trucks (`et`), less flying (`fl`), clean aviation fuel (`saf`), clean shipping (`cs`), renewable electricity (`re`) |
 | Buildings and industry | clean heating (`ch`), clean industry (`ci`) |

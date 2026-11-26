@@ -469,6 +469,9 @@ interface CountryParts {
   /** CO₂ a year as a constant stream, such as clearing, by the cause it counts in and family. */
   co2: ByCause<Readonly<Record<string, number>>>;
   jointCo2: ByCause<Readonly<Record<string, number>>>;
+  /** CH₄ a year as a constant stream, such as rewetted peat's, by the cause and family. */
+  ch4: ByCause<Readonly<Record<string, number>>>;
+  jointCh4: ByCause<Readonly<Record<string, number>>>;
   /** CO₂ a year that builds up after a change, by the cause it counts in, time constant and family. */
   builtUp: readonly BuiltUp[];
   /** The part of each production step's farm CO₂ that is grid electricity, kg a year. */
@@ -502,10 +505,15 @@ interface CountryHook {
   hook: (c: CountryContext) => CountryPart;
 }
 
-const addRecords = (
-  parts: readonly CountryPart[],
-  key: 'co2' | 'jointCo2',
-): Record<string, number> => {
+type StreamKey = 'co2' | 'jointCo2' | 'ch4' | 'jointCh4';
+
+/** The constant streams of each gas: its key on the base year and on the production change. */
+const STREAMS = [
+  ['co2', 'co2', 'jointCo2'],
+  ['ch4', 'ch4', 'jointCh4'],
+] as const;
+
+const addRecords = (parts: readonly CountryPart[], key: StreamKey): Record<string, number> => {
   const out: Record<string, number> = {};
   for (const p of parts) {
     for (const [k, v] of Object.entries(p[key] ?? {})) {
@@ -513,6 +521,26 @@ const addRecords = (
     }
   }
   return out;
+};
+
+/** The modules' constant streams of a country, by key, the cause they count in and family. */
+const streamsOf = (
+  extra: readonly CountryPart[],
+  countryHooks: readonly CountryHook[],
+): Record<StreamKey, ByCause<Readonly<Record<string, number>>>> => {
+  const byKey = (key: StreamKey) =>
+    causeRecord((cause) =>
+      addRecords(
+        extra.filter((_, k) => countryHooks[k]?.cause === cause),
+        key,
+      ),
+    );
+  return {
+    co2: byKey('co2'),
+    jointCo2: byKey('jointCo2'),
+    ch4: byKey('ch4'),
+    jointCh4: byKey('jointCh4'),
+  };
 };
 
 /** What a cut removes from the base year's production, kept while the cut is. */
@@ -622,18 +650,7 @@ const countryParts = (
     ) as CountryResult,
     farm,
     cuts,
-    co2: causeRecord((cause) =>
-      addRecords(
-        extra.filter((_, k) => countryHooks[k]?.cause === cause),
-        'co2',
-      ),
-    ),
-    jointCo2: causeRecord((cause) =>
-      addRecords(
-        extra.filter((_, k) => countryHooks[k]?.cause === cause),
-        'jointCo2',
-      ),
-    ),
+    ...streamsOf(extra, countryHooks),
     builtUp: extra.flatMap((e, k) =>
       e.buildUp ? [{ cause: countryHooks[k]?.cause ?? DIET_CAUSE, ...e.buildUp }] : [],
     ),
@@ -727,14 +744,17 @@ const farmTotal = (
 const clearingOf = (
   parts: readonly CountryParts[],
   cause: CountedCause,
-): Record<string, Joint<number>> => {
-  const out: Record<string, { own: number; joint: number }> = {};
+): Record<string, Joint<GasVector>> => {
+  const out: Record<string, Joint<GasVector>> = {};
+  const slot = (f: string) => (out[f] ??= { own: { ...ZERO_GAS }, joint: { ...ZERO_GAS } });
   for (const p of parts) {
-    for (const [f, v] of Object.entries(p.co2[cause])) {
-      (out[f] ??= { own: 0, joint: 0 }).own += v;
-    }
-    for (const [f, v] of Object.entries(p.jointCo2[cause])) {
-      (out[f] ??= { own: 0, joint: 0 }).joint += v;
+    for (const [gas, own, joint] of STREAMS) {
+      for (const [f, v] of Object.entries(p[own][cause])) {
+        slot(f).own[gas] += v;
+      }
+      for (const [f, v] of Object.entries(p[joint][cause])) {
+        slot(f).joint[gas] += v;
+      }
     }
   }
   return out;
@@ -779,7 +799,13 @@ const builtUpPaths = (
 ): Record<string, GasVector[]> =>
   builtUpSums(parts, cause).reduce<Record<string, GasVector[]>>((out, s) => {
     const share = builtUp(shareAt, years, s.lag);
-    const path = familyPath(NO_FARM, { own: s.co2, joint: 0 }, years, scale, share);
+    const path = familyPath(
+      NO_FARM,
+      { own: { ...ZERO_GAS, co2: s.co2 }, joint: ZERO_GAS },
+      years,
+      scale,
+      share,
+    );
     return { ...out, [s.family]: plusPath(out[s.family], path) as GasVector[] };
   }, {});
 
@@ -815,7 +841,7 @@ const gridPath = (
  */
 const familyPath = (
   farm: Joint<GasVector>,
-  clearing: Joint<number>,
+  clearing: Joint<GasVector>,
   years: readonly number[],
   scale: Scale,
   shareAt: (year: number) => number,
@@ -823,19 +849,14 @@ const familyPath = (
   years.map((y) => {
     const r = shareAt(y);
     const rr = r * r;
-    const at = (g: Gas, own: number, joint: number) => {
+    const at = (g: Gas) => {
       const k = scale(g, y);
-      return r * (farm.own[g] * k + own) + rr * (farm.joint[g] * k + joint);
+      return r * (farm.own[g] * k + clearing.own[g]) + rr * (farm.joint[g] * k + clearing.joint[g]);
     };
-    return {
-      co2: at('co2', clearing.own, clearing.joint),
-      ch4: at('ch4', 0, 0),
-      n2o: at('n2o', 0, 0),
-      hfc: at('hfc', 0, 0),
-    };
+    return { co2: at('co2'), ch4: at('ch4'), n2o: at('n2o'), hfc: at('hfc') };
   });
 
-const NO_CLEARING: Joint<number> = { own: 0, joint: 0 };
+const NO_CLEARING: Joint<GasVector> = { own: ZERO_GAS, joint: ZERO_GAS };
 const NO_FARM: Joint<GasVector> = { own: ZERO_GAS, joint: ZERO_GAS };
 
 const sumPaths = (paths: readonly GasVector[][]): GasVector[] =>
@@ -1369,7 +1390,7 @@ const emissionsPass = (
     const lagged = builtUpPaths(parts, c, years, scale, shareAt);
     const constant = Object.fromEntries(
       Object.entries(clearingOf(parts, c))
-        .filter(([, v]) => v.own !== 0 || v.joint !== 0)
+        .filter(([, v]) => !isZero(v.own) || !isZero(v.joint))
         .map(([f, v]) => [f, familyPath(NO_FARM, v, years, scale, shareAt)]),
     );
     return Object.fromEntries(

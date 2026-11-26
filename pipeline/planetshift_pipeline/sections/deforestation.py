@@ -10,7 +10,8 @@ from ..inputs import Build, log, write
 
 
 def drained(b: Build, peat: dict) -> dict:
-    """t of CO₂ a year from drained organic soils, by country and the item it is shared to."""
+    """t of CO₂ a year from drained organic soils, and of CH₄ once rewetted, by country and the
+    item it is shared to."""
     y = b.emissions_year
     area = O.harvested_area(b.read("QCL", y, y), I.load_crops(), b.iso3)
     peat_rows = [
@@ -22,8 +23,12 @@ def drained(b: Build, peat: dict) -> dict:
     ruminants = O.ruminant_weights(
         b.merged, b.production[["iso3", "fbs_code", "production"]], I.RUMINANT_ITEMS
     )
-    co2 = O.country_co2(b.read("GV", y, y), b.iso3)
-    kept, lost = O.drained(co2, crops[crops["fbs_code"].isin(b.kept_codes)], ruminants)
+    gv = b.read("GV", y, y)
+    co2 = O.country_co2(gv, b.iso3)
+    drained_area = O.country_area(gv, b.iso3)
+    food_crops = crops[crops["fbs_code"].isin(b.kept_codes)]
+    kept, lost = O.drained(co2, food_crops, ruminants)
+    ch4, _ = O.drained(O.rewetted_ch4(co2, drained_area), food_crops, ruminants)
     log.info(
         "drained organic soils %s: %.2f Gt CO2/yr on food items (cropland %.2f, grassland %.2f), "
         "%.0f Mt on none",
@@ -33,7 +38,17 @@ def drained(b: Build, peat: dict) -> dict:
         co2.loc[co2["land"] == "grassland", "t"].sum() / 1e9,
         lost / 1e6,
     )
-    return D.by_country(kept, set(b.iso3.values()))
+    log.info(
+        "drained organic soils %s: %.1f Mha, %.2f Mt CH4/yr on food items once rewetted",
+        y,
+        drained_area["t"].sum() / 1e6,
+        ch4["t_co2"].sum() / 1e6,
+    )
+    countries = set(b.iso3.values())
+    return {
+        "drainedByCountry": D.by_country(kept, countries),
+        "rewettedCh4ByCountry": D.by_country(ch4, countries),
+    }
 
 
 def build(b: Build) -> None:
@@ -76,5 +91,5 @@ def build(b: Build) -> None:
     write(
         b.out,
         "deforestation.json",
-        D.deforestation_json(data, area) | {"drainedByCountry": drained(b, peat_food)},
+        D.deforestation_json(data, area) | drained(b, peat_food),
     )
