@@ -2,6 +2,7 @@
 // and the app. docs/data-contract.md describes each file; change both together.
 
 import type { Departures } from '../configSchema';
+import type { CalibrationFile } from '../model/fair/calibration';
 
 export const GASES = ['co2', 'ch4', 'n2o', 'hfc'] as const;
 export type Gas = (typeof GASES)[number];
@@ -430,6 +431,17 @@ export interface Origins {
  * All files loaded together: the core's here, each lever module's added by its `data.ts`
  * (app/src/levers/<id>/data.ts), which also describes the file.
  */
+/**
+ * fair.json: the FaIR calibration of the members the app runs (model/fair/calibration.ts) and each
+ * SSP's emissions of every FaIR specie (FaIR's units, calendar years from 1750) and land-use
+ * forcing (W m⁻²).
+ */
+export type FairFile = CalibrationFile & {
+  doi: string;
+  licence: string;
+  ssp: Record<Ssp, { emissions: Record<string, number[]>; landUse: number[] }>;
+};
+
 export interface ModelData {
   meta: Meta;
   countries: Country[];
@@ -454,6 +466,8 @@ export interface ModelData {
   /** Optional: without it, every import takes the world's average intensity. */
   origins?: Origins;
   water?: Water;
+  /** Optional: without it the temperature adds up pulse responses (AGTP) instead of running FaIR. */
+  fair?: FairFile;
   /** Not a file: the build's departures from FaIR stand for it when it is unset. */
   departures?: Departures;
 }

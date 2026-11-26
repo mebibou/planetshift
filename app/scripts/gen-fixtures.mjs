@@ -1,5 +1,5 @@
 // Writes small but plausible fixtures for Planetshift. Usage: node gen-fixtures.mjs <out dir>
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const out = process.argv[2];
@@ -1508,3 +1508,31 @@ write('deeptime.json', {
   },
   extinctionThreshold: { warming: 5.2, degreesPerMyr: 10, source: 'Song et al. (2021)' },
 });
+
+// FaIR run in the app: the port's own test case (three members, a made-up scenario) stands for
+// every SSP, its constant series written out year by year as fair.json holds them.
+const fairCase = JSON.parse(
+  readFileSync(new URL('../test/model/fair/fixture.json', import.meta.url), 'utf8'),
+);
+const calibration = Object.fromEntries(
+  Object.entries(fairCase.calibration).filter(([key]) => key !== 'ebm'),
+);
+const fairYears = fairCase.landUse.length;
+const fairSsp = {
+  emissions: Object.fromEntries(
+    Object.entries(fairCase.emissions).map(([s, v]) => [
+      s,
+      typeof v === 'number' ? new Array(fairYears).fill(v) : v,
+    ]),
+  ),
+  landUse: fairCase.landUse,
+};
+writeFileSync(
+  join(out, 'fair.json'),
+  `${JSON.stringify({
+    ...calibration,
+    doi: '10.5281/zenodo.10566813',
+    licence: 'CC BY 4.0',
+    ssp: { ssp126: fairSsp, ssp245: fairSsp, ssp370: fairSsp },
+  })}\n`,
+);

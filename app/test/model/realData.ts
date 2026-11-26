@@ -5,7 +5,7 @@ import type { IntensitiesFile, ModelData } from '../../src/data/types';
 
 const FOLDER = join(__dirname, '../../public/data');
 const CORE = ['meta', 'countries', 'items', 'supply', 'intensities', 'feed', 'land', 'climate'];
-const OPTIONAL = ['mammals', 'species', 'chain', 'origins', 'water'];
+const OPTIONAL = ['mammals', 'species', 'chain', 'origins', 'water', 'fair'];
 const present = (f: string): boolean => existsSync(join(FOLDER, `${f}.json`));
 const read = (f: string): unknown => JSON.parse(readFileSync(join(FOLDER, `${f}.json`), 'utf8'));
 

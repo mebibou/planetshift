@@ -126,6 +126,26 @@ export const oceanPaths = (
 
 type PhBand = SeaLevelPaths['baseline'];
 
+/**
+ * The surface ocean's pH each year from FaIR's CO₂ run in the model, without and with the levers:
+ * each band end takes the CO₂ band's other end, as more CO₂ means lower pH.
+ */
+export const oceanFromCo2 = (base: BandSeries, scenario: BandSeries): SeaLevelPaths => {
+  const baseline = baselineOf(base);
+  // Solved again only where the CO₂ differs from the baseline's.
+  const of = (ppm: readonly number[], same: readonly number[], solved: readonly number[]) =>
+    ppm.map((p, i) => (p === same[i] ? (solved[i] as number) : ph(p)));
+  return {
+    years: base.years,
+    baseline,
+    scenario: {
+      median: of(scenario.median, base.median, baseline.median),
+      low: of(scenario.p95, base.p95, baseline.low),
+      high: of(scenario.p05, base.p05, baseline.high),
+    },
+  };
+};
+
 const phOf = (ppm: readonly number[]) => ppm.map((p) => ph(p));
 
 /** The pH without the levers, the same for every run on a dataset. */

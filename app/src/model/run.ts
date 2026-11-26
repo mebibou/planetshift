@@ -1,9 +1,10 @@
-import { oceanPaths } from './ocean';
+import { oceanFromCo2, oceanPaths } from './ocean';
 import { seaLevel2100, seaLevelPaths } from './seaLevel';
 import {
   ANIMAL_GROUPS,
   GASES,
   type AnimalGroup,
+  type BandSeries,
   type Chain as FoodChain,
   type Climate,
   type Ssp,
@@ -85,6 +86,16 @@ import {
   chainSums,
   type ChainCause,
 } from './chain';
+import {
+  baselineBandsOf,
+  ensembleOf,
+  fairBaseline,
+  scenarioBands,
+  warmingBand,
+  withChanges,
+  type Ensemble,
+  type FairBaseline,
+} from './fairClimate';
 import { groupTotals, prepare, type Prepared, type PreparedCountry } from './prepare';
 import { baselineScale, builtUp, ramp, tabulate, type Scale } from './timePath';
 import {
@@ -98,6 +109,7 @@ import {
   memoPer,
   range,
   recordFrom,
+  subtractPaths,
   sum,
   valueAt,
   zeros,
@@ -938,87 +950,118 @@ const peopleOf = (
 const baselineOf = (options: Options): Baseline =>
   options.people === undefined ? options.baseline : 'population';
 
+/** What the baseline depends on besides the data, which its caches are keyed by. */
+const baselineKey = (options: Options, currentYear: number): string =>
+  [
+    options.baseline,
+    options.ssp,
+    options.climate,
+    ...BASELINE_OPTIONS.map((f) => (options as unknown as Record<string, string>)[f]),
+    options.people ?? '',
+    options.peopleYear ?? '',
+    currentYear,
+  ].join('|');
+
+/** The FaIR ensemble the model runs when the build has fair.json and FaIR is the climate method;
+ * otherwise the temperature adds up pulse responses. */
+const ensembleIn = (prepared: Prepared, options: Options): Ensemble | null =>
+  prepared.data.fair && options.climate === 'fair' ? ensembleOf(prepared.data.fair) : null;
+
+/** The farm emissions the population baseline adds to the SSP's, kg a year from the base year. */
+const adjustmentOf = (prepared: Prepared, options: Options, currentYear: number): GasVector[] => {
+  const { climate } = prepared.data;
+  const scale = baselineScale(
+    baselineOf(options),
+    climate,
+    worldPopulationOf(prepared, options, currentYear),
+    prepared.baseYear,
+  );
+  return baselineOf(options) === 'population'
+    ? populationAdjustmentEmissions(climate, options.ssp, prepared.baseYear, (y) => scale('co2', y))
+    : [];
+};
+
+const fairBaselineCache = memoPer<Prepared, FairBaseline>();
+
+/** FaIR on the SSP with the population baseline's farm emissions, once per options. */
+const fairBaselineOf = (
+  prepared: Prepared,
+  options: Options,
+  currentYear: number,
+  ensemble: Ensemble,
+): FairBaseline =>
+  fairBaselineCache(prepared, baselineKey(options, currentYear), () =>
+    fairBaseline(
+      ensemble,
+      withChanges(
+        ensemble.file.ssp[options.ssp],
+        [adjustmentOf(prepared, options, currentYear)],
+        prepared.baseYear,
+      ),
+      currentYear,
+    ),
+  );
+
 /**
- * The baseline temperature by band: the SSP's, plus the population baseline's farm emissions,
- * plus what each module adds in registry order (the data centres beyond the SSP, then the
- * permafrost release the warming so far causes).
+ * The baseline temperature by band: FaIR's on the SSP with the population baseline's farm
+ * emissions (or, without FaIR, the SSP's plus their pulse responses), plus what each module adds
+ * in registry order (the data centres beyond the SSP, then the permafrost release the warming
+ * so far causes).
  */
 const baselineTemperature = (
   prepared: Prepared,
   options: Options,
   currentYear: number,
 ): Record<Band, BaselineBand> =>
-  baselineCache(
-    prepared,
-    [
-      options.baseline,
-      options.ssp,
-      options.climate,
-      ...BASELINE_OPTIONS.map((f) => (options as unknown as Record<string, string>)[f]),
-      options.people ?? '',
-      options.peopleYear ?? '',
-      currentYear,
-    ].join('|'),
-    () => {
-      const { climate } = prepared.data;
-      const tYears = range(FIRST_YEAR, END_YEAR);
-      const total = climate.scenarioTemperature[options.ssp];
-      const scale = baselineScale(
-        baselineOf(options),
-        climate,
-        worldPopulationOf(prepared, options, currentYear),
-        prepared.baseYear,
-      );
-      const adjustmentEmissions =
-        baselineOf(options) === 'population'
-          ? populationAdjustmentEmissions(climate, options.ssp, prepared.baseYear, (y) =>
-              scale('co2', y),
-            )
-          : [];
-      return bandRecord((band) => {
-        const farm =
-          adjustmentEmissions.length > 0
-            ? warmingByGas(
-                adjustmentEmissions,
-                prepared.baseYear,
-                climate,
-                options.climate,
-                band,
-                tYears,
-              )
-            : gasRecord(() => zerosOn(tYears));
-        const adjustment = sumOfGases(farm);
-        return MODULES.reduce<BaselineBand>(
-          (acc, m) => {
-            const part = m.hooks.baseline?.({
-              prepared,
-              options,
-              currentYear,
+  baselineCache(prepared, baselineKey(options, currentYear), () => {
+    const { climate } = prepared.data;
+    const tYears = range(FIRST_YEAR, END_YEAR);
+    const total = climate.scenarioTemperature[options.ssp];
+    const adjustmentEmissions = adjustmentOf(prepared, options, currentYear);
+    const ensemble = ensembleIn(prepared, options);
+    const fair = ensemble
+      ? warmingBand(fairBaselineOf(prepared, options, currentYear, ensemble), tYears)
+      : null;
+    return bandRecord((band) => {
+      const farm =
+        adjustmentEmissions.length > 0
+          ? warmingByGas(
+              adjustmentEmissions,
+              prepared.baseYear,
+              climate,
+              options.climate,
               band,
               tYears,
-              temperature: acc.temperature,
-            });
-            return part
-              ? {
-                  temperature: part.warming
-                    ? addSeries(acc.temperature, part.warming)
-                    : acc.temperature,
-                  farm,
-                  byCause: part.byCause ? [...acc.byCause, part.byCause] : acc.byCause,
-                  memo: { ...acc.memo, [m.id]: part.memo },
-                }
-              : acc;
-          },
-          {
-            temperature: addSeries(seriesOn(total, total[band], tYears), adjustment),
-            farm,
-            byCause: [],
-            memo: {},
-          },
-        );
-      });
-    },
-  );
+            )
+          : gasRecord(() => zerosOn(tYears));
+      const start = fair
+        ? fair[band]
+        : addSeries(seriesOn(total, total[band], tYears), sumOfGases(farm));
+      return MODULES.reduce<BaselineBand>(
+        (acc, m) => {
+          const part = m.hooks.baseline?.({
+            prepared,
+            options,
+            currentYear,
+            band,
+            tYears,
+            temperature: acc.temperature,
+          });
+          return part
+            ? {
+                temperature: part.warming
+                  ? addSeries(acc.temperature, part.warming)
+                  : acc.temperature,
+                farm,
+                byCause: part.byCause ? [...acc.byCause, part.byCause] : acc.byCause,
+                memo: { ...acc.memo, [m.id]: part.memo },
+              }
+            : acc;
+        },
+        { temperature: start, farm, byCause: [], memo: {} },
+      );
+    });
+  });
 
 const gasRecord = <T>(f: (g: Gas) => T): Record<Gas, T> =>
   Object.fromEntries(GASES.map((g) => [g, f(g)])) as Record<Gas, T>;
@@ -1640,12 +1683,9 @@ const withFootprints = (
   return countries.map((c) => ({ ...c, ...prints.get(c.iso3) }));
 };
 
-export const runPrepared = (
-  prepared: Prepared,
-  scenario: Scenario,
-  given: Options,
-  currentYear: number,
-): ScenarioResult => {
+/** What a run works from: its context, the supply chains and production steps, and the frame of
+ * its emission passes. */
+const runFrame = (prepared: Prepared, scenario: Scenario, given: Options, currentYear: number) => {
   const options = withPeopleYear(given, scenario);
   const { climate } = prepared.data;
   const levers = scenario.levers ?? {};
@@ -1683,6 +1723,139 @@ export const runPrepared = (
     completeIndex,
     people,
   };
+  return { options, climate, ctx, chains, steps, years, tYears, scale, completeIndex, frame };
+};
+
+/**
+ * Each family's yearly emission change (median, every cause), kg a year from the current year,
+ * for checking the breakdown against a climate model that is not linear in them.
+ */
+export const familyEmissionPaths = (
+  prepared: Prepared,
+  scenario: Scenario,
+  given: Options,
+  currentYear: number,
+): { years: number[]; byFamily: Record<string, GasVector[]> } => {
+  const { frame, steps, years } = runFrame(prepared, scenario, given, currentYear);
+  const pass = emissionsPass(frame, steps, MODULES, ['median']);
+  return {
+    years,
+    byFamily: Object.fromEntries(
+      FAMILIES.map((f) => {
+        const byCause = pass.paths.median?.[f] as ByCause<GasVector[]>;
+        return [f, sumPaths(COUNTED_CAUSES.map((c) => byCause[c]))];
+      }),
+    ),
+  };
+};
+
+/** FaIR's part of a run: its baseline and scenario across members, the warming the scenario
+ * avoids member by member, and the CO₂ in the air. */
+type FairPart = {
+  baseline: BandSeries;
+  scenario: BandSeries;
+  avoided: BandSeries;
+  co2: { baseline: BandSeries; scenario: BandSeries };
+};
+
+const fairRun = (
+  ensemble: Ensemble,
+  baseline: FairBaseline,
+  change: readonly GasVector[],
+  tYears: readonly number[],
+): FairPart => {
+  const bands = baselineBandsOf(baseline, tYears);
+  const scenario = scenarioBands(ensemble, baseline, change, tYears);
+  return {
+    baseline: bands.warming,
+    scenario: scenario.warming,
+    avoided: scenario.avoided,
+    co2: { baseline: bands.co2, scenario: scenario.co2 },
+  };
+};
+
+/** FaIR's part of a run with the levers' emission `change` (kg a year from the current year),
+ * or none when the model adds up pulse responses. */
+const fairPartOf = (
+  prepared: Prepared,
+  options: Options,
+  currentYear: number,
+  change: readonly GasVector[],
+  tYears: readonly number[],
+): FairPart | null => {
+  const ensemble = ensembleIn(prepared, options);
+  return ensemble
+    ? fairRun(ensemble, fairBaselineOf(prepared, options, currentYear, ensemble), change, tYears)
+    : null;
+};
+
+/**
+ * The warming avoided each year: FaIR's, member by member, less what the levers' other forcing
+ * and the feedback add, band by band; each end of the range takes the nearer or farther of
+ * theirs.
+ */
+const avoidedWithFair = (fair: BandSeries, other: Record<Band, number[]>) => {
+  const at = (band: Band, i: number) => 0 - (other[band][i] ?? 0);
+  return {
+    median: fair.median.map((v, i) => v + at('median', i)),
+    p05: fair.p05.map((v, i) => v + Math.min(at('p05', i), at('p95', i))),
+    p95: fair.p95.map((v, i) => v + Math.max(at('p05', i), at('p95', i))),
+  };
+};
+
+/** `parts` scaled to add up to `total`; kept as they are when they add up to nothing. */
+export const scaledTo = (parts: readonly number[], total: number): number[] => {
+  const s = sum(parts);
+  return Math.abs(s) < 1e-12 ? [...parts] : parts.map((v) => (v * total) / s);
+};
+
+/** Rows (one per cause) of yearly values scaled so each year's add up to `totals`. */
+const scaledColumns = (
+  rows: readonly number[][],
+  totals: readonly number[],
+  apply: boolean,
+): number[][] => (apply ? byColumns(rows, totals) : [...rows]);
+
+const byColumns = (rows: readonly number[][], totals: readonly number[]): number[][] => {
+  const columns = totals.map((total, i) =>
+    scaledTo(
+      rows.map((r) => r[i] ?? 0),
+      total,
+    ),
+  );
+  return rows.map((_, c) => columns.map((col) => col[c] as number));
+};
+
+/** The warming avoided each year: FaIR's with the levers' other forcing and the feedback, or
+ * the pulse responses' from the change of each band. */
+const avoidedOf = (
+  fair: FairPart | null,
+  delta: Record<Band, number[]>,
+  other: Record<Band, number[]>,
+): { median: number[]; p05: number[]; p95: number[] } =>
+  fair ? avoidedWithFair(fair.avoided, other) : avoidedBand(delta);
+
+/** The surface ocean's pH: from FaIR's CO₂ when it runs, else from the SSP's CO₂ changed by the
+ * pulse response of the levers' CO₂. */
+const oceanOf = (
+  fair: FairPart | null,
+  climate: Climate,
+  ssp: Ssp,
+  co2Change: readonly number[],
+  currentYear: number,
+) =>
+  fair
+    ? oceanFromCo2(fair.co2.baseline, fair.co2.scenario)
+    : oceanPaths(climate, ssp, co2Change, currentYear);
+
+export const runPrepared = (
+  prepared: Prepared,
+  scenario: Scenario,
+  given: Options,
+  currentYear: number,
+): ScenarioResult => {
+  const { options, climate, ctx, chains, steps, years, tYears, scale, completeIndex, frame } =
+    runFrame(prepared, scenario, given, currentYear);
   const full = emissionsPass(frame, steps, MODULES, BANDS);
   const { countries, world } = full;
   const worldBase = sumBy(countries, (c) => c.emissions);
@@ -1709,9 +1882,19 @@ export const runPrepared = (
       tYears,
     ),
   );
+  const fair = fairPartOf(prepared, options, currentYear, differenceIn.median, tYears);
+  const pulses = (band: Band, paths: readonly GasVector[]) =>
+    warmingFrom(paths, currentYear, climate, options.climate, band, tYears);
+  const spread = bandRecord((band) =>
+    fair && band !== 'median'
+      ? pulses(band, subtractPaths(differenceIn[band], differenceIn.median))
+      : zerosOn(tYears),
+  );
   const leversDelta = bandRecord((band) =>
     addSeries(
-      warmingFrom(differenceIn[band], currentYear, climate, options.climate, band, tYears),
+      fair
+        ? addSeries(subtract(fair.scenario[band], fair.baseline[band]), spread[band])
+        : pulses(band, differenceIn[band]),
       extraWarming[band],
     ),
   );
@@ -1742,10 +1925,20 @@ export const runPrepared = (
   const seaPaths =
     climate.seaLevel &&
     seaLevelPaths(climate.seaLevel, baseline.median, scenarioBand.median, FIRST_YEAR);
+  const avoidedSeries = avoidedOf(
+    fair,
+    delta,
+    bandRecord((band) =>
+      addSeries(addSeries(extraWarming[band], feedbackDelta[band]), spread[band]),
+    ),
+  );
   const avoidedIn = (year: number) => {
-    const values = BANDS.map((band) => 0 - (delta[band][year - FIRST_YEAR] ?? 0));
-    const range95 = values.slice(1);
-    return { median: values[0] ?? 0, p05: Math.min(...range95), p95: Math.max(...range95) };
+    const i = year - FIRST_YEAR;
+    return {
+      median: avoidedSeries.median[i] ?? 0,
+      p05: avoidedSeries.p05[i] ?? 0,
+      p95: avoidedSeries.p95[i] ?? 0,
+    };
   };
 
   const causeGas = causeRecord((c) =>
@@ -1767,9 +1960,15 @@ export const runPrepared = (
       ),
     ),
   );
-  const causeShares = shareFeedback(
+  // With FaIR, the causes' pulse responses only share its total out.
+  const linearShares = shareFeedback(
     COUNTED_CAUSES.map((c) => causeChange[c]),
     feedbackDelta.median,
+  );
+  const causeShares = scaledColumns(
+    linearShares,
+    avoidedSeries.median.map((v) => 0 - v),
+    fair !== null,
   );
   const avoidedByCause = causeRecord((c) =>
     (causeShares[COUNTED_CAUSES.indexOf(c)] ?? []).map((v) => 0 - v),
@@ -1791,12 +1990,13 @@ export const runPrepared = (
   const feedbackAt = HORIZON_YEARS.map((y) => 0 - (feedbackDelta.median[y - FIRST_YEAR] ?? 0));
   const players = [...shares.keys()];
   const causes = COUNTED_CAUSES.length;
-  const sharedAt = HORIZON_YEARS.map((_, h) =>
-    shareOut(
+  const sharedAt = HORIZON_YEARS.map((year, h) => {
+    const linear = shareOut(
       players.flatMap((f) => COUNTED_CAUSES.map((_, c) => shares.get(f)?.[c * 3 + h] ?? 0)),
       feedbackAt[h] as number,
-    ),
-  );
+    );
+    return fair ? scaledTo(linear, avoidedIn(year).median) : linear;
+  });
   const warmingOf = (family: string, c: number, h: number): number => {
     const k = players.indexOf(family);
     return k < 0 ? 0 : (sharedAt[h]?.[k * causes + c] ?? 0);
@@ -1824,7 +2024,8 @@ export const runPrepared = (
     baselineEmissions: baselinePath,
     scenarioEmissions: baselinePath.map((e, i) => addGas(e, farmDifference[i] as GasVector)),
     seaLevel: seaPaths,
-    ocean: oceanPaths(
+    ocean: oceanOf(
+      fair,
       climate,
       options.ssp,
       differenceIn.median.map((v) => v.co2),
@@ -1835,7 +2036,7 @@ export const runPrepared = (
       observed: observedOn(climate.observed[options.temperature], tYears),
       baseline,
       scenario: scenarioBand,
-      avoided: avoidedBand(delta),
+      avoided: avoidedSeries,
       avoidedByCause,
       avoidedByGas,
       baselineChange: change,
