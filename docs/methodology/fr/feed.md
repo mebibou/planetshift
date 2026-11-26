@@ -68,7 +68,7 @@ Du poisson donné aux animaux, environ 90 % va à l'aquaculture, 9 % aux porcs e
 ## Hypothèses
 
 - La répartition est la même pour chaque produit dans la méthode 1, sauf les produits de la pêche, qui ont leur propre répartition. Le maïs et le soja se partagent donc entre les espèces de la même façon.
-- Les concentrés par tonne et les parts des rations sont des valeurs arrondies calquées sur les résultats régionaux de GLEAM 2.0. Ce ne sont pas une copie de ses tables, qui ne sont pas publiées sous cette forme. C'est un point de départ, à revoir.
+- Les concentrés par tonne et les parts des rations, celles de l'aquaculture comprises, sont des valeurs arrondies de Planetshift, faites pour ressembler aux résultats régionaux de GLEAM 2.0. Aucune source ne les donne : la description du modèle GLEAM 2.0 donne la ration de chaque système de production en parts de matière sèche par aliment (son supplément S1), et calcule l'ingestion à partir des besoins énergétiques des animaux (section 3.6). Elle ne donne ni concentrés par tonne de produit ni ration par classe d'aliments. C'est un point de départ, à revoir.
 - Deux niveaux de revenu représentent les nombreux systèmes de production que GLEAM distingue.
 - Les régions sans production animale (aucune pour l'instant) prennent les parts mondiales.
 - L'herbe, les résidus de culture et les tourteaux sont hors des bilans : ils ne sont donc pas répartis ici. Les surfaces des oléagineux triturés pour le tourteau, et des prairies temporaires, suivent les animaux dans [Terres](#method-land). Les émissions du tourteau les suivent aussi ([Émissions](#method-emissions)). Les prairies permanentes suivent les ruminants.
@@ -81,6 +81,7 @@ Le code est `pipeline/planetshift_pipeline/feed.py` et les tables sont `pipeline
 
 - FAOSTAT, Bilans alimentaires (2010–), usage fourrager par produit et par pays : <https://www.fao.org/faostat/en/#data/FBS>.
 - FAO, Global Livestock Environmental Assessment Model (GLEAM) : <https://www.fao.org/gleam/en/>.
+- FAO (2017). Global Livestock Environmental Assessment Model, version 2.0, description du modèle : <https://www.fao.org/fileadmin/user_upload/gleam/docs/GLEAM_2.0_Model_description.pdf>.
 - Mottet, A., de Haan, C., Falcucci, A., Tempio, G., Opio, C., Gerber, P. (2017). Livestock: on our plates or eating at our table? A new analysis of the feed/food debate. Global Food Security 14, 1–8 : <https://doi.org/10.1016/j.gfs.2017.01.001>.
 - Alltech (2025). Agri-Food Outlook 2025, production mondiale d'aliments composés par espèce en 2024 (tableau « Feed Tonnage by Sector » ; tableau de la production d'aliments pour pondeuses) : <https://www.alltech.com/agri-food-outlook>.
 - Tacon, A. G. J., Metian, M., Parsons, G., Shumway, S. (2025). A Global Aquaculture and Aquafeed Production Update: 2010 to 2023. Reviews in Fisheries Science & Aquaculture ; résumé : aliments aquacoles commerciaux 69,42 Mt en 2023 : <https://doi.org/10.1080/23308249.2025.2568830>.

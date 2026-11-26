@@ -94,9 +94,9 @@ Chacun suit ensuite l'évolution de FaIR avec le scénario.
 
 | Voitures et camions électriques, d'ici 2100 | SSP3-7.0 | SSP2-4.5 |
 | --- | --- | --- |
-| Modèles de chimie (réglage du site) | 0,034 et 0,016 °C évités | 0,103 et 0,066 °C évités |
-| Coefficient unique de FaIR | 0,020 et 0,019 °C ajoutés | 0,092 et 0,059 °C évités |
-| Coefficient de FaIR partagé entre terre et mer selon le rapport de Hoor et al. | 0,010 et 0,013 °C ajoutés | 0,098 et 0,063 °C évités |
+| Modèles de chimie (réglage du site) | 0,027 et 0,016 °C évités | 0,101 et 0,066 °C évités |
+| Coefficient unique de FaIR | 0,026 et 0,019 °C ajoutés | 0,090 et 0,059 °C évités |
+| Coefficient de FaIR partagé entre terre et mer selon le rapport de Hoor et al. | 0,017 et 0,013 °C ajoutés | 0,095 et 0,063 °C évités |
 
 Une copie de Planetshift peut garder le coefficient unique de FaIR (`fair`) ou le partage entre terre et mer du total de FaIR (`hoor`).
 

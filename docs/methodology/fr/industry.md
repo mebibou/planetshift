@@ -1,6 +1,6 @@
 # Bâtiments et industrie
 
-À côté des transports et de l'électricité, deux parties de l'économie brûlent directement des combustibles fossiles. Dans les bâtiments, des chaudières au gaz et au fioul chauffent les pièces et l'eau, et des cuisinières servent à cuisiner. Dans l'industrie, l'acier et le ciment sont les plus gros émetteurs, suivis de la chimie. Planetshift propose ici deux leviers, le chauffage propre et l'industrie propre, qui couvre l'acier, le ciment et la chimie. Adopté en entier, chacun évite moins de 0,02 °C de réchauffement en 2050, et environ 0,07 et 0,10 °C en 2100. Ils en évitent bien plus quand l'électricité qu'ils consomment est propre (voir *Résultats* plus bas).
+À côté des transports et de l'électricité, deux parties de l'économie brûlent directement des combustibles fossiles. Dans les bâtiments, des chaudières au gaz et au fioul chauffent les pièces et l'eau, et des cuisinières servent à cuisiner. Dans l'industrie, l'acier et le ciment sont les plus gros émetteurs, suivis de la chimie. Planetshift propose ici deux leviers, le chauffage propre et l'industrie propre, qui couvre l'acier, le ciment et la chimie. Adopté en entier, chacun évite moins de 0,02 °C de réchauffement en 2050, et environ 0,06 et 0,11 °C en 2100. Ils en évitent bien plus quand l'électricité qu'ils consomment est propre (voir *Résultats* plus bas).
 
 ## Comment ces émissions sont comptées
 
@@ -14,16 +14,16 @@ Brûler moins de combustible évite aussi le méthane qui fuit pendant sa produc
 
 ## Les secteurs et leur avenir
 
-Les émissions de chaque secteur partent en 2023 d'un inventaire récent. Elles suivent ensuite la forme de la trajectoire du scénario, comme pour les transports. Ces trajectoires sont les émissions avec lesquelles FaIR lui-même est lancé : RCMIP v5.1.0, les émissions harmonisées de CMIP6, par secteur CEDS.
+Les émissions de chaque secteur partent d'un inventaire récent. Elles suivent ensuite la forme de la trajectoire du scénario, comme pour les transports. Ces trajectoires sont les émissions avec lesquelles tourne FaIR lui-même : RCMIP v5.1.0, les émissions harmonisées de CMIP6, par secteur CEDS.
 
-- **Bâtiments** : le CO₂ du secteur *Residential Commercial Other* de RCMIP, ramené aux 3,0 milliards de tonnes de CO₂ direct des bâtiments estimés par l'AIE pour 2022, pris pour 2023. C'est le combustible brûlé sur place pour le chauffage, l'eau chaude et la cuisson. L'électricité et la chaleur de réseau qu'utilisent les bâtiments sont dans le secteur électrique. Le secteur de RCMIP contient aussi le carburant des machines agricoles et des bateaux de pêche. Le ramener à l'inventaire des bâtiments les laisse de côté (l'énergie des fermes a son propre levier).
+- **Bâtiments** : le CO₂ du secteur *Residential Commercial Other* de RCMIP, ramené aux 2,68 milliards de tonnes de CO₂ fossile des combustibles résidentiels, commerciaux et institutionnels que donne CEDS pour 2022, sa dernière année, et porté à 2023 par la forme du scénario, comme le transport routier. C'est le combustible fossile brûlé sur place pour le chauffage, l'eau chaude et la cuisson. L'électricité et la chaleur de réseau qu'utilisent les bâtiments sont dans le secteur électrique. Le secteur de RCMIP contient aussi le carburant des machines agricoles et des bateaux de pêche. Le ramener à l'inventaire des bâtiments les laisse de côté (l'énergie des fermes a son propre levier).
 - **Industrie** : le CO₂ du secteur *Industrial Sector* de RCMIP, ramené aux 9,0 milliards de tonnes de CO₂ direct de l'industrie estimés par l'AIE pour 2022, pris pour 2023. C'est le combustible brûlé dans les usines, et le CO₂ des procédés industriels comme la calcination du calcaire.
 
 Émissions en milliards de tonnes de CO₂ par an (2023 / 2050 / 2100) :
 
 | Secteur | SSP1-2.6 | SSP2-4.5 | SSP3-7.0 |
 | --- | --- | --- | --- |
-| Bâtiments | 3,00 / 2,87 / 1,45 | 3,00 / 2,75 / 1,88 | 3,00 / 3,05 / 1,98 |
+| Bâtiments | 2,69 / 2,57 / 1,30 | 2,61 / 2,40 / 1,64 | 2,70 / 2,75 / 1,78 |
 | Industrie | 9,00 / 3,92 / 1,06 | 9,00 / 10,41 / 5,47 | 9,00 / 10,81 / 12,18 |
 
 ### L'acier, le ciment et la chimie dans l'industrie
@@ -54,34 +54,38 @@ Le CO₂ qu'économise le chauffage propre est le CO₂ des bâtiments × (1 −
 
 ## Industrie propre
 
-Un seul levier couvre l'acier, le ciment et la chimie : la part de leur production faite de façon propre. À adoption complète sur un réseau propre, il retire 54 % du CO₂ de l'industrie : 26 % pour l'acier, 23 % pour le ciment et 5 % pour la chimie. Sur le réseau actuel, il en retire environ 28 %.
+Un seul levier couvre l'acier, le ciment et la chimie : la part de leur production faite de façon propre. À adoption complète sur un réseau propre, il retire 56 % du CO₂ de l'industrie : 26 % pour l'acier, 26 % pour le ciment et 5 % pour la chimie. Sur le réseau actuel, il en retire environ 31 %.
 
 Les procédés propres consomment de l'électricité. De l'hydrogène produit avec l'électricité d'un réseau qui brûle encore du charbon économise peu. Au haut de la fourchette d'électricité, sur le réseau de SSP3-7.0, la part de l'acier peut ajouter du CO₂. La fourchette probable le montre.
 
 ### Acier
 
-À adoption complète, le CO₂ direct de l'acier baisse de 90 % (75–95 %) :
+À adoption complète, le CO₂ direct de l'acier baisse de 90 % (90–97 %). Les chiffres viennent de l'*Iron and Steel Technology Roadmap* de l'AIE (2020) :
 
-- L'acier fait de fer réduit à l'hydrogène et fondu au four électrique à arc émet sur place 90 à 95 % de moins qu'un haut fourneau.
-- La ferraille fondue au four électrique économise à peu près autant.
-- Les hauts fourneaux avec captage du carbone émettent 75 à 90 % de moins.
-
-Ces chiffres viennent de l'*Iron and Steel Technology Roadmap* de l'AIE (2020) et du rapport *Making Net-Zero Steel Possible* de la Mission Possible Partnership (2022).
+- Dans le scénario de développement durable de l'AIE, le CO₂ direct par tonne d'acier brut baisse de 90 % d'ici 2070 (p. 54). C'est la médiane.
+- La réduction par fusion avec captage du carbone émettrait environ 90 % de moins qu'un haut fourneau (p. 92), et dans les filières de l'AIE avec captage, 90 % du CO₂ est capté (note de la figure 2.11, p. 107). C'est le bas de la fourchette.
+- La ferraille fondue au four électrique émet sur place 0,04 t de CO₂ par tonne d'acier brut, contre 1,2 t pour un haut fourneau (tableau p. 42), soit 97 % de moins. C'est le haut de la fourchette.
+- Le fer réduit à l'hydrogène produit avec une électricité propre donnerait un acier primaire sans émissions (p. 93).
 
 La réduction directe à l'hydrogène demande 3,48 MWh d'électricité par tonne d'acier liquide, surtout pour produire l'hydrogène, et évite 1,82 t de CO₂ par rapport à un haut fourneau (Vogl et al. 2018) : la filière hydrogène consomme donc 1,9 kWh par kg évité. La ferraille au four électrique demande 0,67 MWh par tonne (même étude), soit 0,4 kWh/kg. La médiane, 1,5 kWh/kg, tire trois quarts de la baisse de l'hydrogène et un quart d'un plus grand usage de ferraille. La fourchette va de 0,4 (tout en ferraille) à 2,2 (une électrolyse moins efficace).
 
 ### Ciment
 
-À adoption complète, le CO₂ direct du ciment baisse de 80 % (60–95 %). La baisse vient des substituts du clinker comme l'argile calcinée et le calcaire (LC3), d'autres combustibles, et du captage du carbone pour le CO₂ de procédé qu'aucun changement de combustible ne supprime (GCCA, *Concrete Future*, 2021 ; GIEC AR6 GT3, chapitre 11).
+À adoption complète, chaque four capte son CO₂, de procédé comme de combustion. Voldsund et al. (2019) comparent six technologies de captage sur le même four de référence, pour le projet européen CEMCAP. Toutes évitent 90 à 93 % du CO₂ à la cheminée (leur tableau 14). Le CO₂ direct du ciment baisse donc de 90 % (90–93 %).
 
-Le captage et la compression consomment environ 0,1 à 0,3 MWh par tonne de CO₂ évité (CEMCAP 2019). Le levier retient 0,25 kWh/kg en médiane, et de 0,1 à 1,0 kWh/kg là où les fours sont aussi chauffés à l'électricité.
+L'électricité vient des tableaux 14 et 15 de la même étude, par kg de clinker :
+
+- Le captage en oxycombustion, celui qui demande le moins d'énergie primaire par kg évité, fait passer la consommation électrique de l'usine de 474 à 1 094 kJ, moins les 83 kJ qu'il produit. Il ramène le CO₂ à la cheminée de 846 à 88 g. Cela fait 0,20 kWh par kg évité, la médiane et le bas de la fourchette.
+- La liquéfaction assistée par membranes, l'autre technique de captage qui ne consomme que de l'électricité, utilise 1 491 kJ et laisse 84 g. Cela fait 0,37 kWh/kg, le haut de la fourchette.
+
+Les autres technologies demandent de la vapeur produite au gaz, ou brûlent plus de charbon, ce que ce levier ne compte pas. Les substituts du clinker, comme l'argile calcinée et le calcaire, réduisent aussi le CO₂ du ciment. Ils sont laissés de côté, car le captage sur chaque four retire déjà le CO₂ qu'ils réduiraient.
 
 ### Chimie
 
 L'AIE nomme deux voies pour les produits chimiques de base : l'hydrogène électrolytique et le captage du carbone (CCUS). Dans sa feuille de route Net Zero, 93 % des produits chimiques de base sont faits avec des émissions quasi nulles en 2050 : 56 % de la production avec le CCUS et 28 % avec l'hydrogène électrolytique (AIE 2023, *Primary chemicals*, CC BY 4.0). À adoption complète, le CO₂ direct de la chimie baisse de 80 % (60–93 %). Le haut de la fourchette est le chiffre de 93 % de l'AIE. La médiane et le bas sont un jugement de Planetshift, non vérifié à une source.
 
 - **L'hydrogène électrolytique**, avec du carbone capté comme matière première, consomme plus de 18,1 PWh d'électricité bas carbone pour réduire de 3,5 milliards de tonnes de CO₂e par an (Kätelhön et al. 2019), soit 5,2 kWh par kg évité. C'est le haut de la fourchette.
-- **Le CCUS** consomme environ 0,1 à 0,3 MWh par tonne de CO₂ capté, comme pour le ciment (CEMCAP 2019). Ce chiffre a été mesuré sur des fours de cimenterie et n'est pas vérifié pour les usines chimiques. 0,1 kWh/kg est le bas de la fourchette.
+- **Le CCUS** est supposé consommer la même électricité que le captage en oxycombustion sur un four de cimenterie, 0,20 kWh par kg évité (Voldsund et al. 2019). Aucune source ouverte ne le donne pour les usines chimiques. C'est le bas de la fourchette.
 
 La médiane, 1,9 kWh/kg, pondère les deux voies à deux contre un, comme les 56 % et 28 % de l'AIE.
 
@@ -127,17 +131,17 @@ Le tableau donne le réchauffement évité en °C : la médiane, puis la fourche
 
 | Leviers | 2050 | 2100 |
 | --- | --- | --- |
-| Chauffage propre | 0,015 (0,001–0,042) ; CO₂ seul 0,009 | 0,070 (0,041–0,127) ; CO₂ seul 0,053 |
-| Industrie propre | 0,016 (−0,009 à 0,072) ; CO₂ seul 0,027 | 0,101 (0,036–0,226) ; CO₂ seul 0,101 |
+| Chauffage propre | 0,013 (0,000–0,037) ; CO₂ seul 0,008 | 0,061 (0,036–0,111) ; CO₂ seul 0,046 |
+| Industrie propre | 0,017 (−0,006 à 0,072) ; CO₂ seul 0,029 | 0,108 (0,055–0,224) ; CO₂ seul 0,108 |
 | Électricité renouvelable seule | 0,099 (0,052–0,192) ; CO₂ seul 0,097 | 0,282 (0,180–0,448) ; CO₂ seul 0,240 |
-| Chauffage propre avec électricité renouvelable | 0,122 (0,062–0,237) ; CO₂ seul 0,114 | 0,372 (0,238–0,590) ; CO₂ seul 0,310 |
-| Industrie propre avec électricité renouvelable | 0,127 (0,060–0,267) ; CO₂ seul 0,135 | 0,409 (0,243–0,683) ; CO₂ seul 0,364 |
+| Chauffage propre avec électricité renouvelable | 0,119 (0,060–0,231) ; CO₂ seul 0,112 | 0,360 (0,231–0,572) ; CO₂ seul 0,301 |
+| Industrie propre avec électricité renouvelable | 0,128 (0,063–0,267) ; CO₂ seul 0,137 | 0,416 (0,262–0,683) ; CO₂ seul 0,371 |
 
 Le chauffage propre gagne aux co-émissions dès le départ. Le gaz qu'il ne brûle plus aurait laissé fuir du méthane, et brûler du gaz émet peu de SO₂.
 
 L'industrie propre perd plus d'un tiers de son effet de 2050 aux co-émissions. Le SO₂ de leurs usines refroidit le climat, donc le supprimer réchauffe. Les filières hydrogène consomment aussi beaucoup d'électricité du réseau, dont elles ajoutent le CO₂ et le méthane. En 2100, son effet avec les co-émissions égale à peu près celui de son seul CO₂. Le CO₂ des fours à coke et le CO qu'émettent les fours sont comptés avec le charbon qui n'est plus brûlé, et ils compensent cette perte.
 
-Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,023 °C en 2050 et 0,090 °C en 2100. L'industrie propre y ajoute 0,028 et 0,127 °C. Sur un réseau propre, chaque levier économise plus que lorsqu'il agit seul.
+Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,020 °C en 2050 et 0,078 °C en 2100. L'industrie propre y ajoute 0,029 et 0,134 °C. Sur un réseau propre, chaque levier économise plus que lorsqu'il agit seul.
 
 Les effets sont petits en 2050, pour deux raisons. Le CO₂ évité s'accumule lentement. Et sur le réseau actuel, l'électricité que consomment les procédés propres annule une grande partie de ce qu'ils économisent.
 
@@ -152,10 +156,10 @@ Certaines industries n'ont pas de levier. Soit les scénarios ne leur donnent pa
 
 ## Hypothèses
 
-- Le CO₂ direct des bâtiments et de l'industrie suit la forme de son scénario, ramené à 3,0 et 9,0 milliards de tonnes en 2023.
+- Le CO₂ direct des bâtiments suit la forme de son scénario, ramené aux 2,68 milliards de tonnes de CEDS en 2022. Celui de l'industrie suit la forme de son scénario, ramené aux 9,0 milliards de tonnes de l'AIE en 2023.
 - L'acier, le ciment et la chimie (sans l'ammoniac) représentent 28,9 %, 28,7 % et 5,7 % du CO₂ direct de l'industrie, chaque année et dans chaque scénario.
 - Une pompe à chaleur demande 1,49 kWh par kg de CO₂ de chaudière évité, chaque année. Pompes à chaleur et chaudières ne deviennent pas plus efficaces avec le temps.
-- L'acier, le ciment et la chimie propres réduisent de 90 %, 80 % et 80 % leur CO₂ direct à adoption complète. Ils consomment 1,5, 0,25 et 1,9 kWh d'électricité par kg évité, sur le réseau qui reste après l'électricité renouvelable.
+- L'acier, le ciment et la chimie propres réduisent de 90 %, 90 % et 80 % leur CO₂ direct à adoption complète. Ils consomment 1,5, 0,20 et 1,9 kWh d'électricité par kg évité, sur le réseau qui reste après l'électricité renouvelable.
 - La fabrication des équipements n'est pas comptée.
 - Ce qui accompagne le combustible des bâtiments et de l'industrie (le CO₂ de sa production, le méthane, le N₂O et la pollution de l'air) suit les rapports de CEDS en 2022 par kg de leur CO₂ fossile, CO₂ de procédé compris pour l'industrie ; les usines chimiques prennent les rapports de l'industrie, que CEDS tire des usines de fer, d'acier, de ciment et de chaux. Ces rapports évoluent avec les facteurs d'émission du scénario. L'électricité consommée ajoute les co-émissions du réseau (voir [Énergie et transport](#method-sectors)).
 
@@ -170,11 +174,8 @@ Certaines industries n'ont pas de levier. Soit les scénarios ne leur donnent pa
 - Apparel Impact Institute (2025). Taking Stock of Progress Against the Roadmap to Net Zero.
 - JRC (2026). Fiche Aluminium (JRC144120), [publications.jrc.ec.europa.eu](https://publications.jrc.ec.europa.eu/repository/handle/JRC144120).
 - AIE (2022). The Future of Heat Pumps, [iea.org/reports/the-future-of-heat-pumps](https://www.iea.org/reports/the-future-of-heat-pumps). Licence : CC BY 4.0.
-- AIE (2020). Iron and Steel Technology Roadmap, [iea.org/reports/iron-and-steel-technology-roadmap](https://www.iea.org/reports/iron-and-steel-technology-roadmap).
+- AIE (2020). Iron and Steel Technology Roadmap, [iea.org/reports/iron-and-steel-technology-roadmap](https://www.iea.org/reports/iron-and-steel-technology-roadmap) : CO₂ direct par tonne des principales filières (tableau p. 42), scénario de développement durable (p. 54), réduction par fusion avec captage et réduction à l'hydrogène (p. 92–93).
 - GIEC (2006). Lignes directrices pour les inventaires nationaux de gaz à effet de serre, volume 2, chapitre 1, tableau 1.4 : facteurs d'émission de CO₂ par défaut pour la combustion.
-- GIEC (2022). Climate Change 2022: Mitigation of Climate Change, groupe de travail III, chapitre 11 (Industrie).
-- Mission Possible Partnership (2022). Making Net-Zero Steel Possible.
 - Vogl, V., Åhman, M. et Nilsson, L. J. (2018). Assessment of hydrogen direct reduction for fossil-free steelmaking. Journal of Cleaner Production 203, 736–745, [doi:10.1016/j.jclepro.2018.08.279](https://doi.org/10.1016/j.jclepro.2018.08.279).
-- GCCA (2021). Concrete Future: the GCCA 2050 Cement and Concrete Industry Roadmap for Net Zero Concrete.
-- CEMCAP (2019). CO₂ capture from cement production, résultats finaux (projet Horizon 2020 de l'UE).
+- Voldsund, M., Gardarsdottir, S. O., De Lena, E. et al. (2019). Comparison of technologies for CO₂ capture from cement production, part 1: technical evaluation. Energies 12, 559, tableaux 14 et 15, [doi:10.3390/en12030559](https://doi.org/10.3390/en12030559). Licence : CC BY 4.0.
 - worldsteel. Indicateurs de durabilité (CO₂ par tonne d'acier, électricité comprise).

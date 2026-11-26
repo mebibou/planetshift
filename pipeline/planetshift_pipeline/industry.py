@@ -11,7 +11,9 @@ import pandas as pd
 
 from .cache import DEFAULT_CACHE, fetched
 from .climate import DEFAULT_OUT, SSPS, rounded
-from .sources import rcmip
+from .coemissions import CEDS_SECTORS
+from .coemissions import FUELS as FOSSIL_FUELS
+from .sources import ceds, rcmip
 
 log = logging.getLogger(__name__)
 
@@ -26,11 +28,10 @@ RCMIP_SHAPE = {
     "industry": "Emissions|CO2|MAGICC Fossil and Industrial|Industrial Sector",
 }
 
-# Recent inventories (kg CO₂/yr) each shape is scaled to meet in BASE_YEAR. IEA Tracking Clean
-# Energy Progress 2023: buildings' direct CO₂ about 3.0 Gt in 2022 (residential and commercial
-# fuel burnt on site; RCMIP's sector also holds farm and fishing fuel, which this leaves out);
-# industry's direct CO₂, energy and processes, 9.0 Gt in 2022. Both are taken for 2023.
-INVENTORY = {"buildings": 3.0 * KG_PER_GT, "industry": 9.0 * KG_PER_GT}
+# The inventories each shape is scaled to: buildings to CEDS 1A4a/1A4b fossil fuel in 2022
+# (`buildings_kg`; RCMIP's sector also holds 1A4c, left out), industry to the IEA's 9.0 Gt of
+# 2022 (Tracking Clean Energy Progress 2023), both taken for 2023.
+INVENTORY = {"industry": 9.0 * KG_PER_GT}
 
 # Global Carbon Budget cement process CO₂ (Andrew), kt CO₂ by country and year.
 CEMENT_URL = "https://zenodo.org/records/22178444/files/0.%20GCP-CEM.csv?download=1"
@@ -61,41 +62,30 @@ HEAT_PUMP = {
     "high": {"fuel": "gas", "boiler": 0.95, "cop": 2.5},
 }
 
-# Share of each part's direct CO₂ gone at full adoption, and the electricity drawn per kg of CO₂
-# avoided. Steel: hydrogen direct reduction with an electric furnace cuts 90–95% against a blast
-# furnace, scrap in electric furnaces about as much on site, blast furnaces with capture 75–90%
-# (IEA 2020, Iron and Steel Technology Roadmap; Mission Possible Partnership 2022). Hydrogen
-# direct reduction needs 3.48 MWh per tonne of liquid steel, mostly electrolysis, and avoids
-# 1.82 t of CO₂ against a blast furnace (Vogl et al. 2018, abstract and section 2.1), so
-# 1.9 kWh/kg; scrap in an electric furnace 0.67 MWh/t (same, section 2), 0.4 kWh/kg. Median:
-# three quarters hydrogen, a quarter extra scrap. Cement: clinker substitutes, alternative fuels
-# and carbon capture together, 60–95%, 80% at the median (GCCA 2021, Concrete Future roadmap;
-# IPCC AR6 WGIII ch. 11). Capture and compression draw about 0.1–0.3 MWh per tonne of CO₂
-# avoided (CEMCAP 2019); electric kilns for the fuel part reach about 1 kWh/kg of all the CO₂
-# avoided. Chemicals (methanol and high-value chemicals): the IEA's Net Zero roadmap makes 93% of
-# primary chemicals near zero emission by 2050, 56% of production with CCUS and 28% with
-# electrolytic hydrogen (IEA 2023, Primary chemicals), the high cut and a two-to-one mix; the
-# median and low cuts are Planetshift's judgement. Electrolytic hydrogen and captured carbon
-# draw more than 18.1 PWh to cut 3.5 Gt CO₂e (Kätelhön et al. 2019, abstract), 5.2 kWh/kg, the
-# high end; capture alone 0.1-0.3 MWh per tonne avoided as for cement (CEMCAP 2019, not checked
-# for chemicals), the low end; the median weighs them two to one.
+# Share of each part's direct CO₂ gone at full adoption, and electricity per kg avoided; the
+# derivations are in docs/methodology/en/industry.md. Steel: IEA 2020, Iron and Steel Technology
+# Roadmap (pp. 42, 54, 92, 107), and Vogl et al. 2018 for the electricity. Cement, capture on
+# every kiln: Voldsund et al. 2019, tables 14 and 15. Chemicals: IEA 2023, Primary chemicals, for
+# the high cut and mix, and Kätelhön et al. 2019 for the high electricity; the median and low
+# cuts, and capture at the cement kiln's 0.20 kWh/kg, are judgements no source gives.
 PARTS = {
     "steel": {
-        "cut": {"median": 0.9, "low": 0.75, "high": 0.95},
+        "cut": {"median": 0.9, "low": 0.9, "high": 0.97},
         "kwhPerKgCo2": {"median": 1.5, "low": 0.4, "high": 2.2},
     },
     "cement": {
-        "cut": {"median": 0.8, "low": 0.6, "high": 0.95},
-        "kwhPerKgCo2": {"median": 0.25, "low": 0.1, "high": 1.0},
+        "cut": {"median": 0.9, "low": 0.9, "high": 0.93},
+        "kwhPerKgCo2": {"median": 0.2, "low": 0.2, "high": 0.37},
     },
     "chemicals": {
         "cut": {"median": 0.8, "low": 0.6, "high": 0.93},
-        "kwhPerKgCo2": {"median": 1.9, "low": 0.1, "high": 5.2},
+        "kwhPerKgCo2": {"median": 1.9, "low": 0.2, "high": 5.2},
     },
 }
 
 SOURCE = (
-    "RCMIP v5.1.0 harmonised to IEA Tracking Clean Energy Progress 2023; Global Carbon Budget "
+    "RCMIP v5.1.0 harmonised to CEDS v_2024_07_08 (buildings, 2022) and IEA Tracking Clean "
+    "Energy Progress 2023 (industry); Global Carbon Budget "
     "cement process CO₂ (Andrew, v260830); heat-pump, steel, cement and chemicals factors from "
     "the IEA, "
     "IPCC, published roadmaps and studies"
@@ -140,6 +130,21 @@ SOURCES = [
         "url": "https://doi.org/10.1073/pnas.1821029116",
         "licence": "PNAS, free to read",
     },
+    {
+        "id": "iea-steel-roadmap",
+        "name": "IEA, Iron and Steel Technology Roadmap",
+        "version": "2020",
+        "url": "https://www.iea.org/reports/iron-and-steel-technology-roadmap",
+        "licence": "IEA, all rights reserved",
+    },
+    {
+        "id": "voldsund-2019-cement-capture",
+        "name": "Voldsund et al. (2019), Comparison of technologies for CO₂ capture from cement "
+        "production, part 1: technical evaluation",
+        "version": "Energies 12(3), 559",
+        "url": "https://doi.org/10.3390/en12030559",
+        "licence": "CC BY 4.0",
+    },
 ]
 
 
@@ -152,12 +157,27 @@ def series(years: np.ndarray, values: np.ndarray) -> dict:
     return {"years": [int(y) for y in years], "values": rounded(values)}
 
 
-def sector_co2(rcmip_df: pd.DataFrame, ssp: str, years: np.ndarray) -> dict[str, np.ndarray]:
-    """kg CO₂/yr of each sector: its SSP shape scaled to the inventory, never below zero."""
+def buildings_kg(table: pd.DataFrame) -> float:
+    """Buildings' fossil CO₂ in a CEDS table of CO₂ by sector and fuel, kg."""
+    rows = table["sector"].isin(CEDS_SECTORS["buildings"]) & table["fuel"].isin(FOSSIL_FUELS)
+    return float(table.loc[rows, "kg"].sum())
+
+
+def sector_co2(
+    rcmip_df: pd.DataFrame, ssp: str, years: np.ndarray, buildings: float
+) -> dict[str, np.ndarray]:
+    """kg CO₂/yr of each sector: its SSP shape scaled to its inventory, never below zero;
+    buildings' to `buildings` kg in CEDS's last year."""
+    targets = {
+        "buildings": (ceds.LAST_YEAR, buildings),
+        "industry": (BASE_YEAR, INVENTORY["industry"]),
+    }
 
     def one(sector: str) -> np.ndarray:
-        shape = rcmip.series(rcmip_df, ssp, RCMIP_SHAPE[sector], years)
-        return np.maximum(scaled_to(shape, years, BASE_YEAR, INVENTORY[sector]), 0)
+        year, target = targets[sector]
+        span = np.arange(min(year, years[0]), years[-1] + 1)
+        shape = rcmip.series(rcmip_df, ssp, RCMIP_SHAPE[sector], span)
+        return np.maximum(scaled_to(shape, span, year, target)[span >= years[0]], 0)
 
     return {sector: one(sector) for sector in RCMIP_SHAPE}
 
@@ -203,13 +223,14 @@ def parts(cement_process_kg: float) -> dict[str, dict]:
     }
 
 
-def document(rcmip_df: pd.DataFrame, cement: pd.DataFrame) -> dict:
+def document(rcmip_df: pd.DataFrame, cement: pd.DataFrame, buildings: float) -> dict:
     years = np.arange(BASE_YEAR, END_YEAR + 1)
     process = cement_process(cement, BASE_YEAR)
     return {
         "co2": {
             ssp: {
-                sector: series(years, v) for sector, v in sector_co2(rcmip_df, ssp, years).items()
+                sector: series(years, v)
+                for sector, v in sector_co2(rcmip_df, ssp, years, buildings).items()
             }
             for ssp in SSPS
         },
@@ -221,7 +242,8 @@ def document(rcmip_df: pd.DataFrame, cement: pd.DataFrame) -> dict:
 
 
 def build(cache_dir: Path) -> dict:
-    return document(rcmip.load(cache_dir), load_cement(cache_dir))
+    measured = buildings_kg(ceds.by_sector_fuel(ceds.path(cache_dir), "CO2"))
+    return document(rcmip.load(cache_dir), load_cement(cache_dir), measured)
 
 
 def summary(doc: dict) -> list[str]:

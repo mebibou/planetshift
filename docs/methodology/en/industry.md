@@ -1,6 +1,6 @@
 # Buildings and industry
 
-Besides transport and electricity, two parts of the economy burn fossil fuel directly. In buildings, gas and oil boilers heat rooms and water, and stoves cook food. In industry, steel and cement are the largest emitters, followed by chemicals. Planetshift has two levers here, clean heating and clean industry, which covers steel, cement and chemicals. Adopted in full, each avoids less than 0.02 °C of warming in 2050, and about 0.07 and 0.10 °C in 2100. They avoid much more when the electricity they use is clean (see *Results* below).
+Besides transport and electricity, two parts of the economy burn fossil fuel directly. In buildings, gas and oil boilers heat rooms and water, and stoves cook food. In industry, steel and cement are the largest emitters, followed by chemicals. Planetshift has two levers here, clean heating and clean industry, which covers steel, cement and chemicals. Adopted in full, each avoids less than 0.02 °C of warming in 2050, and about 0.06 and 0.11 °C in 2100. They avoid much more when the electricity they use is clean (see *Results* below).
 
 ## How these emissions are counted
 
@@ -14,16 +14,16 @@ Burning less fuel also avoids the methane leaked while producing it, and its air
 
 ## The sectors and their futures
 
-Each sector's emissions start in 2023 at a recent inventory. From there, they follow the shape of the scenario's trajectory, as for transport. The trajectories are the emissions FaIR itself is run with: RCMIP v5.1.0, the harmonised CMIP6 emissions, by CEDS sector.
+Each sector's emissions start at a recent inventory. From there, they follow the shape of the scenario's trajectory, as for transport. The trajectories are the emissions FaIR itself runs on: RCMIP v5.1.0, the harmonised CMIP6 emissions, by CEDS sector.
 
-- **Buildings**: RCMIP's *Residential Commercial Other* CO₂, scaled to the IEA's 3.0 billion tonnes of direct CO₂ from buildings in 2022, taken for 2023. It is the fuel burnt on site for space and water heating and for cooking. The electricity and district heat that buildings use are in the electricity sector. RCMIP's sector also holds the fuel of farm machinery and fishing boats. Scaling it to the buildings inventory leaves those out (farm energy has its own lever).
+- **Buildings**: RCMIP's *Residential Commercial Other* CO₂, scaled to CEDS's 2.68 billion tonnes of fossil CO₂ from residential, commercial and institutional fuel in 2022, its last year, and carried to 2023 by the scenario's shape, as road transport is. It is the fossil fuel burnt on site for space and water heating and for cooking. The electricity and district heat that buildings use are in the electricity sector. RCMIP's sector also holds the fuel of farm machinery and fishing boats. Scaling it to the buildings inventory leaves those out (farm energy has its own lever).
 - **Industry**: RCMIP's *Industrial Sector* CO₂, scaled to the IEA's 9.0 billion tonnes of direct CO₂ from industry in 2022, taken for 2023. It is the fuel burnt in factories, and the CO₂ of industrial processes such as calcining limestone.
 
 Emissions in billion tonnes of CO₂ a year (2023 / 2050 / 2100):
 
 | Sector | SSP1-2.6 | SSP2-4.5 | SSP3-7.0 |
 | --- | --- | --- | --- |
-| Buildings | 3.00 / 2.87 / 1.45 | 3.00 / 2.75 / 1.88 | 3.00 / 3.05 / 1.98 |
+| Buildings | 2.69 / 2.57 / 1.30 | 2.61 / 2.40 / 1.64 | 2.70 / 2.75 / 1.78 |
 | Industry | 9.00 / 3.92 / 1.06 | 9.00 / 10.41 / 5.47 | 9.00 / 10.81 / 12.18 |
 
 ### Steel, cement and chemicals within industry
@@ -54,34 +54,38 @@ The CO₂ that clean heating saves is the buildings' CO₂ × (1 − `heatPumpKw
 
 ## Clean industry
 
-One lever covers steel, cement and chemicals: the share of their production made in clean ways. At full adoption on a clean grid, it removes 54% of industry's CO₂: 26% from steel, 23% from cement and 5% from chemicals. On today's grid, it removes about 28%.
+One lever covers steel, cement and chemicals: the share of their production made in clean ways. At full adoption on a clean grid, it removes 56% of industry's CO₂: 26% from steel, 26% from cement and 5% from chemicals. On today's grid, it removes about 31%.
 
 The clean routes draw electricity. Hydrogen made with power from a grid that still burns coal saves little. At the high end of the electricity range, on SSP3-7.0's grid, the steel part can add CO₂. The likely range shows this.
 
 ### Steel
 
-At full adoption, steel's direct CO₂ falls by 90% (75–95%):
+At full adoption, steel's direct CO₂ falls by 90% (90–97%). The figures are from the IEA's *Iron and Steel Technology Roadmap* (2020):
 
-- Steel made from iron reduced with hydrogen and melted in an electric arc furnace emits 90–95% less on site than a blast furnace.
-- Scrap melted in an electric furnace saves about as much.
-- Blast furnaces with carbon capture emit 75–90% less.
-
-These figures are from the IEA's *Iron and Steel Technology Roadmap* (2020) and the Mission Possible Partnership's *Making Net-Zero Steel Possible* (2022).
+- In the IEA's Sustainable Development Scenario, the direct CO₂ per tonne of crude steel falls by 90% by 2070 (p. 54). This is the median.
+- Smelting reduction with carbon capture would emit about 90% less than a blast furnace (p. 92), and in the IEA's routes with capture, 90% of the CO₂ is captured (note to figure 2.11, p. 107). This is the low end.
+- Scrap melted in an electric furnace emits 0.04 t of CO₂ per tonne of crude steel on site, against 1.2 t for a blast furnace (table on p. 42), 97% less. This is the high end.
+- Iron reduced with hydrogen made from clean electricity would make primary steel with no emissions (p. 93).
 
 Hydrogen direct reduction needs 3.48 MWh of electricity per tonne of liquid steel, mostly to make the hydrogen, and avoids 1.82 t of CO₂ against a blast furnace (Vogl et al. 2018), so the hydrogen route draws 1.9 kWh per kg avoided. Scrap in an electric furnace needs 0.67 MWh per tonne (same study), or 0.4 kWh/kg. The median, 1.5 kWh/kg, takes three quarters of the cut from hydrogen and a quarter from using more scrap. The range is 0.4 (all scrap) to 2.2 (less efficient electrolysis).
 
 ### Cement
 
-At full adoption, cement's direct CO₂ falls by 80% (60–95%). The cut comes from clinker substitutes such as calcined clay and limestone (LC3), from other fuels, and from carbon capture for the process CO₂ that no change of fuel removes (GCCA, *Concrete Future*, 2021; IPCC AR6 WGIII chapter 11).
+At full adoption, every kiln captures its CO₂, process and fuel alike. Voldsund et al. (2019) compare six capture technologies on the same reference kiln, for the EU's CEMCAP project. All of them avoid 90–93% of the CO₂ at the stack (their table 14). Cement's direct CO₂ therefore falls by 90% (90–93%).
 
-Capture and compression draw about 0.1–0.3 MWh per tonne of CO₂ avoided (CEMCAP 2019). The lever uses 0.25 kWh/kg at the median, and 0.1 to 1.0 kWh/kg where kilns are also heated by electricity.
+The electricity comes from the same study's tables 14 and 15, per kg of clinker:
+
+- Oxyfuel capture, the one with the lowest primary energy per kg avoided, raises the plant's power use from 474 to 1,094 kJ, minus the 83 kJ it generates. It cuts the stack's CO₂ from 846 to 88 g. That is 0.20 kWh per kg avoided, the median and the low end.
+- Membrane-assisted liquefaction, the other capture technology that runs on electricity alone, uses 1,491 kJ and leaves 84 g. That is 0.37 kWh/kg, the high end.
+
+The other technologies need steam from gas, or burn more coal, which this lever does not count. Clinker substitutes, such as calcined clay and limestone, also cut cement's CO₂. They are left out, because capture on every kiln already removes the CO₂ they would cut.
 
 ### Chemicals
 
 The IEA names two routes for primary chemicals: electrolytic hydrogen and carbon capture (CCUS). In its Net Zero roadmap, 93% of primary chemicals are made with near-zero emissions in 2050: 56% of production with CCUS and 28% with electrolytic hydrogen (IEA 2023, *Primary chemicals*, CC BY 4.0). At full adoption, chemicals' direct CO₂ falls by 80% (60–93%). The high end is the IEA's 93%. The median and the low end are Planetshift's judgement, not checked against a source.
 
 - **Electrolytic hydrogen**, with captured carbon as feedstock, draws more than 18.1 PWh of low-carbon electricity to cut 3.5 billion tonnes of CO₂e a year (Kätelhön et al. 2019), so 5.2 kWh per kg avoided. That is the high end.
-- **CCUS** draws about 0.1–0.3 MWh per tonne of CO₂ captured, as for cement (CEMCAP 2019). This figure was measured on cement kilns and is not checked for chemical plants. 0.1 kWh/kg is the low end.
+- **CCUS** is taken to use the same electricity as oxyfuel capture on a cement kiln, 0.20 kWh per kg avoided (Voldsund et al. 2019). No open source gives it for chemical plants. It is the low end.
 
 The median, 1.9 kWh/kg, weighs the two routes two to one, as the IEA's 56% and 28% do.
 
@@ -127,17 +131,17 @@ The table gives the warming avoided in °C, as a median with the likely range in
 
 | Levers | 2050 | 2100 |
 | --- | --- | --- |
-| Clean heating | 0.015 (0.001–0.042); CO₂ alone 0.009 | 0.070 (0.041–0.127); CO₂ alone 0.053 |
-| Clean industry | 0.016 (−0.009–0.072); CO₂ alone 0.027 | 0.101 (0.036–0.226); CO₂ alone 0.101 |
+| Clean heating | 0.013 (0.000–0.037); CO₂ alone 0.008 | 0.061 (0.036–0.111); CO₂ alone 0.046 |
+| Clean industry | 0.017 (−0.006–0.072); CO₂ alone 0.029 | 0.108 (0.055–0.224); CO₂ alone 0.108 |
 | Renewable electricity alone | 0.099 (0.052–0.192); CO₂ alone 0.097 | 0.282 (0.180–0.448); CO₂ alone 0.240 |
-| Clean heating with renewable electricity | 0.122 (0.062–0.237); CO₂ alone 0.114 | 0.372 (0.238–0.590); CO₂ alone 0.310 |
-| Clean industry with renewable electricity | 0.127 (0.060–0.267); CO₂ alone 0.135 | 0.409 (0.243–0.683); CO₂ alone 0.364 |
+| Clean heating with renewable electricity | 0.119 (0.060–0.231); CO₂ alone 0.112 | 0.360 (0.231–0.572); CO₂ alone 0.301 |
+| Clean industry with renewable electricity | 0.128 (0.063–0.267); CO₂ alone 0.137 | 0.416 (0.262–0.683); CO₂ alone 0.371 |
 
 Clean heating gains from the co-emissions from the start. The gas it no longer burns would have leaked methane, and burning gas emits little SO₂.
 
 Clean industry loses over a third of its 2050 effect to the co-emissions. Their plants' SO₂ cools the climate, so removing it warms. The hydrogen routes also draw a lot of grid power, which adds that power's CO₂ and methane. By 2100 its effect with the co-emissions about equals its CO₂ alone. The coke ovens' CO₂ and the CO that the furnaces emit are counted with the coal no longer burnt, and they make up for the loss.
 
-With renewable electricity in full, clean heating adds 0.023 °C in 2050 and 0.090 °C in 2100 to it. Clean industry adds 0.028 and 0.127 °C. On a clean grid, each lever saves more than it does alone.
+With renewable electricity in full, clean heating adds 0.020 °C in 2050 and 0.078 °C in 2100 to it. Clean industry adds 0.029 and 0.134 °C. On a clean grid, each lever saves more than it does alone.
 
 The effects are small in 2050 for two reasons. The CO₂ avoided adds up slowly. On today's grid, the electricity that the clean routes draw also cancels much of what they save.
 
@@ -152,10 +156,10 @@ Some industries have no lever. Either the scenarios give no trajectory for them 
 
 ## Assumptions
 
-- Buildings' and industry's direct CO₂ follow their scenario's shape, scaled to 3.0 and 9.0 billion tonnes in 2023.
+- Buildings' direct CO₂ follows its scenario's shape, scaled to CEDS's 2.68 billion tonnes in 2022. Industry's follows its scenario's shape, scaled to the IEA's 9.0 billion tonnes in 2023.
 - Steel, cement and chemicals (without ammonia) are 28.9%, 28.7% and 5.7% of industry's direct CO₂ in every year and scenario.
 - A heat pump needs 1.49 kWh per kg of a boiler's CO₂ avoided, in every year. Heat pumps and boilers do not get more efficient over time.
-- Clean steel, cement and chemicals cut 90%, 80% and 80% of their direct CO₂ at full adoption. They draw 1.5, 0.25 and 1.9 kWh of electricity per kg avoided, on the grid left after renewable electricity.
+- Clean steel, cement and chemicals cut 90%, 90% and 80% of their direct CO₂ at full adoption. They draw 1.5, 0.20 and 1.9 kWh of electricity per kg avoided, on the grid left after renewable electricity.
 - Making the equipment is not counted.
 - What comes with the fuel of buildings and of industry (the CO₂ of producing it, methane, N₂O and air pollution) uses CEDS's 2022 ratios per kg of their fossil CO₂, process CO₂ included for industry; chemical plants take industry's ratios, which CEDS draws from iron, steel, cement and lime plants. These ratios change with the scenario's emission factors. The electricity drawn adds the grid's co-emissions (see [Energy and transport](#method-sectors)).
 
@@ -170,11 +174,8 @@ Some industries have no lever. Either the scenarios give no trajectory for them 
 - Apparel Impact Institute (2025). Taking Stock of Progress Against the Roadmap to Net Zero.
 - JRC (2026). Aluminium factsheet (JRC144120), [publications.jrc.ec.europa.eu](https://publications.jrc.ec.europa.eu/repository/handle/JRC144120).
 - IEA (2022). The Future of Heat Pumps, [iea.org/reports/the-future-of-heat-pumps](https://www.iea.org/reports/the-future-of-heat-pumps). Licence: CC BY 4.0.
-- IEA (2020). Iron and Steel Technology Roadmap, [iea.org/reports/iron-and-steel-technology-roadmap](https://www.iea.org/reports/iron-and-steel-technology-roadmap).
+- IEA (2020). Iron and Steel Technology Roadmap, [iea.org/reports/iron-and-steel-technology-roadmap](https://www.iea.org/reports/iron-and-steel-technology-roadmap): direct CO₂ intensity of the main routes (table, p. 42), the Sustainable Development Scenario (p. 54), smelting reduction with capture and hydrogen reduction (pp. 92–93).
 - IPCC (2006). Guidelines for National Greenhouse Gas Inventories, volume 2, chapter 1, table 1.4: default CO₂ emission factors for combustion.
-- IPCC (2022). Climate Change 2022: Mitigation of Climate Change, Working Group III, chapter 11 (Industry).
-- Mission Possible Partnership (2022). Making Net-Zero Steel Possible.
 - Vogl, V., Åhman, M. and Nilsson, L. J. (2018). Assessment of hydrogen direct reduction for fossil-free steelmaking. Journal of Cleaner Production 203, 736–745, [doi:10.1016/j.jclepro.2018.08.279](https://doi.org/10.1016/j.jclepro.2018.08.279).
-- GCCA (2021). Concrete Future: the GCCA 2050 Cement and Concrete Industry Roadmap for Net Zero Concrete.
-- CEMCAP (2019). CO₂ capture from cement production, final results (EU Horizon 2020 project).
+- Voldsund, M., Gardarsdottir, S. O., De Lena, E. et al. (2019). Comparison of technologies for CO₂ capture from cement production, part 1: technical evaluation. Energies 12, 559, tables 14 and 15, [doi:10.3390/en12030559](https://doi.org/10.3390/en12030559). Licence: CC BY 4.0.
 - worldsteel. Sustainability indicators (CO₂ per tonne of steel, including electricity).

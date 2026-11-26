@@ -327,7 +327,7 @@ Each departure is a named switch in `planetshift.config.json`, the file a fork o
 With every switch at its plain-FaIR value, on SSP2-4.5:
 
 - less flying in full avoids 0.007 °C in 2050 and 0.045 °C in 2100, instead of 0.055 and 0.125, as most of its effect is the contrails' and FaIR has none;
-- electric cars avoid 0.026 and 0.090 °C instead of 0.040 and 0.103, and in SSP3-7.0 add 0.019 °C by 2100 instead of avoiding 0.034;
+- electric cars avoid 0.025 and 0.087 °C instead of 0.039 and 0.101, and in SSP3-7.0 add 0.026 °C by 2100 instead of avoiding 0.027;
 - the six energy levers together avoid 0.161 and 0.531 °C instead of 0.250 and 0.652.
 
 Without the shipping rule, the baseline is 0.037 °C cooler in 2024 and 0.069 °C cooler in 2100. The farm levers do not move.

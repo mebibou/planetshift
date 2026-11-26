@@ -37,7 +37,7 @@ Les rythmes publiés sont souvent donnés en tonnes de carbone (t C). Une tonne 
 
 Les couverts végétaux sont des plantes semées entre deux cultures principales, pendant une interculture d'hiver ou de saison sèche, et laissées sur le champ ou enfouies. Leurs racines et leurs résidus ajoutent du carbone au sol.
 
-La méta-analyse de Poeplau et Don (2015) a trouvé un gain moyen de 0,32 t de carbone par hectare et par an (1,17 t de CO₂). Elle n'a pas trouvé d'effet clair du climat parmi les essais au champ, qui sont surtout en climat humide. En climat sec, l'eau limite ce qu'un couvert peut produire. Le facteur du GIEC pour des apports de carbone élevés y est de 1,04, contre 1,11 en climat humide : le gain fait donc environ le tiers de celui du climat humide.
+La méta-analyse de Poeplau et Don (2015) a trouvé un gain moyen de 0,32 t de carbone par hectare et par an (1,17 t de CO₂). Son résumé désigne l'altitude et la profondeur d'échantillonnage, et non le climat, comme les raisons des écarts entre essais au champ. La plupart de ces essais sont en climat humide. Lessmann et al. (2022) ont regroupé des méta-analyses par zone climatique : les rotations avec cultures intermédiaires gagnent 0,14 t de carbone par hectare et par an en zone tempérée, 0,15 en zone subtropicale et 0,17 en zone tropicale, dans les 20 à 30 premiers cm (leur tableau 2). Un seul taux s'applique donc à tous les climats humides. En climat sec, l'eau limite ce qu'un couvert peut produire. Le facteur du GIEC pour des apports de carbone élevés y est de 1,04, contre 1,11 en climat humide : le gain fait donc environ le tiers du gain en climat humide.
 
 Les couverts végétaux atteignent au plus un quart des cultures, la surface qu'implique l'estimation mondiale de Poeplau et Don : 0,12 Pg de carbone par an à leurs 0,32 t C par hectare font 375 millions d'hectares, un quart des 1,5 milliard d'hectares de cultures du monde. À ce plafond, les couverts végétaux de Planetshift stockent environ 0,37 Gt de CO₂ par an, 0,10 Pg de carbone. C'est proche de l'estimation mondiale de Poeplau et Don (0,12 ± 0,03 Pg C par an).
 
@@ -127,6 +127,7 @@ Les valeurs, avec une ligne de justification pour chacune, sont dans `pipeline/r
 ## Sources
 
 - Poeplau, C. et Don, A. (2015). Carbon sequestration in agricultural soils via cultivation of cover crops – A meta-analysis. Agriculture, Ecosystems & Environment 200, 33–41, doi:10.1016/j.agee.2014.10.024.
+- Lessmann, M., Ros, G. H., Young, M. D. et de Vries, W. (2022). Global variation in soil carbon sequestration potential through improved cropland management. Global Change Biology 28, 1162–1177, tableau 2, doi:10.1111/gcb.15954. CC BY 4.0.
 - GIEC (2006, affinées en 2019). Lignes directrices pour les inventaires nationaux de gaz à effet de serre, volume 4, chapitre 5, terres cultivées, et chapitre 2, appendice 4, biochar (tableaux 4Ap.1 et 4Ap.2).
 - Cardinael, R. et al. (2018). Revisiting IPCC Tier 1 coefficients for soil organic and biomass carbon storage in agroforestry systems. Environmental Research Letters 13, 124020, doi:10.1088/1748-9326/aaeb5f. CC BY 3.0.
 - Roe, S. et al. (2021). Land-based measures to mitigate climate change: potential and feasibility by country. Global Change Biology 27, 6025–6058, doi:10.1111/gcb.15873. CC BY 4.0.

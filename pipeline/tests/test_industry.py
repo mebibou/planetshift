@@ -1,6 +1,6 @@
 """The industry build: shapes, factors, and recent totals against the inventories.
 
-Recent totals, Gt CO₂: buildings' direct CO₂ about 3 (IEA tracking 2023), cement process CO₂
+Recent totals, Gt CO₂: buildings' fossil CO₂ 2.68 in 2022 (CEDS v_2024_07_08), cement process CO₂
 about 1.5–1.6 (Global Carbon Budget, Andrew v260830), iron and steel about 2.6 direct (IEA
 tracking 2023; worldsteel's 3.6 includes electricity), cement process and fuel about 2.4 (IEA)."""
 
@@ -36,13 +36,25 @@ def test_each_sector_is_its_shape_scaled_to_the_inventory():
         }
     )
     years = np.arange(I.BASE_YEAR, I.END_YEAR + 1)
-    co2 = I.sector_co2(df, "ssp245", years)
-    assert co2["buildings"][0] == pytest.approx(3.0 * GT)
+    co2 = I.sector_co2(df, "ssp245", years, 2.7 * GT)
+    assert co2["buildings"][0] == pytest.approx(2.7 * GT * (3000 - 1500 * 8 / 35) / 2700)
     assert co2["industry"][0] == pytest.approx(9.0 * GT)
     assert co2["industry"][years == 2050][0] / co2["industry"][0] == pytest.approx(
         18000 / (9000 + 9000 * 8 / 35)
     )
     assert co2["buildings"][-1] == 0
+
+
+def test_buildings_take_ceds_residential_and_commercial_fossil_fuel():
+    table = pd.DataFrame(
+        {
+            "sector": ["1A4b_Residential", "1A4a_Commercial-institutional", "1A4b_Residential"]
+            + ["1A4c_Agriculture-forestry-fishing"],
+            "fuel": ["natural_gas", "light_oil", "biomass", "diesel_oil"],
+            "kg": [2.0, 1.0, 5.0, 7.0],
+        }
+    )
+    assert I.buildings_kg(table) == 3.0
 
 
 def test_cement_share_comes_from_its_process_co2():
@@ -83,7 +95,7 @@ def test_the_built_document_meets_the_recent_totals():
             assert s["years"][0] == I.BASE_YEAR and s["years"][-1] == I.END_YEAR
             assert len(s["values"]) == len(s["years"])
             assert min(s["values"]) >= 0
-        assert doc["co2"][ssp]["buildings"]["values"][0] == pytest.approx(3.0 * GT, rel=1e-3)
+        assert 2.5 * GT < doc["co2"][ssp]["buildings"]["values"][0] < 2.8 * GT
     process = doc["cementProcessCo2"]["kg"] / GT
     assert 1.4 < process < 1.7
     parts = doc["industryParts"]

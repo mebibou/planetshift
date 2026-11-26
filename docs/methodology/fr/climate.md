@@ -327,7 +327,7 @@ Chaque écart est un interrupteur nommé de `planetshift.config.json`, le fichie
 Avec chaque interrupteur sur FaIR tel quel, sur SSP2-4.5 :
 
 - moins d'avion à fond évite 0,007 °C en 2050 et 0,045 °C en 2100, au lieu de 0,055 et 0,125, car l'essentiel de son effet vient des traînées et FaIR n'en a pas ;
-- les voitures électriques évitent 0,026 et 0,090 °C au lieu de 0,040 et 0,103, et dans SSP3-7.0 ajoutent 0,019 °C d'ici 2100 au lieu d'en éviter 0,034 ;
+- les voitures électriques évitent 0,025 et 0,087 °C au lieu de 0,039 et 0,101, et dans SSP3-7.0 ajoutent 0,026 °C d'ici 2100 au lieu d'en éviter 0,027 ;
 - les six leviers d'énergie ensemble évitent 0,161 et 0,531 °C au lieu de 0,250 et 0,652.
 
 Sans la règle sur le transport maritime, la référence est plus fraîche de 0,037 °C en 2024 et de 0,069 °C en 2100. Les leviers agricoles ne bougent pas.

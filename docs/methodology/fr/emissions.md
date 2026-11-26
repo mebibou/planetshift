@@ -142,8 +142,8 @@ Les taux sont dans `proxies.csv`. La plupart sont le rapport entre la production
 | 2586 Autres huiles d'oléagineux | 2570 autres oléagineux : 0,35 | facteurs de conversion techniques de la FAO, lin et carthame (le rapport mondial dépasse 1 : le produit contient des huiles de graines listées ailleurs) |
 | 2655 Vin | 2620 raisin : 0,63 | bilan mondial 2023 |
 | 2656 Bière | 2513 orge : 5,8 | bilan mondial 2023 |
-| 2657 Boissons fermentées | 2518 sorgho : 4 | hypothèse (les facteurs de conversion techniques de la FAO n'en donnent aucun pour les boissons) |
-| 2658 Boissons alcoolisées | 2514 maïs : 0,9 | hypothèse (les facteurs de conversion techniques de la FAO n'en donnent aucun pour les boissons) |
+| 2657 Boissons fermentées | 2518 sorgho : 4 | hypothèse, 0,25 t de grain par t de bière de sorgho ou de mil (les facteurs de conversion techniques de la FAO donnent des boissons fermentées de riz, de blé et de fruits dans quelques pays, aucune de sorgho ou de mil) |
+| 2658 Boissons alcoolisées | 2514 maïs : 0,9 | hypothèse, 1,1 t de grain par t de spiritueux à 40 % d'alcool (les facteurs de conversion techniques de la FAO n'en donnent aucun pour les spiritueux) |
 | 2740 Beurre, ghee | 2848 lait : 0,056 | bilan mondial 2023, 85 % du lait transformé |
 | 2743 Crème | 2848 lait : 0,09 | bilan mondial 2023, 15 % du lait transformé |
 
