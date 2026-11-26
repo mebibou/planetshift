@@ -3,9 +3,9 @@ import { orderKey, panelOrder, type CauseSection, type PanelGroup } from '../app
 import { valueAt } from '../app/summaryModel';
 import { HORIZONS, type Horizon } from '../app/url';
 import type { Worth, WorthId } from '../app/worth';
-import type { Climate, LeverCause } from '../data/types';
+import type { Climate, ModuleCause } from '../data/types';
 import { formatTemperature } from '../i18n/format';
-import { DIET_CAUSE, LEVER_CAUSES, PANEL_MODULES, type LeverId } from '../levers/registry';
+import { DIET_CAUSE, PANEL_CAUSES, PANEL_MODULES, type LeverId } from '../levers/registry';
 import type { Options } from '../model/api';
 import { DietGroup, type PanelProps } from './DietGroup';
 import { Info } from './Info';
@@ -36,11 +36,11 @@ const GROUPS: readonly PanelGroup[] = [
 const causeSizes = (climate: Climate, options: Options, horizon: Horizon) => {
   const attribution = climate.attribution[options.ssp];
   return Object.fromEntries(
-    LEVER_CAUSES.map((c) => [
-      c,
-      valueAt(attribution[c].years, attribution[c].median, Number(horizon)) ?? 0,
-    ]),
-  ) as Record<LeverCause, number>;
+    PANEL_CAUSES.map((c) => {
+      const a = attribution[c];
+      return [c, (a && valueAt(a.years, a.median, Number(horizon))) ?? 0];
+    }),
+  ) as Record<ModuleCause, number>;
 };
 
 interface Ordered {
@@ -54,7 +54,7 @@ interface Ordered {
 /** The order once the figures or the key change: kept while settled for this key. */
 const nextOrder = (
   ordered: Ordered,
-  sizes: Record<LeverCause, number>,
+  sizes: Record<ModuleCause, number>,
   values: ReadonlyMap<WorthId, Worth>,
   horizon: Horizon,
   key: string,
@@ -76,7 +76,7 @@ const nextOrder = (
  * known for the current options, horizon and data, and only then: a slider never reorders it.
  */
 const usePanelOrder = (
-  sizes: Record<LeverCause, number>,
+  sizes: Record<ModuleCause, number>,
   values: ReadonlyMap<WorthId, Worth>,
   horizon: Horizon,
   key: string,
@@ -146,7 +146,7 @@ const Cause = ({
   size,
 }: {
   props: SidePanelProps;
-  cause: LeverCause;
+  cause: ModuleCause;
   ids: string[];
   size: number;
 }) => {
@@ -165,7 +165,7 @@ const Cause = ({
         {ids.length > 0 && (
           <QuickPair
             ids={ids}
-            scope={cause}
+            scope={`cause-${cause}`}
             locale={locale}
             scenario={scenario}
             name={(value) => t('quick.cause', { name, value })}

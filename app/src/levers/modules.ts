@@ -13,12 +13,14 @@ import { regrowth } from './regrowth';
 import { removals } from './removals';
 import { shippingSulphur } from './shippingSulphur';
 import { waste } from './waste';
+import { wasteMethane } from './wasteMethane';
 import { kept, MODULES as SPECS } from './registry';
 import type { LeverModule } from './types';
 
 const ALL: readonly LeverModule[] = [
   population,
   waste,
+  wasteMethane,
   practices,
   deforestation,
   regrowth,

@@ -214,6 +214,8 @@ export type ClimateMethod = 'fair' | 'ar6';
  */
 /** The causes some lever acts on. */
 export type LeverCause = 'fossilIndustry' | 'agriculture' | 'landUse';
+/** The causes a module's group goes under in the panel: a lever's, and waste. */
+export type ModuleCause = LeverCause | 'waste';
 /** The causes the levers' avoided warming is split by gas in: their own and other human emissions. */
 export type GasLeverCause = LeverCause | 'waste' | 'other';
 

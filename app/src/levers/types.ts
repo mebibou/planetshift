@@ -7,8 +7,8 @@ import type {
   CountedCause,
   Gas,
   GasVector,
-  LeverCause,
   ModelData,
+  ModuleCause,
 } from '../data/types';
 import type { CountryResult, Options, Scenario, ScenarioResult } from '../model/api';
 import type { ModuleDeparture } from '../config';
@@ -243,7 +243,7 @@ export interface LeverModule {
    * panel, and the cause its own emissions count in (country CO₂, world emissions and warming);
    * farm emissions always count in farming. None for a module without a family.
    */
-  cause?: LeverCause;
+  cause?: ModuleCause;
   /** Off in planetshift.config.json, the build leaves the module out; its hooks check the data's. */
   departure?: ModuleDeparture;
   levers: readonly LeverDef[];

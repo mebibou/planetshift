@@ -14,8 +14,8 @@ import {
   type GasVector,
   type CountedCause,
   type Item,
-  type LeverCause,
   type ModelData,
+  type ModuleCause,
   type Scope,
   type Series,
 } from '../data/types';
@@ -498,7 +498,7 @@ interface IntensityCut {
 }
 
 interface CountryHook {
-  cause: LeverCause;
+  cause: ModuleCause;
   hook: (c: CountryContext) => CountryPart;
 }
 
@@ -1170,7 +1170,7 @@ const acts = (m: LeverModule, ctx: RunContext): boolean =>
 const dietActs = (s: Scenario): boolean =>
   s.shift > 0 || Object.values(s.groupShifts).some((v) => (v ?? 0) > 0);
 
-const causeOfModule = (m: LeverModule): LeverCause => m.cause ?? DIET_CAUSE;
+const causeOfModule = (m: LeverModule): ModuleCause => m.cause ?? DIET_CAUSE;
 
 /** A family's warming from forcing that is no emission, in the cause it mainly acts on. */
 const ownWarming = (

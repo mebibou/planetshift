@@ -1561,6 +1561,44 @@ write('industry.json', {
   source: 'Planetshift test fixture: industry.md values, straight lines between them',
 });
 
+// landfill and wastewater methane by country, kg a year (CHN is outside the model's countries),
+// and the waste cause's methane, Mt, straight lines between landfills.md's 2023, 2050 and 2100
+const wasteMethaneMt = {
+  ssp126: [66.2, 63.1, 45.1],
+  ssp245: [66.2, 44.6, 26.9],
+  ssp370: [66.2, 90.9, 128.5],
+};
+write('wastemethane.json', {
+  year: 2022,
+  total: 82.1e9,
+  byCountry: {
+    BRA: { landfill: 2.5e9, wastewater: 3.2e9, managed: 0.75 },
+    CHN: { landfill: 5.5e9, wastewater: 6.0e9, managed: 0.9 },
+    FRA: { landfill: 0.9e9, wastewater: 0.25e9, managed: 1 },
+    IND: { landfill: 2.8e9, wastewater: 4.6e9, managed: 0.5 },
+    NGA: { landfill: 0.6e9, wastewater: 1.1e9, managed: 0.3 },
+    USA: { landfill: 3.6e9, wastewater: 0.7e9, managed: 1 },
+  },
+  ch4: Object.fromEntries(
+    Object.entries(wasteMethaneMt).map(([ssp, [a, b, c]]) => {
+      const f = through([
+        [2023, a],
+        [2050, b],
+        [2100, c],
+      ]);
+      return [
+        ssp,
+        { years: sectorYears, values: sectorYears.map((y) => Number((f(y) * 1e9).toPrecision(4))) },
+      ];
+    }),
+  ),
+  capture: { median: 0.6, low: 0.5, high: 0.75 },
+  diversion: { median: 0.4, low: 0.3, high: 0.5 },
+  wastewaterCut: { median: 0.45, low: 0.4, high: 0.5 },
+  decayYears: { median: 11.11, low: 20, high: 5.88 },
+  source: 'Planetshift test fixture: landfills.md values, straight lines between them',
+});
+
 // A few points of each deep-time series, already on 1850–1900 (synthetic shapes).
 const MA = (m) => Math.round(1950 - m * 1e6);
 const stages = [

@@ -1,0 +1,14 @@
+{
+  "title": "Décharges et eaux usées",
+  "description": "Réduire le méthane des déchets qui pourrissent : capter le gaz des décharges, composter ou méthaniser les déchets alimentaires et verts, et traiter les eaux usées. Le levier agit sur le méthane des déchets que les leviers alimentaires laissent.",
+  "family": "Décharges et eaux usées",
+  "page": "Décharges et eaux usées",
+  "landfills": {
+    "title": "Décharges",
+    "description": "Gaz collecté dans les décharges et brûlé, et déchets organiques compostés ou méthanisés plutôt qu'enfouis. À 100 %, environ 70 % du méthane des décharges disparaît. Le captage agit tout de suite ; les déchets déjà enfouis continuent de pourrir pendant des décennies."
+  },
+  "wastewater": {
+    "title": "Eaux usées",
+    "description": "Réseaux d'égouts et stations d'épuration à la place des latrines, des fosses septiques et des rejets bruts, et le gaz des boues et des lagunes brûlé. À 100 %, environ 45 % du méthane des eaux usées disparaît."
+  }
+}

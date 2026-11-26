@@ -14,7 +14,8 @@ La section **Leviers** d'Explorer range les leviers sous la cause du réchauffem
 
 - combustibles fossiles et industrie : énergie et transport, bâtiments et industrie, fuites de méthane ;
 - agriculture : alimentation, pratiques agricoles, gaspillage alimentaire ;
-- usage des terres : déforestation, carbone dans les terres agricoles.
+- usage des terres : déforestation, carbone dans les terres agricoles ;
+- déchets : décharges et eaux usées.
 
 Les causes sont classées selon le réchauffement que chacune cause à l'horizon du graphique dans le scénario choisi, si bien que les combustibles fossiles viennent en premier. Au sein d'une cause, les groupes sont classés selon le réchauffement que chacun éviterait seul et en entier : c'est le chiffre affiché à côté. Cet ordre est recalculé quand on change une option ou l'horizon, ou quand les données changent. Il n'est jamais recalculé pendant qu'on déplace un curseur, pour que les groupes restent en place pendant le glissement.
 
@@ -108,7 +109,7 @@ L'effet commun de la repousse est de 0,1842 − 0,1700 = 0,0142 °C. La valeur d
 
 Calculée directement, la valeur de Shapley demande une exécution du modèle pour chaque ensemble de groupes actifs. Cela fait 2ⁿ exécutions pour n groupes : 256 avec les huit groupes actifs. Sur les données réelles, cela prend des secondes, alors qu'un mouvement de curseur ne dispose que de quelques centièmes de seconde.
 
-Planetshift s'appuie plutôt sur la façon dont les groupes interagissent. Les groupes agricoles n'interagissent que par la production qu'ils changent. L'alimentation et la baisse du gaspillage changent ce qui est produit. Les pratiques, la déforestation, la repousse et le carbone dans les terres agricoles agissent sur la production que ces deux-là laissent, mais pas les uns sur les autres. La valeur de n'importe quel ensemble de groupes agricoles se lit donc à partir d'un passage des émissions agricoles pour les groupes de production de cet ensemble : aucun, l'alimentation, le gaspillage, ou les deux. Cela fait au plus quatre passages, trois de plus que l'exécution elle-même. Chaque passage est conservé et réutilisé tant qu'on déplace des curseurs qui ne le changent pas.
+Planetshift s'appuie plutôt sur la façon dont les groupes interagissent. Les groupes agricoles n'interagissent que par la production qu'ils changent. L'alimentation et la baisse du gaspillage changent ce qui est produit. Les pratiques, la déforestation, la repousse, le carbone dans les terres agricoles, et les décharges et eaux usées agissent sur la production que ces deux-là laissent, mais pas les uns sur les autres. La valeur de n'importe quel ensemble de groupes agricoles se lit donc à partir d'un passage des émissions agricoles pour les groupes de production de cet ensemble : aucun, l'alimentation, le gaspillage, ou les deux. Cela fait au plus quatre passages, trois de plus que l'exécution elle-même. Chaque passage est conservé et réutilisé tant qu'on déplace des curseurs qui ne le changent pas.
 
 Les groupes hors de l'agriculture (énergie et transport, bâtiments et industrie, fuites de méthane) interagissent entre eux par le réseau que laisse l'électricité renouvelable, et par le méthane par kg de combustible que laissent les leviers sur les fuites. Ils n'interagissent pas avec l'agriculture. Leur valeur est leurs propres émissions, recalculées avec les leviers de l'autre groupe à zéro.
 

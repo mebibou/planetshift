@@ -858,7 +858,7 @@ test('the panel is in groups, all closed, under their causes, with the time sett
 }) => {
   await open(page);
   const groups = page.locator('.panel details.group');
-  await expect(groups).toHaveCount(8);
+  await expect(groups).toHaveCount(9);
   await expect(page.locator('#panel-tab-levers')).toHaveAttribute('aria-selected', 'true');
   await expect(page.locator('#panel-panel-options')).toBeHidden();
   for (const id of [
@@ -871,6 +871,7 @@ test('the panel is in groups, all closed, under their causes, with the time sett
       'energy',
       'industry',
       'fossilMethane',
+      'wasteMethane',
     ].map((m) => `levers-${m}`),
   ]) {
     await expect(page.locator(`details[data-group="${id}"]`)).not.toHaveAttribute('open');
@@ -1377,7 +1378,7 @@ test('a group’s 0% / 100% pair sets its levers and the URL without opening the
   expect(new Set(await sliderValues(page, 'levers-energy'))).toEqual(new Set(['100']));
   await expect(fold.locator('.group-meta')).toHaveText('6 of 6 adopted');
   expect(await pressed(page, 'energy')).toBe('full');
-  expect(await pressed(page, 'fossilIndustry')).toBe('mixed');
+  expect(await pressed(page, 'cause-fossilIndustry')).toBe('mixed');
   await expect.poll(() => summaryText(page)).not.toBe(before);
   await fold.locator('summary').click();
   await page.locator('#lever-flyLess').fill('50');
@@ -1416,15 +1417,15 @@ test('a cause’s pair sets every group under it, and the all-levers pair every 
   await expect(page.locator('[data-worth="family:industry"]')).toBeVisible();
   await page.waitForTimeout(1000);
   const before = await order();
-  await expect(quick(page, 'agriculture', 'full')).toHaveAccessibleName(
+  await expect(quick(page, 'cause-agriculture', 'full')).toHaveAccessibleName(
     'Set every lever under Farming to 100%',
   );
-  await quick(page, 'agriculture', 'full').click();
+  await quick(page, 'cause-agriculture', 'full').click();
   await expect(page).toHaveURL(/shift=100/);
-  for (const scope of ['diet', 'practices', 'waste', 'agriculture']) {
+  for (const scope of ['diet', 'practices', 'waste', 'cause-agriculture']) {
     expect(await pressed(page, scope)).toBe('full');
   }
-  for (const scope of ['energy', 'deforestation', 'fossilIndustry', 'landUse']) {
+  for (const scope of ['energy', 'deforestation', 'cause-fossilIndustry', 'cause-landUse']) {
     expect(await pressed(page, scope)).toBe('zero');
   }
   expect(await pressed(page, 'all')).toBe('mixed');
@@ -1433,7 +1434,16 @@ test('a cause’s pair sets every group under it, and the all-levers pair every 
   await expect(quick(page, 'all', 'full')).toHaveAccessibleName('Set all levers to 100%');
   await quick(page, 'all', 'full').click();
   await expect(page).toHaveURL(/ev=100/);
-  for (const scope of ['all', 'fossilIndustry', 'agriculture', 'landUse', 'removals', 'industry']) {
+  for (const scope of [
+    'all',
+    'cause-fossilIndustry',
+    'cause-agriculture',
+    'cause-landUse',
+    'cause-waste',
+    'removals',
+    'industry',
+    'wasteMethane',
+  ]) {
     expect(await pressed(page, scope)).toBe('full');
   }
   await page.waitForTimeout(1000);

@@ -2,7 +2,14 @@
 // from them. With `modules.ts`, the only files a new module shares.
 
 import { DEPARTURES } from '../config';
-import type { Cause, CountedCause, GasLeverCause, LeverCause, ModelData } from '../data/types';
+import type {
+  Cause,
+  CountedCause,
+  GasLeverCause,
+  LeverCause,
+  ModelData,
+  ModuleCause,
+} from '../data/types';
 import type { Levers } from '../model/api';
 import { deadfallSpec as deadfall } from './deadfall/spec';
 import { deforestationSpec as deforestation } from './deforestation/spec';
@@ -17,6 +24,7 @@ import { removalsSpec as removals } from './removals/spec';
 import { shippingSulphurSpec as shippingSulphur } from './shippingSulphur/spec';
 import type { DataFileDef, LeverDef, LeverSpec, OptionDef } from './types';
 import { wasteSpec as waste } from './waste/spec';
+import { wasteMethaneSpec as wasteMethane } from './wasteMethane/spec';
 
 /** Whether the build keeps a module: one that departs from FaIR only when its departure is on. */
 export const kept = (m: { departure?: LeverSpec['departure'] }): boolean =>
@@ -30,6 +38,7 @@ export const kept = (m: { departure?: LeverSpec['departure'] }): boolean =>
 export const MODULES: readonly LeverSpec[] = [
   population,
   waste,
+  wasteMethane,
   practices,
   deforestation,
   regrowth,
@@ -46,7 +55,7 @@ export const MODULES: readonly LeverSpec[] = [
  * The order of the levers in the URL and of the modules' Methodology pages; the panel orders its
  * groups by cause and by what each is worth (`app/panelOrder.ts`).
  */
-const PANEL_ORDER = ['practices', 'waste', 'deforestation', 'removals', 'energy'];
+const PANEL_ORDER = ['practices', 'waste', 'wasteMethane', 'deforestation', 'removals', 'energy'];
 
 /** The order of the modules' figures in the summary strip. */
 const SUMMARY_ORDER = ['regrowth', 'removals', 'deforestation'];
@@ -95,6 +104,8 @@ export const DIET_CAUSE: LeverCause = 'agriculture';
 
 /** The causes a lever acts on, in the order of the data. */
 export const LEVER_CAUSES: readonly LeverCause[] = ['fossilIndustry', 'agriculture', 'landUse'];
+/** The panel's cause headings: the causes a lever acts on, and waste. */
+export const PANEL_CAUSES: readonly ModuleCause[] = [...LEVER_CAUSES, 'waste'];
 export const GAS_LEVER_CAUSES: readonly GasLeverCause[] = [...LEVER_CAUSES, 'waste', 'other'];
 
 /**

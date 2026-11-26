@@ -14,7 +14,8 @@ The **Levers** section of Explore groups the levers under the cause of warming e
 
 - fossil fuels and industry: energy and transport, buildings and industry, methane leaks;
 - farming: diet, farm practices, food waste;
-- land use: deforestation, carbon in farmland.
+- land use: deforestation, carbon in farmland;
+- waste: landfills and wastewater.
 
 The causes are ordered by how much warming each one causes by the chart's horizon, under the chosen scenario, so fossil fuels come first. Within a cause, the groups are ordered by the warming each would avoid alone and in full, which is the figure shown beside it. That order is worked out again when you change an option or the horizon, or when the data change. It is never worked out while you move a slider, so the groups stay in place while you drag.
 
@@ -108,7 +109,7 @@ The joint effect of regrowth is 0.1842 − 0.1700 = 0.0142 °C. The Shapley valu
 
 Computed directly, the Shapley value needs one run of the model for every set of acting groups. That is 2ⁿ runs for n groups: 256 with all eight groups acting. On the real data that takes seconds, and a slider move has only a few hundredths of a second.
 
-Instead, Planetshift makes use of how the groups interact. Farming's groups interact only through the production they change. The diet and less waste change what is produced. Practices, deforestation, regrowth and carbon in farmland act on the production those two leave, but not on each other. So the worth of any set of farming groups is read from one pass of the farm emissions for the production groups in that set: none, the diet, less waste, or both. That is at most four passes, three more than the run itself. Each pass is kept and reused while you move sliders that do not change it.
+Instead, Planetshift makes use of how the groups interact. Farming's groups interact only through the production they change. The diet and less waste change what is produced. Practices, deforestation, regrowth, carbon in farmland, and landfills and wastewater act on the production those two leave, but not on each other. So the worth of any set of farming groups is read from one pass of the farm emissions for the production groups in that set: none, the diet, less waste, or both. That is at most four passes, three more than the run itself. Each pass is kept and reused while you move sliders that do not change it.
 
 The groups outside farming (energy and transport, buildings and industry, methane leaks) interact with each other through the grid that renewable electricity leaves, and through the methane per kg of fuel that the leak levers leave. They do not interact with farming. Their worth is their own emissions, recomputed with the other group's levers off.
 

@@ -125,6 +125,7 @@ const MEASURE_TITLES: Record<Measure, (t: T, ui: UiState, years: readonly number
   municipalWaste: (t) => t('map.legend.municipalWaste'),
   oceanPlastic: (t) => t('map.legend.oceanPlastic'),
   fossilMethane: (t) => t('map.legend.fossilMethane'),
+  wasteMethane: (t) => t('map.legend.wasteMethane'),
 };
 
 const legendTitleOf = (t: T, ui: UiState, years: readonly number[]): string => {
