@@ -208,12 +208,12 @@ The threshold moves the baseline, but it hardly moves the effect of a shift. A h
 
 | Offtake threshold | Non-food baseline, Mt CO₂e | India | Niger | Ethiopia | Mali | Full shift: emissions avoided, Gt CO₂e | Full shift: warming avoided in 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 6.7% (southern Africa, used) | 211 | 113 | 18.1 | 6.9 | 1.1 | 7.03 | 0.346 |
-| 9% (median) | 245 | 113 | 19.5 | 26.0 | 4.0 | 6.98 | 0.343 |
-| 9.9% (mean) | 258 | 113 | 19.8 | 31.1 | 5.1 | 6.96 | 0.342 |
-| 12% (pastoral systems) | 286 | 113 | 20.4 | 40.0 | 7.1 | 6.93 | 0.341 |
+| 6.7% (southern Africa, used) | 211 | 113 | 18.1 | 6.9 | 1.1 | 7.03 | 0.347 |
+| 9% (median) | 245 | 113 | 19.5 | 26.0 | 4.0 | 6.98 | 0.345 |
+| 9.9% (mean) | 258 | 113 | 19.8 | 31.1 | 5.1 | 6.96 | 0.344 |
+| 12% (pastoral systems) | 286 | 113 | 20.4 | 40.0 | 7.1 | 6.93 | 0.342 |
 
-A half shift avoids half as much (3.46 to 3.50 Gt CO₂e, 0.170 to 0.173 °C). The likely range that the app shows covers only the climate response, not this choice.
+A half shift avoids half the emissions (3.46 to 3.50 Gt CO₂e) and a little more than half the warming (0.173 to 0.176 °C), because FaIR's response is not proportional. The likely range that the app shows covers only the climate response, not this choice.
 
 ### Limits of the rule
 

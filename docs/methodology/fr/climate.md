@@ -1,6 +1,6 @@
 # Des émissions à la température
 
-Planetshift traduit une variation des émissions en variation de la température mondiale. Il suit séparément le dioxyde de carbone, le méthane et le protoxyde d'azote avec FaIR, un modèle climatique simple utilisé par le GIEC, au lieu de les additionner en « équivalent CO₂ ». Selon la médiane de FaIR pour le scénario intermédiaire, avant tout levier, le monde est 1,89 °C au-dessus de 1850–1900 en 2050 et 2,61 °C en 2100. L'application mesure l'effet des leviers par rapport à une référence de ce type.
+Planetshift traduit une variation des émissions en variation de la température mondiale. Il suit séparément le dioxyde de carbone, le méthane et le protoxyde d'azote avec FaIR, un modèle climatique simple utilisé par le GIEC, au lieu de les additionner en « équivalent CO₂ ». L'application lance FaIR elle-même à chaque mouvement d'une commande. Selon la médiane de FaIR pour le scénario intermédiaire, avant tout levier, le monde est 1,88 °C au-dessus de 1850–1900 en 2050 et 2,59 °C en 2100. L'application mesure l'effet des leviers par rapport à une référence de ce type.
 
 Cette page explique aussi la bande d'incertitude, la courbe des facteurs naturels seuls, pourquoi 2023 et 2024 ont été si chaudes, l'option du pergélisol et les quelques endroits où Planetshift s'écarte de FaIR.
 
@@ -19,6 +19,25 @@ Le raccourci habituel additionne les gaz en « équivalent CO₂ », avec le pot
 - se trompe de calendrier pour un changement d'alimentation qui agit en une ou deux décennies.
 
 Planetshift garde donc chaque gaz séparé, des facteurs d'émission jusqu'à la température. Il n'affiche l'équivalent CO₂ que comme un chiffre familier.
+
+## Comment l'application lance FaIR
+
+Le modèle de FaIR est porté en TypeScript (`app/src/model/fair/`) et tourne dans le processus d'arrière-plan de l'application. Le portage couvre ce dont les simulations de Planetshift ont besoin :
+
+- les cycles du CO₂, du méthane, du N₂O et des 40 gaz halogénés, chacun avec la mise à l'échelle de sa durée de vie ;
+- la durée de vie du méthane selon sa chimie et la température (Thornhill et al. 2021) ;
+- le forçage des gaz à effet de serre (Meinshausen et al. 2020), des aérosols par le rayonnement et les nuages, de l'ozone, de la vapeur d'eau stratosphérique, des suies sur la neige et la glace, de l'albédo de l'usage des terres, du soleil et des volcans ;
+- le modèle de bilan d'énergie à trois couches.
+
+Sur les mêmes émissions, il donne la température de chaque membre à 6 × 10⁻⁹ °C près de celle de FaIR 2.2.5 lui-même, chaque année de 1750 à 2100. Un test le vérifie sur les trois SSP et sur SSP2-4.5 sans l'agriculture, sans la pollution de l'air ou avec toutes les émissions retirées.
+
+L'application lance 50 des 841 membres (`pipeline/fair_members.csv`, livrés dans `fair.json`). Ils ont été choisis pour garder la médiane et la fourchette de 5 à 95 % de l'ensemble complet sur SSP1-2.6, SSP2-4.5 et SSP3-7.0, et sur SSP2-4.5 sans pollution de l'air et avec toutes les émissions arrêtées à partir de 2025, toutes les dix ans de 2030 à 2100. Sur ces cibles, les 50 restent à 0,024 °C des 841. Sur les cas pour lesquels ils n'ont pas été choisis, ils restent à 0,034 °C près les années intermédiaires, à 0,035 °C pour le réchauffement évité en retirant l'agriculture et à 0,054 °C pour le réchauffement que masque la pollution de l'air. Cinquante membres tirés au hasard s'écartent de 0,17 °C. La variabilité interne de FaIR, le bruit d'une année à l'autre que sa calibration peut ajouter, est désactivée. Elle déplace une année isolée jusqu'à un dixième de degré, et elle s'annule entre une référence et un scénario.
+
+La référence est lancée une fois pour chaque scénario et chaque jeu d'options, de 1750 à 2100 : les émissions du SSP pour chaque gaz et aérosol, l'albédo de son usage des terres et, avec la référence par défaut, les émissions agricoles qu'ajoute la population (voir [Options](#method-options)). Les leviers changent ensuite le CO₂, le méthane, le N₂O et le HFC-134a à partir de l'année en cours. Chaque membre repart de l'état de la référence au début de cette année, si bien que seules les années à venir sont recalculées. Cela prend environ 4 ms pour les 50 membres.
+
+La température, sa fourchette, le réchauffement évité par les leviers, le niveau de la mer et le pH de l'océan viennent tous de ces simulations. Ce que les leviers changent en dehors de ces quatre gaz est ajouté selon sa propre réponse : la pollution de l'air des leviers d'énergie, les traînées des avions, l'albédo des terres qui repoussent et les rejets du pergélisol (voir les pages des leviers).
+
+L'application additionnait auparavant la réponse à chaque kilogramme (ci-dessous). Pour de grands changements, cette somme s'écarte de FaIR. Avec tous les leviers au maximum sur SSP2-4.5, FaIR donne 1,39 °C de réchauffement évité en 2100 par ces quatre gaz, là où la somme donnait 1,32 °C, car le méthane disparaît plus vite et les puits de carbone sont moins saturés quand les émissions baissent.
 
 ## La réponse de la température à un kilogramme
 
@@ -40,13 +59,19 @@ Le tableau donne la médiane de FaIR, avec sa fourchette de 5 à 95 %, en °C pa
 
 ### Comment l'application utilise les courbes
 
-Les leviers modifient les émissions de chaque gaz, année après année. L'application additionne le réchauffement dû à la variation de chaque année : la variation d'un gaz une année donnée, multipliée par l'AGTP de ce gaz pour le nombre d'années écoulées depuis. En symboles, avec $\Delta E_{\text{gaz}}(\tau)$ la variation des émissions d'un gaz l'année $\tau$ :
+La température elle-même vient de FaIR lancé dans l'application (ci-dessus). Les courbes servent encore à trois choses :
+
+- **Elles répartissent le total de FaIR.** Le réchauffement évité est réparti entre les causes, les gaz et les familles de leviers en proportion de la somme des réponses de chacun, si bien que les parts s'additionnent au total de FaIR (voir [Leviers](#method-levers), *Lire la répartition*).
+- **Elles sont l'option AR6.** Avec les courbes de l'AR6 (ci-dessous), l'application additionne les réponses au lieu de lancer FaIR, sur les températures des scénarios des 841 membres.
+- **Elles sont le repli** d'une construction sans `fair.json`.
+
+Pour chaque année, la somme des réponses additionne la variation de chaque gaz multipliée par son AGTP pour le nombre d'années écoulées depuis. En symboles, avec $\Delta E_{\text{gaz}}(\tau)$ la variation des émissions d'un gaz l'année $\tau$ :
 
 $$
 \Delta T(t) = \sum_{\text{gaz}} \sum_{\tau \le t} \Delta E_{\text{gaz}}(\tau) \cdot \mathrm{AGTP}_{\text{gaz}}(t - \tau)
 $$
 
-Cette somme est exacte pour un modèle dont la réponse est proportionnelle à ce qu'il reçoit. Elle est proche pour FaIR tant que la variation due aux leviers reste petite par rapport aux émissions mondiales (voir [Limites](#method-limitations) pour les leviers d'énergie au maximum).
+Cette somme est exacte pour un modèle dont la réponse est proportionnelle à ce qu'il reçoit, et proche de FaIR quand la variation reste petite par rapport aux émissions mondiales.
 
 Chaque valeur d'AGTP est la variation de la température moyenne d'une année civile due à une année d'émission répartie uniformément sur cette année. AGTP(0) est donc l'effet dans l'année même.
 
@@ -84,7 +109,7 @@ Les deux concordent en ordre de grandeur. À 20 ans, la médiane de FaIR vaut 0,
 
 ## La bande d'incertitude
 
-La bande autour de l'effet du changement est la fourchette de 5 à 95 % de l'AGTP sur les 841 membres. Elle couvre l'incertitude sur la réponse du climat : sensibilité climatique, absorption de chaleur par l'océan, cycle du carbone, chimie du méthane et forçage.
+La bande autour de la température est la fourchette de 5 à 95 % sur les 50 membres que lance FaIR. La bande autour du réchauffement évité est la même fourchette du réchauffement évité propre à chaque membre, sa simulation de référence moins celle du scénario. Elle couvre l'incertitude sur la réponse du climat : sensibilité climatique, absorption de chaleur par l'océan, cycle du carbone, chimie du méthane et forçage. Ce que les leviers changent en dehors des quatre gaz ajoute à la fourchette par les réponses aux impulsions, tout comme les bornes des fourchettes propres aux leviers (une réduction ou une consommation d'électricité incertaine). Les bornes basses s'additionnent entre elles, et les bornes hautes aussi.
 
 Elle ne couvre pas l'incertitude sur les émissions par tonne d'aliment, sur les régimes ou sur l'alimentation animale, qui est sans doute plus grande. La fourchette réelle est donc plus large que celle affichée. L'option AR6 n'a pas de bande.
 
@@ -109,21 +134,24 @@ Le forçage est la variation de l'énergie que la Terre retient, qui la réchauf
 
 ## Les températures des scénarios
 
-Pour chaque avenir, la courbe de température totale vient des 841 membres de FaIR lancés sur l'une de trois trajectoires socio-économiques partagées (SSP), historique compris :
+Pour chaque avenir, la courbe de température totale vient de FaIR lancé sur l'une de trois trajectoires socio-économiques partagées (SSP), historique compris :
 
 - SSP1-2.6 : atténuation forte ;
 - SSP2-4.5 : voie intermédiaire, par défaut ;
 - SSP3-7.0 : rivalité régionale, émissions élevées.
 
-L'application montre la médiane et la fourchette de 5 à 95 % par rapport à 1850–1900. Le tableau donne les valeurs de FaIR lui-même. La référence de l'application y ajoute le forçage de la règle de 2020 sur le transport maritime, 0,04 °C aujourd'hui (voir « Pourquoi 2023 et 2024 ont été si chaudes »).
+L'application montre la médiane et la fourchette de 5 à 95 % par rapport à 1850–1900. Le tableau donne les valeurs de FaIR lui-même sur les 50 membres que lance l'application et, à la ligne sous chacune, celles des 841 membres tels que les lance le pipeline, avec leur variabilité interne. La référence de l'application y ajoute le forçage de la règle de 2020 sur le transport maritime, 0,04 °C aujourd'hui (voir « Pourquoi 2023 et 2024 ont été si chaudes »).
 
 | Scénario | 2015–2024 | 2050 | 2100 |
 | --- | --- | --- | --- |
-| SSP1-2.6 | 1,20 °C (1,01–1,36) | 1,79 °C (1,36–2,34) | 1,76 °C (1,22–2,56) |
-| SSP2-4.5 | 1,20 °C (1,01–1,35) | 1,89 °C (1,49–2,33) | 2,61 °C (1,91–3,60) |
-| SSP3-7.0 | 1,20 °C (1,01–1,35) | 1,86 °C (1,49–2,28) | 3,47 °C (2,67–4,43) |
+| SSP1-2.6 | 1,18 °C (1,00–1,35) | 1,79 °C (1,38–2,30) | 1,77 °C (1,25–2,55) |
+| 841 membres | 1,20 °C (1,01–1,36) | 1,79 °C (1,36–2,34) | 1,76 °C (1,22–2,56) |
+| SSP2-4.5 | 1,18 °C (1,00–1,35) | 1,88 °C (1,51–2,31) | 2,59 °C (1,93–3,55) |
+| 841 membres | 1,20 °C (1,01–1,35) | 1,89 °C (1,49–2,33) | 2,61 °C (1,91–3,60) |
+| SSP3-7.0 | 1,18 °C (1,00–1,35) | 1,86 °C (1,51–2,24) | 3,45 °C (2,67–4,46) |
+| 841 membres | 1,20 °C (1,01–1,35) | 1,86 °C (1,49–2,28) | 3,47 °C (2,67–4,43) |
 
-Le réchauffement observé sur 2015–2024 est de 1,27 °C dans HadCRUT5 et de 1,33 °C dans Berkeley Earth, tous deux ramenés ici à leur propre moyenne de 1850–1900. La médiane de FaIR est 0,06 °C sous HadCRUT5, qui se situe dans la fourchette de 5 à 95 % de FaIR. Indicators of Global Climate Change 2024, qui combine quatre séries, évalue 2015–2024 à 1,24 °C (1,11–1,35) (Forster et al. 2025). Des tests comparent la médiane de FaIR à HadCRUT5 et à cette évaluation. Les valeurs de 2100 sont proches des meilleures estimations de l'AR6 pour 2081–2100 : 1,8, 2,7 et 3,6 °C (tableau SPM.1).
+Le réchauffement observé sur 2015–2024 est de 1,27 °C dans HadCRUT5 et de 1,33 °C dans Berkeley Earth, tous deux ramenés ici à leur propre moyenne de 1850–1900. La médiane de FaIR dans l'application est 0,09 °C sous HadCRUT5, et celle des 841 membres 0,06 °C sous elle. HadCRUT5 se situe dans les deux fourchettes de 5 à 95 %. Indicators of Global Climate Change 2024, qui combine quatre séries, évalue 2015–2024 à 1,24 °C (1,11–1,35) (Forster et al. 2025). Des tests comparent la médiane de FaIR à HadCRUT5 et à cette évaluation. Les valeurs de 2100 sont proches des meilleures estimations de l'AR6 pour 2081–2100 : 1,8, 2,7 et 3,6 °C (tableau SPM.1).
 
 ### D'où viennent ces simulations et les courbes observées
 
@@ -136,7 +164,7 @@ Les courbes observées sont l'analyse HadCRUT5 du Met Office (série annuelle mo
 - **Le réchauffement d'origine humaine.** Forster et al. (2026) l'estiment à 1,37 °C en 2025, en hausse d'environ 0,27 °C par décennie.
 - **Les années isolées.** L'OMM a placé 2024 à 1,55 ± 0,13 °C au-dessus de 1850–1900, la première année civile au-delà de 1,5 °C, et 2025 à 1,44 ± 0,13 °C. Au sens du GIEC, un niveau de réchauffement est une moyenne sur 20 ans : « la survenue d'années isolées où la variation de la température à la surface du globe dépasse un certain niveau ne signifie pas que ce niveau de réchauffement planétaire a été atteint » (rapport de synthèse de l'AR6, résumé à l'intention des décideurs, note 28).
 - **L'Accord de Paris.** Son objectif (article 2.1 a) est de contenir le réchauffement « nettement en dessous de 2 °C par rapport aux niveaux préindustriels » et de poursuivre l'action menée pour le limiter à 1,5 °C.
-- **Où mènent les politiques actuelles.** Elles mènent à environ 2,6 à 2,8 °C en 2100 : 2,7 °C selon le Climate Action Tracker (novembre 2026) et 2,8 °C selon le rapport 2026 du PNUE sur l'écart entre les besoins et les perspectives. C'est proche des 2,61 °C de SSP2-4.5 ici. Si tous les engagements sont tenus, neutralité carbone comprise, le réchauffement atteint environ 2,1 °C.
+- **Où mènent les politiques actuelles.** Elles mènent à environ 2,6 à 2,8 °C en 2100 : 2,7 °C selon le Climate Action Tracker (novembre 2026) et 2,8 °C selon le rapport 2026 du PNUE sur l'écart entre les besoins et les perspectives. C'est proche des 2,59 °C de SSP2-4.5 ici. Si tous les engagements sont tenus, neutralité carbone comprise, le réchauffement atteint environ 2,1 °C.
 - **Les budgets carbone restants.** Pour une chance sur deux de rester sous 1,5, 1,7 et 2 °C, les budgets de CO₂ restants sont de 130, 500 et 1 050 Gt à partir du début de 2026 (Forster et al. 2026). Le Global Carbon Budget 2025 donne 170, 525 et 1 055 Gt au 1er janvier 2026. Ces budgets supposent une trajectoire pour les autres gaz : on ne peut donc pas les comparer un pour un avec des leviers qui réduisent surtout le méthane.
 
 ## Pourquoi 2023 et 2024 ont été si chaudes
@@ -298,15 +326,15 @@ Ce calcul émule les projections de l'AR6 pour ce siècle. Ce n'est pas un modè
 
 L'onglet pH de l'océan montre le pH de l'océan en surface chaque année jusqu'en 2100, modélisé et modélisé avec les leviers. L'océan absorbe une partie du CO₂ de l'air. Le CO₂ qu'il dissout l'acidifie : son pH suit donc le CO₂ de l'air, pas le réchauffement.
 
-Le CO₂ de l'air vient de FaIR pour le scénario choisi, médiane et 5–95 % des membres : 421,5 ppm en 2024 et 542 ppm en 2100 dans SSP2-4.5. Avec les leviers, le CO₂ que le calcul évite chaque année est converti par la réponse du CO₂ de l'air à un kilogramme émis selon FaIR, tirée de la même impulsion que l'AGTP. Un milliard de tonnes de CO₂ ajoute 0,11 ppm la première année, 0,064 ppm après 50 ans et 0,055 ppm après 200. Seul le CO₂ change le pH. Les leviers qui réduisent le méthane, le N₂O ou la pollution de l'air ne pourraient le changer que par la petite rétroaction de la température sur le cycle du carbone de FaIR, laissée de côté ici, comme les émissions du pergélisol.
+Le CO₂ de l'air vient de FaIR lancé dans l'application pour le scénario choisi, médiane et 5–95 % des membres : 421,3 ppm en 2024 et 541 ppm en 2100 dans SSP2-4.5. Avec les leviers, c'est le CO₂ des mêmes membres lancés avec les leviers. Seul le CO₂ change le pH. Les leviers qui réduisent le méthane ou le N₂O le changent aussi un peu, par la rétroaction de la température sur le cycle du carbone de FaIR. Les rejets du pergélisol sont laissés de côté.
 
 Le pH vient de la chimie de l'eau de mer en équilibre avec l'air, sur l'échelle totale. L'eau de mer est tenue à une salinité de 35, une alcalinité totale de 2 300 µmol/kg (la moyenne mondiale de Jiang et al. 2019) et 18 °C. À alcalinité fixée, 1,5 °C de réchauffement déplace le pH de moins de 0,003 : la température n'est donc pas prise de FaIR. Les constantes sont celles de Lueker et al. (2000) pour l'acide carbonique, Dickson (1990) pour l'acide borique, Weiss (1974) pour la solubilité et la fugacité du CO₂, Millero (1995) pour l'eau, Lee et al. (2010) pour le bore total, et Weiss et Price (1980) pour la vapeur d'eau de l'air. À 280, 420, 560 et 900 ppm, on obtient 8,181, 8,036, 7,929 et 7,745. PyCO2SYS donne les mêmes valeurs avec ces constantes à la troisième décimale, ce qu'un test vérifie.
 
-Sur le CO₂ de FaIR, cela donne 8,08 en 2000, contre 8,07 ± 0,02 chez Jiang et al. d'après les observations et les modèles. De 1870–1899 à 2080–2099, il baisse de 0,145, 0,228 et 0,320 dans SSP1-2.6, SSP2-4.5 et SSP3-7.0. C'est environ un dixième de moins que les modèles du système Terre de CMIP6 (0,16, 0,26 et 0,35 ; Kwiatkowski et al. 2020). Des tests vérifient que chaque baisse reste à moins de 0,05 de la valeur de CMIP6 correspondante. En 2100, on obtient 8,03 dans SSP1-2.6, 7,94 dans SSP2-4.5 et 7,82 dans SSP3-7.0.
+Sur le CO₂ de FaIR, cela donne un pH de 8,08 en 2000, contre 8,07 ± 0,02 chez Jiang et al. d'après les observations et les modèles. De 1870–1899 à 2080–2099, il baisse de 0,146, 0,228 et 0,321 dans SSP1-2.6, SSP2-4.5 et SSP3-7.0. C'est environ un dixième de moins que les modèles du système Terre de CMIP6 (0,16, 0,26 et 0,35 ; Kwiatkowski et al. 2020). Des tests vérifient que chaque baisse reste à moins de 0,05 de la valeur de CMIP6 correspondante. En 2100, on obtient 8,03 dans SSP1-2.6, 7,94 dans SSP2-4.5 et 7,82 dans SSP3-7.0.
 
-La courbe observée du graphique est le pH moyen mondial en surface du service Copernicus Marine. C'est une reconstruction annuelle à partir des observations par le LSCE, de 1985 (8,108) à 2025 (8,040), avec une incertitude type d'environ 0,015. Le modèle est un peu en dessous, dans cette incertitude : il donne 8,081 contre 8,087 en 2000, et 8,034 contre 8,042 en 2024. La courbe observée est montrée telle que publiée, sans être décalée sur le modèle.
+La courbe observée du graphique est le pH moyen mondial en surface du service Copernicus Marine. C'est une reconstruction annuelle à partir des observations par le LSCE, de 1985 (8,108) à 2025 (8,040), avec une incertitude type d'environ 0,015. Le modèle est un peu en dessous, dans cette incertitude : il donne 8,082 contre 8,087 en 2000, et 8,034 contre 8,042 en 2024. La courbe observée est montrée telle que publiée, sans être décalée sur le modèle.
 
-Dans SSP2-4.5, tous les leviers en entier font passer le pH de 2100 de 7,94 à 8,07, à peu près celui de 2024 (8,03). Les voitures électriques seules le relèvent de 0,011, et l'électricité renouvelable de 0,034. Le changement d'alimentation, qui réduit le méthane et le N₂O, le laisse inchangé. La fourchette vient du CO₂ : le pH avec les leviers prend la variation médiane du CO₂ à chaque borne de la fourchette du scénario.
+Dans SSP2-4.5, tous les leviers en entier font passer le pH de 2100 de 7,94 à 8,06, près de celui de 2024 (8,03). Les voitures électriques seules le relèvent de 0,012, et l'électricité renouvelable de 0,034. Le changement d'alimentation complet le relève de 0,011, par la forêt qui n'est plus défrichée et le réchauffement qu'il évite. La fourchette du pH vient de celle du CO₂ sur les membres : chaque borne de la fourchette du pH vient de la borne opposée de celle du CO₂.
 
 ## Où Planetshift s'écarte de FaIR
 
@@ -327,19 +355,19 @@ Chaque écart est un interrupteur nommé de `planetshift.config.json`, le fichie
 
 Avec chaque interrupteur sur FaIR tel quel, sur SSP2-4.5 :
 
-- moins d'avion à fond évite 0,007 °C en 2050 et 0,045 °C en 2100, au lieu de 0,055 et 0,125, car l'essentiel de son effet vient des traînées et FaIR n'en a pas ;
-- les voitures électriques évitent 0,025 et 0,087 °C au lieu de 0,039 et 0,102, et dans SSP3-7.0 ajoutent 0,026 °C d'ici 2100 au lieu d'en éviter 0,028 ;
-- les six leviers d'énergie ensemble évitent 0,161 et 0,531 °C au lieu de 0,252 et 0,657.
+- moins d'avion à fond évite 0,006 °C en 2050 et 0,043 °C en 2100, au lieu de 0,055 et 0,124, car l'essentiel de son effet vient des traînées, que FaIR ne compte pas ;
+- les voitures électriques évitent 0,023 et 0,086 °C au lieu de 0,038 et 0,100, et dans SSP3-7.0 ajoutent 0,035 °C d'ici 2100 au lieu d'en éviter 0,018 ;
+- les six leviers d'énergie ensemble évitent 0,154 et 0,538 °C au lieu de 0,246 et 0,666.
 
 Sans la règle sur le transport maritime, la référence est plus fraîche de 0,037 °C en 2024 et de 0,069 °C en 2100. Les leviers agricoles ne bougent pas.
 
 ## Hypothèses
 
-- Les courbes d'AGTP viennent d'impulsions sur SSP2-4.5 en 2035 et servent pour tous les scénarios et toutes les années. Les courbes de 2025 et 2045 sont à 7 % près.
-- L'ensemble calibré est utilisé tel que publié, avec ses 841 membres, y compris sa variabilité interne stochastique (avec une graine fixe : identique dans les simulations appariées, elle s'annule dans les différences).
+- L'application lance FaIR sur 50 des 841 membres de l'ensemble calibré, choisis pour garder sa médiane et sa fourchette de 5 à 95 %, sans sa variabilité interne. Les simulations du pipeline lui-même (les causes du réchauffement, les courbes) utilisent les 841, avec leur variabilité interne (avec une graine fixe : les simulations appariées reçoivent le même bruit, qui s'annule dans les différences).
+- Les leviers changent le CO₂ fossile, le méthane, le N₂O et le HFC-134a de FaIR ; tout ce qu'ils changent d'autre est ajouté selon sa propre réponse.
+- Les courbes d'AGTP viennent d'impulsions sur SSP2-4.5 en 2035 et servent pour tous les scénarios et toutes les années. Les courbes de 2025 et 2045 sont à 7 % près. Elles ne font que répartir le total de FaIR, sauf avec l'option AR6.
 - Le méthane agricole est traité comme biogénique : pas de CO₂ issu de son oxydation.
 - Le CO₂ agricole (urée et chaulage) est traité comme du CO₂ fossile dans FaIR.
-- La réponse est traitée comme proportionnelle à la variation des émissions, ce que confirme le test de l'impulsion dix fois plus grande.
 - Les émissions d'une année sont réparties uniformément sur l'année. La température d'une année civile est la moyenne des valeurs de FaIR à ses deux extrémités.
 - Les séries observées sont ramenées à leur propre moyenne de 1850–1900. L'année en cours de HadCRUT5 est laissée de côté tant qu'elle n'est pas complète.
 - Le forçage naturel et les émissions d'aérosols des scénarios sont utilisés tels que publiés. La règle de 2020 sur le transport maritime ajoute 0,12 (0,08–0,14) W/m² à partir de 2020 hors de l'ensemble de FaIR, en suivant le carburant des navires de chaque scénario, à la référence comme au scénario (voir « Pourquoi 2023 et 2024 ont été si chaudes »).

@@ -136,7 +136,7 @@ Land use's part of CO₂ is land use's own run, as land use emits nothing else h
 
 ### What the levers do to each gas
 
-After today, each cause's band in a gas is what is left once the levers have cut that cause's emissions of the gas. The change is worked out gas by gas, with the same temperature response as the rest (see [Levers](#method-levers)). With permafrost on, each cause's share of the change in its release is split between the cause's gases in proportion to the size of each. The levers cut the methane and N₂O of the food chain's waste, which come off each gas's *Waste*, and its refrigerants, which come off the HFCs' other sources.
+After today, each cause's band in a gas is what is left once the levers have cut that cause's emissions of the gas. The levers' total change comes from FaIR run in the app, and is split between causes and gases in proportion to each one's sum of responses (see [Climate](#method-climate) and [Levers](#method-levers)). With permafrost on, each cause's share of the change in its release is split between the cause's gases in proportion to the size of each. The levers cut the methane and N₂O of the food chain's waste, which come off each gas's *Waste*, and its refrigerants, which come off the HFCs' other sources.
 
 Some of what the energy levers change is not a greenhouse gas: aviation's non-CO₂ forcing (its contrails and NOx) and the air pollution of the fuel they no longer burn, including the methane NOx leaves in the air. These count under *All gases* only, in fossil fuels and in air pollution, so a cause's gases do not quite add up to its band under *All gases*.
 

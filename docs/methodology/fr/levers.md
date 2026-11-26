@@ -94,7 +94,7 @@ Planetshift utilise plutôt la **valeur de Shapley**, une règle de la théorie 
 
 Un levier qui n'agit qu'avec un autre partage cet effet commun à moitié avec lui. La repousse sur les terres libérées est un tel levier.
 
-**Exemple.** Avec la moitié des aliments d'origine animale remplacés par des végétaux (alimentation à 50 %), la repousse naturelle activée et le pergélisol désactivé, le modèle donne ces médianes du réchauffement évité en 2100 :
+**Exemple.** Avec la moitié des aliments d'origine animale remplacés par des végétaux (alimentation à 50 %), la repousse naturelle activée et le pergélisol désactivé, la somme des réponses de chaque gaz (voir [Climat](#method-climate)) donne ces médianes du réchauffement évité en 2100 :
 
 | Groupes actifs | Réchauffement évité en 2100 |
 | --- | --- |
@@ -102,7 +102,7 @@ Un levier qui n'agit qu'avec un autre partage cet effet commun à moitié avec l
 | Repousse seule | 0 (elle ne libère aucune terre) |
 | Alimentation et repousse | 0,1842 °C |
 
-L'effet commun de la repousse est de 0,1842 − 0,1700 = 0,0142 °C. La valeur de Shapley le partage à parts égales entre les deux. La repousse obtient 0,0071 °C et l'alimentation 0,1700 + 0,0071 = 0,1771 °C, ce que montre le résumé (au dernier chiffre arrondi près). Avec le pergélisol activé, la variation de son rejet est répartie en plus de ces parts (voir plus bas) : les parts du résumé s'écartent alors un peu de celles-ci.
+L'effet commun de la repousse est de 0,1842 − 0,1700 = 0,0142 °C. La valeur de Shapley le partage à parts égales entre les deux. La repousse obtient 0,0071 °C et l'alimentation 0,1700 + 0,0071 = 0,1771 °C. Avec le pergélisol activé, la variation de son rejet est répartie en plus de ces parts (voir plus bas). Le résumé met ensuite les parts à l'échelle pour qu'elles s'additionnent au réchauffement évité que donne FaIR (voir *Répartir le total de FaIR* plus bas).
 
 ### Comment Planetshift les calcule vite
 
@@ -112,7 +112,13 @@ Planetshift s'appuie plutôt sur la façon dont les groupes interagissent. Les g
 
 Les groupes hors de l'agriculture (énergie et transport, bâtiments et industrie) interagissent entre eux par le réseau que laisse l'électricité renouvelable. Ils n'interagissent pas avec l'agriculture. Leur valeur est leurs propres émissions, recalculées avec les leviers de l'autre groupe à zéro.
 
-Un test vérifie, sur les données de test et sur les données réelles, que cela donne les valeurs de Shapley des exécutions complètes à neuf chiffres près.
+Un test vérifie, sur les données de test et sur les données réelles, que cela donne les valeurs de Shapley des exécutions complètes à neuf chiffres près, sur la somme des réponses de chaque gaz.
+
+### Répartir le total de FaIR
+
+Le réchauffement évité vient de FaIR lancé dans l'application, dont la réponse n'est pas proportionnelle aux émissions (voir [Climat](#method-climate)). Ses valeurs de Shapley demanderaient de lancer FaIR sur chaque ensemble de groupes actifs, jusqu'à 256 simulations. Cela prend environ une seconde à chaque mouvement de curseur. Les parts sont donc les valeurs de Shapley sur la somme des réponses, toutes multipliées par le même facteur pour s'additionner au total de FaIR. Les causes et les gaz sont répartis de la même façon, année par année.
+
+Sur les données réelles, cela reste à 0,015 °C des valeurs de Shapley de FaIR lancé sur chaque ensemble de groupes, 1,1 % du total, avec tous les leviers au maximum sur SSP2-4.5 en 2100. Le plus grand écart est celui de l'alimentation : 0,358 °C contre 0,373 °C. Avec un seul groupe actif, les deux sont identiques.
 
 ### Une méthode envisagée et écartée
 

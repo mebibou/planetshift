@@ -94,9 +94,9 @@ Chacun suit ensuite l'évolution de FaIR avec le scénario.
 
 | Voitures et camions électriques, d'ici 2100 | SSP3-7.0 | SSP2-4.5 |
 | --- | --- | --- |
-| Modèles de chimie (réglage du site) | 0,028 et 0,017 °C évités | 0,102 et 0,067 °C évités |
-| Coefficient unique de FaIR | 0,026 et 0,019 °C ajoutés | 0,090 et 0,060 °C évités |
-| Coefficient de FaIR partagé entre terre et mer selon le rapport de Hoor et al. | 0,016 et 0,012 °C ajoutés | 0,096 et 0,064 °C évités |
+| Modèles de chimie (réglage du site) | 0,018 et 0,011 °C évités | 0,100 et 0,066 °C évités |
+| Coefficient unique de FaIR | 0,035 et 0,025 °C ajoutés | 0,089 et 0,059 °C évités |
+| Coefficient de FaIR partagé entre terre et mer selon le rapport de Hoor et al. | 0,025 et 0,018 °C ajoutés | 0,095 et 0,063 °C évités |
 
 Une copie de Planetshift peut garder le coefficient unique de FaIR (`fair`) ou le partage entre terre et mer du total de FaIR (`hoor`).
 
@@ -110,7 +110,7 @@ Une copie de Planetshift peut garder le coefficient unique de FaIR (`fair`) ou l
 ## Hypothèses
 
 - Laisser de côté l'usage des terres, comme le fait le réglage par défaut, est prudent, car compter la repousse rend le réchauffement évité plus grand.
-- La réponse du climat est linéarisée autour du scénario de référence. Cela tient bien pour les leviers qui changent une petite part des émissions mondiales : la plupart des leviers agricoles et fonciers, et un levier d'énergie seul. Cela tient moins bien pour les leviers d'énergie au maximum, qui retirent une grande partie du CO₂ du scénario. Leur réchauffement évité est une estimation au premier ordre.
+- FaIR tourne dans l'application sur le CO₂, le méthane, le N₂O et le HFC-134a des leviers : leur réponse n'est pas linéarisée, même pour les leviers d'énergie au maximum. Ce que les leviers changent en dehors de ces gaz (pollution de l'air, traînées des avions, albédo de la repousse, pergélisol) est encore ajouté selon sa réponse autour du scénario de référence. La répartition par famille partage le total de FaIR en proportion de la réponse linéaire de chaque famille (voir [Leviers](#method-levers)).
 
 ## Sources
 

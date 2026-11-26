@@ -1,6 +1,6 @@
 # Bâtiments et industrie
 
-À côté des transports et de l'électricité, deux parties de l'économie brûlent directement des combustibles fossiles. Dans les bâtiments, des chaudières au gaz et au fioul chauffent les pièces et l'eau, et des cuisinières servent à cuisiner. Dans l'industrie, l'acier et le ciment sont les plus gros émetteurs, suivis de la chimie. Planetshift propose ici deux leviers, le chauffage propre et l'industrie propre, qui couvre l'acier, le ciment et la chimie. Adopté en entier, chacun évite moins de 0,02 °C de réchauffement en 2050, et environ 0,06 et 0,11 °C en 2100. Ils en évitent bien plus quand l'électricité qu'ils consomment est propre (voir *Résultats* plus bas).
+À côté des transports et de l'électricité, deux parties de l'économie brûlent directement des combustibles fossiles. Dans les bâtiments, des chaudières au gaz et au fioul chauffent les pièces et l'eau, et des cuisinières servent à cuisiner. Dans l'industrie, l'acier et le ciment sont les plus gros émetteurs, suivis de la chimie. Planetshift propose ici deux leviers, le chauffage propre et l'industrie propre, qui couvre l'acier, le ciment et la chimie. Adopté en entier, chacun évite moins de 0,02 °C de réchauffement en 2050. En 2100, le chauffage propre évite environ 0,06 °C et l'industrie propre environ 0,105 °C. Ils en évitent bien plus quand l'électricité qu'ils consomment est propre (voir *Résultats* plus bas).
 
 ## Comment ces émissions sont comptées
 
@@ -118,12 +118,12 @@ Chaque année $y$, chaque adoption $a$ a déjà suivi sa montée, et $g$ est l'i
 - Chauffage propre (`ch`) économise $a \times \text{CO}_2\text{ des bâtiments} \times (1 - k\,g')$, avec $k$ = `heatPumpKwhPerKgCo2`.
 - Industrie propre (`ci`) économise $a \times \text{CO}_2\text{ de l'industrie} \times \sum_{i} \text{part}_i \times \text{réduction}_i \times (1 - k_i\,g')$ sur $i$ dans l'acier, le ciment et la chimie, avec $k_i$ = `kwhPerKgCo2`.
 
-Les variations de CO₂ sont convoluées avec la courbe d'AGTP du CO₂ (le réchauffement dû à un kilogramme de CO₂ au fil du temps). Ce qui les accompagne est traité comme pour les transports :
+Les variations de CO₂ vont à FaIR, que lance l'application (voir la [page sur la température](#method-climate)). Ce qui les accompagne est traité comme pour les transports :
 
 - le CO₂ de la production du combustible (pour l'acier, celui de ses fours à coke et de ses mines de charbon), le méthane et le N₂O, sous *combustibles fossiles et industrie* ;
 - la pollution de l'air, monoxyde de carbone et composés organiques volatils compris, sous sa propre cause.
 
-La fourchette probable associe l'AGTP à 95 % au haut de chaque réduction et au bas de chaque consommation d'électricité. Elle associe l'AGTP à 5 % aux extrémités opposées.
+La fourchette probable est la fourchette de 5 à 95 % des membres de FaIR. S'y ajoute, par les réponses aux impulsions, ce que changent les bornes de chaque réduction et de chaque consommation d'électricité : l'AGTP à 95 % avec le haut de chaque réduction et le bas de chaque consommation d'électricité, l'AGTP à 5 % avec les extrémités opposées.
 
 ## Résultats
 
@@ -131,17 +131,17 @@ Le tableau donne le réchauffement évité en °C : la médiane, puis la fourche
 
 | Leviers | 2050 | 2100 |
 | --- | --- | --- |
-| Chauffage propre | 0,013 (0,001–0,037) ; CO₂ seul 0,008 | 0,061 (0,036–0,112) ; CO₂ seul 0,046 |
-| Industrie propre | 0,017 (−0,006 à 0,072) ; CO₂ seul 0,029 | 0,109 (0,055–0,225) ; CO₂ seul 0,108 |
-| Électricité renouvelable seule | 0,100 (0,052–0,194) ; CO₂ seul 0,097 | 0,284 (0,182–0,451) ; CO₂ seul 0,240 |
-| Chauffage propre avec électricité renouvelable | 0,120 (0,061–0,233) ; CO₂ seul 0,112 | 0,363 (0,233–0,577) ; CO₂ seul 0,301 |
-| Industrie propre avec électricité renouvelable | 0,130 (0,064–0,268) ; CO₂ seul 0,137 | 0,419 (0,264–0,688) ; CO₂ seul 0,371 |
+| Chauffage propre | 0,013 (0,001–0,036) ; CO₂ seul 0,008 | 0,060 (0,037–0,109) ; CO₂ seul 0,044 |
+| Industrie propre | 0,016 (−0,005 à 0,070) ; CO₂ seul 0,028 | 0,105 (0,052–0,225) ; CO₂ seul 0,104 |
+| Électricité renouvelable seule | 0,096 (0,060–0,187) ; CO₂ seul 0,093 | 0,286 (0,180–0,464) ; CO₂ seul 0,236 |
+| Chauffage propre avec électricité renouvelable | 0,115 (0,070–0,225) ; CO₂ seul 0,108 | 0,367 (0,235–0,590) ; CO₂ seul 0,297 |
+| Industrie propre avec électricité renouvelable | 0,124 (0,074–0,260) ; CO₂ seul 0,133 | 0,421 (0,265–0,707) ; CO₂ seul 0,366 |
 
 Le chauffage propre gagne aux co-émissions dès le départ. Le gaz qu'il ne brûle plus aurait laissé fuir du méthane, et brûler du gaz émet peu de SO₂.
 
 L'industrie propre perd plus d'un tiers de son effet de 2050 aux co-émissions. Le SO₂ de leurs usines refroidit le climat, donc le supprimer réchauffe. Les filières hydrogène consomment aussi beaucoup d'électricité du réseau, dont elles ajoutent le CO₂ et le méthane. En 2100, son effet avec les co-émissions égale à peu près celui de son seul CO₂. Le CO₂ des fours à coke et le CO qu'émettent les fours sont comptés avec le charbon qui n'est plus brûlé, et ils compensent cette perte.
 
-Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,020 °C en 2050 et 0,079 °C en 2100. L'industrie propre y ajoute 0,030 et 0,135 °C. Sur un réseau propre, chaque levier économise plus que lorsqu'il agit seul.
+Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,019 °C en 2050 et 0,081 °C en 2100. L'industrie propre y ajoute 0,028 et 0,135 °C. Sur un réseau propre, chaque levier économise plus que lorsqu'il agit seul.
 
 Les effets sont petits en 2050, pour deux raisons. Le CO₂ évité s'accumule lentement. Et sur le réseau actuel, l'électricité que consomment les procédés propres annule une grande partie de ce qu'ils économisent.
 

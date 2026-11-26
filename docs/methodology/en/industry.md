@@ -1,6 +1,6 @@
 # Buildings and industry
 
-Besides transport and electricity, two parts of the economy burn fossil fuel directly. In buildings, gas and oil boilers heat rooms and water, and stoves cook food. In industry, steel and cement are the largest emitters, followed by chemicals. Planetshift has two levers here, clean heating and clean industry, which covers steel, cement and chemicals. Adopted in full, each avoids less than 0.02 °C of warming in 2050, and about 0.06 and 0.11 °C in 2100. They avoid much more when the electricity they use is clean (see *Results* below).
+Besides transport and electricity, two parts of the economy burn fossil fuel directly. In buildings, gas and oil boilers heat rooms and water, and stoves cook food. In industry, steel and cement are the largest emitters, followed by chemicals. Planetshift has two levers here, clean heating and clean industry, which covers steel, cement and chemicals. Adopted in full, each avoids less than 0.02 °C of warming in 2050. In 2100, clean heating avoids about 0.06 °C and clean industry about 0.105 °C. They avoid much more when the electricity they use is clean (see *Results* below).
 
 ## How these emissions are counted
 
@@ -118,12 +118,12 @@ In each year $y$, each adoption $a$ is already ramped, and $g$ is the grid's int
 - Clean heating (`ch`) saves $a \times \text{buildings' CO}_2 \times (1 - k\,g')$, with $k$ = `heatPumpKwhPerKgCo2`.
 - Clean industry (`ci`) saves $a \times \text{industry's CO}_2 \times \sum_{i} \text{share}_i \times \text{cut}_i \times (1 - k_i\,g')$ over $i$ in steel, cement and chemicals, with $k_i$ = `kwhPerKgCo2`.
 
-The CO₂ changes are convolved with the CO₂ AGTP curve (the warming from one kilogram of CO₂ over time). What comes with them is treated as for transport:
+The CO₂ changes go to FaIR, which the app runs (see the [temperature page](#method-climate)). What comes with them is treated as for transport:
 
 - the CO₂ of producing the fuel (for steel, that of its coke ovens and coal mines), methane and N₂O, under *fossil fuels and industry*;
 - the air pollution, CO and VOCs included, under its own cause.
 
-The likely range pairs the 95% AGTP with the high end of each cut and the low end of each electricity use. It pairs the 5% AGTP with the opposite ends.
+The likely range is the 5–95% range of FaIR's members. The ends of each cut and each electricity use add to it through the pulse responses: the 95% AGTP with the high end of each cut and the low end of each electricity use, the 5% AGTP with the opposite ends.
 
 ## Results
 
@@ -131,17 +131,17 @@ The table gives the warming avoided in °C, as a median with the likely range in
 
 | Levers | 2050 | 2100 |
 | --- | --- | --- |
-| Clean heating | 0.013 (0.001–0.037); CO₂ alone 0.008 | 0.061 (0.036–0.112); CO₂ alone 0.046 |
-| Clean industry | 0.017 (−0.006–0.072); CO₂ alone 0.029 | 0.109 (0.055–0.225); CO₂ alone 0.108 |
-| Renewable electricity alone | 0.100 (0.052–0.194); CO₂ alone 0.097 | 0.284 (0.182–0.451); CO₂ alone 0.240 |
-| Clean heating with renewable electricity | 0.120 (0.061–0.233); CO₂ alone 0.112 | 0.363 (0.233–0.577); CO₂ alone 0.301 |
-| Clean industry with renewable electricity | 0.130 (0.064–0.268); CO₂ alone 0.137 | 0.419 (0.264–0.688); CO₂ alone 0.371 |
+| Clean heating | 0.013 (0.001–0.036); CO₂ alone 0.008 | 0.060 (0.037–0.109); CO₂ alone 0.044 |
+| Clean industry | 0.016 (−0.005–0.070); CO₂ alone 0.028 | 0.105 (0.052–0.225); CO₂ alone 0.104 |
+| Renewable electricity alone | 0.096 (0.060–0.187); CO₂ alone 0.093 | 0.286 (0.180–0.464); CO₂ alone 0.236 |
+| Clean heating with renewable electricity | 0.115 (0.070–0.225); CO₂ alone 0.108 | 0.367 (0.235–0.590); CO₂ alone 0.297 |
+| Clean industry with renewable electricity | 0.124 (0.074–0.260); CO₂ alone 0.133 | 0.421 (0.265–0.707); CO₂ alone 0.366 |
 
 Clean heating gains from the co-emissions from the start. The gas it no longer burns would have leaked methane, and burning gas emits little SO₂.
 
 Clean industry loses over a third of its 2050 effect to the co-emissions. Their plants' SO₂ cools the climate, so removing it warms. The hydrogen routes also draw a lot of grid power, which adds that power's CO₂ and methane. By 2100 its effect with the co-emissions about equals its CO₂ alone. The coke ovens' CO₂ and the CO that the furnaces emit are counted with the coal no longer burnt, and they make up for the loss.
 
-With renewable electricity in full, clean heating adds 0.020 °C in 2050 and 0.079 °C in 2100 to it. Clean industry adds 0.030 and 0.135 °C. On a clean grid, each lever saves more than it does alone.
+With renewable electricity in full, clean heating adds 0.019 °C in 2050 and 0.081 °C in 2100 to it. Clean industry adds 0.028 and 0.135 °C. On a clean grid, each lever saves more than it does alone.
 
 The effects are small in 2050 for two reasons. The CO₂ avoided adds up slowly. On today's grid, the electricity that the clean routes draw also cancels much of what they save.
 

@@ -166,15 +166,16 @@ The URL keys of the options, the diet controls and the levers are listed under [
 ## Climate
 
 - **The temperature is computed from each gas separately.** CO₂e (GWP100 from the IPCC's Sixth Assessment Report, AR6: 27 for CH₄, 273 for N₂O) is only shown as a total. See [Climate](#method-climate).
-- **The warming per kilogram (AGTP) comes from FaIR v2.2.5 with the fair-calibrate v1.4.1 ensemble**, all 841 members. The app keeps the median and the 5th and 95th percentiles. See [Climate](#method-climate).
+- **The temperature comes from FaIR v2.2.5 run in the app**, on 50 members of the fair-calibrate v1.4.1 ensemble chosen to keep its median and 5–95% range, without internal variability. The levers change its CO₂, methane, N₂O and HFC-134a. See [Climate](#method-climate).
+- **The warming per kilogram (AGTP) comes from the same ensemble**, all 841 members. It splits FaIR's total between causes, gases and lever families, and is the AR6 option's method. See [Climate](#method-climate).
 - **Pulses of 1 Gt CO₂, 1 Mt CH₄ and 0.1 Mt N₂O on SSP2-4.5 in 2035** are used for every year and every scenario. Pulses in 2025 and 2045 give curves within 7%. See [Climate](#method-climate).
-- **The response is proportional to the change in emissions**, so the warming is the convolution of each year's change with the AGTP. A pulse ten times larger agrees within 0.2%. See [Climate](#method-climate).
+- **The breakdown is proportional**: each family's Shapley value on the sum of responses, scaled to FaIR's total. It stays within 0.015 °C of the Shapley values of FaIR runs. See [Levers](#method-levers).
 - **Agricultural methane is biogenic** (no CO₂ from its oxidation), **and farm CO₂ (urea, liming) is fossil CO₂** in FaIR. See [Climate](#method-climate).
 - **A year's emissions are spread evenly over the year.** A calendar year's temperature is the mean of FaIR's values at its two ends. See [Climate](#method-climate).
 - **The AR6 alternative is one curve**, from AR6 Chapter 7's expressions, so its range is zero, not unknown. See [Climate](#method-climate) and [Options](#method-options).
 - **The band covers only the climate response**, not the uncertainty in intensities, diets or feed, so the real range is wider. See [Climate](#method-climate).
-- **Scenario temperatures are FaIR's 841 members on its calibration's emissions history to 2022, then the RCMIP v5.1.0 scenarios**, relative to 1850–1900. SSP2-4.5 is the default. See [Climate](#method-climate).
-- **With the population baseline, a correction is added to the SSP's temperature**: the warming from the gap between population-scaled agricultural emissions and the SSP's own agricultural path. The baseline curve then matches its emissions. See [The shift](#method-shift).
+- **Scenario temperatures are FaIR's on its calibration's emissions history to 2022, then the RCMIP v5.1.0 scenarios**, relative to 1850–1900. SSP2-4.5 is the default. See [Climate](#method-climate).
+- **With the population baseline, FaIR runs on the SSP's emissions plus the gap between population-scaled agricultural emissions and the SSP's own agricultural path.** The baseline curve then matches its emissions. See [The shift](#method-shift).
 - **Permafrost is on by default.** It releases 18.3 (3.2–41.7) PgC per °C of warming over 20 years, 1.6% of it as methane (AR6's 2.8 PgCeq of methane feedback is about 0.28 PgC of methane). It is computed from the baseline temperature and from the scenario's. The carbon released is not taken back up when the temperature falls, and it is computed in one pass only. See [Climate](#method-climate).
 - **Observed temperature is HadCRUT5 by default, Berkeley Earth as the alternative**, each re-baselined to its own 1850–1900 mean. HadCRUT5's current year is left out until complete. See [Climate](#method-climate).
 

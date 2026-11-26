@@ -208,12 +208,12 @@ Le seuil change la base, mais à peine l'effet d'un changement de régime. Un tr
 
 | Seuil de taux d'exploitation | Base hors alimentation, Mt CO₂e | Inde | Niger | Éthiopie | Mali | Changement complet : émissions évitées, Gt CO₂e | Changement complet : réchauffement évité en 2100, °C |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 6,7 % (Afrique australe, retenu) | 211 | 113 | 18,1 | 6,9 | 1,1 | 7,03 | 0,346 |
-| 9 % (médiane) | 245 | 113 | 19,5 | 26,0 | 4,0 | 6,98 | 0,343 |
-| 9,9 % (moyenne) | 258 | 113 | 19,8 | 31,1 | 5,1 | 6,96 | 0,342 |
-| 12 % (systèmes pastoraux) | 286 | 113 | 20,4 | 40,0 | 7,1 | 6,93 | 0,341 |
+| 6,7 % (Afrique australe, retenu) | 211 | 113 | 18,1 | 6,9 | 1,1 | 7,03 | 0,347 |
+| 9 % (médiane) | 245 | 113 | 19,5 | 26,0 | 4,0 | 6,98 | 0,345 |
+| 9,9 % (moyenne) | 258 | 113 | 19,8 | 31,1 | 5,1 | 6,96 | 0,344 |
+| 12 % (systèmes pastoraux) | 286 | 113 | 20,4 | 40,0 | 7,1 | 6,93 | 0,342 |
 
-Un demi-changement évite la moitié (de 3,46 à 3,50 Gt CO₂e, de 0,170 à 0,173 °C). La fourchette probable que montre l'application ne couvre que la réponse du climat, pas ce choix.
+Un demi-changement évite la moitié des émissions (de 3,46 à 3,50 Gt CO₂e) et un peu plus de la moitié du réchauffement (de 0,173 à 0,176 °C), car la réponse de FaIR n'est pas proportionnelle. La fourchette probable que montre l'application ne couvre que la réponse du climat, pas ce choix.
 
 ### Les limites de la règle
 
