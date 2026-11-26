@@ -94,7 +94,7 @@ Planetshift uses the **Shapley value** instead, a rule from game theory for shar
 
 A lever that only acts together with another shares that joint effect half and half with it. Regrowth on freed land is such a lever.
 
-**Worked example.** With half of animal foods shifted to plants (diet at 50%), natural regrowth on and permafrost off, the model gives these medians of the warming avoided in 2100:
+**Worked example.** With half of animal foods shifted to plants (diet at 50%), natural regrowth on and permafrost off, the sum of each gas's response (see [Climate](#method-climate)) gives these medians of the warming avoided in 2100:
 
 | Groups acting | Warming avoided in 2100 |
 | --- | --- |
@@ -102,7 +102,7 @@ A lever that only acts together with another shares that joint effect half and h
 | Regrowth alone | 0 (it frees no land) |
 | Diet and regrowth | 0.1842 °C |
 
-The joint effect of regrowth is 0.1842 − 0.1700 = 0.0142 °C. The Shapley value splits it equally between the two. Regrowth gets 0.0071 °C and the diet gets 0.1700 + 0.0071 = 0.1771 °C, which is what the summary shows (the last digit is rounded). With permafrost on, the change in its release is shared out on top of these parts (see below), so the summary's parts differ slightly from these.
+The joint effect of regrowth is 0.1842 − 0.1700 = 0.0142 °C. The Shapley value splits it equally between the two. Regrowth gets 0.0071 °C and the diet gets 0.1700 + 0.0071 = 0.1771 °C. With permafrost on, the change in its release is shared out on top of these parts (see below). The summary then scales the parts so that they add up to the warming avoided that FaIR gives (see *Sharing out FaIR's total* below).
 
 ### How Planetshift computes them quickly
 
@@ -112,7 +112,13 @@ Instead, Planetshift makes use of how the groups interact. Farming's groups inte
 
 The groups outside farming (energy and transport, buildings and industry) interact with each other through the grid that renewable electricity leaves. They do not interact with farming. Their worth is their own emissions, recomputed with the other group's levers off.
 
-A test checks, on the fixtures and on the real data, that this gives the Shapley values of full runs to nine digits.
+A test checks, on the fixtures and on the real data, that this gives the Shapley values of full runs to nine digits, on the sum of each gas's response.
+
+### Sharing out FaIR's total
+
+The warming avoided comes from FaIR run in the app, which does not respond in proportion to the emissions (see [Climate](#method-climate)). Its Shapley values would need FaIR run on every set of acting groups, up to 256 runs. That takes about a second for each move of a slider. So the parts are the Shapley values on the sum of responses, each scaled by the same factor so that they add up to FaIR's total. The causes and the gases are shared out the same way, year by year.
+
+On the real data, this stays within 0.015 °C of the Shapley values of FaIR run on every set of groups, 1.1% of the total, with every lever in full on SSP2-4.5 in 2100. The largest gap is the diet's: 0.358 °C, against 0.373 °C. With one group acting, the two are the same.
 
 ### A method considered and not used
 

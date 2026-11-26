@@ -94,9 +94,9 @@ Each then follows FaIR's change with the scenario.
 
 | Electric cars and trucks, by 2100 | SSP3-7.0 | SSP2-4.5 |
 | --- | --- | --- |
-| Chemistry models (website default) | 0.028 and 0.017 °C avoided | 0.102 and 0.067 °C avoided |
-| FaIR's one coefficient | 0.026 and 0.019 °C added | 0.090 and 0.060 °C avoided |
-| FaIR's coefficient shared between land and sea by Hoor et al.'s ratio | 0.016 and 0.012 °C added | 0.096 and 0.064 °C avoided |
+| Chemistry models (website default) | 0.018 and 0.011 °C avoided | 0.100 and 0.066 °C avoided |
+| FaIR's one coefficient | 0.035 and 0.025 °C added | 0.089 and 0.059 °C avoided |
+| FaIR's coefficient shared between land and sea by Hoor et al.'s ratio | 0.025 and 0.018 °C added | 0.095 and 0.063 °C avoided |
 
 A fork can keep FaIR's one coefficient (`fair`) or the land and sea split of FaIR's total (`hoor`).
 
@@ -110,7 +110,7 @@ A fork can keep FaIR's one coefficient (`fair`) or the land and sea split of FaI
 ## Assumptions
 
 - Leaving out land use, as the default does, is conservative, because counting regrowth makes the warming avoided larger.
-- The climate response is linearised around the baseline scenario. This holds well for levers that change a small part of the world's emissions: most farming and land levers, and single energy levers. It holds less well for the energy levers in full, which remove a large part of the scenario's CO₂. Their warming avoided is a first-order estimate.
+- FaIR runs in the app on the levers' CO₂, methane, N₂O and HFC-134a, so their response is not linearised, even for the energy levers in full. What the levers change besides those gases (air pollution, aviation's contrails, the albedo of regrowth, permafrost) is still added from its own response around the baseline scenario. The breakdown by family splits FaIR's total in proportion to each family's linear response (see [Levers](#method-levers)).
 
 ## Sources
 

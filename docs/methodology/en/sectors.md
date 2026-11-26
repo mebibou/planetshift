@@ -1,6 +1,6 @@
 # Beyond the farm: transport, electricity and data centres
 
-Food is one part of the climate problem. Burning coal, oil and gas for power and transport is the larger part. So that diet and farming levers can be compared with other actions, Planetshift has six levers on road vehicles, aviation, shipping and electricity, which also reaches data centres. With all six in full from 2026 to 2035, they avoid 0.252 °C of warming in 2050 and 0.657 °C in 2100 (median, SSP2-4.5), once the methane and air pollution that come with the fuel are counted.
+Food is one part of the climate problem. Burning coal, oil and gas for power and transport is the larger part. So that diet and farming levers can be compared with other actions, Planetshift has six levers on road vehicles, aviation, shipping and electricity, which also reaches data centres. With all six in full from 2026 to 2035, they avoid 0.246 °C of warming in 2050 and 0.666 °C in 2100 (median, SSP2-4.5), once the methane and air pollution that come with the fuel are counted.
 
 ## What these levers count
 
@@ -145,21 +145,21 @@ The code is `app/src/levers/energy/model.ts`, a lever module called by `run.ts`.
 - Clean shipping (`cs`) cuts $a \times$ shipping CO₂.
 - Each sector's change in CO₂ brings its co-emissions with it (below). The electricity drawn counts in the electricity sector's change. The methane goes with the CO₂ into the emissions. The change in air pollution gives a forcing and a methane change of its own, both counted under *air pollution*.
 
-The CO₂ and methane changes are convolved with their AGTP curves. An AGTP curve gives the warming, year by year, after one kilogram of a gas is emitted (see the [temperature page](#method-climate)). The forcing changes are convolved with `forcingResponse`. All are added to the warming change.
+The CO₂ and methane changes go to FaIR, which the app runs with every lever's change in these gases (see the [temperature page](#method-climate)). The forcing changes are convolved with `forcingResponse` and added to FaIR's warming change.
 
 With `dc=iea`, the baseline also carries the data centres' extra CO₂ from 2024, with what comes with the electricity sector's CO₂ (below). The lever already counts this when it cuts it. It adds under 0.001 °C.
 
 ### The likely range
 
-The likely range pairs the 95% AGTP and forcing response with the low end of `evKwhPerKgCo2`, the high end of `aviationNonCo2` and the high data-centre case. The 5% end uses the opposite ends. So the low end of the warming avoided uses the least favourable end of every range.
+The likely range is the 5–95% range of FaIR's members on the median emissions. The ends of the levers' own ranges add to it through the pulse responses: the 95% AGTP and forcing response with the low end of `evKwhPerKgCo2`, the high end of `aviationNonCo2` and the high data-centre case. The 5% end uses the opposite ends. So the low end of the warming avoided uses the least favourable end of every range.
 
-### A linear estimate
+### What stays linear
 
-The response is linear around the scenario. This holds well for small changes. It holds less well when every lever is in full and most of a scenario's CO₂ is removed. The figures are then a first-order estimate.
+FaIR runs on the levers' CO₂ and methane, so their warming is not linearised, even with every lever in full and most of a scenario's CO₂ removed. The air pollution, aviation's non-CO₂ forcing and the methane NOx leaves are still linear in the change, around the scenario.
 
 ## Methane and air pollution that come with the fuel
 
-Burning coal, oil and gas emits more than CO₂. A lever that cuts fuel cuts all of these emissions along with the CO₂. Counting it raises the warming the energy levers avoid. All six in full avoid 0.252 °C in 2050 with it, against 0.209 °C counting CO₂ only. Of all the energy, heating and industry levers, only clean industry, on the [Buildings and industry](#method-industry) page, avoids less when it is counted (0.017 °C instead of 0.029 in 2050).
+Burning coal, oil and gas emits more than CO₂. A lever that cuts fuel cuts all of these emissions along with the CO₂. Counting it raises the warming the energy levers avoid. All six in full avoid 0.246 °C in 2050 with it, against 0.204 °C counting CO₂ only. Of all the energy, heating and industry levers, only clean industry, on the [Buildings and industry](#method-industry) page, avoids less when it is counted (0.016 °C instead of 0.028 in 2050).
 
 What comes with the fuel:
 
@@ -327,40 +327,40 @@ Warming avoided in °C, median (likely range). Each lever is at 100% from 2026 t
 
 | Levers | 2050, CO₂ only | 2050, with | 2100, CO₂ only | 2100, with |
 | --- | --- | --- | --- | --- |
-| Electric cars | 0.020 (0.010–0.035) | 0.039 (−0.017–0.116) | 0.071 (0.040–0.118) | 0.102 (0.020–0.207) |
-| Electric trucks | 0.013 (0.006–0.020) | 0.026 (−0.012–0.076) | 0.047 (0.026–0.073) | 0.067 (0.012–0.132) |
-| Less flying | 0.050 (0.014–0.123) | 0.055 (0.017–0.133) | 0.107 (0.039–0.259) | 0.125 (0.048–0.291) |
-| Clean aviation fuel | 0.009 (0.007–0.013) | 0.015 (0.010–0.023) | 0.043 (0.029–0.062) | 0.060 (0.038–0.094) |
-| Clean shipping | 0.007 (0.005–0.009) | 0.009 (0.006–0.015) | 0.024 (0.016–0.036) | 0.034 (0.022–0.054) |
-| Renewable electricity | 0.097 (0.070–0.134) | 0.100 (0.052–0.194) | 0.240 (0.156–0.362) | 0.284 (0.182–0.451) |
-| All six | 0.209 (0.128–0.342) | 0.252 (0.079–0.541) | 0.528 (0.316–0.888) | 0.657 (0.328–1.175) |
-| All six with clean heating and clean industry | 0.264 (0.168–0.423) | 0.301 (0.099–0.653) | 0.720 (0.443–1.182) | 0.870 (0.462–1.532) |
+| Electric cars | 0.019 (0.010–0.034) | 0.038 (−0.015–0.113) | 0.068 (0.037–0.119) | 0.100 (0.022–0.205) |
+| Electric trucks | 0.013 (0.006–0.019) | 0.025 (−0.011–0.074) | 0.045 (0.023–0.074) | 0.066 (0.013–0.130) |
+| Less flying | 0.050 (0.014–0.123) | 0.055 (0.018–0.132) | 0.105 (0.037–0.260) | 0.124 (0.049–0.290) |
+| Clean aviation fuel | 0.009 (0.007–0.012) | 0.014 (0.011–0.021) | 0.040 (0.027–0.062) | 0.059 (0.039–0.092) |
+| Clean shipping | 0.007 (0.005–0.009) | 0.009 (0.007–0.015) | 0.023 (0.015–0.035) | 0.033 (0.022–0.052) |
+| Renewable electricity | 0.093 (0.072–0.130) | 0.096 (0.060–0.187) | 0.236 (0.148–0.379) | 0.286 (0.180–0.464) |
+| All six | 0.204 (0.134–0.339) | 0.246 (0.094–0.533) | 0.524 (0.305–0.919) | 0.666 (0.344–1.199) |
+| All six with clean heating and clean industry | 0.259 (0.176–0.420) | 0.295 (0.121–0.646) | 0.718 (0.439–1.232) | 0.886 (0.498–1.574) |
 
 With every energy, heating and industry lever in full, two effects roughly cancel at first. The fuel's supply and methane are no longer emitted, which is a gain. The cooling the pollution masked is lost. After that, the gains are larger (median, °C, SSP2-4.5):
 
 | Year | Warming avoided, CO₂ only | Supply CO₂, methane and N₂O gain | Air pollution loss | Warming avoided, with |
 | --- | --- | --- | --- | --- |
-| 2030 | 0.012 | +0.004 | −0.016 | 0.001 |
-| 2040 | 0.131 | +0.064 | −0.079 | 0.116 |
-| 2050 | 0.264 | +0.122 | −0.084 | 0.301 |
-| 2100 | 0.720 | +0.198 | −0.049 | 0.870 |
+| 2030 | 0.012 | +0.006 | −0.017 | 0.001 |
+| 2040 | 0.129 | +0.056 | −0.075 | 0.110 |
+| 2050 | 0.259 | +0.118 | −0.082 | 0.295 |
+| 2100 | 0.718 | +0.218 | −0.049 | 0.886 |
 
 **The supply's CO₂** makes the largest difference. It adds about a tenth to every oil lever's CO₂, in every year: 0.150 kg per kg for road, 0.153 for aviation and shipping. It adds 8% to the electricity a lever cuts or draws.
 
 **CO and VOCs** add a little warming avoided: their ozone and methane scale with the fuel. Ammonia's small cooling works against this.
 
-**Renewable electricity** loses the cooling of coal power's SO₂, the largest source of SO₂. But it gains its NOx's ozone and methane, and its fuel's supply. It avoids 0.100 °C instead of 0.097 in 2050, and 0.284 against 0.240 in 2100.
+**Renewable electricity** loses the cooling of coal power's SO₂, the largest source of SO₂. But it gains its NOx's ozone and methane, and its fuel's supply. It avoids 0.096 °C instead of 0.093 in 2050, and 0.286 against 0.236 in 2100.
 
 **Less flying, clean aviation fuel and clean heating** gain from the start: their fuel's supply outweighs the little SO₂ they cut.
 
-**Clean industry** alone loses: 0.017 instead of 0.029 in 2050. Its plants emit SO₂, and the hydrogen routes draw a lot of grid power.
+**Clean industry** alone loses: 0.016 instead of 0.028 in 2050. Its plants emit SO₂, and the hydrogen routes draw a lot of grid power.
 
 **Electric vehicles** gain. Their soot, their NOx's ozone and their fuel's supply stop straight away. The methane their NOx no longer destroys, about half of FaIR's on land, builds up slowly over decades. Electric cars avoid, in 2050 and 2100:
 
-- SSP1-2.6: 0.030 and 0.048 °C (CO₂ alone 0.016 and 0.036);
-- SSP2-4.5: 0.039 and 0.102 (CO₂ alone 0.020 and 0.071).
+- SSP1-2.6: 0.031 and 0.053 °C (CO₂ alone 0.015 and 0.038);
+- SSP2-4.5: 0.038 and 0.100 (CO₂ alone 0.019 and 0.068).
 
-In SSP3-7.0, the grid stays dirty and NOx and methane are high. That methane takes back part of the gain. Electric vehicles avoid more than their CO₂ alone in 2050, but less than it by 2100. Electric cars avoid 0.019 °C in 2050 and 0.028 °C in 2100 (CO₂ alone 0.012 and 0.035). Electric trucks avoid 0.012 and 0.017 (CO₂ alone 0.007 and 0.022). With FaIR's one coefficient for every source, they would add 0.026 and 0.019 °C by 2100. With that coefficient shared between land and sea, they would add 0.016 and 0.012 (see [Limitations](#method-limitations)).
+In SSP3-7.0, the grid stays dirty and NOx and methane are high. That methane takes back part of the gain. Electric vehicles avoid more than their CO₂ alone in 2050, but less than it by 2100. Electric cars avoid 0.017 °C in 2050 and 0.018 °C in 2100 (CO₂ alone 0.011 and 0.030). Electric trucks avoid 0.011 and 0.011 (CO₂ alone 0.007 and 0.019). With FaIR's one coefficient for every source, they would add 0.035 and 0.025 °C by 2100. With that coefficient shared between land and sea, they would add 0.025 and 0.018 (see [Limitations](#method-limitations)).
 
 ### Against published phase-outs
 
