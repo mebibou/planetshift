@@ -150,6 +150,9 @@ export const GRID: Setting[] = [
   setting('allWasteMethane+ssp370', { levers: all(WASTE_METHANE) }, { ssp: 'ssp370' }),
   ...[0.5, 1].map((a) => setting(`peatRewetting@${a * 100}`, { levers: { peatRewetting: a } })),
   setting('peatRewetting+shift100', { shift: 1, levers: { peatRewetting: 1 } }),
+  ...[0.5, 1].map((a) => setting(`hfcPhaseDown@${a * 100}`, { levers: { hfcPhaseDown: a } })),
+  setting('hfcPhaseDown+diet', { shift: 1, levers: { hfcPhaseDown: 1 } }),
+  setting('hfcPhaseDown+ssp370', { levers: { hfcPhaseDown: 1 } }, { ssp: 'ssp370' }),
 ];
 
 /** Run with every departure from FaIR at its plain-FaIR value (planetshift.config.schema.json). */

@@ -942,7 +942,7 @@ test('the panel is in groups, all closed, under their causes, with the time sett
 }) => {
   await open(page);
   const groups = page.locator('.panel details.group');
-  await expect(groups).toHaveCount(9);
+  await expect(groups).toHaveCount(10);
   await expect(page.locator('#panel-tab-levers')).toHaveAttribute('aria-selected', 'true');
   await expect(page.locator('#panel-panel-options')).toBeHidden();
   for (const id of [
@@ -956,6 +956,7 @@ test('the panel is in groups, all closed, under their causes, with the time sett
       'industry',
       'fossilMethane',
       'wasteMethane',
+      'hfc',
     ].map((m) => `levers-${m}`),
   ]) {
     await expect(page.locator(`details[data-group="${id}"]`)).not.toHaveAttribute('open');
@@ -980,6 +981,9 @@ test('the panel is in groups, all closed, under their causes, with the time sett
   ).toHaveCount(1);
   await expect(
     page.locator('.cause-section[data-cause="landUse"] details[data-group="levers-deforestation"]'),
+  ).toHaveCount(1);
+  await expect(
+    page.locator('.cause-section[data-cause="other"] details[data-group="levers-hfc"]'),
   ).toHaveCount(1);
   const meta = (id: string) => page.locator(`details[data-group="${id}"] .group-meta`);
   await expect(meta('diet')).toHaveText('No shift yet');
@@ -1527,6 +1531,8 @@ test('a cause’s pair sets every group under it, and the all-levers pair every 
     'removals',
     'industry',
     'wasteMethane',
+    'cause-other',
+    'hfc',
   ]) {
     expect(await pressed(page, scope)).toBe('full');
   }

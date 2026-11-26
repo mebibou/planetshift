@@ -15,6 +15,7 @@ import { deadfallSpec as deadfall } from './deadfall/spec';
 import { deforestationSpec as deforestation } from './deforestation/spec';
 import { energySpec as energy } from './energy/spec';
 import { fossilMethaneSpec as fossilMethane } from './fossilMethane/spec';
+import { hfcSpec as hfc } from './hfc/spec';
 import { industrySpec as industry } from './industry/spec';
 import { permafrostSpec as permafrost } from './permafrost/spec';
 import { populationSpec as population } from './population/spec';
@@ -47,6 +48,7 @@ export const MODULES: readonly LeverSpec[] = [
   energy,
   industry,
   fossilMethane,
+  hfc,
   shippingSulphur,
   permafrost,
 ].filter(kept);
@@ -104,8 +106,8 @@ export const DIET_CAUSE: LeverCause = 'agriculture';
 
 /** The causes a lever acts on, in the order of the data. */
 export const LEVER_CAUSES: readonly LeverCause[] = ['fossilIndustry', 'agriculture', 'landUse'];
-/** The panel's cause headings: the causes a lever acts on, and waste. */
-export const PANEL_CAUSES: readonly ModuleCause[] = [...LEVER_CAUSES, 'waste'];
+/** The panel's cause headings: the causes a lever acts on, waste, and other human emissions. */
+export const PANEL_CAUSES: readonly ModuleCause[] = [...LEVER_CAUSES, 'waste', 'other'];
 export const GAS_LEVER_CAUSES: readonly GasLeverCause[] = [...LEVER_CAUSES, 'waste', 'other'];
 
 /**

@@ -426,6 +426,7 @@ const FILE_LICENCES: Readonly<Record<string, readonly string[]>> = {
   waste: ['unTerms'],
   oceanplastic: ['ccByNc'],
   wastemethane: ['ccByNcSa'],
+  hfc: ['ccBySa'],
 };
 
 /** A data file's terms, as DATA-LICENCES.md gives them. */

@@ -34,7 +34,9 @@ export const ensembleOf = (file: FairFile): Ensemble =>
 
 /**
  * `base` with each gas's `changes` (kg a year, the first in `first`) added to its FaIR specie;
- * net CO₂ may go below zero, the other gases stop at zero as the pipeline's attribution runs do.
+ * net CO₂ may go below zero, and so may HFC-134a, which carries every HFC's change as the stream
+ * with the same forcing (levers/hfc); the other gases stop at zero as the pipeline's attribution
+ * runs do.
  */
 export const withChanges = (
   base: ScenarioInput,
@@ -47,7 +49,7 @@ export const withChanges = (
       path.forEach((v, k) => {
         const t = first + k - START;
         const next = (series[t] as number) + v[g] / KG_PER_UNIT[g];
-        series[t] = g === 'co2' ? next : Math.max(0, next);
+        series[t] = g === 'co2' || g === 'hfc' ? next : Math.max(0, next);
       }),
     );
     return series;

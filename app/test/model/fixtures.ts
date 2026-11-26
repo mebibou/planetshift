@@ -33,6 +33,7 @@ import origins from '../../public/fixtures/origins.json';
 import water from '../../public/fixtures/water.json';
 import fossilmethane from '../../public/fixtures/fossilmethane.json';
 import wastemethane from '../../public/fixtures/wastemethane.json';
+import hfc from '../../public/fixtures/hfc.json';
 
 /** The fixtures in public/fixtures, as the app loads them. */
 export const loadFixtures = (): ModelData =>
@@ -57,6 +58,7 @@ export const loadFixtures = (): ModelData =>
     coemissions,
     people,
     wastemethane,
+    hfc,
     mammals,
     species: species as unknown as Species,
     chain: chain as unknown as Chain,

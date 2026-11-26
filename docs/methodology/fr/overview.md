@@ -7,6 +7,7 @@ Les leviers sont traités à égalité. Aucun n'est présenté comme la façon d
 - l'énergie et le transport qui abandonnent les combustibles fossiles ;
 - des bâtiments et une industrie plus propres ;
 - moins de fuites de méthane du pétrole, du gaz et du charbon ;
+- la réduction des HFC ;
 - ce que mangent les gens ;
 - les pratiques agricoles ;
 - moins de nourriture gaspillée ;

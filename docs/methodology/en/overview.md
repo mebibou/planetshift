@@ -7,6 +7,7 @@ The levers are treated as equals. None is presented as the way to limit warming.
 - energy and transport moving off fossil fuels;
 - cleaner buildings and industry;
 - fewer methane leaks from oil, gas and coal;
+- the HFC phase-down;
 - what people eat;
 - farm practices;
 - less food wasted;

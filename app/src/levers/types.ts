@@ -128,6 +128,8 @@ export interface WorldContext {
 export interface WorldPart {
   extraEmissions?: Record<Band, GasVector[]>;
   extraWarming?: Record<Band, number[]> | null;
+  /** kg CO₂e a year beyond its gases' GWP100, on `years` (the HFCs it passes as HFC-134a). */
+  co2eAdjustment?: number[];
   /**
    * Warming by band it causes through a cause other than its own, counted there (the energy
    * levers' air pollution), °C on the temperature years.

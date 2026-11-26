@@ -15,7 +15,8 @@ La section **Leviers** d'Explorer range les leviers sous la cause du réchauffem
 - combustibles fossiles et industrie : énergie et transport, bâtiments et industrie, fuites de méthane ;
 - agriculture : alimentation, pratiques agricoles, gaspillage alimentaire ;
 - usage des terres : déforestation, carbone dans les terres agricoles ;
-- déchets : décharges et eaux usées.
+- déchets : décharges et eaux usées ;
+- autres émissions humaines : la réduction des HFC.
 
 Les causes sont classées selon le réchauffement que chacune cause à l'horizon du graphique dans le scénario choisi, si bien que les combustibles fossiles viennent en premier. Au sein d'une cause, les groupes sont classés selon le réchauffement que chacun éviterait seul et en entier : c'est le chiffre affiché à côté. Cet ordre est recalculé quand on change une option ou l'horizon, ou quand les données changent. Il n'est jamais recalculé pendant qu'on déplace un curseur, pour que les groupes restent en place pendant le glissement.
 
@@ -99,17 +100,17 @@ Un levier qui n'agit qu'avec un autre partage cet effet commun à moitié avec l
 
 | Groupes actifs | Réchauffement évité en 2100 |
 | --- | --- |
-| Alimentation seule | 0,1700 °C |
+| Alimentation seule | 0,1677 °C |
 | Repousse seule | 0 (elle ne libère aucune terre) |
-| Alimentation et repousse | 0,1842 °C |
+| Alimentation et repousse | 0,1819 °C |
 
-L'effet commun de la repousse est de 0,1842 − 0,1700 = 0,0142 °C. La valeur de Shapley le partage à parts égales entre les deux. La repousse obtient 0,0071 °C et l'alimentation 0,1700 + 0,0071 = 0,1771 °C. Avec le pergélisol activé, la variation de son rejet est répartie en plus de ces parts (voir plus bas). Le résumé met ensuite les parts à l'échelle pour qu'elles s'additionnent au réchauffement évité que donne FaIR (voir *Répartir le total de FaIR* plus bas).
+L'effet commun de la repousse est de 0,1819 − 0,1677 = 0,0142 °C. La valeur de Shapley le partage à parts égales entre les deux. La repousse obtient 0,0071 °C et l'alimentation 0,1677 + 0,0071 = 0,1748 °C. Avec le pergélisol activé, la variation de son rejet est répartie en plus de ces parts (voir plus bas). Le résumé met ensuite les parts à l'échelle pour qu'elles s'additionnent au réchauffement évité que donne FaIR (voir *Répartir le total de FaIR* plus bas).
 
 ### Comment Planetshift les calcule vite
 
 Calculée directement, la valeur de Shapley demande une exécution du modèle pour chaque ensemble de groupes actifs. Cela fait 2ⁿ exécutions pour n groupes : 256 avec les huit groupes actifs. Sur les données réelles, cela prend des secondes, alors qu'un mouvement de curseur ne dispose que de quelques centièmes de seconde.
 
-Planetshift s'appuie plutôt sur la façon dont les groupes interagissent. Les groupes agricoles n'interagissent que par la production qu'ils changent. L'alimentation et la baisse du gaspillage changent ce qui est produit. Les pratiques, la déforestation, la repousse, le carbone dans les terres agricoles, et les décharges et eaux usées agissent sur la production que ces deux-là laissent, mais pas les uns sur les autres. La valeur de n'importe quel ensemble de groupes agricoles se lit donc à partir d'un passage des émissions agricoles pour les groupes de production de cet ensemble : aucun, l'alimentation, le gaspillage, ou les deux. Cela fait au plus quatre passages, trois de plus que l'exécution elle-même. Chaque passage est conservé et réutilisé tant qu'on déplace des curseurs qui ne le changent pas.
+Planetshift s'appuie plutôt sur la façon dont les groupes interagissent. Les groupes agricoles n'interagissent que par la production qu'ils changent. L'alimentation et la baisse du gaspillage changent ce qui est produit. Les pratiques, la déforestation, la repousse, le carbone dans les terres agricoles, les décharges et eaux usées, et la réduction des HFC agissent sur la production que ces deux-là laissent, mais pas les uns sur les autres. La valeur de n'importe quel ensemble de groupes agricoles se lit donc à partir d'un passage des émissions agricoles pour les groupes de production de cet ensemble : aucun, l'alimentation, le gaspillage, ou les deux. Cela fait au plus quatre passages, trois de plus que l'exécution elle-même. Chaque passage est conservé et réutilisé tant qu'on déplace des curseurs qui ne le changent pas.
 
 Les groupes hors de l'agriculture (énergie et transport, bâtiments et industrie, fuites de méthane) interagissent entre eux par le réseau que laisse l'électricité renouvelable, et par le méthane par kg de combustible que laissent les leviers sur les fuites. Ils n'interagissent pas avec l'agriculture. Leur valeur est leurs propres émissions, recalculées avec les leviers de l'autre groupe à zéro.
 
@@ -119,7 +120,7 @@ Un test vérifie, sur les données de test et sur les données réelles, que cel
 
 Le réchauffement évité vient de FaIR lancé dans l'application, dont la réponse n'est pas proportionnelle aux émissions (voir [Climat](#method-climate)). Ses valeurs de Shapley demanderaient de lancer FaIR sur chaque ensemble de groupes actifs, jusqu'à 256 simulations. Cela prend environ une seconde à chaque mouvement de curseur. Les parts sont donc les valeurs de Shapley sur la somme des réponses, toutes multipliées par le même facteur pour s'additionner au total de FaIR. Les causes et les gaz sont répartis de la même façon, année par année.
 
-Sur les données réelles, cela reste à 0,018 °C des valeurs de Shapley de FaIR lancé sur chaque ensemble de groupes, 1,2 % du total, avec tous les leviers au maximum sur SSP2-4.5 en 2100. Le plus grand écart est celui de l'énergie et du transport : 0,572 °C contre 0,554 °C. Avec un seul groupe actif, les deux sont identiques.
+Sur les données réelles, cela reste à 0,017 °C des valeurs de Shapley de FaIR lancé sur chaque ensemble de groupes, 1,1 % du total, avec tous les leviers au maximum sur SSP2-4.5 en 2100. Le plus grand écart est celui de l'énergie et du transport : 0,570 °C contre 0,553 °C. Avec un seul groupe actif, les deux sont identiques.
 
 ### Une méthode envisagée et écartée
 
