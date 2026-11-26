@@ -723,8 +723,10 @@
     "mapText": "Chaque pays avec les valeurs de la couche aujourd’hui et avec les leviers, la variation, l’unité et, pour la production et les émissions, la source la moins précise.",
     "chart": "{chart} en CSV",
     "chartText": {
-      "temperature": "Chaque année de 1850 à 2100 : température observée, température sans et avec les leviers avec leurs fourchettes de 5 à 95 %, et réchauffement dû aux seuls facteurs naturels.",
+      "temperature": "Chaque année de 1850 à 2100 : température observée, température modélisée et, à partir de cette année, température modélisée avec les leviers, chacune avec sa fourchette de 5 à 95 %, et réchauffement dû aux seuls facteurs naturels.",
       "avoided": "Chaque année jusqu’en 2100 : le réchauffement évité par les leviers, avec sa fourchette de 5 à 95 %.",
+      "sealevel": "Chaque année de 1900 à 2100 : le niveau de la mer observé, la montée modélisée à partir de 2000 et, à partir de cette année, la montée modélisée avec les leviers, chacune avec sa fourchette probable (17 à 83 %), en cm.",
+      "ocean": "Chaque année jusqu’en 2100 : le pH observé de la surface de l’océan, le pH modélisé et, à partir de cette année, le pH modélisé avec les leviers, chacun avec sa fourchette de 5 à 95 %.",
       "cause": "Chaque année de 1850 à 2100 selon le scénario choisi : réchauffement par cause avec sa fourchette, température observée et émissions agricoles par gaz.",
       "waste": "La nourriture perdue et gaspillée dans le monde par étape, aujourd’hui et avec les leviers ; les déchets municipaux solides par type et par destination, pour le monde et chaque groupe de revenu ; et le plastique qui atteint l’océan, en tonnes par an."
     },

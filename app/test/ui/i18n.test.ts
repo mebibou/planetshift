@@ -4,6 +4,7 @@ import { DICTIONARIES } from '../../src/i18n/i18n';
 import { ANIMAL_GROUPS, PLANT_GROUPS } from '../../src/data/types';
 import { SECTIONS, sectionTitleKey } from '../../src/methodology/sections';
 import { LAYERS, GAS_CHOICES, WASTE_OF } from '../../src/map/layers';
+import { CHARTS } from '../../src/app/url';
 import { TIERS } from '../../src/map/sources';
 import { FAMILIES, familyLabel, LEVERS, PANEL_MODULES } from '../../src/levers/registry';
 import { OPTIONS } from '../../src/model/options';
@@ -26,11 +27,12 @@ describe('dictionaries', () => {
     [...Object.values(EN), ...Object.values(FR)].forEach((v) => expect(v.trim()).not.toBe(''));
   });
 
-  it('name every group, gas, tier, layer, option, section, lever and family', () => {
+  it('name every group, gas, tier, chart tab and its download, layer, option, section, lever and family', () => {
     const keys = [
       ...['all', ...ANIMAL_GROUPS, ...PLANT_GROUPS].map((g) => `groups.${g}`),
       ...GAS_CHOICES.map((g) => `gases.${g}`),
       ...TIERS.map((t) => `tiers.${t}`),
+      ...CHARTS.flatMap((c) => [`charts.tabs.${c}`, `download.chartText.${c}`]),
       ...LAYERS.flatMap((l) => [
         `map.layers.${l}`,
         ...(l === 'waste' ? WASTE_OF.map((w) => `map.notes.waste.${w}`) : [`map.notes.${l}`]),

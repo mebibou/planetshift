@@ -719,8 +719,10 @@
     "mapText": "Every country with the layer’s values today and with the levers, the change, the unit and, for production and emissions, the least precise source.",
     "chart": "{chart} as CSV",
     "chartText": {
-      "temperature": "Each year from 1850 to 2100: observed temperature, temperature without and with the levers with their 5–95% ranges, and warming from natural factors only.",
+      "temperature": "Each year from 1850 to 2100: observed temperature, modelled temperature and, from this year, modelled temperature with levers, both with their 5–95% ranges, and warming from natural factors only.",
       "avoided": "Each year to 2100: the warming the levers avoid, with its 5–95% range.",
+      "sealevel": "Each year from 1900 to 2100: observed sea level, the modelled rise from 2000 and, from this year, the modelled rise with levers, both with their likely (17–83%) ranges, in cm.",
+      "ocean": "Each year to 2100: the observed surface ocean pH, the modelled pH and, from this year, the modelled pH with levers, both with their 5–95% ranges.",
       "cause": "Each year from 1850 to 2100 under the chosen scenario: warming by cause with its range, observed temperature and farm emissions by gas.",
       "waste": "The world's food lost and wasted by stage, today and with the levers; municipal solid waste by type and by where it goes, for the world and each income group; and the plastic reaching the ocean, in tonnes a year."
     },
