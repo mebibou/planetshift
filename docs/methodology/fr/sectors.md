@@ -85,7 +85,7 @@ Véhicules électriques et électricité renouvelable vont donc ensemble, et cha
 
 Le CO₂ des carburants est le facteur 2023 du gouvernement britannique pour un carburant 100 % minéral : 2,33 kg par litre d'essence et 2,63 kg par litre de diesel.
 
-**Voitures électriques** agit sur le CO₂ du transport routier de passagers. Il faut 1,10 kWh par kg de CO₂ évité (0,72–1,72). Une voiture électrique consomme environ 0,18 kWh par km à la prise (0,15–0,22, pertes de recharge comprises). La voiture à essence qu'elle remplace brûle environ 7 litres aux 100 km (5,5–9). Sur le réseau mondial actuel, à 0,48 kg/kWh, une voiture électrique économise environ la moitié du CO₂ de la voiture à essence (1 − 1,10 × 0,48 = 0,47). Sur un réseau propre, elle en économise presque tout.
+**Voitures électriques** agit sur le CO₂ du transport routier de passagers. Il faut 1,23 kWh par kg de CO₂ évité (0,76–1,87). Une voiture électrique consomme environ 0,20 kWh par km à la prise (0,16–0,24, pertes de recharge comprises). Ce sont la médiane et les extrêmes de la consommation réelle des voitures à batterie immatriculées en 2019, par segment. Elle va de 19,9 à 21,9 kWh aux 100 km en Europe, de 17,3 à 24,0 aux États-Unis, de 19,7 à 21,7 en Chine et de 15,9 à 19,2 en Inde (Bieker 2021, tableaux A.2, A.4, A.6 et A.8). La voiture à essence qu'elle remplace brûle environ 7 litres aux 100 km (5,5–9). Sur le réseau mondial actuel (0,48 kg/kWh), une voiture électrique économise environ les deux cinquièmes du CO₂ de la voiture à essence qu'elle remplace (1 − 1,23 × 0,48 = 0,41). Sur un réseau propre, elle en économise presque tout.
 
 **Camions électriques** agit sur le CO₂ du transport routier de marchandises. Il faut 1,27 kWh par kg évité (1,06–2,03). Un camion de 40 tonnes à batterie consomme environ 1,1 kWh par km à la prise dans les flottes allemandes (Oeko-Institut, 2025), contre 33 litres de diesel aux 100 km. Les utilitaires électriques (0,25 kWh/km contre 9 L/100 km) sont le bas de la fourchette. Sur le réseau actuel, un camion économise environ 40 % de son CO₂ (1 − 1,27 × 0,48 = 0,39). Sur le réseau de SSP3-7.0, dont l'intensité augmente, il économise peu.
 
@@ -159,7 +159,7 @@ La réponse est linéaire autour du scénario. Cela tient bien pour de petites v
 
 ## Le méthane et la pollution de l'air qui accompagnent le combustible
 
-Brûler du charbon, du pétrole et du gaz émet plus que du CO₂. Un levier qui réduit le combustible réduit toutes ces émissions avec le CO₂. Le compter augmente le réchauffement qu'évitent les leviers d'énergie. Les six au maximum évitent 0,250 °C en 2050 en le comptant, contre 0,209 °C pour le CO₂ seul. De tous les leviers d'énergie, de chauffage et d'industrie, seule l'industrie propre, sur la page [Bâtiments et industrie](#method-industry), évite moins en le comptant (0,017 °C au lieu de 0,026 en 2050).
+Brûler du charbon, du pétrole et du gaz émet plus que du CO₂. Un levier qui réduit le combustible réduit toutes ces émissions avec le CO₂. Le compter augmente le réchauffement qu'évitent les leviers d'énergie. Les six au maximum évitent 0,250 °C en 2050 en le comptant, contre 0,209 °C pour le CO₂ seul. De tous les leviers d'énergie, de chauffage et d'industrie, seule l'industrie propre, sur la page [Bâtiments et industrie](#method-industry), évite moins en le comptant (0,017 °C au lieu de 0,029 en 2050).
 
 Ce qui accompagne le combustible :
 
@@ -325,23 +325,23 @@ Réchauffement évité en °C, médiane (fourchette probable). Chaque levier est
 
 | Leviers | 2050, CO₂ seul | 2050, avec | 2100, CO₂ seul | 2100, avec |
 | --- | --- | --- | --- | --- |
-| Voitures électriques | 0,022 (0,011–0,035) | 0,040 (−0,015 à 0,116) | 0,074 (0,042–0,120) | 0,103 (0,022–0,207) |
+| Voitures électriques | 0,020 (0,010–0,035) | 0,039 (−0,017 à 0,116) | 0,071 (0,040–0,118) | 0,101 (0,019–0,206) |
 | Camions électriques | 0,013 (0,006–0,020) | 0,026 (−0,012 à 0,076) | 0,047 (0,026–0,073) | 0,066 (0,011–0,131) |
 | Moins d'avion | 0,050 (0,014–0,123) | 0,055 (0,017–0,133) | 0,107 (0,039–0,259) | 0,125 (0,048–0,291) |
 | Carburant d'aviation propre | 0,009 (0,007–0,013) | 0,015 (0,010–0,022) | 0,043 (0,029–0,062) | 0,060 (0,038–0,093) |
 | Transport maritime propre | 0,007 (0,005–0,009) | 0,009 (0,006–0,015) | 0,024 (0,016–0,036) | 0,034 (0,021–0,053) |
 | Électricité renouvelable | 0,097 (0,070–0,134) | 0,099 (0,052–0,192) | 0,240 (0,156–0,362) | 0,282 (0,180–0,448) |
-| Les six | 0,209 (0,128–0,342) | 0,250 (0,077–0,539) | 0,529 (0,316–0,888) | 0,652 (0,325–1,167) |
-| Les six avec chauffage propre et industrie propre | 0,264 (0,162–0,426) | 0,301 (0,096–0,655) | 0,723 (0,429–1,196) | 0,868 (0,446–1,541) |
+| Les six | 0,209 (0,128–0,342) | 0,250 (0,077–0,539) | 0,528 (0,316–0,888) | 0,652 (0,325–1,167) |
+| Les six avec chauffage propre et industrie propre | 0,264 (0,168–0,423) | 0,299 (0,098–0,650) | 0,720 (0,443–1,182) | 0,863 (0,458–1,522) |
 
 Avec tous les leviers d'énergie, de chauffage et d'industrie au maximum, deux effets s'annulent à peu près au début. L'approvisionnement et le méthane du combustible ne sont plus émis, ce qui est un gain. Le refroidissement que masquait la pollution est perdu. Ensuite, les gains sont plus grands (médiane, °C, SSP2-4.5) :
 
 | Année | Réchauffement évité, CO₂ seul | Gain du CO₂, du méthane et du N₂O de l'approvisionnement | Perte due à la pollution de l'air | Réchauffement évité, avec |
 | --- | --- | --- | --- | --- |
 | 2030 | 0,012 | +0,004 | −0,016 | 0,001 |
-| 2040 | 0,131 | +0,063 | −0,078 | 0,116 |
-| 2050 | 0,264 | +0,121 | −0,084 | 0,301 |
-| 2100 | 0,723 | +0,194 | −0,049 | 0,868 |
+| 2040 | 0,131 | +0,063 | −0,079 | 0,115 |
+| 2050 | 0,264 | +0,119 | −0,084 | 0,299 |
+| 2100 | 0,720 | +0,192 | −0,049 | 0,863 |
 
 **Le CO₂ de l'approvisionnement** est ce qui change le plus les chiffres. Il ajoute environ un dixième au CO₂ de chaque levier sur le pétrole, chaque année : 0,150 kg par kg pour la route, 0,153 pour l'aviation et le transport maritime. Il ajoute 8 % à l'électricité qu'un levier réduit ou consomme.
 
@@ -351,14 +351,14 @@ Avec tous les leviers d'énergie, de chauffage et d'industrie au maximum, deux e
 
 **Moins d'avion, le carburant d'aviation propre et le chauffage propre** gagnent dès le départ : l'approvisionnement de leur combustible l'emporte sur le peu de SO₂ qu'ils retirent.
 
-**L'industrie propre** est seule à perdre : 0,016 au lieu de 0,027 en 2050. Ses usines émettent du SO₂, et les filières hydrogène consomment beaucoup d'électricité du réseau.
+**L'industrie propre** est seule à perdre : 0,017 au lieu de 0,029 en 2050. Ses usines émettent du SO₂, et les filières hydrogène consomment beaucoup d'électricité du réseau.
 
 **Les véhicules électriques** gagnent. Leur suie, l'ozone de leurs NOx et l'approvisionnement de leur carburant disparaissent aussitôt. Le méthane que leurs NOx ne détruisent plus, environ la moitié de celui de FaIR sur terre, s'accumule lentement sur des décennies. Les voitures électriques évitent, en 2050 et 2100 :
 
-- SSP1-2.6 : 0,031 et 0,049 °C (CO₂ seul 0,016 et 0,037) ;
-- SSP2-4.5 : 0,040 et 0,103 (CO₂ seul 0,022 et 0,074).
+- SSP1-2.6 : 0,030 et 0,048 °C (CO₂ seul 0,016 et 0,036) ;
+- SSP2-4.5 : 0,039 et 0,101 (CO₂ seul 0,020 et 0,071).
 
-Dans SSP3-7.0, le réseau reste sale et les NOx et le méthane sont élevés. Ce méthane reprend une partie du gain. Les véhicules électriques évitent plus que leur seul CO₂ en 2050, mais moins que lui d'ici 2100. Les voitures électriques évitent 0,021 °C en 2050 et 0,034 °C en 2100 (CO₂ seul 0,013 et 0,042). Les camions électriques évitent 0,012 et 0,016 (CO₂ seul 0,007 et 0,022). Avec le coefficient unique de FaIR pour toutes les sources, ils ajouteraient 0,020 et 0,019 °C d'ici 2100. Avec ce coefficient partagé entre terre et mer, ils ajouteraient 0,010 et 0,013 (voir [Limites](#method-limitations)).
+Dans SSP3-7.0, le réseau reste sale et les NOx et le méthane sont élevés. Ce méthane reprend une partie du gain. Les véhicules électriques évitent plus que leur seul CO₂ en 2050, mais moins que lui d'ici 2100. Les voitures électriques évitent 0,019 °C en 2050 et 0,027 °C en 2100 (CO₂ seul 0,012 et 0,035). Les camions électriques évitent 0,012 et 0,016 (CO₂ seul 0,007 et 0,022). Avec le coefficient unique de FaIR pour toutes les sources, ils ajouteraient 0,026 et 0,019 °C d'ici 2100. Avec ce coefficient partagé entre terre et mer, ils ajouteraient 0,017 et 0,013 (voir [Limites](#method-limitations)).
 
 ### Comparé aux sorties publiées des combustibles fossiles
 
@@ -398,7 +398,7 @@ Les leviers d'énergie comptent le combustible et l'électricité qu'un secteur 
 - Pour des voitures moyennes immatriculées en 2021, Bieker (2021) trouve des émissions sur la durée de vie d'une voiture électrique à batterie inférieures de 66 à 69 % à celles d'une voiture à essence en Europe, de 60 à 68 % aux États-Unis, de 37 à 45 % en Chine et de 19 à 34 % en Inde. L'écart dépend du réseau de chaque région.
 - Le *Global EV Outlook 2024* de l'AIE trouve qu'une voiture électrique à batterie vendue en 2023 émet environ moitié moins qu'une voiture à essence comparable sur sa durée de vie.
 
-Le gain du levier des voitures électriques est d'environ 47 % du CO₂ d'échappement sur le réseau mondial actuel. Il laisse de côté la fabrication de la voiture et de sa batterie, et il est d'autant trop grand. La comparaison avec ces chiffres est grossière, car ils comptent aussi la production du carburant et des réseaux régionaux. Un camion électrique porte une batterie plus grosse qu'une voiture, et son gain est surestimé de la même façon.
+Le gain du levier des voitures électriques est d'environ 41 % du CO₂ d'échappement sur le réseau mondial actuel. Il laisse de côté la fabrication de la voiture et de sa batterie, et il est d'autant trop grand. La comparaison avec ces chiffres est grossière, car ils comptent aussi la production du carburant et des réseaux régionaux. Un camion électrique porte une batterie plus grosse qu'une voiture, et son gain est surestimé de la même façon.
 
 **L'éolien et le solaire** ont aussi des émissions de cycle de vie, dues à la fabrication des éoliennes et des panneaux. Elles sont faibles à côté de l'électricité fossile qu'ils remplacent. Les médianes du GIEC sont de 11 g CO₂e par kWh pour l'éolien terrestre et 48 pour le solaire au sol, contre 490 pour le gaz en cycle combiné et 820 pour le charbon (Schlömer et al. 2014).
 
@@ -415,7 +415,7 @@ Le gain du levier des voitures électriques est d'environ 47 % du CO₂ d'échap
 - Le transport maritime, international et intérieur, suit le transport maritime international du scénario.
 - L'électricité ne comprend que la production. La chaleur des centrales est laissée de côté. Son CO₂ et l'intensité du réseau s'arrêtent à zéro là où la bioénergie avec captage du carbone du scénario les rendrait négatifs.
 - Les modèles de scénarios sont ceux que CMIP6 a utilisés pour chaque trajectoire : IMAGE pour SSP1-2.6, MESSAGE-GLOBIOM pour SSP2-4.5, AIM/CGE pour SSP3-7.0. L'électricité suit donc le même récit que les émissions sur lesquelles tourne FaIR.
-- Un véhicule électrique demande 1,10 (voiture) ou 1,27 (camion) kWh par kg de CO₂ d'échappement évité, chaque année. Les véhicules ne deviennent pas plus efficaces avec le temps, et leur fabrication n'est pas comptée.
+- Un véhicule électrique demande 1,23 (voiture) ou 1,27 (camion) kWh par kg de CO₂ d'échappement évité, chaque année. Les véhicules ne deviennent pas plus efficaces avec le temps, et leur fabrication n'est pas comptée.
 - Le forçage de l'aviation hors CO₂ est proportionnel à son CO₂ de la même année, au rapport de 2018. Le carburant propre ne le change pas.
 - Les centres de données ajoutent leur électricité au-delà des 415 TWh de 2024, en suivant les cas de l'AIE jusqu'en 2035, puis constante. Leur construction n'est pas comptée.
 - La réponse au forçage est celle de FaIR à un forçage solaire (efficacité 1) sur SSP2-4.5 en 2035, utilisée pour chaque année et chaque scénario.
@@ -437,7 +437,7 @@ Le gain du levier des voitures électriques est d'environ 47 % du CO₂ d'échap
 - Lee, D. S. et al. (2021). The contribution of global aviation to anthropogenic climate forcing for 2000 to 2018. Atmospheric Environment 244, 117834, [doi:10.1016/j.atmosenv.2020.117834](https://doi.org/10.1016/j.atmosenv.2020.117834). Licence : CC BY 4.0.
 - ICCT (2023). A total cost of ownership comparison of truck decarbonization pathways in Europe, pour la consommation d'énergie des camions électriques à batterie et diesel.
 - Le Corguillé, J., Hacker, F., Dolinga, T. (2025). Real-world data analysis of battery electric trucks operating in Germany. Oeko-Institut, EVS38 : 1,06 kWh/km pour le tracteur eActros 600 et 1,15 pour un Scania de 38 t, [oeko.de](https://www.oeko.de/fileadmin/oekodoc/Real-world-data-analysis-of-battery-electric-trucks-operating-in-Germany.pdf).
-- Bieker, G. (2021). A global comparison of the life-cycle greenhouse gas emissions of combustion engine and electric passenger cars. ICCT white paper, [theicct.org](https://theicct.org/publication/a-global-comparison-of-the-life-cycle-greenhouse-gas-emissions-of-combustion-engine-and-electric-passenger-cars/).
+- Bieker, G. (2021). A global comparison of the life-cycle greenhouse gas emissions of combustion engine and electric passenger cars. ICCT white paper ; consommation réelle d'électricité des voitures à batterie immatriculées en 2019, pertes de recharge comprises, dans les tableaux A.2 (Europe), A.4 (États-Unis), A.6 (Chine) et A.8 (Inde), [theicct.org](https://theicct.org/publication/a-global-comparison-of-the-life-cycle-greenhouse-gas-emissions-of-combustion-engine-and-electric-passenger-cars/).
 - AIE (2024). Global EV Outlook 2024, [iea.org/reports/global-ev-outlook-2024](https://www.iea.org/reports/global-ev-outlook-2024). Licence : CC BY 4.0.
 - Schlömer, S. et al. (2014). Annex III: Technology-specific cost and performance parameters. In Climate Change 2014: Mitigation of Climate Change, contribution of Working Group III to the IPCC's Fifth Assessment Report, Cambridge University Press, table A.III.2.
 - Ministère britannique de la Sécurité énergétique et de la Neutralité carbone (DESNZ) (2023). Greenhouse gas reporting: conversion factors 2023, CO₂ par litre d'essence 100 % minérale (2,331 kg ; 2,345 kg CO₂e) et de diesel (2,626 kg ; 2,659 kg CO₂e). Licence : Open Government Licence v3.

@@ -68,7 +68,7 @@ Of the fish fed to animals, about 90% goes to aquaculture, 9% to pigs and 1% to 
 ## Assumptions
 
 - The split is the same for every feed item in method 1, except the fish items, which have a split of their own. Maize and soybeans are therefore shared between species in the same proportions.
-- Concentrate feed per tonne and ration shares are rounded values modelled on GLEAM 2.0's regional results. They are not a copy of its tables, which are not published in this form. They are a starting point, and should be reviewed.
+- Concentrate feed per tonne and ration shares, aquafeed's included, are Planetshift's own rounded values, meant to resemble GLEAM 2.0's regional results. No source gives them: GLEAM 2.0's model description gives each production system's ration as shares of dry matter by feed material (its Supplement S1), and computes intake from the animals' energy needs (section 3.6). It gives no concentrate per tonne of product and no ration by feed class. They are a starting point, and should be reviewed.
 - Two income levels stand for the many production systems GLEAM distinguishes.
 - Regions without animal production (none at present) take the world shares.
 - Grass, crop residues and oil cakes are outside the balance sheets, so they are not split here. The land of the oilseeds crushed for cake, and of temporary meadows, follows the animals in [Land](#method-land). So do the cake's emissions ([Emissions](#method-emissions)). Permanent pasture follows the ruminants.
@@ -81,6 +81,7 @@ The code is `pipeline/planetshift_pipeline/feed.py` and the tables are `pipeline
 
 - FAOSTAT, Food Balances (2010–), feed use by item and country: <https://www.fao.org/faostat/en/#data/FBS>.
 - FAO, Global Livestock Environmental Assessment Model (GLEAM): <https://www.fao.org/gleam/en/>.
+- FAO (2017). Global Livestock Environmental Assessment Model, version 2.0, model description: <https://www.fao.org/fileadmin/user_upload/gleam/docs/GLEAM_2.0_Model_description.pdf>.
 - Mottet, A., de Haan, C., Falcucci, A., Tempio, G., Opio, C., Gerber, P. (2017). Livestock: on our plates or eating at our table? A new analysis of the feed/food debate. Global Food Security 14, 1–8: <https://doi.org/10.1016/j.gfs.2017.01.001>.
 - Alltech (2025). Agri-Food Outlook 2025, world compound feed production by species in 2024 (table "Feed Tonnage by Sector"; layer feed production table): <https://www.alltech.com/agri-food-outlook>.
 - Tacon, A. G. J., Metian, M., Parsons, G., Shumway, S. (2025). A Global Aquaculture and Aquafeed Production Update: 2010 to 2023. Reviews in Fisheries Science & Aquaculture; abstract: commercial aquafeed 69.42 Mt in 2023: <https://doi.org/10.1080/23308249.2025.2568830>.

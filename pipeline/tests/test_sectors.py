@@ -85,6 +85,12 @@ def test_ev_electricity_per_kg_is_a_plausible_ordered_range(kind):
     assert 0.5 < values["low"] and values["high"] < 2.5
 
 
+def test_an_electric_car_draws_the_icct_median_against_seven_litres_of_petrol():
+    passenger = sectors.EV_KWH_PER_KG["passenger"]
+    assert passenger["median"] == pytest.approx(0.20 / (0.07 * 2.33))
+    assert passenger["median"] == pytest.approx(1.23, abs=0.01)
+
+
 def test_grid_intensity_is_co2_over_generation_and_data_centres_follow_it():
     years = np.arange(sectors.BASE_YEAR, 2101)
     rows = [

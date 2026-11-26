@@ -1,7 +1,7 @@
 practice,field,zone,value,low,high,source,reasoning
 coverCrops,appliesTo,,cropland,,,poeplau-don-2015,"cover crops grow between the main crops of arable land, so the rate is per hectare of cropland"
 coverCrops,rate,temperateMoist,1.17,0.6,2.0,poeplau-don-2015,"meta-analysis mean 0.32 t C/ha/yr (×44/12 = 1.17 t CO2); low about half of it, high near the larger mean of later syntheses"
-coverCrops,rate,tropicalMoist,1.17,0.6,2.0,poeplau-don-2015;ipcc-2006-cropland,"the meta-analysis finds no climate effect and the IPCC input factor for moist tropics (1.11) equals the temperate one, so the same rate"
+coverCrops,rate,tropicalMoist,1.17,0.6,2.0,poeplau-don-2015;lessmann-2022;ipcc-2006-cropland,"the same rate: Lessmann et al. (2022, table 2) find cover-cropped rotations gain 0.14 t C/ha/yr in temperate, 0.15 in subtropical and 0.17 in tropical zones, and the IPCC input factor for moist tropics (1.11) equals the temperate one"
 coverCrops,rate,temperateDry,0.45,0.2,0.8,ipcc-2006-cropland,"the IPCC high-input factor is 1.04 in dry climates against 1.11 in moist ones, so about 0.36 of the moist gain, on lower reference stocks"
 coverCrops,rate,tropicalDry,0.45,0.2,0.8,ipcc-2006-cropland,same reasoning as temperate dry: water limits cover-crop growth and carbon inputs
 coverCrops,rate,World,0.95,0.4,1.8,poeplau-don-2015;ipcc-2006-cropland,"for countries without a zone: about two thirds of cropland is in moist climates, so a weighted mean of the moist and dry rates"

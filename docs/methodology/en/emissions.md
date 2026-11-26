@@ -142,8 +142,8 @@ The rates are in `proxies.csv`. Most are the ratio of the world's 2023 output of
 | 2586 Other oilcrop oils | 2570 other oilcrops: 0.35 | FAO technical conversion factors, linseed and safflower (the world ratio is above 1: the item holds oils of seeds listed elsewhere) |
 | 2655 Wine | 2620 grapes: 0.63 | world balance 2023 |
 | 2656 Beer | 2513 barley: 5.8 | world balance 2023 |
-| 2657 Fermented beverages | 2518 sorghum: 4 | assumed (FAO's technical conversion factors give none for beverages) |
-| 2658 Alcoholic beverages | 2514 maize: 0.9 | assumed (FAO's technical conversion factors give none for beverages) |
+| 2657 Fermented beverages | 2518 sorghum: 4 | assumed, 0.25 t of grain per t of sorghum or millet beer (FAO's technical conversion factors give fermented beverages of rice, wheat and fruit in a few countries, none of sorghum or millet) |
+| 2658 Alcoholic beverages | 2514 maize: 0.9 | assumed, 1.1 t of grain per t of spirits at 40% alcohol (FAO's technical conversion factors give none for spirits) |
 | 2740 Butter, ghee | 2848 milk: 0.056 | world balance 2023, 85% of the processed milk |
 | 2743 Cream | 2848 milk: 0.09 | world balance 2023, 15% of the processed milk |
 

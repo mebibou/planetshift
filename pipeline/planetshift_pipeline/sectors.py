@@ -56,7 +56,9 @@ RCMIP_SHAPE = {
 
 # Electricity per kg of tailpipe CO₂ avoided, kWh/kg: EV use at the plug ÷ the vehicle it replaces'
 # CO₂ per km (petrol 2.33 kg/L, diesel 2.63 kg/L: UK conversion factors 2023, 100% mineral
-# fuel). Passenger: 0.18 (0.15–0.22) kWh/km against 7 (9–5.5) L of petrol per 100 km.
+# fuel). Passenger: 0.20 (0.16–0.24) kWh/km against 7 (9–5.5) L of petrol per 100 km; the kWh
+# are the median and extremes of real-world use by segment and region, charging losses
+# included (Bieker 2021, ICCT, tables A.2, A.4, A.6 and A.8).
 # Freight: a 40 t battery truck at 1.1 kWh/km (1.06 for the eActros 600 tractor and 1.15 for a
 # 38 t Scania in German fleets: Oeko-Institut 2025, Real-world data analysis of battery electric
 # trucks operating in Germany) against 33 L of diesel per 100 km, with vans (0.25 kWh/km against
@@ -65,9 +67,9 @@ PETROL_KG_PER_L = 2.33
 DIESEL_KG_PER_L = 2.63
 EV_KWH_PER_KG = {
     "passenger": {
-        "median": 0.18 / (0.07 * PETROL_KG_PER_L),
-        "low": 0.15 / (0.09 * PETROL_KG_PER_L),
-        "high": 0.22 / (0.055 * PETROL_KG_PER_L),
+        "median": 0.20 / (0.07 * PETROL_KG_PER_L),
+        "low": 0.16 / (0.09 * PETROL_KG_PER_L),
+        "high": 0.24 / (0.055 * PETROL_KG_PER_L),
     },
     "freight": {
         "median": 1.1 / (0.33 * DIESEL_KG_PER_L),

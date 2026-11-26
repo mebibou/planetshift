@@ -37,7 +37,7 @@ Rates in the literature are often given in tonnes of carbon (t C). One tonne of 
 
 Cover crops are plants sown between two main crops, in a winter or dry-season fallow, and left on or ploughed into the field. Their roots and residues add carbon to the soil.
 
-The meta-analysis of Poeplau and Don (2015) found a mean gain of 0.32 t of carbon per hectare a year (1.17 t of CO₂). It found no clear effect of climate among the field trials, which are mostly in moist climates. In dry climates, water limits what a cover crop can grow. The IPCC's factor for high carbon inputs is 1.04 there, against 1.11 in moist climates, so the gain is about a third of the moist one.
+The meta-analysis of Poeplau and Don (2015) found a mean gain of 0.32 t of carbon per hectare a year (1.17 t of CO₂). Its abstract names elevation and sampling depth, not climate, as the reasons field trials differ. Most of those trials are in moist climates. Lessmann et al. (2022) pooled meta-analyses by climate zone: cover-cropped rotations gain 0.14 t of carbon per hectare a year in temperate zones, 0.15 in subtropical and 0.17 in tropical ones, in the top 20–30 cm (their table 2). So one rate applies to every moist climate. In dry climates, water limits what a cover crop can grow. The IPCC's factor for high carbon inputs is 1.04 there, against 1.11 in moist climates, so the gain is about a third of the moist-climate gain.
 
 Cover crops reach at most a quarter of cropland, the area implied by Poeplau and Don's global estimate: 0.12 Pg of carbon a year at their 0.32 t C per hectare is 375 million hectares, a quarter of the world's 1.5 billion hectares of cropland. At that cap, Planetshift's cover crops store about 0.37 Gt of CO₂ a year, 0.10 Pg of carbon. This is close to Poeplau and Don's global estimate (0.12 ± 0.03 Pg C a year).
 
@@ -127,6 +127,7 @@ The values, with one line of reasoning for each, are in `pipeline/removals.csv`.
 ## Sources
 
 - Poeplau, C. and Don, A. (2015). Carbon sequestration in agricultural soils via cultivation of cover crops – A meta-analysis. Agriculture, Ecosystems & Environment 200, 33–41, doi:10.1016/j.agee.2014.10.024.
+- Lessmann, M., Ros, G. H., Young, M. D. and de Vries, W. (2022). Global variation in soil carbon sequestration potential through improved cropland management. Global Change Biology 28, 1162–1177, table 2, doi:10.1111/gcb.15954. CC BY 4.0.
 - IPCC (2006, refined 2019). Guidelines for National Greenhouse Gas Inventories, volume 4, chapter 5, Cropland, and chapter 2, appendix 4, biochar (Tables 4Ap.1 and 4Ap.2).
 - Cardinael, R. et al. (2018). Revisiting IPCC Tier 1 coefficients for soil organic and biomass carbon storage in agroforestry systems. Environmental Research Letters 13, 124020, doi:10.1088/1748-9326/aaeb5f. CC BY 3.0.
 - Roe, S. et al. (2021). Land-based measures to mitigate climate change: potential and feasibility by country. Global Change Biology 27, 6025–6058, doi:10.1111/gcb.15873. CC BY 4.0.

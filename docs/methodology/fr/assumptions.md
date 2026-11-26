@@ -147,7 +147,7 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 ## Énergie et transport
 
 - **Les secteurs font partie du CO₂ fossile de chaque SSP, ramené aux inventaires de 2023** : route 6,1 (passagers 60 %, marchandises 40 %), aviation 0,95, transport maritime 0,98 et électricité 14,15 Gt de CO₂. Un levier retire une part des émissions d'un secteur. Voir [Énergie et transport](#method-sectors).
-- **Un véhicule électrique économise son CO₂ d'échappement × (1 − kWh par kg évité × l'intensité du réseau après l'électricité renouvelable).** Les kWh par kg évité sont 1,11 pour les passagers et 1,47 pour les marchandises, chaque année. La fabrication des véhicules et des batteries n'est pas comptée. Voir [Énergie et transport](#method-sectors).
+- **Un véhicule électrique économise son CO₂ d'échappement × (1 − kWh par kg évité × l'intensité du réseau après l'électricité renouvelable).** Les kWh par kg évité sont 1,23 pour les passagers et 1,27 pour les marchandises, chaque année. La fabrication des véhicules et des batteries n'est pas comptée. Voir [Énergie et transport](#method-sectors).
 - **L'électricité renouvelable réduit le CO₂ du secteur électrique et l'intensité du réseau de la part adoptée.** L'intensité ne descend jamais sous zéro. Voir [Énergie et transport](#method-sectors).
 - **Le forçage de l'aviation hors CO₂ est de 6,44 × 10⁻¹⁴ W/m² par kg par an de CO₂ de l'aviation**, le rapport de 2018. Il vient des vols eux-mêmes : moins d'avion le réduit donc, et le carburant propre non. Voir [Énergie et transport](#method-sectors).
 - **Moins d'avion et le carburant propre se combinent** : le carburant propre agit sur les vols qui restent. Voir [Énergie et transport](#method-sectors).
@@ -159,9 +159,9 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 
 ## Bâtiments et industrie
 
-- **Le CO₂ direct des bâtiments et de l'industrie fait partie du CO₂ fossile de chaque SSP, rapporté à 2023** : 3,0 et 9,0 Gt de CO₂ (AIE). L'acier représente 28,9 %, le ciment 28,7 % et la chimie sans l'ammoniac 5,7 % de celui de l'industrie, chaque année et dans chaque scénario. Le CO₂ de l'ammoniac n'est réduit que par « Moins d'azote, mieux employé », du côté de la ferme. Voir [Bâtiments et industrie](#method-industry).
+- **Le CO₂ direct des bâtiments et de l'industrie fait partie du CO₂ fossile de chaque SSP, rapporté à un inventaire** : les 2,68 Gt de CO₂ des bâtiments en 2022 (CEDS) et les 9,0 Gt de l'industrie en 2022, pris pour 2023 (AIE). L'acier représente 28,9 %, le ciment 28,7 % et la chimie sans l'ammoniac 5,7 % de celui de l'industrie, chaque année et dans chaque scénario. Le CO₂ de l'ammoniac n'est réduit que par « Moins d'azote, mieux employé », du côté de la ferme. Voir [Bâtiments et industrie](#method-industry).
 - **Une pompe à chaleur économise le CO₂ de la chaudière × (1 − 1,49 kWh par kg évité × l'intensité du réseau après l'électricité renouvelable).** Voir [Bâtiments et industrie](#method-industry).
-- **L'industrie propre réduit de 90 %, 80 % et 80 % le CO₂ direct de l'acier, du ciment et de la chimie à adoption complète**, moins 1,5, 0,25 et 1,9 kWh d'électricité par kg évité sur le même réseau. La fabrication des équipements n'est pas comptée. Voir [Bâtiments et industrie](#method-industry).
+- **L'industrie propre réduit de 90 %, 90 % et 80 % le CO₂ direct de l'acier, du ciment et de la chimie à adoption complète**, moins 1,5, 0,20 et 1,9 kWh d'électricité par kg évité sur le même réseau. La fabrication des équipements n'est pas comptée. Voir [Bâtiments et industrie](#method-industry).
 
 ## Climat
 
@@ -202,16 +202,6 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 
 Les autres sources sont sous CC BY 4.0, dans le domaine public, sous Open Government Licence, Apache 2.0 ou MIT.
 
-### Valeurs reprises de mémoire plutôt que vérifiées à la source
-
-- Les consommations de concentrés et les rations de type GLEAM, qu'aucun tableau publié ne donne sous cette forme, et la ration 30/40/5/25 de l'aquaculture. Voir [Alimentation animale](#method-feed).
-- Les grains par tonne de boissons fermentées (0,25 t) et alcoolisées (1,1 t), que les facteurs de conversion techniques de la FAO ne donnent pas. Voir [Émissions](#method-emissions).
-- Le même taux des cultures intermédiaires sous tous les climats humides : la méta-analyse n'a pu être lue que dans son résumé, qui dit que l'altitude et la profondeur d'échantillonnage expliquent les taux, et non le climat. Voir [Carbone dans les terres agricoles](#method-removals).
-- Les 0,15–0,22 kWh/km d'une voiture électrique. Les mesures de l'EPA américaine pour les modèles 2023–2025, pertes de recharge comprises, donnent une médiane de 0,22 kWh/km pour les voitures (0,17–0,27 du 10e au 90e centile), mais elles ne sont pas pondérées par les ventes et ne couvrent que le marché américain. Voir [Énergie et transports](#method-sectors).
-- Les baisses de l'acier et du ciment à adoption complète (90 %, 80 %) et l'électricité du ciment par kg évité. Voir [Bâtiments et industrie](#method-industry).
-- Les 3,0 Gt de CO₂ direct des bâtiments en 2022, lues seulement dans un résumé de recherche de la page de l'AIE. Le *Special Report on Buildings Efficiency* de l'AIE donne 2,8 Gt sans année, et CEDS 2,68 Gt pour les combustibles résidentiels, commerciaux et institutionnels en 2022. Voir [Bâtiments et industrie](#method-industry).
-- Les 0,1 kWh/kg de la voie par captage de la chimie, pris des fours de cimenterie. Voir [Bâtiments et industrie](#method-industry).
-
 ### Hypothèses qu'aucune source ne donne
 
 Ces valeurs sont des jugements propres à Planetshift. Aucune source ne les fixe, si bien qu'aucune ne peut être vérifiée. Elles restent des hypothèses.
@@ -220,6 +210,9 @@ Ces valeurs sont des jugements propres à Planetshift. Aucune source ne les fixe
 - Le mélange de boissons végétales (50 % de soja, 50 % d'avoine). Voir [Le changement](#method-shift).
 - La part applicable de chaque pratique par groupe de revenu et par pays. Voir [Pratiques agricoles](#method-practices).
 - Les baisses médiane et basse de la chimie à adoption complète (80 %, 60 %). Voir [Bâtiments et industrie](#method-industry).
+- La voie par captage de la chimie consomme la même électricité que le captage en oxycombustion sur un four de cimenterie, 0,20 kWh par kg évité. Aucune source ouverte ne donne l'électricité du captage dans les usines chimiques. Voir [Bâtiments et industrie](#method-industry).
+- Les concentrés par tonne de produit et les rations par classe d'aliments de type GLEAM, y compris la ration 30/40/5/25 de l'aquaculture (méthode des *rations régionales de type GLEAM* seulement). La description du modèle GLEAM 2.0 donne la ration de chaque système de production en parts de matière sèche par aliment, et calcule l'ingestion à partir des besoins énergétiques des animaux. Elle ne donne ni concentrés par tonne de produit ni ration par classe d'aliments. Voir [Alimentation animale](#method-feed).
+- Les grains par tonne de boissons fermentées (0,25 t) et alcoolisées (1,1 t). Les facteurs de conversion techniques de la FAO couvrent les boissons fermentées à base de riz (170 à 566 % du riz au Japon, en Corée, aux Philippines et à Singapour), de blé (Corée) et de fruits, mais pas la bière de sorgho ou de mil, ni les spiritueux. Voir [Émissions](#method-emissions).
 
 ### HESTIA n'a pas encore de produits animaux
 

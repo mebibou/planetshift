@@ -16,6 +16,8 @@ WORLD = "World"
 CITATIONS = {
     "poeplau-don-2015": "Carbon sequestration in agricultural soils via cultivation of cover "
     "crops – A meta-analysis (Poeplau & Don, 2015), doi:10.1016/j.agee.2014.10.024",
+    "lessmann-2022": "Global variation in soil carbon sequestration potential through improved "
+    "cropland management (Lessmann et al., 2022), doi:10.1111/gcb.15954",
     "ipcc-2006-cropland": "2006 IPCC Guidelines for National Greenhouse Gas Inventories, "
     "vol. 4 ch. 5 Cropland, with its 2019 Refinement",
     "cardinael-2018": "Revisiting IPCC Tier 1 coefficients for soil organic and biomass carbon "
