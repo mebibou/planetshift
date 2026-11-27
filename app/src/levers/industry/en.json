@@ -1,6 +1,6 @@
 {
   "title": "Buildings and industry",
-  "description": "Cut the fossil fuel burnt in buildings and in steel, cement and chemical plants: its CO₂, the methane leaked supplying it and its air pollution, whose cooling goes too.",
+  "description": "Cut the fossil fuel burnt in buildings and factories: its CO₂, the methane leaked supplying it and its air pollution, whose cooling goes too.",
   "family": "Buildings and industry",
   "page": "Buildings and industry",
   "efficientBuildings": {
@@ -14,6 +14,10 @@
   "cleanIndustry": {
     "title": "Clean industry",
     "description": "Steel made with hydrogen or scrap in electric furnaces, cement with its kilns' CO₂ captured, and chemicals made with electrolytic hydrogen or carbon capture; the electricity they draw counts. Ammonia is left to the farm practices."
+  },
+  "otherIndustry": {
+    "title": "Other industry",
+    "description": "Heat pumps supply the low-temperature heat of food, paper, textile and other factories. For the rest, electric heat and bioenergy replace most of the fuel burnt. The electricity they draw counts. Ammonia is left to the farm practices."
   },
   "acidN2o": {
     "title": "Nitric and adipic acid N₂O",

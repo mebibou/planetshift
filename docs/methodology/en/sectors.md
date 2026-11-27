@@ -159,7 +159,7 @@ FaIR runs on the levers' CO₂ and methane, so their warming is not linearised, 
 
 ## Methane and air pollution that come with the fuel
 
-Burning coal, oil and gas emits more than CO₂. A lever that cuts fuel cuts all of these emissions along with the CO₂. Counting it raises the warming the energy levers avoid. All six in full avoid 0.246 °C in 2050 with it, against 0.204 °C counting CO₂ only. Of all the energy, heating and industry levers, only clean industry, on the [Buildings and industry](#method-industry) page, avoids less when it is counted (0.016 °C instead of 0.028 in 2050).
+Burning coal, oil and gas emits more than CO₂. A lever that cuts fuel cuts all of these emissions along with the CO₂. Counting it raises the warming the energy levers avoid. All six in full avoid 0.246 °C in 2050 with it, against 0.204 °C counting CO₂ only. Of all the energy, heating and industry levers, only clean industry and other industry, on the [Buildings and industry](#method-industry) page, avoid less when it is counted (0.016 °C instead of 0.028 in 2050, and −0.001 instead of 0.005).
 
 What comes with the fuel:
 
@@ -308,7 +308,7 @@ A test runs cuts held from 2025 under SSP2-4.5 through FaIR itself with 100 memb
 
 ### How the model adds them up
 
-In each year, every lever's change in fossil CO₂ is split by the sector that emits it. The electricity drawn by electric vehicles, heat pumps and clean industry counts as the electricity sector's, on the grid that remains after renewable electricity. Each sector's change, times its ratios of that year, gives two things:
+In each year, every lever's change in fossil CO₂ is split by the sector that emits it. The electricity drawn by electric vehicles, heat pumps, clean industry and other industry counts as the electricity sector's, on the grid that remains after renewable electricity. Each sector's change, times its ratios of that year, gives two things:
 
 - **The change in the supply's CO₂, methane and N₂O.** These join the CO₂ in the emissions. They are convolved with their AGTP curves, under *fossil fuels and industry*.
 - **The change in air pollution**, under *air pollution*. Its forcing goes through `forcingResponse`: each sector's particle, CO ozone and VOC ozone forcing per kg of CO₂, plus NOx's. Its NOx, VOC and CO methane goes through methane's AGTP. NOx's methane is scaled for where it is emitted.
@@ -353,7 +353,7 @@ With every energy, heating and industry lever in full, two effects roughly cance
 
 **Less flying, clean aviation fuel and clean heating** gain from the start: their fuel's supply outweighs the little SO₂ they cut.
 
-**Clean industry** alone loses: 0.016 instead of 0.028 in 2050. Its plants emit SO₂, and the hydrogen routes draw a lot of grid power.
+**Clean industry** and **other industry** lose: 0.016 instead of 0.028 in 2050, and −0.001 instead of 0.005. Their plants emit SO₂, and the hydrogen routes and electric heat draw a lot of grid power.
 
 **Electric vehicles** gain. Their soot, their NOx's ozone and their fuel's supply stop straight away. The methane their NOx no longer destroys, about half of FaIR's on land, builds up slowly over decades. Electric cars avoid, in 2050 and 2100:
 
