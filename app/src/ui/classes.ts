@@ -18,7 +18,15 @@ export const FOLD =
   'fold border-t border-rule pt-2.5 [.group-body>&]:mt-0.5 [&>.segmented]:mb-3.5 [&>.slider]:mb-3.5';
 export const FOLD_SUMMARY = `${SUMMARY} items-center gap-2.5 py-1 font-bold [[open]>&]:mb-2.5`;
 
-export const LEVER_FOOT = 'lever-foot flex items-baseline gap-2 empty:hidden';
+/** A fold inside a group, inset so it reads as part of it rather than a group of its own. */
+export const SUBFOLD =
+  'fold subfold mt-2 border-0 border-l-2 border-solid border-rule py-0.5 pl-3 [&>.lever]:mb-3.5';
+export const SUBFOLD_SUMMARY = `${SUMMARY} items-center gap-2 py-0.5 text-[0.88rem] font-semibold [[open]>&]:mb-1.5`;
+
+export const LEVER_FOOT = 'lever-foot -mt-2.5 flex items-baseline gap-2 empty:hidden';
+
+/** A lever: its slider and, close under it, its worth figure, set apart from the next lever. */
+export const LEVER = 'lever pb-1.5';
 
 export const POPUP_SHADOW = 'shadow-[0_4px_16px_color-mix(in_srgb,var(--ink)_14%,transparent)]';
 

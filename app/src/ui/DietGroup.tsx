@@ -10,7 +10,7 @@ import { QuickPair } from './QuickPair';
 import { Segmented } from './Segmented';
 import { Slider } from './Slider';
 import { WorthPill } from './Worth';
-import { FOLD, FOLD_SUMMARY, HINT, LEVER_FOOT, LINK_BUTTON } from './classes';
+import { HINT, LEVER, LEVER_FOOT, LINK_BUTTON, SUBFOLD, SUBFOLD_SUMMARY } from './classes';
 
 export interface PanelProps {
   t: T;
@@ -38,11 +38,11 @@ const choice = <V extends string>(t: T, field: string, values: readonly V[]) => 
 
 /** The animal foods set apart from the main shift, each with its own slider. */
 const FoodShifts = ({ t, locale, scenario, setScenario }: PanelProps) => (
-  <details className={FOLD} data-fold="advanced">
-    <summary className={FOLD_SUMMARY}>{t('controls.advanced')}</summary>
+  <details className={SUBFOLD} data-fold="advanced">
+    <summary className={SUBFOLD_SUMMARY}>{t('controls.advanced')}</summary>
     <p className={HINT}>{t('controls.groupsHint')}</p>
     {ANIMAL_GROUPS.map((g) => (
-      <div className="lever" key={g}>
+      <div className={LEVER} key={g}>
         <Slider
           id={`group-${g}`}
           label={t(`groups.${g}`)}

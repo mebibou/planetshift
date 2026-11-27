@@ -11,7 +11,7 @@ import { Info } from './Info';
 import { QuickPair } from './QuickPair';
 import { Slider } from './Slider';
 import { WorthPill } from './Worth';
-import { HINT, HINT_TEXT, LEVER_FOOT, LINK_BUTTON } from './classes';
+import { HINT, HINT_TEXT, LEVER, LEVER_FOOT, LINK_BUTTON } from './classes';
 
 export interface LeverGroupProps extends PanelProps {
   module: LeverSpec;
@@ -46,7 +46,7 @@ const LeverSlider = ({
   const { id, min, max, step, ui } = lever;
   const pct = (v: number) => formatPercent(locale, v / 100);
   return (
-    <div className="lever" data-lever={id}>
+    <div className={LEVER} data-lever={id}>
       <Slider
         id={`lever-${id}`}
         label={t(ui.label)}
