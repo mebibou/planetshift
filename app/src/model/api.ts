@@ -211,8 +211,9 @@ export interface Summary {
 
 type Temperature = ScenarioResult['temperature'];
 
-/** What comes after the rest of a run: the by-family breakdown and the warming split by cause. */
+/** What comes after the rest of a run: footprints, the by-family breakdown, the split by cause. */
 export interface Breakdown {
+  footprints: Record<string, Pick<CountryResult, 'footprint' | 'footprintChange'>>;
   summary: Pick<Summary, 'byFamily' | 'byFamilyCause' | 'byCause'>;
   temperature: Pick<Temperature, 'avoidedByCause' | 'avoidedByGas'>;
 }
@@ -227,6 +228,7 @@ export type FirstResult = Omit<ScenarioResult, 'summary' | 'temperature'> & {
 /** A result with its breakdown, its fields where a whole run puts them. */
 export const withBreakdown = (result: FirstResult, breakdown: Breakdown): ScenarioResult => ({
   ...result,
+  countries: result.countries.map((c) => ({ ...c, ...breakdown.footprints[c.iso3] })),
   summary: { ...result.summary, ...breakdown.summary },
   temperature: { ...result.temperature, ...breakdown.temperature },
 });

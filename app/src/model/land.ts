@@ -1,6 +1,6 @@
 import { ANIMAL_GROUPS, type AnimalGroup, type GasVector, type Land } from '../data/types';
 import { groupTotals, type Prepared, type PreparedCountry } from './prepare';
-import { dot, memoPer, type ItemVector } from './util';
+import { dot, memoPer, sparseDot, type ItemVector } from './util';
 
 export interface Farmland {
   cropland: number;
@@ -18,17 +18,21 @@ export const farmlandTotal = (l: Farmland): number => l.cropland + l.pasture;
 
 type GroupTonnes = Partial<Record<AnimalGroup, number>>;
 
+const grazedTerm = (share: number, base: number, change: number): number =>
+  share > 0 && base > 0 ? (share * change) / base : 0;
+
 /** The relative change of the grazing, each ruminant group's share by its change in production. */
 const grazedChange = (
   pasture: Land['pasture'][string],
   before: GroupTonnes,
   change: GroupTonnes,
-): number =>
-  ANIMAL_GROUPS.reduce((acc, g) => {
-    const share = pasture.shares[g] ?? 0;
-    const base = before[g] ?? 0;
-    return share > 0 && base > 0 ? acc + (share * (change[g] ?? 0)) / base : acc;
-  }, 0);
+): number => {
+  let acc = 0;
+  for (const g of ANIMAL_GROUPS) {
+    acc += grazedTerm(pasture.shares[g] ?? 0, before[g] ?? 0, change[g] ?? 0);
+  }
+  return acc;
+};
 
 /**
  * Change in pasture: each ruminant group's share of the pasture changes by that group's
@@ -52,10 +56,16 @@ export interface CakeWeights {
 export const cakeWeights = (
   shares: Partial<Record<AnimalGroup, number>> | undefined,
   relative: Partial<Record<AnimalGroup, number>>,
-): CakeWeights => ({
-  total: ANIMAL_GROUPS.reduce((a, g) => a + (shares?.[g] ?? 0), 0),
-  change: ANIMAL_GROUPS.reduce((a, g) => a + (shares?.[g] ?? 0) * (relative[g] ?? 0), 0),
-});
+): CakeWeights => {
+  let total = 0;
+  let change = 0;
+  for (const g of ANIMAL_GROUPS) {
+    const share = shares?.[g] ?? 0;
+    total += share;
+    change += share * (relative[g] ?? 0);
+  }
+  return { total, change };
+};
 
 /**
  * Change in an amount an oilseed's cake carries (its land, or its emissions): it changes with the
@@ -70,11 +80,13 @@ export const oilcakeChange = (
   cakeHa: Readonly<Record<string, number>> | undefined,
   sharesOf: (code: string) => Partial<Record<AnimalGroup, number>> | undefined,
   relative: Partial<Record<AnimalGroup, number>>,
-): number =>
-  Object.entries(cakeHa ?? {}).reduce(
-    (acc, [code, ha]) => acc + cakeAmountChange(ha, cakeWeights(sharesOf(code), relative)),
-    0,
-  );
+): number => {
+  let acc = 0;
+  for (const code in cakeHa) {
+    acc += cakeAmountChange(cakeHa[code] as number, cakeWeights(sharesOf(code), relative));
+  }
+  return acc;
+};
 
 /** How the cake's land follows the animals: each group's relative change, the feed shares. */
 export interface CakeDemand {
@@ -87,6 +99,8 @@ const sumValues = (r: Readonly<Record<string, number>> | undefined): number =>
 
 interface CountryLand {
   haPerTonne: ItemVector;
+  /** The fodder's hectares, which follow the grazing's shares; absent without pasture. */
+  fodder?: Land['pasture'][string];
   base: Farmland;
   /** Emitting production by group, the base of each ruminant group's relative change. */
   groups: GroupTonnes;
@@ -107,8 +121,10 @@ export const countryLand = (pc: PreparedCountry, prepared: Prepared): CountryLan
     const iso3 = pc.country.iso3;
     const byCode = land.cropHaPerTonne[iso3] ?? {};
     const haPerTonne = Float64Array.from(prepared.items, (item) => byCode[String(item.code)] ?? 0);
+    const pasture = land.pasture[iso3];
     return {
       haPerTonne,
+      ...(pasture ? { fodder: { ha: land.fodderHa?.[iso3] ?? 0, shares: pasture.shares } } : {}),
       base: {
         cropland: baseCropland(land, iso3, haPerTonne, pc),
         pasture: basePasture(land, iso3),
@@ -133,10 +149,10 @@ export const landChangeOf = (
   const iso3 = pc.country.iso3;
   const own = countryLand(pc, prepared);
   const pasture = land.pasture[iso3];
-  const fodder = pasture && { ha: land.fodderHa?.[iso3] ?? 0, shares: pasture.shares };
+  const fodder = pasture && own.fodder;
   return {
     cropland:
-      dot(own.haPerTonne, change) +
+      sparseDot(own.haPerTonne, change) +
       oilcakeChange(land.oilcakeHa?.[iso3], cake.sharesOf, cake.relative) +
       pastureChange(fodder, own.groups, groupChange),
     pasture: pastureChange(pasture, own.groups, groupChange),

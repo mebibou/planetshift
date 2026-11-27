@@ -8,7 +8,7 @@ import {
   type GasVector,
 } from '../data/types';
 import type { Prepared, PreparedCountry } from './prepare';
-import { memoPer, recordFrom, type ItemVector } from './util';
+import { cachedIn, memoPer, recordFrom, type ItemVector } from './util';
 
 /** The causes food's emissions after the farm count in: energy, waste and wastewater, refrigerants. */
 export const CHAIN_CAUSES = [
@@ -91,6 +91,18 @@ export const chainEmissions = (
 /** The sums of `chainSums`: each cause of CHAIN_CAUSES, then each gas of GASES. */
 const SLOTS = CHAIN_CAUSES.length * GASES.length;
 
+const matrices = new WeakMap<ChainIntensities, Float64Array>();
+
+/** The intensities item by item, each item's SLOTS sums side by side, once per country. */
+const slotMatrix = (ints: ChainIntensities): Float64Array =>
+  cachedIn(matrices, ints, () => {
+    const rows = CHAIN_CAUSES.flatMap((c) => GASES.map((g) => ints[c][g]));
+    const n = (rows[0] as ItemVector).length;
+    const m = new Float64Array(n * SLOTS);
+    rows.forEach((row, k) => row.forEach((v, i) => (m[i * SLOTS + k] = v)));
+    return m;
+  });
+
 /**
  * kg of each gas by cause from tonnes of production (or a change in it), as one flat vector of
  * CHAIN_CAUSES × GASES. One loop over the items fills all the sums in place, as this runs for
@@ -98,23 +110,32 @@ const SLOTS = CHAIN_CAUSES.length * GASES.length;
  */
 export const chainSums = (production: ItemVector, ints: ChainIntensities): Float64Array => {
   const out = new Float64Array(SLOTS);
-  const rows = CHAIN_CAUSES.flatMap((c) => GASES.map((g) => ints[c][g]));
+  const m = slotMatrix(ints);
   for (let i = 0; i < production.length; i++) {
     const t = production[i] as number;
     if (t !== 0) {
+      const at = i * SLOTS;
       for (let k = 0; k < SLOTS; k++) {
-        out[k] = (out[k] as number) + t * ((rows[k] as ItemVector)[i] as number);
+        out[k] = (out[k] as number) + t * (m[at + k] as number);
       }
     }
   }
   return out;
 };
 
-/** A cause's gases out of `chainSums`. */
-export const causeOf = (sums: Float64Array, cause: ChainCause): GasVector => {
-  const base = CHAIN_CAUSES.indexOf(cause) * GASES.length;
-  return recordFrom(GASES, (_, j) => sums[base + j] as number);
-};
+const gasesAt = (sums: Float64Array, base: number): GasVector => ({
+  co2: sums[base] as number,
+  ch4: sums[base + 1] as number,
+  n2o: sums[base + 2] as number,
+  hfc: sums[base + 3] as number,
+});
+
+/** Each cause's gases out of `chainSums`. */
+export const byCause = (sums: Float64Array): Record<ChainCause, GasVector> => ({
+  fossilIndustry: gasesAt(sums, 0),
+  waste: gasesAt(sums, GASES.length),
+  other: gasesAt(sums, 2 * GASES.length),
+});
 
 /** All the causes' gases together out of `chainSums`. */
 export const allCauses = (sums: Float64Array): GasVector =>

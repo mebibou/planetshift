@@ -56,8 +56,11 @@ export const maturity = (
   regrowthYears: number,
 ): number => {
   const span = Math.max(1, Math.round(regrowthYears));
-  const steps = Array.from({ length: span }, (_, k) => freedShare(t - k));
-  return steps.reduce((a, v) => a + v, 0) / span;
+  let grown = 0;
+  for (let k = 0; k < span; k++) {
+    grown += freedShare(t - k);
+  }
+  return grown / span;
 };
 
 /**

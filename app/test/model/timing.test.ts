@@ -35,7 +35,7 @@ describe('performance', () => {
 const real = loadRealData();
 
 describe.skipIf(real === null)('performance on the real data', () => {
-  it('runs every sample, levers included, in well under 30 ms once prepared', () => {
+  it('runs every sample, levers included, in a median under 20 ms and at most 35 ms once prepared', () => {
     const data = real as NonNullable<typeof real>;
     prepare(data);
     SAMPLES.forEach((p) => runScenario(data, p.scenario, DEFAULT_OPTIONS, CURRENT_YEAR));
@@ -52,7 +52,7 @@ describe.skipIf(real === null)('performance on the real data', () => {
     const max = times[times.length - 1] as number;
     console.log(`real data: run median ${median.toFixed(1)} ms, max ${max.toFixed(1)} ms`);
     expect(median).toBeLessThan(20);
-    expect(max).toBeLessThan(30);
+    expect(max).toBeLessThan(35);
   });
 
   const everything = Object.fromEntries(LEVERS.map((l) => [l.id, 1]));

@@ -64,6 +64,15 @@ export const tabulate = (scale: Scale, years: readonly number[]): Scale => {
   };
 };
 
+/** The rises up to `i`, each times the lag of the years since: Σ rises[k] × lag[i − k]. */
+const laggedSum = (rises: readonly number[], lag: readonly number[], i: number): number => {
+  let acc = 0;
+  for (let k = 0; k <= i; k++) {
+    acc += (rises[k] as number) * (lag[i - k] as number);
+  }
+  return acc;
+};
+
 /**
  * A share that builds up behind `share` with a first-order lag of `timeConstant` years: each
  * year's rise in it counts only 1 − e^(−t / timeConstant) of itself t years on.
@@ -74,10 +83,8 @@ export const builtUp = (
   timeConstant: number,
 ): ((year: number) => number) => {
   const rises = years.map((y) => share(y) - share(y - 1));
-  const lag = (t: number) => 1 - Math.exp(-t / timeConstant);
-  const values = years.map((_, i) =>
-    rises.slice(0, i + 1).reduce((acc, r, k) => acc + r * lag(i - k), 0),
-  );
+  const lag = years.map((_, t) => 1 - Math.exp(-t / timeConstant));
+  const values = years.map((_, i) => laggedSum(rises, lag, i));
   const first = years[0] ?? 0;
   return (year) => values[year - first] ?? 0;
 };

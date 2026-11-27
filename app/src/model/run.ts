@@ -71,8 +71,10 @@ import {
   cutEmissions,
   emissionsOf,
   worstIntensity,
+  type CountryCakes,
+  type CountryIntensities,
 } from './emissions';
-import { animalUse, feedChange, feedSharesOf, groupProductionChange } from './feed';
+import { animalUse, feedChange, feedSharesOf, groupProductionChange, totalsOf } from './feed';
 import { addLand, countryLand, landChangeOf, NO_LAND, type CakeDemand } from './land';
 import { clipChange, locateAll } from './location';
 import { mammalsOf, NO_MAMMALS } from './mammals';
@@ -82,7 +84,7 @@ import { foodFootprints, type IntensityCut as FootprintCut } from './footprint';
 import {
   allCauses,
   CHAIN_CAUSES,
-  causeOf,
+  byCause,
   chainBase,
   chainIntensities,
   chainSums,
@@ -382,8 +384,6 @@ const chainsOf = (ctx: RunContext): Chain[] =>
       : [];
   });
 
-const aloneCache = memoLatest<Prepared, Production>();
-
 /**
  * The production steps of the families in `has`: the diet shift's change (none when it is left
  * out), then, for each module that changes the supply chain, the change with it and every
@@ -407,22 +407,33 @@ const productionSteps = (
       combine(own.slice(0, k + 1).map((c) => c.chain)),
       diet.food,
     );
+  const keyOf = (k: number) => stepKey(scenario, options, own.slice(0, k + 1), withDiet);
   return own.reduce<Step[]>(
-    (steps, { family }, k) => [
-      ...steps,
-      {
-        family,
-        run: withDiet
-          ? run(k)()
-          : aloneCache(
-              prepared,
-              JSON.stringify([own.slice(0, k + 1).map((c) => c.family), scenario.levers, options]),
-              run(k),
-            ),
-      },
-    ],
+    (steps, { family }, k) => [...steps, { family, run: stepCache(k)(prepared, keyOf(k), run(k)) }],
     withDiet || own.length === 0 ? [{ family: 'diet', run: diet }] : [],
   );
+};
+
+const stepCaches: ReturnType<typeof memoLatest<Prepared, Production>>[] = [];
+
+/** The cache of the `k`th supply step, one per step so the steps do not push each other out. */
+const stepCache = (k: number) => (stepCaches[k] ??= memoLatest<Prepared, Production>());
+
+/**
+ * What a supply step's production depends on: the scenario but for the levers outside the steps'
+ * modules, the options, and whether the diet shift is in play.
+ */
+const stepKey = (
+  scenario: Scenario,
+  options: Options,
+  own: readonly Chain[],
+  withDiet: boolean,
+): string => {
+  const ids = MODULES.filter((m) => own.some((c) => c.family === familyOf(m))).flatMap((m) =>
+    m.levers.map((l) => l.id),
+  );
+  const levers = Object.fromEntries(ids.map((id) => [id, scenario.levers[id]]));
+  return JSON.stringify([own.map((c) => c.family), withDiet, { ...scenario, levers }, options]);
 };
 
 /**
@@ -520,19 +531,32 @@ const STREAMS = [
 
 const STREAM_KEYS = STREAMS.flatMap(([, own, joint]) => [own, joint]);
 
-/** Each part's stream of `key` added into its cause's record, the parts in their order. */
+const NO_STREAM: Readonly<Record<string, number>> = Object.freeze({});
+const COUNTED: ReadonlySet<string> = new Set(COUNTED_CAUSES);
+
+/** A stream added into `into`, a record of the caller's own, family by family. */
+const addInto = (into: Record<string, number>, stream: Readonly<Record<string, number>>) => {
+  for (const f in stream) {
+    into[f] = f in into ? (into[f] as number) + (stream[f] as number) : (stream[f] as number);
+  }
+};
+
+/**
+ * Each part's stream of `key` added into its cause's record, the parts in their order; a cause
+ * no part has a stream in shares one empty record.
+ */
 const addRecords = (
   parts: readonly CountryPart[],
   causes: readonly ModuleCause[],
   key: StreamKey,
-): ByCause<Record<string, number>> => {
-  const out = causeRecord((): Record<string, number> => ({}));
+): ByCause<Readonly<Record<string, number>>> => {
+  const out = causeRecord(() => NO_STREAM);
   parts.forEach((p, k) => {
-    const into = out[causes[k] as CountedCause] as Record<string, number> | undefined;
-    if (into) {
-      for (const [f, v] of Object.entries(p[key] ?? {})) {
-        into[f] = f in into ? (into[f] as number) + v : v;
-      }
+    const cause = causes[k] as CountedCause;
+    const stream = p[key];
+    if (stream && COUNTED.has(cause)) {
+      const into = out[cause] === NO_STREAM ? (out[cause] = {}) : out[cause];
+      addInto(into as Record<string, number>, stream);
     }
   });
   return out;
@@ -558,6 +582,94 @@ const countryMammals = (pc: PreparedCountry, change: ItemVector, prepared: Prepa
 
 const ownCutCache = memoPer<Record<Gas, ItemVector>, GasVector>();
 
+/** Each step's farm emissions: its production's, then each oilcake's change, added in order. */
+const stepEmissions = (
+  stages: readonly Stage[],
+  intensities: CountryIntensities,
+  cakeChanges: readonly GasVector[][],
+): GasVector[] =>
+  stages.map((s, k) => {
+    const out = emissionsOf(s.change, intensities);
+    for (const v of cakeChanges[k] ?? []) {
+      addInPlace(out, v);
+    }
+    return out;
+  });
+
+/** Each step's own farm emissions by its family: its emissions less the step's before it. */
+const stepFarm = (stages: readonly Stage[], emitted: readonly GasVector[]) => {
+  const out: Record<string, GasVector> = {};
+  stages.forEach((s, k) => {
+    const own = emitted[k] as GasVector;
+    const before = emitted[k - 1];
+    out[s.family] = before ? gasVector((g) => own[g] - before[g]) : own;
+  });
+  return out;
+};
+
+/** What the cuts are read on in a country: its intensities, oilcakes and production change. */
+interface CutBase {
+  pc: PreparedCountry;
+  intensities: CountryIntensities;
+  oilcakes: CountryCakes;
+  change: ItemVector;
+  cakeChange: readonly GasVector[];
+  /** The key the base year's cut is kept by. */
+  ownKey: string;
+}
+
+/** What a share of each item's intensity cut removes, on the base year and on the change. */
+const cutOf = (b: CutBase, share: Record<Gas, ItemVector>): Joint<GasVector> => ({
+  own: ownCutCache(share, b.ownKey, () =>
+    addGas(
+      cutEmissions(b.pc.emitting, b.intensities, share),
+      cutCakeEmissions(b.oilcakes, b.oilcakes.kg, share),
+    ),
+  ),
+  joint: addGas(
+    cutEmissions(b.change, b.intensities, share),
+    cutCakeEmissions(b.oilcakes, b.cakeChange, share),
+  ),
+});
+
+/** Each intensity cut's family and band, what it removes. */
+const cutsOf = (
+  b: CutBase,
+  intensityCuts: readonly IntensityCut[],
+  bands: readonly Band[],
+): CountryParts['cuts'] => {
+  const out: Record<string, Partial<Record<Band, Joint<GasVector>>>> = {};
+  for (const { family, cut } of intensityCuts) {
+    const byBand: Partial<Record<Band, Joint<GasVector>>> = {};
+    for (const band of bands) {
+      byBand[band] = cutOf(b, cut(b.pc, band));
+    }
+    out[family] = byBand;
+  }
+  return out;
+};
+
+/** The hooks' CO₂ that builds up, each with the cause its module counts in. */
+const builtUpOf = (extra: readonly CountryPart[], countryHooks: readonly CountryHook[]) => {
+  const out: BuiltUp[] = [];
+  extra.forEach((e, k) => {
+    if (e.buildUp) {
+      out.push({ cause: countryHooks[k]?.cause ?? DIET_CAUSE, ...e.buildUp });
+    }
+  });
+  return out;
+};
+
+/** The hooks' results added onto the country's own, in the hooks' order. */
+const withHookResults = (result: object, extra: readonly CountryPart[]): CountryResult => {
+  for (const e of extra) {
+    if (e.result) {
+      Object.assign(result, e.result);
+    }
+  }
+  return result as CountryResult;
+};
+
 const countryParts = (
   pc: PreparedCountry,
   /** The diet's change in food, or null where the diet is not read (a pass of the breakdown). */
@@ -577,87 +689,58 @@ const countryParts = (
   const intensities = countryIntensities(pc, prepared, options.scope);
   const oilcakes = countryCakes(pc, prepared, options.scope);
   const change = (stages[stages.length - 1] as Stage).change;
+  const cake = cakes[cakes.length - 1] as CakeDemand;
   const cakeChanges = cakes.map((c) => cakeEmissionsChange(oilcakes, c));
-  const cakeChange = cakeChanges[cakeChanges.length - 1] as GasVector[];
-  const productionChange = groupTotals(change, prepared);
-  const emitted = stages.map((s, k) =>
-    (cakeChanges[k] ?? []).reduce((a, v) => addGas(a, v), emissionsOf(s.change, intensities)),
-  );
+  const productionChange = totalsOf(change, prepared);
+  const emitted = stepEmissions(stages, intensities, cakeChanges);
   const total = emitted[emitted.length - 1] as GasVector;
-  const farm = Object.fromEntries(
-    stages.map((s, k) => {
-      const own = emitted[k] as GasVector;
-      const before = emitted[k - 1];
-      return [s.family, before ? gasVector((g) => own[g] - before[g]) : own];
-    }),
-  );
-  const cuts = Object.fromEntries(
-    intensityCuts.map(({ family, cut }) => [
-      family,
-      Object.fromEntries(
-        bands.map((band) => {
-          const share = cut(pc, band);
-          return [
-            band,
-            {
-              own: ownCutCache(share, `${pc.country.iso3}|${options.scope}`, () =>
-                addGas(
-                  cutEmissions(pc.emitting, intensities, share),
-                  cutCakeEmissions(oilcakes, oilcakes.kg, share),
-                ),
-              ),
-              joint: addGas(
-                cutEmissions(change, intensities, share),
-                cutCakeEmissions(oilcakes, cakeChange, share),
-              ),
-            },
-          ];
-        }),
-      ),
-    ]),
+  const cuts = cutsOf(
+    {
+      pc,
+      intensities,
+      oilcakes,
+      change,
+      cakeChange: cakeChanges[cakeChanges.length - 1] as GasVector[],
+      ownKey: `${pc.country.iso3}|${options.scope}`,
+    },
+    intensityCuts,
+    bands,
   );
   const land = countryLand(pc, prepared).base;
-  const landChange = landChangeOf(
-    pc,
-    change,
-    productionChange,
-    prepared,
-    cakes[cakes.length - 1] as CakeDemand,
-  );
+  const landChange = landChangeOf(pc, change, productionChange, prepared, cake);
   const extra = countryHooks.map(({ hook }) => hook({ pc, food, stages, land, landChange }));
   const chain = countryChain(pc, prepared, stages);
+  const result = {
+    iso3: pc.country.iso3,
+    ...base,
+    productionChange,
+    emissionsChange: Object.values(cuts).reduce(
+      (a, c) => (c.median ? addGas(addGas(a, c.median.own), c.median.joint) : a),
+      total,
+    ),
+    proteinAfter: food
+      ? base.proteinBefore + perCapitaPerDay(food, pc, prepared, 'protein')
+      : base.proteinBefore,
+    kcalAfter: food
+      ? base.kcalBefore + perCapitaPerDay(food, pc, prepared, 'kcal')
+      : base.kcalBefore,
+    land,
+    landChange,
+    landArea: prepared.data.land.landArea?.[pc.country.iso3] ?? 0,
+  };
+  Object.assign(
+    result,
+    countryMammals(pc, change, prepared),
+    speciesOf(prepared.data.species?.byCountry[pc.country.iso3], land, landChange),
+    countryWaterOf(pc, change, prepared, cake),
+    chain.result,
+  );
   return {
-    result: Object.assign(
-      {
-        iso3: pc.country.iso3,
-        ...base,
-        productionChange,
-        emissionsChange: Object.values(cuts).reduce(
-          (a, c) => (c.median ? addGas(addGas(a, c.median.own), c.median.joint) : a),
-          total,
-        ),
-        proteinAfter: food
-          ? base.proteinBefore + perCapitaPerDay(food, pc, prepared, 'protein')
-          : base.proteinBefore,
-        kcalAfter: food
-          ? base.kcalBefore + perCapitaPerDay(food, pc, prepared, 'kcal')
-          : base.kcalBefore,
-        land,
-        landChange,
-        landArea: prepared.data.land.landArea?.[pc.country.iso3] ?? 0,
-        ...countryMammals(pc, change, prepared),
-        ...speciesOf(prepared.data.species?.byCountry[pc.country.iso3], land, landChange),
-        ...countryWaterOf(pc, change, prepared, cakes[cakes.length - 1] as CakeDemand),
-        ...chain.result,
-      },
-      ...extra.map((e) => e.result ?? {}),
-    ) as CountryResult,
-    farm,
+    result: withHookResults(result, extra),
+    farm: stepFarm(stages, emitted),
     cuts,
     ...streamsOf(extra, countryHooks),
-    builtUp: extra.flatMap((e, k) =>
-      e.buildUp ? [{ cause: countryHooks[k]?.cause ?? DIET_CAUSE, ...e.buildUp }] : [],
-    ),
+    builtUp: builtUpOf(extra, countryHooks),
     gridFarm: stepGridCo2(stages, intensities.kgPerTonne.co2, gridShare),
     chainFarm: chain.byStep,
   };
@@ -681,15 +764,33 @@ const chainOf = (
   const ints = chainIntensities(pc, prepared, chain);
   const totals = stages.map((s) => chainSums(s.change, ints));
   const last = totals[totals.length - 1];
+  const byStep: Record<string, Record<ChainCause, GasVector>> = {};
+  stages.forEach((s, k) => {
+    byStep[s.family] = byCause(k === 0 ? (totals[0] as Float64Array) : stepSums(totals, k));
+  });
   return {
-    byStep: Object.fromEntries(
-      stages.map((s, k) => {
-        const own = (totals[k] as Float64Array).map((v, i) => v - (totals[k - 1]?.[i] ?? 0));
-        return [s.family, recordFrom(CHAIN_CAUSES, (c) => causeOf(own, c))];
-      }),
-    ),
+    byStep,
     result: { chain: chainBase(pc, ints), chainChange: last ? allCauses(last) : ZERO_GAS },
   };
+};
+
+/** `v` added into `into`, a vector of the caller's own. */
+const addInPlace = (into: GasVector, v: GasVector) => {
+  into.co2 += v.co2;
+  into.ch4 += v.ch4;
+  into.n2o += v.n2o;
+  into.hfc += v.hfc;
+};
+
+/** A step's own sums: its totals less the step's before it. */
+const stepSums = (totals: readonly Float64Array[], k: number): Float64Array => {
+  const now = totals[k] as Float64Array;
+  const before = totals[k - 1] as Float64Array;
+  const out = new Float64Array(now.length);
+  for (let i = 0; i < now.length; i++) {
+    out[i] = (now[i] as number) - (before[i] as number);
+  }
+  return out;
 };
 
 /** The grid electricity's part of a vector of production's CO₂, kg. */
@@ -758,11 +859,13 @@ const clearingOf = (
   const slot = (f: string) => (out[f] ??= { own: { ...ZERO_GAS }, joint: { ...ZERO_GAS } });
   for (const p of parts) {
     for (const [gas, own, joint] of STREAMS) {
-      for (const [f, v] of Object.entries(p[own][cause])) {
-        slot(f).own[gas] += v;
+      const ownStream = p[own][cause];
+      const jointStream = p[joint][cause];
+      for (const f in ownStream) {
+        slot(f).own[gas] += ownStream[f] as number;
       }
-      for (const [f, v] of Object.entries(p[joint][cause])) {
-        slot(f).joint[gas] += v;
+      for (const f in jointStream) {
+        slot(f).joint[gas] += jointStream[f] as number;
       }
     }
   }
@@ -869,7 +972,13 @@ const NO_CLEARING: Joint<GasVector> = { own: ZERO_GAS, joint: ZERO_GAS };
 const NO_FARM: Joint<GasVector> = { own: ZERO_GAS, joint: ZERO_GAS };
 
 const sumPaths = (paths: readonly GasVector[][]): GasVector[] =>
-  (paths[0] ?? []).map((_, i) => paths.reduce((a, p) => addGas(a, p[i] as GasVector), ZERO_GAS));
+  (paths[0] ?? []).map((_, i) => {
+    const total = { co2: 0, ch4: 0, n2o: 0, hfc: 0 };
+    for (const p of paths) {
+      addInPlace(total, p[i] as GasVector);
+    }
+    return total;
+  });
 
 const sumBy = <T>(xs: readonly T[], f: (x: T) => GasVector): GasVector =>
   xs.reduce((a, x) => addGas(a, f(x)), ZERO_GAS);
@@ -1409,8 +1518,16 @@ const emissionsPass = (
     );
   });
   /** A family's emissions after the farm in a cause, scaled and ramped like its farm emissions. */
-  const chainOwn = (f: string, c: ChainCause): GasVector =>
-    parts.reduce((a, p) => addGas(a, p.chainFarm[f]?.[c] ?? ZERO_GAS), ZERO_GAS);
+  const chainOwn = (f: string, c: ChainCause): GasVector => {
+    const a = { ...ZERO_GAS };
+    for (const p of parts) {
+      const v = p.chainFarm[f]?.[c];
+      if (v) {
+        addInPlace(a, v);
+      }
+    }
+    return a;
+  };
   /** Each family's chain path in each cause, once per pass, as it does not depend on the band. */
   const chainPaths = new Map<string, GasVector[] | undefined>(
     FAMILIES.flatMap((f) =>
@@ -1732,23 +1849,13 @@ const leverCut = (ctx: RunContext): { key: string; of: FootprintCut } | null => 
       };
 };
 
-/** The countries' results with their food footprint per person, today and with the levers. */
-const withFootprints = (
-  ctx: RunContext,
-  steps: readonly Step[],
-  countries: CountryResult[],
-): CountryResult[] => {
+/** Each country's food footprint per person, today and with the levers, by ISO3. */
+const footprintsOf = (ctx: RunContext, steps: readonly Step[]): Breakdown['footprints'] => {
   const { prepared, options } = ctx;
   const last = steps[steps.length - 1];
-  const prints = foodFootprints(
-    prepared,
-    options.scope,
-    options.feed,
-    last?.run.supply ?? {},
-    leverCut(ctx),
+  return Object.fromEntries(
+    foodFootprints(prepared, options.scope, options.feed, last?.run.supply ?? {}, leverCut(ctx)),
   );
-  // Added in place: the results are this run's own, and copying their many fields is slow.
-  return countries.map((c) => Object.assign(c, prints.get(c.iso3)));
 };
 
 /** What a run works from: its context, the supply chains and production steps, and the frame of
@@ -1923,7 +2030,7 @@ export interface SplitRun {
 }
 
 /** The breakdown's places in a result, held until it is filled, so a whole run's keys keep their order. */
-const PENDING: { [K in keyof Breakdown]: Partial<Breakdown[K]> } = {
+const PENDING: { [K in 'summary' | 'temperature']: Partial<Breakdown[K]> } = {
   summary: { byFamily: undefined, byFamilyCause: undefined, byCause: undefined },
   temperature: { avoidedByCause: undefined, avoidedByGas: undefined },
 };
@@ -2141,7 +2248,7 @@ export const startPrepared = (
   };
 
   const result = {
-    countries: withFootprints(ctx, steps, countries),
+    countries,
     years,
     baselineEmissions: baselinePath,
     scenarioEmissions: baselinePath.map((e, i) => addGas(e, farmDifference[i] as GasVector)),
@@ -2188,6 +2295,7 @@ export const startPrepared = (
   return {
     result: Object.assign(result, ...world.map((w) => w.part.result ?? {})) as FirstResult,
     breakdown: () => ({
+      footprints: footprintsOf(ctx, steps),
       summary: breakdownOf(
         familyShares(frame, full, chains),
         HORIZON_YEARS.map((y) => 0 - (feedbackDelta.median[y - FIRST_YEAR] ?? 0)),
