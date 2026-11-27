@@ -1,6 +1,6 @@
 # Buildings and industry
 
-Besides transport and electricity, two parts of the economy burn fossil fuel directly. In buildings, gas and oil boilers heat rooms and water, and stoves cook food. In industry, steel and cement are the largest emitters, followed by chemicals. Planetshift has two levers here, clean heating and clean industry, which covers steel, cement and chemicals. Adopted in full, each avoids less than 0.02 °C of warming in 2050. In 2100, clean heating avoids about 0.06 °C and clean industry about 0.105 °C. They avoid much more when the electricity they use is clean (see *Results* below).
+Besides transport and electricity, two parts of the economy burn fossil fuel directly. In buildings, gas and oil boilers heat rooms and water, and stoves cook food. In industry, steel and cement are the largest emitters, followed by chemicals. Planetshift has three levers here: efficient buildings, clean heating, and clean industry, which covers steel, cement and chemicals. Adopted in full, clean heating and clean industry each avoid less than 0.02 °C of warming in 2050. Efficient buildings avoids about 0.03 °C. In 2100, efficient buildings avoids about 0.09 °C, clean heating about 0.06 °C and clean industry about 0.105 °C. Clean heating and clean industry avoid much more when the electricity they use is clean (see *Results* below).
 
 ## How these emissions are counted
 
@@ -35,6 +35,23 @@ The scenarios do not split industry by product. Steel, cement and chemicals are 
 - **Chemicals**: 5.7%. Primary chemicals (ethylene, propylene, the aromatics, methanol and ammonia) emitted about 935 million tonnes of direct CO₂ in 2022, and ammonia 45% of it (IEA, *Tracking Clean Energy Progress*, chemicals). Ammonia is left out, which leaves 0.51 billion tonnes from methanol and high-value chemicals. Ammonia is what nitrogen fertiliser is made from. Its CO₂ is cut only on the farm side, by *Less nitrogen, better used*, in the cradle-to-farm-gate scope (see [Farm practices](#method-practices)), so no tonne is cut twice.
 
 The rest of industry, about 37%, has no lever: ammonia, aluminium, paper, food and others.
+
+## Efficient buildings
+
+This lever cuts the energy that buildings need for the same services. Insulation and better windows reduce the heat they lose, and efficient appliances, lighting and cooling use less electricity. The lever cuts both the fuel burnt in buildings and the electricity they draw from the grid.
+
+At full adoption, buildings use 42% less energy than in the scenario. The figure is from the IPCC's Sixth Assessment Report (Working Group III, chapter 9, section 9.6.2 and figure 9.16). The chapter pools bottom-up studies of every region. It finds that energy-efficiency technologies and practices could avoid 5.6 billion tonnes of CO₂ in 2050, which is 42% of buildings' baseline emissions. The chapter describes these estimates as low. Its baseline is the IEA's Current Policies Scenario of 2019. Its emissions count both the fuel burnt in buildings and the electricity and heat they use. In the chapter's sequence, efficiency comes after sufficiency, which avoids 10% more, and before renewable energy produced on site, which avoids 9%. Sufficiency includes less floor area per person. Neither is part of this lever.
+
+Planetshift applies the 42% to both parts of buildings' emissions:
+
+- **Fuel**: buildings' direct CO₂ (see *The sectors and their futures* above) falls by 42% × adoption.
+- **Electricity**: buildings use half of the world's electricity (IEA, *Special Report on Buildings Efficiency*, 2026). The electricity sector's CO₂ (see [Energy and transport](#method-sectors)) falls by 42% × 0.5 × adoption, on the grid that renewable electricity leaves. With renewable electricity in full, the power saved would have been clean, so saving it avoids no CO₂.
+
+Most of the saving is electricity. In 2035 on SSP2-4.5, full adoption saves 0.9 billion tonnes of buildings' fuel CO₂ and 2.9 billion tonnes of the grid's.
+
+Clean heating then acts on the fuel left after efficiency. Its heat pumps replace boilers that burn 42% less, so they also draw 42% less electricity. No tonne is cut twice.
+
+The figures are in `app/src/levers/industry/efficiency.json`.
 
 ## Clean heating
 
@@ -107,7 +124,7 @@ Each lever cuts its sector's co-emissions in step with the CO₂ it removes. The
 
 ## In the app
 
-The **Buildings and industry** fold of the Levers section has two sliders. Each sets the share adopted. Like every lever, it ramps in from the current year to the year set by *All levers fully in place by* (`app/src/levers/industry/model.ts`).
+The **Buildings and industry** fold of the Levers section has three sliders. Each sets the share adopted. Like every lever, it ramps in from the current year to the year set by *All levers fully in place by* (`app/src/levers/industry/model.ts`).
 
 In the breakdown by lever in the summary, all of these levers' effect counts as *Buildings and industry*. This includes the extra saving that renewable electricity brings to them when both are on. Renewable electricity alone is counted under *Energy and transport*. The farm emissions, the map and the farming band of the Causes of warming chart do not change.
 
@@ -115,7 +132,8 @@ In the breakdown by lever in the summary, all of these levers' effect counts as 
 
 In each year $y$, each adoption $a$ is already ramped, and $g$ is the grid's intensity in the chosen scenario. The grid these levers draw on is $g' = g\,(1 - a_{\text{re}})$, where $a_{\text{re}}$ is the renewable-electricity lever of the [energy and transport](#method-sectors) fold:
 
-- Clean heating (`ch`) saves $a \times \text{buildings' CO}_2 \times (1 - k\,g')$, with $k$ = `heatPumpKwhPerKgCo2`.
+- Efficient buildings (`eb`) saves $s \times \text{buildings' CO}_2 + s \times e \times \text{electricity's CO}_2 \times (1 - a_{\text{re}})$, with $s = a \times p$, $p$ = `potential` (0.42) and $e$ = `electricityShare` (0.5).
+- Clean heating (`ch`) saves $a \times (1 - s) \times \text{buildings' CO}_2 \times (1 - k\,g')$, with $k$ = `heatPumpKwhPerKgCo2`.
 - Clean industry (`ci`) saves $a \times \text{industry's CO}_2 \times \sum_{i} \text{share}_i \times \text{cut}_i \times (1 - k_i\,g')$ over $i$ in steel, cement and chemicals, with $k_i$ = `kwhPerKgCo2`.
 
 The CO₂ changes go to FaIR, which the app runs (see the [temperature page](#method-climate)). What comes with them is treated as for transport:
@@ -136,6 +154,10 @@ The table gives the warming avoided in °C, as a median with the likely range in
 | Renewable electricity alone | 0.096 (0.060–0.187); CO₂ alone 0.093 | 0.286 (0.180–0.464); CO₂ alone 0.236 |
 | Clean heating with renewable electricity | 0.115 (0.070–0.225); CO₂ alone 0.108 | 0.367 (0.235–0.590); CO₂ alone 0.297 |
 | Clean industry with renewable electricity | 0.124 (0.074–0.260); CO₂ alone 0.133 | 0.421 (0.265–0.707); CO₂ alone 0.366 |
+| Efficient buildings | 0.028 (0.017–0.054); CO₂ alone 0.025 | 0.092 (0.060–0.147); CO₂ alone 0.074 |
+| Efficient buildings with clean heating | 0.036 (0.020–0.072); CO₂ alone 0.030 | 0.128 (0.082–0.211); CO₂ alone 0.100 |
+| Efficient buildings with renewable electricity | 0.107 (0.066–0.207); CO₂ alone 0.102 | 0.322 (0.205–0.520); CO₂ alone 0.264 |
+| Efficient buildings with clean heating and renewable electricity | 0.118 (0.073–0.230); CO₂ alone 0.111 | 0.370 (0.236–0.594); CO₂ alone 0.299 |
 
 Clean heating gains from the co-emissions from the start. The gas it no longer burns would have leaked methane, and burning gas emits little SO₂.
 
@@ -144,6 +166,8 @@ Clean industry loses over a third of its 2050 effect to the co-emissions. Their 
 With renewable electricity in full, clean heating adds 0.019 °C in 2050 and 0.081 °C in 2100 to it. Clean industry adds 0.028 and 0.135 °C. On a clean grid, each lever saves more than it does alone.
 
 The effects are small in 2050 for two reasons. The CO₂ avoided adds up slowly. On today's grid, the electricity that the clean routes draw also cancels much of what they save.
+
+On SSP2-4.5, efficient buildings avoids more than clean heating, because most of what it saves is electricity. On SSP1-2.6 it avoids 0.028 °C in 2050 and 0.050 °C in 2100. On SSP3-7.0 it avoids 0.029 °C in 2050 and 0.166 °C in 2100, because the grid emits more CO₂ per kWh there and each kWh saved avoids more CO₂. With clean heating and renewable electricity in full, efficient buildings adds only 0.003 °C, in 2050 as in 2100. After heat pumps and a clean grid, little fossil energy is left for it to save.
 
 ## Other industries
 
@@ -160,6 +184,7 @@ Some industries have no lever. Either the scenarios give no trajectory for them 
 - Steel, cement and chemicals (without ammonia) are 28.9%, 28.7% and 5.7% of industry's direct CO₂ in every year and scenario.
 - A heat pump needs 1.49 kWh per kg of a boiler's CO₂ avoided, in every year. Heat pumps and boilers do not get more efficient over time.
 - Clean steel, cement and chemicals cut 90%, 90% and 80% of their direct CO₂ at full adoption. They draw 1.5, 0.20 and 1.9 kWh of electricity per kg avoided, on the grid left after renewable electricity.
+- Efficiency cuts 42% of buildings' fuel and of their electricity at full adoption, in every year and scenario. Buildings use half of the electricity, so the grid's CO₂ falls by 21%. The IPCC's efficiency step may already include some heat pumps. Clean heating acts only on the fuel left after efficiency, so no tonne is counted twice.
 - Making the equipment is not counted.
 - What comes with the fuel of buildings and of industry (the CO₂ of producing it, methane, N₂O and air pollution) uses CEDS's 2022 ratios per kg of their fossil CO₂, process CO₂ included for industry; chemical plants take industry's ratios, which CEDS draws from iron, steel, cement and lime plants. These ratios change with the scenario's emission factors. The electricity drawn adds the grid's co-emissions (see [Energy and transport](#method-sectors)).
 
@@ -173,6 +198,8 @@ Some industries have no lever. Either the scenarios give no trajectory for them 
 - Kätelhön, A., Meys, R., Deutz, S., Suh, S. and Bardow, A. (2019). Climate change mitigation potential of carbon capture and utilization in the chemical industry. PNAS 116, 11187–11194, [doi:10.1073/pnas.1821029116](https://doi.org/10.1073/pnas.1821029116).
 - Apparel Impact Institute (2025). Taking Stock of Progress Against the Roadmap to Net Zero.
 - JRC (2026). Aluminium factsheet (JRC144120), [publications.jrc.ec.europa.eu](https://publications.jrc.ec.europa.eu/repository/handle/JRC144120).
+- IPCC (2022). Climate Change 2022: Mitigation of Climate Change, Working Group III, chapter 9, Buildings, section 9.6.2 and figure 9.16, [ipcc.ch/report/ar6/wg3/chapter/chapter-9](https://www.ipcc.ch/report/ar6/wg3/chapter/chapter-9/).
+- IEA (2026). Special Report on Buildings Efficiency, executive summary, [iea.org/reports/special-report-on-buildings-efficiency](https://www.iea.org/reports/special-report-on-buildings-efficiency). Licence: CC BY 4.0.
 - IEA (2022). The Future of Heat Pumps, [iea.org/reports/the-future-of-heat-pumps](https://www.iea.org/reports/the-future-of-heat-pumps). Licence: CC BY 4.0.
 - IEA (2020). Iron and Steel Technology Roadmap, [iea.org/reports/iron-and-steel-technology-roadmap](https://www.iea.org/reports/iron-and-steel-technology-roadmap): direct CO₂ intensity of the main routes (table, p. 42), the Sustainable Development Scenario (p. 54), smelting reduction with capture and hydrogen reduction (pp. 92–93).
 - IPCC (2006). Guidelines for National Greenhouse Gas Inventories, volume 2, chapter 1, table 1.4: default CO₂ emission factors for combustion.

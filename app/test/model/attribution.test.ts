@@ -65,6 +65,7 @@ const breakdownAgainstShapley = (data: NonNullable<typeof real>) => {
       ...sample.levers,
       cleanHeating: 0.5,
       cleanIndustry: 0.5,
+      efficientBuildings: 0.5,
       oilGasMethane: 0.5,
       coalMineMethane: 0.5,
     },

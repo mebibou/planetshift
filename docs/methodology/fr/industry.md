@@ -1,6 +1,6 @@
 # Bâtiments et industrie
 
-À côté des transports et de l'électricité, deux parties de l'économie brûlent directement des combustibles fossiles. Dans les bâtiments, des chaudières au gaz et au fioul chauffent les pièces et l'eau, et des cuisinières servent à cuisiner. Dans l'industrie, l'acier et le ciment sont les plus gros émetteurs, suivis de la chimie. Planetshift propose ici deux leviers, le chauffage propre et l'industrie propre, qui couvre l'acier, le ciment et la chimie. Adopté en entier, chacun évite moins de 0,02 °C de réchauffement en 2050. En 2100, le chauffage propre évite environ 0,06 °C et l'industrie propre environ 0,105 °C. Ils en évitent bien plus quand l'électricité qu'ils consomment est propre (voir *Résultats* plus bas).
+À côté des transports et de l'électricité, deux parties de l'économie brûlent directement des combustibles fossiles. Dans les bâtiments, des chaudières au gaz et au fioul chauffent les pièces et l'eau, et des cuisinières servent à cuisiner. Dans l'industrie, l'acier et le ciment sont les plus gros émetteurs, suivis de la chimie. Planetshift propose ici trois leviers : les bâtiments efficaces, le chauffage propre, et l'industrie propre, qui couvre l'acier, le ciment et la chimie. Adoptés en entier, le chauffage propre et l'industrie propre évitent chacun moins de 0,02 °C de réchauffement en 2050. Les bâtiments efficaces évitent environ 0,03 °C. En 2100, les bâtiments efficaces évitent environ 0,09 °C, le chauffage propre environ 0,06 °C et l'industrie propre environ 0,105 °C. Le chauffage propre et l'industrie propre en évitent bien plus quand l'électricité qu'ils consomment est propre (voir *Résultats* plus bas).
 
 ## Comment ces émissions sont comptées
 
@@ -35,6 +35,23 @@ Les scénarios ne détaillent pas l'industrie par produit. L'acier, le ciment et
 - **Chimie** : 5,7 %. Les produits chimiques de base (éthylène, propylène, aromatiques, méthanol et ammoniac) ont émis environ 935 millions de tonnes de CO₂ direct en 2022, dont 45 % pour l'ammoniac (AIE, *Tracking Clean Energy Progress*, chimie). L'ammoniac est laissé de côté, ce qui laisse 0,51 milliard de tonnes pour le méthanol et les produits chimiques à haute valeur. L'ammoniac est la matière des engrais azotés. Son CO₂ n'est réduit que du côté de la ferme, par « Moins d'azote, mieux employé », dans le périmètre du berceau à la sortie de ferme (voir [Pratiques agricoles](#method-practices)), pour qu'aucune tonne ne soit réduite deux fois.
 
 Le reste de l'industrie, environ 37 %, n'a pas de levier : l'ammoniac, l'aluminium, le papier, l'agroalimentaire et les autres.
+
+## Bâtiments efficaces
+
+Ce levier réduit l'énergie dont les bâtiments ont besoin pour les mêmes services. L'isolation et de meilleures fenêtres réduisent la chaleur qu'ils perdent, et des appareils, un éclairage et une climatisation efficaces consomment moins d'électricité. Le levier réduit à la fois le combustible brûlé dans les bâtiments et l'électricité qu'ils tirent du réseau.
+
+À adoption complète, les bâtiments consomment 42 % d'énergie de moins que dans le scénario. Le chiffre vient du sixième rapport d'évaluation du GIEC (groupe de travail III, chapitre 9, section 9.6.2 et figure 9.16). Le chapitre regroupe des études ascendantes de toutes les régions. Il trouve que les technologies et pratiques d'efficacité énergétique pourraient éviter 5,6 milliards de tonnes de CO₂ en 2050, soit 42 % des émissions de référence des bâtiments. Le chapitre présente ses estimations comme basses. Sa référence est le scénario des politiques actuelles de l'AIE de 2019. Ses émissions comptent à la fois le combustible brûlé dans les bâtiments et l'électricité et la chaleur qu'ils consomment. Dans l'ordre du chapitre, l'efficacité vient après la sobriété, qui évite 10 % de plus, et avant l'énergie renouvelable produite sur place, qui évite 9 %. La sobriété comprend moins de surface par personne. Aucune des deux ne fait partie de ce levier.
+
+Planetshift applique les 42 % aux deux parts des émissions des bâtiments :
+
+- **Combustible** : le CO₂ direct des bâtiments (voir *Les secteurs et leur avenir* plus haut) baisse de 42 % × l'adoption.
+- **Électricité** : les bâtiments consomment la moitié de l'électricité mondiale (AIE, *Special Report on Buildings Efficiency*, 2026). Le CO₂ du secteur électrique (voir [Énergie et transport](#method-sectors)) baisse de 42 % × 0,5 × l'adoption, sur le réseau qui reste après l'électricité renouvelable. Avec l'électricité renouvelable en entier, l'électricité économisée aurait été propre. L'économiser n'évite alors aucun CO₂.
+
+L'essentiel de l'économie porte sur l'électricité. En 2035 sous SSP2-4.5, l'adoption complète économise 0,9 milliard de tonnes du CO₂ du combustible des bâtiments et 2,9 milliards de tonnes de celui du réseau.
+
+Le chauffage propre agit ensuite sur le combustible qui reste après l'efficacité. Ses pompes à chaleur remplacent des chaudières qui brûlent 42 % de moins, donc elles consomment aussi 42 % d'électricité de moins. Aucune tonne n'est réduite deux fois.
+
+Les chiffres sont dans `app/src/levers/industry/efficiency.json`.
 
 ## Chauffage propre
 
@@ -107,7 +124,7 @@ Chaque levier réduit les co-émissions de son secteur au même rythme que le CO
 
 ## Dans l'application
 
-Le volet **Bâtiments et industrie** de la section Leviers compte deux curseurs. Chacun règle la part adoptée. Comme pour tous les leviers, cette part monte de l'année en cours jusqu'à l'année réglée par *Tous les leviers en place en* (`app/src/levers/industry/model.ts`).
+Le volet **Bâtiments et industrie** de la section Leviers compte trois curseurs. Chacun règle la part adoptée. Comme pour tous les leviers, cette part monte de l'année en cours jusqu'à l'année réglée par *Tous les leviers en place en* (`app/src/levers/industry/model.ts`).
 
 Dans la répartition par levier du résumé, tout l'effet de ces leviers compte sous *Bâtiments et industrie*. Cela comprend l'économie supplémentaire qu'apporte l'électricité renouvelable à ces leviers quand les deux sont activés. L'électricité renouvelable seule est comptée sous *Énergie et transport*. Les émissions agricoles, la carte et la bande de l'agriculture du graphique Causes du réchauffement ne changent pas.
 
@@ -115,7 +132,8 @@ Dans la répartition par levier du résumé, tout l'effet de ces leviers compte 
 
 Chaque année $y$, chaque adoption $a$ a déjà suivi sa montée, et $g$ est l'intensité du réseau dans le scénario choisi. Le réseau sur lequel puisent ces leviers est $g' = g\,(1 - a_{\text{re}})$, où $a_{\text{re}}$ est le levier « Électricité renouvelable » du volet [Énergie et transport](#method-sectors) :
 
-- Chauffage propre (`ch`) économise $a \times \text{CO}_2\text{ des bâtiments} \times (1 - k\,g')$, avec $k$ = `heatPumpKwhPerKgCo2`.
+- Bâtiments efficaces (`eb`) économisent $s \times \text{CO}_2\text{ des bâtiments} + s \times e \times \text{CO}_2\text{ de l'électricité} \times (1 - a_{\text{re}})$, avec $s = a \times p$, $p$ = `potential` (0,42) et $e$ = `electricityShare` (0,5).
+- Chauffage propre (`ch`) économise $a \times (1 - s) \times \text{CO}_2\text{ des bâtiments} \times (1 - k\,g')$, avec $k$ = `heatPumpKwhPerKgCo2`.
 - Industrie propre (`ci`) économise $a \times \text{CO}_2\text{ de l'industrie} \times \sum_{i} \text{part}_i \times \text{réduction}_i \times (1 - k_i\,g')$ sur $i$ dans l'acier, le ciment et la chimie, avec $k_i$ = `kwhPerKgCo2`.
 
 Les variations de CO₂ vont à FaIR, que lance l'application (voir la [page sur la température](#method-climate)). Ce qui les accompagne est traité comme pour les transports :
@@ -136,6 +154,10 @@ Le tableau donne le réchauffement évité en °C : la médiane, puis la fourche
 | Électricité renouvelable seule | 0,096 (0,060–0,187) ; CO₂ seul 0,093 | 0,286 (0,180–0,464) ; CO₂ seul 0,236 |
 | Chauffage propre avec électricité renouvelable | 0,115 (0,070–0,225) ; CO₂ seul 0,108 | 0,367 (0,235–0,590) ; CO₂ seul 0,297 |
 | Industrie propre avec électricité renouvelable | 0,124 (0,074–0,260) ; CO₂ seul 0,133 | 0,421 (0,265–0,707) ; CO₂ seul 0,366 |
+| Bâtiments efficaces | 0,028 (0,017–0,054) ; CO₂ seul 0,025 | 0,092 (0,060–0,147) ; CO₂ seul 0,074 |
+| Bâtiments efficaces avec chauffage propre | 0,036 (0,020–0,072) ; CO₂ seul 0,030 | 0,128 (0,082–0,211) ; CO₂ seul 0,100 |
+| Bâtiments efficaces avec électricité renouvelable | 0,107 (0,066–0,207) ; CO₂ seul 0,102 | 0,322 (0,205–0,520) ; CO₂ seul 0,264 |
+| Bâtiments efficaces avec chauffage propre et électricité renouvelable | 0,118 (0,073–0,230) ; CO₂ seul 0,111 | 0,370 (0,236–0,594) ; CO₂ seul 0,299 |
 
 Le chauffage propre gagne aux co-émissions dès le départ. Le gaz qu'il ne brûle plus aurait laissé fuir du méthane, et brûler du gaz émet peu de SO₂.
 
@@ -144,6 +166,8 @@ L'industrie propre perd plus d'un tiers de son effet de 2050 aux co-émissions. 
 Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,019 °C en 2050 et 0,081 °C en 2100. L'industrie propre y ajoute 0,028 et 0,135 °C. Sur un réseau propre, chaque levier économise plus que lorsqu'il agit seul.
 
 Les effets sont petits en 2050, pour deux raisons. Le CO₂ évité s'accumule lentement. Et sur le réseau actuel, l'électricité que consomment les procédés propres annule une grande partie de ce qu'ils économisent.
+
+Sous SSP2-4.5, les bâtiments efficaces évitent plus que le chauffage propre, car l'essentiel de ce qu'ils économisent est de l'électricité. Sous SSP1-2.6, ils évitent 0,028 °C en 2050 et 0,050 °C en 2100. Sous SSP3-7.0, ils évitent 0,029 °C en 2050 et 0,166 °C en 2100, car le réseau y reste plus carboné et chaque kWh économisé évite plus de CO₂. Avec le chauffage propre et l'électricité renouvelable en entier, les bâtiments efficaces n'ajoutent que 0,003 °C, en 2050 comme en 2100. Après les pompes à chaleur et un réseau propre, il reste peu d'énergie fossile à économiser.
 
 ## Autres industries
 
@@ -160,6 +184,7 @@ Certaines industries n'ont pas de levier. Soit les scénarios ne leur donnent pa
 - L'acier, le ciment et la chimie (sans l'ammoniac) représentent 28,9 %, 28,7 % et 5,7 % du CO₂ direct de l'industrie, chaque année et dans chaque scénario.
 - Une pompe à chaleur demande 1,49 kWh par kg de CO₂ de chaudière évité, chaque année. Pompes à chaleur et chaudières ne deviennent pas plus efficaces avec le temps.
 - L'acier, le ciment et la chimie propres réduisent de 90 %, 90 % et 80 % leur CO₂ direct à adoption complète. Ils consomment 1,5, 0,20 et 1,9 kWh d'électricité par kg évité, sur le réseau qui reste après l'électricité renouvelable.
+- L'efficacité réduit de 42 % le combustible des bâtiments et leur électricité à adoption complète, chaque année et dans chaque scénario. Les bâtiments consomment la moitié de l'électricité, donc le CO₂ du réseau baisse de 21 %. L'étape d'efficacité du GIEC comprend peut-être déjà des pompes à chaleur. Le chauffage propre n'agit que sur le combustible qui reste après l'efficacité. Aucune tonne n'est donc comptée deux fois.
 - La fabrication des équipements n'est pas comptée.
 - Ce qui accompagne le combustible des bâtiments et de l'industrie (le CO₂ de sa production, le méthane, le N₂O et la pollution de l'air) suit les rapports de CEDS en 2022 par kg de leur CO₂ fossile, CO₂ de procédé compris pour l'industrie ; les usines chimiques prennent les rapports de l'industrie, que CEDS tire des usines de fer, d'acier, de ciment et de chaux. Ces rapports évoluent avec les facteurs d'émission du scénario. L'électricité consommée ajoute les co-émissions du réseau (voir [Énergie et transport](#method-sectors)).
 
@@ -173,6 +198,8 @@ Certaines industries n'ont pas de levier. Soit les scénarios ne leur donnent pa
 - Kätelhön, A., Meys, R., Deutz, S., Suh, S. et Bardow, A. (2019). Climate change mitigation potential of carbon capture and utilization in the chemical industry. PNAS 116, 11187–11194, [doi:10.1073/pnas.1821029116](https://doi.org/10.1073/pnas.1821029116).
 - Apparel Impact Institute (2025). Taking Stock of Progress Against the Roadmap to Net Zero.
 - JRC (2026). Fiche Aluminium (JRC144120), [publications.jrc.ec.europa.eu](https://publications.jrc.ec.europa.eu/repository/handle/JRC144120).
+- GIEC (2022). Climate Change 2022: Mitigation of Climate Change, groupe de travail III, chapitre 9, Buildings, section 9.6.2 et figure 9.16, [ipcc.ch/report/ar6/wg3/chapter/chapter-9](https://www.ipcc.ch/report/ar6/wg3/chapter/chapter-9/).
+- AIE (2026). Special Report on Buildings Efficiency, résumé exécutif, [iea.org/reports/special-report-on-buildings-efficiency](https://www.iea.org/reports/special-report-on-buildings-efficiency). Licence : CC BY 4.0.
 - AIE (2022). The Future of Heat Pumps, [iea.org/reports/the-future-of-heat-pumps](https://www.iea.org/reports/the-future-of-heat-pumps). Licence : CC BY 4.0.
 - AIE (2020). Iron and Steel Technology Roadmap, [iea.org/reports/iron-and-steel-technology-roadmap](https://www.iea.org/reports/iron-and-steel-technology-roadmap) : CO₂ direct par tonne des principales filières (tableau p. 42), scénario de développement durable (p. 54), réduction par fusion avec captage et réduction à l'hydrogène (p. 92–93).
 - GIEC (2006). Lignes directrices pour les inventaires nationaux de gaz à effet de serre, volume 2, chapitre 1, tableau 1.4 : facteurs d'émission de CO₂ par défaut pour la combustion.

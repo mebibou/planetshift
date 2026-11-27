@@ -1,16 +1,20 @@
 import type { Ssp } from '../../data/types';
 import { towards } from '../../model/bands';
 import type { Band } from '../../model/climate';
-import { dataValueAt, sum } from '../../model/util';
+import { dataValueAt, recordFrom, sum } from '../../model/util';
 import { coChange, NO_CO_CHANGE, type CoYear } from '../energy/coemissions';
 import type { CoEmissions, Sectors } from '../energy/data';
-import { gridAt, hasSectors } from '../energy/model';
+import { gridAt, hasSectors, sectorCo2 } from '../energy/model';
 import { NO_LEAKS, withLeaks, type LeaksOf } from '../fossilMethane/model';
-import { INDUSTRY_PARTS, type Industry, type IndustrySector, type PartDef } from './data';
+import efficiency from './efficiency.json';
+import { INDUSTRY_PARTS, type BuildingsEfficiency, type Industry } from './data';
+import type { IndustrySector, PartDef } from './data';
 import { hasIndustry, INDUSTRY_LEVERS, type IndustryLever } from './data';
 export { hasIndustry, INDUSTRY_LEVERS, type IndustryLever };
 
 /** Levers on the direct fossil CO₂ of buildings and of industry (industry.md). */
+
+export const EFFICIENCY: BuildingsEfficiency = efficiency;
 
 /** The energy lever whose cleaner grid the heat pumps and clean industry draw on. */
 export const RENEWABLE_ELECTRICITY = 'renewableElectricity';
@@ -26,12 +30,8 @@ export const industryCo2 = (
   return s ? dataValueAt(s.years, s.values, year) : 0;
 };
 
-/** The adoptions reached in a year: the two levers and renewable electricity. */
-export interface IndustryAdoption {
-  cleanHeating: number;
-  cleanIndustry: number;
-  renewableElectricity: number;
-}
+/** The adoptions reached in a year: the module's levers and renewable electricity. */
+export type IndustryAdoption = Record<IndustryLever | typeof RENEWABLE_ELECTRICITY, number>;
 
 export interface YearContext {
   industry: Industry;
@@ -44,9 +44,10 @@ export interface YearContext {
 export type IndustrySource = 'buildings' | 'industry' | 'electricity';
 
 /**
- * Change in fossil CO₂ in a year by the sector that emits it, kg (negative when avoided): heat
- * pumps save buildings' CO₂ and clean steel, cement and chemicals save their part of industry's, and both
- * draw electricity on the grid left after renewable electricity.
+ * Change in fossil CO₂ in a year by the sector that emits it, kg (negative when avoided):
+ * efficiency cuts buildings' fuel and their share of the grid's CO₂, heat pumps replace the
+ * boilers it leaves, and clean steel, cement and chemicals save their part of industry's; heat
+ * pumps and clean industry draw electricity on the grid left after renewable electricity.
  */
 export const industryCo2BySource = (
   ctx: YearContext,
@@ -55,17 +56,23 @@ export const industryCo2BySource = (
 ): Record<IndustrySource, number> => {
   const { industry, sectors, ssp, band } = ctx;
   const grid = gridAt(sectors, ssp, year) * (1 - a.renewableElectricity);
-  const heated = a.cleanHeating * industryCo2(industry, ssp, 'buildings', year);
+  const saved = a.efficientBuildings * EFFICIENCY.potential;
+  const buildings = industryCo2(industry, ssp, 'buildings', year);
+  const heated = a.cleanHeating * (1 - saved) * buildings;
   const made = a.cleanIndustry * industryCo2(industry, ssp, 'industry', year);
   const parts = INDUSTRY_PARTS.map((name) => industry.industryParts[name]);
   const cut = (p: PartDef) => p.share * towards(p.cut, band, true);
   return {
-    buildings: -heated,
+    buildings: -saved * buildings - heated,
     industry: -made * sum(parts.map(cut)),
     electricity:
       (heated * towards(industry.heatPumpKwhPerKgCo2, band, false) +
         made * sum(parts.map((p) => cut(p) * towards(p.kwhPerKgCo2, band, false)))) *
-      grid,
+        grid -
+      saved *
+        EFFICIENCY.electricityShare *
+        sectorCo2(sectors, ssp, 'electricity', year) *
+        (1 - a.renewableElectricity),
   };
 };
 
@@ -103,11 +110,11 @@ const actingPaths = (
 ): IndustryPaths => {
   const { ssp } = ctx;
   const bySource = years.map((y) =>
-    industryCo2BySource(ctx, y, {
-      cleanHeating: adoption('cleanHeating') * shareAt(y),
-      cleanIndustry: adoption('cleanIndustry') * shareAt(y),
-      renewableElectricity: adoption(RENEWABLE_ELECTRICITY) * shareAt(y),
-    }),
+    industryCo2BySource(
+      ctx,
+      y,
+      recordFrom([...INDUSTRY_LEVERS, RENEWABLE_ELECTRICITY], (id) => adoption(id) * shareAt(y)),
+    ),
   );
   return {
     co2: bySource.map((s) => s.buildings + s.industry + s.electricity),

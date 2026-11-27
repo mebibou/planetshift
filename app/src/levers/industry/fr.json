@@ -3,6 +3,10 @@
   "description": "Réduire les combustibles fossiles brûlés dans les bâtiments et dans les usines d'acier, de ciment et de chimie : leur CO₂, le méthane qui fuit pour les produire et leur pollution de l'air, dont le refroidissement disparaît aussi.",
   "family": "Bâtiments et industrie",
   "page": "Bâtiments et industrie",
+  "efficientBuildings": {
+    "title": "Bâtiments efficaces",
+    "description": "L'isolation, de meilleures fenêtres, et des appareils et un éclairage efficaces réduisent le combustible brûlé dans les bâtiments et l'électricité qu'ils consomment. À adoption complète, les deux baissent de 42 %, ce qui laisse moins à remplacer aux pompes à chaleur et à l'électricité propre."
+  },
   "cleanHeating": {
     "title": "Chauffage propre",
     "description": "Pompes à chaleur et cuisson électrique remplacent les chaudières au gaz et au fioul : leur CO₂ disparaît, celui du réseau pour les faire tourner apparaît."

@@ -161,6 +161,7 @@ The URL keys of the options, the diet controls and the levers are listed under [
 ## Buildings and industry
 
 - **Buildings' and industry's direct CO₂ are part of each SSP's fossil CO₂, scaled to an inventory**: buildings' 2.68 Gt CO₂ in 2022 (CEDS) and industry's 9.0 Gt in 2022, taken for 2023 (IEA). Steel is 28.9%, cement 28.7% and chemicals without ammonia 5.7% of industry's, in every year and scenario. Ammonia's CO₂ is cut only by nitrogen efficiency, on the farm side. See [Buildings and industry](#method-industry).
+- **Efficient buildings cut 42% of buildings' fuel and of their electricity at full adoption** (IPCC AR6 WGIII, section 9.6.2, figure 9.16), and buildings use half of the electricity (IEA), so the grid's CO₂ falls by 21%, on the grid left after renewable electricity. Clean heating acts on the fuel that efficiency leaves. See [Buildings and industry](#method-industry).
 - **A heat pump saves the boiler's CO₂ × (1 − 1.49 kWh per kg avoided × the grid's intensity after renewable electricity).** See [Buildings and industry](#method-industry).
 - **Clean industry cuts 90%, 90% and 80% of steel's, cement's and chemicals' direct CO₂ at full adoption**, less 1.5, 0.20 and 1.9 kWh of electricity per kg avoided on the same grid. Making the equipment is not counted. See [Buildings and industry](#method-industry).
 
