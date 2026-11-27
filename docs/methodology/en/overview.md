@@ -46,7 +46,7 @@ Below is the food and farming map. For each country, it shows how farms' emissio
 Each lever is a share of adoption, from 0 to 100%. It ramps up from this year to the year you choose at the top of the panel (2035 by default), then stays at that level until 2100.
 
 - The energy and transport levers cut parts of the scenario's fossil CO₂: electric cars and trucks, less flying, clean aviation fuel, clean shipping and renewable electricity, which also cleans the extra demand of AI data centres (see [Energy and transport](#method-sectors)).
-- The buildings and industry levers cut the direct fossil CO₂ of heating, steel, cement and chemicals (see [Buildings and industry](#method-industry)).
+- The buildings and industry levers cut the direct fossil CO₂ of heating, steel, cement and chemicals, and the N₂O of nitric and adipic acid plants (see [Buildings and industry](#method-industry)).
 - Farm practices, less food waste, an end to deforestation, the rewetting of drained peat and carbon stored in farmland act on farming and land (see [Levers](#method-levers)).
 
 The diet gets its own section below because it has the most steps, not because it is the biggest lever.

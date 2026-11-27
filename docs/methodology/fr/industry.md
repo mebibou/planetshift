@@ -1,6 +1,6 @@
 # Bâtiments et industrie
 
-À côté des transports et de l'électricité, deux parties de l'économie brûlent directement des combustibles fossiles. Dans les bâtiments, des chaudières au gaz et au fioul chauffent les pièces et l'eau, et des cuisinières servent à cuisiner. Dans l'industrie, l'acier et le ciment sont les plus gros émetteurs, suivis de la chimie. Planetshift propose ici trois leviers : les bâtiments efficaces, le chauffage propre, et l'industrie propre, qui couvre l'acier, le ciment et la chimie. Adoptés en entier, le chauffage propre et l'industrie propre évitent chacun moins de 0,02 °C de réchauffement en 2050. Les bâtiments efficaces évitent environ 0,03 °C. En 2100, les bâtiments efficaces évitent environ 0,09 °C, le chauffage propre environ 0,06 °C et l'industrie propre environ 0,105 °C. Le chauffage propre et l'industrie propre en évitent bien plus quand l'électricité qu'ils consomment est propre (voir *Résultats* plus bas).
+À côté des transports et de l'électricité, deux parties de l'économie brûlent directement des combustibles fossiles. Dans les bâtiments, des chaudières au gaz et au fioul chauffent les pièces et l'eau, et des cuisinières servent à cuisiner. Dans l'industrie, l'acier et le ciment sont les plus gros émetteurs, suivis de la chimie. Planetshift propose ici quatre leviers : les bâtiments efficaces, le chauffage propre, l'industrie propre, qui couvre l'acier, le ciment et la chimie, et un levier qui détruit le N₂O des usines d'acide nitrique et d'acide adipique. Adoptés en entier, le chauffage propre et l'industrie propre évitent chacun moins de 0,02 °C de réchauffement en 2050. Les bâtiments efficaces évitent environ 0,03 °C. En 2100, les bâtiments efficaces évitent environ 0,09 °C, le chauffage propre environ 0,06 °C et l'industrie propre environ 0,105 °C. Le chauffage propre et l'industrie propre en évitent bien plus quand l'électricité qu'ils consomment est propre (voir *Résultats* plus bas). En entier, le levier des acides nitrique et adipique évite 0,002 °C en 2050 et 0,006 °C en 2100.
 
 ## Comment ces émissions sont comptées
 
@@ -112,6 +112,23 @@ Pour l'acier, le ciment et la chimie, `cut` est la part du CO₂ direct de chacu
 
 Aucun des deux leviers ne compte le CO₂ de la fabrication des pompes à chaleur, des électrolyseurs ou des installations de captage.
 
+## N₂O des acides nitrique et adipique
+
+Le troisième levier réduit un gaz qu'aucun combustible n'émet. La fabrication de l'acide nitrique et de l'acide adipique rejette du protoxyde d'azote (N₂O) comme sous-produit. L'acide nitrique sert surtout à faire des engrais azotés, et l'acide adipique du nylon. CEDS en compte 0,667 million de tonnes en 2022 : 0,397 de l'acide adipique (`2B3_Chemicals-Adipic-acid`) et 0,270 de l'acide nitrique (`2B2_Chemicals-Nitric-acid`). La Chine en émet 69 %, surtout par l'acide adipique. Les États-Unis en émettent 8 %, Singapour 5 %, l'Égypte 3 % et l'Inde 2 %. Ailleurs, beaucoup d'usines réduisent déjà leur N₂O. Les chiffres de CEDS sont les émissions qui restent après cette réduction.
+
+Après 2022, les deux suivent le N₂O des combustibles fossiles et de l'industrie du scénario (RCMIP v5.1.0, *MAGICC Fossil and Industrial*), rapporté à 2023. Les fuites de méthane suivent de la même façon le méthane de l'énergie du scénario. Les scénarios ne donnent pas de trajectoire propre à ces deux acides. Émissions en millions de tonnes de N₂O par an (2023 / 2050 / 2100) :
+
+| | SSP1-2.6 | SSP2-4.5 | SSP3-7.0 |
+| --- | --- | --- | --- |
+| Acides adipique et nitrique | 0,667 / 0,536 / 0,564 | 0,667 / 0,724 / 0,502 | 0,667 / 0,852 / 1,126 |
+
+Ce N₂O fait partie du N₂O de chaque scénario, donc le réchauffement du scénario le compte déjà. Le levier en retire une part. À 100 %, chaque usine détruit son N₂O :
+
+- **Acide adipique** : 95,5 % de son N₂O disparaît. La destruction thermique brûle les gaz de procédé, ce qui transforme 98,5 % de leur N₂O en azote. Le GIEC suppose qu'elle fonctionne 97 % du temps (Lignes directrices 2006, volume 3, tableau 3.4 : 98,5 % × 97 %). La destruction catalytique en retire moins : 92,5 % du N₂O, en fonctionnant 89 % du temps.
+- **Acide nitrique** : 72,2 % de son N₂O disparaît. Une usine à haute pression émet 9 kg de N₂O par tonne d'acide, contre 2,5 kg pour une usine qui réduit son N₂O (Refinement 2019 des Lignes directrices 2006, volume 3, tableau 3.3). Cette réduction se fait avec des catalyseurs dans le brûleur, et avec des catalyseurs ou des unités de réduction sur les gaz de queue. Les estimations de l'EPA américaine sont plus hautes, 80 à 95 % pour ces mesures (*Global Mitigation of Non-CO₂ Greenhouse Gases: 2010–2030*, 2013, chapitre IV.1). Planetshift retient les facteurs d'inventaire du GIEC, parce qu'ils donnent ce qu'émettent en moyenne les usines équipées.
+
+À 100 %, le levier retire 86 % du N₂O qu'émettent aujourd'hui les deux acides. Il ne consomme pas d'électricité. Le gaz que brûle la destruction thermique n'est pas compté. Les données sont dans `acidn2o.json`. Le code du pipeline est `pipeline/planetshift_pipeline/acid_n2o.py`, et celui du levier `app/src/levers/industry/acidN2o.ts`.
+
 ## Méthane et pollution de l'air
 
 Brûler des combustibles fossiles émet aussi du méthane et des polluants de l'air. CEDS donne ce qui accompagnait chaque kilogramme de CO₂ en 2022 :
@@ -124,7 +141,7 @@ Chaque levier réduit les co-émissions de son secteur au même rythme que le CO
 
 ## Dans l'application
 
-Le volet **Bâtiments et industrie** de la section Leviers compte trois curseurs. Chacun règle la part adoptée. Comme pour tous les leviers, cette part monte de l'année en cours jusqu'à l'année réglée par *Tous les leviers en place en* (`app/src/levers/industry/model.ts`).
+Le volet **Bâtiments et industrie** de la section Leviers compte quatre curseurs. Chacun règle la part adoptée. Comme pour tous les leviers, cette part monte de l'année en cours jusqu'à l'année réglée par *Tous les leviers en place en* (`app/src/levers/industry/model.ts`).
 
 Dans la répartition par levier du résumé, tout l'effet de ces leviers compte sous *Bâtiments et industrie*. Cela comprend l'économie supplémentaire qu'apporte l'électricité renouvelable à ces leviers quand les deux sont activés. L'électricité renouvelable seule est comptée sous *Énergie et transport*. Les émissions agricoles, la carte et la bande de l'agriculture du graphique Causes du réchauffement ne changent pas.
 
@@ -135,6 +152,7 @@ Chaque année $y$, chaque adoption $a$ a déjà suivi sa montée, et $g$ est l'i
 - Bâtiments efficaces (`eb`) économisent $s \times \text{CO}_2\text{ des bâtiments} + s \times e \times \text{CO}_2\text{ de l'électricité} \times (1 - a_{\text{re}})$, avec $s = a \times p$, $p$ = `potential` (0,42) et $e$ = `electricityShare` (0,5).
 - Chauffage propre (`ch`) économise $a \times (1 - s) \times \text{CO}_2\text{ des bâtiments} \times (1 - k\,g')$, avec $k$ = `heatPumpKwhPerKgCo2`.
 - Industrie propre (`ci`) économise $a \times \text{CO}_2\text{ de l'industrie} \times \sum_{i} \text{part}_i \times \text{réduction}_i \times (1 - k_i\,g')$ sur $i$ dans l'acier, le ciment et la chimie, avec $k_i$ = `kwhPerKgCo2`.
+- N₂O des acides nitrique et adipique (`an`) économise $a \times (0{,}955\,N_{\text{adipique}}(y) + 0{,}722\,N_{\text{nitrique}}(y))$ de N₂O, avec $N$ le N₂O de chaque acide dans le scénario (`abated` et `emissions` dans `acidn2o.json`). Il n'a pas de fourchette propre.
 
 Les variations de CO₂ vont à FaIR, que lance l'application (voir la [page sur la température](#method-climate)). Ce qui les accompagne est traité comme pour les transports :
 
@@ -169,6 +187,8 @@ Les effets sont petits en 2050, pour deux raisons. Le CO₂ évité s'accumule l
 
 Sous SSP2-4.5, les bâtiments efficaces évitent plus que le chauffage propre, car l'essentiel de ce qu'ils économisent est de l'électricité. Sous SSP1-2.6, ils évitent 0,028 °C en 2050 et 0,050 °C en 2100. Sous SSP3-7.0, ils évitent 0,029 °C en 2050 et 0,166 °C en 2100, car le réseau y reste plus carboné et chaque kWh économisé évite plus de CO₂. Avec le chauffage propre et l'électricité renouvelable en entier, les bâtiments efficaces n'ajoutent que 0,003 °C, en 2050 comme en 2100. Après les pompes à chaleur et un réseau propre, il reste peu d'énergie fossile à économiser.
 
+Adopté en entier, le levier du N₂O des acides nitrique et adipique évite 0,0019 °C (0,0012–0,0026) en 2050 et 0,0056 °C (0,0033–0,0086) en 2100 avec SSP2-4.5, 0,0015 et 0,0051 °C avec SSP1-2.6, et 0,0020 et 0,0071 °C avec SSP3-7.0. Une fois en place, il évite environ 0,6 million de tonnes de N₂O par an. Le N₂O reste dans l'air environ un siècle, donc le réchauffement qu'il évite continue de croître jusqu'en 2100. Adopté avec l'industrie propre, il ajoute à peu près ce qu'il évite seul, car les deux ne se recoupent pas.
+
 ## Autres industries
 
 Certaines industries n'ont pas de levier. Soit les scénarios ne leur donnent pas de trajectoire et il n'existe pas d'année de base ouverte d'où partir, soit leurs émissions sont surtout de l'électricité, que le levier « Électricité renouvelable » couvre déjà :
@@ -186,6 +206,7 @@ Certaines industries n'ont pas de levier. Soit les scénarios ne leur donnent pa
 - L'acier, le ciment et la chimie propres réduisent de 90 %, 90 % et 80 % leur CO₂ direct à adoption complète. Ils consomment 1,5, 0,20 et 1,9 kWh d'électricité par kg évité, sur le réseau qui reste après l'électricité renouvelable.
 - L'efficacité réduit de 42 % le combustible des bâtiments et leur électricité à adoption complète, chaque année et dans chaque scénario. Les bâtiments consomment la moitié de l'électricité, donc le CO₂ du réseau baisse de 21 %. L'étape d'efficacité du GIEC comprend peut-être déjà des pompes à chaleur. Le chauffage propre n'agit que sur le combustible qui reste après l'efficacité. Aucune tonne n'est donc comptée deux fois.
 - La fabrication des équipements n'est pas comptée.
+- Le N₂O des acides nitrique et adipique est celui de CEDS pour 2022. Après 2023, il suit le N₂O des combustibles fossiles et de l'industrie du scénario. À adoption complète, 95,5 % de celui de l'acide adipique et 72,2 % de celui de l'acide nitrique disparaissent, dans tous les pays, années et scénarios. Utiliser moins d'engrais dans les fermes ne réduit pas la quantité d'acide nitrique produite.
 - Ce qui accompagne le combustible des bâtiments et de l'industrie (le CO₂ de sa production, le méthane, le N₂O et la pollution de l'air) suit les rapports de CEDS en 2022 par kg de leur CO₂ fossile, CO₂ de procédé compris pour l'industrie ; les usines chimiques prennent les rapports de l'industrie, que CEDS tire des usines de fer, d'acier, de ciment et de chaux. Ces rapports évoluent avec les facteurs d'émission du scénario. L'électricité consommée ajoute les co-émissions du réseau (voir [Énergie et transport](#method-sectors)).
 
 ## Sources
@@ -203,6 +224,9 @@ Certaines industries n'ont pas de levier. Soit les scénarios ne leur donnent pa
 - AIE (2022). The Future of Heat Pumps, [iea.org/reports/the-future-of-heat-pumps](https://www.iea.org/reports/the-future-of-heat-pumps). Licence : CC BY 4.0.
 - AIE (2020). Iron and Steel Technology Roadmap, [iea.org/reports/iron-and-steel-technology-roadmap](https://www.iea.org/reports/iron-and-steel-technology-roadmap) : CO₂ direct par tonne des principales filières (tableau p. 42), scénario de développement durable (p. 54), réduction par fusion avec captage et réduction à l'hydrogène (p. 92–93).
 - GIEC (2006). Lignes directrices pour les inventaires nationaux de gaz à effet de serre, volume 2, chapitre 1, tableau 1.4 : facteurs d'émission de CO₂ par défaut pour la combustion.
+- GIEC (2006). Lignes directrices pour les inventaires nationaux de gaz à effet de serre, volume 3, chapitre 3, tableau 3.4 : facteurs par défaut de la production d'acide adipique, [ipcc-nggip.iges.or.jp](https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol3.html).
+- GIEC (2019). 2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories, volume 3, chapitre 3, tableau 3.3 : facteurs par défaut de la production d'acide nitrique, [ipcc-nggip.iges.or.jp](https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol3.html).
+- US EPA (2013). Global Mitigation of Non-CO₂ Greenhouse Gases: 2010–2030, chapitre IV.1, production d'acide nitrique et d'acide adipique, [epa.gov](https://www.epa.gov/sites/default/files/2016-06/documents/mac_report_2013-iv_industrial.pdf). Œuvre du gouvernement américain, dans le domaine public.
 - Vogl, V., Åhman, M. et Nilsson, L. J. (2018). Assessment of hydrogen direct reduction for fossil-free steelmaking. Journal of Cleaner Production 203, 736–745, [doi:10.1016/j.jclepro.2018.08.279](https://doi.org/10.1016/j.jclepro.2018.08.279).
 - Voldsund, M., Gardarsdottir, S. O., De Lena, E. et al. (2019). Comparison of technologies for CO₂ capture from cement production, part 1: technical evaluation. Energies 12, 559, tableaux 14 et 15, [doi:10.3390/en12030559](https://doi.org/10.3390/en12030559). Licence : CC BY 4.0.
 - worldsteel. Indicateurs de durabilité (CO₂ par tonne d'acier, électricité comprise).

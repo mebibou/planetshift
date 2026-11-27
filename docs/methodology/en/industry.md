@@ -1,6 +1,6 @@
 # Buildings and industry
 
-Besides transport and electricity, two parts of the economy burn fossil fuel directly. In buildings, gas and oil boilers heat rooms and water, and stoves cook food. In industry, steel and cement are the largest emitters, followed by chemicals. Planetshift has three levers here: efficient buildings, clean heating, and clean industry, which covers steel, cement and chemicals. Adopted in full, clean heating and clean industry each avoid less than 0.02 °C of warming in 2050. Efficient buildings avoids about 0.03 °C. In 2100, efficient buildings avoids about 0.09 °C, clean heating about 0.06 °C and clean industry about 0.105 °C. Clean heating and clean industry avoid much more when the electricity they use is clean (see *Results* below).
+Besides transport and electricity, two parts of the economy burn fossil fuel directly. In buildings, gas and oil boilers heat rooms and water, and stoves cook food. In industry, steel and cement are the largest emitters, followed by chemicals. Planetshift has four levers here: efficient buildings, clean heating, clean industry, which covers steel, cement and chemicals, and a lever that destroys the N₂O of nitric and adipic acid plants. Adopted in full, clean heating and clean industry each avoid less than 0.02 °C of warming in 2050. Efficient buildings avoids about 0.03 °C. In 2100, efficient buildings avoids about 0.09 °C, clean heating about 0.06 °C and clean industry about 0.105 °C. Clean heating and clean industry avoid much more when the electricity they use is clean (see *Results* below). In full, the nitric and adipic acid lever avoids 0.002 °C in 2050 and 0.006 °C in 2100.
 
 ## How these emissions are counted
 
@@ -112,6 +112,23 @@ For steel, cement and chemicals, `cut` is the share of each one's direct CO₂ t
 
 Neither lever counts the CO₂ of making the heat pumps, electrolysers or capture plants.
 
+## Nitric and adipic acid N₂O
+
+The third lever cuts a gas that no fuel emits. Making nitric acid and adipic acid releases nitrous oxide (N₂O) as a by-product. Most nitric acid becomes nitrogen fertiliser, and most adipic acid becomes nylon. CEDS gives 0.667 million tonnes of it in 2022: 0.397 from adipic acid (`2B3_Chemicals-Adipic-acid`) and 0.270 from nitric acid (`2B2_Chemicals-Nitric-acid`). China emits 69% of it, mostly from adipic acid. The United States emits 8%, Singapore 5%, Egypt 3% and India 2%. Many plants elsewhere already abate their N₂O, so CEDS's figures are the emissions left after that abatement.
+
+After 2022, both follow the scenario's N₂O from fossil fuels and industry (RCMIP v5.1.0, *MAGICC Fossil and Industrial*), relative to 2023. The methane leaks follow the scenario's energy methane in the same way. The scenarios do not give these two acids a path of their own. Emissions in million tonnes of N₂O a year (2023 / 2050 / 2100):
+
+| | SSP1-2.6 | SSP2-4.5 | SSP3-7.0 |
+| --- | --- | --- | --- |
+| Adipic and nitric acid | 0.667 / 0.536 / 0.564 | 0.667 / 0.724 / 0.502 | 0.667 / 0.852 / 1.126 |
+
+This N₂O is part of each scenario's N₂O, so the scenario's warming already includes it. The lever removes a share of it. At 100%, every plant destroys its N₂O:
+
+- **Adipic acid**: 95.5% of its N₂O is removed. Thermal destruction burns the off-gas, which turns 98.5% of its N₂O into nitrogen. The IPCC assumes it runs 97% of the time (2006 Guidelines, volume 3, table 3.4: 98.5% × 97%). Catalytic destruction removes less: 92.5% of the N₂O, running 89% of the time.
+- **Nitric acid**: 72.2% of its N₂O is removed. A high-pressure plant emits 9 kg of N₂O per tonne of acid, and one with N₂O abatement 2.5 kg (2019 Refinement to the 2006 Guidelines, volume 3, table 3.3). Abatement covers catalysts in the burner and catalysts or reduction units on the tail gas. The US EPA's estimates are higher, 80–95% for these measures (*Global Mitigation of Non-CO₂ Greenhouse Gases: 2010–2030*, 2013, chapter IV.1). Planetshift keeps the IPCC's inventory factors, because they are what plants with abatement emit on average.
+
+At 100%, the lever removes 86% of the N₂O the two acids emit today. It draws no electricity. The gas that thermal destruction burns is not counted. The data is in `acidn2o.json`. The pipeline code is `pipeline/planetshift_pipeline/acid_n2o.py`, and the lever's code is `app/src/levers/industry/acidN2o.ts`.
+
 ## Methane and air pollution
 
 Burning fossil fuel also emits methane and air pollutants. CEDS gives how much came with each kilogram of CO₂ in 2022:
@@ -124,7 +141,7 @@ Each lever cuts its sector's co-emissions in step with the CO₂ it removes. The
 
 ## In the app
 
-The **Buildings and industry** fold of the Levers section has three sliders. Each sets the share adopted. Like every lever, it ramps in from the current year to the year set by *All levers fully in place by* (`app/src/levers/industry/model.ts`).
+The **Buildings and industry** fold of the Levers section has four sliders. Each sets the share adopted. Like every lever, it ramps in from the current year to the year set by *All levers fully in place by* (`app/src/levers/industry/model.ts`).
 
 In the breakdown by lever in the summary, all of these levers' effect counts as *Buildings and industry*. This includes the extra saving that renewable electricity brings to them when both are on. Renewable electricity alone is counted under *Energy and transport*. The farm emissions, the map and the farming band of the Causes of warming chart do not change.
 
@@ -135,6 +152,7 @@ In each year $y$, each adoption $a$ is already ramped, and $g$ is the grid's int
 - Efficient buildings (`eb`) saves $s \times \text{buildings' CO}_2 + s \times e \times \text{electricity's CO}_2 \times (1 - a_{\text{re}})$, with $s = a \times p$, $p$ = `potential` (0.42) and $e$ = `electricityShare` (0.5).
 - Clean heating (`ch`) saves $a \times (1 - s) \times \text{buildings' CO}_2 \times (1 - k\,g')$, with $k$ = `heatPumpKwhPerKgCo2`.
 - Clean industry (`ci`) saves $a \times \text{industry's CO}_2 \times \sum_{i} \text{share}_i \times \text{cut}_i \times (1 - k_i\,g')$ over $i$ in steel, cement and chemicals, with $k_i$ = `kwhPerKgCo2`.
+- Nitric and adipic acid N₂O (`an`) saves $a \times (0.955\,N_{\text{adipic}}(y) + 0.722\,N_{\text{nitric}}(y))$ of N₂O, with $N$ each acid's N₂O in the scenario (`abated` and `emissions` in `acidn2o.json`). It has no range of its own.
 
 The CO₂ changes go to FaIR, which the app runs (see the [temperature page](#method-climate)). What comes with them is treated as for transport:
 
@@ -169,6 +187,8 @@ The effects are small in 2050 for two reasons. The CO₂ avoided adds up slowly.
 
 On SSP2-4.5, efficient buildings avoids more than clean heating, because most of what it saves is electricity. On SSP1-2.6 it avoids 0.028 °C in 2050 and 0.050 °C in 2100. On SSP3-7.0 it avoids 0.029 °C in 2050 and 0.166 °C in 2100, because the grid emits more CO₂ per kWh there and each kWh saved avoids more CO₂. With clean heating and renewable electricity in full, efficient buildings adds only 0.003 °C, in 2050 as in 2100. After heat pumps and a clean grid, little fossil energy is left for it to save.
 
+Adopted in full, the nitric and adipic acid N₂O lever avoids 0.0019 °C (0.0012–0.0026) in 2050 and 0.0056 °C (0.0033–0.0086) in 2100 on SSP2-4.5, 0.0015 and 0.0051 °C on SSP1-2.6, and 0.0020 and 0.0071 °C on SSP3-7.0. Once in place, it avoids about 0.6 million tonnes of N₂O a year. N₂O stays in the air for about a century, so the warming it avoids keeps growing to 2100. Adopted with clean industry, it adds about as much as it avoids alone, because the two do not overlap.
+
 ## Other industries
 
 Some industries have no lever. Either the scenarios give no trajectory for them and there is no open base year to start from, or their emissions are mostly electricity, which the renewable-electricity lever already covers:
@@ -186,6 +206,7 @@ Some industries have no lever. Either the scenarios give no trajectory for them 
 - Clean steel, cement and chemicals cut 90%, 90% and 80% of their direct CO₂ at full adoption. They draw 1.5, 0.20 and 1.9 kWh of electricity per kg avoided, on the grid left after renewable electricity.
 - Efficiency cuts 42% of buildings' fuel and of their electricity at full adoption, in every year and scenario. Buildings use half of the electricity, so the grid's CO₂ falls by 21%. The IPCC's efficiency step may already include some heat pumps. Clean heating acts only on the fuel left after efficiency, so no tonne is counted twice.
 - Making the equipment is not counted.
+- The N₂O of nitric and adipic acid is CEDS's for 2022. After 2023, it follows the scenario's N₂O from fossil fuels and industry. At full adoption, 95.5% of adipic acid's and 72.2% of nitric acid's is removed, in every country, year and scenario. Using less fertiliser on farms does not reduce the nitric acid made.
 - What comes with the fuel of buildings and of industry (the CO₂ of producing it, methane, N₂O and air pollution) uses CEDS's 2022 ratios per kg of their fossil CO₂, process CO₂ included for industry; chemical plants take industry's ratios, which CEDS draws from iron, steel, cement and lime plants. These ratios change with the scenario's emission factors. The electricity drawn adds the grid's co-emissions (see [Energy and transport](#method-sectors)).
 
 ## Sources
@@ -203,6 +224,9 @@ Some industries have no lever. Either the scenarios give no trajectory for them 
 - IEA (2022). The Future of Heat Pumps, [iea.org/reports/the-future-of-heat-pumps](https://www.iea.org/reports/the-future-of-heat-pumps). Licence: CC BY 4.0.
 - IEA (2020). Iron and Steel Technology Roadmap, [iea.org/reports/iron-and-steel-technology-roadmap](https://www.iea.org/reports/iron-and-steel-technology-roadmap): direct CO₂ intensity of the main routes (table, p. 42), the Sustainable Development Scenario (p. 54), smelting reduction with capture and hydrogen reduction (pp. 92–93).
 - IPCC (2006). Guidelines for National Greenhouse Gas Inventories, volume 2, chapter 1, table 1.4: default CO₂ emission factors for combustion.
+- IPCC (2006). Guidelines for National Greenhouse Gas Inventories, volume 3, chapter 3, table 3.4: default factors for adipic acid production, [ipcc-nggip.iges.or.jp](https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol3.html).
+- IPCC (2019). 2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories, volume 3, chapter 3, table 3.3: default factors for nitric acid production, [ipcc-nggip.iges.or.jp](https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol3.html).
+- US EPA (2013). Global Mitigation of Non-CO₂ Greenhouse Gases: 2010–2030, chapter IV.1, nitric and adipic acid production, [epa.gov](https://www.epa.gov/sites/default/files/2016-06/documents/mac_report_2013-iv_industrial.pdf). A work of the US government, in the public domain.
 - Vogl, V., Åhman, M. and Nilsson, L. J. (2018). Assessment of hydrogen direct reduction for fossil-free steelmaking. Journal of Cleaner Production 203, 736–745, [doi:10.1016/j.jclepro.2018.08.279](https://doi.org/10.1016/j.jclepro.2018.08.279).
 - Voldsund, M., Gardarsdottir, S. O., De Lena, E. et al. (2019). Comparison of technologies for CO₂ capture from cement production, part 1: technical evaluation. Energies 12, 559, tables 14 and 15, [doi:10.3390/en12030559](https://doi.org/10.3390/en12030559). Licence: CC BY 4.0.
 - worldsteel. Sustainability indicators (CO₂ per tonne of steel, including electricity).

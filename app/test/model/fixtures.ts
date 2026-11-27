@@ -36,6 +36,7 @@ import fossilmethane from '../../public/fixtures/fossilmethane.json';
 import wastemethane from '../../public/fixtures/wastemethane.json';
 import hfc from '../../public/fixtures/hfc.json';
 import pollination from '../../public/fixtures/pollination.json';
+import acidn2o from '../../public/fixtures/acidn2o.json';
 
 /** The fixtures in public/fixtures, as the app loads them. */
 export const loadFixtures = (): ModelData =>
@@ -68,6 +69,7 @@ export const loadFixtures = (): ModelData =>
     water: water as unknown as Water,
     fossilmethane,
     pollination: pollination as unknown as Pollination,
+    acidn2o,
   }) as unknown as ModelData;
 
 export const CURRENT_YEAR = 2026;

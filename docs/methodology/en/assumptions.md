@@ -164,6 +164,7 @@ The URL keys of the options, the diet controls and the levers are listed under [
 - **Efficient buildings cut 42% of buildings' fuel and of their electricity at full adoption** (IPCC AR6 WGIII, section 9.6.2, figure 9.16), and buildings use half of the electricity (IEA), so the grid's CO₂ falls by 21%, on the grid left after renewable electricity. Clean heating acts on the fuel that efficiency leaves. See [Buildings and industry](#method-industry).
 - **A heat pump saves the boiler's CO₂ × (1 − 1.49 kWh per kg avoided × the grid's intensity after renewable electricity).** See [Buildings and industry](#method-industry).
 - **Clean industry cuts 90%, 90% and 80% of steel's, cement's and chemicals' direct CO₂ at full adoption**, less 1.5, 0.20 and 1.9 kWh of electricity per kg avoided on the same grid. Making the equipment is not counted. See [Buildings and industry](#method-industry).
+- **Destroying the N₂O of nitric and adipic acid plants removes 72.2% and 95.5% of it at full adoption** (IPCC inventory factors). Their N₂O is CEDS's in 2022, following the scenario's N₂O from fossil fuels and industry. See [Buildings and industry](#method-industry).
 
 ## Climate
 

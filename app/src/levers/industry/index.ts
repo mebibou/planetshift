@@ -11,6 +11,7 @@ import { forcingResponseOf } from '../energy/model';
 import { anyAdopted, lever } from '../define';
 import type { LeverModule } from '../types';
 import { industrySpec } from './spec';
+import { ACID_N2O_LEVER, acidN2oPath, withAcidN2o } from './acidN2o';
 import { leaksOf } from '../fossilMethane/model';
 import { INDUSTRY_LEVERS, industryPaths, type IndustryLever } from './model';
 
@@ -46,9 +47,19 @@ export const industry: LeverModule = {
           leaksOf(prepared.data.fossilmethane, adoption, options.ssp, shareAt),
         ),
       );
+      const acid = acidN2oPath(
+        prepared.data.acidn2o,
+        adoption(ACID_N2O_LEVER),
+        options.ssp,
+        years,
+        shareAt,
+      );
       return {
         extraEmissions: bandRecord((band) =>
-          coGases(paths[band].co2, paths[band].co, departs(prepared.data, 'fossilMethaneCo2')),
+          withAcidN2o(
+            coGases(paths[band].co2, paths[band].co, departs(prepared.data, 'fossilMethaneCo2')),
+            acid,
+          ),
         ),
         warmingByCause:
           anyAdopted(adoption, LEVERS) && hasCoEmissions(coemissions)

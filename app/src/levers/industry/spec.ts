@@ -2,6 +2,7 @@ import { hasSectors } from '../energy/data';
 import { lever } from '../define';
 import type { LeverSpec } from '../types';
 import { EMPTY_INDUSTRY } from './data';
+import { ACID_N2O_LEVER, EMPTY_ACID_N2O, hasAcidN2o } from './acidN2o';
 import { hasIndustry, INDUSTRY_LEVERS, type IndustryLever } from './data';
 
 const ID = 'industry';
@@ -10,7 +11,10 @@ const KEYS: Record<IndustryLever, string> = {
   cleanHeating: 'ch',
   cleanIndustry: 'ci',
 };
-const LEVERS = INDUSTRY_LEVERS.map((id) => lever(ID, id, KEYS[id]));
+const LEVERS = [
+  ...INDUSTRY_LEVERS.map((id) => lever(ID, id, KEYS[id])),
+  lever(ID, ACID_N2O_LEVER, 'an'),
+];
 
 /**
  * The direct fossil CO₂ of buildings' heating and of steel, cement and chemicals, with the methane and air
@@ -24,8 +28,14 @@ export const industrySpec: LeverSpec = {
   cause: 'fossilIndustry',
   levers: LEVERS,
   options: [],
-  files: [{ name: 'industry', empty: EMPTY_INDUSTRY }],
-  available: (data) => hasIndustry(data.industry) && hasSectors(data.sectors),
+  files: [
+    { name: 'industry', empty: EMPTY_INDUSTRY },
+    { name: 'acidn2o', empty: EMPTY_ACID_N2O },
+  ],
+  available: (data, id) =>
+    id === ACID_N2O_LEVER
+      ? hasAcidN2o(data.acidn2o)
+      : hasIndustry(data.industry) && hasSectors(data.sectors),
   ui: { section: 'levers' },
   methodology: { page: 'industry' },
 };

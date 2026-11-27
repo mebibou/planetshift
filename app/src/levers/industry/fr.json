@@ -14,5 +14,9 @@
   "cleanIndustry": {
     "title": "Industrie propre",
     "description": "Acier fait à l'hydrogène ou à la ferraille au four électrique, ciment avec le CO₂ de ses fours capté, et chimie à l'hydrogène électrolytique ou au captage du carbone ; l'électricité qu'ils consomment compte. L'ammoniac est laissé aux pratiques agricoles."
+  },
+  "acidN2o": {
+    "title": "N₂O des acides nitrique et adipique",
+    "description": "Des catalyseurs et la destruction thermique décomposent le N₂O que rejettent les usines d'acide nitrique (pour les engrais) et d'acide adipique (pour le nylon). À 100 %, 72 % du N₂O des usines d'acide nitrique et 96 % de celui des usines d'acide adipique disparaissent (GIEC)."
   }
 }

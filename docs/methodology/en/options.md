@@ -107,7 +107,7 @@ Each lever's adoption is 0–100, in percent. It is left out of the address at 0
 | Deforestation | deforestation stopped (`df`), drained peat rewetted (`pr`) |
 | Carbon in farmland | cover crops (`cc`), trees on farms (`af`), biochar (`bc`), rock dust, experimental (`ew`) |
 | Energy and transport | electric cars (`ev`), electric trucks (`et`), less flying (`fl`), clean aviation fuel (`saf`), clean shipping (`cs`), renewable electricity (`re`) |
-| Buildings and industry | efficient buildings (`eb`), clean heating (`ch`), clean industry (`ci`) |
+| Buildings and industry | efficient buildings (`eb`), clean heating (`ch`), clean industry (`ci`), nitric and adipic acid N₂O (`an`) |
 | Methane leaks | oil and gas leaks (`ogm`), coal-mine methane (`cmm`) |
 | Direct air capture | direct air capture (`dac`) |
 | HFC phase-down | HFC phase-down (`hfc`) |

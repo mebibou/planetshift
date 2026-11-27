@@ -84,7 +84,7 @@ Each lever's adoption is a percentage under the key its module declares. A lever
 | `deforestation` | `df` deforestation, `pr` drained peat rewetted |
 | `removals` | `cc` cover crops, `af` agroforestry, `bc` biochar, `ew` rock dust (experimental) |
 | `energy` | `ev` electric cars, `et` electric trucks, `fl` less flying, `saf` clean aviation fuel, `cs` clean shipping, `re` renewable electricity |
-| `industry` | `eb` efficient buildings, `ch` clean heating, `ci` clean industry |
+| `industry` | `eb` efficient buildings, `ch` clean heating, `ci` clean industry, `an` nitric and adipic acid N₂O |
 
 Each option follows under its key, and is left out at its default: `scope`, `feed`, `base`, `loc`, `temp`, `clim`, `ssp`, and the modules' `pop`, `regrow`, `deadfall`, `dc` and `pf`.
 
