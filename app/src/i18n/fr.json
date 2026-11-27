@@ -198,6 +198,7 @@
       "waste": "Déchets",
       "fossilMethane": "Fuites de méthane",
       "fires": "Incendies",
+      "pollination": "Pollinisateurs",
       "change": "Variation",
       "quality": "Qualité des données"
     },
@@ -245,9 +246,11 @@
       "wasteMethane": "Méthane des décharges et des eaux usées avec les leviers, par an",
       "fireAnomaly": "Surface brûlée pendant la saison des feux {season} par rapport à la moyenne {from}–{to} (aucun levier ne la change)",
       "forestFireAnomaly": "Forêt brûlée pendant la saison des feux {season} par rapport à la moyenne {from}–{to} (aucun levier ne la change)",
-      "fireCarbon": "Carbone émis par les incendies pendant la saison des feux {season} (aucun levier ne le change)"
+      "fireCarbon": "Carbone émis par les incendies pendant la saison des feux {season} (aucun levier ne le change)",
+      "pollination": "Production végétale issue de cultures dépendant des pollinisateurs, en poids, avec les leviers"
     },
     "notes": {
+      "pollination": "La part de la production végétale de chaque pays, en poids, qui vient de cultures pollinisées par les animaux, surtout des insectes. Une culture compte si les pollinisateurs augmentent son rendement, même peu. Chaque culture a la classe que lui donnent Aizen et al. (2019), la plupart reprises de Klein et al. (2007). L'infobulle donne aussi la part due à la pollinisation elle-même. Cette part est le rendement que chaque culture perdrait sans pollinisateurs, de 5 % à 95 % selon la classe (Aizen et al. 2009). C'est ce qui dépend des pollinisateurs dans la production, pas une perte attendue dans un scénario. Les produits animaux ne sont pas comptés. Leurs cultures fourragères comptent là où elles sont cultivées.",
       "fossilMethane": "Le méthane qui fuit en produisant le pétrole, le gaz et le charbon dans chaque pays en 2022, d'après CEDS : puits de pétrole et de gaz, leur dégazage et leur torchage, gazoducs, et mines de charbon. C'est là où le combustible est produit, pas là où il est brûlé. Avec les leviers, c'est ce méthane moins la part qu'enlèvent les deux leviers sur les fuites : à 100 %, 75 % du méthane du pétrole et du gaz et 50 % de celui des mines de charbon. Les leviers qui brûlent moins de combustible réduisent aussi les fuites du monde, mais la carte ne répartit pas cette baisse par pays. L'infobulle donne chaque part.",
       "water": "L'eau douce prélevée dans les rivières, les lacs et les nappes pour les cultures et les animaux de chaque pays et pour fabriquer les intrants de la ferme. Ce sont les litres par tonne de chaque aliment multipliés par sa production. HESTIA donne les litres des cultures qu'il couvre. Poore & Nemecek (2018) donnent le reste. Les produits animaux comptent l'eau utilisée à la ferme, pas leurs aliments concentrés, comptés sur les cultures. La pisciculture n'est pas comptée. Les litres par tonne ne changent pas avec les leviers : l'eau suit la production. L'eau ne change pas le réchauffement. L'infobulle donne la surface équipée pour l'irrigation.",
       "waterScarcity": "La consommation d'eau pondérée par la rareté de l'eau là où elle est utilisée (AWARE 2.0), en litres-équivalent. Elle ne couvre que les cultures pour lesquelles HESTIA a une agrégation du pays lui-même : les pays sont incomplets et ne se comparent pas sur ce chiffre. Elle ne s'ajoute pas aux litres prélevés.",
@@ -308,6 +311,12 @@
       "coalMineMethane": "Dont mines de charbon, aujourd'hui",
       "wasteMethane": "Méthane des décharges et des eaux usées, par an",
       "wasteSectors": { "landfill": "Décharges et dépôts", "wastewater": "Eaux usées" },
+      "pollination": "Issue de cultures dépendant des pollinisateurs, en poids",
+      "pollinationShares": {
+        "attributableTonnes": "Due à la pollinisation, en poids",
+        "dependentKcal": "Issue de cultures dépendant des pollinisateurs, en calories",
+        "attributableKcal": "Due à la pollinisation, en calories"
+      },
       "unchanged": "Aucun levier ne le change",
       "perPerson": "Par personne, par an",
       "largestTypes": "Principaux types",
@@ -475,6 +484,10 @@
       "value": "{value} cm",
       "detail": "Fourchette probable de {low} à {high} cm. Sans les leviers, la mer est {baseline} m au-dessus de son niveau de 1900 en 2100 (fourchette probable de {baselineLow} à {baselineHigh} m), d'après une vitesse ajustée sur le GIEC AR6. La hausse que les leviers évitent continue de croître après 2100. Ce chiffre laisse cela de côté."
     },
+    "pollination": {
+      "label": "Production végétale issue de cultures dépendant des pollinisateurs",
+      "detail": "en poids, aujourd'hui et une fois les leviers en place. La pollinisation elle-même en représente {attributable}. En calories, ces cultures en donnent {dependentKcal} et la pollinisation elle-même {attributableKcal}. C'est ce qui dépend des pollinisateurs dans la production, pas une perte. Classes des cultures d'Aizen et al. (2019)."
+    },
     "water": {
       "label": "Eau douce prélevée pour l'agriculture",
       "detail": "par an, une fois les leviers en place : {change}. Les litres par tonne viennent de HESTIA pour les cultures qu'il couvre et de Poore & Nemecek (2018) pour le reste. La pisciculture n'est pas comptée. L'eau ne change pas le réchauffement."
@@ -579,6 +592,7 @@
       "impacts": "Ce que signifie le réchauffement",
       "biodiversity": "Biodiversité",
       "water": "Eau douce",
+      "pollination": "Pollinisateurs",
       "options": "Options",
       "assumptions": "Hypothèses",
       "limitations": "Limites"

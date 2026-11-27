@@ -63,6 +63,19 @@ export interface Options {
   ssp: Ssp;
 }
 
+/**
+ * The production of the crops pollination.json rates, in tonnes and kcal, the part from crops
+ * that depend on pollinators at all, and the part pollination gives (each crop's ratio).
+ */
+export interface PollinationTotals {
+  tonnes: number;
+  dependentTonnes: number;
+  attributableTonnes: number;
+  kcal: number;
+  dependentKcal: number;
+  attributableKcal: number;
+}
+
 export interface CountryResult {
   iso3: string;
   /**
@@ -104,6 +117,9 @@ export interface CountryResult {
   waterScarcityChange: number;
   /** Land equipped for irrigation, ha, where FAOSTAT gives it. */
   irrigatedHa?: number;
+  /** Crop production and its pollinator-dependent part, today and its change; none without pollination.json. */
+  pollination?: PollinationTotals;
+  pollinationChange?: PollinationTotals;
   /** Food's emissions after the farm, kg a year, and their change at the full shift; none without chain.json. */
   chain?: GasVector;
   chainChange?: GasVector;

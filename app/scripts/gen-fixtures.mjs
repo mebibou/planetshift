@@ -1048,6 +1048,24 @@ write('water.json', {
   irrigatedHa: { FRA: 2.9e6, USA: 2.67e7, IND: 7.6e7, BRA: 8.2e6 },
 });
 
+// pollinator dependence [ratio, share of dependent crops]: oats unrated; FRA's tomatoes its own
+write('pollination.json', {
+  source: 'https://doi.org/10.1111/gcb.14736',
+  world: {
+    2511: [0, 0],
+    2514: [0, 0],
+    2807: [0, 0],
+    2546: [0.05, 1],
+    2555: [0.25, 1],
+    2571: [0.25, 1],
+    2531: [0, 0],
+    2601: [0.05, 1],
+    2615: [0, 0],
+    2536: [0, 0],
+  },
+  byCountry: { FRA: { 2601: [0.65, 1] } },
+});
+
 // food's emissions after the farm: each food's Poore & Nemecek weight at the shared stages, and
 // kg of each gas per weighted tonne by country and stage; IND left to the world's
 write('chain.json', {

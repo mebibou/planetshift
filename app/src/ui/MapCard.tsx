@@ -43,6 +43,7 @@ import {
   LAND_SHARE_THRESHOLDS,
   MAMMAL_THRESHOLDS,
   pickColours,
+  POLLINATION_THRESHOLDS,
   SPECIES_DENSITY_THRESHOLDS,
   SPECIES_THRESHOLDS,
   thresholdsFor,
@@ -97,6 +98,7 @@ const FIXED_THRESHOLDS: Partial<Record<Measure, number[]>> = {
   speciesDensity: SPECIES_DENSITY_THRESHOLDS,
   fireAnomaly: FIRE_ANOMALY_THRESHOLDS,
   forestFireAnomaly: FIRE_ANOMALY_THRESHOLDS,
+  pollination: POLLINATION_THRESHOLDS,
 };
 
 const fixedThresholds = (spec: LayerSpec): number[] | undefined =>
@@ -140,6 +142,7 @@ const MEASURE_TITLES: Record<Measure, (t: T, ui: UiState, years: readonly number
   fireAnomaly: (t, _, years) => t('map.legend.fireAnomaly', fireYears(years)),
   forestFireAnomaly: (t, _, years) => t('map.legend.forestFireAnomaly', fireYears(years)),
   fireCarbon: (t, _, years) => t('map.legend.fireCarbon', fireYears(years)),
+  pollination: (t) => t('map.legend.pollination'),
 };
 
 /** fires.json's season, then the first and last years of its mean; none without the file. */

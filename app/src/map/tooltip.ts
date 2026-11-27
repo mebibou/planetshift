@@ -1,4 +1,5 @@
 import type { CountryResult } from '../model/api';
+import { hasPollination, pollinationShares, type PollinationShares } from '../app/pollination';
 import { speciesAfter } from '../model/species';
 import type { T } from '../i18n/i18n';
 import {
@@ -23,6 +24,7 @@ import {
   relativeChange,
   type GasChoice,
   type LandUseCo2,
+  type Layer,
   type LayerSpec,
   type Measure,
   UNCHANGED,
@@ -63,6 +65,7 @@ const FORMATS: Record<Measure, (locale: string, v: number) => string> = {
   fireAnomaly: (locale, v) => formatPercent(locale, v, 0, true),
   forestFireAnomaly: (locale, v) => formatPercent(locale, v, 0, true),
   fireCarbon: (locale, v) => formatCarbon(locale, v),
+  pollination: formatShare,
 };
 
 /** A layer's quantity in its unit: tonnes of product, kg of gas, hectares, or a share of land. */
@@ -320,6 +323,28 @@ const fireRows = (c: CountryResult, t: T, locale: string): [string, string][] =>
     : [];
 };
 
+const POLLINATION_ROWS: readonly (keyof PollinationShares)[] = [
+  'attributableTonnes',
+  'dependentKcal',
+  'attributableKcal',
+];
+
+/** The other shares of crop production pollinators help, today and with the levers. */
+const pollinationRows = (c: CountryResult, t: T, locale: string): [string, string][] => {
+  const s = pollinationShares([c]);
+  return s
+    ? POLLINATION_ROWS.map((k) => [
+        t(`map.tooltip.pollinationShares.${k}`),
+        t('map.tooltip.beforeAfter', {
+          before: formatShare(locale, s.before[k]),
+          after: formatShare(locale, s.after[k]),
+        }),
+      ])
+    : [];
+};
+
+const AIZEN = 'https://doi.org/10.1111/gcb.14736';
+
 interface Extra {
   rows: [string, string][];
   source?: TooltipModel['source'];
@@ -397,6 +422,13 @@ const MEASURE_TOOLTIPS: Record<
   fossilMethane: {
     what: (t) => t('map.tooltip.fossilMethane'),
     extra: (c, t, locale) => ({ rows: leakRows(c, t, locale) }),
+  },
+  pollination: {
+    what: (t) => t('map.tooltip.pollination'),
+    extra: (c, t, locale) => ({
+      rows: pollinationRows(c, t, locale),
+      source: { label: 'Aizen et al. (2019)', url: AIZEN },
+    }),
   },
   wasteMethane: {
     what: (t) => t('map.tooltip.wasteMethane'),
@@ -537,11 +569,15 @@ const countryTooltip = (
   };
 };
 
-/** Whether the layer has data for a country: every layer but waste and leaked methane has it for every country. */
+/** The layers with data for some countries only; every other layer has it for every country. */
+const HAS_DATA: Partial<Record<Layer, (c: CountryResult, spec: LayerSpec) => boolean>> = {
+  waste: (c, spec) => hasWasteData(c, measureOf(spec)),
+  fossilMethane: (c) => c.fossilMethane !== undefined,
+  pollination: hasPollination,
+};
+
 const hasData = (c: CountryResult, spec: LayerSpec): boolean =>
-  spec.layer === 'fossilMethane'
-    ? c.fossilMethane !== undefined
-    : spec.layer !== 'waste' || hasWasteData(c, measureOf(spec));
+  HAS_DATA[spec.layer]?.(c, spec) ?? true;
 
 /** A country's tooltip on a layer the run gives it data for, or no data. */
 const runTooltip = (

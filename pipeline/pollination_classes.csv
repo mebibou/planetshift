@@ -1,0 +1,116 @@
+qcl_code,qcl_item,class,aizen_item
+15,Wheat,0,Wheat
+27,Rice,0,"Rice, paddy"
+44,Barley,0,Barley
+56,Maize (corn),0,Maize
+71,Rye,0,Rye
+75,Oats,0,Oats
+79,Millet,0,Millet
+83,Sorghum,0,Sorghum
+89,Buckwheat,3,Buckwheat
+92,Quinoa,0,Quinoa
+97,Triticale,0,Triticale
+103,Mixed grain,0,"Grain, mixed"
+116,Potatoes,0,Potatoes
+122,Sweet potatoes,0,Sweet potatoes
+125,"Cassava, fresh",0,Cassava
+135,Yautia,0,Yautia (cocoyam)
+136,Taro,0,Taro (cocoyam)
+137,Yams,0,Yams
+156,Sugar cane,0,Sugar cane
+157,Sugar beet,0,Sugar beet
+176,"Beans, dry",1,"Beans, dry"
+181,"Broad beans and horse beans, dry",2,"Broad beans, horse beans, dry"
+187,"Peas, dry",0,"Peas, dry"
+191,"Chick peas, dry",0,Chick peas
+195,"Cow peas, dry",1,"Cow peas, dry"
+197,"Pigeon peas, dry",1,Pigeon peas
+201,"Lentils, dry",0,Lentils
+203,"Bambara beans, dry",1,Bambara beans
+216,"Brazil nuts, in shell",4,"Brazil nuts, with shell"
+217,"Cashew nuts, in shell",3,"Cashew nuts, with shell"
+220,"Chestnuts, in shell",2,Chestnut
+221,"Almonds, in shell",3,"Almonds, with shell"
+222,"Walnuts, in shell",0,"Walnuts, with shell"
+223,"Pistachios, in shell",0,Pistachios
+224,Kola nuts,3,Kola nuts
+225,"Hazelnuts, in shell",0,"Hazelnuts, with shell"
+226,Areca nuts,0,Areca nuts
+236,Soya beans,2,Soybeans
+242,"Groundnuts, excluding shelled",1,"Groundnuts, with shell"
+249,"Coconuts, in shell",2,Coconuts
+254,Oil palm fruit,1,"Oil, palm fruit"
+260,Olives,0,Olives
+263,Karite nuts (sheanuts),2,Karite nuts (sheanuts)
+265,Castor oil seeds,0,Castor oil seed
+267,Sunflower seed,2,Sunflower seed
+270,Rape or colza seed,2,Rapeseed
+277,Jojoba seeds,0,Jojoba seeds
+280,Safflower seed,1,Safflower seed
+289,Sesame seed,2,Sesame seed
+292,Mustard seed,2,Mustard seed
+296,Poppy seed,1,Poppy seed
+299,Melonseed,4,Melonseed
+328,"Seed cotton, unginned",2,Seed cotton
+333,Linseed,1,Linseed
+358,Cabbages,0,Cabbages and other brassicas
+367,Asparagus,0,Asparagus
+372,Lettuce and chicory,0,Lettuce and chicory
+373,Spinach,0,Spinach
+378,Cassava leaves,0,Cassava leaves
+388,Tomatoes,1,Tomatoes
+393,Cauliflowers and broccoli,0,Cauliflowers and broccoli
+394,"Pumpkins, squash and gourds",4,"Pumpkins, squash and gourds"
+397,Cucumbers and gherkins,3,Cucumbers and gherkins
+399,Eggplants (aubergines),2,Eggplants (aubergines)
+401,"Chillies and peppers, green",1,"Chillies and peppers, green"
+402,"Onions and shallots, green",0,"Onions, shallots, green"
+403,"Onions and shallots, dry (excluding dehydrated)",0,"Onions, dry"
+406,Green garlic,0,Garlic
+407,Leeks and other alliaceous vegetables,0,"Leeks, other alliaceous vegetables"
+414,"Other beans, green",1,"Beans, green"
+417,"Peas, green",0,"Peas, green"
+423,String beans,1,String beans
+426,Carrots and turnips,0,Carrots and turnips
+430,Okra,2,Okra
+446,Green corn (maize),0,"Maize, green"
+459,Chicory roots,0,Chicory roots
+486,Bananas,0,Bananas
+489,Plantains and cooking bananas,0,Bananas
+490,Oranges,1,Oranges
+495,"Tangerines, mandarins, clementines",1,"Tangerines, mandarins, clementines, satsumas"
+497,Lemons and limes,1,Lemons and limes
+507,Pomelos and grapefruits,1,Grapefruit (inc. pomelos)
+515,Apples,3,Apples
+521,Pears,3,Pears
+523,Quinces,4,Quinces
+526,Apricots,3,Apricots
+530,Sour cherries,3,"Cherries, sour"
+531,Cherries,3,Cherries
+534,Peaches and nectarines,3,Peaches and nectarines
+536,Plums and sloes,3,Plums and sloes
+544,Strawberries,2,Strawberries
+547,Raspberries,3,Raspberries
+549,Gooseberries,2,Gooseberries
+550,Currants,2,Currants
+552,Blueberries,3,Blueberries
+554,Cranberries,3,Cranberries
+560,Grapes,0,Grapes
+567,Watermelons,4,Watermelons
+568,Cantaloupes and other melons,4,"Melons, other (inc.cantaloupes)"
+569,Figs,2,Figs
+571,"Mangoes, guavas and mangosteens",3,"Mangoes, mangosteens, guavas"
+572,Avocados,3,Avocados
+574,Pineapples,0,Pineapples
+577,Dates,0,Dates
+587,Persimmons,1,Persimmons
+591,Cashewapple,3,Cashewapple
+592,Kiwi fruit,4,Kiwi fruit
+600,Papayas,1,Papayas
+656,"Coffee, green",2,"Coffee, green"
+661,Cocoa beans,4,"Cocoa, beans"
+687,"Pepper (Piper spp.), raw",0,Pepper (piper spp.)
+689,"Chillies and peppers, dry (Capsicum spp., Pimenta spp.), raw",1,"Chillies and peppers, dry"
+692,"Vanilla, raw",4,Vanilla
+702,"Nutmeg, mace, cardamoms, raw",3,"Nutmeg, mace and cardamoms"
+711,"Anise, badian, coriander, cumin, caraway, fennel and juniper berries, raw",3,"Anise, badian, fennel, coriander"

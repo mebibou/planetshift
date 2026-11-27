@@ -17,6 +17,7 @@ export const LAYER_COLOURS: Record<Layer, string[]> = {
   waste: ramp('seq-waste', 7),
   fossilMethane: ramp('seq-emissions', 7),
   fires: ramp('diverging', 7),
+  pollination: ramp('seq-pollination', 7),
   change: ramp('diverging', 7),
   quality: ramp('tier', 6),
 };

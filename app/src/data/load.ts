@@ -30,6 +30,7 @@ export const OPTIONAL_FILES = [
   'solidwaste',
   'oceanplastic',
   'fires',
+  'pollination',
 ] as const;
 
 /**

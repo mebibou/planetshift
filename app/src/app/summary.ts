@@ -18,6 +18,7 @@ import type { Options, ScenarioResult } from '../model/api';
 import { mammalRatio, type MammalRatio } from './mammals';
 import { fishTotal, speciesTotal, type FishTotal, type SpeciesTotal } from './species';
 import { waterTotal, type WaterTotal } from './water';
+import { pollinationShares, type PollinationShares } from './pollination';
 import { gasChange, landStat, type PerCapita } from './summaryModel';
 import type { Milestone, Milestones } from './milestones';
 
@@ -211,6 +212,31 @@ const waterStats = (t: T, locale: string, result: ScenarioResult): Stat[] => {
   return w ? [waterStat(t, locale, w)] : [];
 };
 
+type Shares = { before: PollinationShares; after: PollinationShares };
+
+const sharesText = (t: T, locale: string, s: Shares, k: keyof PollinationShares): string =>
+  t('summary.beforeAfter', {
+    before: formatPercent(locale, s.before[k], 1),
+    after: formatPercent(locale, s.after[k], 1),
+  });
+
+/** Crop production from pollinator-dependent crops, today and with the levers, and the rest. */
+export const pollinationStat = (t: T, locale: string, s: Shares): Stat => ({
+  label: t('summary.pollination.label'),
+  value: sharesText(t, locale, s, 'dependentTonnes'),
+  detail: t('summary.pollination.detail', {
+    attributable: sharesText(t, locale, s, 'attributableTonnes'),
+    dependentKcal: sharesText(t, locale, s, 'dependentKcal'),
+    attributableKcal: sharesText(t, locale, s, 'attributableKcal'),
+  }),
+  className: 'stat-pollination',
+});
+
+const pollinationStats = (t: T, locale: string, result: ScenarioResult): Stat[] => {
+  const s = pollinationShares(result.countries);
+  return s ? [pollinationStat(t, locale, s)] : [];
+};
+
 /** The mammals' figure, where the data has farmed and wild mammals. */
 const mammalStats = (t: T, locale: string, result: ScenarioResult, wild?: Mammals['wild']) => {
   const m = mammalRatio(result.countries, wild);
@@ -219,7 +245,7 @@ const mammalStats = (t: T, locale: string, result: ScenarioResult, wild?: Mammal
 
 /**
  * The summary's figures: the warming avoided by the horizon, the emissions avoided as CO₂e and by
- * gas, the land freed, the freshwater withdrawn, farmed against wild mammals, species committed to extinction and the
+ * gas, the land freed, the freshwater withdrawn, the crops pollinators help, farmed against wild mammals, species committed to extinction and the
  * fish left in the ocean, each module's own figure, and the protein and
  * calories per person.
  */
@@ -273,6 +299,7 @@ export const summaryStats = (
     },
     ...seaLevelStats(t, locale, result),
     ...waterStats(t, locale, result),
+    ...pollinationStats(t, locale, result),
     ...mammalStats(t, locale, result, wild),
     ...natureStats(t, locale, result, options, species),
     ...SUMMARY_MODULES.flatMap((m) => {

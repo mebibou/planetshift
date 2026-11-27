@@ -80,6 +80,7 @@ import { clipChange, locateAll } from './location';
 import { mammalsOf, NO_MAMMALS } from './mammals';
 import { speciesOf } from './species';
 import { countryWaterOf } from './water';
+import { countryPollinationOf } from './pollination';
 import { foodFootprints, type IntensityCut as FootprintCut } from './footprint';
 import {
   allCauses,
@@ -733,6 +734,7 @@ const countryParts = (
     countryMammals(pc, change, prepared),
     speciesOf(prepared.data.species?.byCountry[pc.country.iso3], land, landChange),
     countryWaterOf(pc, change, prepared, cake),
+    countryPollinationOf(pc, change, prepared),
     chain.result,
   );
   return {

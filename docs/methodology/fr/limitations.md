@@ -53,6 +53,8 @@ Le détail et les chiffres sont dans *La pollution de l'air et le méthane des N
 
 **L'eau douce.** Les prélèvements sont comptés, pas l'eau consommée, sauf dans la couche de rareté limitée aux cultures. Les litres de HESTIA couvrent 35 cultures dans 56 pays, et ses moyennes mondiales 15 de plus. Le reste vient des valeurs mondiales de Poore & Nemecek : l'irrigation d'un pays n'est comptée que là où HESTIA a sa propre agrégation. Les produits animaux prennent la valeur de l'étude moins l'eau de leurs aliments concentrés, une estimation de l'eau de la ferme elle-même qui dépend des rations de type GLEAM. L'eau de la pisciculture n'est pas comptée. Les pays s'écartent d'AQUASTAT plus que le monde (le pays médian fait 1,7 fois son chiffre, le Bangladesh presque six). Voir [Eau douce](#method-water).
 
+**Les pollinisateurs.** La dépendance de chaque culture aux pollinisateurs est une seule classe pour toutes les variétés et tous les lieux (Klein et al. 2007, via Aizen et al. 2019), et elle ne change pas avec le nombre de pollinisateurs. Les cultures sans classe prennent la moyenne des cultures classées de leur produit. Les chiffres montrent ce qui dépend des pollinisateurs dans la production, pas une perte. Voir [Pollinisateurs](#method-pollination).
+
 **Les cultures non alimentaires.** Le coton, le tabac, le caoutchouc et les cultures pour biocarburants ne sont pas pris en compte.
 
 **L'échelle infranationale.** La production et les émissions sont par pays. Il n'y a pas de carte de l'endroit où, dans un pays, les aliments sont produits.

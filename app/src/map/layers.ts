@@ -11,6 +11,7 @@ import {
 import { GWP100, type CountryResult } from '../model/api';
 import { speciesAfter } from '../model/species';
 import { wasteMethaneTotal } from '../levers/wasteMethane/data';
+import { hasPollination, pollinationShares } from '../app/pollination';
 
 export const LAYERS = [
   'production',
@@ -25,6 +26,7 @@ export const LAYERS = [
   'waste',
   'fossilMethane',
   'fires',
+  'pollination',
   'change',
   'quality',
 ] as const;
@@ -37,7 +39,8 @@ export type ChangeOf = (typeof CHANGE_OF)[number];
  * weight per km² of land, the species its farmland commits to extinction, the freshwater its
  * farming withdraws, the scarcity-weighted water use of the crops HESTIA covers, the food lost
  * and wasted, the municipal solid waste, the plastic reaching the ocean, the methane leaked by
- * oil, gas and coal, or the latest fire season against the mean and its carbon.
+ * oil, gas and coal, the latest fire season against the mean and its carbon, or the share of crop
+ * production from crops pollinators help.
  */
 export type Measure =
   | ChangeOf
@@ -56,7 +59,8 @@ export type Measure =
   | 'wasteMethane'
   | 'fireAnomaly'
   | 'forestFireAnomaly'
-  | 'fireCarbon';
+  | 'fireCarbon'
+  | 'pollination';
 
 /** What each layer but Change measures, production where it is not listed. */
 const LAYER_MEASURES: Partial<Record<Layer, Measure>> = {
@@ -68,6 +72,7 @@ const LAYER_MEASURES: Partial<Record<Layer, Measure>> = {
   water: 'water',
   waterScarcity: 'waterScarcity',
   fossilMethane: 'fossilMethane',
+  pollination: 'pollination',
 };
 export type GasChoice = Gas | 'co2e';
 /** The farm's gases and CO₂e, which also counts the refrigerants after the farm. */
@@ -221,6 +226,14 @@ const WASTE_DATA: Partial<Record<Measure, (c: CountryResult) => boolean>> = {
 export const leakedMethane = (c: CountryResult): number =>
   c.fossilMethane ? c.fossilMethane.oilGas + c.fossilMethane.coal : 0;
 
+/** The share of crop production (t) from pollinator-dependent crops, and its change. */
+export const pollinatorShare = (c: CountryResult): [number, number] => {
+  const s = pollinationShares([c]);
+  return s
+    ? [s.before.dependentTonnes, s.after.dependentTonnes - s.before.dependentTonnes]
+    : [0, 0];
+};
+
 export const hasWasteData = (c: CountryResult, kind: Measure): boolean =>
   WASTE_DATA[kind]?.(c) ?? false;
 
@@ -267,6 +280,7 @@ const MEASURES: Record<
   fireAnomaly: (c) => [fireValue(c, 'fireAnomaly') ?? 0, 0],
   forestFireAnomaly: (c) => [fireValue(c, 'forestFireAnomaly') ?? 0, 0],
   fireCarbon: (c) => [fireValue(c, 'fireCarbon') ?? 0, 0],
+  pollination: pollinatorShare,
 };
 
 export const beforeAfter = (
@@ -298,6 +312,7 @@ const VALUES: Partial<Record<Layer, Value>> = {
   waste: (c, ba) => (hasWasteData(c, ba.kind) ? ba.after : null),
   fossilMethane: (c, ba) => (c.fossilMethane ? ba.after : null),
   fires: (c, ba) => (hasFireData(c, ba.kind) ? ba.after : null),
+  pollination: (c, ba) => (hasPollination(c) ? ba.after : null),
 };
 
 /** The number the map colours a country by, or null for no data. */

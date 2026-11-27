@@ -386,6 +386,7 @@ test('the map layers and tooltip work', async ({ page }) => {
     'waste',
     'fossilMethane',
     'fires',
+    'pollination',
     'quality',
     'change',
     'emissions',
@@ -1298,6 +1299,25 @@ test('the summary gives the freshwater withdrawn, today and with the levers', as
   await expect(stat.locator('.stat-value')).toContainText('→');
   await expect(stat.locator('.stat-value')).toContainText('billion m³');
   await expect(stat).toContainText('Water does not change the warming');
+});
+
+test('the pollinators layer and figure give the crop production that depends on pollinators', async ({
+  page,
+}) => {
+  await open(page, `${START}&shift=100&layer=pollination`);
+  await expect(page.locator('.legend-title')).toContainText(
+    'Crop production from pollinator-dependent crops',
+  );
+  await expect(page.locator('.map-note')).toContainText('not a loss');
+  await page.locator('path.country[data-iso3="FRA"]').click();
+  const tooltip = page.locator('.map-frame .tooltip');
+  await expect(tooltip).toContainText('From pollinator-dependent crops, by weight');
+  await expect(tooltip).toContainText('Due to pollination, by calories');
+  await expect(tooltip).toContainText('Aizen et al. (2019)');
+  const stat = page.locator('.summary .stat-pollination');
+  await expect(stat).toContainText('Crop production from pollinator-dependent crops');
+  await expect(stat.locator('.stat-value')).toContainText('→');
+  await expect(stat).toContainText('not a loss');
 });
 
 test('the summary sets the farmed mammals against the wild ones, and a shift lowers it', async ({

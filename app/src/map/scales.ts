@@ -47,6 +47,9 @@ export const QUALITY_THRESHOLDS = [1.5, 2.5, 3.5, 4.5, 5.5];
 /** The share of a country's land that is farmed: fixed bins, the same for every scenario. */
 export const LAND_SHARE_THRESHOLDS = [0.05, 0.1, 0.2, 0.3, 0.45, 0.6];
 
+/** The share of crop production from pollinator-dependent crops: fixed bins, as for the land share. */
+export const POLLINATION_THRESHOLDS = [0.05, 0.1, 0.2, 0.3, 0.45, 0.6];
+
 /** Farmed mammals, tonnes of live weight per km² of land: fixed bins, as for the land share. */
 export const MAMMAL_THRESHOLDS = [1, 2.5, 5, 10, 20, 40];
 
