@@ -88,6 +88,44 @@ describe('the food footprint in a run', () => {
     const undrained = { ...data, deforestation: { ...data.deforestation, drainedByCountry: {} } };
     expect(fra(data)).toBeGreaterThan(fra(undrained));
   });
+
+  it('counts the N₂O of the drained soils too, and nothing else of theirs moves', () => {
+    const fra = (d: typeof data) =>
+      runScenario(d, BASE_SCENARIO, DEFAULT_OPTIONS, CURRENT_YEAR).countries.find(
+        (c) => c.iso3 === 'FRA',
+      )!.footprint!;
+    const without = fra({
+      ...data,
+      deforestation: { ...data.deforestation, drainedN2oByCountry: {} },
+    });
+    expect(fra(data).n2o).toBeGreaterThan(without.n2o);
+    expect(fra(data).co2).toBe(without.co2);
+  });
+
+  it('shares a crushed oilseed’s drained N₂O between oil and cake as it shares the CO₂', () => {
+    const undrained: typeof data = {
+      ...data,
+      land: { ...data.land, crush: { '2555': { oil: '2571', oilShare: 0.37 } } },
+      deforestation: { ...data.deforestation, drainedByCountry: {}, drainedN2oByCountry: {} },
+    };
+    const footprints = (field?: 'drainedByCountry' | 'drainedN2oByCountry') =>
+      runScenario(
+        field
+          ? {
+              ...undrained,
+              deforestation: { ...undrained.deforestation, [field]: { BRA: { '2555': 1e6 } } },
+            }
+          : undrained,
+        BASE_SCENARIO,
+        DEFAULT_OPTIONS,
+        CURRENT_YEAR,
+      ).countries.map((c) => c.footprint!);
+    const base = footprints();
+    const co2 = footprints('drainedByCountry').map((f, c) => f.co2 - base[c]!.co2);
+    const n2o = footprints('drainedN2oByCountry').map((f, c) => f.n2o - base[c]!.n2o);
+    expect(Math.min(...co2)).toBeGreaterThan(0);
+    n2o.forEach((kg, c) => expect(kg).toBeCloseTo(co2[c]!, 9));
+  });
 });
 
 describe('cuts combined', () => {
