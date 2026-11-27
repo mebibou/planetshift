@@ -1,5 +1,5 @@
 import type { ModelData } from '../../data/types';
-import type { LeverModule } from '../types';
+import type { LeverModule, Stage } from '../types';
 import { wasteSpec } from './spec';
 import { countryFoodWaste } from './foodWaste';
 import { foodWithLessWaste, lossChain, wasteShareOf } from './model';
@@ -8,6 +8,12 @@ const foodWasteFields = (fw: ReturnType<typeof countryFoodWaste>) => ({
   foodWaste: fw.before,
   foodWasteChange: fw.change,
 });
+
+/** The change in production up to the last step, and how the oilcake follows it. */
+const lastStage = (stages: readonly Stage[]): Pick<Stage, 'change' | 'cake'> => {
+  const { change, cake } = stages[stages.length - 1] as Stage;
+  return { change, cake };
+};
 
 /** A country's municipal waste and plastic reaching the ocean, where the files give them. */
 const unchangedWaste = (data: ModelData, iso3: string) => {
@@ -50,7 +56,7 @@ export const waste: LeverModule = {
             ? foodWasteFields(
                 countryFoodWaste(pc, prepared, {
                   dietFood: food,
-                  change: (stages[stages.length - 1] as (typeof stages)[number]).change,
+                  ...lastStage(stages),
                   wasteCut,
                   lossCut,
                 }),
