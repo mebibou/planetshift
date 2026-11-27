@@ -380,8 +380,8 @@ export interface OceanPlastic {
   source: string;
 }
 
-/** How an impact is counted: times as often, a percentage, summers in a century, Mt a year. */
-export type ImpactUnit = 'times' | 'percent' | 'perCentury' | 'megatonnes';
+/** How an impact is counted: times as often, %, summers in 100, Mt or millions of people a year. */
+export type ImpactUnit = 'times' | 'percent' | 'perCentury' | 'megatonnes' | 'millions';
 
 /**
  * One impact at each of its group's levels: a central value (`mid`), a range (`low`, `high`), or
@@ -397,7 +397,7 @@ export interface ImpactRow {
   high?: number[];
 }
 
-export type ImpactGroupId = 'wgi' | 'wgii' | 'sr15' | 'heatwave';
+export type ImpactGroupId = 'wgi' | 'wgii' | 'sr15' | 'heatwave' | 'fire' | 'flood';
 
 /** The impacts one source assessed, at the same global warming levels, °C above 1850–1900. */
 export interface ImpactGroup {
@@ -409,7 +409,7 @@ export interface ImpactGroup {
   rows: ImpactRow[];
 }
 
-/** impacts.json: what the IPCC and one study assessed at given levels of global warming. */
+/** impacts.json: what the IPCC and two studies assessed at given levels of global warming. */
 export interface Impacts {
   groups: ImpactGroup[];
 }

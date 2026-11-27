@@ -6,4 +6,6 @@ from ..inputs import Build, write
 
 
 def build(b: Build) -> None:
-    write(b.out, "impacts.json", I.impacts_json(I.read_spm6(b.cache), I.read_cited()))
+    write(
+        b.out, "impacts.json", I.impacts_json(I.read_spm6(b.cache), I.read_cited(), I.read_floods())
+    )

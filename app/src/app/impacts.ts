@@ -119,7 +119,13 @@ export const futuresAt = (
 export const readImpacts = (impacts: Impacts, futures: Futures): GroupReading[] =>
   impacts.groups.map((g) => readGroup(g, futures));
 
-const DIGITS: Record<ImpactUnit, number> = { times: 1, percent: 0, perCentury: 0, megatonnes: 1 };
+const DIGITS: Record<ImpactUnit, number> = {
+  times: 1,
+  percent: 0,
+  perCentury: 0,
+  megatonnes: 1,
+  millions: 0,
+};
 
 /** A number, or a range of two, in a unit: "4.1×", "3–14%". */
 export const unitText = (t: T, locale: string, unit: ImpactUnit, ...values: number[]): string =>

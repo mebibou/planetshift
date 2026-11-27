@@ -186,3 +186,44 @@ describe('the headline tiles', () => {
     expect(at(1.9, 1.2).map((x) => x.r.row.id)).toEqual(['drought10', 'coral', 'arctic']);
   });
 });
+
+describe('wildfire and river floods', () => {
+  const FIRE: ImpactGroup = {
+    id: 'fire',
+    url: '',
+    jointly: false,
+    levels: [2, 4],
+    rows: [{ id: 'burnedArea', unit: 'percent', ref: 'p. 272', low: [30, 50], high: [35, 70] }],
+  };
+  const FLOOD: ImpactGroup = {
+    id: 'flood',
+    url: '',
+    jointly: true,
+    levels: [1.5, 2, 3],
+    rows: [
+      {
+        id: 'riverFlood',
+        unit: 'millions',
+        ref: 'Table S5',
+        mid: [199, 207, 223],
+        low: [173, 174, 177],
+        high: [226, 230, 258],
+      },
+    ],
+  };
+
+  it('read the burned area between 2 °C and 4 °C only', () => {
+    const [above, below] = readGroup(FIRE, { baseline: 3, scenario: 1.8 }).rows[0]!.cells;
+    expect(cellText(t, 'en', 'percent', above)).toBe('40–53%');
+    expect(cellText(t, 'en', 'percent', below)).toBe('not assessed below 2 °C');
+  });
+
+  it('give the people exposed to floods in millions, at least the 3 °C value above it', () => {
+    const r = readGroup(FLOOD, { baseline: 3.4, scenario: 2.5 }).rows[0]!;
+    expect(cellText(t, 'en', 'millions', r.cells[0])).toBe('≥ 223 million');
+    expect(cellText(t, 'en', 'millions', r.cells[1])).toBe('215 million');
+    expect(rowInfo(t, 'en', FLOOD, r)[2]).toBe(
+      "Lowest to highest of the study's nine models: 176–244 million with them.",
+    );
+  });
+});
