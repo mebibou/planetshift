@@ -2,7 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: 'test/e2e',
-  use: { baseURL: 'http://localhost:4173' },
+  // A service worker would answer before a test's routes; offline.spec.ts allows it.
+  use: { baseURL: 'http://localhost:4173', serviceWorkers: 'block' },
   webServer: {
     command: 'npm run build && npm run prerender && npm run preview -- --port 4173 --strictPort',
     port: 4173,

@@ -8,6 +8,11 @@
     "startTitle": "La page n'a pas pu démarrer",
     "startFailed": "Les données sont chargées, mais une erreur a arrêté la page ({reason}). Rechargez la page. Si l'erreur persiste, merci de la signaler."
   },
+  "update": {
+    "available": "Une nouvelle version de Planetshift est disponible.",
+    "reload": "Recharger",
+    "dismiss": "Plus tard"
+  },
   "header": {
     "tagline": "À quoi ressemble le changement ?",
     "nav": "Sections",

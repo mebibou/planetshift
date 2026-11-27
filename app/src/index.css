@@ -1,6 +1,7 @@
 @layer theme, base, components, utilities;
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities);
+@import './fonts.css';
 @import './styles.css';
 
 /* The interface's tokens (styles.css) as Tailwind's theme, so utilities follow light and dark. */

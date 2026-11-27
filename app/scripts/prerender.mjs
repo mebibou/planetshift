@@ -43,10 +43,21 @@ const escape = (text) =>
 /** The Planetshift mark, as in the header. */
 const MARK = `<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="#cfe4ee"/><g fill="#3f9a5f"><path d="M1 7c2-3 7-4 10-2s3 4 1 6-1 5-4 5-3-1-4-3-4-4-3-6z"/><path d="M7 17c2-1 5 0 5 3s-1 6-3 8-3-2-3-5 0-5 1-6z"/><path d="M15 5c4-3 11-3 14 0s2 6-1 7-5 0-7 2-5 1-6-2 0-5 0-7z"/><path d="M18 15c3-1 6 0 6 3s-2 5-3 7-3-1-3-4-1-4 0-6z"/><path d="M25 21c2-1 5 0 5 2s-2 3-3 3-3-1-2-5z"/></g><circle cx="16" cy="16" r="14" fill="none" stroke="#1d5a3a" stroke-width="1.5"/></svg>`;
 
+/** The site's own Lato, inlined, as the card is drawn from a page that has no URL. */
+const FONTS = (
+  await Promise.all(
+    [400, 700, 900].map(async (weight) => {
+      const file = new URL(`../src/fonts/lato-latin-${weight}-normal.woff2`, import.meta.url);
+      const data = (await readFile(file)).toString('base64');
+      return `@font-face { font-family: Lato; font-weight: ${weight}; src: url(data:font/woff2;base64,${data}) format('woff2'); }`;
+    }),
+  )
+).join('\n');
+
 /** The share image's page: the name, the question, what the site shows, and the chart. */
 const cardHtml = (t, chart, host) => `<!doctype html><html><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap">
 <style>
+${FONTS}
   body { margin: 0; width: 1200px; height: 630px; background: #f2f4f1; color: #17241e;
     font-family: Lato, system-ui, sans-serif; display: grid; grid-template-columns: 500px 1fr; }
   .text { padding: 64px 24px 56px 64px; display: flex; flex-direction: column; gap: 22px; }
@@ -160,6 +171,8 @@ const capture = async (browser, origin, site, page) => {
   return html
     .replaceAll(`${origin}/`, `./${up}`)
     .replaceAll('"./assets/', `"${up}assets/`)
+    .replaceAll('href="./manifest.webmanifest"', `href="${up}manifest.webmanifest"`)
+    .replaceAll('href="./icons/', `href="${up}icons/`)
     .replace(
       '</head>',
       `${headOf(site, page)}<meta property="og:url" content="${site}${page.path}"></head>`,

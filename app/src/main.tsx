@@ -8,6 +8,7 @@ import { applyTheme, effectiveTheme, prefersDark, readStoredTheme } from './app/
 import { parseTourFlag, readTourSeen, shouldShowTour } from './app/tour';
 import { parseUi, type View } from './app/url';
 import { parseEntry, SITE_ROOT, withEntryView } from './app/entry';
+import { buildOf, registerOffline, serviceWorkers, UPDATES } from './app/offline';
 import { dataFolder, dataUrl, loadAll, LoadError, type Loaded } from './data/load';
 import { browserLang, parseLang, readStoredLang, translator } from './i18n/i18n';
 
@@ -109,6 +110,16 @@ if (element) {
       </StartError>,
     );
   const data = loadAll(dataUrl(dataFolder(location.search), SITE_ROOT));
+  const build = buildOf(document);
+  const workers = serviceWorkers();
+  // Registered once the page's own data has arrived, so the worker's copies revalidate instead.
+  if (import.meta.env.PROD && build && workers) {
+    const register = () =>
+      registerOffline(workers, new URL('sw.js', SITE_ROOT).href, build, UPDATES).catch(
+        () => undefined,
+      );
+    data.then(register, register);
+  }
   // The app shows once its view is ready, and again with the data when that arrives.
   let shown = false;
   let current: Loaded | null = null;

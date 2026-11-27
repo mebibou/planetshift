@@ -17,7 +17,6 @@ const OPTIONS: Record<string, string[]> = {
   population: ['medium', 'low', 'high'],
 };
 
-const FONT_HOSTS = /fonts\.(googleapis|gstatic)\.com/;
 let errors: string[] = [];
 
 const TOUR = '@tour';
@@ -37,10 +36,8 @@ test.beforeEach(async ({ page }, testInfo) => {
       }
     });
   }
-  // The Lato font comes from Google Fonts with display=swap: offline, the page falls back to the
-  // system font, so a failed font request is not an error of the app.
   page.on('console', (m) => {
-    if (m.type() === 'error' && !FONT_HOSTS.test(m.location().url)) {
+    if (m.type() === 'error') {
       errors.push(m.text());
     }
   });
