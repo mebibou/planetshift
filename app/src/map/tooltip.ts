@@ -17,6 +17,7 @@ import {
   beforeAfter,
   farmland,
   gasValue,
+  hasFireData,
   hasWasteData,
   measureOf,
   relativeChange,
@@ -38,6 +39,10 @@ export interface TooltipModel {
 const formatShare = (locale: string, v: number): string =>
   formatPercent(locale, v, v > 0 && v < 0.1 ? 1 : 0);
 
+/** Tonnes of carbon, in the mass's unit with C after it. */
+const formatCarbon = (locale: string, tonnes: number): string =>
+  `${formatMass(locale, tonnes * 1000)}\u00a0C`;
+
 const FORMATS: Record<Measure, (locale: string, v: number) => string> = {
   production: (locale, v) => formatMass(locale, v * 1000),
   emissions: formatMass,
@@ -55,6 +60,9 @@ const FORMATS: Record<Measure, (locale: string, v: number) => string> = {
   oceanPlastic: (locale, v) => formatMass(locale, v * 1000),
   fossilMethane: formatMass,
   wasteMethane: formatMass,
+  fireAnomaly: (locale, v) => formatPercent(locale, v, 0, true),
+  forestFireAnomaly: (locale, v) => formatPercent(locale, v, 0, true),
+  fireCarbon: (locale, v) => formatCarbon(locale, v),
 };
 
 /** A layer's quantity in its unit: tonnes of product, kg of gas, hectares, or a share of land. */
@@ -80,6 +88,10 @@ const clearingCo2Row = (
 const WHAT_A_WASTE = 'https://datacatalog.worldbank.org/search/dataset/0039597';
 const MEIJER = 'https://doi.org/10.1126/sciadv.aaz5803';
 const CEDS = 'https://doi.org/10.5281/zenodo.12803197';
+const STATE_OF_WILDFIRES = {
+  label: 'State of Wildfires 2025-26',
+  url: 'https://doi.org/10.5281/zenodo.21262381',
+};
 
 /** Food's emissions after the farm in a gas, today and with the levers; none without the file. */
 const chainRows = (c: CountryResult, gas: GasChoice, t: T, locale: string): [string, string][] =>
@@ -274,6 +286,40 @@ const wasteSectorRows = (c: CountryResult, t: T, locale: string): [string, strin
     ];
   });
 
+/** A figure of the fire season, with its anomaly where the file gives one. */
+const withAnomaly = (value: string, anomaly: number | undefined, t: T, locale: string): string =>
+  anomaly === undefined
+    ? value
+    : t('map.tooltip.fires.withAnomaly', {
+        value,
+        anomaly: formatPercent(locale, anomaly, 0, true),
+      });
+
+/** The season's area burned, forest burned and carbon, each against the mean. */
+const fireRows = (c: CountryResult, t: T, locale: string): [string, string][] => {
+  const f = c.fire;
+  return f
+    ? [
+        [
+          t('map.tooltip.fires.burned'),
+          withAnomaly(formatArea(locale, f.burned * 100), f.burnedAnomaly, t, locale),
+        ],
+        [
+          t('map.tooltip.fires.forest'),
+          withAnomaly(formatArea(locale, f.forest * 100), f.forestAnomaly, t, locale),
+        ],
+        ...(f.carbon === undefined
+          ? []
+          : [
+              [
+                t('map.tooltip.fires.carbon'),
+                withAnomaly(formatCarbon(locale, f.carbon), f.carbonAnomaly, t, locale),
+              ] as [string, string],
+            ]),
+      ]
+    : [];
+};
+
 interface Extra {
   rows: [string, string][];
   source?: TooltipModel['source'];
@@ -359,6 +405,18 @@ const MEASURE_TOOLTIPS: Record<
       source: { label: 'CEDS v_2024_07_08', url: CEDS },
     }),
   },
+  fireAnomaly: {
+    what: (t) => t('map.tooltip.fireAnomaly'),
+    extra: (c, t, locale) => ({ rows: fireRows(c, t, locale), source: STATE_OF_WILDFIRES }),
+  },
+  forestFireAnomaly: {
+    what: (t) => t('map.tooltip.forestFireAnomaly'),
+    extra: (c, t, locale) => ({ rows: fireRows(c, t, locale), source: STATE_OF_WILDFIRES }),
+  },
+  fireCarbon: {
+    what: (t) => t('map.tooltip.fireCarbon'),
+    extra: (c, t, locale) => ({ rows: fireRows(c, t, locale), source: STATE_OF_WILDFIRES }),
+  },
   landCo2: {
     what: (t) => t('map.tooltip.landCo2'),
     extra: (c, t, locale) => ({
@@ -395,6 +453,30 @@ const landCo2Tooltip = (
           [t('map.tooltip.after'), formatMass(locale, ba.after)],
           ...own.extra(c, t, locale, null).rows,
         ],
+      }
+    : noData(name, t);
+};
+
+/** The fire measure the layer shows, then the season's three figures; no lever changes them. */
+const fireTooltip = (
+  name: string,
+  c: CountryResult | undefined,
+  spec: LayerSpec,
+  t: T,
+  locale: string,
+): TooltipModel => {
+  const kind = measureOf(spec);
+  const own = MEASURE_TOOLTIPS[kind];
+  const extra = c && hasFireData(c, kind) ? own.extra(c, t, locale, null) : null;
+  return c && extra
+    ? {
+        title: name,
+        rows: [
+          [own.what(t, spec), formatMeasure(locale, kind)(beforeAfter(c, spec).before)],
+          ...extra.rows,
+          [t('map.tooltip.unchanged'), ''],
+        ],
+        ...(extra.source ? { source: extra.source } : {}),
       }
     : noData(name, t);
 };
@@ -461,6 +543,17 @@ const hasData = (c: CountryResult, spec: LayerSpec): boolean =>
     ? c.fossilMethane !== undefined
     : spec.layer !== 'waste' || hasWasteData(c, measureOf(spec));
 
+/** A country's tooltip on a layer the run gives it data for, or no data. */
+const runTooltip = (
+  name: string,
+  c: CountryResult | undefined,
+  spec: LayerSpec,
+  t: T,
+  locale: string,
+  worst: TierSource | null,
+): TooltipModel =>
+  c && hasData(c, spec) ? countryTooltip(name, c, spec, t, locale, worst) : noData(name, t);
+
 /** Before and after numbers, then the measure's own rows: the tier and its source, or land's parts. */
 export const tooltipModel = (
   name: string,
@@ -473,6 +566,6 @@ export const tooltipModel = (
 ): TooltipModel =>
   spec.layer === 'landCo2'
     ? landCo2Tooltip(name, c, landUse, spec, t, locale)
-    : c && hasData(c, spec)
-      ? countryTooltip(name, c, spec, t, locale, worst)
-      : noData(name, t);
+    : spec.layer === 'fires'
+      ? fireTooltip(name, c, spec, t, locale)
+      : runTooltip(name, c, spec, t, locale, worst);

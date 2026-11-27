@@ -11,7 +11,7 @@ import { oceanPlasticTotal, wasteBars } from '../chart/wasteBars';
 import { populationPath } from '../chart/populationArea';
 import type { Options, Scenario, ScenarioResult } from '../model/api';
 import { attributionFor, causeGasesOf, causesIn, type Attribution } from '../chart/series';
-import { measureOf, type LayerSpec, type Measure } from '../map/layers';
+import { measureOf, type Layer, type LayerSpec, type Measure } from '../map/layers';
 import type { TableRow } from '../map/table';
 import { WASTE_VIEWS, type ChartTab, type UiState } from './url';
 import { formatSignificant } from '../i18n/format';
@@ -60,15 +60,19 @@ export const scenarioSlug = (scenario: Scenario): string => {
     .join('-');
 };
 
-/** What a layer of a measure is of: the gas, the food group or the waste; '' for none. */
+/** The layers whose CSV names the choice they show: the waste, or what of the fires. */
+const CHOICES: Partial<Record<Layer, (spec: LayerSpec) => string>> = {
+  waste: (spec) => spec.wasteOf ?? 'food',
+  fires: (spec) => spec.firesOf ?? 'burned',
+};
+
+/** What a layer of a measure is of: the gas, the food group, the waste or the fires; '' for none. */
 const selectionOf = (spec: LayerSpec, measure: Measure): string =>
   measure === 'emissions'
     ? spec.gas
     : measure === 'production'
       ? spec.group
-      : spec.layer === 'waste'
-        ? (spec.wasteOf ?? 'food')
-        : '';
+      : (CHOICES[spec.layer]?.(spec) ?? '');
 
 /** The layer and what it is of: `change-emissions-ch4`, `production-dairy`, `land`. */
 export const layerSlug = (spec: LayerSpec): string => {
@@ -95,6 +99,11 @@ const UNITS: Record<Measure, (spec: LayerSpec) => string> = {
   oceanPlastic: () => 't of plastic reaching the ocean through rivers (no lever changes it)',
   fossilMethane: () => 'kg CH4 leaked by oil, gas and coal (CEDS 2022)',
   wasteMethane: () => 'kg CH4 of landfills and wastewater',
+  fireAnomaly: () =>
+    'share by which the area burned in the latest fire season is above the mean of the seasons before it, negative below (no lever changes it)',
+  forestFireAnomaly: () =>
+    'share by which the forest burned in the latest fire season is above the mean of the seasons before it, negative below (no lever changes it)',
+  fireCarbon: () => 't C emitted by fires in the latest fire season (no lever changes it)',
 };
 
 export const unitOf = (measure: Measure, spec: LayerSpec): string => UNITS[measure](spec);

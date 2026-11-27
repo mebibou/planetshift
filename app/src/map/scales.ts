@@ -39,6 +39,9 @@ export const CHANGE_THRESHOLDS = [-0.4, -0.15, -0.02, 0.02, 0.15, 0.4];
 /** Net CO₂, kg a year: sinks and sources by ±1, 10 and 100 Mt, the middle bin about nothing. */
 export const NET_THRESHOLDS = [-1e11, -1e10, -1e9, 1e9, 1e10, 1e11];
 
+/** A fire season against its mean: bins symmetric as ratios (×0.5 and ×2), not as shares. */
+export const FIRE_ANOMALY_THRESHOLDS = [-0.5, -0.2, -0.1, 0.1, 0.25, 1];
+
 export const QUALITY_THRESHOLDS = [1.5, 2.5, 3.5, 4.5, 5.5];
 
 /** The share of a country's land that is farmed: fixed bins, the same for every scenario. */

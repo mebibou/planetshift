@@ -3,6 +3,7 @@ import type { CountryResult } from '../model/api';
 import {
   beforeAfter,
   gasValue,
+  hasFireData,
   hasWasteData,
   measureOf,
   relativeChange,
@@ -101,6 +102,7 @@ const OWN_COLUMNS: Partial<Record<Layer, (spec: LayerSpec) => Column[]>> = {
   quality: () => ['name', 'tier'],
   landCo2: () => ['name', 'before', 'after'],
   waste: (spec) => (unchanged(spec) ? ['name', 'before'] : ['name', 'before', 'after', 'change']),
+  fires: () => ['name', 'before'],
 };
 
 /** The columns a layer shows: today, with the levers and the change, and the tier where it has one. */
@@ -141,6 +143,7 @@ const LISTED: Partial<
   waterScarcity: (c) => c.waterScarcity > 0,
   waste: (c, _, spec) => hasWasteData(c, measureOf(spec)),
   fossilMethane: (c) => c.fossilMethane !== undefined,
+  fires: (c, _, spec) => hasFireData(c, measureOf(spec)),
 };
 
 /** Whether the layer has data for a country. */

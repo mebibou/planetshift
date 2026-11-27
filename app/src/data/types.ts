@@ -329,6 +329,29 @@ export interface LandUse {
   source: string;
 }
 
+/**
+ * A place's fires in the latest fire season, March to February: km² burned in all and in forest
+ * (at least 30% tree cover), t of carbon emitted, and each one's anomaly, a share above (or below)
+ * the mean of the seasons before. An anomaly on a mean of almost nothing is left out.
+ */
+export interface FireCountry {
+  burned: number;
+  burnedAnomaly?: number;
+  forest: number;
+  forestAnomaly?: number;
+  carbon?: number;
+  carbonAnomaly?: number;
+}
+
+/** fires.json: State of Wildfires 2025-26, the latest season against the baseline years. */
+export interface Fires {
+  season: [number, number];
+  baseline: { burned: [number, number]; carbon: [number, number] };
+  byCountry: Record<string, FireCountry>;
+  world: FireCountry;
+  source: string;
+}
+
 /** The types of municipal solid waste, in solidwaste.json's order. */
 export const WASTE_TYPES = [
   'foodGreen',
@@ -525,6 +548,8 @@ export interface ModelData {
   solidwaste?: SolidWaste;
   /** Optional: a build without it has no ocean plastic on the map or the Waste chart. */
   oceanplastic?: OceanPlastic;
+  /** Optional: a build without it leaves the map's fires layer without data. */
+  fires?: Fires;
   /** Not a file: the build's departures from FaIR stand for it when it is unset. */
   departures?: Departures;
 }
