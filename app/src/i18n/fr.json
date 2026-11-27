@@ -62,7 +62,7 @@
     "advanced": "Régler chaque aliment animal",
     "groupsHint": "Un aliment réglé ici garde sa propre part. Les autres aliments suivent le curseur principal.",
     "groupsReset": "Suivre de nouveau le curseur principal",
-    "rampHint": "Chaque levier, l'alimentation comprise, monte à partir d'aujourd'hui et est entièrement en place cette année-là.",
+    "rampHint": "Chaque levier, l'alimentation comprise, monte à partir d'aujourd'hui et est entièrement en place cette année-là. Le captage direct dans l'air suit son propre calendrier.",
     "horizon": "Résultats jusqu'en",
     "info": "À propos : {name}",
     "shiftHint": "La part des aliments animaux (viande, produits laitiers, œufs, poisson) remplacée par des végétaux, atteinte entièrement l'année choisie plus haut. Elle réduit le méthane et le N₂O des animaux d'élevage et libère des terres agricoles.",

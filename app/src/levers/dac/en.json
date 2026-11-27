@@ -1,0 +1,14 @@
+{
+  "title": "Direct air capture",
+  "description": "Take CO₂ out of the air with machines and store it underground. This lever follows its own timing, separate from the shared one. The electricity the machines use counts.",
+  "family": "Direct air capture",
+  "page": "Direct air capture",
+  "directAirCapture": {
+    "title": "Direct air capture",
+    "description": "Plants take CO₂ from the air and store it underground. At 100%, they follow the IEA's path: about 0.65 Gt a year in 2050 and 3.3 Gt in 2100. The CO₂ of the plants' electricity counts, and renewable electricity lowers it."
+  },
+  "summary": {
+    "title": "CO₂ removed from the air in {year}",
+    "detail": "a year, net of the plants' energy, likely {low} to {high}"
+  }
+}

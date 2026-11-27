@@ -1,0 +1,14 @@
+{
+  "title": "Captage direct dans l'air",
+  "description": "Retirer du CO₂ de l'air avec des machines et le stocker sous terre. Ce levier suit son propre calendrier, différent du calendrier commun. L'électricité que consomment les machines compte.",
+  "family": "Captage direct dans l'air",
+  "page": "Captage direct dans l'air",
+  "directAirCapture": {
+    "title": "Captage direct dans l'air",
+    "description": "Des usines captent le CO₂ de l'air et le stockent sous terre. À 100 %, elles suivent le calendrier de l'AIE : environ 0,65 Gt par an en 2050 et 3,3 Gt en 2100. Le CO₂ de l'électricité des usines compte, et l'électricité renouvelable le réduit."
+  },
+  "summary": {
+    "title": "CO₂ retiré de l'air en {year}",
+    "detail": "par an, net de l'énergie des usines, probablement de {low} à {high}"
+  }
+}

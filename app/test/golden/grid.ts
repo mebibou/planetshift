@@ -153,6 +153,19 @@ export const GRID: Setting[] = [
   ...[0.5, 1].map((a) => setting(`hfcPhaseDown@${a * 100}`, { levers: { hfcPhaseDown: a } })),
   setting('hfcPhaseDown+diet', { shift: 1, levers: { hfcPhaseDown: 1 } }),
   setting('hfcPhaseDown+ssp370', { levers: { hfcPhaseDown: 1 } }, { ssp: 'ssp370' }),
+  ...[0.5, 1].map((a) =>
+    setting(`directAirCapture@${a * 100}`, { levers: { directAirCapture: a } }),
+  ),
+  setting('directAirCapture+renewables', {
+    levers: { directAirCapture: 1, renewableElectricity: 1 },
+  }),
+  ...['ssp126', 'ssp370'].map((ssp) =>
+    setting(
+      `directAirCapture+${ssp}`,
+      { levers: { directAirCapture: 1 } },
+      { ssp: ssp as Options['ssp'] },
+    ),
+  ),
 ];
 
 /** Run with every departure from FaIR at its plain-FaIR value (planetshift.config.schema.json). */
@@ -175,6 +188,7 @@ export const PLAIN_GRID: Setting[] = [
   setting('permafrostOffAlone', {}, { permafrost: 'off' }),
   ...LEAKS.map((id) => setting(`${id}@100`, { levers: { [id]: 1 } })),
   setting('allLeaks+fuel', { levers: all([...LEAKS, ...ENERGY, ...INDUSTRY]) }),
+  setting('directAirCapture@100', { levers: { directAirCapture: 1 } }),
   setting(
     'everythingAllOptions',
     { shift: 0.5, levers: all(GOLDEN_LEVERS, 0.7) },
@@ -201,4 +215,6 @@ export const QUERIES = [
   'deadfall=x',
   'ogm=50&cmm=x',
   'pr=50&df=x',
+  'dac=50&re=100',
+  'dac=x',
 ];

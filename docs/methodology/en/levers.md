@@ -4,15 +4,15 @@ Each lever is the share of a change that is adopted, from 0 to 100%, reached in 
 
 ## What a lever is
 
-Every way Planetshift offers to limit warming is a lever, and none is preferred over another. The levers cover energy and transport, buildings and industry, what people eat, farm practices, less food wasted, an end to clearing forest, the rewetting of drained peat, and carbon stored in farmland.
+Every way Planetshift offers to limit warming is a lever, and none is preferred over another. The levers cover energy and transport, buildings and industry, what people eat, farm practices, less food wasted, an end to clearing forest, the rewetting of drained peat, carbon stored in farmland, and direct air capture.
 
-Each lever is a slider from 0 to 100%, which sets the share adopted. The diet's main slider is the share of animal foods moved to plant foods. Every lever ramps up from today and is fully in place in the year set at the top of the panel, *All levers fully in place by*.
+Each lever is a slider from 0 to 100%, which sets the share adopted. The diet's main slider is the share of animal foods moved to plant foods. Every lever ramps up from today and is fully in place in the year set at the top of the panel, *All levers fully in place by*. Direct air capture is the exception: it follows a path of its own, because its plants take decades to build up (see [Direct air capture](#method-dac)).
 
 ## How the panel groups them
 
 The **Levers** section of Explore groups the levers under the cause of warming each mainly acts on (see [Causes of global warming](#method-link)):
 
-- fossil fuels and industry: energy and transport, buildings and industry, methane leaks;
+- fossil fuels and industry: energy and transport, buildings and industry, methane leaks, direct air capture;
 - farming: diet, farm practices, food waste;
 - land use: deforestation, carbon in farmland;
 - waste: landfills and wastewater;
@@ -56,6 +56,8 @@ Less supply needs less production, which uses less land and emits less. The chan
 **Deforestation** (see [Deforestation](#method-deforestation)). Clearing forest for farming releases about 2 Gt of CO₂ a year (`deforestation.json`, by country and item). The model keeps this yearly amount constant and counts only its change. The clearing tied to an item moves with the item's production in the country where the forest is cleared. A shift away from beef therefore lowers pasture clearing in Brazil, through trade, even with the lever at 0. This change is capped between none and double today's clearing. The lever then prevents its share of the clearing that is left. Both are changes in CO₂, and they go into the climate response like any other. The CO₂ of drained organic soils, about 0.8 Gt a year, and their N₂O, about 0.34 Mt, move with production too. The land production frees is taken to be rewetted, and rewetted land emits methane. The peat rewetting lever rewets its share of the drained land that is left: its CO₂ and N₂O stop and its methane starts.
 
 **Carbon in farmland** (see [Carbon stored in farmland](#method-removals)). Cover crops, trees on farms, biochar and rock dust, which is experimental, store CO₂. The amount stored is adoption × the largest share of the land the practice can reach (`maxShare`) × the hectares of cropland, pasture or both once the shift is complete × the country's rate. Each hectare stores carbon for `years` years from the year the practice starts on it. Cover crops and trees saturate after 20 years. Biochar and rock dust keep storing carbon until 2100.
+
+**Direct air capture** (see [Direct air capture](#method-dac)). Plants take CO₂ from the air and store it underground, on the IEA's path to about 0.65 Gt a year in 2050 and 3.3 Gt in 2100, scaled by the slider. Their electricity's CO₂, on the grid that renewable electricity leaves, and the CO₂ of building them are subtracted from what they store.
 
 **Energy and transport** (see [Energy and transport](#method-sectors)). Six levers act on the fossil CO₂ of the scenario chosen under *Other options*:
 
@@ -112,7 +114,7 @@ Computed directly, the Shapley value needs one run of the model for every set of
 
 Instead, Planetshift makes use of how the groups interact. Farming's groups interact only through the production they change. The diet and less waste change what is produced. Practices, deforestation, regrowth, carbon in farmland, landfills and wastewater, and the HFC phase-down act on the production those two leave, but not on each other. So the worth of any set of farming groups is read from one pass of the farm emissions for the production groups in that set: none, the diet, less waste, or both. That is at most four passes, three more than the run itself. Each pass is kept and reused while you move sliders that do not change it.
 
-The groups outside farming (energy and transport, buildings and industry, methane leaks) interact with each other through the grid that renewable electricity leaves, and through the methane per kg of fuel that the leak levers leave. They do not interact with farming. Their worth is their own emissions, recomputed with the other group's levers off.
+The groups outside farming (energy and transport, buildings and industry, methane leaks, direct air capture) interact with each other through the grid that renewable electricity leaves, and through the methane per kg of fuel that the leak levers leave. They do not interact with farming. Their worth is their own emissions, recomputed with the other group's levers off.
 
 A test checks, on the fixtures and on the real data, that this gives the Shapley values of full runs to nine digits, on the sum of each gas's response.
 

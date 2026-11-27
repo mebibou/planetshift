@@ -38,6 +38,7 @@ const LEVERS_ON = {
   landfills: 0.5,
   wastewater: 0.5,
   hfcPhaseDown: 0.5,
+  directAirCapture: 0.5,
 };
 
 describe('the breakdown by family', () => {
