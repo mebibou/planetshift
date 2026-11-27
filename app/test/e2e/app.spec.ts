@@ -1287,41 +1287,20 @@ test('the summary sets the farmed mammals against the wild ones, and a shift low
   await expect(stat.locator('.stat-value')).not.toHaveText('3.4 to 1 → 3.4 to 1');
 });
 
-test('the farm practices’ breakdown is left out of the first load, loads once, then acts', async ({
+test('the farm practices’ breakdown comes with the first load, as every run reads it', async ({
   page,
 }) => {
   const breakdown = (url: string) => url.endsWith('/breakdown.json');
   const asked: string[] = [];
   page.on('request', (r) => asked.push(r.url()));
   await open(page);
-  expect(asked.filter(breakdown)).toEqual([]);
+  expect(asked.filter(breakdown)).toHaveLength(1);
   const before = await summaryText(page);
   await page.locator('details[data-group="levers-practices"] > summary').click();
-  const slider = page.locator('#lever-feedAdditives');
-  await expect(slider).toBeEnabled();
-  await slider.fill('60');
-  await expect.poll(() => asked.filter(breakdown).length).toBe(1);
+  await page.locator('#lever-feedAdditives').fill('60');
   await expect.poll(() => summaryText(page)).not.toBe(before);
-  await page.locator('#lever-riceWater').fill('30');
   await page.waitForLoadState('networkidle');
   expect(asked.filter(breakdown)).toHaveLength(1);
-});
-
-test('a deferred file that fails says so and is not asked for again', async ({ page }) => {
-  const asked: string[] = [];
-  await page.route('**/breakdown.json', (route) => {
-    asked.push(route.request().url());
-    return route.abort();
-  });
-  await open(page);
-  await page.locator('details[data-group="levers-practices"] > summary').click();
-  await page.locator('#lever-feedAdditives').fill('60');
-  await expect(page.locator('.run-error').filter({ hasText: 'breakdown.json' })).toBeVisible();
-  await page.locator('#lever-riceWater').fill('30');
-  await page.locator('#lever-feedAdditives').fill('70');
-  await page.waitForLoadState('networkidle');
-  expect(asked).toHaveLength(1);
-  errors = errors.filter((e) => !e.includes('net::ERR_FAILED'));
 });
 
 test('a language switch keeps the chart range', async ({ page }) => {

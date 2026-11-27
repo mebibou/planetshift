@@ -148,9 +148,13 @@ const leverData = (names: readonly string[], bodies: readonly unknown[]) =>
  * needs them. A deferred file that fails to load is not tried again, as `complete` runs before
  * every model run.
  */
-export const loadAll = async (folder: string, fetchFn: Fetch = fetch): Promise<Loaded> => {
+export const loadAll = async (
+  folder: string,
+  fetchFn: Fetch = fetch,
+  deferred: readonly string[] = DEFERRED_FILES,
+): Promise<Loaded> => {
   const urlOf = (f: string) => `${folder}${f}.json`;
-  const eager = LEVER_FILES.filter((f) => !DEFERRED_FILES.includes(f));
+  const eager = LEVER_FILES.filter((f) => !deferred.includes(f));
   const [files, leverFiles, optionalFiles] = await Promise.all([
     Promise.all(DATA_FILES.map((f) => loadFile(fetchFn, urlOf(f)))),
     Promise.all(eager.map((f) => loadFile(fetchFn, urlOf(f), true))),
@@ -209,9 +213,9 @@ export const loadAll = async (folder: string, fetchFn: Fetch = fetch): Promise<L
           optionalFiles[i] === MISSING ? [] : [[f, optionalFiles[i]]],
         ),
       ),
-      ...Object.fromEntries(DEFERRED_FILES.map((f) => [f, EMPTY_LEVER_DATA[f]])),
+      ...Object.fromEntries(deferred.map((f) => [f, EMPTY_LEVER_DATA[f]])),
       ...leverData(eager, leverFiles),
     } as ModelData,
-    DEFERRED_FILES,
+    deferred,
   );
 };
