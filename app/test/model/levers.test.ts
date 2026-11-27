@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { FAMILIES, COUNTED_CAUSES, LEVER_IDS, MODULES } from '../../src/levers/registry';
+import { FAMILIES, COUNTED_CAUSES, LEVER_IDS } from '../../src/levers/registry';
 import { PRACTICES } from '../../src/levers/practices/data';
-import { DEFAULT_OPTIONS, type Options, type Scenario } from '../../src/model/api';
-import { shapley } from '../../src/model/attribution';
+import { DEFAULT_OPTIONS, type Scenario } from '../../src/model/api';
 import { BASE_SCENARIO } from '../../src/model/scenarios';
 import { decodeState, encodeState } from '../../src/model/state';
 import { gasShares } from '../../src/model/run';
 import { sum } from '../../src/model/util';
 import { GASES, type LeverCause } from '../../src/data/types';
 import { lever, run } from '../levers';
+import { exactShapley, FAMILY_GROUPS, withOnly } from './families';
 
 describe('levers together', () => {
   it('with no shift and no lever, nothing is avoided', () => {
@@ -55,49 +55,37 @@ describe('the breakdown by family', () => {
     expect(total(s.byFamily.avoidedCo2e) / s.avoidedCo2e).toBeCloseTo(1, 9);
     FAMILIES.forEach((f) => expect(s.byFamily.avoidedWarming2100[f], f).toBeGreaterThan(0));
   });
-  it('equals the Shapley values of full runs with each family on or off', () => {
-    // The permafrost feedback is shared out by each family's warming, not by Shapley values.
-    const on = run({ shift: 0.5, levers: LEVERS_ON }, { regrowth: 'natural', permafrost: 'off' });
-    const scenario = { shift: 0.5, levers: LEVERS_ON };
-    const families = FAMILIES.filter((f) => Math.abs(on.summary.byFamily.avoidedCo2e[f] ?? 0) > 0);
-    const offIn = (family: string, s: Partial<Scenario>, o: Partial<Options>) =>
-      family === 'diet'
-        ? [{ ...s, shift: 0 }, o]
-        : family === 'regrowth'
-          ? [s, { ...o, regrowth: 'none' }]
-          : [
-              {
-                ...s,
-                levers: Object.fromEntries(
-                  Object.entries(s.levers ?? {}).filter(
-                    ([id]) =>
-                      MODULES.find((m) => m.levers.some((l) => l.id === id))?.family !== family,
-                  ),
-                ),
-              },
-              o,
-            ];
-    const exact = shapley(families, (coalition) => {
-      const [s, o] = families
-        .filter((f) => !coalition.includes(f))
-        .reduce<[Partial<Scenario>, Partial<Options>]>(
-          ([s1, o1], f) => offIn(f, s1, o1) as [Partial<Scenario>, Partial<Options>],
-          [scenario, { regrowth: 'natural', permafrost: 'off' }],
-        );
-      const r = run(s, o).summary;
-      return [r.avoidedWarming2050.median, r.avoidedWarming2100.median, r.avoidedCo2e];
-    });
-    expect(families.length).toBe(FAMILIES.length);
-    families.forEach((f) => {
-      const [w50, w100, co2e] = exact.get(f) as number[];
-      expect(on.summary.byFamily.avoidedWarming2050[f], f).toBeCloseTo(w50 as number, 9);
-      expect(on.summary.byFamily.avoidedWarming2100[f], f).toBeCloseTo(w100 as number, 9);
-      expect((on.summary.byFamily.avoidedCo2e[f] as number) / (co2e as number), f).toBeCloseTo(
-        1,
-        9,
+  FAMILY_GROUPS.forEach((group) =>
+    it(`equals the Shapley values of full runs with each family on or off: ${group.join(', ')}`, () => {
+      // The permafrost feedback is shared out by each family's warming, not by Shapley values.
+      const [scenario, options] = withOnly(
+        group,
+        { shift: 0.5, levers: LEVERS_ON },
+        { regrowth: 'natural' as const, permafrost: 'off' as const },
       );
-    });
-  });
+      const on = run(scenario, options).summary;
+      const exact = exactShapley(scenario, options, (s, o) => {
+        const r = run(s, o).summary;
+        return [r.avoidedWarming2050.median, r.avoidedWarming2100.median, r.avoidedCo2e];
+      });
+      expect([...exact.keys()]).toEqual(FAMILIES.filter((f) => group.includes(f)));
+      exact.forEach(([w50, w100, co2e], f) => {
+        expect(on.byFamily.avoidedWarming2050[f], f).toBeCloseTo(w50 as number, 9);
+        expect(on.byFamily.avoidedWarming2100[f], f).toBeCloseTo(w100 as number, 9);
+        expect((on.byFamily.avoidedCo2e[f] as number) / (co2e as number), f).toBeCloseTo(1, 9);
+      });
+      FAMILIES.filter((f) => !exact.has(f)).forEach((f) =>
+        expect(
+          [
+            on.byFamily.avoidedWarming2050[f],
+            on.byFamily.avoidedWarming2100[f],
+            on.byFamily.avoidedCo2e[f],
+          ],
+          f,
+        ).toEqual([0, 0, 0]),
+      );
+    }),
+  );
   it('gives the diet alone, with no other family acting, all that is avoided', () => {
     const diet = run({ shift: 0.5 }).summary;
     expect(diet.byFamily.avoidedWarming2050.diet).toBeCloseTo(diet.avoidedWarming2050.median, 12);
