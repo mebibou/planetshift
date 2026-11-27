@@ -1,5 +1,7 @@
 import type { Prepared, PreparedCountry } from '../../model/prepare';
+import type { CakeDemand } from '../../model/land';
 import { cachedIn, clamp, memoPer, type ItemVector } from '../../model/util';
+import { cropChange, ownProduction, type Crops } from './crops';
 
 /** A country's clearing and drained soils by the item they are tied to: kg a year, area in ha. */
 export interface CountryClearing {
@@ -56,27 +58,37 @@ const clearedItems = (clearing: ItemVector): Uint32Array =>
     Uint32Array.from(Array.from(clearing).flatMap((d, i) => (d !== 0 ? [i] : []))),
   );
 
-/** An item's relative change, −1..MAX_RISE, 0 where the country has none. */
-const relativeAt = (change: ItemVector, emitting: ItemVector, i: number): number => {
-  const base = emitting[i] as number;
-  return base > 0 ? clamp((change[i] as number) / base, -1, MAX_RISE) : 0;
+/** A crop's relative change, −1..MAX_RISE, 0 where the country has none. */
+const relativeAt = (
+  crops: Crops,
+  i: number,
+  change: ItemVector,
+  emitting: ItemVector,
+  cake: CakeDemand | undefined,
+): number => {
+  const base = crops.base[i] as number;
+  return base > 0 ? clamp(cropChange(crops, i, change, emitting, cake) / base, -1, MAX_RISE) : 0;
 };
 
 /**
  * Each step's relative change of the `items`, step after step of the items' length; only the
- * items are filled, as clearing is tied to a few.
+ * items are filled, as clearing is tied to a few. A crop's change counts the items made from it
+ * (`crops`), oil and sugar back to the crop through their extraction rates, and the oilcake as
+ * the step's demand for it (`cakes`) moves.
  */
 export const relativeChanges = (
   steps: readonly ItemVector[],
   emitting: ItemVector,
   items: Uint32Array,
+  crops: Crops = ownProduction(emitting),
+  cakes: readonly (CakeDemand | undefined)[] = [],
 ): Float64Array => {
   const n = emitting.length;
   const out = new Float64Array(steps.length * n);
   steps.forEach((change, k) => {
     for (let j = 0; j < items.length; j++) {
       const i = items[j] as number;
-      out[k * n + i] = relativeAt(change, emitting, i);
+      out[k * n + i] = relativeAt(crops, i, change, emitting, cakes[k]);
     }
   });
   return out;

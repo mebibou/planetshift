@@ -165,11 +165,14 @@ export interface Feed {
  * landArea[iso3]: the country's land area in hectares (FAOSTAT), for the share of it farmed;
  * a build without it leaves the map's land use layer empty.
  * crush[oilseedCode]: the oil crushing it gives, and the oil's share of the crush's value.
+ * extraction[processedCode][primaryCode]: tonnes of the processed item made per tonne of the
+ * primary item processed.
  */
 export interface Land {
   cropHaPerTonne: Record<string, Record<string, number>>;
   oilcakeHa?: Record<string, Record<string, number>>;
   crush?: Record<string, { oil: string; oilShare: number }>;
+  extraction?: Record<string, Record<string, number>>;
   fodderHa?: Record<string, number>;
   landArea?: Record<string, number>;
   pasture: Record<string, { ha: number; shares: Partial<Record<AnimalGroup, number>> }>;

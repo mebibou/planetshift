@@ -187,8 +187,8 @@ Le tableau montre ce que change la compensation, sur les données réelles avec 
 | Scénario, repousse activée | Absorption nette une fois complet (Gt de CO₂ par an) | Évité en 2050 (°C) | Évité en 2100 (°C) |
 | --- | --- | --- | --- |
 | Changement complet, avant | 9,20 | 0,176 | 0,397 (0,250–0,787) |
-| Changement complet, net | 8,86 | 0,174 | 0,395 (0,249–0,775) |
-| Moitié du changement, avant → net | 4,60 → 4,43 | 0,087 → 0,086 | 0,197 → 0,195 |
+| Changement complet, net | 8,86 | 0,174 | 0,396 (0,250–0,776) |
+| Moitié du changement, avant → net | 4,60 → 4,43 | 0,087 → 0,087 | 0,197 → 0,196 |
 | Lait végétal pour le lait, avant → net | 1,08 → 0,99 | 0,046 → 0,047 | 0,102 → 0,103 |
 | Moitié du poisson en légumineuses, avant → net | 0,01 → −0,09 | 0,0019 → 0,0014 | 0,0049 → 0,0042 |
 

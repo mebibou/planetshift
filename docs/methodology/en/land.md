@@ -187,8 +187,8 @@ The table shows what netting changes, on the real data with FaIR, SSP2-4.5 and b
 | Scenario, regrowth on | Net uptake when complete (Gt CO₂ a year) | Avoided in 2050 (°C) | Avoided in 2100 (°C) |
 | --- | --- | --- | --- |
 | Full shift, before | 9.20 | 0.176 | 0.397 (0.250–0.787) |
-| Full shift, netted | 8.86 | 0.174 | 0.395 (0.249–0.775) |
-| Half shift, before → netted | 4.60 → 4.43 | 0.087 → 0.086 | 0.197 → 0.195 |
+| Full shift, netted | 8.86 | 0.174 | 0.396 (0.250–0.776) |
+| Half shift, before → netted | 4.60 → 4.43 | 0.087 → 0.087 | 0.197 → 0.196 |
 | Dairy to plant milk, before → netted | 1.08 → 0.99 | 0.046 → 0.047 | 0.102 → 0.103 |
 | Half the fish to legumes, before → netted | 0.01 → −0.09 | 0.0019 → 0.0014 | 0.0049 → 0.0042 |
 

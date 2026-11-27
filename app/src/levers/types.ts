@@ -13,7 +13,7 @@ import type {
 import type { CountryResult, Options, Scenario, ScenarioResult } from '../model/api';
 import type { ModuleDeparture } from '../config';
 import type { Band } from '../model/climate';
-import type { Farmland } from '../model/land';
+import type { CakeDemand, Farmland } from '../model/land';
 import type { Prepared, PreparedCountry } from '../model/prepare';
 import type { ItemVector } from '../model/util';
 import type { Scale } from '../model/timePath';
@@ -76,6 +76,8 @@ export interface Stage {
   family: string;
   /** The change in emitting production up to this step, tonnes by item. */
   change: ItemVector;
+  /** How the demand for oilcake follows the animals up to this step. */
+  cake: CakeDemand;
 }
 
 export interface FarmGrid {
