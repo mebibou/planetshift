@@ -385,6 +385,7 @@ test('the map layers and tooltip work', async ({ page }) => {
     'waterScarcity',
     'waste',
     'fossilMethane',
+    'fires',
     'quality',
     'change',
     'emissions',
@@ -1172,6 +1173,31 @@ test('the land-use CO₂ layer shows net CO₂, sinks included, and what the lev
   await expect(tooltip).toContainText('With the levers');
   await expect(tooltip).toContainText('Of which clearing for farming');
   await expect(tooltip).not.toContainText('Least precise source');
+});
+
+test('the fires layer shows the latest season against the mean, which no lever changes', async ({
+  page,
+}) => {
+  await open(page, `${START}&shift=50`);
+  await page.locator('#layer-tab-fires').click();
+  await expect(page).toHaveURL(/layer=fires/);
+  await expect(page.locator('.legend-title')).toContainText(
+    'Area burned in the 2025–26 fire season against the 2002–2024 mean',
+  );
+  await expect(page.locator('.legend li').first()).toContainText('−50%');
+  await expect(page.locator('.map-note')).toContainText('not a sign of a milder climate');
+  await expect(page.locator('path.country[data-iso3="NGA"]')).not.toHaveClass(/has-data/);
+  await page.locator('path.country[data-iso3="BRA"]').click();
+  const tooltip = page.locator('.map-frame .tooltip');
+  await expect(tooltip).toContainText('Area burned against the mean');
+  await expect(tooltip).toContainText('Of which forest');
+  await expect(tooltip).toContainText('No lever changes it');
+  await expect(tooltip).not.toContainText('With the levers');
+  await page.locator('label[for="firesOf-carbon"]').click();
+  await expect(page).toHaveURL(/fire=carbon/);
+  await expect(page.locator('.legend-title')).toContainText('Carbon emitted by fires');
+  await page.locator('#map-tab-table').click();
+  await expect(page.locator('#map-panel-table tbody tr')).toHaveCount(4);
 });
 
 test('the farmed mammals layer shows live weight per km² of land, today and with the levers', async ({

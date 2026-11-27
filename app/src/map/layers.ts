@@ -1,6 +1,8 @@
 import {
   FARM_GASES,
   GASES,
+  type FireCountry,
+  type Fires,
   type Gas,
   type GasVector,
   type Group,
@@ -22,6 +24,7 @@ export const LAYERS = [
   'waterScarcity',
   'waste',
   'fossilMethane',
+  'fires',
   'change',
   'quality',
 ] as const;
@@ -33,8 +36,8 @@ export type ChangeOf = (typeof CHANGE_OF)[number];
  * share of a country's land that is farmed, its net land-use CO₂, its farmed mammals' live
  * weight per km² of land, the species its farmland commits to extinction, the freshwater its
  * farming withdraws, the scarcity-weighted water use of the crops HESTIA covers, the food lost
- * and wasted, the municipal solid waste, the plastic reaching the ocean or the methane leaked by
- * oil, gas and coal.
+ * and wasted, the municipal solid waste, the plastic reaching the ocean, the methane leaked by
+ * oil, gas and coal, or the latest fire season against the mean and its carbon.
  */
 export type Measure =
   | ChangeOf
@@ -50,7 +53,10 @@ export type Measure =
   | 'municipalWaste'
   | 'oceanPlastic'
   | 'fossilMethane'
-  | 'wasteMethane';
+  | 'wasteMethane'
+  | 'fireAnomaly'
+  | 'forestFireAnomaly'
+  | 'fireCarbon';
 
 /** What each layer but Change measures, production where it is not listed. */
 const LAYER_MEASURES: Partial<Record<Layer, Measure>> = {
@@ -81,8 +87,29 @@ const WASTE_MEASURES: Record<WasteOf, Measure> = {
   plastic: 'oceanPlastic',
   methane: 'wasteMethane',
 };
+/** The fires layer: the area burned or the forest burned against the mean, or the carbon. */
+export const FIRES_OF = ['burned', 'forest', 'carbon'] as const;
+export type FiresOf = (typeof FIRES_OF)[number];
+type FireMeasure = 'fireAnomaly' | 'forestFireAnomaly' | 'fireCarbon';
+const FIRE_MEASURES: Record<FiresOf, FireMeasure> = {
+  burned: 'fireAnomaly',
+  forest: 'forestFireAnomaly',
+  carbon: 'fireCarbon',
+};
+/** The field of fires.json each fire measure reads. */
+const FIRE_FIELDS: Record<FireMeasure, keyof FireCountry> = {
+  fireAnomaly: 'burnedAnomaly',
+  forestFireAnomaly: 'forestAnomaly',
+  fireCarbon: 'carbon',
+};
 /** The measures no lever changes: their value with the levers is today's. */
-export const UNCHANGED: readonly Measure[] = ['municipalWaste', 'oceanPlastic'];
+export const UNCHANGED: readonly Measure[] = [
+  'municipalWaste',
+  'oceanPlastic',
+  'fireAnomaly',
+  'forestFireAnomaly',
+  'fireCarbon',
+];
 
 export interface LayerSpec {
   layer: Layer;
@@ -91,6 +118,7 @@ export interface LayerSpec {
   gas: GasChoice;
   speciesPer?: SpeciesPer;
   wasteOf?: WasteOf;
+  firesOf?: FiresOf;
 }
 
 /** Each country's measured net land-use CO₂, kg a year. */
@@ -123,13 +151,14 @@ export interface BeforeAfter {
   after: number;
 }
 
-type MeasureSpec = Pick<LayerSpec, 'layer' | 'changeOf' | 'speciesPer' | 'wasteOf'>;
+type MeasureSpec = Pick<LayerSpec, 'layer' | 'changeOf' | 'speciesPer' | 'wasteOf' | 'firesOf'>;
 
 /** The layers whose measure depends on one of their choices. */
 const CHOSEN_MEASURES: Partial<Record<Layer, (spec: MeasureSpec) => Measure>> = {
   change: (spec) => spec.changeOf,
   species: (spec) => (spec.speciesPer === 'farmland' ? 'speciesDensity' : 'species'),
   waste: (spec) => WASTE_MEASURES[spec.wasteOf ?? 'food'],
+  fires: (spec) => FIRE_MEASURES[spec.firesOf ?? 'burned'],
 };
 
 export const measureOf = (spec: MeasureSpec): Measure =>
@@ -195,6 +224,23 @@ export const leakedMethane = (c: CountryResult): number =>
 export const hasWasteData = (c: CountryResult, kind: Measure): boolean =>
   WASTE_DATA[kind]?.(c) ?? false;
 
+/** A fire measure's figure for a country, or undefined where fires.json has none. */
+const fireValue = (c: CountryResult, kind: FireMeasure): number | undefined =>
+  c.fire?.[FIRE_FIELDS[kind]];
+
+/** Whether fires.json gives a country a figure for the fire measure. */
+export const hasFireData = (c: CountryResult, kind: Measure): boolean =>
+  kind in FIRE_FIELDS && fireValue(c, kind as FireMeasure) !== undefined;
+
+/** The run's countries with their fires from fires.json, which no lever changes. */
+export const withFires = (countries: CountryResult[], fires: Fires | undefined): CountryResult[] =>
+  fires
+    ? countries.map((c) => {
+        const fire = fires.byCountry[c.iso3];
+        return fire ? { ...c, fire } : c;
+      })
+    : countries;
+
 const MEASURES: Record<
   Measure,
   (c: CountryResult, spec: LayerSpec, landUse: LandUseCo2) => [number, number]
@@ -218,6 +264,9 @@ const MEASURES: Record<
   oceanPlastic: (c) => [c.oceanPlastic ?? 0, 0],
   fossilMethane: (c) => [leakedMethane(c), c.fossilMethaneChange ?? 0],
   wasteMethane: wasteMethaneTotal,
+  fireAnomaly: (c) => [fireValue(c, 'fireAnomaly') ?? 0, 0],
+  forestFireAnomaly: (c) => [fireValue(c, 'forestFireAnomaly') ?? 0, 0],
+  fireCarbon: (c) => [fireValue(c, 'fireCarbon') ?? 0, 0],
 };
 
 export const beforeAfter = (
@@ -248,6 +297,7 @@ const VALUES: Partial<Record<Layer, Value>> = {
   waterScarcity: (c, ba) => (c.waterScarcity > 0 ? ba.after : null),
   waste: (c, ba) => (hasWasteData(c, ba.kind) ? ba.after : null),
   fossilMethane: (c, ba) => (c.fossilMethane ? ba.after : null),
+  fires: (c, ba) => (hasFireData(c, ba.kind) ? ba.after : null),
 };
 
 /** The number the map colours a country by, or null for no data. */

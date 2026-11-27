@@ -11,13 +11,14 @@ import {
 } from '../app/download';
 import { GROUP_CHOICES } from '../app/groups';
 import { MAP_VIEWS, type UiState } from '../app/url';
-import type { Climate, Country, Intensities, LandUse, Meta } from '../data/types';
+import type { Climate, Country, Fires, Intensities, LandUse, Meta } from '../data/types';
 import { formatPercent } from '../i18n/format';
 import type { T } from '../i18n/i18n';
 import { choropleth } from '../map/choropleth';
-import { LAYER_COLOURS, scaleKind } from '../map/colours';
+import { scaleOf } from '../map/colours';
 import {
   CHANGE_OF,
+  FIRES_OF,
   GAS_CHOICES,
   LAYERS,
   landUseCo2,
@@ -25,6 +26,8 @@ import {
   measureOf,
   SPECIES_PER,
   WASTE_OF,
+  withFires,
+  type FiresOf,
   type LandUseCo2,
   type Layer,
   type LayerSpec,
@@ -36,6 +39,7 @@ import { shapeNames } from '../map/geo';
 import { legendBins } from '../map/legend';
 import {
   colourScale,
+  FIRE_ANOMALY_THRESHOLDS,
   LAND_SHARE_THRESHOLDS,
   MAMMAL_THRESHOLDS,
   pickColours,
@@ -66,6 +70,7 @@ export interface MapCardProps {
   climate: Climate;
   meta: Meta;
   landUse?: LandUse | undefined;
+  fires?: Fires | undefined;
   currentYear: number;
   /** The folder the data was read from, and its files with their sizes. */
   folder: string;
@@ -90,6 +95,8 @@ const FIXED_THRESHOLDS: Partial<Record<Measure, number[]>> = {
   mammals: MAMMAL_THRESHOLDS,
   species: SPECIES_THRESHOLDS,
   speciesDensity: SPECIES_DENSITY_THRESHOLDS,
+  fireAnomaly: FIRE_ANOMALY_THRESHOLDS,
+  forestFireAnomaly: FIRE_ANOMALY_THRESHOLDS,
 };
 
 const fixedThresholds = (spec: LayerSpec): number[] | undefined =>
@@ -97,17 +104,20 @@ const fixedThresholds = (spec: LayerSpec): number[] | undefined =>
 
 /** The layer's colour scale: its kind, thresholds and colours, from the values it shows. */
 const paletteOf = (spec: LayerSpec, values: ReadonlyMap<string, number | null>) => {
-  const layer = spec.layer;
-  const kind = scaleKind(layer);
+  const { kind, colours: ramp } = scaleOf(spec);
   const numbers = [...values.values()].filter((v): v is number => v !== null);
   const thresholds = fixedThresholds(spec) ?? thresholdsFor(kind, numbers, 7);
-  const colours =
-    kind === 'sequential'
-      ? pickColours(LAYER_COLOURS[layer], thresholds.length + 1)
-      : LAYER_COLOURS[layer];
+  const colours = kind === 'sequential' ? pickColours(ramp, thresholds.length + 1) : ramp;
   return { kind, thresholds, colours, scale: colourScale(thresholds, colours) };
 };
 type Palette = ReturnType<typeof paletteOf>;
+
+/** The fire season (2025–26) and the years of its mean, from fires.json's four years. */
+const fireYears = ([start, end, from, to]: readonly number[]) => ({
+  season: `${start ?? ''}–${String(end ?? '').slice(-2)}`,
+  from: from ?? '',
+  to: to ?? '',
+});
 
 /** What each measure shows, for the legend's title. */
 const MEASURE_TITLES: Record<Measure, (t: T, ui: UiState, years: readonly number[]) => string> = {
@@ -127,7 +137,18 @@ const MEASURE_TITLES: Record<Measure, (t: T, ui: UiState, years: readonly number
   oceanPlastic: (t) => t('map.legend.oceanPlastic'),
   fossilMethane: (t) => t('map.legend.fossilMethane'),
   wasteMethane: (t) => t('map.legend.wasteMethane'),
+  fireAnomaly: (t, _, years) => t('map.legend.fireAnomaly', fireYears(years)),
+  forestFireAnomaly: (t, _, years) => t('map.legend.forestFireAnomaly', fireYears(years)),
+  fireCarbon: (t, _, years) => t('map.legend.fireCarbon', fireYears(years)),
 };
+
+/** fires.json's season, then the first and last years of its mean; none without the file. */
+const fireFileYears = (fires: Fires | undefined): number[] =>
+  fires ? [...fires.season, ...fires.baseline.burned] : [];
+
+/** The years a layer's legend names: land-use CO₂'s mean, or the fire season and its baseline. */
+const legendYears = (ui: UiState, props: Pick<MapCardProps, 'landUse' | 'fires'>): number[] =>
+  ui.layer === 'fires' ? fireFileYears(props.fires) : (props.landUse?.years ?? []);
 
 const legendTitleOf = (t: T, ui: UiState, years: readonly number[]): string => {
   const what = MEASURE_TITLES[measureOf(ui)](t, ui, years);
@@ -325,6 +346,14 @@ const MapControls = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui:
         hidden={ui.layer !== 'waste'}
         onChange={(wasteOf) => setUi((u) => ({ ...u, wasteOf }))}
       />
+      <Segmented<FiresOf>
+        name="firesOf"
+        legend={t('map.firesOf.legend')}
+        options={FIRES_OF.map((v) => ({ value: v, label: t(`map.firesOf.${v}`) }))}
+        value={ui.firesOf}
+        hidden={ui.layer !== 'fires'}
+        onChange={(firesOf) => setUi((u) => ({ ...u, firesOf }))}
+      />
       <Segmented<UiState['gas']>
         name="gas"
         legend={t('map.gas')}
@@ -354,7 +383,7 @@ const MapControls = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui:
 };
 
 /** The map card: a choropleth or a table of every country, its choices and its downloads. */
-export const MapCard = (props: MapCardProps) => {
+const MapCardView = (props: MapCardProps) => {
   const { t, locale, lang, countries, state, setUi } = props;
   const { ui } = state;
   const names = useMemo(
@@ -378,7 +407,7 @@ export const MapCard = (props: MapCardProps) => {
   const landUse = useMemo(() => landUseCo2(props.landUse), [props.landUse]);
   const rowsOf = useRows(props, landUse);
   const { mapRef, palette } = usePaint(props, names, landUse);
-  const legendTitle = legendTitleOf(t, ui, props.landUse?.years ?? []);
+  const legendTitle = legendTitleOf(t, ui, legendYears(ui, props));
   return (
     <section ref={card} className={MAP_CARD} aria-labelledby="map-title">
       <h2 id="map-title" className="visually-hidden">
@@ -444,4 +473,14 @@ export const MapCard = (props: MapCardProps) => {
       </div>
     </section>
   );
+};
+
+/** The map card, the run's countries given their fires, which no lever changes. */
+export const MapCard = (props: MapCardProps) => {
+  const { result, fires } = props;
+  const withFire = useMemo(
+    () => result && { ...result, countries: withFires(result.countries, fires) },
+    [result, fires],
+  );
+  return <MapCardView {...props} result={withFire} />;
 };

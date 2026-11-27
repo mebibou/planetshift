@@ -197,6 +197,7 @@
       "waterScarcity": "Water scarcity (crops)",
       "waste": "Waste",
       "fossilMethane": "Methane leaks",
+      "fires": "Fires",
       "change": "Change",
       "quality": "Data quality"
     },
@@ -208,6 +209,12 @@
       "municipal": "Municipal waste",
       "plastic": "Plastic to the ocean",
       "methane": "Landfill and wastewater methane"
+    },
+    "firesOf": {
+      "legend": "Fires",
+      "burned": "Area burned",
+      "forest": "Forest burned",
+      "carbon": "Carbon emitted"
     },
     "gas": "Gas",
     "group": "Food",
@@ -231,7 +238,10 @@
       "municipalWaste": "Municipal solid waste, a year (no lever changes it)",
       "oceanPlastic": "Plastic reaching the ocean through rivers, a year (no lever changes it)",
       "fossilMethane": "Methane leaked by oil, gas and coal with the levers, a year",
-      "wasteMethane": "Methane of landfills and wastewater with the levers, a year"
+      "wasteMethane": "Methane of landfills and wastewater with the levers, a year",
+      "fireAnomaly": "Area burned in the {season} fire season against the {from}–{to} mean (no lever changes it)",
+      "forestFireAnomaly": "Forest burned in the {season} fire season against the {from}–{to} mean (no lever changes it)",
+      "fireCarbon": "Carbon emitted by fires in the {season} fire season (no lever changes it)"
     },
     "notes": {
       "fossilMethane": "Methane leaked producing oil, gas and coal in each country in 2022, from CEDS: oil and gas wells, their venting and flaring, gas pipelines, and coal mines. It is where the fuel is produced, not where it is burnt. With the levers, it is that methane less the share the two leak levers remove: at 100%, 75% of oil and gas methane and 50% of coal mines'. The levers that burn less fuel cut the world's leaks too, but the map does not split that cut by country. The tooltip gives each part.",
@@ -251,7 +261,8 @@
         "municipal": "The household and commercial waste each country's towns collect or should collect, in tonnes a year: the World Bank's estimate for 2022 from What a Waste 3.0. No lever changes it. The food levers cut food waste, but not the municipal waste shown here. The tooltip gives its largest types and where it goes. A country that reports neither takes its income group's shares.",
         "plastic": "Plastic that reaches the ocean through rivers, in tonnes a year, from Meijer et al. (2021)'s model of the plastic that leaves each country's land by its rivers. No lever changes it. The estimates are uncertain: a river's true figure can be several times lower or higher.",
         "methane": "The methane of landfills, open dumps and wastewater in each country, in kg a year, from CEDS for 2022. The Landfills and Wastewater levers cut it: gas captured at landfills, organic waste composted or digested, sewage treated. The levers that grow less food cut it too, as less food is wasted. A country's room to capture landfill gas is the share of its buried waste that goes to landfills rather than open dumps or is never collected (What a Waste 3.0). With the levers, the map shows the cut once the levers are in full and the waste already buried has rotted away. The tooltip shows landfills and wastewater separately."
-      }
+      },
+      "fires": "The map shows each country's latest fire season, from March to February, against its mean over the seasons since 2002, from the State of Wildfires report. Blue countries burned less than usual, red ones more. It is one season, not a trend. Fewer hectares burn worldwide than in the early 2000s, mostly because farming has spread into savannas and grasslands, where fires are now put out or never lit (Andela et al. 2017). That decline is not a sign of a milder climate. Forest fires release the most carbon per hectare. Hotter, drier weather makes them more likely. Forest is land with at least 30% tree cover. The carbon is the mean of two estimates, GFED5.1 and GFAS. No lever changes these figures. NASA's MODIS instruments map the area burned. The MODIS instrument on the Terra satellite will stop in December 2026, and later reports will use VIIRS instead."
     },
     "tooltip": {
       "water": "Freshwater withdrawn, a year",
@@ -303,6 +314,15 @@
         "retail": "Wasted in shops",
         "foodService": "Wasted in food service",
         "household": "Wasted at home"
+      },
+      "fireAnomaly": "Area burned against the mean",
+      "forestFireAnomaly": "Forest burned against the mean",
+      "fireCarbon": "Carbon emitted by fires",
+      "fires": {
+        "burned": "Area burned",
+        "forest": "Of which forest",
+        "carbon": "Carbon emitted",
+        "withAnomaly": "{value} ({anomaly} against the mean)"
       }
     },
     "noClearing": "No clearing or no data",

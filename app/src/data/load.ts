@@ -29,6 +29,7 @@ export const OPTIONAL_FILES = [
   'fair',
   'solidwaste',
   'oceanplastic',
+  'fires',
 ] as const;
 
 /**

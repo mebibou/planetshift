@@ -935,6 +935,49 @@ write('landuse.json', {
   source: 'Synthetic fixture',
 });
 
+// the latest fire season: km² burned, t C, anomalies as shares of the mean; NGA left without
+// data, FRA without a forest anomaly (a mean of almost nothing)
+write('fires.json', {
+  season: [2025, 2026],
+  baseline: { burned: [2002, 2024], carbon: [2003, 2024] },
+  byCountry: {
+    BRA: {
+      burned: 102815,
+      burnedAnomaly: -0.451,
+      forest: 17799.5,
+      forestAnomaly: -0.506,
+      carbon: 118291687,
+      carbonAnomaly: -0.539,
+    },
+    USA: {
+      burned: 27040.1,
+      burnedAnomaly: -0.205,
+      forest: 7806.9,
+      forestAnomaly: -0.031,
+      carbon: 41791264,
+      carbonAnomaly: -0.215,
+    },
+    IND: {
+      burned: 54045.6,
+      burnedAnomaly: 0.207,
+      forest: 15508.7,
+      forestAnomaly: 1.795,
+      carbon: 44032574,
+      carbonAnomaly: -0.197,
+    },
+    FRA: { burned: 371.9, burnedAnomaly: 0.007, forest: 4.1, carbon: 590710 },
+  },
+  world: {
+    burned: 3289962.6,
+    burnedAnomaly: -0.178,
+    forest: 457208.6,
+    forestAnomaly: -0.11,
+    carbon: 2071567215,
+    carbonAnomaly: -0.253,
+  },
+  source: 'Synthetic fixture',
+});
+
 // farmed mammals' live weight, tonnes by the food group each herd follows; NGA left without data
 write('mammals.json', {
   year: 2024,

@@ -24,6 +24,7 @@ describe('url', () => {
       speciesPer: 'farmland',
       wasteOf: 'food',
       wasteView: 'food',
+      firesOf: 'burned',
     });
     expect(parseUi('?view=nope&gas=xx&causegas=co2e&waste=paper')).toEqual(DEFAULT_UI);
     expect(parseUi('?layer=waste&waste=plastic&chart=waste&wasteview=treatment')).toMatchObject({

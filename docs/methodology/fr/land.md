@@ -216,6 +216,24 @@ Les totaux UTCATF des inventaires nationaux n'ont pas été utilisés : ils comp
 
 `pipeline/planetshift_pipeline/landuse.py` lit la feuille de chaque modèle et vérifie que ses pays et les colonnes qu'aucun pays ne porte s'additionnent à son total mondial, chaque année (à 0,1 % près ; ils le font à 10⁻⁷ près). Les noms de pays sont associés aux codes ISO3 par les noms anglais de FAOSTAT, puis par `pipeline/landuse_names.csv`.
 
+## Les incendies par pays
+
+La couche Incendies de la carte montre la dernière saison des feux de chaque pays, de mars 2025 à février 2026, comparée à sa moyenne sur les saisons de 2002 à 2024. Elle ne montre pas de tendance de la surface brûlée, et aucun levier ne la change. Les données sont les synthèses régionales du rapport State of Wildfires 2025-26 (Burton et al., en cours d'évaluation). Leurs saisons des feux vont de mars à février : elles commencent et finissent quand il y a le moins de feux dans le monde. La couche a trois vues :
+
+- Surface brûlée : la surface brûlée de la saison, en part au-dessus ou au-dessous de la moyenne du pays. La surface brûlée est le produit MODIS MCD64A1 de la NASA (Giglio et al. 2018).
+- Forêt brûlée : la même part pour la surface brûlée couverte d'arbres à 30 % au moins. Les synthèses State of Wildfires répartissent ainsi la surface brûlée.
+- Carbone émis : les tonnes de carbone que les feux ont libérées pendant la saison. C'est la moyenne de deux estimations, GFED5.1 (van der Werf et al. 2025) et GFAS (Kaiser et al. 2012). Leurs séries commencent en 2003, donc la moyenne du carbone porte sur les saisons de 2003 à 2024. L'infobulle donne l'écart du carbone tel que le donnent les synthèses State of Wildfires, la moyenne des écarts des deux estimations.
+
+L'infobulle donne les trois chiffres du pays. Le fichier omet un écart quand la moyenne du pays est sous 10 km² brûlés ou 1 000 t de carbone, car quelques feux suffiraient alors à colorer le pays en rouge ou en bleu foncé. Les classes sont symétriques en rapport à la moyenne : −50 % va avec +100 % (moitié et double), −20 % avec +25 %, et −10 % avec +10 %. Une saison peut brûler plusieurs fois sa moyenne, mais jamais moins que zéro.
+
+Dans le monde, 3,29 millions de km² ont brûlé pendant la saison 2025–26, 18 % sous la moyenne 2002–2024. Les feux ont libéré 2,07 Gt de carbone, 25 % sous la moyenne 2003–2024. 109 des 142 pays qui ont un écart ont moins brûlé que leur moyenne. La forêt brûlée, 14 % du total, était 11 % sous sa moyenne. La forêt a brûlé plus que sa moyenne dans 26 des 104 pays qui ont un écart pour la forêt, dont le Canada (+162 %, et +195 % en carbone), l'Espagne (+767 %) et l'Inde (+180 %).
+
+Ces chiffres ne sont pas à eux seuls un signal climatique. La surface brûlée mondiale a baissé depuis le début des années 2000, d'environ un quart de 1998 à 2015. La baisse vient surtout des savanes et des prairies, où l'agriculture s'est étendue et intensifiée : les champs et le pâturage morcellent le combustible, et les feux sont éteints ou pas allumés (Andela et al. 2017). Dans le même temps, les conditions météo qui laissent les feux se propager sont devenues plus fréquentes. Les incendies de forêt, qui libèrent le plus de carbone par hectare, ont augmenté dans certaines régions (Jones et al. 2022). Une baisse de la surface brûlée mondiale n'est donc pas la preuve d'un climat plus clément, et une saison n'est pas une tendance. La couche montre où une saison a été inhabituelle.
+
+La surface brûlée vient des instruments MODIS. Celui du satellite Terra de la NASA doit s'arrêter en décembre 2026. Les synthèses State of Wildfires suivantes utiliseront à la place le produit VIIRS (VNP64A1), qui cartographie autrement la surface brûlée. `pipeline/planetshift_pipeline/fires.py` lit le produit MODIS par son nom, et la construction s'arrête quand un nouveau fichier ne l'a plus. Le passage à VIIRS se fera alors avec une nouvelle moyenne.
+
+`pipeline/planetshift_pipeline/fires.py` vérifie que la moyenne de la source est celle de toutes les saisons sauf la dernière, pour chaque pays et chaque produit, à 10⁻⁶ près. Elles concordent à 10⁻¹⁴ près. Les noms de pays sont reliés aux codes ISO3 par les noms anglais de FAOSTAT, puis par `pipeline/fire_names.csv`. Les pays du modèle portent 92 % de la surface brûlée mondiale et 96 % de son carbone. Le fichier n'a pas de chiffre pour Taïwan, donc la carte montre Taïwan sans donnée.
+
 ## Vérifications
 
 `pipeline/tests/test_land_validation.py` compare le `land.json` construit avec FAOSTAT et la littérature :
@@ -265,3 +283,9 @@ Les données d'utilisation des terres de FAOSTAT que lit le pipeline donnent 1,5
 - FAO (2025). Land statistics 2001–2023: global, regional and country trends. FAOSTAT Analytical Brief 107 : <https://doi.org/10.4060/cd5765en>.
 - FAO (2023). Land statistics and indicators 2000–2021. FAOSTAT Analytical Brief 71 (prairies 3,2 et terres agricoles 4,8 milliards d'hectares en 2021, sur une version antérieure).
 - Global Carbon Project (2025). Supplemental data of Global Carbon Budget 2025, National Land Use Change Carbon Emissions 2025 v1.0 (BLUE, OSCAR et LUCE) : <https://doi.org/10.18160/GCP-2025>, CC BY 4.0. Friedlingstein, P. et al. (2026). Global Carbon Budget 2025. Earth Syst. Sci. Data 18, 3211–3288.
+- Burton et al. (en cours d'évaluation). State of Wildfires 2025–26. Earth System Science Data. Synthèses régionales : <https://doi.org/10.5281/zenodo.21262381>, CC BY 4.0.
+- Giglio, L., Boschetti, L., Roy, D. P., Humber, M. L., Justice, C. O. (2018). The Collection 6 MODIS burned area mapping algorithm and product. Remote Sensing of Environment 217, 72–85 : <https://doi.org/10.1016/j.rse.2018.08.005>.
+- van der Werf, G. R. et al. (2025). Landscape fire emissions from the 5th version of the Global Fire Emissions Database (GFED5). Scientific Data 12, 1870 : <https://doi.org/10.1038/s41597-025-06127-w>.
+- Kaiser, J. W. et al. (2012). Biomass burning emissions estimated with a global fire assimilation system based on observed fire radiative power. Biogeosciences 9, 527–554 : <https://doi.org/10.5194/bg-9-527-2012>.
+- Andela, N. et al. (2017). A human-driven decline in global burned area. Science 356, 1356–1362 : <https://doi.org/10.1126/science.aal4108>.
+- Jones, M. W. et al. (2022). Global and regional trends and drivers of fire under climate change. Reviews of Geophysics 60, e2020RG000726 : <https://doi.org/10.1029/2020RG000726>.

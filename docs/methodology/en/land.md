@@ -216,6 +216,24 @@ The national inventories' LULUCF totals were not used: they count the uptake of 
 
 `pipeline/planetshift_pipeline/landuse.py` reads each model's sheet and checks that its countries and the columns no country holds add up to its world total, every year (within 0.1%; they do within 10⁻⁷). Country names are matched to ISO3 codes by FAOSTAT's English names, then by `pipeline/landuse_names.csv`.
 
+## Fires by country
+
+The map's Fires layer shows each country's latest fire season, from March 2025 to February 2026, against its mean over the seasons from 2002 to 2024. It shows no trend in burned area, and no lever changes it. The data are the State of Wildfires 2025-26 regional summaries (Burton et al., under review). Their fire seasons run from March to February, so they start and end when the fewest fires burn worldwide. The layer has three views:
+
+- Area burned: the season's burned area as a share above or below the country's mean. The burned area is NASA's MODIS MCD64A1 product (Giglio et al. 2018).
+- Forest burned: the same share for the part of the burned area with at least 30% tree cover. The State of Wildfires summaries split the burned area this way.
+- Carbon emitted: the tonnes of carbon that fires released in the season. It is the mean of two estimates, GFED5.1 (van der Werf et al. 2025) and GFAS (Kaiser et al. 2012). Their record starts in 2003, so the carbon's mean is over the seasons from 2003 to 2024. The tooltip gives the carbon's anomaly as the State of Wildfires summaries give it, the mean of the two estimates' anomalies.
+
+The tooltip gives all three figures for the country. The file leaves out an anomaly where the country's mean is below 10 km² burned or 1,000 t of carbon, because a few fires would then colour the country deep red or blue. The bins are symmetric as ratios to the mean: −50% pairs with +100% (half and double), −20% with +25%, and −10% with +10%. A season can burn many times its mean, but never less than zero.
+
+Worldwide, 3.29 million km² burned in the 2025–26 season, 18% below the 2002–2024 mean. Fires released 2.07 Gt of carbon, 25% below the 2003–2024 mean. 109 of the 142 countries with an anomaly burned less than their mean. The forest burned, 14% of the total, was 11% below its mean. Forest burned more than its mean in 26 of the 104 countries with a forest anomaly, among them Canada (+162%, and +195% in carbon), Spain (+767%) and India (+180%).
+
+These figures are not a climate signal on their own. Global burned area has fallen since the early 2000s, by about a quarter from 1998 to 2015. Most of the fall is in savannas and grasslands, where farming has spread and intensified: fields and grazing break up the fuel, and fires are put out or not lit (Andela et al. 2017). Over the same years, the weather that lets fires spread has become more frequent. Forest fires, which release the most carbon per hectare, have increased in some regions (Jones et al. 2022). A fall in the world's burned area is therefore not evidence of a milder climate, and one season is not a trend. The layer shows where a season was unusual.
+
+The burned area comes from the MODIS instruments. The one on NASA's Terra satellite is scheduled to stop in December 2026. Later State of Wildfires summaries will use the VIIRS product (VNP64A1) instead, which maps burned area differently. `pipeline/planetshift_pipeline/fires.py` reads the MODIS product by name, and the build stops when a new file no longer has it. The move to VIIRS will then come with a new baseline.
+
+`pipeline/planetshift_pipeline/fires.py` checks that the source's mean is the mean of all the seasons but the last, for every country and product, within 10⁻⁶. They match within 10⁻¹⁴. Country names are matched to ISO3 codes by FAOSTAT's English names, then by `pipeline/fire_names.csv`. The countries in the model hold 92% of the world's burned area and 96% of its fire carbon. The file has no figure for Taiwan, so the map shows Taiwan without data.
+
 ## Checks
 
 `pipeline/tests/test_land_validation.py` compares the built `land.json` with FAOSTAT and the literature:
@@ -265,3 +283,9 @@ The FAOSTAT land-use data the pipeline reads give 1.58 billion hectares of cropl
 - FAO (2025). Land statistics 2001–2023: global, regional and country trends. FAOSTAT Analytical Brief 107: <https://doi.org/10.4060/cd5765en>.
 - FAO (2023). Land statistics and indicators 2000–2021. FAOSTAT Analytical Brief 71 (pasture 3.2 and farmland 4.8 billion hectares in 2021, on an earlier release).
 - Global Carbon Project (2025). Supplemental data of Global Carbon Budget 2025, National Land Use Change Carbon Emissions 2025 v1.0 (BLUE, OSCAR and LUCE): <https://doi.org/10.18160/GCP-2025>, CC BY 4.0. Friedlingstein, P. et al. (2026). Global Carbon Budget 2025. Earth Syst. Sci. Data 18, 3211–3288.
+- Burton et al. (under review). State of Wildfires 2025–26. Earth System Science Data. Regional summaries: <https://doi.org/10.5281/zenodo.21262381>, CC BY 4.0.
+- Giglio, L., Boschetti, L., Roy, D. P., Humber, M. L., Justice, C. O. (2018). The Collection 6 MODIS burned area mapping algorithm and product. Remote Sensing of Environment 217, 72–85: <https://doi.org/10.1016/j.rse.2018.08.005>.
+- van der Werf, G. R. et al. (2025). Landscape fire emissions from the 5th version of the Global Fire Emissions Database (GFED5). Scientific Data 12, 1870: <https://doi.org/10.1038/s41597-025-06127-w>.
+- Kaiser, J. W. et al. (2012). Biomass burning emissions estimated with a global fire assimilation system based on observed fire radiative power. Biogeosciences 9, 527–554: <https://doi.org/10.5194/bg-9-527-2012>.
+- Andela, N. et al. (2017). A human-driven decline in global burned area. Science 356, 1356–1362: <https://doi.org/10.1126/science.aal4108>.
+- Jones, M. W. et al. (2022). Global and regional trends and drivers of fire under climate change. Reviews of Geophysics 60, e2020RG000726: <https://doi.org/10.1029/2020RG000726>.

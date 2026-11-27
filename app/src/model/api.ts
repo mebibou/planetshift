@@ -7,6 +7,7 @@ import type {
   CauseWarming,
   ClimateMethod,
   FeedMethod,
+  FireCountry,
   Gas,
   GasVector,
   Group,
@@ -109,6 +110,8 @@ export interface CountryResult {
   /** What the food eaten in the country emits per person, kg a year, and its change with the levers. */
   footprint?: GasVector;
   footprintChange?: GasVector;
+  /** The country's latest fire season (fires.json): set by the map, not the run, as no lever changes it. */
+  fire?: FireCountry;
 }
 
 export type Band3 = { median: number; p05: number; p95: number };

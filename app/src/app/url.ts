@@ -2,11 +2,13 @@ import { GROUP_CHOICES } from './groups';
 import { CAUSE_GASES, type CauseGas } from '../chart/series';
 import {
   CHANGE_OF,
+  FIRES_OF,
   GAS_CHOICES,
   LAYERS,
   SPECIES_PER,
   WASTE_OF,
   type ChangeOf,
+  type FiresOf,
   type GasChoice,
   type GroupChoice,
   type Layer,
@@ -47,6 +49,7 @@ export interface UiState {
   speciesPer: SpeciesPer;
   wasteOf: WasteOf;
   wasteView: WasteView;
+  firesOf: FiresOf;
 }
 
 export const DEFAULT_UI: UiState = {
@@ -63,6 +66,7 @@ export const DEFAULT_UI: UiState = {
   speciesPer: 'country',
   wasteOf: 'food',
   wasteView: 'food',
+  firesOf: 'burned',
 };
 
 /** Query parameters the interface owns; everything else belongs to the model's state. */
@@ -80,6 +84,7 @@ const UI_KEYS = {
   speciesPer: 'per',
   wasteOf: 'waste',
   wasteView: 'wasteview',
+  firesOf: 'fire',
 };
 const KEPT_KEYS = ['data'];
 const OWN_KEYS = [...Object.values(UI_KEYS), ...KEPT_KEYS];
@@ -107,6 +112,7 @@ export const parseUi = (query: string): UiState => {
     speciesPer: oneOf(SPECIES_PER, p.get(UI_KEYS.speciesPer), DEFAULT_UI.speciesPer),
     wasteOf: oneOf(WASTE_OF, p.get(UI_KEYS.wasteOf), DEFAULT_UI.wasteOf),
     wasteView: oneOf(WASTE_VIEWS, p.get(UI_KEYS.wasteView), DEFAULT_UI.wasteView),
+    firesOf: oneOf(FIRES_OF, p.get(UI_KEYS.firesOf), DEFAULT_UI.firesOf),
   };
 };
 
