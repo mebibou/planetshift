@@ -31,7 +31,7 @@ Pour chaque pays, les terres cultivées du modèle sont la somme sur les produit
 
 Quand un scénario change la production, les terres cultivées changent avec elle, produit par produit, aux hectares par tonne propres au pays. Cela comprend les cultures fourragères qui ne sont plus produites pour des animaux moins nombreux. Les terres des tourteaux changent avec les animaux qui les mangent.
 
-Les prairies changent avec la production des groupes de ruminants. La part des prairies d'un pays attribuée à chaque groupe varie en proportion de la production du groupe. Si un pays produit moitié moins de bœuf, les prairies attribuées au bœuf sont divisées par deux. Les prairies ne descendent jamais sous zéro. Les prairies temporaires changent de la même façon.
+Les prairies changent avec la production des groupes de ruminants. La part des prairies d'un pays attribuée à chaque groupe varie en proportion de la production du groupe. Si un pays produit moitié moins de bœuf, les prairies attribuées au bœuf sont divisées par deux. La production laitière compte le beurre et la crème comme le lait dont ils sont faits (voir [Le changement](#method-shift)). Les prairies ne descendent jamais sous zéro. Les prairies temporaires changent de la même façon.
 
 **Exemple.** Avec un changement de 50 %, à protéines égales et avec les options par défaut, le monde libère 1,51 milliard d'hectares de ses 3,02 milliards de prairies. Il libère aussi 65 Mha de ses 1,69 milliard d'hectares de terres cultivées, environ 4 %.
 
@@ -189,10 +189,10 @@ Le tableau montre ce que change la compensation, sur les données réelles avec 
 | Changement complet, avant | 9,20 | 0,176 | 0,397 (0,250–0,787) |
 | Changement complet, net | 8,86 | 0,174 | 0,396 (0,250–0,776) |
 | Moitié du changement, avant → net | 4,60 → 4,43 | 0,087 → 0,087 | 0,197 → 0,196 |
-| Lait végétal pour le lait, avant → net | 1,08 → 0,99 | 0,046 → 0,047 | 0,102 → 0,103 |
+| Lait végétal pour le lait, avant → net | 1,10 → 1,01 | 0,047 → 0,047 | 0,103 → 0,103 |
 | Moitié du poisson en légumineuses, avant → net | 0,01 → −0,09 | 0,0019 → 0,0014 | 0,0049 → 0,0042 |
 
-Avec le changement complet, 14 pays cultivent au total plus de terres qu'avant, 41 Mha ensemble. Avec la substitution du poisson, 103 pays cultivent plus de terres qu'avant, 18 Mha ensemble. Sans la repousse, rien ne change.
+Avec le changement complet, 14 pays cultivent au total plus de terres qu'avant, 41 Mha ensemble. Avec la substitution du poisson, 104 pays cultivent plus de terres qu'avant, 18 Mha ensemble. Sans la repousse, rien ne change.
 
 ### L'albédo des terres qui repoussent
 

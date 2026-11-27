@@ -107,7 +107,7 @@ A country's farmland has two parts, from `land.json` (see [Land](#method-land)):
 - **Cropland**: for each item, its hectares harvested per tonne × its production less processing. These are the same tonnes whose emissions are counted. The area of a processed crop is therefore counted on the derived item, when the data gives that item hectares of its own.
 - **Pasture**: the country's permanent meadows and pastures, shared among the ruminant groups that graze it (ruminant meat and dairy).
 
-At the full shift, cropland changes by each item's change in production × its hectares per tonne. Each ruminant group's share of the pasture changes by the same fraction as that group's production in the country. For example, if beef production falls by 40% and beef cattle graze 80% of the pasture, pasture falls by 32%. Pasture never falls below zero.
+At the full shift, cropland changes by each item's change in production × its hectares per tonne. Each ruminant group's share of the pasture changes by the same fraction as that group's production in the country. For example, if beef production falls by 40% and beef cattle graze 80% of the pasture, pasture falls by 32%. A group's production counts butter and cream in tonnes of the milk they are made from, by their extraction rates. A tonne of butter counts as 17.9 t of milk. Less butter therefore shrinks the dairy herd's pasture, as less of that milk would. Pasture never falls below zero.
 
 The land a country frees is the fall in its cropland and pasture, added together. A country that needs more land in total frees none.
 
@@ -159,7 +159,7 @@ The baseline temperature is the chosen SSP's published temperature. With the *po
 - The kept basis is conserved exactly per country. The other nutrient is not.
 - The default replacement is today's mix of protein-rich plant foods (cereals, rice, pulses, nuts, oilseeds with at least 10% protein). The legume mix is 60% pulses, 20% soybeans, 20% cereals, and soy and oat drinks 50% soybeans, 50% oats: starting values to review.
 - Losses and seed are fixed shares of supply. Processing is fixed in tonnes. The supply multiplier is capped at 3.
-- Feed falls in proportion to each group's production less processing in the same country, as pasture and fodder do. An animal group a country does not produce has no feed to lose.
+- Feed falls in proportion to each group's production less processing in the same country, as pasture and fodder do. Butter and cream count as the milk they are made from. An animal group a country does not produce has no feed to lose.
 - Milk and fish fed to animals change once, with the animals they feed. That change does not change feed again.
 - Fixed trade shares or domestic production: no change in who exports what.
 - Production cannot fall below what is processed. Such cases are clipped and listed.

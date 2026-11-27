@@ -1,6 +1,10 @@
 import { ANIMAL_GROUPS, type AnimalGroup, type GasVector, type Land } from '../data/types';
-import { groupTotals, type Prepared, type PreparedCountry } from './prepare';
+import { cakeAmountChange, cakeWeights, type CakeDemand } from './cake';
+import { primaryTotals } from './crops';
+import type { Prepared, PreparedCountry } from './prepare';
 import { dot, memoPer, sparseDot, type ItemVector } from './util';
+
+export { cakeAmountChange, cakeWeights, type CakeDemand, type CakeWeights } from './cake';
 
 export interface Farmland {
   cropland: number;
@@ -47,34 +51,6 @@ export const pastureChange = (
     ? Math.max(-pasture.ha, pasture.ha * grazedChange(pasture, before, change))
     : 0;
 
-/** An oilseed's feed shares in all, and weighted by each group's relative change. */
-export interface CakeWeights {
-  total: number;
-  change: number;
-}
-
-export const cakeWeights = (
-  shares: Partial<Record<AnimalGroup, number>> | undefined,
-  relative: Partial<Record<AnimalGroup, number>>,
-): CakeWeights => {
-  let total = 0;
-  let change = 0;
-  for (const g of ANIMAL_GROUPS) {
-    const share = shares?.[g] ?? 0;
-    total += share;
-    change += share * (relative[g] ?? 0);
-  }
-  return { total, change };
-};
-
-/**
- * Change in an amount an oilseed's cake carries (its land, or its emissions): it changes with the
- * production of the animal groups the cake feeds, weighted by its feed shares, and never falls
- * below zero.
- */
-export const cakeAmountChange = (amount: number, { total, change }: CakeWeights): number =>
-  total > 0 ? Math.max(-amount, (amount * change) / total) : 0;
-
 /** Change in the land of oilseeds crushed for cake, each oilseed's as `cakeAmountChange` says. */
 export const oilcakeChange = (
   cakeHa: Readonly<Record<string, number>> | undefined,
@@ -88,12 +64,6 @@ export const oilcakeChange = (
   return acc;
 };
 
-/** How the cake's land follows the animals: each group's relative change, the feed shares. */
-export interface CakeDemand {
-  relative: Partial<Record<AnimalGroup, number>>;
-  sharesOf: (code: string) => Partial<Record<AnimalGroup, number>> | undefined;
-}
-
 const sumValues = (r: Readonly<Record<string, number>> | undefined): number =>
   Object.values(r ?? {}).reduce((a, b) => a + b, 0);
 
@@ -102,7 +72,7 @@ interface CountryLand {
   /** The fodder's hectares, which follow the grazing's shares; absent without pasture. */
   fodder?: Land['pasture'][string];
   base: Farmland;
-  /** Emitting production by group, the base of each ruminant group's relative change. */
+  /** Emitting production by group, butter in milk tonnes: each ruminant group's base. */
   groups: GroupTonnes;
 }
 
@@ -129,14 +99,14 @@ export const countryLand = (pc: PreparedCountry, prepared: Prepared): CountryLan
         cropland: baseCropland(land, iso3, haPerTonne, pc),
         pasture: basePasture(land, iso3),
       },
-      groups: groupTotals(pc.emitting, prepared),
+      groups: primaryTotals(pc.emitting, prepared),
     };
   });
 
 /**
  * Change in cropland and pasture, ha, from a change in emitting production (by item, and the
- * same summed by group). Cropland counts the crops, the cake's land as `cake` says, and the
- * fodder, which follows the ruminant groups as pasture does.
+ * same summed by `primaryTotals`). Cropland counts the crops, the cake's land as `cake` says, and
+ * the fodder, which follows the ruminant groups as pasture does.
  */
 export const landChangeOf = (
   pc: PreparedCountry,

@@ -107,7 +107,7 @@ Les terres agricoles d'un pays ont deux parts, tirées de `land.json` (voir [Ter
 - **Cultures** : pour chaque produit, ses hectares récoltés par tonne × sa production moins la transformation. Ce sont les mêmes tonnes dont on compte les émissions. La surface d'une culture transformée est donc comptée sur le produit dérivé, quand les données donnent à ce produit ses propres hectares.
 - **Prairies** : les prairies et pâturages permanents du pays, répartis entre les groupes de ruminants qui les pâturent (viande de ruminants et lait).
 
-Au changement complet, les cultures varient de la variation de production de chaque produit × ses hectares par tonne. La part des prairies de chaque groupe de ruminants varie de la même fraction que la production de ce groupe dans le pays. Par exemple, si la production de bœuf baisse de 40 % et que les bovins à viande pâturent 80 % des prairies, les prairies baissent de 32 %. Les prairies ne descendent jamais sous zéro.
+Au changement complet, les cultures varient de la variation de production de chaque produit × ses hectares par tonne. La part des prairies de chaque groupe de ruminants varie de la même fraction que la production de ce groupe dans le pays. Par exemple, si la production de bœuf baisse de 40 % et que les bovins à viande pâturent 80 % des prairies, les prairies baissent de 32 %. La production d'un groupe compte le beurre et la crème en tonnes du lait dont ils sont faits, par leurs taux d'extraction. Une tonne de beurre compte pour 17,9 t de lait. Moins de beurre réduit donc les prairies du troupeau laitier, comme le ferait moins de ce lait. Les prairies ne descendent jamais sous zéro.
 
 Les terres qu'un pays libère sont la baisse de ses cultures et de ses prairies, additionnées. Un pays à qui il faut plus de terres au total n'en libère aucune.
 
@@ -159,7 +159,7 @@ La température de référence est la température publiée du SSP choisi. Avec 
 - La base maintenue est conservée exactement dans chaque pays. L'autre nutriment ne l'est pas.
 - Le remplacement par défaut est le mélange actuel de végétaux riches en protéines (céréales, riz, légumineuses, fruits à coque, oléagineux à au moins 10 % de protéines). Le mélange de légumineuses est à 60 % de légumineuses, 20 % de soja et 20 % de céréales, et les boissons soja et avoine à 50 % de soja et 50 % d'avoine : des valeurs de départ à revoir.
 - Les pertes et semences sont des parts fixes des disponibilités. La transformation est fixe en tonnes. Le multiplicateur des disponibilités est plafonné à 3.
-- L'alimentation animale baisse en proportion de la production moins la transformation de chaque groupe dans le même pays, comme les prairies et le fourrage. Un groupe animal qu'un pays ne produit pas n'a pas d'alimentation à perdre.
+- L'alimentation animale baisse en proportion de la production moins la transformation de chaque groupe dans le même pays, comme les prairies et le fourrage. Le beurre et la crème comptent comme le lait dont ils sont faits. Un groupe animal qu'un pays ne produit pas n'a pas d'alimentation à perdre.
 - Le lait et le poisson donnés aux animaux changent une fois, avec les animaux qu'ils nourrissent. Cette variation ne change pas de nouveau l'alimentation animale.
 - Parts du commerce fixes ou production nationale : pas de changement dans qui exporte quoi.
 - La production ne peut pas descendre sous ce qui est transformé. Ces cas sont écrêtés et signalés.

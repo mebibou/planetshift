@@ -43,7 +43,7 @@ Le résumé divise les mammifères d'élevage du monde par ses mammifères sauva
 
 ## Avec les leviers
 
-Un troupeau croît ou décroît avec la production de l'aliment qu'il donne, dans son pays. Planetshift donne déjà, pour chaque pays, la variation de la production de chaque groupe animal une fois les leviers en place (la même variation relative qui fait varier ses aliments du bétail et ses tourteaux). Les troupeaux la suivent :
+Un troupeau croît ou décroît avec la production de l'aliment qu'il donne, dans son pays. Planetshift donne déjà, pour chaque pays, la variation de la production de chaque groupe animal une fois les leviers en place. C'est la même variation relative qui fait varier ses aliments du bétail et ses tourteaux, le beurre et la crème comptés comme le lait dont ils sont faits. Les troupeaux la suivent :
 
 $$
 \Delta B_c = \sum_g B_{c,g} \, \frac{\Delta P_{c,g}}{P_{c,g}}

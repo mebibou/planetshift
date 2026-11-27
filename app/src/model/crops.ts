@@ -1,6 +1,7 @@
-import { cakeAmountChange, cakeWeights, type CakeDemand } from './land';
-import type { Prepared, PreparedCountry } from './prepare';
-import { memoPer, sum, type ItemVector } from './util';
+import type { Group } from '../data/types';
+import { cakeAmountChange, cakeWeights, type CakeDemand } from './cake';
+import { groupTotals, type Prepared, type PreparedCountry } from './prepare';
+import { cachedIn, memoPer, sum, type ItemVector } from './util';
 
 /**
  * A processed item made from a crop: tonnes of the crop per tonne of it, and the share of the
@@ -114,6 +115,38 @@ export const worldCrops = (prepared: Prepared): Crops =>
       Math.max(0, t - (processing[i] as number)),
     );
     return cropsFrom(prepared, emitting, at);
+  });
+
+const primaryCache = memoPer<Prepared, ItemVector>();
+
+/**
+ * Tonnes of the primary items behind a tonne of each item (17.9 t of milk for a tonne of butter),
+ * the world's; 1 for a primary item.
+ */
+export const primaryTonnes = (prepared: Prepared): ItemVector =>
+  primaryCache(prepared, 'primary', () => {
+    const perTonne = [...worldCrops(prepared).derived.values()]
+      .flat()
+      .reduce(
+        (m, d) => m.set(d.item, (m.get(d.item) ?? 0) + d.perTonne),
+        new Map<number, number>(),
+      );
+    return Float64Array.from(prepared.items, (_, i) => perTonne.get(i) ?? 1);
+  });
+
+const totalsCache = new WeakMap<ItemVector, Record<Group, number>>();
+
+/**
+ * Group totals of a vector in tonnes of the primary items, so a tonne of butter counts as the milk
+ * it is made from; kept per vector, as no vector is written to once built.
+ */
+export const primaryTotals = (v: ItemVector, prepared: Prepared): Record<Group, number> =>
+  cachedIn(totalsCache, v, () => {
+    const w = primaryTonnes(prepared);
+    return groupTotals(
+      v.map((t, i) => t * (w[i] as number)),
+      prepared,
+    );
   });
 
 /** The change in tonnes of crop a processed item's change takes, its cake's included. */

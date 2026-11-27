@@ -103,7 +103,7 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 - **Deux niveaux de revenu représentent les nombreux systèmes de production que GLEAM distingue.** Voir [Alimentation animale](#method-feed).
 - **Les produits dont aucune ration ne contient la classe suivent la répartition par espèce.** Voir [Alimentation animale](#method-feed).
 - **Une région sans production animale prend les parts mondiales** (aucune pour l'instant). Voir [Alimentation animale](#method-feed).
-- **L'alimentation animale baisse en proportion de la production de chaque groupe dans le même pays.** Un groupe qu'un pays n'élève pas n'a pas d'alimentation à perdre. Voir [Le changement](#method-shift).
+- **L'alimentation animale baisse en proportion de la production de chaque groupe dans le même pays.** Un groupe qu'un pays n'élève pas n'a pas d'alimentation à perdre. Le beurre et la crème comptent comme le lait dont ils sont faits. Voir [Le changement](#method-shift).
 - **Le lait et le poisson donnés aux animaux changent une fois, quand les animaux qu'ils nourrissent changent.** Le poisson pêché pour la farine est sauvage et ne mange aucun aliment : sa variation ne change donc pas de nouveau l'alimentation animale. Voir [Le changement](#method-shift) et [Poissons et fruits de mer](#method-seafood).
 
 ## Eau douce

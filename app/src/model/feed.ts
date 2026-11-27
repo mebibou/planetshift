@@ -5,6 +5,7 @@ import {
   type FeedMethod,
   type Group,
 } from '../data/types';
+import { primaryTotals } from './crops';
 import { groupTotals, type Prepared, type PreparedCountry } from './prepare';
 import { cachedIn, memoPer, type ItemVector } from './util';
 
@@ -17,14 +18,14 @@ const totalsCache = new WeakMap<ItemVector, Record<Group, number>>();
 export const totalsOf = (v: ItemVector, prepared: Prepared): Record<Group, number> =>
   cachedIn(totalsCache, v, () => groupTotals(v, prepared));
 
-/** Relative change of each animal group's production in a country (−1..), 0 where it has none. */
+/** Relative change of each animal group's production in milk tonnes for butter (−1..), 0 if none. */
 export const groupProductionChange = (
   production: ItemVector,
   change: ItemVector,
   prepared: Prepared,
 ): Record<AnimalGroup, number> => {
-  const base = totalsOf(production, prepared);
-  const changed = totalsOf(change, prepared);
+  const base = primaryTotals(production, prepared);
+  const changed = primaryTotals(change, prepared);
   const out = {} as Record<AnimalGroup, number>;
   for (const g of ANIMAL_GROUPS) {
     out[g] = base[g] > 0 ? changed[g] / base[g] : 0;
