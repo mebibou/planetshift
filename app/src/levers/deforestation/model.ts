@@ -1,7 +1,7 @@
 import type { Prepared, PreparedCountry } from '../../model/prepare';
 import type { CakeDemand } from '../../model/land';
 import { cachedIn, clamp, memoPer, type ItemVector } from '../../model/util';
-import { cropChange, ownProduction, type Crops } from './crops';
+import { cropChange, ownProduction, type Crops } from '../../model/crops';
 
 /** A country's clearing and drained soils by the item they are tied to: kg a year, area in ha. */
 export interface CountryClearing {

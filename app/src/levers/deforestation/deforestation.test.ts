@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { expectOwnGases, jointShare, lever, rampShare, run, w2100 } from '../../../test/levers';
 import type { Prepared, PreparedCountry } from '../../model/prepare';
-import { cropsOf, primaryWeights } from './crops';
+import { cropsOf, primaryWeights } from '../../model/crops';
 import { clearingParts, MAX_RISE, relativeChanges, rewettedParts } from './model';
 
 /** A country with the `emitting` production of the items `codes`, and its extraction rates. */

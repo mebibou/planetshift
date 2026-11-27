@@ -1,6 +1,6 @@
 import { sum } from '../../model/util';
 import type { LeverModule } from '../types';
-import { countryCrops } from './crops';
+import { countryCrops } from '../../model/crops';
 import { deforestationSpec } from './spec';
 import {
   clearingParts,

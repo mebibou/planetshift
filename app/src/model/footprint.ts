@@ -10,7 +10,8 @@ import { CHAIN_CAUSES, chainIntensities } from './chain';
 import { countryCakes, countryIntensities } from './emissions';
 import { feedByGroup, feedSharesOf } from './feed';
 import type { Prepared, PreparedCountry } from './prepare';
-import { memoLatest, memoPer, recordFrom, type ItemVector } from './util';
+import { worldCrops } from './crops';
+import { memoLatest, memoPer, recordFrom, sum, type ItemVector } from './util';
 
 /** kg of each gas per tonne of each item. */
 type ByGas = Record<Gas, ItemVector>;
@@ -96,11 +97,23 @@ const landByItem = (prepared: Prepared, iso3: string): TonnesByItem =>
     };
   });
 
-/** kg of each gas from the land per tonne a country produces of each item, less the crushed part. */
+const keptCache = memoPer<Prepared, ItemVector>();
+
+/**
+ * The share of each crop's land the crop itself keeps, the world's: its tonnes left unprocessed
+ * over its tonnes with those of the items made from it (see `worldCrops`); 1 for other items.
+ */
+const keptShares = (prepared: Prepared): ItemVector =>
+  keptCache(prepared, 'kept', () => {
+    const world = worldCrops(prepared);
+    return world.base.map((base, i) => (base > 0 ? (world.emitting[i] as number) / base : 1));
+  });
+
+/** kg of each gas from the land per tonne a country produces of each item, less the processed part. */
 const landPerTonne = (pc: PreparedCountry, prepared: Prepared): ByGas => {
   const land = landByItem(prepared, pc.country.iso3);
   const codes = prepared.items.map((item) => String(item.code));
-  const kept = codes.map((code) => 1 - crushedShare(prepared, code));
+  const kept = keptShares(prepared);
   return recordFrom(GASES, (g) =>
     Float64Array.from(codes, (code, i) => {
       const t = pc.emitting[i] as number;
@@ -109,42 +122,75 @@ const landPerTonne = (pc: PreparedCountry, prepared: Prepared): ByGas => {
   );
 };
 
-const crushedCache = memoPer<Prepared, Map<string, number>>();
+const worldLandCache = memoPer<Prepared, GasVector[]>();
 
-/**
- * The share of the world's production of each oilseed that is crushed into oil and cake: the
- * world's, as raw seed is traded and crushed where it is imported (Brazil's soybeans in China).
- */
-const worldCrushed = (prepared: Prepared): Map<string, number> =>
-  crushedCache(prepared, 'crushed', () => {
-    const totals = (code: string, field: 'production' | 'processing') =>
-      prepared.countries.reduce((a, pc) => a + (pc.rows.get(code)?.[field] ?? 0), 0);
-    return new Map(
-      Object.keys(prepared.data.land.crush ?? {}).map((code) => {
-        const produced = totals(code, 'production');
-        return [code, produced > 0 ? Math.min(1, totals(code, 'processing') / produced) : 0];
-      }),
+/** kg of each gas a year from the land under each item, the world's, by item index. */
+const worldLand = (prepared: Prepared): GasVector[] =>
+  worldLandCache(prepared, 'land', () => {
+    const byCountry = prepared.countries.map((pc) => landByItem(prepared, pc.country.iso3));
+    return prepared.items.map((item) =>
+      recordFrom(GASES, (g) =>
+        sum(byCountry.map((land) => (land[g][String(item.code)] ?? 0) * KG_PER_T)),
+      ),
     );
   });
 
-/** The share of an oilseed's production crushed into oil and cake, the world's; 0 for other items. */
-const crushedShare = (prepared: Prepared, code: string): number =>
-  worldCrushed(prepared).get(code) ?? 0;
+interface ProcessedLand {
+  items: Map<number, GasVector>;
+  cakes: [string, GasVector][];
+}
+
+const processedCache = memoPer<Prepared, ProcessedLand>();
 
 /**
- * What crushing oilseeds emits, pooled over the world, as oil and cake are traded like each
- * other: kg of each gas from the land per tonne of each oil eaten (by item index), and kg of each
- * gas per tonne of each animal group's production from the cake it eats (the cake's share of
- * the farm emissions, after the levers' cuts, and of the land).
+ * What the items made from crops carry of the crops' land, pooled over the world, as they are
+ * traded like the crops: kg of each gas per tonne of each item made (by item index), the crop's
+ * land per tonne of crop times the crop tonnes the item carries, and kg of each gas from the land
+ * of each oilseed's cake (by the oilseed's code).
+ */
+const processedLand = (prepared: Prepared): ProcessedLand =>
+  processedCache(prepared, 'processed', () => {
+    const world = worldCrops(prepared);
+    const land = worldLand(prepared);
+    const links = [...world.derived].flatMap(([crop, ds]) => {
+      const base = world.base[crop] as number;
+      const perCropTonne = scaled(land[crop] as GasVector, base > 0 ? 1 / base : 0);
+      return ds.map((d) => ({ d, perCropTonne }));
+    });
+    return {
+      items: links.reduce(
+        (m, { d, perCropTonne }) =>
+          m.set(d.item, addGas(m.get(d.item) ?? ZERO, scaled(perCropTonne, d.perTonne * d.share))),
+        new Map<number, GasVector>(),
+      ),
+      cakes: links.flatMap(({ d, perCropTonne }): [string, GasVector][] =>
+        d.cake
+          ? [
+              [
+                d.cake,
+                scaled(
+                  perCropTonne,
+                  d.perTonne * (1 - d.share) * (world.emitting[d.item] as number),
+                ),
+              ],
+            ]
+          : [],
+      ),
+    };
+  });
+
+/**
+ * What processing crops emits, pooled over the world: kg of each gas from the land per tonne of
+ * each item made from a crop (by item index), and kg of each gas per tonne of each animal group's
+ * production from the oilcake it eats (the cake's share of the farm emissions, after the levers'
+ * cuts, and of the land).
  */
 export const crushPools = (
   prepared: Prepared,
   scope: Scope,
   method: FeedMethod,
   cut: IntensityCut,
-): { oil: Map<number, GasVector>; cake: FeedPerTonne } => {
-  const crush = prepared.data.land.crush ?? {};
-  const oilKg = new Map<number, GasVector>();
+): { products: Map<number, GasVector>; cake: FeedPerTonne } => {
   const cakeKg = ANIMAL_GROUPS.map(() => ({ co2: 0, ch4: 0, n2o: 0, hfc: 0 }));
   const toCake = (seed: string, kg: GasVector) => {
     const shares = feedSharesOf(prepared.data.feed, method, 'World', seed) ?? {};
@@ -153,17 +199,9 @@ export const crushPools = (
       GASES.forEach((g) => ((cakeKg[k] as GasVector)[g] += kg[g] * share));
     });
   };
+  const processed = processedLand(prepared);
+  processed.cakes.forEach(([seed, kg]) => toCake(seed, kg));
   prepared.countries.forEach((pc) => {
-    const land = landByItem(prepared, pc.country.iso3);
-    Object.entries(crush).forEach(([seed, { oil, oilShare }]) => {
-      const share = KG_PER_T * crushedShare(prepared, seed);
-      const crushed = recordFrom(GASES, (g) => (land[g][seed] ?? 0) * share);
-      const index = prepared.indexOf.get(oil);
-      if (index !== undefined) {
-        oilKg.set(index, addGas(oilKg.get(index) ?? ZERO, scaled(crushed, oilShare)));
-      }
-      toCake(seed, scaled(crushed, 1 - oilShare));
-    });
     const cakes = countryCakes(pc, prepared, scope);
     const cuts = cut(pc);
     cakes.kg.forEach((kg, k) => {
@@ -180,13 +218,8 @@ export const crushPools = (
   const groupT = ANIMAL_GROUPS.map((_, k) =>
     prepared.countries.reduce((a, pc) => a + (groupTonnes(pc, prepared)[k] as number), 0),
   );
-  const eaten = (i: number) =>
-    prepared.countries.reduce(
-      (a, pc) => a + (pc.food[i] as number) * (pc.multipliers[i] as number),
-      0,
-    );
   return {
-    oil: new Map([...oilKg].map(([i, kg]) => [i, perTonne(kg, eaten(i))])),
+    products: processed.items,
     cake: cakeKg.map((kg, k) => perTonne(kg, groupT[k] as number)),
   };
 };
@@ -332,13 +365,13 @@ export const footprintFrame = (
     ItemVector[]
   >;
   const consumed = prepared.countries.map((pc, c) =>
-    withOil(
+    withProducts(
       consumedIntensity(
         own[c] as ByGas,
         importIntensity(byGas, world, sources[c] as ItemOrigins),
         importShares(pc, prepared),
       ),
-      pools.oil,
+      pools.products,
     ),
   );
   const feed = feedPerTonne(prepared, method, consumed);
@@ -456,11 +489,11 @@ const importedFeed = (
   return out;
 };
 
-/** An intensity with each oil's pooled land per tonne eaten added, gas by gas. */
-const withOil = (intensity: ByGas, oil: Map<number, GasVector>): ByGas =>
+/** An intensity with each processed item's pooled land per tonne added, gas by gas. */
+const withProducts = (intensity: ByGas, products: Map<number, GasVector>): ByGas =>
   recordFrom(GASES, (g) => {
     const out = Float64Array.from(intensity[g]);
-    oil.forEach((kg, i) => {
+    products.forEach((kg, i) => {
       out[i] = (out[i] as number) + kg[g];
     });
     return out;
