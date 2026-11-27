@@ -109,6 +109,7 @@ Each lever's adoption is 0–100, in percent. It is left out of the address at 0
 | Energy and transport | electric cars (`ev`), electric trucks (`et`), less flying (`fl`), clean aviation fuel (`saf`), clean shipping (`cs`), renewable electricity (`re`) |
 | Buildings and industry | clean heating (`ch`), clean industry (`ci`) |
 | Methane leaks | oil and gas leaks (`ogm`), coal-mine methane (`cmm`) |
+| Direct air capture | direct air capture (`dac`) |
 | HFC phase-down | HFC phase-down (`hfc`) |
 
 A value the page does not recognise falls back to its default.

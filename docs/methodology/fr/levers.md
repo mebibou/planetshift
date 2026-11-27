@@ -4,15 +4,15 @@ Chaque levier est la part adoptée d'un changement, de 0 à 100 %, atteinte en e
 
 ## Ce qu'est un levier
 
-Chaque moyen de limiter le réchauffement que propose Planetshift est un levier, et aucun n'est privilégié. Les leviers couvrent l'énergie et le transport, les bâtiments et l'industrie, ce que mangent les gens, les pratiques agricoles, moins de nourriture gaspillée, la fin du défrichement des forêts, le remouillage de la tourbe drainée et le carbone stocké dans les terres agricoles.
+Chaque moyen de limiter le réchauffement que propose Planetshift est un levier, et aucun n'est privilégié. Les leviers couvrent l'énergie et le transport, les bâtiments et l'industrie, ce que mangent les gens, les pratiques agricoles, moins de nourriture gaspillée, la fin du défrichement des forêts, le remouillage de la tourbe drainée, le carbone stocké dans les terres agricoles et le captage direct dans l'air.
 
-Chaque levier est un curseur de 0 à 100 %, qui fixe la part adoptée. Le curseur principal de l'alimentation est la part des aliments d'origine animale remplacés par des végétaux. Chaque levier se met en place progressivement à partir d'aujourd'hui et est entièrement en place l'année choisie en haut du panneau, *Tous les leviers en place en*.
+Chaque levier est un curseur de 0 à 100 %, qui fixe la part adoptée. Le curseur principal de l'alimentation est la part des aliments d'origine animale remplacés par des végétaux. Chaque levier se met en place progressivement à partir d'aujourd'hui et est entièrement en place l'année choisie en haut du panneau, *Tous les leviers en place en*. Le captage direct dans l'air fait exception : il suit un calendrier propre, car ses usines mettent des décennies à se construire (voir [Captage direct dans l'air](#method-dac)).
 
 ## Comment le panneau les regroupe
 
 La section **Leviers** d'Explorer range les leviers sous la cause du réchauffement sur laquelle chacun agit surtout (voir [Causes du réchauffement climatique](#method-link)) :
 
-- combustibles fossiles et industrie : énergie et transport, bâtiments et industrie, fuites de méthane ;
+- combustibles fossiles et industrie : énergie et transport, bâtiments et industrie, fuites de méthane, captage direct dans l'air ;
 - agriculture : alimentation, pratiques agricoles, gaspillage alimentaire ;
 - usage des terres : déforestation, carbone dans les terres agricoles ;
 - déchets : décharges et eaux usées ;
@@ -56,6 +56,8 @@ Moins d'offre demande moins de production, qui occupe moins de terres et émet m
 **Déforestation** (voir [Déforestation](#method-deforestation)). Défricher la forêt pour l'agriculture libère environ 2 Gt de CO₂ par an (`deforestation.json`, par pays et par produit). Le modèle garde ce montant annuel constant et n'en compte que la variation. Le défrichement lié à un produit varie avec la production de ce produit dans le pays où la forêt est défrichée. Se détourner du bœuf réduit donc, par le commerce, le défrichement pour les pâturages au Brésil, même avec le levier à 0. Cette variation est bornée entre zéro et le double du défrichement actuel. Le levier empêche ensuite sa part du défrichement qui reste. Ces deux effets sont des variations de CO₂, et ils entrent dans la réponse du climat comme les autres. Le CO₂ des sols organiques drainés, environ 0,8 Gt par an, et leur N₂O, environ 0,34 Mt, varient eux aussi avec la production. Les terres que la production libère sont supposées remises en eau, et une terre remise en eau émet du méthane. Le levier de remouillage des tourbières remet en eau sa part des terres drainées qui restent : leur CO₂ et leur N₂O s'arrêtent et leur méthane commence.
 
 **Carbone dans les terres agricoles** (voir [Carbone stocké dans les terres agricoles](#method-removals)). Les couverts végétaux, les arbres dans les fermes, le biochar et la poudre de roche, qui est expérimentale, stockent du CO₂. La quantité stockée est adoption × la plus grande part des terres que la pratique peut atteindre (`maxShare`) × les hectares de cultures, de prairies ou des deux une fois le changement complet × le taux du pays. Chaque hectare stocke du carbone pendant `years` ans à partir de l'année où la pratique y commence. Les couverts et les arbres saturent après 20 ans. Le biochar et la poudre de roche continuent de stocker du carbone jusqu'en 2100.
+
+**Captage direct dans l'air** (voir [Captage direct dans l'air](#method-dac)). Des usines captent le CO₂ de l'air et le stockent sous terre, selon le calendrier de l'AIE, jusqu'à environ 0,65 Gt par an en 2050 et 3,3 Gt en 2100, à l'échelle du curseur. Le CO₂ de leur électricité, sur le réseau que laisse l'électricité renouvelable, et celui de leur construction sont retranchés de ce qu'elles stockent.
 
 **Énergie et transport** (voir [Énergie et transport](#method-sectors)). Six leviers agissent sur le CO₂ fossile du scénario choisi dans *Autres options* :
 
@@ -112,7 +114,7 @@ Calculée directement, la valeur de Shapley demande une exécution du modèle po
 
 Planetshift s'appuie plutôt sur la façon dont les groupes interagissent. Les groupes agricoles n'interagissent que par la production qu'ils changent. L'alimentation et la baisse du gaspillage changent ce qui est produit. Les pratiques, la déforestation, la repousse, le carbone dans les terres agricoles, les décharges et eaux usées, et la réduction des HFC agissent sur la production que ces deux-là laissent, mais pas les uns sur les autres. La valeur de n'importe quel ensemble de groupes agricoles se lit donc à partir d'un passage des émissions agricoles pour les groupes de production de cet ensemble : aucun, l'alimentation, le gaspillage, ou les deux. Cela fait au plus quatre passages, trois de plus que l'exécution elle-même. Chaque passage est conservé et réutilisé tant qu'on déplace des curseurs qui ne le changent pas.
 
-Les groupes hors de l'agriculture (énergie et transport, bâtiments et industrie, fuites de méthane) interagissent entre eux par le réseau que laisse l'électricité renouvelable, et par le méthane par kg de combustible que laissent les leviers sur les fuites. Ils n'interagissent pas avec l'agriculture. Leur valeur est leurs propres émissions, recalculées avec les leviers de l'autre groupe à zéro.
+Les groupes hors de l'agriculture (énergie et transport, bâtiments et industrie, fuites de méthane, captage direct dans l'air) interagissent entre eux par le réseau que laisse l'électricité renouvelable, et par le méthane par kg de combustible que laissent les leviers sur les fuites. Ils n'interagissent pas avec l'agriculture. Leur valeur est leurs propres émissions, recalculées avec les leviers de l'autre groupe à zéro.
 
 Un test vérifie, sur les données de test et sur les données réelles, que cela donne les valeurs de Shapley des exécutions complètes à neuf chiffres près, sur la somme des réponses de chaque gaz.
 

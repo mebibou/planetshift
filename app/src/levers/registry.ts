@@ -11,6 +11,7 @@ import type {
   ModuleCause,
 } from '../data/types';
 import type { Levers } from '../model/api';
+import { dacSpec as dac } from './dac/spec';
 import { deadfallSpec as deadfall } from './deadfall/spec';
 import { deforestationSpec as deforestation } from './deforestation/spec';
 import { energySpec as energy } from './energy/spec';
@@ -47,6 +48,7 @@ export const MODULES: readonly LeverSpec[] = [
   removals,
   energy,
   industry,
+  dac,
   fossilMethane,
   hfc,
   shippingSulphur,

@@ -1,0 +1,12 @@
+{
+  "netZero": { "years": [2022, 2030, 2035, 2050], "capturedGt": [0, 0.08, 0.203, 1.041] },
+  "storedShare": 0.643,
+  "delayedAction": { "year": 2100, "storedGt": 3.3 },
+  "energy": {
+    "median": { "electricityKwh": 500, "heatKwh": 1500, "cop": 2.9 },
+    "low": { "electricityKwh": 400, "heatKwh": 1600, "cop": 4 },
+    "high": { "electricityKwh": 660, "heatKwh": 1980, "cop": 2.5 }
+  },
+  "embodiedShare": { "median": 0.05, "low": 0.025, "high": 0.06 },
+  "source": "IEA, Net Zero Roadmap 2023 Update (CC BY 4.0): direct air capture in the CCUS milestones table, and the Delayed Action Case's 3.3 Gt of DACS in 2100 (section 3.3.3). IEA, Direct Air Capture 2022 (CC BY 4.0): 630 of the 980 Mt captured in 2050 stored, and solid sorbents' 7.2-9.5 GJ a tonne, 20-25% of it electricity. Deutz and Bardow (2021), Nature Energy 6, 203-213: 500 kWh of electricity and 1,500 kWh of heat at about 100 °C a tonne, and up to 45 and 15 g CO2e a kg captured from the sorbent and the plant. Terlouw et al. (2021), Environmental Science & Technology 55, 11397-11411: a high-temperature heat pump at a COP of 2.9."
+}

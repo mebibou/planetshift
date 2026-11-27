@@ -62,7 +62,7 @@
     "advanced": "Shift each animal food",
     "groupsHint": "A food you set here keeps its own share. The other foods follow the main slider.",
     "groupsReset": "Follow the main slider again",
-    "rampHint": "Every lever, the diet included, ramps up from today and is fully in place by this year.",
+    "rampHint": "Every lever, the diet included, ramps up from today and is fully in place by this year. Direct air capture follows a path of its own.",
     "horizon": "Results up to",
     "info": "About: {name}",
     "shiftHint": "The share of animal foods (meat, dairy, eggs, fish) replaced by plant foods, reached in full by the year above. It cuts the methane and N₂O of farm animals and frees farmland.",

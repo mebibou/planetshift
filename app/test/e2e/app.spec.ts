@@ -941,7 +941,7 @@ test('the panel is in groups, all closed, under their causes, with the time sett
 }) => {
   await open(page);
   const groups = page.locator('.panel details.group');
-  await expect(groups).toHaveCount(10);
+  await expect(groups).toHaveCount(11);
   await expect(page.locator('#panel-tab-levers')).toHaveAttribute('aria-selected', 'true');
   await expect(page.locator('#panel-panel-options')).toBeHidden();
   for (const id of [
@@ -953,6 +953,7 @@ test('the panel is in groups, all closed, under their causes, with the time sett
       'removals',
       'energy',
       'industry',
+      'dac',
       'fossilMethane',
       'wasteMethane',
       'hfc',
@@ -983,6 +984,9 @@ test('the panel is in groups, all closed, under their causes, with the time sett
   ).toHaveCount(1);
   await expect(
     page.locator('.cause-section[data-cause="other"] details[data-group="levers-hfc"]'),
+  ).toHaveCount(1);
+  await expect(
+    page.locator('.cause-section[data-cause="other"] details[data-group="levers-dac"]'),
   ).toHaveCount(1);
   const meta = (id: string) => page.locator(`details[data-group="${id}"] .group-meta`);
   await expect(meta('diet')).toHaveText('No shift yet');
@@ -1552,6 +1556,7 @@ test('a cause’s pair sets every group under it, and the all-levers pair every 
     'cause-waste',
     'removals',
     'industry',
+    'dac',
     'wasteMethane',
     'cause-other',
     'hfc',

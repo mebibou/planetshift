@@ -6,7 +6,7 @@ import { flatten, lookup, type Params, type Tree } from './dict';
 export type Lang = 'en' | 'fr';
 export const LANGS: Lang[] = ['en', 'fr'];
 
-const MODULE_FILES = import.meta.glob('../levers/*/*.json', {
+const MODULE_FILES = import.meta.glob('../levers/*/{en,fr}.json', {
   eager: true,
   import: 'default',
 }) as Record<string, Tree>;

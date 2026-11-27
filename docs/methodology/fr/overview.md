@@ -12,7 +12,8 @@ Les leviers sont traités à égalité. Aucun n'est présenté comme la façon d
 - les pratiques agricoles ;
 - moins de nourriture gaspillée ;
 - la fin du défrichement des forêts ;
-- le carbone stocké dans les terres agricoles.
+- le carbone stocké dans les terres agricoles ;
+- le captage direct dans l'air.
 
 Ce qui a réchauffé la planète jusqu'ici la réchauffe encore, c'est pourquoi chaque levier est présenté sous la cause qu'il réduit.
 
@@ -22,7 +23,7 @@ Ce qui a réchauffé la planète jusqu'ici la réchauffe encore, c'est pourquoi 
 
 À gauche se trouve le panneau. En haut figure l'année à laquelle tous les leviers sont en place. Viennent ensuite les groupes de leviers, sous la cause du réchauffement sur laquelle chacun agit, la plus grande cause d'abord :
 
-- combustibles fossiles et industrie : énergie et transport, bâtiments et industrie, fuites de méthane ;
+- combustibles fossiles et industrie : énergie et transport, bâtiments et industrie, fuites de méthane, captage direct dans l'air ;
 - agriculture : alimentation, pratiques agricoles, gaspillage alimentaire ;
 - usage des terres : déforestation, carbone dans les terres agricoles.
 
