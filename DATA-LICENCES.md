@@ -30,3 +30,7 @@ Some sources add conditions to their licence. Keep these conditions when you reu
 - **IEA**: its reports, charts and figures are under CC BY 4.0. Its standalone datasets and data annexes are not, and none of them is used here. The figures in `sectors.json` and `industry.json` are read from the reports and their charts. Credit as the IEA asks: "IEA [year], [title], [URL], Licence: CC BY 4.0".
 
 When you reuse the data, credit Planetshift and the original sources listed in `meta.json`.
+
+## Fonts
+
+The interface's font, Lato, is self-hosted from `app/src/fonts/`: the Latin and Latin Extended subsets of its regular, italic, bold and black weights, as WOFF2 files taken from the Fontsource package `@fontsource/lato` 5.3.0. Lato is under the SIL Open Font License 1.1, whose text is in `app/src/fonts/OFL.txt`. Each file keeps the font's copyright notice and Reserved Font Name in its metadata. The files are unmodified, so the name Lato is kept.

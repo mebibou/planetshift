@@ -7,6 +7,7 @@ import type { RunResult } from '../model/engine';
 import { modelClient, workerPort, type ModelClient } from '../model/client';
 import type { AppState, ViewContext } from './context';
 import { Explore } from '../ui/Explore';
+import { UpdatePrompt } from '../ui/UpdatePrompt';
 import { Header } from './Header';
 import { CODE_LICENCE, DATA_LICENCES, REPOSITORY } from './links';
 import { useLatest } from '../ui/useLatest';
@@ -284,6 +285,7 @@ export const App = ({ initial, loaded: first, currentYear }: AppProps) => {
           </a>
         </p>
       </footer>
+      <UpdatePrompt t={t} />
     </>
   );
 };
