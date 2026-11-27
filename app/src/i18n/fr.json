@@ -649,13 +649,14 @@
     "range": "{name} : {parts}.",
     "rangeWithout": "{range} sans les leviers",
     "rangeWith": "{range} avec eux",
-    "note": "Les fourchettes du (i) sont celles des sources, pas celle du réchauffement. Les dommages économiques sont laissés de côté. La hausse du niveau de la mer évitée est dans le résumé, et le pH de l'océan a son propre graphique.",
+    "note": "Les fourchettes du (i) sont celles des sources, pas celle du réchauffement. Les dommages économiques, y compris ceux des crues, sont laissés de côté. La hausse du niveau de la mer évitée est dans le résumé, et le pH de l'océan a son propre graphique.",
     "more": "Comment c'est lu",
     "units": {
       "times": "{value} fois",
       "percent": "{value} %",
       "perCentury": "{value} sur 100",
-      "megatonnes": "{value} Mt"
+      "megatonnes": "{value} Mt",
+      "millions": "{value} millions"
     },
     "groups": {
       "wgi": {
@@ -671,6 +672,13 @@
       "heatwave": {
         "title": "Vagues de chaleur (Dosio et al. 2018)",
         "range": "Fourchette des modèles de l'étude"
+      },
+      "fire": {
+        "title": "Incendies (GIEC AR6, groupe II)"
+      },
+      "flood": {
+        "title": "Crues des fleuves (Hirabayashi et al. 2021)",
+        "range": "Du plus bas au plus haut des neuf modèles de l'étude"
       }
     },
     "rows": {
@@ -733,6 +741,16 @@
         "label": "Personnes exposées à de fortes vagues de chaleur au moins une fois tous les 5 ans",
         "note": "La part de la population mondiale exposée à de fortes vagues de chaleur au moins une fois tous les 5 ans, d'après une étude (Dosio et al. 2018), pas d'après le GIEC. Elle prend la même population (SSP3) aux deux niveaux.",
         "short": "Personnes exposées à de fortes vagues de chaleur"
+      },
+      "burnedArea": {
+        "label": "Surface brûlée dans le monde, hausse due au seul changement climatique",
+        "note": "Combien de terres brûlent en plus chaque année dans le monde du seul fait du changement climatique. Selon l'évaluation du GIEC (confiance moyenne), c'est environ 30–35 % de plus si le réchauffement reste sous 2 °C, et 50–70 % de plus vers 4 °C. L'usage des terres est laissé de côté. Les modèles qui ajoutent l'extension des terres agricoles prévoient une surface brûlée plus petite. Le GIEC donne une fourchette, pas de valeur centrale. La carte affiche la valeur pour « sous 2 °C » à 2 °C.",
+        "short": "Plus de surface brûlée"
+      },
+      "riverFlood": {
+        "label": "Personnes exposées chaque année à une crue centennale",
+        "note": "Combien de personnes, en millions, vivent dans les zones qu'atteint une crue de fleuve une année donnée. Il s'agit d'une crue vue une fois en 100 ans en 1971–2000. C'est la médiane de neuf modèles CMIP6 d'une étude (Hirabayashi et al. 2021), pas un résultat du GIEC. La population reste à son niveau de 2015. Cela représente 2,2 % de la population mondiale en 1971–2000, et 3,2 % à 3 °C.",
+        "short": "Personnes exposées aux crues centennales"
       }
     }
   },

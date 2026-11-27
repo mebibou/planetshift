@@ -43,6 +43,8 @@ The details and figures are in *Air pollution and NOx's methane in detail*, belo
 
 **Permafrost and other feedbacks.** The permafrost switch adds one Earth-system feedback, in a simple way. Each degree's release is spread over 20 years and computed in one pass. Abrupt thaw is left out. Its range spans a factor of ten. Other feedbacks beyond FaIR's carbon cycle (forest dieback, methane hydrates) are not included.
 
+**Fires and floods.** FaIR has no explicit fire carbon feedback. AR6 WGI puts it at 0.01–0.06 W m⁻² per °C, with very low confidence in its size. It leaves the feedback out of its total of feedbacks (sections 5.4.3.2 and 5.4.8, p. 739). The aerosols from fires, which cool, may offset part of it. The emissions of future fires follow the SSP scenario and do not change with the levers. On the card *What the warming means*, the wildfire row is the area burned from climate change alone. From 1998 to 2015, the area burned worldwide fell by about 1.4% a year, mainly as farming spread and intensified (AR6 WGII, 2.4.4.2.2), while fire weather and extreme fires grew in many regions. Counts of flood disasters depend on how many people live on flood plains and how disasters are reported, so the card uses a model study of the people exposed instead (see [What the warming means](#method-impacts)).
+
 **How trade responds.** Each country's farms change in proportion to their share of world output. In reality, a fall in beef demand would hit some exporters harder than others, and prices would shift who grows what.
 
 **Prices and incomes.** Cheaper or dearer food changes what people buy. Planetshift does not model it. A shift is a choice you set, not a forecast of what people will do.

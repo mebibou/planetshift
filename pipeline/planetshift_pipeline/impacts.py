@@ -4,17 +4,23 @@ card that reads them at the warming each future reaches.
 - AR6 WGI Figure SPM.6: how many times more often a hot extreme, a heavy 1-day rain or an
   agricultural and ecological drought once in 10 (or 50) years in 1850–1900 comes, at 1, 1.5, 2,
   3 and 4 °C, with the median and the 5–95% range of the CMIP6 models (CEDA, CC BY 4.0).
-- AR6 WGII SPM B.4.1, SR1.5 SPM B.3.1, B.4.1, B.4.2 and B.4.4, and Dosio et al. (2018): single
-  values cited with their page, in `impacts.csv`. SR1.5 and the heatwave study stop at 2 °C."""
+- AR6 WGII SPM B.4.1 and chapter 2 (burned area), SR1.5 SPM B.3.1, B.4.1, B.4.2 and B.4.4, and
+  Dosio et al. (2018): single values cited with their page, in `impacts.csv`. SR1.5 and the
+  heatwave study stop at 2 °C.
+- Hirabayashi et al. (2021), Table S5: the people exposed each year to the 1971–2000 100-year
+  river flood in each of nine CMIP6 models, in `impacts_floods.csv`; the card gives their median
+  and their range."""
 
 import csv
 import io
+import statistics
 from pathlib import Path
 
 from .cache import fetched
 
 PIPELINE = Path(__file__).resolve().parent.parent
 CITED_CSV = PIPELINE / "impacts.csv"
+FLOODS_CSV = PIPELINE / "impacts_floods.csv"
 
 SPM6_BASE = "https://dap.ceda.ac.uk/badc/ar6_wg1/data/spm/spm_06/v20210809"
 SPM6_PAGE = "https://doi.org/10.5285/93d1b84fbb144901809eaf67b35eb5c4"
@@ -31,14 +37,19 @@ SPM6_COLUMNS = {"mid": "50th", "low": "5th", "high": "95th"}
 WGII_PAGE = "https://www.ipcc.ch/report/ar6/wg2/chapter/summary-for-policymakers/"
 SR15_PAGE = "https://www.ipcc.ch/sr15/chapter/spm/"
 DOSIO_PAGE = "https://doi.org/10.1088/1748-9326/aab827"
+WGII_CH2_PAGE = "https://www.ipcc.ch/report/ar6/wg2/chapter/chapter-2/"
+FLOODS_PAGE = "https://doi.org/10.1038/s41598-021-83279-w"
+FLOODS_REF = "Hirabayashi et al. (2021), Supplementary Table S5"
 
 #: The groups in the card's order, each with its source's page and whether both futures must lie
-#: within its levels for a row to be read (the studies that stop at 2 °C).
+#: within its levels for a row to be read (the studies that stop at 2 or 3 °C).
 GROUPS = (
     {"id": "wgi", "url": SPM6_PAGE, "jointly": False},
     {"id": "wgii", "url": WGII_PAGE, "jointly": False},
     {"id": "sr15", "url": SR15_PAGE, "jointly": True},
     {"id": "heatwave", "url": DOSIO_PAGE, "jointly": True},
+    {"id": "fire", "url": WGII_CH2_PAGE, "jointly": False},
+    {"id": "flood", "url": FLOODS_PAGE, "jointly": True},
 )
 IPCC_TERMS = "IPCC copyright: the values are cited as facts with their page, the text is not reused"
 
@@ -74,6 +85,23 @@ SOURCES = [
         "version": "2018",
         "url": DOSIO_PAGE,
         "licence": "CC BY 3.0",
+    },
+    {
+        "id": "ar6-wgii-ch2",
+        "name": "IPCC (2022), Climate Change 2022: Impacts, Adaptation and Vulnerability, "
+        "Chapter 2, 2.5.3.2.1 (pp. 271–272): global burned area projected at below 2 °C and "
+        "about 4 °C",
+        "version": "AR6 WGII",
+        "url": WGII_CH2_PAGE,
+        "licence": IPCC_TERMS,
+    },
+    {
+        "id": "hirabayashi-2021",
+        "name": "Hirabayashi et al. (2021), Global exposure to flooding from the new CMIP6 climate "
+        "model projections, Scientific Reports 11, 3740, Supplementary Table S5",
+        "version": "2021",
+        "url": FLOODS_PAGE,
+        "licence": "CC BY 4.0",
     },
 ]
 
@@ -149,8 +177,27 @@ def grouped(group: dict, rows: list[dict]) -> dict:
     }
 
 
-def impacts_json(spm6: dict[str, str], cited: list[dict]) -> dict:
-    rows = {"wgi": spm6_rows(spm6)} | {
-        g["id"]: cited_rows(cited, g["id"]) for g in GROUPS if g["id"] != "wgi"
+def read_floods(path: Path = FLOODS_CSV) -> list[dict]:
+    return list(csv.DictReader(path.open(encoding="utf-8")))
+
+
+def flood_row(lines: list[dict]) -> dict:
+    """The models' median at each level, with the lowest and highest model as the range, in
+    millions of people (the 2015 population, kept fixed)."""
+    levels = sorted({float(line["level"]) for line in lines})
+    at = [[float(x["millions"]) for x in lines if float(x["level"]) == level] for level in levels]
+    return {
+        "id": "riverFlood",
+        "unit": "millions",
+        "ref": FLOODS_REF,
+        "levels": levels,
+        "mid": [statistics.median(v) for v in at],
+        "low": [min(v) for v in at],
+        "high": [max(v) for v in at],
     }
+
+
+def impacts_json(spm6: dict[str, str], cited: list[dict], floods: list[dict]) -> dict:
+    computed = {"wgi": spm6_rows(spm6), "flood": [flood_row(floods)]}
+    rows = {g["id"]: cited_rows(cited, g["id"]) for g in GROUPS} | computed
     return {"groups": [grouped(g, rows[g["id"]]) for g in GROUPS]}

@@ -1797,9 +1797,13 @@ test('the card on what the warming means reads each source at both futures', asy
   await card.locator('details > summary').click();
   const table = card.locator('.impacts-table');
   const groups = table.locator('.impact-group');
-  await expect(groups).toHaveCount(4);
+  await expect(groups).toHaveCount(6);
   await expect(groups.nth(0)).toHaveAttribute('data-group', 'wgi');
   await expect(groups.nth(3)).toHaveAttribute('data-group', 'heatwave');
+  await expect(groups.nth(5)).toHaveAttribute('data-group', 'flood');
+  await expect(table.locator('[data-row="riverFlood"] .impact-value').first()).toContainText(
+    'million',
+  );
   await expect(groups.nth(2).locator('.impact-levels')).toHaveText(
     'Assessed at 1.5 °C and 2 °C only',
   );

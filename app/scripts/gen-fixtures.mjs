@@ -669,6 +669,26 @@ write('impacts.json', {
       levels: [1.5, 2],
       rows: [impactRow('heatwave', 'percent', { mid: [14, 37], low: [9, 32], high: [18, 45] })],
     },
+    {
+      id: 'fire',
+      url: 'https://example.org/fire',
+      jointly: false,
+      levels: [2, 4],
+      rows: [impactRow('burnedArea', 'percent', { low: [30, 50], high: [35, 70] })],
+    },
+    {
+      id: 'flood',
+      url: 'https://example.org/flood',
+      jointly: true,
+      levels: [1.5, 2, 3],
+      rows: [
+        impactRow('riverFlood', 'millions', {
+          mid: [199, 207, 223],
+          low: [173, 174, 177],
+          high: [226, 230, 258],
+        }),
+      ],
+    },
   ],
 });
 

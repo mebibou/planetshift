@@ -645,13 +645,14 @@
     "range": "{name}: {parts}.",
     "rangeWithout": "{range} without the levers",
     "rangeWith": "{range} with them",
-    "note": "The ranges in the (i) are the sources' own, not the range of the warming. Economic damages are left out. The sea-level rise avoided is in the summary, and the ocean's pH has its own chart.",
+    "note": "The ranges in the (i) are the sources' own, not the range of the warming. Economic damages are left out, flood damages included. The sea-level rise avoided is in the summary, and the ocean's pH has its own chart.",
     "more": "How it is read",
     "units": {
       "times": "{value}×",
       "percent": "{value}%",
       "perCentury": "{value} in 100",
-      "megatonnes": "{value} Mt"
+      "megatonnes": "{value} Mt",
+      "millions": "{value} million"
     },
     "groups": {
       "wgi": {
@@ -667,6 +668,13 @@
       "heatwave": {
         "title": "Heatwaves (Dosio et al. 2018)",
         "range": "The study's range of models"
+      },
+      "fire": {
+        "title": "Wildfire (IPCC AR6 WGII)"
+      },
+      "flood": {
+        "title": "River floods (Hirabayashi et al. 2021)",
+        "range": "Lowest to highest of the study's nine models"
       }
     },
     "rows": {
@@ -729,6 +737,16 @@
         "label": "People exposed to severe heatwaves at least once every 5 years",
         "note": "The share of the world's people exposed to severe heatwaves at least once every 5 years, from one study (Dosio et al. 2018), not from the IPCC. It uses the same population (SSP3) at both levels.",
         "short": "People exposed to severe heatwaves"
+      },
+      "burnedArea": {
+        "label": "Area burned worldwide, increase from climate change alone",
+        "note": "How much more land burns each year worldwide from climate change alone, as the IPCC assessed it (medium confidence): about 30–35% more if the warming stays below 2 °C, 50–70% more at about 4 °C. Land use is left out. Models that add the spread of farmland project a smaller area burned. The IPCC gives a range, not a central value. The card shows the value for below 2 °C at 2 °C.",
+        "short": "More area burned"
+      },
+      "riverFlood": {
+        "label": "People exposed each year to a 100-year river flood",
+        "note": "How many people, in millions, live in the areas a river flood reaches in a given year. The flood is one seen once in 100 years in 1971–2000. This is the median of nine CMIP6 models in one study (Hirabayashi et al. 2021), not an IPCC finding. The population stays at its 2015 level. That is 2.2% of the world's people in 1971–2000, and 3.2% at 3 °C.",
+        "short": "People exposed to 100-year river floods"
       }
     }
   },

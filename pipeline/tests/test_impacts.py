@@ -1,4 +1,5 @@
 import json
+from collections import Counter
 from pathlib import Path
 
 import pytest
@@ -84,20 +85,66 @@ def test_a_group_whose_rows_were_assessed_at_different_levels_is_refused():
         I.grouped({"id": "sr15"}, rows)
 
 
-def test_the_file_holds_the_four_groups_in_order_with_their_levels():
+def flood(model, level, millions):
+    return {"model": model, "level": level, "millions": millions}
+
+
+def test_the_flood_row_is_the_models_median_and_their_range():
+    lines = [
+        flood("a", "1.5", "10"),
+        flood("b", "1.5", "30"),
+        flood("c", "1.5", "20"),
+        flood("a", "3", "40"),
+        flood("b", "3", "60"),
+        flood("c", "3", "50"),
+    ]
+    assert I.flood_row(lines) == {
+        "id": "riverFlood",
+        "unit": "millions",
+        "ref": I.FLOODS_REF,
+        "levels": [1.5, 3.0],
+        "mid": [20.0, 50.0],
+        "low": [10.0, 40.0],
+        "high": [30.0, 60.0],
+    }
+
+
+def test_the_flood_table_holds_nine_models_at_three_levels():
+    lines = I.read_floods()
+    assert set(Counter(x["model"] for x in lines).values()) == {3}
+    assert len({x["model"] for x in lines}) == 9
+    row = I.flood_row(lines)
+    assert row["levels"] == [1.5, 2.0, 3.0]
+    assert row["mid"] == [199.0, 207.0, 223.0]
+    assert row["low"] == [173.0, 174.0, 177.0]
+    assert row["high"] == [226.0, 230.0, 258.0]
+
+
+def test_the_flood_median_at_3_c_is_the_papers_3_2_percent_of_about_7_billion_people():
+    """The paper gives 3.2% of the world's people at 3 °C, its population fixed at 2015's."""
+    share = I.flood_row(I.read_floods())["mid"][2] / 7.0e3
+    assert share == pytest.approx(0.032, abs=0.001)
+
+
+def test_the_file_holds_the_six_groups_in_order_with_their_levels():
     spm6 = {row: HOT for row in I.SPM6_FILES}
-    data = I.impacts_json(spm6, I.read_cited())
-    assert [g["id"] for g in data["groups"]] == ["wgi", "wgii", "sr15", "heatwave"]
+    data = I.impacts_json(spm6, I.read_cited(), I.read_floods())
+    ids = ["wgi", "wgii", "sr15", "heatwave", "fire", "flood"]
+    assert [g["id"] for g in data["groups"]] == ids
     levels = {g["id"]: g["levels"] for g in data["groups"]}
     assert levels["wgii"] == [1.5, 2.0, 3.0, 4.0, 5.0]
     assert levels["sr15"] == levels["heatwave"] == [1.5, 2.0]
-    assert [g["jointly"] for g in data["groups"]] == [False, False, True, True]
+    assert levels["fire"] == [2.0, 4.0]
+    assert levels["flood"] == [1.5, 2.0, 3.0]
+    assert [g["jointly"] for g in data["groups"]] == [False, False, True, True, False, True]
     assert all("levels" not in r for g in data["groups"] for r in g["rows"])
 
 
 def test_the_cited_table_holds_the_published_values():
     rows = {
-        r["id"]: r for g in ("wgii", "sr15", "heatwave") for r in I.cited_rows(I.read_cited(), g)
+        r["id"]: r
+        for g in ("wgii", "sr15", "heatwave", "fire")
+        for r in I.cited_rows(I.read_cited(), g)
     }
     assert rows["extinction"]["high"] == [14.0, 18.0, 29.0, 39.0, 48.0]
     assert rows["extinction"]["low"] == [3.0] * 5
@@ -105,6 +152,8 @@ def test_the_cited_table_holds_the_published_values():
     assert rows["arctic"]["mid"] == [1.0, 10.0]
     assert rows["fishery"]["mid"] == [1.5, 3.0]
     assert rows["heatwave"]["mid"] == [13.8, 36.9]
+    assert rows["burnedArea"]["low"] == [30.0, 50.0]
+    assert rows["burnedArea"]["high"] == [35.0, 70.0]
     assert all(r["ref"] for r in rows.values())
 
 
