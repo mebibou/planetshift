@@ -33,4 +33,4 @@ When you reuse the data, credit Planetshift and the original sources listed in `
 
 ## Fonts
 
-The interface's font, Lato, is self-hosted from `app/src/fonts/`: the Latin and Latin Extended subsets of its regular, italic, bold and black weights, as WOFF2 files taken from the Fontsource package `@fontsource/lato` 5.3.0. Lato is under the SIL Open Font License 1.1, whose text is in `app/src/fonts/OFL.txt`. Each file keeps the font's copyright notice and Reserved Font Name in its metadata. The files are unmodified, so the name Lato is kept.
+The interface's font, Lato, is self-hosted from `app/src/fonts/`. The files are WOFF2 copies of the Latin and Latin Extended subsets of its regular, italic, bold and black weights, from the Fontsource package `@fontsource/lato` 5.3.0. Lato is under the SIL Open Font License 1.1, whose text is in `app/src/fonts/OFL.txt`. Each file keeps the font's copyright notice and Reserved Font Name in its metadata. The files are unmodified, so the name Lato is kept.
