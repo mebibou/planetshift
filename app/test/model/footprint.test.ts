@@ -102,6 +102,29 @@ describe('the food footprint in a run', () => {
     expect(fra(data).co2).toBe(without.co2);
   });
 
+  it('counts every cause of the chain after the farm, waste and wastewater included', () => {
+    const chain = data.chain!;
+    const unwasted = (stages: typeof chain.world) =>
+      Object.fromEntries(
+        Object.entries(stages).filter(([stage]) => !['waste', 'wastewater'].includes(stage)),
+      );
+    const noWaste = {
+      ...data,
+      chain: {
+        ...chain,
+        world: unwasted(chain.world),
+        byCountry: Object.fromEntries(
+          Object.entries(chain.byCountry).map(([iso3, stages]) => [iso3, unwasted(stages)]),
+        ),
+      },
+    };
+    const ch4 = (d: typeof data) =>
+      runScenario(d, BASE_SCENARIO, DEFAULT_OPTIONS, CURRENT_YEAR).countries.find(
+        (c) => c.iso3 === 'FRA',
+      )!.footprint!.ch4;
+    expect(ch4(data)).toBeGreaterThan(ch4(noWaste));
+  });
+
   it('shares a crushed oilseed’s drained N₂O between oil and cake as it shares the CO₂', () => {
     const undrained: typeof data = {
       ...data,

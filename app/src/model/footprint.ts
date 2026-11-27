@@ -6,7 +6,7 @@ import {
   type GasVector,
   type Scope,
 } from '../data/types';
-import { chainIntensities } from './chain';
+import { CHAIN_CAUSES, chainIntensities } from './chain';
 import { countryCakes, countryIntensities } from './emissions';
 import { feedByGroup, feedSharesOf } from './feed';
 import type { Prepared, PreparedCountry } from './prepare';
@@ -54,7 +54,7 @@ const baseIntensity = (pc: PreparedCountry, prepared: Prepared, scope: Scope): B
     const chain = prepared.data.chain ? chainIntensities(pc, prepared, prepared.data.chain) : null;
     const land = landPerTonne(pc, prepared);
     const chainAt = (g: Gas, i: number) =>
-      chain ? (chain.fossilIndustry[g][i] as number) + (chain.other[g][i] as number) : 0;
+      chain ? CHAIN_CAUSES.reduce((a, cause) => a + (chain[cause][g][i] as number), 0) : 0;
     return recordFrom(GASES, (g) =>
       Float64Array.from(
         prepared.items,
