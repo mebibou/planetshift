@@ -36,13 +36,20 @@ export interface Industry {
 
 export const EMPTY_INDUSTRY = {} as Industry;
 
+/** efficiency.json: `potential` is the share of buildings' demand avoided at full adoption. */
+export interface BuildingsEfficiency {
+  potential: number;
+  electricityShare: number;
+  source: string;
+}
+
 declare module '../../data/types' {
   interface ModelData {
     industry: Industry;
   }
 }
 
-export const INDUSTRY_LEVERS = ['cleanHeating', 'cleanIndustry'] as const;
+export const INDUSTRY_LEVERS = ['efficientBuildings', 'cleanHeating', 'cleanIndustry'] as const;
 export type IndustryLever = (typeof INDUSTRY_LEVERS)[number];
 
 /** Whether industry.json was loaded with data for the levers to act on. */

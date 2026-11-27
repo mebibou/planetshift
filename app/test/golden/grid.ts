@@ -166,6 +166,17 @@ export const GRID: Setting[] = [
       { ssp: ssp as Options['ssp'] },
     ),
   ),
+  ...[0.5, 1].map((a) =>
+    setting(`efficientBuildings@${a * 100}`, { levers: { efficientBuildings: a } }),
+  ),
+  setting('efficientBuildings+heating', { levers: all(['efficientBuildings', 'cleanHeating']) }),
+  ...['ssp245', 'ssp126', 'ssp370'].map((ssp) =>
+    setting(
+      `efficientBuildings+heating+renewables+${ssp}`,
+      { levers: all(['efficientBuildings', 'cleanHeating', 'renewableElectricity']) },
+      { ssp: ssp as Options['ssp'] },
+    ),
+  ),
 ];
 
 /** Run with every departure from FaIR at its plain-FaIR value (planetshift.config.schema.json). */
@@ -189,6 +200,7 @@ export const PLAIN_GRID: Setting[] = [
   ...LEAKS.map((id) => setting(`${id}@100`, { levers: { [id]: 1 } })),
   setting('allLeaks+fuel', { levers: all([...LEAKS, ...ENERGY, ...INDUSTRY]) }),
   setting('directAirCapture@100', { levers: { directAirCapture: 1 } }),
+  setting('efficientBuildings@100', { levers: { efficientBuildings: 1 } }),
   setting(
     'everythingAllOptions',
     { shift: 0.5, levers: all(GOLDEN_LEVERS, 0.7) },
@@ -217,4 +229,6 @@ export const QUERIES = [
   'pr=50&df=x',
   'dac=50&re=100',
   'dac=x',
+  'eb=50&ch=100&re=100',
+  'eb=x',
 ];

@@ -161,6 +161,7 @@ Les clés d'URL des options, des réglages du régime et des leviers sont listé
 ## Bâtiments et industrie
 
 - **Le CO₂ direct des bâtiments et de l'industrie fait partie du CO₂ fossile de chaque SSP, rapporté à un inventaire** : les 2,68 Gt de CO₂ des bâtiments en 2022 (CEDS) et les 9,0 Gt de l'industrie en 2022, pris pour 2023 (AIE). L'acier représente 28,9 %, le ciment 28,7 % et la chimie sans l'ammoniac 5,7 % de celui de l'industrie, chaque année et dans chaque scénario. Le CO₂ de l'ammoniac n'est réduit que par « Moins d'azote, mieux employé », du côté de la ferme. Voir [Bâtiments et industrie](#method-industry).
+- **Les bâtiments efficaces réduisent de 42 % le combustible des bâtiments et leur électricité à adoption complète** (GIEC AR6 GT III, section 9.6.2, figure 9.16), et les bâtiments consomment la moitié de l'électricité (AIE), donc le CO₂ du réseau baisse de 21 %, sur le réseau qui reste après l'électricité renouvelable. Le chauffage propre agit sur le combustible que laisse l'efficacité. Voir [Bâtiments et industrie](#method-industry).
 - **Une pompe à chaleur économise le CO₂ de la chaudière × (1 − 1,49 kWh par kg évité × l'intensité du réseau après l'électricité renouvelable).** Voir [Bâtiments et industrie](#method-industry).
 - **L'industrie propre réduit de 90 %, 90 % et 80 % le CO₂ direct de l'acier, du ciment et de la chimie à adoption complète**, moins 1,5, 0,20 et 1,9 kWh d'électricité par kg évité sur le même réseau. La fabrication des équipements n'est pas comptée. Voir [Bâtiments et industrie](#method-industry).
 

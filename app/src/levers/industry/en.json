@@ -3,6 +3,10 @@
   "description": "Cut the fossil fuel burnt in buildings and in steel, cement and chemical plants: its CO₂, the methane leaked supplying it and its air pollution, whose cooling goes too.",
   "family": "Buildings and industry",
   "page": "Buildings and industry",
+  "efficientBuildings": {
+    "title": "Efficient buildings",
+    "description": "Insulation, better windows, and efficient appliances and lighting cut the fuel buildings burn and the electricity they use. At full adoption, both fall by 42%, which leaves less for heat pumps and clean power to replace."
+  },
   "cleanHeating": {
     "title": "Clean heating",
     "description": "Heat pumps and electric cooking replace gas and oil boilers: their CO₂ goes, the grid's CO₂ for running them comes."

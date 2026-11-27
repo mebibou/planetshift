@@ -5,7 +5,11 @@ import { EMPTY_INDUSTRY } from './data';
 import { hasIndustry, INDUSTRY_LEVERS, type IndustryLever } from './data';
 
 const ID = 'industry';
-const KEYS: Record<IndustryLever, string> = { cleanHeating: 'ch', cleanIndustry: 'ci' };
+const KEYS: Record<IndustryLever, string> = {
+  efficientBuildings: 'eb',
+  cleanHeating: 'ch',
+  cleanIndustry: 'ci',
+};
 const LEVERS = INDUSTRY_LEVERS.map((id) => lever(ID, id, KEYS[id]));
 
 /**

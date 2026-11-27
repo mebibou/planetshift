@@ -15,7 +15,11 @@ import { leaksOf } from '../fossilMethane/model';
 import { INDUSTRY_LEVERS, industryPaths, type IndustryLever } from './model';
 
 const ID = 'industry';
-const KEYS: Record<IndustryLever, string> = { cleanHeating: 'ch', cleanIndustry: 'ci' };
+const KEYS: Record<IndustryLever, string> = {
+  efficientBuildings: 'eb',
+  cleanHeating: 'ch',
+  cleanIndustry: 'ci',
+};
 const LEVERS = INDUSTRY_LEVERS.map((id) => lever(ID, id, KEYS[id]));
 
 /**

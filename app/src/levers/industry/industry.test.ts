@@ -7,12 +7,14 @@ import { BASE_SCENARIO } from '../../model/scenarios';
 import { decodeState, encodeState } from '../../model/state';
 import { CURRENT_YEAR } from '../../../test/model/fixtures';
 import type { IndustrySector } from './data';
-import { INDUSTRY_LEVERS, industryCo2, industryCo2BySource } from './model';
+import { sectorCo2 } from '../energy/model';
+import { EFFICIENCY, INDUSTRY_LEVERS, industryCo2, industryCo2BySource } from './model';
 
 const at2035 = (sector: IndustrySector) => {
   const s = data.industry.co2.ssp245[sector];
   return s.values[s.years.indexOf(2035)] as number;
 };
+const electricity2035 = () => sectorCo2(data.sectors, 'ssp245', 'electricity', 2035);
 const grid2035 = () => {
   const g = data.sectors.gridIntensity.ssp245;
   return g.values[g.years.indexOf(2035)] as number;
@@ -85,7 +87,7 @@ describe('industry levers', () => {
 
   it('save more with renewable electricity, and all of their cut on a clean grid', () => {
     const re = w2100(lever('renewableElectricity'));
-    INDUSTRY_LEVERS.forEach((id) =>
+    (['cleanHeating', 'cleanIndustry'] as const).forEach((id) =>
       expect(w2100(run({ levers: { [id]: 1, renewableElectricity: 1 } })), id).toBeGreaterThan(
         w2100(lever(id)) + re,
       ),
@@ -93,6 +95,7 @@ describe('industry levers', () => {
     const ctx = { industry: data.industry, sectors: data.sectors, ssp: 'ssp245' as const };
     const bySource = (renewableElectricity: number) =>
       industryCo2BySource({ ...ctx, band: 'median' }, 2040, {
+        efficientBuildings: 0,
         cleanHeating: 1,
         cleanIndustry: 1,
         renewableElectricity,
@@ -110,6 +113,47 @@ describe('industry levers', () => {
     expect(half.electricity).toBeCloseTo(none.electricity / 2, 0);
     expect(none.electricity).toBeGreaterThan(0);
     expect(half.buildings).toBe(none.buildings);
+  });
+
+  it('efficient buildings cut their fuel and their share of the grid’s CO₂', () => {
+    const r = withoutMethaneCo2('efficientBuildings');
+    expect(r.summary.avoided.co2).toBeCloseTo(
+      0.42 *
+        (at2035('buildings') * (1 + supply('buildings')) +
+          0.5 * electricity2035() * (1 + supply('electricity'))),
+      -6,
+    );
+  });
+
+  it('efficient buildings leave less for heat pumps and a clean grid to clean', () => {
+    const ctx = { industry: data.industry, sectors: data.sectors, ssp: 'ssp245' as const };
+    const bySource = (efficientBuildings: number, cleanHeating: number, re: number) =>
+      industryCo2BySource({ ...ctx, band: 'median' }, 2040, {
+        efficientBuildings,
+        cleanHeating,
+        cleanIndustry: 0,
+        renewableElectricity: re,
+      });
+    const buildings = industryCo2(data.industry, 'ssp245', 'buildings', 2040);
+    const saved = EFFICIENCY.potential;
+    expect(bySource(1, 0, 0).buildings).toBeCloseTo(-saved * buildings, 0);
+    expect(bySource(1, 1, 0).buildings).toBeCloseTo(-buildings, 0);
+    expect(bySource(1, 1, 0).electricity - bySource(1, 0, 0).electricity).toBeCloseTo(
+      (1 - saved) * (bySource(0, 1, 0).electricity - bySource(0, 0, 0).electricity),
+      0,
+    );
+    expect(bySource(1, 0, 0).electricity).toBeCloseTo(
+      -saved * EFFICIENCY.electricityShare * sectorCo2(data.sectors, 'ssp245', 'electricity', 2040),
+      0,
+    );
+    expect(bySource(1, 0, 0.5).electricity).toBeCloseTo(bySource(1, 0, 0).electricity / 2, 0);
+    expect(bySource(1, 1, 1).electricity).toBe(0);
+    const w = (levers: Record<string, number>) => w2100(run({ levers }));
+    const both = { efficientBuildings: 1, cleanHeating: 1 };
+    expect(w(both)).toBeLessThan(w({ efficientBuildings: 1 }) + w({ cleanHeating: 1 }));
+    expect(w({ ...both, renewableElectricity: 1 })).toBeLessThan(
+      w(both) + w({ renewableElectricity: 1 }),
+    );
   });
 
   it('avoid more with more adoption', () => {
@@ -139,8 +183,9 @@ describe('industry levers', () => {
   });
 
   it('round-trip in the URL', () => {
-    const scenario = { ...BASE_SCENARIO, levers: { cleanHeating: 0.5, cleanIndustry: 1 } };
-    expect(encodeState(scenario, DEFAULT_OPTIONS)).toBe('ch=50&ci=100');
-    expect(decodeState('ch=50&ci=100').scenario).toEqual(scenario);
+    const levers = { efficientBuildings: 0.25, cleanHeating: 0.5, cleanIndustry: 1 };
+    const scenario = { ...BASE_SCENARIO, levers };
+    expect(encodeState(scenario, DEFAULT_OPTIONS)).toBe('eb=25&ch=50&ci=100');
+    expect(decodeState('eb=25&ch=50&ci=100').scenario).toEqual(scenario);
   });
 });
