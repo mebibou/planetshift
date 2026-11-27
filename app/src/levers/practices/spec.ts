@@ -22,7 +22,7 @@ export const practicesSpec: LeverSpec = {
   levers: LEVERS,
   options: [],
   files: [
-    { name: 'breakdown', empty: EMPTY_BREAKDOWN, deferred: true },
+    { name: 'breakdown', empty: EMPTY_BREAKDOWN },
     { name: 'practices', empty: EMPTY_PRACTICES },
   ],
   available: (data, id) => data.practices[id as PracticeId] !== undefined,

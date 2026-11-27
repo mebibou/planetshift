@@ -4,7 +4,6 @@ import {
   dataFolder,
   dataUrl,
   decodeIntensities,
-  DEFERRED_FILES,
   EMPTY_LEVER_DATA,
   LEVER_FILES,
   loadAll,
@@ -24,7 +23,8 @@ const ok = (body: unknown) =>
 const notFound = () =>
   Promise.resolve({ ok: false, status: 404, json: () => Promise.resolve(null) });
 const bodyOf = (url: string) => (url.endsWith('intensities.json') ? INTENSITIES : { url });
-const EAGER = LEVER_FILES.filter((f) => !DEFERRED_FILES.includes(f));
+const DEFERRED = ['breakdown'];
+const EAGER = LEVER_FILES.filter((f) => !DEFERRED.includes(f));
 
 describe('data loading', () => {
   it('reads fixtures only when asked', () => {
@@ -41,11 +41,14 @@ describe('data loading', () => {
 
   it('loads every file from the folder but the deferred ones', async () => {
     const asked: string[] = [];
-    const loaded = await loadAll('fixtures/', (url) => {
-      asked.push(url);
-      return ok(bodyOf(url));
-    });
-    expect(DEFERRED_FILES).toEqual(['breakdown']);
+    const loaded = await loadAll(
+      'fixtures/',
+      (url) => {
+        asked.push(url);
+        return ok(bodyOf(url));
+      },
+      DEFERRED,
+    );
     expect(asked.sort()).toEqual(
       [...DATA_FILES, ...EAGER, ...OPTIONAL_FILES].map((f) => `fixtures/${f}.json`).sort(),
     );
@@ -74,10 +77,14 @@ describe('data loading', () => {
 
   it('loads a deferred file once a lever of its module is above 0, and only once', async () => {
     const asked: string[] = [];
-    const loaded = await loadAll('data/', (url) => {
-      asked.push(url);
-      return ok(bodyOf(url));
-    });
+    const loaded = await loadAll(
+      'data/',
+      (url) => {
+        asked.push(url);
+        return ok(bodyOf(url));
+      },
+      DEFERRED,
+    );
     expect(loaded.complete({})).toBeNull();
     expect(loaded.complete({ feedAdditives: 0 })).toBeNull();
     expect(neededFiles(loaded.pending, { coverCrops: 1 })).toEqual([]);
@@ -94,17 +101,25 @@ describe('data loading', () => {
 
   it('names a deferred file that failed and does not ask for it again, and leaves a missing one empty', async () => {
     const asked: string[] = [];
-    const loaded = await loadAll('data/', (url) => {
-      asked.push(url);
-      return url.endsWith('breakdown.json') ? Promise.reject(new TypeError('x')) : ok(bodyOf(url));
-    });
+    const loaded = await loadAll(
+      'data/',
+      (url) => {
+        asked.push(url);
+        return url.endsWith('breakdown.json')
+          ? Promise.reject(new TypeError('x'))
+          : ok(bodyOf(url));
+      },
+      DEFERRED,
+    );
     expect(loaded.failed()).toEqual([]);
     await expect(loaded.complete({ feedAdditives: 1 })).rejects.toBeInstanceOf(LoadError);
     expect(loaded.failed()).toEqual(['breakdown']);
     expect(loaded.complete({ feedAdditives: 1 })).toBeNull();
     expect(asked.filter((u) => u.endsWith('breakdown.json'))).toHaveLength(1);
-    const missing = await loadAll('data/', (url) =>
-      url.endsWith('breakdown.json') ? notFound() : ok(bodyOf(url)),
+    const missing = await loadAll(
+      'data/',
+      (url) => (url.endsWith('breakdown.json') ? notFound() : ok(bodyOf(url))),
+      DEFERRED,
     );
     expect((await missing.complete({ feedAdditives: 1 }))?.data.breakdown).toEqual(
       EMPTY_LEVER_DATA.breakdown,

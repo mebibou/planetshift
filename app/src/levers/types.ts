@@ -47,7 +47,7 @@ export interface OptionDef {
 export interface DataFileDef {
   name: string;
   empty: unknown;
-  /** Loaded only once one of the module's levers is above 0; `empty` stands for it until then. */
+  /** Loaded once a lever of the module is above 0: no hook may read it while they are at 0. */
   deferred?: boolean;
 }
 
