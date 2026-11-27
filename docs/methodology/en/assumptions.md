@@ -103,7 +103,7 @@ The URL keys of the options, the diet controls and the levers are listed under [
 - **Two income levels stand for the many production systems GLEAM distinguishes.** See [Feed](#method-feed).
 - **Feed items whose class has no ration use the species split.** See [Feed](#method-feed).
 - **A region without animal production takes the world shares** (none at present). See [Feed](#method-feed).
-- **Feed falls in proportion to each group's production in the same country.** A group a country does not raise has no feed to lose. See [The shift](#method-shift).
+- **Feed falls in proportion to each group's production in the same country.** A group a country does not raise has no feed to lose. Butter and cream count as the milk they are made from. See [The shift](#method-shift).
 - **Milk and fish fed to animals change once, when the animals they feed change.** The fish caught for meal are wild and eat no feed, so their change does not change feed again. See [The shift](#method-shift) and [Fish and seafood](#method-seafood).
 
 ## Freshwater

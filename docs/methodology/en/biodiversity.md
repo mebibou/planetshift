@@ -43,7 +43,7 @@ The summary divides the world's farmed mammals by its wild mammals, today and on
 
 ## With the levers
 
-A herd grows or shrinks with the production of the food it gives, in its country. Planetshift already gives each country's change in each animal group's production once the levers are in full (the same relative change that moves its feed and its oilcakes). The herds follow it:
+A herd grows or shrinks with the production of the food it gives, in its country. Planetshift already gives each country's change in each animal group's production once the levers are in full. It is the same relative change that moves its feed and its oilcakes, with butter and cream counted as the milk they are made from. The herds follow it:
 
 $$
 \Delta B_c = \sum_g B_{c,g} \, \frac{\Delta P_{c,g}}{P_{c,g}}

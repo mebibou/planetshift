@@ -74,6 +74,7 @@ import {
   type CountryCakes,
   type CountryIntensities,
 } from './emissions';
+import { primaryTotals } from './crops';
 import { animalUse, feedChange, feedSharesOf, groupProductionChange, totalsOf } from './feed';
 import { addLand, countryLand, landChangeOf, NO_LAND, type CakeDemand } from './land';
 import { clipChange, locateAll } from './location';
@@ -705,7 +706,7 @@ const countryParts = (
     bands,
   );
   const land = countryLand(pc, prepared).base;
-  const landChange = landChangeOf(pc, change, productionChange, prepared, cake);
+  const landChange = landChangeOf(pc, change, primaryTotals(change, prepared), prepared, cake);
   const extra = countryHooks.map(({ hook }) => hook({ pc, food, stages, land, landChange }));
   const chain = countryChain(pc, prepared, stages);
   const result = {

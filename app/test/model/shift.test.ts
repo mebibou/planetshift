@@ -4,7 +4,7 @@ import { DEFAULT_OPTIONS, type Basis, type Scenario } from '../../src/model/api'
 import { foodChange, removalShares } from '../../src/model/diet';
 import { feedChange, groupProductionChange } from '../../src/model/feed';
 import { countryIntensities, emissionsOf } from '../../src/model/emissions';
-import { groupTotals, prepare, valueOf } from '../../src/model/prepare';
+import { groupTotals, prepare, valueOf, type Prepared } from '../../src/model/prepare';
 import { countryLand } from '../../src/model/land';
 import type { ItemVector } from '../../src/model/util';
 import { REPLACEMENT_MIXES } from '../../src/model/replacement';
@@ -169,6 +169,27 @@ describe('feed', () => {
     const herd = (base: ItemVector) => groupProductionChange(base, change['FRA']!, p).dairy;
     expect(herd(fra.emitting)).toBeCloseTo(2 * herd(fra.production), 9);
     expect(countryLand(fra, p).groups.dairy).toBeCloseTo(groupTotals(fra.emitting, p).dairy, 9);
+  });
+  it('counts butter in tonnes of the milk it is made from, so a butter cut moves the herd', () => {
+    const dairy = {
+      items: [
+        { code: 2848, group: 'dairy' },
+        { code: 2740, group: 'dairy' },
+      ],
+      indexOf: new Map([
+        ['2848', 0],
+        ['2740', 1],
+      ]),
+      countries: [],
+      worldProduction: Float64Array.from([0, 0]),
+      data: { land: { extraction: { '2740': { '2848': 0.056 } } } },
+    } as unknown as Prepared;
+    const lessButter = groupProductionChange(
+      Float64Array.from([100, 1]),
+      Float64Array.from([0, -1]),
+      dairy,
+    );
+    expect(lessButter.dairy).toBeCloseTo(-(1 / 0.056) / (100 + 1 / 0.056), 9);
   });
 });
 

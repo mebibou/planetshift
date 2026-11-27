@@ -31,7 +31,7 @@ For each country, the model's cropland is the sum over items of hectares per ton
 
 When a scenario changes production, cropland changes with it, item by item, at the country's own hectares per tonne. This includes the feed crops no longer grown for fewer animals. The oilcake land changes with the animals that eat the cake.
 
-Pasture changes with the production of the ruminant groups. Each group's share of a country's pasture changes in proportion to the group's production. If a country produces half as much beef, the pasture given to beef halves. Pasture never falls below zero. Temporary meadows change the same way.
+Pasture changes with the production of the ruminant groups. Each group's share of a country's pasture changes in proportion to the group's production. If a country produces half as much beef, the pasture given to beef halves. Dairy's production counts butter and cream as the milk they are made from (see [The shift](#method-shift)). Pasture never falls below zero. Temporary meadows change the same way.
 
 **Example.** With a 50% shift, protein kept equal and the default options, the world frees 1.51 billion hectares of its 3.02 billion of pasture. It also frees 65 Mha of its 1.69 billion hectares of cropland, about 4%.
 
@@ -189,10 +189,10 @@ The table shows what netting changes, on the real data with FaIR, SSP2-4.5 and b
 | Full shift, before | 9.20 | 0.176 | 0.397 (0.250–0.787) |
 | Full shift, netted | 8.86 | 0.174 | 0.396 (0.250–0.776) |
 | Half shift, before → netted | 4.60 → 4.43 | 0.087 → 0.087 | 0.197 → 0.196 |
-| Dairy to plant milk, before → netted | 1.08 → 0.99 | 0.046 → 0.047 | 0.102 → 0.103 |
+| Dairy to plant milk, before → netted | 1.10 → 1.01 | 0.047 → 0.047 | 0.103 → 0.103 |
 | Half the fish to legumes, before → netted | 0.01 → −0.09 | 0.0019 → 0.0014 | 0.0049 → 0.0042 |
 
-Under the full shift, 14 countries farm more land overall than before, 41 Mha together. Under the fish swap, 103 countries farm more land than before, 18 Mha together. With regrowth off, nothing changes.
+Under the full shift, 14 countries farm more land overall than before, 41 Mha together. Under the fish swap, 104 countries farm more land than before, 18 Mha together. With regrowth off, nothing changes.
 
 ### The albedo of the land growing back
 
