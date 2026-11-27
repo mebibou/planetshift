@@ -10,6 +10,7 @@ from . import config
 from .cache import DEFAULT_CACHE
 from .inputs import OUT_DIR, Build, log
 from .sections import (
+    acid_n2o,
     breakdown,
     chain,
     climate,
@@ -87,6 +88,7 @@ SECTIONS: tuple[Section, ...] = (
     Section("industry", industry.build, ("industry.json",), ("industry",)),
     Section("coemissions", coemissions.build, ("coemissions.json",), ("coemissions",)),
     Section("fossilmethane", fossil_methane.build, ("fossilmethane.json",)),
+    Section("acidn2o", acid_n2o.build, ("acidn2o.json",), ("acid_n2o",)),
     Section("hfc", hfc.build, ("hfc.json",)),
     Section("waste", waste.build, ("waste.json",), ("waste", "food_loss")),
     Section(

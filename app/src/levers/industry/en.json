@@ -14,5 +14,9 @@
   "cleanIndustry": {
     "title": "Clean industry",
     "description": "Steel made with hydrogen or scrap in electric furnaces, cement with its kilns' CO₂ captured, and chemicals made with electrolytic hydrogen or carbon capture; the electricity they draw counts. Ammonia is left to the farm practices."
+  },
+  "acidN2o": {
+    "title": "Nitric and adipic acid N₂O",
+    "description": "Catalysts and thermal destruction break down the N₂O that nitric acid plants (for fertiliser) and adipic acid plants (for nylon) release. At 100%, 72% of nitric acid plants' N₂O and 96% of adipic acid plants' goes (IPCC)."
   }
 }

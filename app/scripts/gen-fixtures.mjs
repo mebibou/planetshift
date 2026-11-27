@@ -1506,6 +1506,21 @@ write('fossilmethane.json', {
   source: 'Planetshift test fixture: CEDS 2022 totals, sectors.md shares',
 });
 
+// adipic and nitric acid N₂O: CEDS's world totals in 2022, rising a little to 2050
+write('acidn2o.json', {
+  years: coYears,
+  cedsYear: 2022,
+  abated: { adipic: 0.9554, nitric: 0.7222 },
+  emissions: Object.fromEntries(
+    Object.keys(sectorGt).map((ssp) => [
+      ssp,
+      { adipic: [397e6, 431e6, 350e6], nitric: [270e6, 293e6, 238e6] },
+    ]),
+  ),
+  byCountry: { USA: { adipic: 26e6, nitric: 31e6 }, IND: { adipic: 0, nitric: 10e6 } },
+  source: 'Planetshift test fixture: CEDS 2022 totals',
+});
+
 // world population: a smooth history to 2023, then the medium variant peaking near 10.3 billion
 // and the low and high ones apart from it by up to ~30% and ~40% in 2100; country ratios for
 // all but Nigeria, which takes the world's

@@ -431,6 +431,7 @@ const FILE_LICENCES: Readonly<Record<string, readonly string[]>> = {
   sectors: ['ccByNcSa'],
   industry: ['ccBySa'],
   fossilmethane: ['ccBySa'],
+  acidn2o: ['ccBySa'],
   fair: ['ccBySa'],
   population: ['ccByIgo', 'ccBy'],
   waste: ['unTerms'],

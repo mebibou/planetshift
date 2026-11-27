@@ -177,6 +177,9 @@ export const GRID: Setting[] = [
       { ssp: ssp as Options['ssp'] },
     ),
   ),
+  ...[0.5, 1].map((a) => setting(`acidN2o@${a * 100}`, { levers: { acidN2o: a } })),
+  setting('acidN2o+cleanIndustry', { levers: { acidN2o: 1, cleanIndustry: 1 } }),
+  setting('acidN2o+ssp370', { levers: { acidN2o: 1 } }, { ssp: 'ssp370' }),
 ];
 
 /** Run with every departure from FaIR at its plain-FaIR value (planetshift.config.schema.json). */
@@ -231,4 +234,6 @@ export const QUERIES = [
   'dac=x',
   'eb=50&ch=100&re=100',
   'eb=x',
+  'an=50&ci=100',
+  'an=x',
 ];
