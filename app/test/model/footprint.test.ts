@@ -1,8 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { ANIMAL_GROUPS, type GasVector } from '../../src/data/types';
 import { DEFAULT_OPTIONS, type Scenario } from '../../src/model/api';
-import { footprintOf, importShares, type FootprintFrame } from '../../src/model/footprint';
-import type { Prepared, PreparedCountry } from '../../src/model/prepare';
+import { worldCrops } from '../../src/model/crops';
+import {
+  crushPools,
+  footprintOf,
+  importShares,
+  type FootprintFrame,
+} from '../../src/model/footprint';
+import { prepare, type Prepared, type PreparedCountry } from '../../src/model/prepare';
 import { combinedCut, runScenario } from '../../src/model/run';
 import { BASE_SCENARIO } from '../../src/model/scenarios';
 import { CURRENT_YEAR, loadFixtures } from './fixtures';
@@ -128,7 +134,11 @@ describe('the food footprint in a run', () => {
   it('shares a crushed oilseed’s drained N₂O between oil and cake as it shares the CO₂', () => {
     const undrained: typeof data = {
       ...data,
-      land: { ...data.land, crush: { '2555': { oil: '2571', oilShare: 0.37 } } },
+      land: {
+        ...data.land,
+        crush: { '2555': { oil: '2571', oilShare: 0.37 } },
+        extraction: { '2571': { '2555': 0.19 } },
+      },
       deforestation: { ...data.deforestation, drainedByCountry: {}, drainedN2oByCountry: {} },
     };
     const footprints = (field?: 'drainedByCountry' | 'drainedN2oByCountry') =>
@@ -148,6 +158,44 @@ describe('the food footprint in a run', () => {
     const n2o = footprints('drainedN2oByCountry').map((f, c) => f.n2o - base[c]!.n2o);
     expect(Math.min(...co2)).toBeGreaterThan(0);
     n2o.forEach((kg, c) => expect(kg).toBeCloseTo(co2[c]!, 9));
+  });
+});
+
+describe('the land of a processed crop', () => {
+  const data = loadFixtures();
+  const cleared = (land: Partial<typeof data.land>): typeof data => ({
+    ...data,
+    land: { ...data.land, ...land },
+    deforestation: {
+      ...data.deforestation,
+      byCountry: { BRA: { '2555': 1e6 } },
+      drainedByCountry: {},
+      drainedN2oByCountry: {},
+    },
+  });
+
+  it('carries to an item made from it with no crush, as palm oil from the fruit, per crop tonne', () => {
+    const prepared = prepare(cleared({ extraction: { '2571': { '2555': 0.19 } } }));
+    const oil = prepared.indexOf.get('2571') as number;
+    const soy = prepared.indexOf.get('2555') as number;
+    const pools = crushPools(prepared, 'cradleToFarmGate', DEFAULT_OPTIONS.feed, () => null);
+    const perCropTonne = (1e6 * 1000) / (worldCrops(prepared).base[soy] as number);
+    expect(pools.products.get(oil)!.co2).toBeCloseTo(perCropTonne / 0.19, 6);
+    expect(pools.cake.every((kg) => kg.co2 === 0)).toBe(true);
+  });
+
+  it('shares it with the cake by the crush’s value, and keeps none on an item without a rate', () => {
+    const crush = { '2555': { oil: '2571', oilShare: 0.37 } };
+    const withRate = prepare(cleared({ crush, extraction: { '2571': { '2555': 0.19 } } }));
+    const pools = crushPools(withRate, 'cradleToFarmGate', DEFAULT_OPTIONS.feed, () => null);
+    const oil = withRate.indexOf.get('2571') as number;
+    const perCropTonne =
+      (1e6 * 1000) / (worldCrops(withRate).base[withRate.indexOf.get('2555')!] as number);
+    expect(pools.products.get(oil)!.co2).toBeCloseTo((0.37 * perCropTonne) / 0.19, 6);
+    const without = prepare(cleared({ crush }));
+    expect(
+      crushPools(without, 'cradleToFarmGate', DEFAULT_OPTIONS.feed, () => null).products.size,
+    ).toBe(0);
   });
 });
 

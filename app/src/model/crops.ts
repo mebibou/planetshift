@@ -1,6 +1,6 @@
-import { cakeAmountChange, cakeWeights, type CakeDemand } from '../../model/land';
-import type { Prepared, PreparedCountry } from '../../model/prepare';
-import { memoPer, sum, type ItemVector } from '../../model/util';
+import { cakeAmountChange, cakeWeights, type CakeDemand } from './land';
+import type { Prepared, PreparedCountry } from './prepare';
+import { memoPer, sum, type ItemVector } from './util';
 
 /**
  * A processed item made from a crop: tonnes of the crop per tonne of it, and the share of the
@@ -14,10 +14,14 @@ export interface Derived {
   cake?: string;
 }
 
-/** A country's crops: the items made from each, and each one's production with theirs counted back. */
+/**
+ * A country's crops: the items made from each, each one's production with theirs counted back
+ * (`base`), and the unprocessed production it was counted from.
+ */
 export interface Crops {
   derived: ReadonlyMap<number, readonly Derived[]>;
   base: ItemVector;
+  emitting: ItemVector;
 }
 
 const NONE: readonly Derived[] = [];
@@ -26,6 +30,7 @@ const NONE: readonly Derived[] = [];
 export const ownProduction = (emitting: ItemVector): Crops => ({
   derived: new Map(),
   base: emitting,
+  emitting,
 });
 
 /**
@@ -50,14 +55,17 @@ const crushed = (
   return crush?.oil === code ? { share: crush.oilShare, cake: seed } : { share: 1 };
 };
 
+/** Tonnes of an item processed, by code. */
+type Processed = (code: string) => number;
+
 /** Each processed item's links to the crops it is made from, as [crop index, link]. */
-const linksOf = (pc: PreparedCountry, prepared: Prepared): [number, Derived][] =>
+const linksOf = (prepared: Prepared, processed: Processed): [number, Derived][] =>
   Object.entries(prepared.data.land.extraction ?? {}).flatMap(([code, byCrop]) => {
     const item = prepared.indexOf.get(code);
     const rates = Object.entries(byCrop).filter(([crop]) => prepared.indexOf.has(crop));
     const weights = primaryWeights(
       rates.map(([, r]) => r),
-      rates.map(([crop]) => pc.rows.get(crop)?.processing ?? 0),
+      rates.map(([crop]) => processed(crop)),
     );
     return item === undefined
       ? []
@@ -67,23 +75,46 @@ const linksOf = (pc: PreparedCountry, prepared: Prepared): [number, Derived][] =
         ]);
   });
 
-/** A country's crops from the items' extraction rates. */
-export const cropsOf = (pc: PreparedCountry, prepared: Prepared): Crops => {
-  const derived = linksOf(pc, prepared).reduce(
+/** Crops from each item's unprocessed production and what is processed of each. */
+const cropsFrom = (prepared: Prepared, emitting: ItemVector, processed: Processed): Crops => {
+  const derived = linksOf(prepared, processed).reduce(
     (m, [crop, d]) => m.set(crop, [...(m.get(crop) ?? NONE), d]),
     new Map<number, readonly Derived[]>(),
   );
-  const base = Float64Array.from(pc.emitting, (t, i) =>
-    (derived.get(i) ?? NONE).reduce((a, d) => a + d.perTonne * (pc.emitting[d.item] as number), t),
+  const base = Float64Array.from(emitting, (t, i) =>
+    (derived.get(i) ?? NONE).reduce((a, d) => a + d.perTonne * (emitting[d.item] as number), t),
   );
-  return { derived, base };
+  return { derived, base, emitting };
 };
+
+/** A country's crops from the items' extraction rates. */
+export const cropsOf = (pc: PreparedCountry, prepared: Prepared): Crops =>
+  cropsFrom(prepared, pc.emitting, (code) => pc.rows.get(code)?.processing ?? 0);
 
 const cache = memoPer<PreparedCountry, Crops>();
 
 /** A country's crops, once per country. */
 export const countryCrops = (pc: PreparedCountry, prepared: Prepared): Crops =>
   cache(pc, 'crops', () => cropsOf(pc, prepared));
+
+const worldCache = memoPer<Prepared, Crops>();
+
+/**
+ * The world's crops, from its production less its processing: a crop is traded raw and processed
+ * where it is imported (Brazil's soybeans in China), so a country's own figures would split it
+ * between the crop and its products at the wrong place.
+ */
+export const worldCrops = (prepared: Prepared): Crops =>
+  worldCache(prepared, 'crops', () => {
+    const processing = Float64Array.from(prepared.items, (item) =>
+      sum(prepared.countries.map((pc) => pc.rows.get(String(item.code))?.processing ?? 0)),
+    );
+    const at = (code: string) => processing[prepared.indexOf.get(code) as number] as number;
+    const emitting = prepared.worldProduction.map((t, i) =>
+      Math.max(0, t - (processing[i] as number)),
+    );
+    return cropsFrom(prepared, emitting, at);
+  });
 
 /** The change in tonnes of crop a processed item's change takes, its cake's included. */
 const derivedChange = (
