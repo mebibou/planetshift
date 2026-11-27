@@ -267,6 +267,10 @@ export interface LeverModule {
   ui: {
     /** Its levers' fold in the Levers section; options always render in the Options group. */
     section?: 'levers';
+    /** The i18n prefix of its summary line, `<meta>.of` and `<meta>.none`, else "adopted". */
+    meta?: string;
+    /** The panel group it stays right after, whatever their figures. */
+    follows?: string;
     /** Why its levers cannot act with these options (an i18n key), or null when they can. */
     blocked?: (options: Options) => string | null;
     /** Its figure in the summary strip, after the farmland freed. */

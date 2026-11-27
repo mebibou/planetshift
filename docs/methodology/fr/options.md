@@ -103,6 +103,7 @@ L'adoption de chaque levier va de 0 à 100, en pour cent. Elle est omise de l'ad
 | Famille | Leviers (clé d'URL) |
 | --- | --- |
 | Pratiques agricoles | additifs alimentaires (`fa`), sélection et alimentation (`bf`), gestion des effluents (`mm`), rizières drainées (`rw`), moins d'azote, mieux employé (`ne`), énergie propre à la ferme (`fe`) |
+| Substitution d'aliments végétaux | riz vers d'autres céréales (`ric`), huile de palme vers d'autres huiles végétales (`plm`) |
 | Gaspillage alimentaire | gaspillage après les magasins (`fw`), pertes avant les magasins (`sl`) |
 | Déforestation | déforestation arrêtée (`df`), tourbières drainées remouillées (`pr`) |
 | Carbone dans les terres agricoles | couverts végétaux (`cc`), arbres dans les fermes (`af`), biochar (`bc`), poudre de roche, expérimentale (`ew`) |

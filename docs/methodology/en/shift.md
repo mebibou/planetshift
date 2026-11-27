@@ -8,7 +8,7 @@ Planetshift's sliders change what people eat. The map shows what farms produce, 
 
 1. **The kept basis.** Each person keeps the same protein (by default) or the same calories.
 2. **What is removed.** Each animal group loses the share of its food supply that the sliders set.
-3. **What is added.** The protein (or calories) removed is added back as plant foods, in the chosen mix.
+3. **What is added.** The protein (or calories) removed is added back as plant foods, in the chosen mix. Rice and palm oil can then be replaced by other cereals and other vegetable oils on the same calories (see "Replacing rice and palm oil" below).
 4. **Losses and seed.** More food needs a little more supply, because some is lost and some grain is kept as seed.
 5. **Feed.** Fewer animals eat less feed, so the production of feed crops falls.
 6. **Where production changes.** The world's change in demand for each food is shared among the countries that produce it.
@@ -153,11 +153,61 @@ The AGTP curves come from pulse runs of FaIR, a simple climate model, or from th
 
 The baseline temperature is the chosen SSP's published temperature. With the *population* baseline, a correction is added: the warming from the difference between population-scaled agricultural emissions and the SSP's own agricultural path, from the base year on. The baseline curve then matches the baseline emissions. The shift's curve is the baseline + ΔT, for the median and for the 5–95% range of the AGTP.
 
+## Replacing rice and palm oil
+
+Two plant foods can also be replaced: rice and palm oil. They are not part of the diet shift, which moves animal foods to plants. Each has its own lever in the *Plant food swaps* group, under Farming, with its own family in the breakdown. At 0%, people eat them as they do today. At 100%, nobody eats them, and other foods bring the same calories. The lever acts on what is eaten once the animal foods have moved, so the rice the diet shift adds is replaced too. It applies in every country, whatever the diet's *Where* setting. The swap runs before the less waste step, so less waste applies to the food left after the swap.
+
+### Which foods
+
+The foods were picked from the model's own data. For each plant food, its emissions per tonne are divided by its calories per tonne in the FBS. The emissions are world averages and include the farm, the inputs and the land under it: forest cleared and drained organic soils (see [Deforestation](#method-deforestation)). In kg of CO₂e (100-year) per 1,000 kcal:
+
+| Food | Total | Of which methane | Of which land | Calories eaten, 10¹² kcal a year |
+| --- | --- | --- | --- | --- |
+| Tea | 59 | 3.2 | 3.3 | 1 |
+| Coffee | 15 | 0.5 | 7.5 | 5 |
+| Tomatoes, other vegetables, fruit | 2 to 4 | under 0.1 | under 1 | 34 to 249 each |
+| Cocoa | 1.8 | 0.04 | 1.4 | 22 |
+| Rice | 0.83 | 0.35 | 0.07 | 1,527 |
+| Palm oil | 0.69 | 0.02 | 0.38 | 211 |
+| Wheat | 0.44 | 0.01 | 0.03 | 1,613 |
+| Rapeseed, sunflower oil | 0.37 to 0.38 | 0.01 | 0.05 to 0.09 | 102 to 131 |
+| Maize | 0.31 | 0.01 | 0.04 | 421 |
+| Soybean oil | 0.26 | 0.02 | 0.05 | 277 |
+
+A food is worth replacing when it emits much more per calorie than the foods that would take its place, and when people eat many of its calories. Rice emits about twice as much per calorie as wheat and nearly three times as much as maize, mostly as methane from flooded paddies, and it is the second-largest source of calories after wheat. Palm oil emits about twice as much as the other vegetable oils, mostly from forest cleared and peat drained for oil palm in Indonesia and Malaysia.
+
+Other foods are left out:
+
+- **Coffee, tea and cocoa** emit the most per calorie, but people do not drink coffee or tea for their calories, and no food replaces them calorie for calorie. Replacing them by mass would need a substitute, and none is obvious. Their food footprints are small: 0.04 to 0.09 Gt of CO₂e a year each.
+- **Vegetables and fruit** have high emissions per calorie because they bring few calories. People eat them for their vitamins and fibre, and most healthy diets call for more of them, not less.
+- **Sugar**, at 0.33 kg per 1,000 kcal, emits no more than the cereals. The clearing for sugar cane counts toward the sugar made from it.
+- **Cassava** emits 0.75 kg per 1,000 kcal, and much of that comes from land. It is a staple of the poorest countries, where replacing it with cereals would mean imports that most could not rely on.
+
+### Their substitutes
+
+- **Rice → the country's other cereals**: wheat, maize, millet, sorghum, barley, oats, rye and other cereals, each in its share of the country's calories from them. In India, Davis et al. (2018) find that replacing rice with maize, millet or sorghum on the same calories would cut irrigation water and raise iron and zinc supply. The substitutes keep the country's own mix: wheat in India, China and Indonesia, wheat and maize in the Philippines and Vietnam, maize and sorghum in Nigeria. A country that eats none of these cereals takes the world's mix.
+- **Palm oil → the country's other vegetable oils**: soybean, rapeseed, sunflower, groundnut, cottonseed, coconut, sesame, olive, rice bran, maize germ and other oils, each in its share of the country's calories from them. Palm kernel oil comes from the same plantations, so it is replaced along with palm oil. Meijaard et al. (2020) and Beyer et al. (2021) note that the other oils yield less oil per hectare. The model counts this, since each substitute brings its own land, clearing and emissions per tonne.
+
+The substitutes go through the same chain as the foods of the animal shift: losses and seed, the country that grows them (fixed trade by default), their emissions, their land and their clearing. The clearing and drained soils of oil palm scale with the change in palm oil, through its extraction rate (see [Deforestation](#method-deforestation)).
+
+### What it changes
+
+At 100%, with the defaults (SSP2-4.5, ramp to 2035), replacing rice avoids 0.021 °C in 2050 and 0.049 °C in 2100. The methane of rice paddies falls by 71% in Thailand, 69% in the Philippines, 55% in Vietnam, 46% in Indonesia, 30% in China and 16% in India. Replacing palm oil avoids under 0.001 °C in 2050 and 0.002 °C in 2100. The forest cleared for farming falls by 17% in Indonesia and 22% in Malaysia, and the CO₂ from drained soils by 22% and 18%. Palm oil adds little warming on this scale: food is about a quarter of the palm oil the world uses, and its clearing and drained peat emit CO₂, which builds up slowly, while rice's methane warms strongly within a few decades.
+
+### Limitations
+
+- The protein shown after the shift is the diet's. It leaves out the swap's small change in protein, just as it leaves out the change from less waste.
+- Only the food use of rice and palm oil changes. The FBS count about a quarter of the world's palm oil as food. The rest, burned as biodiesel, used in soaps and cosmetics or processed, is not covered.
+- People eat the substitutes in today's proportions. Their prices, and the cooking and taste habits linked to rice, are not modelled.
+- The extra demand for the substitutes does not raise their yields or their prices. It does not change where they are grown either, beyond the trade option.
+- Rice bran oil and maize germ oil, by-products of milling, are substitutes like the others.
+
 ## Assumptions
 
 - Diets change by shares of each animal group's current supply; the mix within a group does not change.
 - The kept basis is conserved exactly per country. The other nutrient is not.
 - The default replacement is today's mix of protein-rich plant foods (cereals, rice, pulses, nuts, oilseeds with at least 10% protein). The legume mix is 60% pulses, 20% soybeans, 20% cereals, and soy and oat drinks 50% soybeans, 50% oats: starting values to review.
+- Rice is replaced by the country's other cereals and palm and palm kernel oil by its other vegetable oils, on the same calories and in today's mix of the substitutes in the country, or the world's where the country eats none.
 - Losses and seed are fixed shares of supply. Processing is fixed in tonnes. The supply multiplier is capped at 3.
 - Feed falls in proportion to each group's production less processing in the same country, as pasture and fodder do. Butter and cream count as the milk they are made from. An animal group a country does not produce has no feed to lose.
 - Milk and fish fed to animals change once, with the animals they feed. That change does not change feed again.
@@ -189,4 +239,7 @@ The code is in `app/src/model/`: `diet.ts`, `replacement.ts`, `feed.ts`, `supply
 - KC, S. et al. (2024). Updating the Shared Socioeconomic Pathways (SSPs) global population and human capital projections. IIASA Working Paper WP-24-003.
 - Our World in Data, Population (long-run series from HYDE 3.3, Gapminder v7 and WPP 2024): <https://ourworldindata.org/population-growth>, CC BY 4.0.
 - Klein Goldewijk, K. et al. (2017). Anthropogenic land use estimates for the Holocene: HYDE 3.2. Earth System Science Data 9, 927–953: <https://doi.org/10.5194/essd-9-927-2017>.
+- Davis, K. F. et al. (2018). Alternative cereals can improve water use and nutrient supply in India. Science Advances 4, eaao1108: https://doi.org/10.1126/sciadv.aao1108
+- Meijaard, E. et al. (2020). The environmental impacts of palm oil in context. Nature Plants 6, 1418–1426: https://doi.org/10.1038/s41477-020-00813-w
+- Beyer, R. M. et al. (2021). Species richness and carbon footprints of vegetable oils: can high yields outweigh palm oil's environmental impact? Sustainability 13, 1813: https://doi.org/10.3390/su13041813
 - Poore, J., Nemecek, T. (2018). Reducing food's environmental impacts through producers and consumers. Science 360, 987–992: https://doi.org/10.1126/science.aaq0216

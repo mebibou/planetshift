@@ -9,6 +9,7 @@ import { fossilMethane } from './fossilMethane';
 import { hfc } from './hfc';
 import { industry } from './industry';
 import { permafrost } from './permafrost';
+import { plantFoods } from './plantFoods';
 import { population } from './population';
 import { practices } from './practices';
 import { regrowth } from './regrowth';
@@ -21,6 +22,7 @@ import type { LeverModule } from './types';
 
 const ALL: readonly LeverModule[] = [
   population,
+  plantFoods,
   waste,
   wasteMethane,
   practices,

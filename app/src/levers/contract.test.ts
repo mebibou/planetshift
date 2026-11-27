@@ -2,7 +2,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { ACTS_WITH, lever, run } from '../../test/levers';
+import { ACTS_WITH, data, lever, run } from '../../test/levers';
 import { CURRENT_YEAR } from '../../test/model/fixtures';
 import { loadRealData } from '../../test/model/realData';
 import { flatten, placeholders } from '../i18n/dict';
@@ -13,7 +13,7 @@ import { OPTIONS } from '../model/options';
 import { runScenario } from '../model/run';
 import { BASE_SCENARIO } from '../model/scenarios';
 import { decodeState, encodeState } from '../model/state';
-import { FAMILIES, LEVERS, MODULES } from './registry';
+import { FAMILIES, LEVERS, leverAvailable, MODULES } from './registry';
 
 const ROOT = join(__dirname, '../../..');
 const CORE_KEYS = ['shift', 'rum', 'pig', 'pou', 'dai', 'egg', 'sea', 'basis', 'with', 'where'];
@@ -101,6 +101,8 @@ describe.each(MODULES.map((m) => [m.id, m] as const))('module %s', (id, module) 
 });
 
 describe.each(LEVERS.map((l) => [l.id, l] as const))('lever %s', (id, def) => {
+  const acts = leverAvailable(data, id);
+
   it('is a share from 0 to 1, 0 by default', () =>
     expect([def.min, def.max, def.default, def.unit]).toEqual([0, 1, 0, 'share']));
 
@@ -120,7 +122,7 @@ describe.each(LEVERS.map((l) => [l.id, l] as const))('lever %s', (id, def) => {
     );
   });
 
-  it('avoids at least as much warming with more adoption', () => {
+  it.skipIf(!acts)('avoids at least as much warming with more adoption', () => {
     const steps = [0, 0.25, 0.5, 0.75, 1].map((a) => warmings(lever(id, a)));
     steps
       .slice(1)

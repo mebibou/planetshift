@@ -6,6 +6,8 @@ export interface PanelGroup {
   id: string;
   cause: ModuleCause;
   worth: WorthId;
+  /** A group it stays right after, whatever their figures. */
+  follows?: string;
 }
 
 export interface CauseSection {
@@ -13,11 +15,20 @@ export interface CauseSection {
   groups: string[];
 }
 
+/** `ids` with each group that follows another moved to right after it, in their order. */
+const withFollowers = (ids: readonly string[], groups: readonly PanelGroup[]): string[] => {
+  const followers = groups.filter((g) => g.follows && ids.includes(g.id));
+  const moved = new Set(followers.map((g) => g.id));
+  return ids
+    .filter((id) => !moved.has(id))
+    .flatMap((id) => [id, ...followers.filter((g) => g.follows === id).map((g) => g.id)]);
+};
+
 /**
  * The panel's lever groups under their causes: the causes biggest first by the warming they
  * cause (`causeSize`), the groups of each by the warming they would avoid in full on their own
- * (`avoided`, larger first), in their given order where a figure is missing or equal. A cause
- * without a group is left out.
+ * (`avoided`, larger first), in their given order where a figure is missing or equal, and a
+ * group that follows another right after it. A cause without a group is left out.
  */
 export const panelOrder = (
   groups: readonly PanelGroup[],
@@ -38,6 +49,7 @@ export const panelOrder = (
         )
         .map(({ g }) => g.id),
     }))
+    .map((s) => ({ ...s, groups: withFollowers(s.groups, groups) }))
     .filter((s) => s.groups.length > 0);
 
 /**

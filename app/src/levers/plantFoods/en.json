@@ -1,0 +1,17 @@
+{
+  "title": "Plant food swaps",
+  "description": "Replace rice and palm oil with other cereals and other vegetable oils. The swap keeps the same calories, in the proportions each country eats them today.",
+  "family": "Plant food swaps",
+  "meta": {
+    "of": "{count} of {total} swapped",
+    "none": "None of {total} swapped"
+  },
+  "rice": {
+    "title": "Rice to other cereals",
+    "description": "Flooded paddies emit methane. Per calorie, rice adds about twice as much warming as wheat or maize. The country's other cereals take its calories."
+  },
+  "palmOil": {
+    "title": "Palm oil to other vegetable oils",
+    "description": "Oil palm plantations clear forest and drain peat, mostly in Indonesia and Malaysia. Palm and palm kernel oil eaten as food are replaced by the country's other vegetable oils. The land and clearing for those oils count too. Palm oil burned as fuel or used in soaps and cosmetics is not replaced."
+  }
+}

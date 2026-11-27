@@ -29,6 +29,7 @@ const GROUPS: readonly PanelGroup[] = [
     id: m.id,
     cause: m.cause ?? DIET_CAUSE,
     worth: `family:${m.id}`,
+    follows: m.ui.follows,
   })),
 ];
 

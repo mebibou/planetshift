@@ -27,6 +27,7 @@ export const SAMPLES: Sample[] = [
   sample('halveRuminant', { groupShifts: { ruminantMeat: 0.5 } }),
   sample('dairyToPlantMilk', { groupShifts: { dairy: 1 }, replacement: 'plantMilk' }),
   sample('lessFish', { groupShifts: { seafood: 0.5 }, replacement: 'legumes' }),
+  sample('plantFoodSwaps', { levers: { rice: 1, palmOil: 1 } }),
   sample('highIncomeShift', { shift: 0.5, where: 'highIncome' }),
   sample('noAnimalFarming', {
     shift: 1,
@@ -43,6 +44,8 @@ export const SAMPLES: Sample[] = [
       replacement: 'legumes',
       levers: {
         ...ALL_PRACTICES,
+        rice: 0.5,
+        palmOil: 0.5,
         foodWaste: 0.5,
         supplyLosses: 0.5,
         deforestation: 1,

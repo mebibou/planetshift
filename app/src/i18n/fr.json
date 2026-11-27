@@ -517,7 +517,7 @@
       "title": "Réchauffement évité en {year}, par groupe de leviers",
       "note": "La part de chaque groupe est la moyenne de ce qu'il ajoute dans tous les ordres où les groupes pourraient être comptés, pour qu'aucun ne soit compté en premier. Un groupe qui agit sur plusieurs causes est partagé entre elles. Les parts s'additionnent au total.",
       "added": "{value} ajoutés",
-      "diet": "Alimentation"
+      "diet": "Des aliments animaux aux végétaux"
     },
     "live": "Réchauffement évité en {year} : {value}."
   },
@@ -615,7 +615,7 @@
     "more": "Afficher plus d’onglets"
   },
   "diet": {
-    "title": "Alimentation",
+    "title": "Des aliments animaux aux végétaux",
     "none": "Pas encore de changement",
     "moved": "{share} déplacés",
     "movedOwn": "{share} déplacés, certains aliments à part",

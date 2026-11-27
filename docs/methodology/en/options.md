@@ -103,6 +103,7 @@ Each lever's adoption is 0–100, in percent. It is left out of the address at 0
 | Family | Levers (URL key) |
 | --- | --- |
 | Farm practices | feed additives (`fa`), breeding and feed (`bf`), manure management (`mm`), rice paddies drained (`rw`), less nitrogen, better used (`ne`), clean farm energy (`fe`) |
+| Plant food swaps | rice to other cereals (`ric`), palm oil to other vegetable oils (`plm`) |
 | Food waste | waste after shops (`fw`), losses before shops (`sl`) |
 | Deforestation | deforestation stopped (`df`), drained peat rewetted (`pr`) |
 | Carbon in farmland | cover crops (`cc`), trees on farms (`af`), biochar (`bc`), rock dust, experimental (`ew`) |

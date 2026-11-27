@@ -29,6 +29,21 @@ describe('the panel order', () => {
       { cause: 'landUse', groups: ['deforestation'] },
     ]);
   });
+  it('keeps a group that follows another right after it, whatever its figure', () => {
+    const swaps: PanelGroup = {
+      id: 'plantFoods',
+      cause: 'agriculture',
+      worth: 'family:plantFoods',
+      follows: 'diet',
+    };
+    expect(
+      panelOrder(
+        [...GROUPS, swaps],
+        { agriculture: 0.3 },
+        (w) => ({ ...WORTH, 'family:plantFoods': 0.5 })[w],
+      ),
+    ).toEqual([{ cause: 'agriculture', groups: ['practices', 'diet', 'plantFoods', 'waste'] }]);
+  });
   it('keeps the given order while the figures are unknown', () => {
     expect(
       panelOrder(GROUPS, { fossilIndustry: 0.1, agriculture: 0.3, landUse: 0 }, () => undefined),
