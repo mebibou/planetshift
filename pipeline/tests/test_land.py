@@ -229,6 +229,11 @@ def test_oil_keeps_its_share_of_the_crush_value_and_the_cake_the_rest():
     ]
 
 
+def test_extraction_lists_each_processed_item_with_its_primaries_and_rates():
+    out = L.extraction_json({2542: [(2536, 0.11), (2537, 0.16)], 2577: [(2562, 0.23)]})
+    assert out == {"2542": {"2536": 0.11, "2537": 0.16}, "2577": {"2562": 0.23}}
+
+
 def test_hectares_by_iso3_keep_the_areas_listed_with_some_land():
     ha = pd.Series({10: 1.234567e9, 20: 0.0, 30: 5e5})
     assert L.hectares_json(ha, {10: "AUS", 20: "XXX", 40: "FRA", 30: "BEL"}) == {

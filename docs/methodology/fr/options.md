@@ -41,7 +41,7 @@ Avec la référence par défaut, *régime actuel × population*, les émissions 
 
 L'option change les émissions agricoles de la référence à partir de l'année de référence, et donc sa température. Avec SSP2-4.5 et la réponse de FaIR, la référence atteint 2,83 °C en 2100 avec la projection moyenne, 2,74 °C avec la basse et 2,92 °C avec la haute. En 2050, les projections basse et haute sont à moins de 0,01 °C de la moyenne.
 
-Le changement de régime et les leviers agricoles modifient des émissions mises à l'échelle de la même façon. Ce qu'ils évitent grandit ou diminue donc avec la population. Un changement de 50 % évite 0,179 °C en 2100 avec la projection moyenne, 0,150 °C avec la basse et 0,214 °C avec la haute (0,070, 0,068 et 0,073 °C en 2050).
+Le changement de régime et les leviers agricoles modifient des émissions mises à l'échelle de la même façon. Ce qu'ils évitent grandit ou diminue donc avec la population. Un changement de 50 % évite 0,179 °C en 2100 avec la projection moyenne, 0,150 °C avec la basse et 0,214 °C avec la haute (0,071, 0,068 et 0,073 °C en 2050).
 
 Le levier du gaspillage agit sur les mêmes disponibilités mises à l'échelle. Le défrichement (déforestation), le carbone stocké dans les terres agricoles, la repousse naturelle, le carbone des grands poissons non pêchés et les leviers d'énergie ne sont pas mis à l'échelle de la population : ils ne changent pas.
 

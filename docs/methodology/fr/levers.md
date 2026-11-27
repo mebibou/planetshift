@@ -102,11 +102,11 @@ Un levier qui n'agit qu'avec un autre partage cet effet commun à moitié avec l
 
 | Groupes actifs | Réchauffement évité en 2100 |
 | --- | --- |
-| Alimentation seule | 0,1685 °C |
+| Alimentation seule | 0,1688 °C |
 | Repousse seule | 0 (elle ne libère aucune terre) |
-| Alimentation et repousse | 0,1827 °C |
+| Alimentation et repousse | 0,1830 °C |
 
-L'effet commun de la repousse est de 0,1827 − 0,1685 = 0,0142 °C. La valeur de Shapley le partage à parts égales entre les deux. La repousse obtient 0,0071 °C et l'alimentation 0,1685 + 0,0071 = 0,1756 °C. Avec le pergélisol activé, la variation de son rejet est répartie en plus de ces parts (voir plus bas). Le résumé met ensuite les parts à l'échelle pour qu'elles s'additionnent au réchauffement évité que donne FaIR (voir *Répartir le total de FaIR* plus bas).
+L'effet commun de la repousse est de 0,1830 − 0,1688 = 0,0142 °C. La valeur de Shapley le partage à parts égales entre les deux. La repousse obtient 0,0071 °C et l'alimentation 0,1688 + 0,0071 = 0,1759 °C. Avec le pergélisol activé, la variation de son rejet est répartie en plus de ces parts (voir plus bas). Le résumé met ensuite les parts à l'échelle pour qu'elles s'additionnent au réchauffement évité que donne FaIR (voir *Répartir le total de FaIR* plus bas).
 
 ### Comment Planetshift les calcule vite
 

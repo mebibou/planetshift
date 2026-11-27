@@ -102,11 +102,11 @@ A lever that only acts together with another shares that joint effect half and h
 
 | Groups acting | Warming avoided in 2100 |
 | --- | --- |
-| Diet alone | 0.1685 °C |
+| Diet alone | 0.1688 °C |
 | Regrowth alone | 0 (it frees no land) |
-| Diet and regrowth | 0.1827 °C |
+| Diet and regrowth | 0.1830 °C |
 
-The joint effect of regrowth is 0.1827 − 0.1685 = 0.0142 °C. The Shapley value splits it equally between the two. Regrowth gets 0.0071 °C and the diet gets 0.1685 + 0.0071 = 0.1756 °C. With permafrost on, the change in its release is shared out on top of these parts (see below). The summary then scales the parts so that they add up to the warming avoided that FaIR gives (see *Sharing out FaIR's total* below).
+The joint effect of regrowth is 0.1830 − 0.1688 = 0.0142 °C. The Shapley value splits it equally between the two. Regrowth gets 0.0071 °C and the diet gets 0.1688 + 0.0071 = 0.1759 °C. With permafrost on, the change in its release is shared out on top of these parts (see below). The summary then scales the parts so that they add up to the warming avoided that FaIR gives (see *Sharing out FaIR's total* below).
 
 ### How Planetshift computes them quickly
 

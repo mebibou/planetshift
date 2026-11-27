@@ -236,6 +236,11 @@ def crush_json(oilcakes: pd.DataFrame) -> dict[str, dict]:
     }
 
 
+def extraction_json(extraction: dict[int, list[tuple[int, float]]]) -> dict[str, dict]:
+    """extraction[processed item code] = {primary item code: t of the item per t processed}."""
+    return {str(c): {str(p): r for p, r in pairs} for c, pairs in extraction.items()}
+
+
 def shared_with_cake(
     ha_per_t: pd.DataFrame, rows: pd.DataFrame, oilcakes: pd.DataFrame
 ) -> tuple[pd.DataFrame, pd.DataFrame]:

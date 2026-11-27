@@ -1,6 +1,26 @@
 import { describe, expect, it } from 'vitest';
 import { expectOwnGases, jointShare, lever, rampShare, run, w2100 } from '../../../test/levers';
-import { clearingParts, MAX_RISE, rewettedParts } from './model';
+import type { Prepared, PreparedCountry } from '../../model/prepare';
+import { cropsOf, primaryWeights } from './crops';
+import { clearingParts, MAX_RISE, relativeChanges, rewettedParts } from './model';
+
+/** A country with the `emitting` production of the items `codes`, and its extraction rates. */
+const country = (
+  codes: string[],
+  emitting: number[],
+  land: Partial<Prepared['data']['land']>,
+  processing: Record<string, number> = {},
+) => {
+  const prepared = {
+    indexOf: new Map(codes.map((c, i) => [c, i])),
+    data: { land },
+  } as unknown as Prepared;
+  const pc = {
+    emitting: Float64Array.from(emitting),
+    rows: new Map(Object.entries(processing).map(([c, t]) => [c, { processing: t }])),
+  } as unknown as PreparedCountry;
+  return { pc, crops: cropsOf(pc, prepared) };
+};
 
 describe('deforestation', () => {
   it('alone cuts CO₂ only', () => expectOwnGases('deforestation', ['co2']));
@@ -22,6 +42,45 @@ describe('deforestation', () => {
       0,
     );
     expect(capped.steps[0]).toBe(100 * MAX_RISE);
+  });
+  it('follows the demand for the oil made from a crop, back through its extraction rate', () => {
+    const { pc, crops } = country(['2562', '2577'], [1, 23], {
+      extraction: { '2577': { '2562': 0.23 } },
+    });
+    expect(crops.base[0]).toBeCloseTo(101);
+    const clearing = Float64Array.from([100, 0]);
+    const lessOil = [Float64Array.from([0, -2.3])];
+    const items = Uint32Array.from([0]);
+    const rel = relativeChanges(lessOil, pc.emitting, items, crops);
+    expect(clearingParts(clearing, lessOil, pc.emitting, 0, undefined, rel).steps[0]).toBeCloseTo(
+      (-100 * 10) / 101,
+    );
+    expect(clearingParts(clearing, lessOil, pc.emitting, 0).steps[0]).toBe(0);
+  });
+  it('follows the demand for the cake of an oilseed by its share of the crush', () => {
+    const { pc, crops } = country(['2555', '2571'], [0, 19], {
+      extraction: { '2571': { '2555': 0.19 } },
+      crush: { '2555': { oil: '2571', oilShare: 0.4 } },
+    });
+    const cake = { relative: { pigMeat: -0.5 }, sharesOf: () => ({ pigMeat: 1 }) };
+    const none = [Float64Array.from([0, 0])];
+    const rel = relativeChanges(none, pc.emitting, Uint32Array.from([0]), crops, [cake]);
+    expect(rel[0]).toBeCloseTo(0.6 * -0.5);
+  });
+  it('shares an item made from two crops by what the country processes of each', () => {
+    expect(primaryWeights([0.11, 0.16], [100, 0])).toEqual([1, 0]);
+    expect(primaryWeights([0.1, 0.2], [100, 50])).toEqual([0.5, 0.5]);
+    expect(primaryWeights([0.11, 0.16], [0, 0])).toEqual([0.5, 0.5]);
+    const { crops } = country(
+      ['2536', '2537', '2542'],
+      [0, 0, 10],
+      {
+        extraction: { '2542': { '2536': 0.1, '2537': 0.2 } },
+      },
+      { '2536': 100, '2537': 50 },
+    );
+    expect(crops.base[0]).toBeCloseTo(50);
+    expect(crops.base[1]).toBeCloseTo(25);
   });
   it('the lever at full adoption stops all of it', () => {
     const r = lever('deforestation');

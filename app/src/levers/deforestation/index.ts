@@ -1,5 +1,6 @@
 import { sum } from '../../model/util';
 import type { LeverModule } from '../types';
+import { countryCrops } from './crops';
 import { deforestationSpec } from './spec';
 import {
   clearingParts,
@@ -47,7 +48,9 @@ export const deforestation: LeverModule = {
         const c = countryClearing(pc, prepared);
         const changes = stages.map((s) => s.change);
         const families = stages.map((s) => s.family);
-        const rel = relativeChanges(changes, pc.emitting, c.items);
+        const crops = countryCrops(pc, prepared);
+        const cakes = stages.map((s) => s.cake);
+        const rel = relativeChanges(changes, pc.emitting, c.items, crops, cakes);
         const parts = clearingParts(c.co2, changes, pc.emitting, share, undefined, rel);
         const area = clearingParts(c.area, changes, pc.emitting, share, undefined, rel);
         const drained = clearingParts(c.drained, changes, pc.emitting, rewet, undefined, rel);

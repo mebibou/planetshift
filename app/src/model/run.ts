@@ -680,8 +680,6 @@ const countryParts = (
   options: Options,
   intensityCuts: readonly IntensityCut[],
   countryHooks: readonly CountryHook[],
-  /** How the oilcakes follow the animals at each stage. */
-  cakes: readonly CakeDemand[],
   bands: readonly Band[],
   /** Each item's share of its CO₂ from grid electricity, or none. */
   gridShare: ItemVector | null,
@@ -689,9 +687,8 @@ const countryParts = (
   const base = countryBase(pc, prepared, options.scope);
   const intensities = countryIntensities(pc, prepared, options.scope);
   const oilcakes = countryCakes(pc, prepared, options.scope);
-  const change = (stages[stages.length - 1] as Stage).change;
-  const cake = cakes[cakes.length - 1] as CakeDemand;
-  const cakeChanges = cakes.map((c) => cakeEmissionsChange(oilcakes, c));
+  const { change, cake } = stages[stages.length - 1] as Stage;
+  const cakeChanges = stages.map((s) => cakeEmissionsChange(oilcakes, s.cake));
   const productionChange = totalsOf(change, prepared);
   const emitted = stepEmissions(stages, intensities, cakeChanges);
   const total = emitted[emitted.length - 1] as GasVector;
@@ -1478,12 +1475,15 @@ const emissionsPass = (
     countryParts(
       pc,
       food ? (food[pc.country.iso3] as ItemVector) : null,
-      steps.map((s) => ({ family: s.family, change: s.run.change[pc.country.iso3] as ItemVector })),
+      steps.map((s, k) => ({
+        family: s.family,
+        change: s.run.change[pc.country.iso3] as ItemVector,
+        cake: (cakeOfs[k] as (pc: PreparedCountry) => CakeDemand)(pc),
+      })),
       prepared,
       options,
       intensityCuts,
       countryHooks,
-      cakeOfs.map((cakeOf) => cakeOf(pc)),
       bands,
       grid ? grid.share(pc) : null,
     ),
