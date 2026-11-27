@@ -31,7 +31,8 @@ export const wasteMethane: LeverModule = {
     country: ({ prepared, adoption }) => {
       const file = prepared.data.wastemethane;
       const a = { landfills: adoption('landfills'), wastewater: adoption('wastewater') };
-      return hasWasteMethane(file)
+      const factors = hasWasteMethane(file) ? factorsOf(file, 'median') : null;
+      return hasWasteMethane(file) && factors
         ? ({ pc, stages }) => {
             const iso3 = pc.country.iso3;
             const row = file.byCountry[iso3];
@@ -39,7 +40,7 @@ export const wasteMethane: LeverModule = {
             return {
               result: {
                 ...(row && {
-                  wasteMethane: countryWasteMethane(row, food, factorsOf(file, 'median'), a),
+                  wasteMethane: countryWasteMethane(row, food, factors, a),
                 }),
               },
             };

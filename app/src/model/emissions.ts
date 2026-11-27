@@ -9,7 +9,7 @@ import {
 } from '../data/types';
 import { cakeAmountChange, cakeWeights, type CakeDemand } from './land';
 import type { Prepared, PreparedCountry } from './prepare';
-import { addGas, dot, gasVector, memoPer, ZERO_GAS, type ItemVector } from './util';
+import { addGas, gasVector, memoPer, nonZeroOf, ZERO_GAS, type ItemVector } from './util';
 
 /** The scope an intensity falls back to when it has none in the chosen one. */
 export const OTHER_SCOPE: Record<Scope, Scope> = {
@@ -62,8 +62,20 @@ export const countryIntensities = (
   });
 
 /** kg of each gas from tonnes of production (or a change in it). */
-export const emissionsOf = (tonnes: ItemVector, intensities: CountryIntensities): GasVector =>
-  gasVector((g) => dot(tonnes, intensities.kgPerTonne[g]));
+export const emissionsOf = (tonnes: ItemVector, intensities: CountryIntensities): GasVector => {
+  const { co2, ch4, n2o, hfc } = intensities.kgPerTonne;
+  const out = { co2: 0, ch4: 0, n2o: 0, hfc: 0 };
+  for (let i = 0; i < tonnes.length; i++) {
+    const t = tonnes[i] as number;
+    if (t !== 0) {
+      out.co2 += t * (co2[i] as number);
+      out.ch4 += t * (ch4[i] as number);
+      out.n2o += t * (n2o[i] as number);
+      out.hfc += t * (hfc[i] as number);
+    }
+  }
+  return out;
+};
 
 /**
  * The highest tier number (least specific source) among the items the country produces, and
@@ -91,16 +103,23 @@ export const cutEmissions = (
   tonnes: ItemVector,
   intensities: CountryIntensities,
   cuts: Record<keyof GasVector, ItemVector>,
-): GasVector =>
-  gasVector((g) => {
-    const k = intensities.kgPerTonne[g];
-    const c = cuts[g];
-    let a = 0;
-    for (let i = 0; i < tonnes.length; i++) {
-      a += (tonnes[i] as number) * (k[i] as number) * (c[i] as number);
-    }
-    return -a;
-  });
+): GasVector => ({
+  co2: cutOne(tonnes, intensities.kgPerTonne.co2, cuts.co2),
+  ch4: cutOne(tonnes, intensities.kgPerTonne.ch4, cuts.ch4),
+  n2o: cutOne(tonnes, intensities.kgPerTonne.n2o, cuts.n2o),
+  hfc: cutOne(tonnes, intensities.kgPerTonne.hfc, cuts.hfc),
+});
+
+/** One gas of `cutEmissions`, over the items the cut reaches: the others add only zeros. */
+const cutOne = (tonnes: ItemVector, kg: ItemVector, cut: ItemVector): number => {
+  const at = nonZeroOf(cut);
+  let a = 0;
+  for (let j = 0; j < at.length; j++) {
+    const i = at[j] as number;
+    a += (tonnes[i] as number) * (kg[i] as number) * (cut[i] as number);
+  }
+  return -a;
+};
 
 /**
  * A country's oilcakes, kg of each gas a year each crushed oilseed's cake carries in the chosen
@@ -138,7 +157,12 @@ export const cakeEmissions = (cakes: CountryCakes): GasVector =>
 export const cakeEmissionsChange = (cakes: CountryCakes, cake: CakeDemand): GasVector[] =>
   cakes.kg.map((kg, k) => {
     const weights = cakeWeights(cake.sharesOf(cakes.codes[k] as string), cake.relative);
-    return gasVector((g) => cakeAmountChange(kg[g], weights));
+    return {
+      co2: cakeAmountChange(kg.co2, weights),
+      ch4: cakeAmountChange(kg.ch4, weights),
+      n2o: cakeAmountChange(kg.n2o, weights),
+      hfc: cakeAmountChange(kg.hfc, weights),
+    };
   });
 
 /** kg of each gas removed from oilcakes' emissions `kg` by cutting each oilseed's intensity by `cuts`. */

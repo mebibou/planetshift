@@ -1,5 +1,5 @@
 import type { Prepared, PreparedCountry } from '../../model/prepare';
-import { memoPer, type ItemVector } from '../../model/util';
+import { memoPer, sparseDot, type ItemVector } from '../../model/util';
 
 const cache = memoPer<PreparedCountry, ItemVector>();
 
@@ -12,7 +12,7 @@ export const storedPerTonne = (pc: PreparedCountry, prepared: Prepared): ItemVec
 
 /** CO₂ a year of a change in production, kg: negative when the catch falls and carbon sinks. */
 export const deadfallCo2 = (change: ItemVector, perTonne: ItemVector): number =>
-  perTonne.reduce((acc, f, i) => acc + f * (change[i] as number), 0);
+  sparseDot(perTonne, change);
 
 /** Each production step's own part of the CO₂, as the steps' changes add up one on another. */
 export const stepParts = (changes: readonly ItemVector[], perTonne: ItemVector): number[] =>

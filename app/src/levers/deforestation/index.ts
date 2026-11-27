@@ -2,12 +2,9 @@ import { sum } from '../../model/util';
 import type { LeverModule } from '../types';
 import { deforestationSpec } from './spec';
 import {
-  clearedAreaOf,
   clearingParts,
-  deforestationOf,
-  drainedN2oOf,
-  drainedOf,
-  rewettedCh4Of,
+  countryClearing,
+  relativeChanges,
   rewettedParts,
   type Parts,
 } from './model';
@@ -15,7 +12,24 @@ import {
 const ID = 'deforestation';
 const REWETTING = 'peatRewetting';
 
-const total = (p: Parts): number => [...p.steps, p.lever, p.leverJoint].reduce((a, b) => a + b);
+/** The steps' changes, then the lever's, added in that order. */
+const total = (p: Parts): number => {
+  let t = 0;
+  p.steps.forEach((v, k) => (t = k === 0 ? v : t + v));
+  return p.steps.length === 0 ? p.lever + p.leverJoint : t + p.lever + p.leverJoint;
+};
+
+/** Each step's value by its family, then the lever's under its own id. */
+const byStep = (
+  families: readonly string[],
+  f: (k: number) => number,
+  lever: number,
+): Record<string, number> => {
+  const out: Record<string, number> = {};
+  families.forEach((family, k) => (out[family] = f(k)));
+  out[ID] = lever;
+  return out;
+};
 
 /**
  * Forest cleared for farming: it follows the production of the items it serves at every step,
@@ -30,23 +44,25 @@ export const deforestation: LeverModule = {
       const share = adoption(ID);
       const rewet = adoption(REWETTING);
       return ({ pc, stages }) => {
+        const c = countryClearing(pc, prepared);
         const changes = stages.map((s) => s.change);
-        const parts = clearingParts(deforestationOf(pc, prepared), changes, pc.emitting, share);
-        const area = clearingParts(clearedAreaOf(pc, prepared), changes, pc.emitting, share);
-        const drained = clearingParts(drainedOf(pc, prepared), changes, pc.emitting, rewet);
-        const n2o = clearingParts(drainedN2oOf(pc, prepared), changes, pc.emitting, rewet);
-        const ch4 = rewettedParts(rewettedCh4Of(pc, prepared), changes, pc.emitting, rewet);
-        const byStep = (f: (k: number) => number) =>
-          Object.fromEntries(stages.map((s, k) => [s.family, f(k)]));
+        const families = stages.map((s) => s.family);
+        const rel = relativeChanges(changes, pc.emitting, c.items);
+        const parts = clearingParts(c.co2, changes, pc.emitting, share, undefined, rel);
+        const area = clearingParts(c.area, changes, pc.emitting, share, undefined, rel);
+        const drained = clearingParts(c.drained, changes, pc.emitting, rewet, undefined, rel);
+        const n2o = clearingParts(c.drainedN2o, changes, pc.emitting, rewet, undefined, rel);
+        const ch4 = rewettedParts(c.rewettedCh4, changes, pc.emitting, rewet, rel);
         return {
-          co2: {
-            ...byStep((k) => (parts.steps[k] as number) + (drained.steps[k] as number)),
-            [ID]: parts.lever + drained.lever,
-          },
+          co2: byStep(
+            families,
+            (k) => (parts.steps[k] as number) + (drained.steps[k] as number),
+            parts.lever + drained.lever,
+          ),
           jointCo2: { [ID]: parts.leverJoint + drained.leverJoint },
-          ch4: { ...byStep((k) => ch4.steps[k] as number), [ID]: ch4.lever },
+          ch4: byStep(families, (k) => ch4.steps[k] as number, ch4.lever),
           jointCh4: { [ID]: ch4.leverJoint },
-          n2o: { ...byStep((k) => n2o.steps[k] as number), [ID]: n2o.lever },
+          n2o: byStep(families, (k) => n2o.steps[k] as number, n2o.lever),
           jointN2o: { [ID]: n2o.leverJoint },
           result: {
             deforestationCo2: parts.before,

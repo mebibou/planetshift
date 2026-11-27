@@ -6,15 +6,15 @@ import {
   type Group,
 } from '../data/types';
 import { groupTotals, type Prepared, type PreparedCountry } from './prepare';
-import { cachedIn, memoPer, recordFrom, type ItemVector } from './util';
+import { cachedIn, memoPer, type ItemVector } from './util';
 
 const totalsCache = new WeakMap<ItemVector, Record<Group, number>>();
 
 /**
- * Group totals of a base vector, kept per vector: a base (a country's production, the world's)
- * is never written to once built, and is the same on every run.
+ * Group totals of a vector, kept per vector: no vector is written to once built, and a pass reads
+ * the totals of a step's change for its land, its oilcakes and its herds.
  */
-const baseTotals = (v: ItemVector, prepared: Prepared): Record<Group, number> =>
+export const totalsOf = (v: ItemVector, prepared: Prepared): Record<Group, number> =>
   cachedIn(totalsCache, v, () => groupTotals(v, prepared));
 
 /** Relative change of each animal group's production in a country (−1..), 0 where it has none. */
@@ -23,9 +23,13 @@ export const groupProductionChange = (
   change: ItemVector,
   prepared: Prepared,
 ): Record<AnimalGroup, number> => {
-  const base = baseTotals(production, prepared);
-  const changed = groupTotals(change, prepared);
-  return recordFrom(ANIMAL_GROUPS, (g) => (base[g] > 0 ? changed[g] / base[g] : 0));
+  const base = totalsOf(production, prepared);
+  const changed = totalsOf(change, prepared);
+  const out = {} as Record<AnimalGroup, number>;
+  for (const g of ANIMAL_GROUPS) {
+    out[g] = base[g] > 0 ? changed[g] / base[g] : 0;
+  }
+  return out;
 };
 
 /** The feed item's split across animal groups: the region's, else the world's. */

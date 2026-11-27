@@ -1,41 +1,45 @@
 import type { Prepared, PreparedCountry } from '../../model/prepare';
-import { clamp, memoPer, type ItemVector } from '../../model/util';
+import { cachedIn, clamp, memoPer, type ItemVector } from '../../model/util';
 
-const cache = memoPer<PreparedCountry, ItemVector>();
+/** A country's clearing and drained soils by the item they are tied to: kg a year, area in ha. */
+export interface CountryClearing {
+  co2: ItemVector;
+  area: ItemVector;
+  drained: ItemVector;
+  drainedN2o: ItemVector;
+  rewettedCh4: ItemVector;
+  /** The items any of them has. */
+  items: Uint32Array;
+}
 
-/** A country's deforestation CO₂ by the item it serves, kg a year. */
-export const deforestationOf = (pc: PreparedCountry, prepared: Prepared): ItemVector =>
-  cache(pc, 'deforestation', () => {
-    const byCode = prepared.data.deforestation.byCountry[pc.country.iso3] ?? {};
-    return Float64Array.from(prepared.items, (item) => (byCode[String(item.code)] ?? 0) * 1000);
-  });
+const byItem = (
+  prepared: Prepared,
+  byCode: Readonly<Record<string, number>> | undefined,
+  unit: number,
+): ItemVector =>
+  Float64Array.from(prepared.items, (item) => (byCode?.[String(item.code)] ?? 0) * unit);
 
-/** A country's CO₂ from drained organic soils by the item it is shared to, kg a year. */
-export const drainedOf = (pc: PreparedCountry, prepared: Prepared): ItemVector =>
-  cache(pc, 'drained', () => {
-    const byCode = prepared.data.deforestation.drainedByCountry?.[pc.country.iso3] ?? {};
-    return Float64Array.from(prepared.items, (item) => (byCode[String(item.code)] ?? 0) * 1000);
-  });
+const cache = memoPer<PreparedCountry, CountryClearing>();
 
-/** The CH₄ a country's drained soils would emit once rewetted, by the item they are shared to, kg a year. */
-export const rewettedCh4Of = (pc: PreparedCountry, prepared: Prepared): ItemVector =>
-  cache(pc, 'rewettedCh4', () => {
-    const byCode = prepared.data.deforestation.rewettedCh4ByCountry?.[pc.country.iso3] ?? {};
-    return Float64Array.from(prepared.items, (item) => (byCode[String(item.code)] ?? 0) * 1000);
-  });
-
-/** The N₂O of a country's drained organic soils by the item they are shared to, kg a year. */
-export const drainedN2oOf = (pc: PreparedCountry, prepared: Prepared): ItemVector =>
-  cache(pc, 'drainedN2o', () => {
-    const byCode = prepared.data.deforestation.drainedN2oByCountry?.[pc.country.iso3] ?? {};
-    return Float64Array.from(prepared.items, (item) => (byCode[String(item.code)] ?? 0) * 1000);
-  });
-
-/** A country's forest area cleared by the item it serves, hectares a year. */
-export const clearedAreaOf = (pc: PreparedCountry, prepared: Prepared): ItemVector =>
-  cache(pc, 'clearedArea', () => {
-    const byCode = prepared.data.deforestation.areaByCountry?.[pc.country.iso3] ?? {};
-    return Float64Array.from(prepared.items, (item) => byCode[String(item.code)] ?? 0);
+/** A country's clearing and drained soils by item, once per country. */
+export const countryClearing = (pc: PreparedCountry, prepared: Prepared): CountryClearing =>
+  cache(pc, 'clearing', () => {
+    const d = prepared.data.deforestation;
+    const iso3 = pc.country.iso3;
+    const vectors = {
+      co2: byItem(prepared, d.byCountry[iso3], 1000),
+      area: byItem(prepared, d.areaByCountry?.[iso3], 1),
+      drained: byItem(prepared, d.drainedByCountry?.[iso3], 1000),
+      drainedN2o: byItem(prepared, d.drainedN2oByCountry?.[iso3], 1000),
+      rewettedCh4: byItem(prepared, d.rewettedCh4ByCountry?.[iso3], 1000),
+    };
+    const all = Object.values(vectors);
+    return {
+      ...vectors,
+      items: Uint32Array.from(
+        prepared.items.flatMap((_, i) => (all.some((v) => v[i] !== 0) ? [i] : [])),
+      ),
+    };
   });
 
 /**
@@ -44,11 +48,11 @@ export const clearedAreaOf = (pc: PreparedCountry, prepared: Prepared): ItemVect
  */
 export const MAX_RISE = 1;
 
-const clearedCache = memoPer<ItemVector, Uint32Array>();
+const clearedCache = new WeakMap<ItemVector, Uint32Array>();
 
 /** The items with clearing, once per clearing vector: most items have none. */
 const clearedItems = (clearing: ItemVector): Uint32Array =>
-  clearedCache(clearing, 'cleared', () =>
+  cachedIn(clearedCache, clearing, () =>
     Uint32Array.from(Array.from(clearing).flatMap((d, i) => (d !== 0 ? [i] : []))),
   );
 
@@ -56,6 +60,26 @@ const clearedItems = (clearing: ItemVector): Uint32Array =>
 const relativeAt = (change: ItemVector, emitting: ItemVector, i: number): number => {
   const base = emitting[i] as number;
   return base > 0 ? clamp((change[i] as number) / base, -1, MAX_RISE) : 0;
+};
+
+/**
+ * Each step's relative change of the `items`, step after step of the items' length; only the
+ * items are filled, as clearing is tied to a few.
+ */
+export const relativeChanges = (
+  steps: readonly ItemVector[],
+  emitting: ItemVector,
+  items: Uint32Array,
+): Float64Array => {
+  const n = emitting.length;
+  const out = new Float64Array(steps.length * n);
+  steps.forEach((change, k) => {
+    for (let j = 0; j < items.length; j++) {
+      const i = items[j] as number;
+      out[k * n + i] = relativeAt(change, emitting, i);
+    }
+  });
+  return out;
 };
 
 export interface Parts {
@@ -66,6 +90,26 @@ export interface Parts {
 }
 
 const same = (rel: number): number => rel;
+
+/** Adds one item's clearing change per step to `totals`; returns its last relative change. */
+const addSteps = (
+  totals: number[],
+  relative: Float64Array,
+  n: number,
+  i: number,
+  d: number,
+  shape: ((rel: number) => number) | undefined,
+): number => {
+  let previous = 0;
+  let last = 0;
+  for (let k = 0; k < totals.length; k++) {
+    last = relative[k * n + i] as number;
+    const rel = shape ? shape(last) : last;
+    totals[k] = (totals[k] as number) + d * (rel - previous);
+    previous = rel;
+  }
+  return last;
+};
 
 /**
  * Deforestation CO₂ before, kg a year, and its change shared out: clearing tied to an item
@@ -81,23 +125,20 @@ export const clearingParts = (
   emitting: ItemVector,
   adoption: number,
   shape: (rel: number) => number = same,
+  relative: Float64Array = relativeChanges(steps, emitting, clearedItems(clearing)),
 ): Parts => {
   const items = clearedItems(clearing);
+  const n = emitting.length;
   const totals = steps.map(() => 0);
+  const shaped = shape !== same;
   let before = 0;
   let lever = 0;
   let leverJoint = 0;
-  for (const i of items) {
+  for (let j = 0; j < items.length; j++) {
+    const i = items[j] as number;
     const d = clearing[i] as number;
     before += d;
-    let previous = 0;
-    let last = 0;
-    for (let k = 0; k < steps.length; k++) {
-      last = relativeAt(steps[k] as ItemVector, emitting, i);
-      const rel = shape(last);
-      totals[k] = (totals[k] as number) + d * (rel - previous);
-      previous = rel;
-    }
+    const last = addSteps(totals, relative, n, i, d, shaped ? shape : undefined);
     if (adoption > 0) {
       lever -= adoption * d;
       leverJoint -= adoption * d * last;
@@ -118,8 +159,9 @@ export const rewettedParts = (
   steps: readonly ItemVector[],
   emitting: ItemVector,
   adoption: number,
+  relative?: Float64Array,
 ): Parts => {
-  const p = clearingParts(ch4, steps, emitting, adoption, fallOnly);
+  const p = clearingParts(ch4, steps, emitting, adoption, fallOnly, relative);
   const neg = (v: number) => 0 - v;
   return { before: 0, steps: p.steps.map(neg), lever: neg(p.lever), leverJoint: neg(p.leverJoint) };
 };

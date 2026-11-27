@@ -28,7 +28,10 @@ export const recordFrom = <K extends string, V>(
   f: (key: K, index: number) => V,
 ): Record<K, V> => {
   const out = {} as Record<K, V>;
-  keys.forEach((k, i) => (out[k] = f(k, i)));
+  for (let i = 0; i < keys.length; i++) {
+    const k = keys[i] as K;
+    out[k] = f(k, i);
+  }
   return out;
 };
 
@@ -61,6 +64,34 @@ export const sumRows = (rows: readonly (readonly number[])[], length: number): n
     }
   }
   return out;
+};
+
+const nonZeroCache = new WeakMap<ItemVector, Uint32Array>();
+
+/** The indices where a vector is not 0, once per vector: it is never written to once built. */
+export const nonZeroOf = (v: ItemVector): Uint32Array =>
+  cachedIn(nonZeroCache, v, () => {
+    const out: number[] = [];
+    v.forEach((x, i) => {
+      if (x !== 0) {
+        out.push(i);
+      }
+    });
+    return Uint32Array.from(out);
+  });
+
+/**
+ * `dot(sparse, b)` over the indices where `sparse` is not 0 only: a sum that starts at 0 is the
+ * same without its zero terms.
+ */
+export const sparseDot = (sparse: ItemVector, b: ItemVector): number => {
+  const at = nonZeroOf(sparse);
+  let acc = 0;
+  for (let k = 0; k < at.length; k++) {
+    const i = at[k] as number;
+    acc += (sparse[i] as number) * (b[i] as number);
+  }
+  return acc;
 };
 
 export const dot = (a: ItemVector, b: ItemVector): number => {
@@ -134,11 +165,13 @@ export const cachedIn = <K extends object, V>(map: WeakMap<K, V>, key: K, comput
 /** A value computed once per owner object and key, for what does not depend on the scenario. */
 export const memoPer = <O extends object, V>() => {
   const store = new WeakMap<O, Map<string, V>>();
+  const mapOf = (owner: O): Map<string, V> => {
+    const byKey = new Map<string, V>();
+    store.set(owner, byKey);
+    return byKey;
+  };
   return (owner: O, key: string, compute: () => V): V => {
-    const byKey = store.get(owner) ?? new Map<string, V>();
-    if (!store.has(owner)) {
-      store.set(owner, byKey);
-    }
+    const byKey = store.get(owner) ?? mapOf(owner);
     const found = byKey.get(key);
     const value = found !== undefined ? found : compute();
     if (found === undefined) {

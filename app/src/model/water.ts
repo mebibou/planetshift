@@ -2,7 +2,7 @@ import type { Water } from '../data/types';
 import type { CountryResult } from './api';
 import { oilcakeChange, type CakeDemand } from './land';
 import type { Prepared, PreparedCountry } from './prepare';
-import { dot, memoPer, type ItemVector } from './util';
+import { dot, memoPer, sparseDot, type ItemVector } from './util';
 
 export type WaterFields = Pick<
   CountryResult,
@@ -21,6 +21,9 @@ interface CountryWater {
   litres: ItemVector;
   scarcity: ItemVector;
   cake: Readonly<Record<string, number>>;
+  /** Litres and L eq today, which no lever changes. */
+  water?: number;
+  waterScarcity?: number;
 }
 
 const waterCache = memoPer<PreparedCountry, CountryWater>();
@@ -34,10 +37,15 @@ export const countryWater = (pc: PreparedCountry, water: Water, prepared: Prepar
     const iso3 = pc.country.iso3;
     const own = water.byCountry[iso3] ?? {};
     const scarce = water.scarcity[iso3] ?? {};
+    const cake = water.oilcake[iso3] ?? {};
+    const litres = vectorOf(prepared, (code) => own[code]?.[0] ?? 0);
+    const scarcity = vectorOf(prepared, (code) => scarce[code] ?? 0);
     return {
-      litres: vectorOf(prepared, (code) => own[code]?.[0] ?? 0),
-      scarcity: vectorOf(prepared, (code) => scarce[code] ?? 0),
-      cake: water.oilcake[iso3] ?? {},
+      litres,
+      scarcity,
+      cake,
+      water: dot(litres, pc.emitting) + sumValues(cake),
+      waterScarcity: dot(scarcity, pc.emitting),
     };
   });
 
@@ -55,10 +63,10 @@ export const waterOf = (
   change: ItemVector,
   cake: CakeDemand,
 ): WaterFields => ({
-  water: dot(w.litres, emitting) + sumValues(w.cake),
-  waterChange: dot(w.litres, change) + oilcakeChange(w.cake, cake.sharesOf, cake.relative),
-  waterScarcity: dot(w.scarcity, emitting),
-  waterScarcityChange: dot(w.scarcity, change),
+  water: w.water ?? dot(w.litres, emitting) + sumValues(w.cake),
+  waterChange: sparseDot(w.litres, change) + oilcakeChange(w.cake, cake.sharesOf, cake.relative),
+  waterScarcity: w.waterScarcity ?? dot(w.scarcity, emitting),
+  waterScarcityChange: sparseDot(w.scarcity, change),
 });
 
 /** A country's water and its change, none without `water.json`. */
