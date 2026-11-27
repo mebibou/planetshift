@@ -10,6 +10,7 @@ const TAIL = [
   'impacts',
   'biodiversity',
   'water',
+  'pollination',
   'deeptime',
   'options',
   'assumptions',

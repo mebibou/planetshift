@@ -14,6 +14,7 @@ const OPTIONAL = [
   'solidwaste',
   'oceanplastic',
   'fair',
+  'pollination',
 ];
 const present = (f: string): boolean => existsSync(join(FOLDER, `${f}.json`));
 const read = (f: string): unknown => JSON.parse(readFileSync(join(FOLDER, `${f}.json`), 'utf8'));

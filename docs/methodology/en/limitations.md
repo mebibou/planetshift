@@ -53,6 +53,8 @@ The details and figures are in *Air pollution and NOx's methane in detail*, belo
 
 **Freshwater.** Withdrawals are counted, not the water consumed, except on the crops-only scarcity layer. HESTIA's litres cover 35 crops in 56 countries, and HESTIA's World averages cover 15 more. The rest are Poore & Nemecek's world values, so a country's irrigation counts only where HESTIA has its own aggregation. Animal products take the study's value less the water of their concentrate feed, an estimate of the farm's own water that depends on the GLEAM-style rations. Fish farms' water is not counted. Countries differ from AQUASTAT more than the world does (the median country is 1.7 times its figure, Bangladesh almost six). See [Freshwater](#method-water).
 
+**Pollinators.** Each crop's dependence on pollinators is one class for every variety and place (Klein et al. 2007, through Aizen et al. 2019), and it does not change with how many pollinators there are. Crops without a class take the mean of their item's classified crops. The figures show how much production depends on pollinators, not a loss. See [Pollinators](#method-pollination).
+
 **Non-food crops.** Cotton, tobacco, rubber and biofuel crops are not in the model.
 
 **Below country level.** Production and emissions are by country. There are no maps of where within a country food is grown.

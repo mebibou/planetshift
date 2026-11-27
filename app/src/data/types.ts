@@ -470,6 +470,16 @@ export interface Water {
   irrigatedHa: Record<string, number>;
 }
 
+/** An item's share of yield pollinators give (Aizen et al. 2009's ratio), and of crops they help. */
+export type PollinationRatio = [ratio: number, dependent: number];
+
+/** pollination.json: `byCountry[iso3][itemCode]` where the country's crops differ from `world`. */
+export interface Pollination {
+  source: string;
+  world: Record<string, PollinationRatio>;
+  byCountry: Record<string, Record<string, PollinationRatio>>;
+}
+
 /** A stage after the farm: shared between foods by Poore & Nemecek's weight, or by mass. */
 export const CHAIN_STAGES = [
   'processing',
@@ -550,6 +560,8 @@ export interface ModelData {
   oceanplastic?: OceanPlastic;
   /** Optional: a build without it leaves the map's fires layer without data. */
   fires?: Fires;
+  /** Optional: a build without it has no pollinator figure or map layer. */
+  pollination?: Pollination;
   /** Not a file: the build's departures from FaIR stand for it when it is unset. */
   departures?: Departures;
 }

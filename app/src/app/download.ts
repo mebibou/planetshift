@@ -104,6 +104,7 @@ const UNITS: Record<Measure, (spec: LayerSpec) => string> = {
   forestFireAnomaly: () =>
     'share by which the forest burned in the latest fire season is above the mean of the seasons before it, negative below (no lever changes it)',
   fireCarbon: () => 't C emitted by fires in the latest fire season (no lever changes it)',
+  pollination: () => 'share of crop production (t) from pollinator-dependent crops',
 };
 
 export const unitOf = (measure: Measure, spec: LayerSpec): string => UNITS[measure](spec);

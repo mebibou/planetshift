@@ -1,5 +1,6 @@
 import type { Tier } from '../data/types';
 import type { CountryResult } from '../model/api';
+import { hasPollination } from '../app/pollination';
 import {
   beforeAfter,
   gasValue,
@@ -144,6 +145,7 @@ const LISTED: Partial<
   waste: (c, _, spec) => hasWasteData(c, measureOf(spec)),
   fossilMethane: (c) => c.fossilMethane !== undefined,
   fires: (c, _, spec) => hasFireData(c, measureOf(spec)),
+  pollination: hasPollination,
 };
 
 /** Whether the layer has data for a country. */
