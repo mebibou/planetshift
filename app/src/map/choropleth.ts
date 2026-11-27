@@ -1,11 +1,24 @@
 import { geoEqualEarth, geoGraticule10, geoPath } from 'd3';
 import type { Topology } from 'topojson-specification';
-import { h, svg } from '../app/dom';
+import { h, svg, uid } from '../app/dom';
 import { placeTooltip } from '../app/place';
 import { countryFeatures, iso3Of } from './geo';
 import type { TooltipModel } from './tooltip';
 
 const WIDTH = 960;
+
+/** A diagonal hatch for countries without data, so they never read as a class of the scale. */
+const noDataHatch = (id: string): SVGElement =>
+  svg(
+    'defs',
+    {},
+    svg(
+      'pattern',
+      { id, width: 6, height: 6, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' },
+      svg('rect', { width: 6, height: 6, class: 'nodata-ground' }),
+      svg('line', { x1: 0, y1: 0, x2: 0, y2: 6, class: 'nodata-hatch' }),
+    ),
+  );
 
 export interface MapPaint {
   fillOf: (iso3: string) => string | null;
@@ -55,9 +68,11 @@ export const choropleth = (world: Topology, label: string): Choropleth => {
       'data-iso3': iso3 ?? undefined,
     });
   });
+  const hatch = uid('map-nodata');
   const map = svg(
     'svg',
     { viewBox: `0 0 ${WIDTH} ${height}`, role: 'img', 'aria-label': label, class: 'map-svg' },
+    noDataHatch(hatch),
     svg('path', { d: path({ type: 'Sphere' }) ?? '', class: 'sphere' }),
     svg('path', { d: path(geoGraticule10()) ?? '', class: 'graticule' }),
     svg('g', {}, ...paths),
@@ -140,7 +155,7 @@ export const choropleth = (world: Topology, label: string): Choropleth => {
       paths.forEach((node) => {
         const iso3 = node.getAttribute('data-iso3');
         const fill = iso3 ? p.fillOf(iso3) : null;
-        node.style.fill = fill ?? 'var(--map-nodata)';
+        node.style.fill = fill ?? `url(#${hatch})`;
         node.classList.toggle('has-data', fill !== null);
       });
     },
