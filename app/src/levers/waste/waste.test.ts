@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { expectOwnGases, lever, production, run } from '../../../test/levers';
+import { cropsOf, ownProduction } from '../../model/crops';
+import type { Prepared, PreparedCountry } from '../../model/prepare';
 import { multiplierWith } from '../../model/supplyChain';
 import { afterShops, foodWasteOf, lostTonnes, productionRatio } from './foodWaste';
 import {
@@ -86,10 +88,27 @@ describe('food waste and losses', () => {
     const supply = Float64Array.from([100, 50]);
     expect(lostTonnes(shares, supply)).toBeCloseTo(20);
     const production = {
-      emitting: Float64Array.from([100, 0]),
+      crops: ownProduction(Float64Array.from([100, 0])),
       change: Float64Array.from([-50, 5]),
     };
     expect(lostTonnes(shares, supply, production)).toBeCloseTo(15);
+  });
+  it('move a crop’s losses with the demand for what is made from it', () => {
+    const prepared = {
+      indexOf: new Map([
+        ['2562', 0],
+        ['2577', 1],
+      ]),
+      data: { land: { extraction: { '2577': { '2562': 0.23 } } } },
+    } as unknown as Prepared;
+    const pc = {
+      emitting: Float64Array.from([1, 23]),
+      rows: new Map(),
+    } as unknown as PreparedCountry;
+    const lessOil = { crops: cropsOf(pc, prepared), change: Float64Array.from([0, -2.3]) };
+    const shares = Float64Array.from([0.1, 0]);
+    const supply = Float64Array.from([1000, 0]);
+    expect(lostTonnes(shares, supply, lessOil)).toBeCloseTo((100 * 91) / 101);
   });
   it('count food lost and wasted today and less of it with the cuts', () => {
     const fw = foodWasteOf(
@@ -99,7 +118,7 @@ describe('food waste and losses', () => {
         dietFood: Float64Array.from([-200]),
         lossShares: Float64Array.from([0.05]),
         supply: Float64Array.from([1000]),
-        emitting: Float64Array.from([1000]),
+        crops: ownProduction(Float64Array.from([1000])),
         change: Float64Array.from([-200]),
         wasteCut: 0.5,
         lossCut: 0.5,
