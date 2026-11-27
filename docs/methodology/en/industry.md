@@ -1,6 +1,6 @@
 # Buildings and industry
 
-Besides transport and electricity, two parts of the economy burn fossil fuel directly. In buildings, gas and oil boilers heat rooms and water, and stoves cook food. In industry, steel and cement are the largest emitters, followed by chemicals. Planetshift has four levers here: efficient buildings, clean heating, clean industry, which covers steel, cement and chemicals, and a lever that destroys the N₂O of nitric and adipic acid plants. Adopted in full, clean heating and clean industry each avoid less than 0.02 °C of warming in 2050. Efficient buildings avoids about 0.03 °C. In 2100, efficient buildings avoids about 0.09 °C, clean heating about 0.06 °C and clean industry about 0.105 °C. Clean heating and clean industry avoid much more when the electricity they use is clean (see *Results* below). In full, the nitric and adipic acid lever avoids 0.002 °C in 2050 and 0.006 °C in 2100.
+Besides transport and electricity, two parts of the economy burn fossil fuel directly. In buildings, gas and oil boilers heat rooms and water, and stoves cook food. In industry, steel and cement are the largest emitters, followed by chemicals. Planetshift has five levers here. Efficient buildings cuts the fuel and electricity that buildings use. Clean heating replaces their boilers. Clean industry covers steel, cement and chemicals. Other industry covers the rest of industry except ammonia. The fifth lever destroys the N₂O of nitric and adipic acid plants. Adopted in full, clean heating and clean industry each avoid less than 0.02 °C of warming in 2050, and other industry alone adds 0.001 °C of warming. Efficient buildings avoids about 0.03 °C. In 2100, efficient buildings avoids about 0.09 °C, clean heating about 0.06 °C, clean industry about 0.105 °C and other industry about 0.035 °C. The levers that draw electricity avoid much more warming when that electricity is clean (see *Results* below). Adopted in full, the nitric and adipic acid lever avoids 0.002 °C in 2050 and 0.006 °C in 2100.
 
 ## How these emissions are counted
 
@@ -34,7 +34,7 @@ The scenarios do not split industry by product. Steel, cement and chemicals are 
 - **Cement**: 28.7%. The Global Carbon Budget's open series of cement process CO₂ (Andrew) gives 1.55 billion tonnes in 2023 (1.49 in 2024). Process CO₂ is the CO₂ released when limestone is calcined into clinker. Calcination is about 60% of a cement plant's direct CO₂, and the fuel burnt in the kiln is the rest. Cement therefore emits about 2.6 billion tonnes directly, close to the IEA's 2.4.
 - **Chemicals**: 5.7%. Primary chemicals (ethylene, propylene, the aromatics, methanol and ammonia) emitted about 935 million tonnes of direct CO₂ in 2022, and ammonia 45% of it (IEA, *Tracking Clean Energy Progress*, chemicals). Ammonia is left out, which leaves 0.51 billion tonnes from methanol and high-value chemicals. Ammonia is what nitrogen fertiliser is made from. Its CO₂ is cut only on the farm side, by *Less nitrogen, better used*, in the cradle-to-farm-gate scope (see [Farm practices](#method-practices)), so no tonne is cut twice.
 
-The rest of industry, about 37%, has no lever: ammonia, aluminium, paper, food and others.
+The rest of industry, about 37%, is ammonia (4.7%, cut on the farm side as above) and 32.0% of everything else. That 32.0%, 2.9 billion tonnes of CO₂ in 2023, comes from light manufacturing (machinery, vehicles, textiles, wood), food and drink, paper, aluminium and other non-ferrous metals, glass, ceramics, bricks and lime, chemicals other than the primary ones, mining and construction. The *Other industry* lever cuts it.
 
 ## Efficient buildings
 
@@ -110,7 +110,50 @@ The median, 1.9 kWh/kg, weighs the two routes two to one, as the IEA's 56% and 2
 
 For steel, cement and chemicals, `cut` is the share of each one's direct CO₂ that goes at full adoption, and `kwhPerKgCo2` is the electricity drawn per kilogram avoided. The CO₂ that clean industry saves is industry's CO₂ × the sum over steel, cement and chemicals of share × cut × (1 − kWh per kg × the grid's intensity).
 
-Neither lever counts the CO₂ of making the heat pumps, electrolysers or capture plants.
+No lever on this page counts the CO₂ of making the heat pumps, electrolysers, electric boilers or capture plants.
+
+## Other industry
+
+This lever cleans the rest of industry without ammonia, 32.0% of industry's direct CO₂. It splits that rest in two, as the IEA's *Net Zero Roadmap* (2023) does. Electricity provides the low-temperature heat. Hydrogen and bioenergy provide the high-temperature heat. At full adoption on a clean grid, it removes 30% of industry's CO₂. On today's grid, it adds about 2% instead, because the electricity it draws emits more CO₂ than the fuel it replaces.
+
+### Low-temperature heat
+
+Light manufacturing, food and tobacco, and pulp and paper emitted 9.7%, 1.9% and 1.1% of industry's direct CO₂ in 2016 (IPCC AR6 WGIII, chapter 11, section 11.4.1.4). Most of their fuel is burnt for heat and drying (same section). About 75% of the heat these industries use is below 200 °C (IEA 2025, *Can low-temperature heat in factories be electrified competitively?*). Heat pumps on the market deliver 100–150 °C, and up to 280 °C is feasible (IPCC, same section). Together, these three industries emit 12.7% of industry's CO₂. Heat below 200 °C is therefore 12.7% × 75% = 9.5% of industry's CO₂, or 29.7% of the rest.
+
+At full adoption, heat pumps supply all of that heat. They draw the same electricity per kg avoided as in buildings: 1.49 kWh/kg (0.80–1.88, see *Clean heating*). The IEA's commentary takes a coefficient of performance of 3.5 for industry. That is within the 2.5 to 4 that the range above spans. On today's grid, heat pumps save 29% of this heat's CO₂.
+
+### The remainder
+
+The other 70.3% of the rest is heat above 200 °C, the CO₂ of processes such as aluminium's carbon anodes, lime and glass, and the fuel of machines. At full adoption, 90% of it is cut (78–99%). All three figures come from Madeddu et al. (2020):
+
+- Median, 90%: the less CO₂-intensive industries, such as paper, wood and textiles, emit 40% of the EU's industrial CO₂. Established technologies can electrify them almost entirely. That cuts industrial CO₂ by 36%, which is 90% of their own CO₂.
+- Low end, 78%: the share of the EU's industrial energy that established technologies can electrify.
+- High end, 99%: the share of industrial heat that can be electrified with technologies still being developed.
+
+Electricity cannot remove process CO₂ (Madeddu et al. 2020). The 90% cut still applies to process CO₂, which overstates it a little.
+
+Figure 2.21 of the IEA's *Net Zero Roadmap* (2023 update, chapter 2, *Industry*, p. 87) shows the energy that *Other industry* (light industries and non-specified industry) uses in 2050 in the Net Zero Scenario. In that scenario, hydrogen and bioenergy provide high-temperature heat (same section, p. 88). The chart gives no numbers, so they are read off its bars to within about 0.2 EJ: 35.7 EJ of electricity, 1.3 EJ of hydrogen, 10.2 EJ of modern solid bioenergy and 6.7 EJ of other renewables, 53.9 EJ of low-carbon energy in all. Its 0.2 EJ of heat and 0.4 EJ of oil are left out.
+
+That electricity also runs the heat pumps for the heat below 200 °C, which this lever already counts. The heat pumps are taken out in four steps:
+
+1. Heat below 200 °C is 29.7% of the fuel that the rest of industry burns (see *Low-temperature heat*).
+2. A heat pump with a seasonal COP of 3 that replaces a boiler at 90% needs 0.90 / 3 = 0.30 kWh of electricity per kWh of fuel, as in *Clean heating*.
+3. Electricity, hydrogen and bioenergy replace the other 70.3% of the fuel kWh for kWh. The heat pumps therefore use 0.297 × 0.30 / (0.297 × 0.30 + 0.703) = 11.3% of the 53.9 EJ, or 6.1 EJ.
+4. Without the heat pumps, the remainder's energy is 47.8 EJ: 62.0% electricity, 2.7% hydrogen, 21.3% bioenergy and 14.0% other renewables.
+
+The electricity draws 3.92 kWh per kg avoided. Madeddu et al. find that electrifying with established technologies cuts CO₂ only on a grid below 255 g per kWh. So each kg avoided needs 1 / 0.255 = 3.92 kWh. The hydrogen is made by electrolysis on the grid. In the Net Zero Scenario, 15,000 TWh of electricity make 80% of the 420 Mt of hydrogen produced in 2050 (same report, chapter 2, p. 78). That is 44.6 kWh per kg of hydrogen, or 1.34 kWh of electricity per kWh of hydrogen (33.3 kWh per kg). Burnt in place of gas, hydrogen draws 1.34 / 0.202 = 6.64 kWh per kg of CO₂ avoided. Bioenergy and the other renewables draw no grid electricity. Per kg avoided, the remainder draws:
+
+- Median: 2.61 kWh/kg, 62.0% × 3.92 + 2.7% × 6.64.
+- Low end: 1.65 kWh/kg, if the fuel replaced is coal burnt at 85% efficiency: 2.50 kWh/kg for the electricity and 3.93 for the hydrogen. The coal factor is the IPCC's 94.6 t of CO₂ per TJ for bituminous coal. That is 0.341 kg of CO₂ per kWh of coal.
+- High end: 2.94 kWh/kg, if it is gas burnt at 90% efficiency: 4.46 kWh/kg for the electricity and 6.64 for the hydrogen.
+
+The mix is the one for all of *Other industry* in 2050, and it applies to the remainder in every year. The CO₂ of burning bioenergy is biogenic and counted as zero, and the land the bioenergy needs is not counted.
+
+On today's grid, the remainder adds CO₂: its net saving is 90% × (1 − 2.61 × 0.48) = −23% of its direct CO₂. It saves CO₂ only on a grid below 0.38 kg per kWh. SSP2-4.5's grid emits 0.42 kg per kWh in 2030, 0.32 in 2040 and 0.27 in 2050. SSP3-7.0's grid stays at about 0.5 kg per kWh and rises to 0.55 by 2100.
+
+### The formula
+
+`industryRest` in `industry.json` holds the rest: `share` (32.0%), `lowHeat` (29.7%), `cut` and `kwhPerKgCo2` of the remainder. The CO₂ that other industry saves is industry's CO₂ × share × (lowHeat × (1 − `heatPumpKwhPerKgCo2` × the grid's intensity) + (1 − lowHeat) × cut × (1 − kWh per kg × the grid's intensity)).
 
 ## Nitric and adipic acid N₂O
 
@@ -141,7 +184,7 @@ Each lever cuts its sector's co-emissions in step with the CO₂ it removes. The
 
 ## In the app
 
-The **Buildings and industry** fold of the Levers section has four sliders. Each sets the share adopted. Like every lever, it ramps in from the current year to the year set by *All levers fully in place by* (`app/src/levers/industry/model.ts`).
+The **Buildings and industry** fold of the Levers section has five sliders. Each sets the share adopted. Like every lever, it ramps in from the current year to the year set by *All levers fully in place by* (`app/src/levers/industry/model.ts`).
 
 In the breakdown by lever in the summary, all of these levers' effect counts as *Buildings and industry*. This includes the extra saving that renewable electricity brings to them when both are on. Renewable electricity alone is counted under *Energy and transport*. The farm emissions, the map and the farming band of the Causes of warming chart do not change.
 
@@ -152,6 +195,7 @@ In each year $y$, each adoption $a$ is already ramped, and $g$ is the grid's int
 - Efficient buildings (`eb`) saves $s \times \text{buildings' CO}_2 + s \times e \times \text{electricity's CO}_2 \times (1 - a_{\text{re}})$, with $s = a \times p$, $p$ = `potential` (0.42) and $e$ = `electricityShare` (0.5).
 - Clean heating (`ch`) saves $a \times (1 - s) \times \text{buildings' CO}_2 \times (1 - k\,g')$, with $k$ = `heatPumpKwhPerKgCo2`.
 - Clean industry (`ci`) saves $a \times \text{industry's CO}_2 \times \sum_{i} \text{share}_i \times \text{cut}_i \times (1 - k_i\,g')$ over $i$ in steel, cement and chemicals, with $k_i$ = `kwhPerKgCo2`.
+- Other industry (`oi`) saves $a \times \text{industry's CO}_2 \times s \times \left(h\,(1 - k\,g') + (1 - h) \times \text{cut} \times (1 - k_r\,g')\right)$, with $s$ the rest's share, $h$ its low-temperature heat, $k$ = `heatPumpKwhPerKgCo2` and $k_r$ the remainder's `kwhPerKgCo2`.
 - Nitric and adipic acid N₂O (`an`) saves $a \times (0.955\,N_{\text{adipic}}(y) + 0.722\,N_{\text{nitric}}(y))$ of N₂O, with $N$ each acid's N₂O in the scenario (`abated` and `emissions` in `acidn2o.json`). It has no range of its own.
 
 The CO₂ changes go to FaIR, which the app runs (see the [temperature page](#method-climate)). What comes with them is treated as for transport:
@@ -176,12 +220,16 @@ The table gives the warming avoided in °C, as a median with the likely range in
 | Efficient buildings with clean heating | 0.036 (0.020–0.072); CO₂ alone 0.030 | 0.128 (0.082–0.211); CO₂ alone 0.100 |
 | Efficient buildings with renewable electricity | 0.107 (0.066–0.207); CO₂ alone 0.102 | 0.322 (0.205–0.520); CO₂ alone 0.264 |
 | Efficient buildings with clean heating and renewable electricity | 0.118 (0.073–0.230); CO₂ alone 0.111 | 0.370 (0.236–0.594); CO₂ alone 0.299 |
+| Other industry | −0.001 (−0.010–0.032); CO₂ alone 0.005 | 0.035 (0.015–0.092); CO₂ alone 0.037 |
+| Other industry with renewable electricity | 0.110 (0.066–0.224); CO₂ alone 0.113 | 0.356 (0.221–0.591); CO₂ alone 0.304 |
 
 Clean heating gains from the co-emissions from the start. The gas it no longer burns would have leaked methane, and burning gas emits little SO₂.
 
 Clean industry loses over a third of its 2050 effect to the co-emissions. Their plants' SO₂ cools the climate, so removing it warms. The hydrogen routes also draw a lot of grid power, which adds that power's CO₂ and methane. By 2100 its effect with the co-emissions about equals its CO₂ alone. The coke ovens' CO₂ and the CO that the furnaces emit are counted with the coal no longer burnt, and they make up for the loss.
 
-With renewable electricity in full, clean heating adds 0.019 °C in 2050 and 0.081 °C in 2100 to it. Clean industry adds 0.028 and 0.135 °C. On a clean grid, each lever saves more than it does alone.
+Other industry alone warms a little at first. Electrifying factory heat on a grid that still burns fossil fuel adds the grid's CO₂ and methane. It also removes the factories' SO₂, which has a cooling effect. On SSP2-4.5 it adds 0.001 °C in 2050, although it avoids 0.005 °C counting CO₂ alone. By 2100, when the scenario's grid no longer emits CO₂, it avoids 0.035 °C. On SSP1-2.6 it avoids 0.001 °C in 2050 and 0.016 °C in 2100. On SSP3-7.0, whose grid stays above 0.5 kg per kWh, it adds 0.006 °C in 2050 and 0.034 °C in 2100. Renewable electricity reverses this: with it, the lever avoids warming from the start.
+
+With renewable electricity in full, clean heating adds 0.019 °C in 2050 and 0.081 °C in 2100 to it. Clean industry adds 0.028 and 0.135 °C, and other industry 0.014 and 0.070 °C (0.008 and 0.024 on SSP1-2.6, 0.010 and 0.063 on SSP3-7.0). On a clean grid, each lever saves more than it does alone.
 
 The effects are small in 2050 for two reasons. The CO₂ avoided adds up slowly. On today's grid, the electricity that the clean routes draw also cancels much of what they save.
 
@@ -191,11 +239,11 @@ Adopted in full, the nitric and adipic acid N₂O lever avoids 0.0019 °C (0.001
 
 ## Other industries
 
-Some industries have no lever. Either the scenarios give no trajectory for them and there is no open base year to start from, or their emissions are mostly electricity, which the renewable-electricity lever already covers:
+Some industries have no lever of their own. Either the scenarios give no trajectory for them and there is no open base year to start from, or their emissions are mostly electricity, which the renewable-electricity lever already covers. Their direct CO₂ is still cut, as part of the rest of industry that *Other industry* cleans:
 
-- **Aluminium**: 1.11–1.12 billion tonnes of CO₂e in 2022–2023, electricity included (JRC, *Aluminium* factsheet, citing the International Aluminium Institute). Most of it is the electricity of smelters, which Renewable electricity already reaches, so a lever of its own would count it twice.
+- **Aluminium**: 1.11–1.12 billion tonnes of CO₂e in 2022–2023, electricity included (JRC, *Aluminium* factsheet, citing the International Aluminium Institute). Most of it is the electricity of smelters, which Renewable electricity already reaches, so a lever of its own would count it twice. Its direct CO₂, from the heat of alumina refineries and the smelters' carbon anodes, is in the rest of industry.
 - **Plastics**: 1.8 billion tonnes of CO₂e over their life cycle in 2019 (OECD, *Global Plastics Outlook*, 2022), spread over chemicals, electricity and waste. The scenarios give plastics no trajectory, and there is no open base year for them; their making is in the chemicals share.
-- **Textiles and clothing**: 0.944 billion tonnes of CO₂e in 2023, 55% of it from making the materials (Apparel Impact Institute, *Taking Stock* 2025). Most of it is the electricity and heat of mills in Asia. The scenarios give textiles no trajectory and there is no open base year for them.
+- **Textiles and clothing**: 0.944 billion tonnes of CO₂e in 2023, 55% of it from making the materials (Apparel Impact Institute, *Taking Stock* 2025). Most of it is the electricity and heat of mills in Asia. The scenarios give textiles no trajectory and there is no open base year for them. The mills' heat is in the rest of industry.
 - **Construction**: its embodied emissions are mostly those of steel and cement, which Clean industry already covers.
 
 ## Assumptions
@@ -205,6 +253,7 @@ Some industries have no lever. Either the scenarios give no trajectory for them 
 - A heat pump needs 1.49 kWh per kg of a boiler's CO₂ avoided, in every year. Heat pumps and boilers do not get more efficient over time.
 - Clean steel, cement and chemicals cut 90%, 90% and 80% of their direct CO₂ at full adoption. They draw 1.5, 0.20 and 1.9 kWh of electricity per kg avoided, on the grid left after renewable electricity.
 - Efficiency cuts 42% of buildings' fuel and of their electricity at full adoption, in every year and scenario. Buildings use half of the electricity, so the grid's CO₂ falls by 21%. The IPCC's efficiency step may already include some heat pumps. Clean heating acts only on the fuel left after efficiency, so no tonne is counted twice.
+- The rest of industry without ammonia is 32.0% of industry's direct CO₂, and 29.7% of the rest is heat below 200 °C, in every year and scenario. Other industry puts all of that heat on heat pumps, which draw 1.49 kWh per kg avoided. It cuts 90% of the remainder with the IEA's 2050 mix for *Other industry*, less its heat pumps: 62.0% electricity at 3.92 kWh per kg avoided, 2.7% electrolytic hydrogen at 6.64 kWh per kg and 35.3% bioenergy and other renewables. On average that is 2.61 kWh per kg.
 - Making the equipment is not counted.
 - The N₂O of nitric and adipic acid is CEDS's for 2022. After 2023, it follows the scenario's N₂O from fossil fuels and industry. At full adoption, 95.5% of adipic acid's and 72.2% of nitric acid's is removed, in every country, year and scenario. Using less fertiliser on farms does not reduce the nitric acid made.
 - What comes with the fuel of buildings and of industry (the CO₂ of producing it, methane, N₂O and air pollution) uses CEDS's 2022 ratios per kg of their fossil CO₂, process CO₂ included for industry; chemical plants take industry's ratios, which CEDS draws from iron, steel, cement and lime plants. These ratios change with the scenario's emission factors. The electricity drawn adds the grid's co-emissions (see [Energy and transport](#method-sectors)).
@@ -221,9 +270,13 @@ Some industries have no lever. Either the scenarios give no trajectory for them 
 - JRC (2026). Aluminium factsheet (JRC144120), [publications.jrc.ec.europa.eu](https://publications.jrc.ec.europa.eu/repository/handle/JRC144120).
 - IPCC (2022). Climate Change 2022: Mitigation of Climate Change, Working Group III, chapter 9, Buildings, section 9.6.2 and figure 9.16, [ipcc.ch/report/ar6/wg3/chapter/chapter-9](https://www.ipcc.ch/report/ar6/wg3/chapter/chapter-9/).
 - IEA (2026). Special Report on Buildings Efficiency, executive summary, [iea.org/reports/special-report-on-buildings-efficiency](https://www.iea.org/reports/special-report-on-buildings-efficiency). Licence: CC BY 4.0.
+- IEA (2023). Net Zero Roadmap: A Global Pathway to Keep the 1.5 °C Goal in Reach, 2023 update, chapter 2, *Industry*, [iea.org/reports/net-zero-roadmap-a-global-pathway-to-keep-the-15-0c-goal-in-reach](https://www.iea.org/reports/net-zero-roadmap-a-global-pathway-to-keep-the-15-0c-goal-in-reach). Licence: CC BY 4.0.
+- IEA (2025). Can low-temperature heat in factories be electrified competitively?, commentary, [iea.org/commentaries/can-low-temperature-heat-in-factories-be-electrified-competitively](https://www.iea.org/commentaries/can-low-temperature-heat-in-factories-be-electrified-competitively). Licence: CC BY 4.0.
+- IPCC (2022). Climate Change 2022: Mitigation of Climate Change, Working Group III, chapter 11: Industry, section 11.4.1.4, [ipcc.ch/report/ar6/wg3/chapter/chapter-11](https://www.ipcc.ch/report/ar6/wg3/chapter/chapter-11/).
+- Madeddu, S., Ueckerdt, F., Pehl, M., Peterseim, J., Lord, M., Kumar, K. A., Krüger, C. and Luderer, G. (2020). The CO₂ reduction potential for the European industry via direct electrification of heat supply (power-to-heat). Environmental Research Letters 15, 124004, [doi:10.1088/1748-9326/abbd02](https://doi.org/10.1088/1748-9326/abbd02). Licence: CC BY 4.0.
 - IEA (2022). The Future of Heat Pumps, [iea.org/reports/the-future-of-heat-pumps](https://www.iea.org/reports/the-future-of-heat-pumps). Licence: CC BY 4.0.
 - IEA (2020). Iron and Steel Technology Roadmap, [iea.org/reports/iron-and-steel-technology-roadmap](https://www.iea.org/reports/iron-and-steel-technology-roadmap): direct CO₂ intensity of the main routes (table, p. 42), the Sustainable Development Scenario (p. 54), smelting reduction with capture and hydrogen reduction (pp. 92–93).
-- IPCC (2006). Guidelines for National Greenhouse Gas Inventories, volume 2, chapter 1, table 1.4: default CO₂ emission factors for combustion.
+- IPCC (2006). Guidelines for National Greenhouse Gas Inventories, volume 2, chapter 1, table 1.4: default CO₂ emission factors for combustion, natural gas, gas/diesel oil and other bituminous coal.
 - IPCC (2006). Guidelines for National Greenhouse Gas Inventories, volume 3, chapter 3, table 3.4: default factors for adipic acid production, [ipcc-nggip.iges.or.jp](https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol3.html).
 - IPCC (2019). 2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories, volume 3, chapter 3, table 3.3: default factors for nitric acid production, [ipcc-nggip.iges.or.jp](https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol3.html).
 - US EPA (2013). Global Mitigation of Non-CO₂ Greenhouse Gases: 2010–2030, chapter IV.1, nitric and adipic acid production, [epa.gov](https://www.epa.gov/sites/default/files/2016-06/documents/mac_report_2013-iv_industrial.pdf). A work of the US government, in the public domain.

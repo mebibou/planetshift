@@ -83,12 +83,52 @@ def test_parts_cut_less_than_all_and_their_ranges_hold_the_median():
         assert p["cut"]["high"] <= 1
 
 
+def test_the_rest_of_industry_leaves_out_ammonia_and_the_three_parts():
+    shares = I.shares(1.55e12)
+    rest = I.rest(shares)
+    ammonia = 0.935 * 0.45 / 9
+    assert rest["share"] == pytest.approx(1 - sum(shares.values()) - ammonia, abs=1e-4)
+    assert rest["lowHeat"] == pytest.approx(0.127 * 0.75 / rest["share"], abs=1e-3)
+    for r in (rest["cut"], rest["kwhPerKgCo2"]):
+        assert r["low"] <= r["median"] <= r["high"]
+    assert rest["cut"]["median"] == pytest.approx(0.9)
+
+
+def test_the_heat_pumps_electricity_comes_out_of_the_iea_mix():
+    hp = 0.3 * 0.9 / 3
+    assert I.heat_pump_ej(0.3) == pytest.approx(53.9 * hp / (hp + 0.7))
+    mix = I.carriers(0.3)
+    left = 53.9 - I.heat_pump_ej(0.3)
+    assert mix["electricity"] == pytest.approx((35.7 - I.heat_pump_ej(0.3)) / left)
+    assert mix["hydrogen"] == pytest.approx(1.3 / left)
+    assert sum(mix.values()) == pytest.approx(1)
+    assert I.carriers(0)["electricity"] == pytest.approx(35.7 / 53.9)
+
+
+def test_the_remainder_draws_its_electricity_and_electrolytic_hydrogen():
+    assert I.H2_KWH_PER_KWH == pytest.approx(1.34, abs=0.01)
+    gas = I.KG_PER_KWH["gas"]
+    mix = I.carriers(0.3)
+    assert I.rest_kwh(0.3, 1 / 0.255, gas) == pytest.approx(
+        mix["electricity"] / 0.255 + mix["hydrogen"] * I.H2_KWH_PER_KWH / gas
+    )
+    r = I.rest_kwh_range(0.3)
+    assert r["low"] < r["median"] < r["high"]
+
+
 @pytest.mark.network
 def test_the_built_document_meets_the_recent_totals():
     if not (RCMIP_FILE.exists() and CEMENT_FILE.exists()):
         pytest.skip("RCMIP or the cement series not downloaded")
     doc = I.build(DEFAULT_CACHE)
-    assert set(doc) == {"co2", "heatPumpKwhPerKgCo2", "industryParts", "cementProcessCo2", "source"}
+    assert set(doc) == {
+        "co2",
+        "heatPumpKwhPerKgCo2",
+        "industryParts",
+        "industryRest",
+        "cementProcessCo2",
+        "source",
+    }
     for ssp in SSPS:
         assert set(doc["co2"][ssp]) == {"buildings", "industry"}
         for s in doc["co2"][ssp].values():

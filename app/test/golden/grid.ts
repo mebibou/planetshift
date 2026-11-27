@@ -180,6 +180,24 @@ export const GRID: Setting[] = [
   ...[0.5, 1].map((a) => setting(`acidN2o@${a * 100}`, { levers: { acidN2o: a } })),
   setting('acidN2o+cleanIndustry', { levers: { acidN2o: 1, cleanIndustry: 1 } }),
   setting('acidN2o+ssp370', { levers: { acidN2o: 1 } }, { ssp: 'ssp370' }),
+  ...[0.5, 1].map((a) => setting(`otherIndustry@${a * 100}`, { levers: { otherIndustry: a } })),
+  ...['ssp245', 'ssp126', 'ssp370'].map((ssp) =>
+    setting(
+      `otherIndustry+renewables+${ssp}`,
+      { levers: { otherIndustry: 1, renewableElectricity: 1 } },
+      { ssp: ssp as Options['ssp'] },
+    ),
+  ),
+  setting('allIndustryLevers+renewables', {
+    levers: all([
+      'efficientBuildings',
+      'cleanHeating',
+      'cleanIndustry',
+      'otherIndustry',
+      'acidN2o',
+      'renewableElectricity',
+    ]),
+  }),
 ];
 
 /** Run with every departure from FaIR at its plain-FaIR value (planetshift.config.schema.json). */
@@ -209,6 +227,7 @@ export const PLAIN_GRID: Setting[] = [
     { shift: 0.5, levers: all(GOLDEN_LEVERS, 0.7) },
     { regrowth: 'natural', permafrost: 'on', scope: 'cradleToFarmGate' },
   ),
+  setting('otherIndustry@100', { levers: { otherIndustry: 1 } }),
 ];
 
 /** Query strings decoded as they are, invalid values included. */
@@ -236,4 +255,6 @@ export const QUERIES = [
   'eb=x',
   'an=50&ci=100',
   'an=x',
+  'oi=50&re=100',
+  'oi=x',
 ];

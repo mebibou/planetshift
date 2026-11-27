@@ -159,7 +159,7 @@ FaIR tourne sur le CO₂ et le méthane des leviers : leur réchauffement n'est 
 
 ## Le méthane et la pollution de l'air qui accompagnent le combustible
 
-Brûler du charbon, du pétrole et du gaz émet plus que du CO₂. Un levier qui réduit le combustible réduit toutes ces émissions avec le CO₂. Le compter augmente le réchauffement qu'évitent les leviers d'énergie. Les six au maximum évitent 0,246 °C en 2050 en le comptant, contre 0,204 °C pour le CO₂ seul. De tous les leviers d'énergie, de chauffage et d'industrie, seule l'industrie propre, sur la page [Bâtiments et industrie](#method-industry), évite moins en le comptant (0,016 °C au lieu de 0,028 en 2050).
+Brûler du charbon, du pétrole et du gaz émet plus que du CO₂. Un levier qui réduit le combustible réduit toutes ces émissions avec le CO₂. Le compter augmente le réchauffement qu'évitent les leviers d'énergie. Les six au maximum évitent 0,246 °C en 2050 en le comptant, contre 0,204 °C pour le CO₂ seul. De tous les leviers d'énergie, de chauffage et d'industrie, seules l'industrie propre et les autres industries, sur la page [Bâtiments et industrie](#method-industry), évitent moins en le comptant (0,016 °C au lieu de 0,028 en 2050, et −0,001 au lieu de 0,005).
 
 Ce qui accompagne le combustible :
 
@@ -308,7 +308,7 @@ Un test fait passer dans FaIR lui-même, avec 100 membres, des baisses maintenue
 
 ### Comment le modèle les additionne
 
-Chaque année, la variation de CO₂ fossile de chaque levier est répartie selon le secteur qui l'émet. L'électricité consommée par les véhicules électriques, les pompes à chaleur et l'industrie propre compte comme celle du secteur électrique, sur le réseau qui reste après l'électricité renouvelable. La variation de chaque secteur, multipliée par ses rapports de l'année, donne deux choses :
+Chaque année, la variation de CO₂ fossile de chaque levier est répartie selon le secteur qui l'émet. L'électricité consommée par les véhicules électriques, les pompes à chaleur, l'industrie propre et les autres industries compte comme celle du secteur électrique, sur le réseau qui reste après l'électricité renouvelable. La variation de chaque secteur, multipliée par ses rapports de l'année, donne deux choses :
 
 - **La variation du CO₂, du méthane et du N₂O de l'approvisionnement.** Ils rejoignent le CO₂ dans les émissions. Ils sont convolués avec leurs courbes d'AGTP, sous *combustibles fossiles et industrie*.
 - **La variation de la pollution de l'air**, sous *pollution de l'air*. Son forçage passe par `forcingResponse` : le forçage des particules, de l'ozone du CO et de l'ozone des COV de chaque secteur par kg de CO₂, plus celui des NOx. Son méthane des NOx, des COV et du CO passe par l'AGTP du méthane. Le méthane des NOx est mis à l'échelle selon le lieu d'émission.
@@ -353,7 +353,7 @@ Avec tous les leviers d'énergie, de chauffage et d'industrie au maximum, deux e
 
 **Moins d'avion, le carburant d'aviation propre et le chauffage propre** gagnent dès le départ : l'approvisionnement de leur combustible l'emporte sur le peu de SO₂ qu'ils retirent.
 
-**L'industrie propre** est seule à perdre : 0,016 au lieu de 0,028 en 2050. Ses usines émettent du SO₂, et les filières hydrogène consomment beaucoup d'électricité du réseau.
+**L'industrie propre** et **les autres industries** perdent : 0,016 au lieu de 0,028 en 2050, et −0,001 au lieu de 0,005. Leurs usines émettent du SO₂, et les filières hydrogène et la chaleur électrique consomment beaucoup d'électricité du réseau.
 
 **Les véhicules électriques** gagnent. Leur suie, l'ozone de leurs NOx et l'approvisionnement de leur carburant disparaissent aussitôt. Le méthane que leurs NOx ne détruisent plus, environ la moitié de celui de FaIR sur terre, s'accumule lentement sur des décennies. Les voitures électriques évitent, en 2050 et 2100 :
 

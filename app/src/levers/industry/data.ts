@@ -18,18 +18,24 @@ export interface PartDef {
   kwhPerKgCo2: Range3;
 }
 
+/** The rest of industry without ammonia; `lowHeat` is its share that is heat below 200 °C. */
+export interface RestDef extends PartDef {
+  lowHeat: number;
+}
+
 /**
  * industry.json: direct fossil CO₂ of buildings and of industry under each SSP, and what their
  * levers need. co2[ssp][sector]: kg CO₂ per year, base year..2100, part of the SSP's fossil CO₂.
  * heatPumpKwhPerKgCo2: electricity a heat pump draws per kg of a boiler's CO₂ it avoids.
  * industryParts: steel, cement and chemicals (methanol and high-value chemicals; ammonia is
- * the farm side's). cementProcessCo2: the Global Carbon Budget's cement process
+ * the farm side's). industryRest: the rest of it. cementProcessCo2: the Global Carbon Budget's cement process
  * CO₂ in the base year, kg, from which cement's share is made.
  */
 export interface Industry {
   co2: Record<Ssp, Record<IndustrySector, Series>>;
   heatPumpKwhPerKgCo2: Range3;
   industryParts: Record<IndustryPart, PartDef>;
+  industryRest: RestDef;
   cementProcessCo2: { year: number; kg: number };
   source: string;
 }
@@ -49,7 +55,12 @@ declare module '../../data/types' {
   }
 }
 
-export const INDUSTRY_LEVERS = ['efficientBuildings', 'cleanHeating', 'cleanIndustry'] as const;
+export const INDUSTRY_LEVERS = [
+  'efficientBuildings',
+  'cleanHeating',
+  'cleanIndustry',
+  'otherIndustry',
+] as const;
 export type IndustryLever = (typeof INDUSTRY_LEVERS)[number];
 
 /** Whether industry.json was loaded with data for the levers to act on. */

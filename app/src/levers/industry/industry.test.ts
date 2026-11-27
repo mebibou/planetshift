@@ -8,7 +8,7 @@ import { decodeState, encodeState } from '../../model/state';
 import { CURRENT_YEAR } from '../../../test/model/fixtures';
 import type { IndustrySector } from './data';
 import { sectorCo2 } from '../energy/model';
-import { EFFICIENCY, INDUSTRY_LEVERS, industryCo2, industryCo2BySource } from './model';
+import { EFFICIENCY, INDUSTRY_LEVERS, industryCo2, industryCo2BySource, restParts } from './model';
 
 const at2035 = (sector: IndustrySector) => {
   const s = data.industry.co2.ssp245[sector];
@@ -42,13 +42,16 @@ const withoutMethaneCo2 = (id: string) =>
     CURRENT_YEAR,
   );
 
+/** Levers whose grid power, on the fixtures' grid, leaks more methane than the fuel they save. */
+const GRID_METHANE_WINS: readonly string[] = ['otherIndustry'];
+
 describe('industry levers', () => {
-  it.each(INDUSTRY_LEVERS)('%s alone avoids CO₂ and methane, attributed to its family', (id) => {
+  it.each(INDUSTRY_LEVERS)('%s alone avoids CO₂, attributed to its family', (id) => {
     const r = lever(id);
     expect(w2100(r)).toBeGreaterThan(0);
     expect(r.summary.byFamily.avoidedWarming2100.industry).toBeCloseTo(w2100(r), 12);
     expect(r.summary.byFamily.avoidedWarming2100.energy).toBe(0);
-    expect(r.summary.avoided.ch4).toBeGreaterThan(0);
+    expect(r.summary.avoided.ch4 > 0, id).toBe(!GRID_METHANE_WINS.includes(id));
     expect(r.summary.avoided.n2o).not.toBe(0);
   });
 
@@ -59,6 +62,9 @@ describe('industry levers', () => {
     expect(avoidedOn(doubled('buildings'), 'cleanIndustry')).toBeCloseTo(industry, -3);
     expect(avoidedOn(doubled('industry'), 'cleanIndustry')).toBeCloseTo(2 * industry, -3);
     expect(avoidedOn(doubled('industry'), 'cleanHeating')).toBeCloseTo(heating, -3);
+    const other = avoidedOn(data, 'otherIndustry');
+    expect(avoidedOn(doubled('industry'), 'otherIndustry')).toBeCloseTo(2 * other, -3);
+    expect(avoidedOn(doubled('buildings'), 'otherIndustry')).toBeCloseTo(other, -3);
   });
 
   it('heat pumps save the boilers’ CO₂ less the electricity they draw', () => {
@@ -85,9 +91,27 @@ describe('industry levers', () => {
     );
   });
 
+  it('other industry puts its low-temperature heat on heat pumps and cleans the rest of it', () => {
+    const r = withoutMethaneCo2('otherIndustry');
+    const g = grid2035();
+    const saved = (cut: number, kwh: number) =>
+      cut * (1 + supply('industry') - kwh * g * (1 + supply('electricity')));
+    expect(r.summary.avoided.co2).toBeCloseTo(
+      at2035('industry') * 0.32 * (0.3 * saved(1, 1.49) + 0.7 * saved(0.9, 2.61)),
+      -6,
+    );
+    expect(restParts(data.industry).map((p) => p.share)).toEqual([0.32 * 0.3, 0.32 * 0.7]);
+  });
+
+  it('leave ammonia out of the rest of industry', () => {
+    const p = data.industry.industryParts;
+    const rest = data.industry.industryRest.share;
+    expect(p.steel.share + p.cement.share + p.chemicals.share + rest).toBeLessThan(0.97);
+  });
+
   it('save more with renewable electricity, and all of their cut on a clean grid', () => {
     const re = w2100(lever('renewableElectricity'));
-    (['cleanHeating', 'cleanIndustry'] as const).forEach((id) =>
+    (['cleanHeating', 'cleanIndustry', 'otherIndustry'] as const).forEach((id) =>
       expect(w2100(run({ levers: { [id]: 1, renewableElectricity: 1 } })), id).toBeGreaterThan(
         w2100(lever(id)) + re,
       ),
@@ -98,12 +122,13 @@ describe('industry levers', () => {
         efficientBuildings: 0,
         cleanHeating: 1,
         cleanIndustry: 1,
+        otherIndustry: 1,
         renewableElectricity,
       });
     const clean = bySource(1);
     expect(clean.electricity).toBe(0);
     expect(clean.industry).toBeCloseTo(
-      -(0.289 * 0.9 + 0.287 * 0.8 + 0.057 * 0.8) *
+      -(0.289 * 0.9 + 0.287 * 0.8 + 0.057 * 0.8 + 0.32 * 0.3 + 0.32 * 0.7 * 0.9) *
         industryCo2(data.industry, 'ssp245', 'industry', 2040),
       0,
     );
@@ -132,6 +157,7 @@ describe('industry levers', () => {
         efficientBuildings,
         cleanHeating,
         cleanIndustry: 0,
+        otherIndustry: 0,
         renewableElectricity: re,
       });
     const buildings = industryCo2(data.industry, 'ssp245', 'buildings', 2040);

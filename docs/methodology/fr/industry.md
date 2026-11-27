@@ -1,6 +1,6 @@
 # Bâtiments et industrie
 
-À côté des transports et de l'électricité, deux parties de l'économie brûlent directement des combustibles fossiles. Dans les bâtiments, des chaudières au gaz et au fioul chauffent les pièces et l'eau, et des cuisinières servent à cuisiner. Dans l'industrie, l'acier et le ciment sont les plus gros émetteurs, suivis de la chimie. Planetshift propose ici quatre leviers : les bâtiments efficaces, le chauffage propre, l'industrie propre, qui couvre l'acier, le ciment et la chimie, et un levier qui détruit le N₂O des usines d'acide nitrique et d'acide adipique. Adoptés en entier, le chauffage propre et l'industrie propre évitent chacun moins de 0,02 °C de réchauffement en 2050. Les bâtiments efficaces évitent environ 0,03 °C. En 2100, les bâtiments efficaces évitent environ 0,09 °C, le chauffage propre environ 0,06 °C et l'industrie propre environ 0,105 °C. Le chauffage propre et l'industrie propre en évitent bien plus quand l'électricité qu'ils consomment est propre (voir *Résultats* plus bas). En entier, le levier des acides nitrique et adipique évite 0,002 °C en 2050 et 0,006 °C en 2100.
+À côté des transports et de l'électricité, deux parties de l'économie brûlent directement des combustibles fossiles. Dans les bâtiments, des chaudières au gaz et au fioul chauffent les pièces et l'eau, et des cuisinières servent à cuisiner. Dans l'industrie, l'acier et le ciment sont les plus gros émetteurs, suivis de la chimie. Planetshift propose ici cinq leviers. Les bâtiments efficaces réduisent le combustible et l'électricité qu'utilisent les bâtiments. Le chauffage propre remplace leurs chaudières. L'industrie propre couvre l'acier, le ciment et la chimie. « Autres industries » couvre le reste de l'industrie, sauf l'ammoniac. Le cinquième levier détruit le N₂O des usines d'acide nitrique et d'acide adipique. Adoptés en entier, le chauffage propre et l'industrie propre évitent chacun moins de 0,02 °C de réchauffement en 2050, et les autres industries seules ajoutent 0,001 °C de réchauffement. Les bâtiments efficaces en évitent environ 0,03 °C. En 2100, les bâtiments efficaces évitent environ 0,09 °C, le chauffage propre environ 0,06 °C, l'industrie propre environ 0,105 °C et les autres industries environ 0,035 °C. Les leviers qui consomment de l'électricité évitent bien plus de réchauffement quand cette électricité est propre (voir *Résultats* plus bas). Adopté en entier, le levier des acides nitrique et adipique évite 0,002 °C en 2050 et 0,006 °C en 2100.
 
 ## Comment ces émissions sont comptées
 
@@ -34,7 +34,7 @@ Les scénarios ne détaillent pas l'industrie par produit. L'acier, le ciment et
 - **Ciment** : 28,7 %. La série ouverte du CO₂ de procédé des cimenteries du Global Carbon Budget (Andrew) donne 1,55 milliard de tonnes en 2023 (1,49 en 2024). Le CO₂ de procédé est celui que libère le calcaire quand il est calciné en clinker. La calcination représente environ 60 % du CO₂ direct d'une cimenterie, le combustible brûlé dans le four faisant le reste. Le ciment émet donc environ 2,6 milliards de tonnes directement, près des 2,4 de l'AIE.
 - **Chimie** : 5,7 %. Les produits chimiques de base (éthylène, propylène, aromatiques, méthanol et ammoniac) ont émis environ 935 millions de tonnes de CO₂ direct en 2022, dont 45 % pour l'ammoniac (AIE, *Tracking Clean Energy Progress*, chimie). L'ammoniac est laissé de côté, ce qui laisse 0,51 milliard de tonnes pour le méthanol et les produits chimiques à haute valeur. L'ammoniac est la matière des engrais azotés. Son CO₂ n'est réduit que du côté de la ferme, par « Moins d'azote, mieux employé », dans le périmètre du berceau à la sortie de ferme (voir [Pratiques agricoles](#method-practices)), pour qu'aucune tonne ne soit réduite deux fois.
 
-Le reste de l'industrie, environ 37 %, n'a pas de levier : l'ammoniac, l'aluminium, le papier, l'agroalimentaire et les autres.
+Le reste de l'industrie, environ 37 %, est l'ammoniac (4,7 %, réduit du côté de la ferme comme ci-dessus) et 32,0 % pour tout le reste. Ces 32,0 %, 2,9 milliards de tonnes de CO₂ en 2023, viennent de l'industrie manufacturière légère (machines, véhicules, textile, bois), de l'agroalimentaire, du papier, de l'aluminium et des autres métaux non ferreux, du verre, de la céramique, des briques et de la chaux, de la chimie autre que les produits de base, des mines et de la construction. Le levier « Autres industries » les réduit.
 
 ## Bâtiments efficaces
 
@@ -110,7 +110,50 @@ La médiane, 1,9 kWh/kg, pondère les deux voies à deux contre un, comme les 56
 
 Pour l'acier, le ciment et la chimie, `cut` est la part du CO₂ direct de chacun qui disparaît à adoption complète, et `kwhPerKgCo2` l'électricité consommée par kilogramme évité. Le CO₂ qu'économise l'industrie propre est le CO₂ de l'industrie × la somme, sur l'acier, le ciment et la chimie, de part × réduction × (1 − kWh par kg × l'intensité du réseau).
 
-Aucun des deux leviers ne compte le CO₂ de la fabrication des pompes à chaleur, des électrolyseurs ou des installations de captage.
+Aucun levier de cette page ne compte le CO₂ de la fabrication des pompes à chaleur, des électrolyseurs, des chaudières électriques ou des installations de captage.
+
+## Autres industries
+
+Ce levier réduit le reste de l'industrie sans l'ammoniac, 32,0 % du CO₂ direct de l'industrie. Il coupe ce reste en deux, comme la *Net Zero Roadmap* de l'AIE (2023). L'électricité fournit la chaleur à basse température. L'hydrogène et la bioénergie fournissent la chaleur à haute température. À adoption complète sur un réseau propre, il retire 30 % du CO₂ de l'industrie. Sur le réseau actuel, il en ajoute plutôt environ 2 %, car l'électricité qu'il consomme émet plus de CO₂ que le combustible qu'elle remplace.
+
+### La chaleur à basse température
+
+L'industrie manufacturière légère, l'agroalimentaire et le tabac, et la pâte et le papier ont émis 9,7 %, 1,9 % et 1,1 % du CO₂ direct de l'industrie en 2016 (GIEC, AR6, groupe III, chapitre 11, section 11.4.1.4). L'essentiel de leur combustible est brûlé pour la chaleur et le séchage (même section). Environ 75 % de la chaleur qu'utilisent ces industries est sous 200 °C (AIE 2025, *Can low-temperature heat in factories be electrified competitively?*). Les pompes à chaleur du marché fournissent 100 à 150 °C, et jusqu'à 280 °C est faisable (GIEC, même section). Ensemble, ces trois industries émettent 12,7 % du CO₂ de l'industrie. La chaleur sous 200 °C représente donc 12,7 % × 75 % = 9,5 % du CO₂ de l'industrie, soit 29,7 % du reste.
+
+À adoption complète, des pompes à chaleur fournissent toute cette chaleur. Elles consomment la même électricité par kg évité que dans les bâtiments : 1,49 kWh/kg (0,80–1,88, voir *Chauffage propre*). Le commentaire de l'AIE retient un coefficient de performance de 3,5 pour l'industrie. Cette valeur est dans la plage de 2,5 à 4 que couvre la fourchette ci-dessus. Sur le réseau actuel, les pompes à chaleur économisent 29 % du CO₂ de cette chaleur.
+
+### Le reliquat
+
+Les 70,3 % restants sont la chaleur au-dessus de 200 °C, le CO₂ de procédés comme les anodes de carbone de l'aluminium, la chaux et le verre, et le carburant des engins. À adoption complète, le levier en retire 90 % (78–99 %). Les trois chiffres viennent de Madeddu et al. (2020) :
+
+- Médiane, 90 % : les industries les moins intensives en CO₂, comme le papier, le bois et le textile, émettent 40 % du CO₂ industriel de l'UE. Des technologies établies peuvent les électrifier presque entièrement. Cela réduit le CO₂ industriel de 36 %, soit 90 % de leur propre CO₂.
+- Bas de la fourchette, 78 % : la part de l'énergie industrielle de l'UE que des technologies établies peuvent électrifier.
+- Haut de la fourchette, 99 % : la part de la chaleur industrielle électrifiable avec des technologies encore en développement.
+
+L'électricité ne peut pas retirer le CO₂ de procédé (Madeddu et al. 2020). La réduction de 90 % s'applique quand même au CO₂ de procédé, ce qui la surestime un peu.
+
+La figure 2.21 de la *Net Zero Roadmap* de l'AIE (mise à jour 2023, chapitre 2, *Industry*, p. 87) montre l'énergie qu'utilise en 2050, dans le scénario Net Zero, l'*Other industry* : l'industrie légère et l'industrie non spécifiée. Dans ce scénario, l'hydrogène et la bioénergie fournissent la chaleur à haute température (même section, p. 88). Le graphique ne donne pas de chiffres. Ils sont lus sur ses barres, à environ 0,2 EJ près. Cela fait 35,7 EJ d'électricité, 1,3 EJ d'hydrogène, 10,2 EJ de bioénergie solide moderne et 6,7 EJ d'autres renouvelables, soit 53,9 EJ d'énergie bas carbone en tout. Les 0,2 EJ de chaleur et 0,4 EJ de pétrole de l'*Other industry* sont laissés de côté.
+
+Cette électricité alimente aussi les pompes à chaleur qui fournissent la chaleur sous 200 °C, que ce levier compte déjà. Elles sont retirées du mélange en quatre étapes :
+
+1. La chaleur sous 200 °C représente 29,7 % du combustible que brûle le reste de l'industrie (voir *La chaleur à basse température*).
+2. Une pompe à chaleur de COP saisonnier 3 qui remplace une chaudière à 90 % consomme 0,90 / 3 = 0,30 kWh d'électricité par kWh de combustible, comme dans *Chauffage propre*.
+3. L'électricité, l'hydrogène et la bioénergie remplacent les 70,3 % restants du combustible kWh pour kWh. Les pompes à chaleur utilisent donc 0,297 × 0,30 / (0,297 × 0,30 + 0,703) = 11,3 % des 53,9 EJ, soit 6,1 EJ.
+4. Sans les pompes à chaleur, l'énergie du reliquat est de 47,8 EJ : 62,0 % d'électricité, 2,7 % d'hydrogène, 21,3 % de bioénergie et 14,0 % d'autres renouvelables.
+
+L'électricité consomme 3,92 kWh par kg évité. Madeddu et al. trouvent qu'électrifier avec des technologies établies ne réduit le CO₂ que sur un réseau sous 255 g par kWh. Chaque kg évité demande donc 1 / 0,255 = 3,92 kWh. L'hydrogène est produit par électrolyse sur le réseau. Dans le scénario Net Zero, 15 000 TWh d'électricité produisent 80 % des 420 Mt d'hydrogène de 2050 (même rapport, chapitre 2, p. 78). Cela fait 44,6 kWh par kg d'hydrogène, soit 1,34 kWh d'électricité par kWh d'hydrogène (33,3 kWh par kg). Brûlé à la place du gaz, l'hydrogène consomme 1,34 / 0,202 = 6,64 kWh par kg de CO₂ évité. La bioénergie et les autres renouvelables ne consomment pas d'électricité du réseau. Par kg évité, le reliquat consomme :
+
+- Médiane : 2,61 kWh/kg, 62,0 % × 3,92 + 2,7 % × 6,64.
+- Bas de la fourchette : 1,65 kWh/kg, si le combustible remplacé est du charbon brûlé avec un rendement de 85 % : 2,50 kWh/kg pour l'électricité et 3,93 pour l'hydrogène. Le facteur du charbon est celui du GIEC, 94,6 t de CO₂ par TJ pour le charbon bitumineux. Cela fait 0,341 kg de CO₂ par kWh de charbon.
+- Haut de la fourchette : 2,94 kWh/kg, si le combustible remplacé est du gaz brûlé avec un rendement de 90 % : 4,46 kWh/kg pour l'électricité et 6,64 pour l'hydrogène.
+
+Ce mélange est celui de toute l'*Other industry* en 2050, et il s'applique au reliquat chaque année. Le CO₂ de la bioénergie brûlée est biogénique et compté nul, et les terres qu'elle occupe ne sont pas comptées.
+
+Sur le réseau actuel, le reliquat ajoute du CO₂ : son économie nette est de 90 % × (1 − 2,61 × 0,48) = −23 % de son CO₂ direct. Il n'économise du CO₂ que sur un réseau sous 0,38 kg par kWh. Le réseau de SSP2-4.5 émet 0,42 kg par kWh en 2030, 0,32 en 2040 et 0,27 en 2050. Celui de SSP3-7.0 reste autour de 0,5 kg par kWh et monte à 0,55 en 2100.
+
+### La formule
+
+`industryRest` dans `industry.json` contient le reste : `share` (32,0 %), `lowHeat` (29,7 %), `cut` et `kwhPerKgCo2` du reliquat. Le CO₂ qu'économisent les autres industries est le CO₂ de l'industrie × part × (lowHeat × (1 − `heatPumpKwhPerKgCo2` × l'intensité du réseau) + (1 − lowHeat) × réduction × (1 − kWh par kg × l'intensité du réseau)).
 
 ## N₂O des acides nitrique et adipique
 
@@ -141,7 +184,7 @@ Chaque levier réduit les co-émissions de son secteur au même rythme que le CO
 
 ## Dans l'application
 
-Le volet **Bâtiments et industrie** de la section Leviers compte quatre curseurs. Chacun règle la part adoptée. Comme pour tous les leviers, cette part monte de l'année en cours jusqu'à l'année réglée par *Tous les leviers en place en* (`app/src/levers/industry/model.ts`).
+Le volet **Bâtiments et industrie** de la section Leviers compte cinq curseurs. Chacun règle la part adoptée. Comme pour tous les leviers, cette part monte de l'année en cours jusqu'à l'année réglée par *Tous les leviers en place en* (`app/src/levers/industry/model.ts`).
 
 Dans la répartition par levier du résumé, tout l'effet de ces leviers compte sous *Bâtiments et industrie*. Cela comprend l'économie supplémentaire qu'apporte l'électricité renouvelable à ces leviers quand les deux sont activés. L'électricité renouvelable seule est comptée sous *Énergie et transport*. Les émissions agricoles, la carte et la bande de l'agriculture du graphique Causes du réchauffement ne changent pas.
 
@@ -152,6 +195,7 @@ Chaque année $y$, chaque adoption $a$ a déjà suivi sa montée, et $g$ est l'i
 - Bâtiments efficaces (`eb`) économisent $s \times \text{CO}_2\text{ des bâtiments} + s \times e \times \text{CO}_2\text{ de l'électricité} \times (1 - a_{\text{re}})$, avec $s = a \times p$, $p$ = `potential` (0,42) et $e$ = `electricityShare` (0,5).
 - Chauffage propre (`ch`) économise $a \times (1 - s) \times \text{CO}_2\text{ des bâtiments} \times (1 - k\,g')$, avec $k$ = `heatPumpKwhPerKgCo2`.
 - Industrie propre (`ci`) économise $a \times \text{CO}_2\text{ de l'industrie} \times \sum_{i} \text{part}_i \times \text{réduction}_i \times (1 - k_i\,g')$ sur $i$ dans l'acier, le ciment et la chimie, avec $k_i$ = `kwhPerKgCo2`.
+- Autres industries (`oi`) économise $a \times \text{CO}_2\text{ de l'industrie} \times s \times \left(h\,(1 - k\,g') + (1 - h) \times \text{réduction} \times (1 - k_r\,g')\right)$, avec $s$ la part du reste, $h$ sa chaleur à basse température, $k$ = `heatPumpKwhPerKgCo2` et $k_r$ le `kwhPerKgCo2` du reliquat.
 - N₂O des acides nitrique et adipique (`an`) économise $a \times (0{,}955\,N_{\text{adipique}}(y) + 0{,}722\,N_{\text{nitrique}}(y))$ de N₂O, avec $N$ le N₂O de chaque acide dans le scénario (`abated` et `emissions` dans `acidn2o.json`). Il n'a pas de fourchette propre.
 
 Les variations de CO₂ vont à FaIR, que lance l'application (voir la [page sur la température](#method-climate)). Ce qui les accompagne est traité comme pour les transports :
@@ -176,12 +220,16 @@ Le tableau donne le réchauffement évité en °C : la médiane, puis la fourche
 | Bâtiments efficaces avec chauffage propre | 0,036 (0,020–0,072) ; CO₂ seul 0,030 | 0,128 (0,082–0,211) ; CO₂ seul 0,100 |
 | Bâtiments efficaces avec électricité renouvelable | 0,107 (0,066–0,207) ; CO₂ seul 0,102 | 0,322 (0,205–0,520) ; CO₂ seul 0,264 |
 | Bâtiments efficaces avec chauffage propre et électricité renouvelable | 0,118 (0,073–0,230) ; CO₂ seul 0,111 | 0,370 (0,236–0,594) ; CO₂ seul 0,299 |
+| Autres industries | −0,001 (−0,010 à 0,032) ; CO₂ seul 0,005 | 0,035 (0,015–0,092) ; CO₂ seul 0,037 |
+| Autres industries avec électricité renouvelable | 0,110 (0,066–0,224) ; CO₂ seul 0,113 | 0,356 (0,221–0,591) ; CO₂ seul 0,304 |
 
 Le chauffage propre gagne aux co-émissions dès le départ. Le gaz qu'il ne brûle plus aurait laissé fuir du méthane, et brûler du gaz émet peu de SO₂.
 
 L'industrie propre perd plus d'un tiers de son effet de 2050 aux co-émissions. Le SO₂ de leurs usines refroidit le climat, donc le supprimer réchauffe. Les filières hydrogène consomment aussi beaucoup d'électricité du réseau, dont elles ajoutent le CO₂ et le méthane. En 2100, son effet avec les co-émissions égale à peu près celui de son seul CO₂. Le CO₂ des fours à coke et le CO qu'émettent les fours sont comptés avec le charbon qui n'est plus brûlé, et ils compensent cette perte.
 
-Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,019 °C en 2050 et 0,081 °C en 2100. L'industrie propre y ajoute 0,028 et 0,135 °C. Sur un réseau propre, chaque levier économise plus que lorsqu'il agit seul.
+Les autres industries réchauffent un peu, seules, au début. Électrifier la chaleur des usines sur un réseau qui brûle encore des combustibles fossiles ajoute le CO₂ et le méthane du réseau. Il retire aussi le SO₂ des usines, qui a un effet refroidissant. Sur SSP2-4.5, elles ajoutent 0,001 °C en 2050, alors qu'elles évitent 0,005 °C en ne comptant que le CO₂. En 2100, quand le réseau du scénario n'émet plus de CO₂, elles évitent 0,035 °C. Sur SSP1-2.6, elles évitent 0,001 °C en 2050 et 0,016 °C en 2100. Sur SSP3-7.0, dont le réseau reste au-dessus de 0,5 kg par kWh, elles ajoutent 0,006 °C en 2050 et 0,034 °C en 2100. Avec l'électricité renouvelable, le levier évite du réchauffement dès le départ.
+
+Avec l'électricité renouvelable en entier, le chauffage propre y ajoute 0,019 °C en 2050 et 0,081 °C en 2100. L'industrie propre y ajoute 0,028 et 0,135 °C, et les autres industries 0,014 et 0,070 °C (0,008 et 0,024 sur SSP1-2.6, 0,010 et 0,063 sur SSP3-7.0). Sur un réseau propre, chaque levier économise plus que lorsqu'il agit seul.
 
 Les effets sont petits en 2050, pour deux raisons. Le CO₂ évité s'accumule lentement. Et sur le réseau actuel, l'électricité que consomment les procédés propres annule une grande partie de ce qu'ils économisent.
 
@@ -191,11 +239,11 @@ Adopté en entier, le levier du N₂O des acides nitrique et adipique évite 0,0
 
 ## Autres industries
 
-Certaines industries n'ont pas de levier. Soit les scénarios ne leur donnent pas de trajectoire et il n'existe pas d'année de base ouverte d'où partir, soit leurs émissions sont surtout de l'électricité, que le levier « Électricité renouvelable » couvre déjà :
+Certaines industries n'ont pas de levier à elles. Soit les scénarios ne leur donnent pas de trajectoire et il n'existe pas d'année de base ouverte d'où partir, soit leurs émissions sont surtout de l'électricité, que le levier « Électricité renouvelable » couvre déjà. Leur CO₂ direct est quand même réduit, comme partie du reste de l'industrie que réduit « Autres industries » :
 
-- **L'aluminium** : 1,11 à 1,12 milliard de tonnes de CO₂e en 2022–2023, électricité comprise (JRC, fiche *Aluminium*, d'après l'International Aluminium Institute). L'essentiel est l'électricité des fonderies, que l'électricité renouvelable atteint déjà : un levier propre la compterait deux fois.
+- **L'aluminium** : 1,11 à 1,12 milliard de tonnes de CO₂e en 2022–2023, électricité comprise (JRC, fiche *Aluminium*, d'après l'International Aluminium Institute). L'essentiel est l'électricité des fonderies, que l'électricité renouvelable atteint déjà : un levier propre la compterait deux fois. Son CO₂ direct, celui de la chaleur des raffineries d'alumine et des anodes de carbone des fonderies, est dans le reste de l'industrie.
 - **Les plastiques** : 1,8 milliard de tonnes de CO₂e sur leur cycle de vie en 2019 (OCDE, *Global Plastics Outlook*, 2022), réparties entre la chimie, l'électricité et les déchets. Les scénarios ne leur donnent pas de trajectoire, et il n'existe pas d'année de base ouverte pour eux ; leur fabrication est dans la part de la chimie.
-- **Le textile et l'habillement** : 0,944 milliard de tonnes de CO₂e en 2023, dont 55 % pour la production des matières (Apparel Impact Institute, *Taking Stock* 2025). L'essentiel est l'électricité et la chaleur des filatures et des usines d'Asie. Les scénarios ne leur donnent pas de trajectoire, et il n'existe pas d'année de base ouverte pour eux.
+- **Le textile et l'habillement** : 0,944 milliard de tonnes de CO₂e en 2023, dont 55 % pour la production des matières (Apparel Impact Institute, *Taking Stock* 2025). L'essentiel est l'électricité et la chaleur des filatures et des usines d'Asie. Les scénarios ne leur donnent pas de trajectoire, et il n'existe pas d'année de base ouverte pour eux. La chaleur des filatures est dans le reste de l'industrie.
 - **La construction** : ses émissions intrinsèques sont surtout celles de l'acier et du ciment, que l'industrie propre couvre déjà.
 
 ## Hypothèses
@@ -205,6 +253,7 @@ Certaines industries n'ont pas de levier. Soit les scénarios ne leur donnent pa
 - Une pompe à chaleur demande 1,49 kWh par kg de CO₂ de chaudière évité, chaque année. Pompes à chaleur et chaudières ne deviennent pas plus efficaces avec le temps.
 - L'acier, le ciment et la chimie propres réduisent de 90 %, 90 % et 80 % leur CO₂ direct à adoption complète. Ils consomment 1,5, 0,20 et 1,9 kWh d'électricité par kg évité, sur le réseau qui reste après l'électricité renouvelable.
 - L'efficacité réduit de 42 % le combustible des bâtiments et leur électricité à adoption complète, chaque année et dans chaque scénario. Les bâtiments consomment la moitié de l'électricité, donc le CO₂ du réseau baisse de 21 %. L'étape d'efficacité du GIEC comprend peut-être déjà des pompes à chaleur. Le chauffage propre n'agit que sur le combustible qui reste après l'efficacité. Aucune tonne n'est donc comptée deux fois.
+- Le reste de l'industrie sans l'ammoniac représente 32,0 % du CO₂ direct de l'industrie, et la chaleur sous 200 °C 29,7 % de ce reste, chaque année et dans chaque scénario. « Autres industries » confie toute cette chaleur à des pompes à chaleur, qui consomment 1,49 kWh par kg évité. Le levier retire 90 % du reliquat avec le mélange de 2050 de l'AIE pour l'*Other industry*, moins ses pompes à chaleur : 62,0 % d'électricité à 3,92 kWh par kg évité, 2,7 % d'hydrogène électrolytique à 6,64 kWh par kg et 35,3 % de bioénergie et d'autres renouvelables. En moyenne, cela fait 2,61 kWh par kg.
 - La fabrication des équipements n'est pas comptée.
 - Le N₂O des acides nitrique et adipique est celui de CEDS pour 2022. Après 2023, il suit le N₂O des combustibles fossiles et de l'industrie du scénario. À adoption complète, 95,5 % de celui de l'acide adipique et 72,2 % de celui de l'acide nitrique disparaissent, dans tous les pays, années et scénarios. Utiliser moins d'engrais dans les fermes ne réduit pas la quantité d'acide nitrique produite.
 - Ce qui accompagne le combustible des bâtiments et de l'industrie (le CO₂ de sa production, le méthane, le N₂O et la pollution de l'air) suit les rapports de CEDS en 2022 par kg de leur CO₂ fossile, CO₂ de procédé compris pour l'industrie ; les usines chimiques prennent les rapports de l'industrie, que CEDS tire des usines de fer, d'acier, de ciment et de chaux. Ces rapports évoluent avec les facteurs d'émission du scénario. L'électricité consommée ajoute les co-émissions du réseau (voir [Énergie et transport](#method-sectors)).
@@ -221,9 +270,13 @@ Certaines industries n'ont pas de levier. Soit les scénarios ne leur donnent pa
 - JRC (2026). Fiche Aluminium (JRC144120), [publications.jrc.ec.europa.eu](https://publications.jrc.ec.europa.eu/repository/handle/JRC144120).
 - GIEC (2022). Climate Change 2022: Mitigation of Climate Change, groupe de travail III, chapitre 9, Buildings, section 9.6.2 et figure 9.16, [ipcc.ch/report/ar6/wg3/chapter/chapter-9](https://www.ipcc.ch/report/ar6/wg3/chapter/chapter-9/).
 - AIE (2026). Special Report on Buildings Efficiency, résumé exécutif, [iea.org/reports/special-report-on-buildings-efficiency](https://www.iea.org/reports/special-report-on-buildings-efficiency). Licence : CC BY 4.0.
+- AIE (2023). Net Zero Roadmap: A Global Pathway to Keep the 1.5 °C Goal in Reach, mise à jour 2023, chapitre 2, *Industry*, [iea.org/reports/net-zero-roadmap-a-global-pathway-to-keep-the-15-0c-goal-in-reach](https://www.iea.org/reports/net-zero-roadmap-a-global-pathway-to-keep-the-15-0c-goal-in-reach). Licence : CC BY 4.0.
+- AIE (2025). Can low-temperature heat in factories be electrified competitively?, commentaire, [iea.org/commentaries/can-low-temperature-heat-in-factories-be-electrified-competitively](https://www.iea.org/commentaries/can-low-temperature-heat-in-factories-be-electrified-competitively). Licence : CC BY 4.0.
+- GIEC (2022). Climate Change 2022: Mitigation of Climate Change, groupe de travail III, chapitre 11 : Industry, section 11.4.1.4, [ipcc.ch/report/ar6/wg3/chapter/chapter-11](https://www.ipcc.ch/report/ar6/wg3/chapter/chapter-11/).
+- Madeddu, S., Ueckerdt, F., Pehl, M., Peterseim, J., Lord, M., Kumar, K. A., Krüger, C. et Luderer, G. (2020). The CO₂ reduction potential for the European industry via direct electrification of heat supply (power-to-heat). Environmental Research Letters 15, 124004, [doi:10.1088/1748-9326/abbd02](https://doi.org/10.1088/1748-9326/abbd02). Licence : CC BY 4.0.
 - AIE (2022). The Future of Heat Pumps, [iea.org/reports/the-future-of-heat-pumps](https://www.iea.org/reports/the-future-of-heat-pumps). Licence : CC BY 4.0.
 - AIE (2020). Iron and Steel Technology Roadmap, [iea.org/reports/iron-and-steel-technology-roadmap](https://www.iea.org/reports/iron-and-steel-technology-roadmap) : CO₂ direct par tonne des principales filières (tableau p. 42), scénario de développement durable (p. 54), réduction par fusion avec captage et réduction à l'hydrogène (p. 92–93).
-- GIEC (2006). Lignes directrices pour les inventaires nationaux de gaz à effet de serre, volume 2, chapitre 1, tableau 1.4 : facteurs d'émission de CO₂ par défaut pour la combustion.
+- GIEC (2006). Lignes directrices pour les inventaires nationaux de gaz à effet de serre, volume 2, chapitre 1, tableau 1.4 : facteurs d'émission de CO₂ par défaut pour la combustion, gaz naturel, gazole et fioul, et autre charbon bitumineux.
 - GIEC (2006). Lignes directrices pour les inventaires nationaux de gaz à effet de serre, volume 3, chapitre 3, tableau 3.4 : facteurs par défaut de la production d'acide adipique, [ipcc-nggip.iges.or.jp](https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol3.html).
 - GIEC (2019). 2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories, volume 3, chapitre 3, tableau 3.3 : facteurs par défaut de la production d'acide nitrique, [ipcc-nggip.iges.or.jp](https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol3.html).
 - US EPA (2013). Global Mitigation of Non-CO₂ Greenhouse Gases: 2010–2030, chapitre IV.1, production d'acide nitrique et d'acide adipique, [epa.gov](https://www.epa.gov/sites/default/files/2016-06/documents/mac_report_2013-iv_industrial.pdf). Œuvre du gouvernement américain, dans le domaine public.

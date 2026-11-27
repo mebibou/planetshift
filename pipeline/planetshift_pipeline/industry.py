@@ -1,5 +1,5 @@
 """industry.json: direct fossil CO₂ of buildings and of industry under each SSP, and what the
-clean-heating and clean-industry levers need. Run alone with
+clean-heating, clean-industry and other-industry levers need. Run alone with
 `uv run python -m planetshift_pipeline.industry`; explained in docs/methodology/en/industry.md."""
 
 import json
@@ -83,6 +83,58 @@ PARTS = {
     },
 }
 
+# Light manufacturing, food and paper's share of industry's CO₂ (IPCC AR6 WGIII 11.4.1.4) and of
+# their heat below 200 °C (IEA 2025 commentary); the remainder's cut and electricity from Madeddu et
+# al. 2020 and IPCC 2006 fuel factors, derived in docs/methodology/en/industry.md. The remainder's
+# carriers are Other industry's 2050 energy use in the IEA Net Zero Roadmap 2023 (figure 2.21,
+# p. 87, read off the chart, EJ), less the heat pumps' electricity; its electrolysis draws
+# 15 000 TWh for 80% of 420 Mt H₂ (p. 78).
+LIGHT_INDUSTRY_SHARE = 0.097 + 0.019 + 0.011
+LOW_HEAT_SHARE = 0.75
+NZE_OTHER_INDUSTRY_2050 = {
+    "electricity": 35.7,
+    "hydrogen": 1.3,
+    "bioenergy": 10.2,
+    "renewables": 6.7,
+}
+H2_KWH_PER_KWH = 15_000e9 / (0.8 * 420e9) / 33.3
+COAL_KG_PER_KWH = 94.6 / 277.8
+
+
+def heat_pump_ej(low_heat: float) -> float:
+    """The EJ of the 2050 electricity that runs heat pumps for the heat below 200 °C: that heat is
+    `low_heat` of the fuel replaced and needs boiler / COP kWh of electricity per kWh of fuel, the
+    rest of the fuel is replaced kWh for kWh."""
+    hp = low_heat * HEAT_PUMP["median"]["boiler"] / HEAT_PUMP["median"]["cop"]
+    return sum(NZE_OTHER_INDUSTRY_2050.values()) * hp / (hp + 1 - low_heat)
+
+
+def carriers(low_heat: float) -> dict[str, float]:
+    """The remainder's share of each low-carbon carrier, the heat pumps' electricity taken out."""
+    left = NZE_OTHER_INDUSTRY_2050 | {
+        "electricity": NZE_OTHER_INDUSTRY_2050["electricity"] - heat_pump_ej(low_heat)
+    }
+    return {k: v / sum(left.values()) for k, v in left.items()}
+
+
+def rest_kwh(low_heat: float, electric: float, fuel_kg_per_kwh: float) -> float:
+    """kWh of grid electricity per kg avoided: the electrified share at `electric` kWh/kg, and
+    hydrogen burnt in place of a fuel emitting `fuel_kg_per_kwh`."""
+    mix = carriers(low_heat)
+    return mix["electricity"] * electric + mix["hydrogen"] * H2_KWH_PER_KWH / fuel_kg_per_kwh
+
+
+def rest_kwh_range(low_heat: float) -> dict[str, float]:
+    gas = KG_PER_KWH["gas"]
+    return {
+        "median": rest_kwh(low_heat, 1 / 0.255, gas),
+        "low": rest_kwh(low_heat, 0.85 / COAL_KG_PER_KWH, COAL_KG_PER_KWH),
+        "high": rest_kwh(low_heat, 0.90 / gas, gas),
+    }
+
+
+REST_CUT = {"median": 0.36 / 0.40, "low": 0.78, "high": 0.99}
+
 SOURCE = (
     "RCMIP v5.1.0 harmonised to CEDS v_2024_07_08 (buildings, 2022) and IEA Tracking Clean "
     "Energy Progress 2023 (industry); Global Carbon Budget "
@@ -136,6 +188,38 @@ SOURCES = [
         "version": "2020",
         "url": "https://www.iea.org/reports/iron-and-steel-technology-roadmap",
         "licence": "IEA, all rights reserved",
+    },
+    {
+        "id": "madeddu-2020-power-to-heat",
+        "name": "Madeddu et al. (2020), The CO₂ reduction potential for the European industry via "
+        "direct electrification of heat supply (power-to-heat)",
+        "version": "Environ. Res. Lett. 15, 124004",
+        "url": "https://doi.org/10.1088/1748-9326/abbd02",
+        "licence": "CC BY 4.0",
+    },
+    {
+        "id": "iea-net-zero-roadmap-2023",
+        "name": "IEA, Net Zero Roadmap: A Global Pathway to Keep the 1.5 °C Goal in Reach, 2023 "
+        "update (report body: figure 2.21 and p. 78; not Annex A)",
+        "version": "2023",
+        "url": "https://www.iea.org/reports/net-zero-roadmap-a-global-pathway-to-keep-the-15-0c-"
+        "goal-in-reach",
+        "licence": "CC BY 4.0",
+    },
+    {
+        "id": "iea-low-temperature-heat",
+        "name": "IEA, Can low-temperature heat in factories be electrified competitively?",
+        "version": "2025",
+        "url": "https://www.iea.org/commentaries/can-low-temperature-heat-in-factories-be-"
+        "electrified-competitively",
+        "licence": "CC BY 4.0",
+    },
+    {
+        "id": "ipcc-ar6-wg3-ch11",
+        "name": "IPCC AR6 WGIII, chapter 11: Industry",
+        "version": "2022",
+        "url": "https://www.ipcc.ch/report/ar6/wg3/chapter/chapter-11/",
+        "licence": "IPCC copyright, figures cited",
     },
     {
         "id": "voldsund-2019-cement-capture",
@@ -202,6 +286,20 @@ def shares(cement_process_kg: float) -> dict[str, float]:
     }
 
 
+def rest(shares: dict[str, float]) -> dict:
+    """The rest of industry: its share without ammonia, the share of it that is heat below 200 °C,
+    and the cut and electricity of cleaning the remainder."""
+    ammonia = PRIMARY_CHEMICALS_2022 * AMMONIA_SHARE / INVENTORY["industry"]
+    share = 1 - sum(shares.values()) - ammonia
+    low_heat = LIGHT_INDUSTRY_SHARE * LOW_HEAT_SHARE / share
+    return {
+        "share": rounded([share])[0],
+        "lowHeat": rounded([low_heat])[0],
+        "cut": range3(REST_CUT),
+        "kwhPerKgCo2": range3(rest_kwh_range(low_heat)),
+    }
+
+
 def heat_pump_kwh(case: dict) -> float:
     """kWh of electricity per kg of fossil CO₂ a heat pump avoids in place of a boiler."""
     return case["boiler"] / (case["cop"] * KG_PER_KWH[case["fuel"]])
@@ -236,6 +334,7 @@ def document(rcmip_df: pd.DataFrame, cement: pd.DataFrame, buildings: float) -> 
         },
         "heatPumpKwhPerKgCo2": range3({k: heat_pump_kwh(c) for k, c in HEAT_PUMP.items()}),
         "industryParts": parts(process),
+        "industryRest": rest(shares(process)),
         "cementProcessCo2": {"year": BASE_YEAR, "kg": rounded([process])[0]},
         "source": SOURCE,
     }
@@ -264,7 +363,7 @@ def summary(doc: dict) -> list[str]:
         f"cement process {doc['cementProcessCo2']['kg'] / KG_PER_GT:.3f} Gt; shares steel "
         f"{p['steel']['share']:.3f} cement {p['cement']['share']:.3f} chemicals "
         f"{p['chemicals']['share']:.3f}; heat pump kWh/kg "
-        f"{doc['heatPumpKwhPerKgCo2']}"
+        f"{doc['heatPumpKwhPerKgCo2']}; rest {doc['industryRest']}"
     )
     return lines
 

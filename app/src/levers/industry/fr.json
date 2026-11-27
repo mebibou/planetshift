@@ -1,6 +1,6 @@
 {
   "title": "Bâtiments et industrie",
-  "description": "Réduire les combustibles fossiles brûlés dans les bâtiments et dans les usines d'acier, de ciment et de chimie : leur CO₂, le méthane qui fuit pour les produire et leur pollution de l'air, dont le refroidissement disparaît aussi.",
+  "description": "Réduire les combustibles fossiles brûlés dans les bâtiments et les usines : leur CO₂, le méthane qui fuit pour les produire et leur pollution de l'air, dont le refroidissement disparaît aussi.",
   "family": "Bâtiments et industrie",
   "page": "Bâtiments et industrie",
   "efficientBuildings": {
@@ -14,6 +14,10 @@
   "cleanIndustry": {
     "title": "Industrie propre",
     "description": "Acier fait à l'hydrogène ou à la ferraille au four électrique, ciment avec le CO₂ de ses fours capté, et chimie à l'hydrogène électrolytique ou au captage du carbone ; l'électricité qu'ils consomment compte. L'ammoniac est laissé aux pratiques agricoles."
+  },
+  "otherIndustry": {
+    "title": "Autres industries",
+    "description": "Des pompes à chaleur fournissent la chaleur à basse température des usines agroalimentaires, papetières, textiles et autres. Pour le reste, la chaleur électrique et la bioénergie remplacent l'essentiel du combustible brûlé. L'électricité consommée est aussi comptée. L'ammoniac est laissé aux pratiques agricoles."
   },
   "acidN2o": {
     "title": "N₂O des acides nitrique et adipique",

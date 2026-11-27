@@ -1,4 +1,4 @@
-import type { Ssp } from '../../data/types';
+import type { Range3, Ssp } from '../../data/types';
 import { towards } from '../../model/bands';
 import type { Band } from '../../model/climate';
 import { dataValueAt, recordFrom, sum } from '../../model/util';
@@ -33,6 +33,26 @@ export const industryCo2 = (
 /** The adoptions reached in a year: the module's levers and renewable electricity. */
 export type IndustryAdoption = Record<IndustryLever | typeof RENEWABLE_ELECTRICITY, number>;
 
+const ALL: Range3 = { median: 1, low: 1, high: 1 };
+
+/** The rest of industry as two parts: its low-temperature heat, all of it on heat pumps, and the remainder. */
+export const restParts = (industry: Industry): PartDef[] => {
+  const r = industry.industryRest;
+  return [
+    { share: r.share * r.lowHeat, cut: ALL, kwhPerKgCo2: industry.heatPumpKwhPerKgCo2 },
+    { share: r.share * (1 - r.lowHeat), cut: r.cut, kwhPerKgCo2: r.kwhPerKgCo2 },
+  ];
+};
+
+/** The share of industry's CO₂ some parts cut, and the electricity they draw per kg of it. */
+const cutBy = (parts: readonly PartDef[], band: Band) => {
+  const cut = parts.map((p) => p.share * towards(p.cut, band, true));
+  return {
+    share: sum(cut),
+    kwh: sum(parts.map((p, i) => (cut[i] as number) * towards(p.kwhPerKgCo2, band, false))),
+  };
+};
+
 export interface YearContext {
   industry: Industry;
   sectors: Sectors;
@@ -46,8 +66,9 @@ export type IndustrySource = 'buildings' | 'industry' | 'electricity';
 /**
  * Change in fossil CO₂ in a year by the sector that emits it, kg (negative when avoided):
  * efficiency cuts buildings' fuel and their share of the grid's CO₂, heat pumps replace the
- * boilers it leaves, and clean steel, cement and chemicals save their part of industry's; heat
- * pumps and clean industry draw electricity on the grid left after renewable electricity.
+ * boilers it leaves, and clean steel, cement and chemicals and the cleaner rest of industry save
+ * their parts of industry's; heat pumps and the industry levers draw electricity on the grid left
+ * after renewable electricity.
  */
 export const industryCo2BySource = (
   ctx: YearContext,
@@ -60,14 +81,19 @@ export const industryCo2BySource = (
   const buildings = industryCo2(industry, ssp, 'buildings', year);
   const heated = a.cleanHeating * (1 - saved) * buildings;
   const made = a.cleanIndustry * industryCo2(industry, ssp, 'industry', year);
-  const parts = INDUSTRY_PARTS.map((name) => industry.industryParts[name]);
-  const cut = (p: PartDef) => p.share * towards(p.cut, band, true);
+  const rest = a.otherIndustry * industryCo2(industry, ssp, 'industry', year);
+  const clean = cutBy(
+    INDUSTRY_PARTS.map((name) => industry.industryParts[name]),
+    band,
+  );
+  const other = cutBy(restParts(industry), band);
   return {
     buildings: -saved * buildings - heated,
-    industry: -made * sum(parts.map(cut)),
+    industry: -(made * clean.share + rest * other.share),
     electricity:
       (heated * towards(industry.heatPumpKwhPerKgCo2, band, false) +
-        made * sum(parts.map((p) => cut(p) * towards(p.kwhPerKgCo2, band, false)))) *
+        made * clean.kwh +
+        rest * other.kwh) *
         grid -
       saved *
         EFFICIENCY.electricityShare *

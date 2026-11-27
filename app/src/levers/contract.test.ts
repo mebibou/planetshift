@@ -135,6 +135,14 @@ describe.each(LEVERS.map((l) => [l.id, l] as const))('lever %s', (id, def) => {
 
 const real = loadRealData();
 
+// otherIndustry electrifies factory heat on SSP2-4.5's still-fossil grid: the grid's methane and
+// the lost SO₂ cooling outweigh its CO₂ saving until about 2050 (horizon 0).
+const WARMS_AT_FIRST: Readonly<Record<string, { horizon: number; by: number }>> = {
+  otherIndustry: { horizon: 0, by: 0.005 },
+};
+const slack = (id: string, h: number) =>
+  WARMS_AT_FIRST[id]?.horizon === h ? (WARMS_AT_FIRST[id]?.by ?? 0) : TOLERANCE;
+
 describe.skipIf(real === null)('every module on the real data', () => {
   const data = real as NonNullable<typeof real>;
   it.each(LEVERS.map((l) => l.id))(
@@ -151,7 +159,7 @@ describe.skipIf(real === null)('every module on the real data', () => {
         ),
       );
       w.slice(1).forEach((v, k) =>
-        v.forEach((x, h) => expect(x).toBeGreaterThanOrEqual((w[k]?.[h] ?? 0) - TOLERANCE)),
+        v.forEach((x, h) => expect(x).toBeGreaterThanOrEqual((w[k]?.[h] ?? 0) - slack(id, h))),
       );
     },
   );
