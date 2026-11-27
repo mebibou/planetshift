@@ -513,7 +513,7 @@
       "title": "Warming avoided in {year}, by lever group",
       "note": "Each group's part is the mean of what it adds over every order the groups could be counted in, so no group is counted first. A group acting on several causes is split between them. The parts add up to the total.",
       "added": "{value} added",
-      "diet": "Diet"
+      "diet": "Animal foods to plants"
     },
     "live": "Less warming in {year}: {value}."
   },
@@ -611,7 +611,7 @@
     "more": "Show more tabs"
   },
   "diet": {
-    "title": "Diet",
+    "title": "Animal foods to plants",
     "none": "No shift yet",
     "moved": "{share} moved",
     "movedOwn": "{share} moved, some foods set apart",

@@ -19,6 +19,7 @@ import { fossilMethaneSpec as fossilMethane } from './fossilMethane/spec';
 import { hfcSpec as hfc } from './hfc/spec';
 import { industrySpec as industry } from './industry/spec';
 import { permafrostSpec as permafrost } from './permafrost/spec';
+import { plantFoodsSpec as plantFoods } from './plantFoods/spec';
 import { populationSpec as population } from './population/spec';
 import { practicesSpec as practices } from './practices/spec';
 import { regrowthSpec as regrowth } from './regrowth/spec';
@@ -39,6 +40,7 @@ export const kept = (m: { departure?: LeverSpec['departure'] }): boolean =>
  */
 export const MODULES: readonly LeverSpec[] = [
   population,
+  plantFoods,
   waste,
   wasteMethane,
   practices,
@@ -59,7 +61,15 @@ export const MODULES: readonly LeverSpec[] = [
  * The order of the levers in the URL and of the modules' Methodology pages; the panel orders its
  * groups by cause and by what each is worth (`app/panelOrder.ts`).
  */
-const PANEL_ORDER = ['practices', 'waste', 'wasteMethane', 'deforestation', 'removals', 'energy'];
+const PANEL_ORDER = [
+  'practices',
+  'plantFoods',
+  'waste',
+  'wasteMethane',
+  'deforestation',
+  'removals',
+  'energy',
+];
 
 /** The order of the modules' figures in the summary strip. */
 const SUMMARY_ORDER = ['regrowth', 'removals', 'deforestation'];

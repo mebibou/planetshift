@@ -1,0 +1,17 @@
+{
+  "title": "Substitution d'aliments végétaux",
+  "description": "Remplacer le riz et l'huile de palme par d'autres céréales et d'autres huiles végétales. Le remplacement garde les mêmes calories, dans les proportions que chaque pays en mange aujourd'hui.",
+  "family": "Substitution d'aliments végétaux",
+  "meta": {
+    "of": "{count} sur {total} remplacés",
+    "none": "Aucun des {total} remplacé"
+  },
+  "rice": {
+    "title": "Riz vers d'autres céréales",
+    "description": "Les rizières inondées émettent du méthane. Par calorie, le riz ajoute environ deux fois plus de réchauffement que le blé ou le maïs. Les autres céréales du pays prennent ses calories."
+  },
+  "palmOil": {
+    "title": "Huile de palme vers d'autres huiles végétales",
+    "description": "Les plantations de palmiers à huile défrichent la forêt et drainent la tourbe, surtout en Indonésie et en Malaisie. Les huiles de palme et de palmiste consommées comme aliments sont remplacées par les autres huiles végétales du pays. Les terres et le défrichement liés à ces huiles sont aussi comptés. L'huile de palme brûlée comme carburant ou utilisée dans les savons et les cosmétiques n'est pas remplacée."
+  }
+}

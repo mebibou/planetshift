@@ -8,7 +8,7 @@ Les curseurs de Planetshift changent ce que l'on mange. La carte montre ce que l
 
 1. **La base maintenue.** Chacun garde les mêmes protéines (par défaut) ou les mêmes calories.
 2. **Ce qui est retiré.** Chaque groupe animal perd la part de ses disponibilités alimentaires que fixent les curseurs.
-3. **Ce qui est ajouté.** Les protéines (ou les calories) retirées reviennent sous forme de produits végétaux, selon le mélange choisi.
+3. **Ce qui est ajouté.** Les protéines (ou les calories) retirées reviennent sous forme de produits végétaux, selon le mélange choisi. Le riz et l'huile de palme peuvent ensuite être remplacés par d'autres céréales et d'autres huiles végétales à calories égales (voir « Remplacer le riz et l'huile de palme » plus bas).
 4. **Pertes et semences.** Plus d'aliments demandent un peu plus de disponibilités, car une partie se perd et une partie du grain est gardée comme semence.
 5. **Alimentation animale.** Moins d'animaux mangent moins, et la production des cultures fourragères baisse.
 6. **Où la production change.** La variation de la demande mondiale de chaque produit est répartie entre les pays qui le produisent.
@@ -153,11 +153,61 @@ Les courbes d'AGTP viennent d'impulsions simulées avec FaIR, un modèle climati
 
 La température de référence est la température publiée du SSP choisi. Avec la référence *population*, on y ajoute une correction : le réchauffement dû à l'écart entre les émissions agricoles mises à l'échelle de la population et la trajectoire agricole propre au SSP, à partir de l'année de référence. La courbe de référence correspond alors aux émissions de référence. La courbe du changement est la référence + ΔT, pour la médiane et pour la fourchette de 5 à 95 % de l'AGTP.
 
+## Remplacer le riz et l'huile de palme
+
+Deux aliments végétaux peuvent aussi être remplacés : le riz et l'huile de palme. Ils ne font pas partie du changement de régime, qui remplace des aliments animaux par des végétaux. Chacun a son propre levier dans le groupe *Substitution d'aliments végétaux*, sous Agriculture, avec sa propre famille dans la décomposition. À 0 %, on les mange comme aujourd'hui. À 100 %, on n'en mange plus, et d'autres aliments apportent les mêmes calories. Le levier agit sur ce qui est mangé une fois les aliments animaux déplacés. Le riz que le changement de régime ajoute est donc remplacé lui aussi. Il s'applique dans tous les pays, quel que soit le réglage *Où* du régime. C'est une étape de production qui vient avant la réduction du gaspillage. La nourriture qui n'est plus gaspillée est celle d'après la substitution.
+
+### Quels aliments
+
+Les aliments ont été choisis à partir des données du modèle. Pour chaque aliment végétal, ses émissions par tonne sont rapportées à ses calories par tonne dans les FBS. Les émissions sont des moyennes mondiales et comprennent la ferme, les intrants et les terres qu'il occupe : forêt défrichée et sols organiques drainés (voir [Déforestation](#method-deforestation)). En kg de CO₂e (à 100 ans) pour 1 000 kcal :
+
+| Aliment | Total | Dont méthane | Dont terres | Calories mangées, 10¹² kcal par an |
+| --- | --- | --- | --- | --- |
+| Thé | 59 | 3,2 | 3,3 | 1 |
+| Café | 15 | 0,5 | 7,5 | 5 |
+| Tomates, autres légumes, fruits | 2 à 4 | moins de 0,1 | moins de 1 | 34 à 249 chacun |
+| Cacao | 1,8 | 0,04 | 1,4 | 22 |
+| Riz | 0,83 | 0,35 | 0,07 | 1 527 |
+| Huile de palme | 0,69 | 0,02 | 0,38 | 211 |
+| Blé | 0,44 | 0,01 | 0,03 | 1 613 |
+| Huiles de colza, de tournesol | 0,37 à 0,38 | 0,01 | 0,05 à 0,09 | 102 à 131 |
+| Maïs | 0,31 | 0,01 | 0,04 | 421 |
+| Huile de soja | 0,26 | 0,02 | 0,05 | 277 |
+
+Un aliment vaut d'être remplacé quand il émet bien plus par calorie que les aliments qui prendraient sa place, et qu'on en tire beaucoup de calories. Le riz émet par calorie environ deux fois plus que le blé et près de trois fois plus que le maïs, surtout à cause du méthane des rizières inondées. C'est la deuxième source de calories après le blé. L'huile de palme émet environ deux fois plus que les autres huiles végétales, surtout à cause de la forêt défrichée et de la tourbe drainée pour le palmier à huile en Indonésie et en Malaisie.
+
+D'autres aliments sont laissés de côté :
+
+- **Le café, le thé et le cacao** émettent le plus par calorie, mais on ne boit pas le café ou le thé pour leurs calories, et aucun aliment ne les remplace calorie pour calorie. Les remplacer à masse égale demanderait un substitut, et aucun ne s'impose. Leurs empreintes alimentaires sont faibles : 0,04 à 0,09 Gt de CO₂e par an chacun.
+- **Les légumes et les fruits** émettent beaucoup par calorie parce qu'ils apportent peu de calories. On les mange pour leurs vitamines et leurs fibres, et la plupart des régimes sains en demandent plus, pas moins.
+- **Le sucre**, à 0,33 kg pour 1 000 kcal, n'émet pas plus que les céréales. Le défrichement pour la canne à sucre est compté sur le sucre qu'on en tire.
+- **Le manioc** émet 0,75 kg pour 1 000 kcal, en bonne partie par les terres. C'est un aliment de base des pays les plus pauvres. Le remplacer par des céréales demanderait des importations, et la plupart de ces pays ne peuvent pas compter dessus.
+
+### Leurs substituts
+
+- **Riz → les autres céréales du pays** : blé, maïs, millet, sorgho, orge, avoine, seigle et autres céréales, chacune selon sa part des calories que le pays en tire. En Inde, Davis et al. (2018) trouvent que remplacer le riz par du maïs, du millet ou du sorgho à calories égales réduirait l'eau d'irrigation et augmenterait les apports en fer et en zinc. Les substituts gardent le mélange propre au pays : le blé en Inde, en Chine et en Indonésie, le blé et le maïs aux Philippines et au Viêt Nam, le maïs et le sorgho au Nigeria. Un pays qui ne mange aucune de ces céréales prend le mélange mondial.
+- **Huile de palme → les autres huiles végétales du pays** : huiles de soja, de colza, de tournesol, d'arachide, de coton, de coco, de sésame, d'olive, de son de riz, de germe de maïs et autres huiles, chacune selon sa part des calories que le pays en tire. L'huile de palmiste vient des mêmes plantations : elle est remplacée en même temps que l'huile de palme. Meijaard et al. (2020) et Beyer et al. (2021) notent que les autres huiles donnent moins d'huile par hectare. Le modèle en tient compte, puisque chaque substitut apporte ses propres terres, son défrichement et ses émissions par tonne.
+
+Les substituts suivent la même chaîne que les aliments ajoutés par le changement des aliments animaux. Elle couvre les pertes et semences, le pays qui les cultive (commerce fixe par défaut), leurs émissions, leurs terres et leur défrichement. Le défrichement et les sols drainés du palmier à huile varient avec l'huile de palme, par son taux d'extraction (voir [Déforestation](#method-deforestation)).
+
+### Ce que cela change
+
+À 100 %, avec les réglages par défaut (SSP2-4.5, montée jusqu'en 2035), remplacer le riz évite 0,021 °C en 2050 et 0,049 °C en 2100. Le méthane des rizières baisse de 71 % en Thaïlande, 69 % aux Philippines, 55 % au Viêt Nam, 46 % en Indonésie, 30 % en Chine et 16 % en Inde. Remplacer l'huile de palme évite moins de 0,001 °C en 2050 et 0,002 °C en 2100. La forêt défrichée pour l'agriculture baisse de 17 % en Indonésie et de 22 % en Malaisie, et le CO₂ des sols drainés de 22 % et 18 %. L'huile de palme ajoute peu de réchauffement à cette échelle : l'alimentation représente environ un quart de l'huile de palme utilisée dans le monde, et son défrichement et sa tourbe drainée émettent du CO₂, qui s'accumule lentement, tandis que le méthane du riz réchauffe fortement en quelques décennies.
+
+### Limites
+
+- Les protéines affichées après le changement sont celles du régime. Elles n'incluent pas la petite variation de protéines due à la substitution, ni celle due à la réduction du gaspillage.
+- Seul l'usage alimentaire du riz et de l'huile de palme change. Les FBS comptent environ un quart de l'huile de palme du monde comme aliment. Le reste, brûlé comme biodiesel, utilisé dans les savons et les cosmétiques ou transformé, n'est pas couvert.
+- Les substituts sont mangés dans les proportions d'aujourd'hui. Leurs prix ne sont pas modélisés, ni les habitudes de cuisine et de goût liées au riz.
+- La demande supplémentaire de substituts n'augmente ni leurs rendements ni leurs prix. Elle ne change pas non plus l'endroit où ils sont cultivés, en dehors de l'option de commerce.
+- Les huiles de son de riz et de germe de maïs, sous-produits de la mouture, sont des substituts comme les autres.
+
 ## Hypothèses
 
 - Les régimes changent par parts des disponibilités actuelles de chaque groupe animal ; le mélange au sein d'un groupe ne change pas.
 - La base maintenue est conservée exactement dans chaque pays. L'autre nutriment ne l'est pas.
 - Le remplacement par défaut est le mélange actuel de végétaux riches en protéines (céréales, riz, légumineuses, fruits à coque, oléagineux à au moins 10 % de protéines). Le mélange de légumineuses est à 60 % de légumineuses, 20 % de soja et 20 % de céréales, et les boissons soja et avoine à 50 % de soja et 50 % d'avoine : des valeurs de départ à revoir.
+- Le riz est remplacé par les autres céréales du pays, et les huiles de palme et de palmiste par ses autres huiles végétales, à calories égales et dans les proportions actuelles des substituts dans le pays, ou celles du monde là où le pays n'en mange aucun.
 - Les pertes et semences sont des parts fixes des disponibilités. La transformation est fixe en tonnes. Le multiplicateur des disponibilités est plafonné à 3.
 - L'alimentation animale baisse en proportion de la production moins la transformation de chaque groupe dans le même pays, comme les prairies et le fourrage. Le beurre et la crème comptent comme le lait dont ils sont faits. Un groupe animal qu'un pays ne produit pas n'a pas d'alimentation à perdre.
 - Le lait et le poisson donnés aux animaux changent une fois, avec les animaux qu'ils nourrissent. Cette variation ne change pas de nouveau l'alimentation animale.
@@ -189,4 +239,7 @@ Le code se trouve dans `app/src/model/` : `diet.ts`, `replacement.ts`, `feed.ts`
 - KC, S. et al. (2024). Updating the Shared Socioeconomic Pathways (SSPs) global population and human capital projections. IIASA Working Paper WP-24-003.
 - Our World in Data, Population (série de long terme tirée de HYDE 3.3, Gapminder v7 et des WPP 2024) : <https://ourworldindata.org/population-growth>, CC BY 4.0.
 - Klein Goldewijk, K. et al. (2017). Anthropogenic land use estimates for the Holocene: HYDE 3.2. Earth System Science Data 9, 927–953 : <https://doi.org/10.5194/essd-9-927-2017>.
+- Davis, K. F. et al. (2018). Alternative cereals can improve water use and nutrient supply in India. Science Advances 4, eaao1108 : https://doi.org/10.1126/sciadv.aao1108
+- Meijaard, E. et al. (2020). The environmental impacts of palm oil in context. Nature Plants 6, 1418–1426 : https://doi.org/10.1038/s41477-020-00813-w
+- Beyer, R. M. et al. (2021). Species richness and carbon footprints of vegetable oils: can high yields outweigh palm oil's environmental impact? Sustainability 13, 1813 : https://doi.org/10.3390/su13041813
 - Poore, J., Nemecek, T. (2018). Reducing food's environmental impacts through producers and consumers. Science 360, 987–992 : https://doi.org/10.1126/science.aaq0216

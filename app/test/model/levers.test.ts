@@ -25,6 +25,7 @@ describe('levers together', () => {
 
 const LEVERS_ON = {
   ...Object.fromEntries(PRACTICES.map((p) => [p, 1])),
+  rice: 0.5,
   foodWaste: 0.5,
   supplyLosses: 0.5,
   deforestation: 1,

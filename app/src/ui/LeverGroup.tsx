@@ -19,13 +19,15 @@ export interface LeverGroupProps extends PanelProps {
   options?: Options;
 }
 
-/** What is adopted of a module's levers, for its group's summary line. */
-const metaOf = (t: T, count: number, total: number): string =>
-  total === 1
+const ADOPTED = { of: 'levers.adoptedOf', none: 'levers.noneAdopted' };
+
+/** What is adopted of a module's levers, for its group's summary line, in its own words if any. */
+const metaOf = (t: T, count: number, total: number, own?: string): string => {
+  const keys = own ? { of: `${own}.of`, none: `${own}.none` } : ADOPTED;
+  return total === 1
     ? t(count > 0 ? 'levers.adoptedOne' : 'levers.notAdopted')
-    : count > 0
-      ? t('levers.adoptedOf', { count, total })
-      : t('levers.noneAdopted', { total });
+    : t(count > 0 ? keys.of : keys.none, { count, total });
+};
 
 const LeverSlider = ({
   t,
@@ -84,7 +86,7 @@ export const LeverGroup = ({ module, available, ...props }: LeverGroupProps) => 
     <Group
       id={`levers-${module.id}`}
       title={title}
-      meta={metaOf(t, adoptedCount(scenario.levers, module), module.levers.length)}
+      meta={metaOf(t, adoptedCount(scenario.levers, module), module.levers.length, module.ui.meta)}
       worth={`family:${module.id}`}
       quick={
         <QuickPair

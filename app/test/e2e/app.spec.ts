@@ -745,6 +745,7 @@ test('natural regrowth adds the CO₂ taken up to the summary, and leaves when o
 
 const LEVER_FAMILIES: [string, string, string][] = [
   ['practices', 'feedAdditives', 'fa'],
+  ['plantFoods', 'rice', 'ric'],
   ['waste', 'foodWaste', 'fw'],
   ['deforestation', 'deforestation', 'df'],
   ['removals', 'coverCrops', 'cc'],
@@ -941,13 +942,14 @@ test('the panel is in groups, all closed, under their causes, with the time sett
 }) => {
   await open(page);
   const groups = page.locator('.panel details.group');
-  await expect(groups).toHaveCount(11);
+  await expect(groups).toHaveCount(12);
   await expect(page.locator('#panel-tab-levers')).toHaveAttribute('aria-selected', 'true');
   await expect(page.locator('#panel-panel-options')).toBeHidden();
   for (const id of [
     'diet',
     ...[
       'practices',
+      'plantFoods',
       'waste',
       'deforestation',
       'removals',
@@ -975,6 +977,11 @@ test('the panel is in groups, all closed, under their causes, with the time sett
   await expect(page.locator('.timing label')).toHaveText('All levers fully in place by');
   await expect(
     page.locator('.cause-section[data-cause="agriculture"] details[data-group="diet"]'),
+  ).toHaveCount(1);
+  await expect(
+    page.locator(
+      '.cause-section[data-cause="agriculture"] details[data-group="levers-plantFoods"]',
+    ),
   ).toHaveCount(1);
   await expect(
     page.locator('.cause-section[data-cause="fossilIndustry"] details[data-group="levers-energy"]'),
@@ -1040,7 +1047,8 @@ test('the causes are ordered by size and their groups by worth, and sliders neve
       .find((o) => o.startsWith('agriculture'))
       ?.split(' ')
       .slice(1) ?? [];
-  const values = await Promise.all(farming.map(worth));
+  expect(farming[farming.indexOf('diet') + 1]).toBe('levers-plantFoods');
+  const values = await Promise.all(farming.filter((g) => g !== 'levers-plantFoods').map(worth));
   expect([...values].sort((a, b) => b - a)).toEqual(values);
   const before = await order();
   await openDiet(page);
@@ -1518,6 +1526,26 @@ test('the Diet pair sets the main shift and clears the foods set apart', async (
   await quick(page, 'diet', 'zero').click();
   await expect(page).not.toHaveURL(/shift=/);
   await expect(page.locator('details[data-group="diet"] .group-meta')).toHaveText('No shift yet');
+});
+
+test('the plant food swaps pair sets rice and palm oil apart from the Diet pair', async ({
+  page,
+}) => {
+  await open(page);
+  const meta = page.locator('details[data-group="levers-plantFoods"] .group-meta');
+  await expect(meta).toHaveText('None of 2 swapped');
+  await quick(page, 'plantFoods', 'full').click();
+  await expect(page).toHaveURL(/ric=100&plm=100/);
+  await expect(meta).toHaveText('2 of 2 swapped');
+  await quick(page, 'diet', 'full').click();
+  await expect(page).toHaveURL(/shift=100/);
+  expect(await pressed(page, 'diet')).toBe('full');
+  expect(await pressed(page, 'plantFoods')).toBe('full');
+  await quick(page, 'diet', 'zero').click();
+  await expect(page).toHaveURL(/ric=100&plm=100/);
+  await quick(page, 'plantFoods', 'zero').click();
+  await expect(page).not.toHaveURL(/ric=|plm=/);
+  await expect(meta).toHaveText('None of 2 swapped');
 });
 
 test('a cause’s pair sets every group under it, and the all-levers pair every group', async ({

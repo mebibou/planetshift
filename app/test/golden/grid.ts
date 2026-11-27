@@ -113,6 +113,11 @@ export const GRID: Setting[] = [
     shift: 1,
     groupShifts: all(['ruminantMeat', 'pigMeat', 'poultryMeat', 'dairy', 'eggs', 'seafood']),
   }),
+  ...['rice', 'palmOil'].flatMap((id) =>
+    [0.5, 1].map((a) => setting(`${id}@${a * 100}`, { levers: { [id]: a } })),
+  ),
+  setting('plantFoodSwaps+shift50', { shift: 0.5, levers: all(['rice', 'palmOil']) }),
+  setting('plantFoodSwaps+waste', { levers: all(['rice', 'palmOil', ...WASTE]) }),
   setting('mixed', MIXED),
   ...OPTION_CASES.map(([id, options]) => setting(`mixed+${id}`, MIXED, options)),
   ...SCENARIO_CASES.map(([id, s]) => setting(`mixed+${id}`, { ...MIXED, ...s })),
