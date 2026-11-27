@@ -199,7 +199,7 @@ To add a lever:
    - a Methodology page in both languages
    - a fixture for each file
 
-   `test/model/timing.test.ts` times a run with everything on. `test/model/attribution.test.ts` checks the breakdown against the Shapley values of full runs. If a module's family interacts with another farm family other than through production (the diet and less waste), the breakdown's shortcut no longer holds, and that test fails.
+   `test/model/timing.test.ts` times a run with everything on. `test/model/attribution.test.ts` checks the breakdown against the Shapley values of full runs. It runs one scenario per group of `FAMILY_GROUPS` (`test/model/families.ts`), with every on/off combination of the group's families. Put a new family in a group with the families it interacts with. A group holds at most 8 families. If a module's family interacts with another farm family other than through production (the diet and less waste), the breakdown's shortcut no longer holds, and that test fails.
 
 7. Run `npm test`. The goldens in `test/golden/` must not move, because a new lever at 0 changes nothing. Then add its id to the grid in `test/golden/grid.ts` and run `npm run golden` to record its own results.
 
