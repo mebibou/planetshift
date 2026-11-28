@@ -140,9 +140,9 @@ The avoided emissions in CO₂e in the year the levers are complete are shared o
 
 ### The breakdown by food
 
-The summary also splits the diet by the animal foods it shifts, and the plant food swaps by the foods they swap. Each food's part comes from its group's part, cause by cause:
+The summary also splits the diet by the animal foods it shifts, the plant food swaps by the foods they swap, and less waste and the farm practices by food group. Each food's part comes from its group's part, cause by cause:
 
-1. Each food is worth what its group would avoid if it moved that food alone, in full, times the share of it moved. This is the figure beside each animal food in the panel, scaled to the slider.
+1. Each food is worth what its group would avoid if it moved that food alone, in full, times the share of it moved. This is the figure beside each animal food in the panel, scaled to the slider. For less waste and the farm practices, a food group is worth the part of the lever group's change in farm emissions that comes from its items, in the run. That part is made of the production less waste no longer needs, by the group of each item grown, and of what the practices cut from each item's emissions. The feed a smaller herd no longer needs therefore counts in the crops it is made of. Clearing, and the rest that has no item, is shared out by the size of each food group's part in farming.
 2. Each food gets its worth, and the rest of its group's part is shared out between the foods by the size of their worth, as the permafrost change is. The foods of a group therefore add up exactly to its part, in each cause, in 2050, in 2100 and in CO₂e.
 
 A food that adds warming in a cause keeps its sign. Swapping rice, for example, avoids the methane of paddies in farming. It adds a little after the farm, under fossil fuels and industry, where the other cereals are processed and carried.

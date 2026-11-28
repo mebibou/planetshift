@@ -39,8 +39,13 @@ describe('the breakdown by food', () => {
   const r = run({ shift: 0.5, groupShifts: { dairy: 1 }, levers: LEVERS }, { regrowth: 'natural' });
   const s = r.summary;
 
-  it('splits the diet by each animal food it shifts and the plant food swaps by each', () => {
-    expect(Object.keys(s.byFood.avoidedWarming2100).sort()).toEqual(['diet', 'plantFoods']);
+  it('splits the diet by each animal food it shifts, the plant food swaps by each, and less waste and practices by food group', () => {
+    expect(Object.keys(s.byFood.avoidedWarming2100).sort()).toEqual([
+      'diet',
+      'plantFoods',
+      'practices',
+      'waste',
+    ]);
     expect(Object.keys(s.byFood.avoidedWarming2100.diet ?? {})).toEqual([...ANIMAL_GROUPS]);
     expect(Object.keys(s.byFood.avoidedWarming2100.plantFoods ?? {})).toEqual(['rice', 'palmOil']);
     expect(s.byFood.avoidedWarming2100.diet?.ruminantMeat?.agriculture).toBeGreaterThan(0);

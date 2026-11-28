@@ -10,6 +10,7 @@ export const wasteSpec: LeverSpec = {
   family: 'waste',
   farm: true,
   cause: 'agriculture',
+  foods: 'groups',
   levers: [lever(ID, 'foodWaste', 'fw'), lever(ID, 'supplyLosses', 'sl')],
   options: [],
   files: [{ name: 'waste', empty: EMPTY_WASTE }],

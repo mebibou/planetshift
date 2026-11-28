@@ -541,6 +541,22 @@ test('the diet is split by food in the summary, and the warming avoided stacks i
   await noHorizontalScroll(page);
 });
 
+test('less waste and the farm practices are split by food group in the summary', async ({
+  page,
+}) => {
+  await open(page, `${START}&fw=100&fa=100&mm=100`);
+  const farming = page.locator('.breakdown-cause[data-cause="agriculture"]');
+  for (const family of ['waste', 'practices']) {
+    const row = farming.locator(`.breakdown-row[data-family="${family}"]`);
+    await expect(row.locator('.breakdown-foods')).toBeHidden();
+    await row.locator('.breakdown-toggle').click();
+    await expect(row.locator('.breakdown-foods > li')).not.toHaveCount(0);
+  }
+  await expect(
+    farming.locator('.breakdown-row[data-family="practices"] [data-food="ruminantMeat"]'),
+  ).toContainText('Beef and lamb');
+});
+
 test('the Waste tab stacks food by stage with the levers, and municipal waste the levers leave', async ({
   page,
 }) => {

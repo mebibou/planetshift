@@ -256,8 +256,8 @@ export interface LeverModule {
    * farm emissions always count in farming. None for a module without a family.
    */
   cause?: ModuleCause;
-  /** Its family's foods in the breakdown: one per lever. */
-  foods?: 'levers';
+  /** Its family's foods in the breakdown: one per lever, or one per food group it changes. */
+  foods?: 'levers' | 'groups';
   /** Off in planetshift.config.json, the build leaves the module out; its hooks check the data's. */
   departure?: ModuleDeparture;
   levers: readonly LeverDef[];

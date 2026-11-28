@@ -105,7 +105,14 @@ import {
   type Ensemble,
   type FairBaseline,
 } from './fairClimate';
-import { groupTotals, prepare, type Prepared, type PreparedCountry } from './prepare';
+import {
+  GROUPS,
+  groupIndicesOf,
+  groupTotals,
+  prepare,
+  type Prepared,
+  type PreparedCountry,
+} from './prepare';
 import { baselineScale, builtUp, ramp, tabulate, type Scale } from './timePath';
 import {
   END_YEAR,
@@ -1937,20 +1944,114 @@ const leverWeights = (frame: PassFrame, module: LeverModule): Map<string, () => 
   );
 };
 
+/** Each item's emissions of `tonnes`, times its `cut` when given, added into its group's. */
+const addByGroup = (
+  into: readonly GasVector[],
+  index: Int32Array,
+  tonnes: ItemVector,
+  kg: Record<Gas, ItemVector>,
+  cut: Record<Gas, ItemVector> | null,
+  sign: number,
+) => {
+  for (const gas of GASES) {
+    const k = kg[gas];
+    const c = cut?.[gas];
+    for (let i = 0; i < index.length; i++) {
+      const v = (tonnes[i] as number) * (k[i] as number) * (c ? (c[i] as number) : 1);
+      (into[index[i] as number] as GasVector)[gas] += sign * v;
+    }
+  }
+};
+
+/** The change in production of the step at `k` alone, in a country, or none. */
+const stepChangeAt = (steps: readonly Step[], k: number, iso3: string): ItemVector | null => {
+  const now = steps[k]?.run.change[iso3];
+  const before = steps[k - 1]?.run.change[iso3];
+  return now ? (before ? now.map((v, i) => v - (before[i] as number)) : now) : null;
+};
+
+/**
+ * A family's farm emissions in the full pass split by the food group of each item, own and
+ * joint: its step's change in production, and what its cut in intensity removes. Clearing and
+ * the rest have no item, so these weigh in farming alone.
+ */
+const groupEmissions = (
+  frame: PassFrame,
+  steps: readonly Step[],
+  module: LeverModule,
+): Joint<GasVector>[] => {
+  const { ctx } = frame;
+  const { prepared, options } = ctx;
+  const index = groupIndicesOf(prepared.items);
+  const k = steps.findIndex((s) => s.family === familyOf(module));
+  const cut = module.hooks.intensity?.(ctx) ?? null;
+  const last = steps[steps.length - 1] as Step;
+  const own = GROUPS.map(() => ({ ...ZERO_GAS }));
+  const joint = GROUPS.map(() => ({ ...ZERO_GAS }));
+  prepared.countries.forEach((pc) => {
+    const iso3 = pc.country.iso3;
+    const kg = countryIntensities(pc, prepared, options.scope).kgPerTonne;
+    const change = stepChangeAt(steps, k, iso3);
+    if (change) {
+      addByGroup(own, index, change, kg, null, 1);
+    }
+    if (cut) {
+      const share = cut(pc, 'median');
+      addByGroup(own, index, pc.emitting, kg, share, -1);
+      addByGroup(joint, index, last.run.change[iso3] as ItemVector, kg, share, -1);
+    }
+  });
+  return GROUPS.map((_, g) => ({ own: own[g] as GasVector, joint: joint[g] as GasVector }));
+};
+
+/** A module's foods when they are food groups: each group, worth its part of the farm emissions. */
+const groupWeights = (
+  frame: PassFrame,
+  steps: readonly Step[],
+  module: LeverModule,
+): Map<string, () => number[]> => {
+  const { years, scale, shareAt } = frame;
+  const byGroup = groupEmissions(frame, steps, module);
+  return new Map(
+    GROUPS.flatMap((g, k) => {
+      const farm = byGroup[k] as Joint<GasVector>;
+      const path = familyPath(farm, NO_CLEARING, years, scale, shareAt);
+      return isZero(farm.own) && isZero(farm.joint)
+        ? []
+        : [
+            [
+              g,
+              () =>
+                pathValues(
+                  frame,
+                  (c) => (c === 'agriculture' ? path : []),
+                  () => [],
+                  (_, atEnd) => (atEnd ? -co2eOf(atEnd) : 0),
+                ),
+            ] as const,
+          ];
+    }),
+  );
+};
+
 type Weighed = [string, Map<string, () => number[]>];
 
 /**
  * What each food of each acting family split by food is worth on its own: the diet's animal
- * foods and a module's levers alone. A family with one food needs no weight: it is all of it.
+ * foods and a module's levers alone, a module's food groups as their part of its emissions. A
+ * family with one food needs no weight: it is all of it.
  */
-const foodWeights = (frame: PassFrame, chains: readonly Chain[]) => {
+const foodWeights = (frame: PassFrame, steps: readonly Step[], chains: readonly Chain[]) => {
   const { ctx } = frame;
   const { production, dependent } = playersOf(ctx, chains);
   const acting = [...production, ...dependent];
   const split = MODULES.filter((m) => m.foods && acting.includes(familyOf(m)));
   const families: Weighed[] = [
     ...(acting.includes('diet') ? [['diet', dietWeights(frame)] as Weighed] : []),
-    ...split.map((m): Weighed => [familyOf(m), leverWeights(frame, m)]),
+    ...split.map((m): Weighed => [
+      familyOf(m),
+      m.foods === 'levers' ? leverWeights(frame, m) : groupWeights(frame, steps, m),
+    ]),
   ];
   const length = HORIZON_SIZE + COUNTED_CAUSES.length * frame.years.length;
   return new Map(
@@ -2570,7 +2671,7 @@ export const startPrepared = (
         totalsAt,
       );
       const foods = foodSplit(
-        foodWeights(frame, chains),
+        foodWeights(frame, steps, chains),
         summary.byFamilyCause,
         yearlyFamilies(
           shares.yearly,
