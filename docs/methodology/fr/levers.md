@@ -138,6 +138,19 @@ Une répartition selon les valeurs signées ne fonctionnerait pas. Une part qui 
 
 Les émissions évitées en CO₂e l'année où les leviers sont en place sont réparties de la même façon. Le CO₂e, ou équivalent CO₂, additionne les gaz avec des poids sur 100 ans (voir [Des émissions à la température](#method-climate)). Ces émissions laissent de côté le forçage de l'aviation hors CO₂ et le pergélisol, qui ne sont pas des émissions d'un levier.
 
+### La répartition par aliment
+
+Le résumé partage aussi l'alimentation entre les aliments animaux qu'elle déplace, et la substitution d'aliments végétaux entre les aliments qu'elle remplace. La part de chaque aliment vient de celle de son groupe, cause par cause :
+
+1. Chaque aliment vaut ce que son groupe éviterait s'il déplaçait cet aliment seul, en entier, multiplié par la part déplacée. C'est le chiffre affiché à côté de chaque aliment animal dans le panneau, ramené au curseur.
+2. Chaque aliment reçoit sa valeur, et le reste de la part de son groupe est réparti entre les aliments selon la taille de leur valeur, comme la variation du pergélisol. Les aliments d'un groupe s'additionnent donc exactement à sa part, pour chaque cause, en 2050, en 2100 et en CO₂e.
+
+Un aliment qui ajoute du réchauffement dans une cause garde son signe. Remplacer le riz, par exemple, évite le méthane des rizières dans l'agriculture. Il ajoute un peu après la ferme, sous les combustibles fossiles et l'industrie, où les autres céréales sont transformées et transportées.
+
+La valeur des aliments est calculée une fois par aliment en entier. Elle est gardée tant que les options, la rampe et les réglages **Maintenus égaux**, **Remplacés par** et **Où** de l'alimentation ne changent pas, donc déplacer un curseur ne fait que la multiplier. Les interactions entre aliments, comme un cheptel plus petit qui demande moins du même aliment du bétail, sont comptées dans le reste qui est réparti. Une valeur de Shapley entre aliments demanderait un calcul pour chaque ensemble d'aliments, jusqu'à 64 pour l'alimentation, à chaque mouvement.
+
+Le graphique Réchauffement évité peut montrer le réchauffement évité empilé par ces aliments, année par année. Chaque année est répartie de la même façon qu'en 2050 et 2100. La part de chaque groupe cette année-là reçoit sa part de la rétroaction et est ramenée au total de FaIR, puis elle est partagée entre ses aliments. Le reste du total revient aux autres leviers.
+
 ## Pourquoi certains leviers sont incertains
 
 Les fourchettes des pratiques (une réduction basse et haute) et du stockage (un taux bas et haut) alimentent la fourchette probable du réchauffement évité, avec la réponse du climat. Le bas de la fourchette prend la plus petite réduction et le captage le plus lent. Pour les leviers d'énergie, le bas de la fourchette prend le plus d'électricité par kilogramme de CO₂ d'échappement évité, le moins de forçage hors CO₂ par kilogramme de CO₂ de l'aviation et la plus faible demande des centres de données.

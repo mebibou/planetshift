@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { milestones } from '../app/milestones';
 import {
   GAS_STAT,
@@ -8,11 +8,11 @@ import {
   summaryStats,
   type Stat,
 } from '../app/summary';
-import { causeGroups, type PerCapita } from '../app/summaryModel';
+import { causeGroups, OTHER_FOODS, type FamilyRow, type PerCapita } from '../app/summaryModel';
 import type { Horizon } from '../app/url';
 import { formatTemperature } from '../i18n/format';
 import type { T } from '../i18n/i18n';
-import { familyLabel } from '../levers/registry';
+import { familyLabel, foodLabel } from '../levers/registry';
 import type { Mammals, Species } from '../data/types';
 import type { Options, ScenarioResult } from '../model/api';
 import { MenuHead } from './MenuHead';
@@ -54,6 +54,12 @@ const GAS_YEAR = 'gas-year m-0 mb-1.5 text-[0.8rem] font-bold text-muted';
 const TITLE = 'breakdown-title m-0 mb-2 text-[0.9rem] font-bold';
 const ROW = 'breakdown-row grid grid-cols-[minmax(0,1fr)_auto] gap-x-2.5 gap-y-0.5 text-[0.82rem]';
 const VALUE = 'breakdown-value font-bold tabular-nums';
+/** A family's toggle for its foods, a disclosure like the panel's groups. */
+const TOGGLE =
+  'breakdown-label breakdown-toggle chevron inline-flex cursor-pointer items-center gap-1 justify-self-start border-0 bg-transparent p-0 text-left text-inherit [font:inherit] focus-visible:rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus';
+/** A family's foods, inset under it as the animal foods are under the diet in the panel. */
+const FOODS =
+  'breakdown-foods col-[1/-1] m-0 mt-1 grid list-none gap-1 border-0 border-l-2 border-solid border-rule py-0.5 pr-0 pl-3 text-[0.78rem]';
 const BAR = {
   plain: 'bg-[var(--bar-colour,var(--muted))]',
   added:
@@ -85,11 +91,67 @@ const Bar = ({ width, added, faint }: { width: number; added: boolean; faint?: b
   </span>
 );
 
+/** A family's row, and, behind a toggle on it, closed at first, its foods when it is split by food. */
+const FamilyItem = ({
+  t,
+  row,
+  valueText,
+}: {
+  t: T;
+  row: FamilyRow;
+  valueText: (v: number) => string;
+}) => {
+  const [open, setOpen] = useState(false);
+  const id = useId();
+  const label = t(familyLabel(row.family));
+  return (
+    <li className={ROW} data-family={row.family}>
+      {row.foods.length > 0 ? (
+        <button
+          type="button"
+          className={TOGGLE}
+          aria-expanded={open}
+          aria-controls={id}
+          aria-label={t('summary.byFood.label', { group: label })}
+          onClick={() => setOpen((o) => !o)}
+        >
+          {label}
+        </button>
+      ) : (
+        <span className="breakdown-label">{label}</span>
+      )}
+      <span className={VALUE}>{valueText(row.value)}</span>
+      <Bar width={row.width} added={row.value < 0} faint />
+      {row.foods.length > 0 && (
+        <ul
+          className={FOODS}
+          id={id}
+          hidden={!open}
+          aria-label={t('summary.byFood.label', { group: label })}
+        >
+          {row.foods.map((food) => (
+            <li key={food.food} className={ROW} data-food={food.food}>
+              <span className="breakdown-label">
+                {food.food === OTHER_FOODS
+                  ? t('summary.byFood.other')
+                  : t(foodLabel(row.family, food.food))}
+              </span>
+              <span className={VALUE}>{valueText(food.value)}</span>
+              <Bar width={food.width} added={food.value < 0} faint />
+            </li>
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+};
+
 /** The warming each cause and each family of levers avoids by the horizon. */
 const Breakdown = ({ t, locale, result, horizon }: SummaryProps & { result: ScenarioResult }) => {
   const s = result.summary;
   const groups = causeGroups(
     horizon === '2100' ? s.byFamilyCause.avoidedWarming2100 : s.byFamilyCause.avoidedWarming2050,
+    horizon === '2100' ? s.byFood.avoidedWarming2100 : s.byFood.avoidedWarming2050,
   );
   const valueText = (v: number) =>
     v < 0
@@ -115,11 +177,7 @@ const Breakdown = ({ t, locale, result, horizon }: SummaryProps & { result: Scen
             </div>
             <ul className="breakdown-families m-0 grid list-none gap-1 py-0 pr-0 pl-4">
               {g.rows.map((r) => (
-                <li key={r.family} className={ROW} data-family={r.family}>
-                  <span className="breakdown-label">{t(familyLabel(r.family))}</span>
-                  <span className={VALUE}>{valueText(r.value)}</span>
-                  <Bar width={r.width} added={r.value < 0} faint />
-                </li>
+                <FamilyItem key={r.family} t={t} row={r} valueText={valueText} />
               ))}
             </ul>
           </li>

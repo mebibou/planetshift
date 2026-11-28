@@ -1,6 +1,7 @@
 import type { Country, CountedCause, Gas } from '../data/types';
 import type { CountryResult } from '../model/api';
 import { COUNTED_CAUSES, FAMILIES, type Family } from '../levers/registry';
+import { shareOut } from '../model/attribution';
 
 export interface PerCapita {
   proteinBefore: number;
@@ -73,12 +74,22 @@ export const landStat = (
   };
 };
 
+/** A food's part of its family's, as a row of the breakdown. */
+export interface FoodRow {
+  food: string;
+  /** °C avoided (negative when the food adds warming). */
+  value: number;
+  width: number;
+}
+
 export interface FamilyRow {
   family: Family;
   /** °C avoided (negative when the family adds warming). */
   value: number;
   /** |value| over the largest |value|, for the bar's length. */
   width: number;
+  /** Its foods, biggest first, when it is split by food and more than one shows. */
+  foods: FoodRow[];
 }
 
 export interface CauseGroup {
@@ -90,30 +101,84 @@ export interface CauseGroup {
   rows: FamilyRow[];
 }
 
+/** A family's foods' warming by cause, for the families split by food. */
+export type FoodWarming = Record<Family, Record<string, Record<CountedCause, number>>>;
+
+/** The foods a family lists at most; the rest are added up as one row. */
+const MOST_FOODS = 4;
+/** The key of the row that adds up a family's other foods. */
+export const OTHER_FOODS = 'other';
+
+/**
+ * A family's foods in a cause, biggest first: the largest that are big enough to show, then the
+ * rest added up. A rest too small to show, or of the other sign than the foods together (a food
+ * that adds warming among those a cutting lever saves), is shared out between the foods listed
+ * by their sizes instead, so the rows always add up to the family's part.
+ */
+const foodsIn = (
+  foods: FoodWarming,
+  family: Family,
+  cause: CountedCause,
+  shown: number,
+): { food: string; value: number }[] => {
+  const all = Object.entries(foods[family] ?? {}).map(([food, byCause]) => ({
+    food,
+    value: byCause[cause] ?? 0,
+  }));
+  const listed = [...all]
+    .sort((a, b) => Math.abs(b.value) - Math.abs(a.value))
+    .filter((f) => Math.abs(f.value) >= shown)
+    .slice(0, MOST_FOODS);
+  const rest = all.filter((f) => !listed.includes(f));
+  const other = rest.reduce((s, f) => s + f.value, 0);
+  const total = all.reduce((s, f) => s + f.value, 0);
+  const apart = Math.abs(other) >= shown && other * total > 0;
+  const folded = shareOut(
+    listed.map((f) => f.value),
+    apart ? 0 : other,
+  );
+  const rows = listed
+    .map((f, k) => ({ food: f.food, value: folded[k] as number }))
+    .sort((a, b) => b.value - a.value);
+  return apart
+    ? [...rows, ...(rest.length === 1 ? rest : [{ food: OTHER_FOODS, value: other }])]
+    : rows;
+};
+
+/** Whether a family shows its foods in a cause: when more than one is big enough. */
+const splitIn = (foods: FoodWarming, family: Family, cause: CountedCause, shown: number) =>
+  foodsIn(foods, family, cause, shown).length > 1;
+
 /**
  * The breakdown grouped by cause, as the Causes of warming chart's bands: each cause the levers
- * move, biggest first, with the families acting on it, biggest first. One scale for all, so a
- * family's bar reads against its cause's; a part too small to show (`shown`, °C) is left out.
- * Empty when a single family acts, as the headline already gives it.
+ * move, biggest first, with the families acting on it, biggest first, and under a family split
+ * by food its foods. One scale for all, so a family's bar reads against its cause's; a part too
+ * small to show (`shown`, °C) is left out. Empty when a single family acts and shows no foods,
+ * as the headline already gives it.
  */
 export const causeGroups = (
   warming: Record<Family, Record<CountedCause, number>>,
+  foods: FoodWarming = {},
   epsilon = 1e-6,
   shown = 0.0005,
 ): CauseGroup[] => {
   const acting = FAMILIES.filter((f) =>
     COUNTED_CAUSES.some((c) => Math.abs(warming[f]?.[c] ?? 0) > epsilon),
   );
-  return acting.length > 1 ? groupsOf(warming, acting, shown) : [];
+  const split = acting.some((f) => COUNTED_CAUSES.some((c) => splitIn(foods, f, c, shown)));
+  return acting.length > 1 || split ? groupsOf(warming, foods, acting, shown) : [];
 };
 
-/** The causes the acting families move, each with its families, on one scale. */
+/** The causes the acting families move, each with its families and their foods, on one scale. */
 const groupsOf = (
   warming: Record<Family, Record<CountedCause, number>>,
+  foods: FoodWarming,
   acting: readonly Family[],
   shown: number,
 ): CauseGroup[] => {
   const of = (f: Family, c: CountedCause) => warming[f]?.[c] ?? 0;
+  const foodRows = (f: Family, c: CountedCause) =>
+    splitIn(foods, f, c, shown) ? foodsIn(foods, f, c, shown) : [];
   const totals = COUNTED_CAUSES.map((cause) => ({
     cause,
     value: acting.reduce((s, f) => s + of(f, cause), 0),
@@ -123,7 +188,10 @@ const groupsOf = (
     0,
     ...totals.flatMap((g) => [
       Math.abs(g.value),
-      ...g.families.map((f) => Math.abs(of(f, g.cause))),
+      ...g.families.flatMap((f) => [
+        Math.abs(of(f, g.cause)),
+        ...foodRows(f, g.cause).map((r) => Math.abs(r.value)),
+      ]),
     ]),
   );
   const width = (v: number) => (largest > 0 ? Math.abs(v) / largest : 0);
@@ -134,7 +202,12 @@ const groupsOf = (
       value,
       width: width(value),
       rows: families
-        .map((family) => ({ family, value: of(family, cause), width: width(of(family, cause)) }))
+        .map((family) => ({
+          family,
+          value: of(family, cause),
+          width: width(of(family, cause)),
+          foods: foodRows(family, cause).map((r) => ({ ...r, width: width(r.value) })),
+        }))
         .sort((a, b) => b.value - a.value),
     }));
 };

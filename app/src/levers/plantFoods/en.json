@@ -13,5 +13,9 @@
   "palmOil": {
     "title": "Palm oil to other vegetable oils",
     "description": "Oil palm plantations clear forest and drain peat, mostly in Indonesia and Malaysia. Palm and palm kernel oil eaten as food are replaced by the country's other vegetable oils. The land and clearing for those oils count too. Palm oil burned as fuel or used in soaps and cosmetics is not replaced."
+  },
+  "foods": {
+    "rice": "Rice",
+    "palmOil": "Palm oil"
   }
 }

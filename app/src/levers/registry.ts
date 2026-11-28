@@ -144,6 +144,12 @@ export const familyLabel = (family: string): string => {
   return m ? `levers.${m.id}.family` : `summary.byFamily.${family}`;
 };
 
+/** The i18n key of a food a family is split by: a lever's own, else its food group's. */
+export const foodLabel = (family: string, food: string): string => {
+  const m = MODULES.find((x) => x.family === family);
+  return m?.foods === 'levers' ? `levers.${m.id}.foods.${food}` : `groups.${food}`;
+};
+
 /**
  * The data files the modules read, each with what stands for it when it is missing and the
  * levers of its module.

@@ -10,6 +10,7 @@ export const plantFoodsSpec: LeverSpec = {
   family: 'plantFoods',
   farm: true,
   cause: 'agriculture',
+  foods: 'levers',
   levers: [lever(ID, 'rice', 'ric'), lever(ID, 'palmOil', 'plm')],
   options: [],
   files: [],

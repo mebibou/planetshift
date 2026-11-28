@@ -167,6 +167,11 @@ export interface ScenarioResult {
      */
     avoidedByGas: Record<Gas, Record<GasLeverCause, number[]>>;
     /**
+     * The median warming avoided each year by each food of the families split by food, °C, all
+     * causes together: the same split as `summary.byFood`, year by year, zero before now.
+     */
+    avoidedByFood: Record<Family, Record<string, number[]>>;
+    /**
      * What a choice of people on Earth changes in the baseline's median warming, by cause and
      * each gas's by cause, °C on `years`; absent when the population follows the UN's.
      */
@@ -226,15 +231,27 @@ export interface Summary {
     avoidedWarming2050: Record<CountedCause, number>;
     avoidedWarming2100: Record<CountedCause, number>;
   };
+  /**
+   * The share of each family split by food (`FoodSplit` in run.ts), by family, food and cause.
+   * A family's foods add up to its causes in `byFamilyCause`.
+   */
+  byFood: {
+    avoidedCo2e: ByFood<number>;
+    avoidedWarming2050: ByFood<number>;
+    avoidedWarming2100: ByFood<number>;
+  };
 }
+
+/** A value for each food of each family split by food, by cause. */
+export type ByFood<T> = Record<Family, Record<string, Record<CountedCause, T>>>;
 
 type Temperature = ScenarioResult['temperature'];
 
 /** What comes after the rest of a run: footprints, the by-family breakdown, the split by cause. */
 export interface Breakdown {
   footprints: Record<string, Pick<CountryResult, 'footprint' | 'footprintChange'>>;
-  summary: Pick<Summary, 'byFamily' | 'byFamilyCause' | 'byCause'>;
-  temperature: Pick<Temperature, 'avoidedByCause' | 'avoidedByGas'>;
+  summary: Pick<Summary, 'byFamily' | 'byFamilyCause' | 'byCause' | 'byFood'>;
+  temperature: Pick<Temperature, 'avoidedByCause' | 'avoidedByGas' | 'avoidedByFood'>;
 }
 
 /** A run's result before its breakdown: what the sliders wait for. */

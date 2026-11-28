@@ -34,6 +34,9 @@ export type Range = (typeof RANGES)[number];
 /** The Waste chart's views: food lost and wasted by stage, municipal waste by type or treatment. */
 export const WASTE_VIEWS = ['food', 'types', 'treatment'] as const;
 export type WasteView = (typeof WASTE_VIEWS)[number];
+/** The Warming avoided chart's views: the total, or stacked by the food each lever shifts. */
+export const AVOIDED_VIEWS = ['total', 'food'] as const;
+export type AvoidedView = (typeof AVOIDED_VIEWS)[number];
 
 export interface UiState {
   view: View;
@@ -49,6 +52,7 @@ export interface UiState {
   speciesPer: SpeciesPer;
   wasteOf: WasteOf;
   wasteView: WasteView;
+  avoidedView: AvoidedView;
   firesOf: FiresOf;
 }
 
@@ -66,6 +70,7 @@ export const DEFAULT_UI: UiState = {
   speciesPer: 'country',
   wasteOf: 'food',
   wasteView: 'food',
+  avoidedView: 'total',
   firesOf: 'burned',
 };
 
@@ -84,6 +89,7 @@ const UI_KEYS = {
   speciesPer: 'per',
   wasteOf: 'waste',
   wasteView: 'wasteview',
+  avoidedView: 'avoidedview',
   firesOf: 'fire',
 };
 const KEPT_KEYS = ['data'];
@@ -112,6 +118,7 @@ export const parseUi = (query: string): UiState => {
     speciesPer: oneOf(SPECIES_PER, p.get(UI_KEYS.speciesPer), DEFAULT_UI.speciesPer),
     wasteOf: oneOf(WASTE_OF, p.get(UI_KEYS.wasteOf), DEFAULT_UI.wasteOf),
     wasteView: oneOf(WASTE_VIEWS, p.get(UI_KEYS.wasteView), DEFAULT_UI.wasteView),
+    avoidedView: oneOf(AVOIDED_VIEWS, p.get(UI_KEYS.avoidedView), DEFAULT_UI.avoidedView),
     firesOf: oneOf(FIRES_OF, p.get(UI_KEYS.firesOf), DEFAULT_UI.firesOf),
   };
 };
