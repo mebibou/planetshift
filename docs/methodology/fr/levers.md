@@ -140,9 +140,9 @@ Les émissions évitées en CO₂e l'année où les leviers sont en place sont r
 
 ### La répartition par aliment
 
-Le résumé partage aussi l'alimentation entre les aliments animaux qu'elle déplace, et la substitution d'aliments végétaux entre les aliments qu'elle remplace. La part de chaque aliment vient de celle de son groupe, cause par cause :
+Le résumé partage aussi l'alimentation entre les aliments animaux qu'elle déplace, la substitution d'aliments végétaux entre les aliments qu'elle remplace, et le gaspillage et les pratiques agricoles par groupe d'aliments. La part de chaque aliment vient de celle de son groupe, cause par cause :
 
-1. Chaque aliment vaut ce que son groupe éviterait s'il déplaçait cet aliment seul, en entier, multiplié par la part déplacée. C'est le chiffre affiché à côté de chaque aliment animal dans le panneau, ramené au curseur.
+1. Chaque aliment vaut ce que son groupe éviterait s'il déplaçait cet aliment seul, en entier, multiplié par la part déplacée. C'est le chiffre affiché à côté de chaque aliment animal dans le panneau, ramené au curseur. Pour le gaspillage et les pratiques agricoles, un groupe d'aliments vaut la part de la variation des émissions à la ferme du groupe de leviers qui vient de ses produits, dans le calcul. Cette part est faite de la production dont moins de gaspillage n'a plus besoin, selon le groupe de chaque produit cultivé ou élevé, et de ce que les pratiques retirent des émissions de chaque produit. L'aliment du bétail dont un cheptel plus petit n'a plus besoin compte donc dans les cultures dont il est fait. Le défrichement, et le reste qui n'a pas de produit, est réparti selon la taille de la part de chaque groupe d'aliments dans l'agriculture.
 2. Chaque aliment reçoit sa valeur, et le reste de la part de son groupe est réparti entre les aliments selon la taille de leur valeur, comme la variation du pergélisol. Les aliments d'un groupe s'additionnent donc exactement à sa part, pour chaque cause, en 2050, en 2100 et en CO₂e.
 
 Un aliment qui ajoute du réchauffement dans une cause garde son signe. Remplacer le riz, par exemple, évite le méthane des rizières dans l'agriculture. Il ajoute un peu après la ferme, sous les combustibles fossiles et l'industrie, où les autres céréales sont transformées et transportées.

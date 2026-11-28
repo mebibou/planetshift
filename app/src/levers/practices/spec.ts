@@ -19,6 +19,7 @@ export const practicesSpec: LeverSpec = {
   family: 'practices',
   farm: true,
   cause: 'agriculture',
+  foods: 'groups',
   levers: LEVERS,
   options: [],
   files: [
