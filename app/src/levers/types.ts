@@ -16,6 +16,7 @@ import type { Band } from '../model/climate';
 import type { CakeDemand, Farmland } from '../model/land';
 import type { Prepared, PreparedCountry } from '../model/prepare';
 import type { ItemVector } from '../model/util';
+import type { ItemChange } from '../model/foods';
 import type { Scale } from '../model/timePath';
 
 /** A lever: a share adopted, 0..1, reached when the shift is complete. */
@@ -109,6 +110,8 @@ export interface CountryPart {
   /** CO₂ a year by family that follows each change with a first-order lag of `years`. */
   buildUp?: { years: number; co2: Readonly<Record<string, number>> };
   result?: Readonly<Record<string, number | object>>;
+  /** Some fields of `result` item by item, for the map's food choice; read only by the breakdown. */
+  byItem?: () => Readonly<Record<string, ItemChange>>;
 }
 
 export interface WorldContext {

@@ -369,7 +369,13 @@ const MEASURE_TOOLTIPS: Record<
     extra: (c, t, _, worst) => tierExtra(c, t, worst),
   },
   emissions: {
-    what: (t, spec) => t('map.tooltip.emissions', { gas: t(`gases.${spec.gas}`) }),
+    what: (t, spec) =>
+      spec.group === 'all'
+        ? t('map.tooltip.emissions', { gas: t(`gases.${spec.gas}`) })
+        : t('map.tooltip.emissionsOf', {
+            gas: t(`gases.${spec.gas}`),
+            group: t(`groups.${spec.group}`),
+          }),
     extra: (c, t, _, worst) => tierExtra(c, t, worst),
   },
   deforestation: {

@@ -224,6 +224,7 @@
     "legend": {
       "production": "Production of {group} with the levers, a year",
       "emissions": "Farm emissions of {gas} with the levers, a year",
+      "emissionsOf": "Farm emissions of {gas} from {group} with the levers, a year",
       "land": "Farmland (cropland and pasture) with the levers",
       "water": "Freshwater withdrawn for farming with the levers, a year",
       "waterScarcity": "Scarcity-weighted water use of the crops HESTIA covers with the levers, a year (L eq)",
@@ -252,6 +253,7 @@
       "waterScarcity": "Water use weighted by how scarce water is where it is used (AWARE 2.0), in litres-equivalent. It covers only the crops for which HESTIA has the country's own aggregation, so countries are not complete and cannot be compared on it. It is not added to the litres withdrawn.",
       "production": "Where food is grown, not where it is eaten.",
       "emissions": "Emissions on the farm from growing food and raising animals. CO₂e weighs methane and nitrous oxide over 100 years, for comparison only.",
+      "foodChoice": "A food's emissions are those of its own items. An animal product's farm emissions leave out its feed, which counts with the crops it is made of. An oilseed's cake counts with the oilseed. The tooltip adds the emissions after the farm and the CO₂ of the forest cleared and the organic soils drained for the food. Animals not raised for food, such as horses, count under All foods only.",
       "land": "Cropland harvested for the foods in the model and permanent pasture, as a share of each country's land area. That is how much of the land farming takes. Eating less meat frees pasture and the cropland that grows feed. The tooltip gives the hectares.",
       "change": "Each country's output changes by the same share as world demand for each food. Exporters change along with the countries that buy from them.",
       "quality": "Neighbouring countries can differ only because their figures come from different sources.",
@@ -275,6 +277,7 @@
       "noData": "No data for this country",
       "production": "Production of {group}",
       "emissions": "Emissions of {gas}",
+      "emissionsOf": "Emissions of {gas} from {group}",
       "before": "Today",
       "after": "With the levers",
       "change": "Change",

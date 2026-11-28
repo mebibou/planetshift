@@ -177,3 +177,20 @@ export const rewettedParts = (
   const neg = (v: number) => 0 - v;
   return { before: 0, steps: p.steps.map(neg), lever: neg(p.lever), leverJoint: neg(p.leverJoint) };
 };
+
+/** `clearingParts` item by item: its steps telescope to the last relative change. */
+export const clearingByItem = (
+  clearing: ItemVector,
+  relative: Float64Array,
+  steps: number,
+  adoption: number,
+): { before: ItemVector; change: ItemVector } => {
+  const at = (steps - 1) * clearing.length;
+  return {
+    before: clearing,
+    change: clearing.map((d, i) => {
+      const last = steps > 0 ? (relative[at + i] as number) : 0;
+      return d * (last - adoption - adoption * last);
+    }),
+  };
+};

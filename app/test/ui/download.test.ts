@@ -120,6 +120,12 @@ describe('map csv', () => {
     expect(layerSlug(spec({ layer: 'land' }))).toBe('land');
     expect(layerSlug(spec({ layer: 'quality' }))).toBe('quality');
     expect(layerSlug(spec({ layer: 'emissions', gas: 'ch4' }))).toBe('emissions-ch4');
+    expect(layerSlug(spec({ layer: 'emissions', gas: 'ch4', group: 'rice' }))).toBe(
+      'emissions-ch4-rice',
+    );
+    expect(layerSlug(spec({ layer: 'change', changeOf: 'emissions', group: 'dairy' }))).toBe(
+      'change-emissions-co2e-dairy',
+    );
     expect(unitOf('emissions', spec({ gas: 'n2o' }))).toBe('kg N2O');
     expect(unitOf('production', spec())).toBe('t');
     expect(unitOf('land', spec())).toBe('ha');

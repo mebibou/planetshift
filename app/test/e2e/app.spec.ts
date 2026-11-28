@@ -1479,6 +1479,58 @@ test('the table sorts by each column and searches both languages', async ({ page
   await expect(page.locator('.table-count')).toContainText('No country matches');
 });
 
+test('a food on the emissions layers changes the map, the tooltip, the table and the CSV', async ({
+  page,
+}) => {
+  await open(page, `${START}&shift=50`);
+  const fills = () =>
+    page
+      .locator('path.country.has-data')
+      .evaluateAll((paths) => paths.map((p) => getComputedStyle(p).fill).join('|'));
+  const csv = async () => {
+    await page.locator('.download-toggle').click();
+    const file = await readDownload(page, () => page.locator('.download-map').click());
+    await page.locator('.download-toggle').click();
+    return file;
+  };
+  const tooltip = page.locator('.map-frame .tooltip');
+  const group = page.locator('#map-group');
+  await expect(page.locator('[data-control="group"]')).toBeVisible();
+  const all = { fills: await fills(), csv: await csv() };
+  await page.locator('path.country[data-iso3="BRA"]').click();
+  await expect(tooltip).toContainText('Food footprint per person');
+  const allTooltip = await tooltip.innerText();
+
+  await group.selectOption('ruminantMeat');
+  await expect(page).toHaveURL(/group=ruminantMeat/);
+  await expect(page.locator('.legend-title')).toContainText('from Beef and lamb');
+  await expect(page.locator('.map-note')).toContainText('leave out its feed');
+  await expect.poll(fills).not.toBe(all.fills);
+  await page.locator('.map-note').dispatchEvent('pointerdown');
+  await expect(tooltip).toBeHidden();
+  await page.locator('path.country[data-iso3="BRA"]').click();
+  await expect(tooltip).toContainText('Emissions of CO₂e from Beef and lamb');
+  await expect(tooltip).toContainText('CO₂ from clearing forest for farming');
+  await expect(tooltip).not.toContainText('Food footprint per person');
+  expect(await tooltip.innerText()).not.toBe(allTooltip);
+  const beef = await csv();
+  expect(beef.name).toMatch(/^planetshift-map-emissions-co2e-ruminantMeat-shift50-\d{4}\.csv$/);
+  const brazil = (text: string) => text.split('\r\n').find((l) => l.startsWith('BRA,')) ?? '';
+  expect(brazil(beef.text)).toContain(',emissions,emissions,co2e-ruminantMeat,');
+  expect(brazil(beef.text).split(',')[6]).not.toBe(brazil(all.csv.text).split(',')[6]);
+
+  await page.locator('#map-tab-table').click();
+  await expect(page.locator('.data-table caption')).toContainText('from Beef and lamb');
+  await page.locator('#layer-tab-change').click();
+  await expect(page.locator('[data-control="group"]')).toBeVisible();
+  await expect(page.locator('.data-table caption')).toContainText('from Beef and lamb');
+  await page.locator('#layer-tab-land').click();
+  await expect(page.locator('[data-control="group"]')).toBeHidden();
+  await page.reload();
+  await expect(page.locator('main[data-ready]')).toBeAttached();
+  await expect(group).toHaveValue('ruminantMeat');
+});
+
 test('the table pages through every country of the real data', async ({ page }) => {
   await open(page, '/?shift=40&mapview=table');
   const rows = page.locator('.data-table tbody tr');
