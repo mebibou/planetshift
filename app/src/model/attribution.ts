@@ -58,3 +58,37 @@ export const shapley = <P>(
     }),
   );
 };
+
+/**
+ * Parts of the avoided warming with the feedback (permafrost) shared out by each part's size,
+ * equally when all are nil, so they add up to the total with it. Not by their signed values:
+ * parts of opposite sign whose total nears zero would each take many times the feedback.
+ */
+export const shareOut = (parts: readonly number[], feedback: number): number[] => {
+  const size = parts.reduce((a, v) => a + Math.abs(v), 0);
+  return parts.map((v) =>
+    size > 0 ? v + (feedback * Math.abs(v)) / size : v + feedback / parts.length,
+  );
+};
+
+/**
+ * A family's `total` split between its foods: each food's own effect (`own`), and the rest of
+ * the total shared out by their sizes, as the feedback is. Where no food has an effect of its
+ * own in this cause (the clearing of a food group), the total goes by the sizes of `fallback`,
+ * their effects in farming, else equally. Nothing when the total is nil.
+ */
+export const foodParts = (
+  total: number,
+  own: readonly number[],
+  fallback: readonly number[],
+): number[] => {
+  const size = (xs: readonly number[]) => xs.reduce((a, v) => a + Math.abs(v), 0);
+  const rest = total - own.reduce((a, v) => a + v, 0);
+  return total === 0
+    ? own.map(() => 0)
+    : size(own) > 0
+      ? shareOut(own, rest)
+      : size(fallback) > 0
+        ? fallback.map((v) => (total * Math.abs(v)) / size(fallback))
+        : own.map(() => total / own.length);
+};

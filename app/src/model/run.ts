@@ -49,8 +49,11 @@ import {
   type Scenario,
   type FirstResult,
   type ScenarioResult,
+  type Summary,
 } from './api';
-import { shapley } from './attribution';
+import { foodParts, shapley, shareOut } from './attribution';
+
+export { shareOut };
 import { bandRecord } from './bands';
 import {
   BANDS,
@@ -110,6 +113,7 @@ import {
   addGas,
   addSeries,
   addVectors,
+  clamp,
   gasVector,
   memoLatest,
   memoPer,
@@ -999,18 +1003,6 @@ const sumSeries = (series: readonly number[][], years: readonly number[]): numbe
     ? zerosOn(years)
     : series.slice(1).reduce((a, s) => addSeries(a, s), series[0] as number[]);
 
-/**
- * Parts of the avoided warming with the feedback (permafrost) shared out by each part's size,
- * equally when all are nil, so they add up to the total with it. Not by their signed values:
- * parts of opposite sign whose total nears zero would each take many times the feedback.
- */
-export const shareOut = (parts: readonly number[], feedback: number): number[] => {
-  const size = sum(parts.map(Math.abs));
-  return parts.map((v) =>
-    size > 0 ? v + (feedback * Math.abs(v)) / size : v + feedback / parts.length,
-  );
-};
-
 /** shareOut at each year (or horizon): `parts[k][h]`, `feedback[h]`. */
 export const shareFeedback = (
   parts: readonly number[][],
@@ -1611,40 +1603,54 @@ const avoidedCo2eAtEnd = (
   return atEnd ? -co2eOf(atEnd) - beyond : 0;
 };
 
-/** The warming avoided at horizon `h`: the emissions' and the extra forcing's, with its sign. */
-const avoidedAtHorizon = (warming: readonly number[], extras: number[][], h: 0 | 1): number => {
-  const year = HORIZON_YEARS[h] as number;
-  return 0 - ((warming[h] ?? 0) + sum(extras.map((e) => e[year - FIRST_YEAR] ?? 0)));
-};
+/** The warming avoided in `year`: the emissions' and the extra forcing's, with its sign. */
+const avoidedAt = (warming: number, extras: number[][], year: number): number =>
+  0 - (warming + sum(extras.map((e) => e[year - FIRST_YEAR] ?? 0)));
+
+/** The length of the first part of `pathValues`: [2050, 2100, CO₂e] for each cause. */
+const HORIZON_SIZE = COUNTED_CAUSES.length * 3;
 
 /**
- * Each family's avoided warming at the horizons and avoided CO₂e once the shift is complete, by
- * cause, as one vector: for each cause in `COUNTED_CAUSES`, [2050, 2100, CO₂e]. Read on the
- * median of a pass.
+ * The values of yearly emission changes by cause, as one vector: for each cause in
+ * `COUNTED_CAUSES`, [2050, 2100, CO₂e] (the warming avoided at the horizons and the CO₂e avoided
+ * once the shift is complete), then for each cause the warming avoided each year of `frame.years`.
  */
-const familyValues = (pass: Pass, frame: PassFrame, family: string): number[] => {
-  const { ctx, completeIndex } = frame;
-  const { currentYear } = ctx;
+const pathValues = (
+  frame: PassFrame,
+  pathOf: (c: CountedCause) => readonly GasVector[],
+  extrasOf: (c: CountedCause) => number[][],
+  co2eAt: (c: CountedCause, atEnd: GasVector | undefined) => number,
+): number[] => {
+  const { ctx, completeIndex, years } = frame;
   const { climate } = ctx.prepared.data;
-  const own = pass.world.find((w) => w.module.family === family);
-  const paths = pass.paths.median?.[family];
-  return COUNTED_CAUSES.flatMap((c) => {
-    const path = paths?.[c] ?? [];
-    const warming = warmingFrom(
-      path,
-      currentYear,
-      climate,
-      ctx.options.climate,
-      'median',
-      HORIZON_YEARS,
-    );
-    const extras = own ? warmingIn(own.module, own.part, c, 'median') : [];
+  const warmingAt = (c: CountedCause, at: readonly number[]) =>
+    warmingFrom(pathOf(c), ctx.currentYear, climate, ctx.options.climate, 'median', at);
+  const horizons = COUNTED_CAUSES.flatMap((c) => {
+    const warming = warmingAt(c, HORIZON_YEARS);
+    const extras = extrasOf(c);
     return [
-      avoidedAtHorizon(warming, extras, 0),
-      avoidedAtHorizon(warming, extras, 1),
-      avoidedCo2eAtEnd(path[completeIndex], own, c, completeIndex),
+      ...HORIZON_YEARS.map((y, h) => avoidedAt(warming[h] ?? 0, extras, y)),
+      co2eAt(c, pathOf(c)[completeIndex]),
     ];
   });
+  const yearly = COUNTED_CAUSES.flatMap((c) => {
+    const warming = warmingAt(c, years);
+    const extras = extrasOf(c);
+    return years.map((y, i) => avoidedAt(warming[i] ?? 0, extras, y));
+  });
+  return [...horizons, ...yearly];
+};
+
+/** A family's `pathValues`, read on the median of a pass. */
+const familyValues = (pass: Pass, frame: PassFrame, family: string): number[] => {
+  const own = pass.world.find((w) => w.module.family === family);
+  const paths = pass.paths.median?.[family];
+  return pathValues(
+    frame,
+    (c) => paths?.[c] ?? [],
+    (c) => (own ? warmingIn(own.module, own.part, c, 'median') : []),
+    (c, atEnd) => avoidedCo2eAtEnd(atEnd, own, c, frame.completeIndex),
+  );
 };
 
 const passCaches = memoPer<
@@ -1670,38 +1676,51 @@ const passCache = (prepared: Prepared, inPlay: string) => {
  * four, rather than one run per coalition. The families outside farming interact with each
  * other but not with farming: their worth is their world hooks run with the others' levers off.
  */
-const familyShares = (
-  frame: PassFrame,
-  full: Pass,
-  chains: readonly Chain[],
-): Map<string, number[]> => {
-  const { ctx } = frame;
+const FARM_MODULES = MODULES.filter((m) => m.farm === true || (m.family && m.farm !== false));
+
+/**
+ * The families acting in a run, as the breakdown counts them: those that change production (the
+ * diet, the supply steps, and the modules that scale the farm emissions), those that act on the
+ * production they leave, and those outside farming.
+ */
+const playersOf = (ctx: RunContext, chains: readonly Chain[]) => {
   const scaling = SCALING.filter((m) => m.hooks.scenarioScale?.(ctx)).map(familyOf);
   const production = [
     ...(dietActs(ctx.scenario) ? ['diet'] : []),
     ...chains.map((c) => c.family),
     ...scaling,
   ];
-  const farmModules = MODULES.filter((m) => m.farm === true || (m.family && m.farm !== false));
-  const dependent = farmModules
-    .filter(
-      (m) =>
-        m.family && !m.hooks.scenarioScale && !production.includes(familyOf(m)) && acts(m, ctx),
-    )
-    .map(familyOf);
+  const dependent = FARM_MODULES.filter(
+    (m) => m.family && !m.hooks.scenarioScale && !production.includes(familyOf(m)) && acts(m, ctx),
+  ).map(familyOf);
   const outside = MODULES.filter((m) => m.family && m.farm === false && acts(m, ctx)).map(familyOf);
+  return { scaling, production, dependent, outside };
+};
+
+/** The adoption of every lever of `families`, which a pass of them depends on. */
+const leversOf = (ctx: RunContext, families: readonly string[]): number[] =>
+  MODULES.filter((m) => families.includes(familyOf(m))).flatMap((m) =>
+    m.levers.map((l) => ctx.adoption(l.id)),
+  );
+
+/** Each family's Shapley values: at the horizons, and each year by cause (`pathValues`' parts). */
+interface Shares {
+  horizons: Map<string, number[]>;
+  yearly: Map<string, number[]>;
+}
+
+const familyShares = (frame: PassFrame, full: Pass, chains: readonly Chain[]): Shares => {
+  const { ctx } = frame;
+  const { scaling, production, dependent, outside } = playersOf(ctx, chains);
   const players = [...production, ...dependent, ...outside];
   const fullKey = production.join('|');
-  const size = COUNTED_CAUSES.length * 3;
+  const size = HORIZON_SIZE;
+  const length = size + COUNTED_CAUSES.length * frame.years.length;
   const valuesOf = (pass: Pass | null, families: readonly string[]) =>
     new Map(
-      families.map((f) => [f, pass ? familyValues(pass, frame, f) : new Array(size).fill(0)]),
+      families.map((f) => [f, pass ? familyValues(pass, frame, f) : new Array(length).fill(0)]),
     );
   const fullValues = valuesOf(full, players);
-  const leversOf = (families: readonly string[]) =>
-    MODULES.filter((m) => families.includes(familyOf(m))).flatMap((m) =>
-      m.levers.map((l) => ctx.adoption(l.id)),
-    );
   const passes = new Map<string, Map<string, number[]>>([[fullKey, fullValues]]);
   /** A pass's values, looked up once per set of production families rather than per coalition. */
   const passValues = (inPlay: readonly string[]): Map<string, number[]> => {
@@ -1720,7 +1739,7 @@ const familyShares = (
       JSON.stringify([
         inPlay.includes('diet') ? [shift, groupShifts, basis, replacement, where] : null,
         families,
-        leversOf(families),
+        leversOf(ctx, families),
         options,
         scenario.rampEnd,
         currentYear,
@@ -1734,7 +1753,7 @@ const familyShares = (
                   ? frame
                   : { ...frame, scale: frame.baseScale },
                 productionSteps(ctx, chains, (f) => inPlay.includes(f)),
-                farmModules,
+                FARM_MODULES,
                 ['median'],
               ),
           families,
@@ -1797,16 +1816,262 @@ const familyShares = (
     }
     return outsideCache.get(key) as Map<string, number[]>;
   };
-  const zero = new Array<number>(size).fill(0);
-  return shapley(players, (coalition) => {
-    const inPlay = production.filter((f) => coalition.includes(f));
-    const farm = passValues(inPlay);
-    const away = outsideValues(outside.filter((f) => coalition.includes(f)));
+  const zero = new Array<number>(length).fill(0);
+  const farmOf = (coalition: readonly string[]) =>
+    passValues(production.filter((f) => coalition.includes(f)));
+  const awayOf = (coalition: readonly string[]) =>
+    outsideValues(outside.filter((f) => coalition.includes(f)));
+  const horizons = shapley(players, (coalition) => {
+    const farm = farmOf(coalition);
+    const away = awayOf(coalition);
     return sumRows(
       coalition.map((f) => (outside.includes(f) ? away : farm).get(f) ?? zero),
       size,
     );
   });
+  // The game is farming's plus the outside's, which share no player: each player's yearly value
+  // is its value in its own game, over far fewer coalitions than all the players make.
+  const yearly = (game: readonly string[], valuesIn: typeof farmOf) =>
+    shapley(game, (coalition) =>
+      sumRows(
+        coalition.map((f) => valuesIn(coalition).get(f) ?? zero),
+        length - size,
+        size,
+      ),
+    );
+  return {
+    horizons,
+    yearly: new Map([...yearly([...production, ...dependent], farmOf), ...yearly(outside, awayOf)]),
+  };
+};
+
+/** What each food of each family split by food is worth on its own, as `pathValues`. */
+type FoodWeights = Map<string, Map<string, number[]>>;
+
+const aloneCaches = memoPer<Prepared, ReturnType<typeof memoLatest<Prepared, number[]>>>();
+
+/**
+ * A family's values in a pass of it alone, one food in full and every lever else off, times the
+ * food's `share`: the worth of that food in the panel, scaled. In full, a pass is redone only
+ * when the options, the ramp or what the family's foods read (`key`) change, not on each move.
+ */
+const aloneValues = (
+  frame: PassFrame,
+  family: string,
+  food: string,
+  share: number,
+  lever: string | null,
+  steps: (ctx: RunContext) => Step[],
+  key: unknown,
+): number[] => {
+  const { prepared, options, scenario, currentYear } = frame.ctx;
+  const ctx: RunContext = { ...frame.ctx, adoption: (id) => (id === lever ? 1 : 0) };
+  const scaled = SCALING.some((m) => familyOf(m) === family);
+  const alone = { ...frame, ctx, ...(scaled ? {} : { scale: frame.baseScale }) };
+  // Only the streams that follow production (clearing) and the family's own hooks count in it.
+  const modules = FARM_MODULES.filter((m) => m.hooks.country || familyOf(m) === family);
+  const values = aloneCaches(prepared, `${family}|${food}`, () => memoLatest<Prepared, number[]>())(
+    prepared,
+    JSON.stringify([key, options, scenario.rampEnd, currentYear]),
+    () => familyValues(emissionsPass(alone, steps(ctx), modules, ['median']), alone, family),
+  );
+  return values.map((v) => v * share);
+};
+
+const dietShare = (scenario: Scenario, group: AnimalGroup): number =>
+  clamp(scenario.groupShifts[group] ?? scenario.shift, 0, 1);
+
+/** The diet's foods: each animal food it shifts. */
+const dietWeights = (frame: PassFrame): Map<string, () => number[]> => {
+  const { prepared, scenario, options } = frame.ctx;
+  const { basis, replacement, where } = scenario;
+  return new Map(
+    ANIMAL_GROUPS.filter((g) => dietShare(scenario, g) > 0).map((g) => {
+      const only = { ...scenario, shift: 0, groupShifts: { [g]: 1 } };
+      return [
+        g,
+        () =>
+          aloneValues(
+            frame,
+            'diet',
+            g,
+            dietShare(scenario, g),
+            null,
+            () => [{ family: 'diet', run: productionChanges(prepared, only, options) }],
+            [basis, replacement, where],
+          ),
+      ];
+    }),
+  );
+};
+
+/** A module's foods when each of its levers is one: each lever adopted. */
+const leverWeights = (frame: PassFrame, module: LeverModule): Map<string, () => number[]> => {
+  const { prepared, scenario, options, adoption } = frame.ctx;
+  const family = familyOf(module);
+  const none = noProduction(prepared);
+  const steps = (ctx: RunContext): Step[] => {
+    const { used, chain } = supplyHooksOf(module, ctx);
+    return [
+      used || chain
+        ? {
+            family,
+            run: productionChanges(
+              prepared,
+              scenario,
+              options,
+              { ...chain, ...(used ? { used } : {}) },
+              none.food,
+            ),
+          }
+        : { family: 'diet', run: none },
+    ];
+  };
+  return new Map(
+    module.levers
+      .filter((l) => adoption(l.id) > 0)
+      .map((l) => [
+        l.id,
+        () => aloneValues(frame, family, l.id, adoption(l.id), l.id, steps, null),
+      ]),
+  );
+};
+
+type Weighed = [string, Map<string, () => number[]>];
+
+/**
+ * What each food of each acting family split by food is worth on its own: the diet's animal
+ * foods and a module's levers alone. A family with one food needs no weight: it is all of it.
+ */
+const foodWeights = (frame: PassFrame, chains: readonly Chain[]) => {
+  const { ctx } = frame;
+  const { production, dependent } = playersOf(ctx, chains);
+  const acting = [...production, ...dependent];
+  const split = MODULES.filter((m) => m.foods && acting.includes(familyOf(m)));
+  const families: Weighed[] = [
+    ...(acting.includes('diet') ? [['diet', dietWeights(frame)] as Weighed] : []),
+    ...split.map((m): Weighed => [familyOf(m), leverWeights(frame, m)]),
+  ];
+  const length = HORIZON_SIZE + COUNTED_CAUSES.length * frame.years.length;
+  return new Map(
+    families.map(([f, foods]) => [
+      f,
+      new Map(
+        [...foods].map(([food, weigh]) => [
+          food,
+          foods.size === 1 ? new Array<number>(length).fill(1) : weigh(),
+        ]),
+      ),
+    ]),
+  );
+};
+
+/**
+ * Each acting family's yearly values (`Shares.yearly`, by cause) with the feedback shared out
+ * and scaled to FaIR's total each year, as `breakdownOf` does at the horizons.
+ */
+const yearlyFamilies = (
+  yearly: Map<string, number[]>,
+  feedback: readonly number[],
+  totals: readonly number[] | null,
+  years: readonly number[],
+): Map<string, number[]> => {
+  const players = [...yearly.keys()];
+  const n = years.length;
+  const causes = COUNTED_CAUSES.length;
+  const byYear = years.map((y, i) => {
+    const linear = shareOut(
+      players.flatMap((f) => COUNTED_CAUSES.map((_, c) => yearly.get(f)?.[c * n + i] ?? 0)),
+      0 - (feedback[y - FIRST_YEAR] ?? 0),
+    );
+    return totals ? scaledTo(linear, totals[y - FIRST_YEAR] ?? 0) : linear;
+  });
+  return new Map(
+    players.map((f, k) => [
+      f,
+      COUNTED_CAUSES.flatMap((_, c) => byYear.map((shared) => shared[k * causes + c] ?? 0)),
+    ]),
+  );
+};
+
+/**
+ * The families split by food, at the horizons and each year: in each cause, each food's own
+ * value and the rest of its family's shared out by their sizes (`foodParts`).
+ */
+const foodSplit = (
+  weights: FoodWeights,
+  familyCause: Breakdown['summary']['byFamilyCause'],
+  yearly: Map<string, number[]>,
+  frame: PassFrame,
+): { summary: Summary['byFood']; temperature: Record<string, Record<string, number[]>> } => {
+  const { years, tYears } = frame;
+  const n = years.length;
+  const farm = COUNTED_CAUSES.indexOf('agriculture');
+  const families = [...weights].map(([family, byFood]) => ({
+    family,
+    foods: [...byFood.keys()],
+    w: [...byFood.values()],
+  }));
+  const partsOf = (w: readonly number[][], total: number, own: number, fallback: number) =>
+    foodParts(
+      total,
+      w.map((v) => v[own] as number),
+      w.map((v) => v[fallback] as number),
+    );
+  const atHorizon = (measure: keyof Summary['byFood'], offset: number) =>
+    Object.fromEntries(
+      families.map(({ family, foods, w }) => {
+        const byCause = causeRecord((c) =>
+          partsOf(
+            w,
+            familyCause[measure][family]?.[c] ?? 0,
+            COUNTED_CAUSES.indexOf(c) * 3 + offset,
+            farm * 3 + offset,
+          ),
+        );
+        return [
+          family,
+          Object.fromEntries(
+            foods.map((food, j) => [food, causeRecord((c) => byCause[c][j] ?? 0)]),
+          ),
+        ];
+      }),
+    );
+  const first = tYears.indexOf(years[0] as number);
+  const temperature = Object.fromEntries(
+    families.map(({ family, foods, w }) => {
+      const values = yearly.get(family);
+      const byYear = years.map((_, i) =>
+        COUNTED_CAUSES.map((_, c) =>
+          partsOf(
+            w,
+            values?.[c * n + i] ?? 0,
+            HORIZON_SIZE + c * n + i,
+            HORIZON_SIZE + farm * n + i,
+          ),
+        ),
+      );
+      return [
+        family,
+        Object.fromEntries(
+          foods.map((food, j) => [
+            food,
+            tYears.map((_, t) =>
+              t < first ? 0 : sum((byYear[t - first] ?? []).map((parts) => parts[j] ?? 0)),
+            ),
+          ]),
+        ),
+      ];
+    }),
+  );
+  return {
+    summary: {
+      avoidedCo2e: atHorizon('avoidedCo2e', 2),
+      avoidedWarming2050: atHorizon('avoidedWarming2050', 0),
+      avoidedWarming2100: atHorizon('avoidedWarming2100', 1),
+    },
+    temperature,
+  };
 };
 
 /** Runs a scenario on prepared data: shift, levers, production, emissions, temperature. */
@@ -2034,8 +2299,8 @@ export interface SplitRun {
 
 /** The breakdown's places in a result, held until it is filled, so a whole run's keys keep their order. */
 const PENDING: { [K in 'summary' | 'temperature']: Partial<Breakdown[K]> } = {
-  summary: { byFamily: undefined, byFamilyCause: undefined, byCause: undefined },
-  temperature: { avoidedByCause: undefined, avoidedByGas: undefined },
+  summary: { byFamily: undefined, byFamilyCause: undefined, byCause: undefined, byFood: undefined },
+  temperature: { avoidedByCause: undefined, avoidedByGas: undefined, avoidedByFood: undefined },
 };
 
 /**
@@ -2048,7 +2313,7 @@ const causeSplit = (
   feedback: readonly number[],
   avoided: readonly number[],
   withFair: boolean,
-): Breakdown['temperature'] => {
+): Omit<Breakdown['temperature'], 'avoidedByFood'> => {
   const { ctx, tYears } = frame;
   const { currentYear, options } = ctx;
   const { climate } = ctx.prepared.data;
@@ -2109,7 +2374,7 @@ const breakdownOf = (
   shares: Map<string, number[]>,
   feedbackAt: readonly number[],
   totalsAt: readonly number[] | null,
-): Breakdown['summary'] => {
+): Omit<Breakdown['summary'], 'byFood'> => {
   const players = [...shares.keys()];
   const causes = COUNTED_CAUSES.length;
   const sharedAt = HORIZON_YEARS.map((_, h) => {
@@ -2154,7 +2419,7 @@ const breakdownOf = (
       avoidedWarming2050: causeTotal(familyCause.avoidedWarming2050),
       avoidedWarming2100: causeTotal(familyCause.avoidedWarming2100),
     },
-  } as Breakdown['summary'];
+  } as Omit<Breakdown['summary'], 'byFood'>;
 };
 
 export const startPrepared = (
@@ -2297,21 +2562,33 @@ export const startPrepared = (
   const totalsAt = fair ? HORIZON_YEARS.map((y) => avoidedIn(y).median) : null;
   return {
     result: Object.assign(result, ...world.map((w) => w.part.result ?? {})) as FirstResult,
-    breakdown: () => ({
-      footprints: footprintsOf(ctx, steps),
-      summary: breakdownOf(
-        familyShares(frame, full, chains),
+    breakdown: () => {
+      const shares = familyShares(frame, full, chains);
+      const summary = breakdownOf(
+        shares.horizons,
         HORIZON_YEARS.map((y) => 0 - (feedbackDelta.median[y - FIRST_YEAR] ?? 0)),
         totalsAt,
-      ),
-      temperature: causeSplit(
+      );
+      const foods = foodSplit(
+        foodWeights(frame, chains),
+        summary.byFamilyCause,
+        yearlyFamilies(
+          shares.yearly,
+          feedbackDelta.median,
+          fair ? avoidedSeries.median : null,
+          years,
+        ),
         frame,
-        full,
-        feedbackDelta.median,
-        avoidedSeries.median,
-        fair !== null,
-      ),
-    }),
+      );
+      return {
+        footprints: footprintsOf(ctx, steps),
+        summary: { ...summary, byFood: foods.summary },
+        temperature: {
+          ...causeSplit(frame, full, feedbackDelta.median, avoidedSeries.median, fair !== null),
+          avoidedByFood: foods.temperature,
+        },
+      };
+    },
   };
 };
 

@@ -24,6 +24,7 @@ describe('url', () => {
       speciesPer: 'farmland',
       wasteOf: 'food',
       wasteView: 'food',
+      avoidedView: 'total',
       firesOf: 'burned',
     });
     expect(parseUi('?view=nope&gas=xx&causegas=co2e&waste=paper')).toEqual(DEFAULT_UI);
@@ -34,6 +35,7 @@ describe('url', () => {
       wasteView: 'treatment',
     });
     expect(parseUi('?layer=land&change=land')).toMatchObject({ layer: 'land', changeOf: 'land' });
+    expect(parseUi('?chart=avoided&avoidedview=food')).toMatchObject({ avoidedView: 'food' });
   });
 
   it('opens the sea-level tab from its link', () => {

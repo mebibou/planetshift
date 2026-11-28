@@ -1,7 +1,15 @@
 import { lazy, Suspense, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { AppState, ViewContext } from '../app/context';
 import { worldPerCapita } from '../app/summaryModel';
-import { CHARTS, WASTE_VIEWS, type ChartTab, type Horizon, type WasteView } from '../app/url';
+import {
+  AVOIDED_VIEWS,
+  CHARTS,
+  WASTE_VIEWS,
+  type AvoidedView,
+  type ChartTab,
+  type Horizon,
+  type WasteView,
+} from '../app/url';
 import { avoidedChart } from '../chart/avoided';
 import { OCEAN_PH, pathsChart, SEA_LEVEL } from '../chart/paths';
 import { causeGasesOf, type CauseGas } from '../chart/series';
@@ -102,7 +110,8 @@ const DRAW: Record<
       options.ssp,
     );
   },
-  avoided: ({ avoided }, { result, ui }) => avoided.update(result, Number(ui.horizon)),
+  avoided: ({ avoided }, { result, ui }) =>
+    avoided.update(result, Number(ui.horizon), ui.avoidedView),
   sealevel: ({ sealevel }, { result, ui, data, options }) =>
     sealevel.update(
       result,
@@ -180,6 +189,14 @@ const ChartSwitches = (props: {
         value={ui.wasteView}
         hidden={ui.chart !== 'waste'}
         onChange={(v) => ctx.setUi((u) => ({ ...u, wasteView: v }))}
+      />
+      <Segmented<AvoidedView>
+        name="avoidedview"
+        legend={t('avoidedChart.view')}
+        options={AVOIDED_VIEWS.map((value) => ({ value, label: t(`avoidedChart.views.${value}`) }))}
+        value={ui.avoidedView}
+        hidden={ui.chart !== 'avoided'}
+        onChange={(v) => ctx.setUi((u) => ({ ...u, avoidedView: v }))}
       />
       <Segmented<CauseGas>
         name="causegas"

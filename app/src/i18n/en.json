@@ -430,7 +430,12 @@
     "line": "Warming avoided",
     "caption": "How much cooler the world is each year with the levers than without them. It grows as the levers ramp up. The warming of methane already avoided fades within decades.",
     "empty": "Nothing avoided yet.",
-    "emptyHint": "Move a lever or shift the diet in the panel."
+    "emptyHint": "Move a lever or shift the diet in the panel.",
+    "view": "Show",
+    "views": { "total": "Total", "food": "By food" },
+    "foodLabel": "Stacked chart of the warming avoided each year to {year} by each food the diet and the plant food swaps shift, and by the other levers",
+    "other": "Other levers",
+    "foodCaption": "The warming avoided split by the food each lever shifts: each animal food the diet moves to plants, and each plant food swapped. Each food's part each year is the same split as in the summary's breakdown. Other levers is the rest of the total."
   },
   "chart": {
     "notes": "How to read this chart",
@@ -511,10 +516,11 @@
     "clipped": "In {count} countries a cut reached the part of a crop or milk that is processed (into oil, sugar, butter…) and was stopped there. That part is cut on the processed food instead.",
     "byFamily": {
       "title": "Warming avoided in {year}, by lever group",
-      "note": "Each group's part is the mean of what it adds over every order the groups could be counted in, so no group is counted first. A group acting on several causes is split between them. The parts add up to the total.",
+      "note": "Each group's part is the mean of what it adds over every order the groups could be counted in, so no group is counted first. A group acting on several causes is split between them. The parts add up to the total. Under a group split by food, each food has what it avoids on its own, plus a share of the rest of the group's part by its size.",
       "added": "{value} added",
       "diet": "Animal foods to plants"
     },
+    "byFood": { "label": "{group}, by food", "other": "Other foods" },
     "live": "Less warming in {year}: {value}."
   },
   "link": {

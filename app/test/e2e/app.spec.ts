@@ -509,6 +509,38 @@ test('moving the shift recolours the map and raises the avoided warming', async 
   expect(await lastY(page, '.avoided-chart .scenario-line')).not.toBe(before.top);
 });
 
+test('the diet is split by food in the summary, and the warming avoided stacks its foods', async ({
+  page,
+}) => {
+  await open(page, `${START}&shift=50`);
+  const diet = page.locator(
+    '.breakdown-cause[data-cause="agriculture"] .breakdown-row[data-family="diet"]',
+  );
+  const toggle = diet.locator('.breakdown-toggle');
+  const foods = diet.locator('.breakdown-foods');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(toggle).toHaveAccessibleName('Animal foods to plants, by food');
+  await expect(foods).toBeHidden();
+  await expect(foods).toHaveAttribute('id', (await toggle.getAttribute('aria-controls')) ?? '');
+  await toggle.focus();
+  await page.keyboard.press('Enter');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await expect(foods.locator('[data-food="ruminantMeat"]')).toContainText('Beef and lamb');
+  await page.keyboard.press('Space');
+  await expect(foods).toBeHidden();
+  await page.locator('#chart-tab-avoided').click();
+  await page.locator('label[for="avoidedview-food"]').click();
+  await expect(page).toHaveURL(/avoidedview=food/);
+  const panel = page.locator('#chart-panel-avoided');
+  await expect(panel.locator('.food-stack[data-food="diet.ruminantMeat"]')).toHaveCount(1);
+  await expect(panel.locator('.chart-legend')).toContainText('Beef and lamb');
+  await expect(panel.locator('.chart-legend')).toContainText('Other levers');
+  await expect(panel.locator('.scenario-line')).toHaveCount(1);
+  await page.locator('label[for="avoidedview-total"]').click();
+  await expect(panel.locator('.food-stack')).toHaveCount(0);
+  await noHorizontalScroll(page);
+});
+
 test('the Waste tab stacks food by stage with the levers, and municipal waste the levers leave', async ({
   page,
 }) => {

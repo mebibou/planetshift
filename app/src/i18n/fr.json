@@ -434,7 +434,12 @@
     "line": "Réchauffement évité",
     "caption": "De combien le monde est plus frais chaque année avec les leviers que sans. L'écart grandit à mesure que les leviers se mettent en place. Le réchauffement du méthane déjà évité s'efface en quelques décennies.",
     "empty": "Rien d'évité pour l'instant.",
-    "emptyHint": "Déplacez un levier ou changez l'alimentation dans le panneau."
+    "emptyHint": "Déplacez un levier ou changez l'alimentation dans le panneau.",
+    "view": "Afficher",
+    "views": { "total": "Total", "food": "Par aliment" },
+    "foodLabel": "Graphique empilé du réchauffement évité chaque année jusqu'en {year} par chaque aliment que déplacent l'alimentation et la substitution d'aliments végétaux, et par les autres leviers",
+    "other": "Autres leviers",
+    "foodCaption": "Le réchauffement évité partagé selon l'aliment que chaque levier déplace : chaque aliment animal que l'alimentation remplace par des végétaux, et chaque aliment végétal substitué. La part de chaque aliment chaque année est le même partage que dans la répartition du résumé. Autres leviers est le reste du total."
   },
   "chart": {
     "notes": "Comment lire ce graphique",
@@ -515,10 +520,11 @@
     "clipped": "Dans {count} pays, une baisse a atteint la part d'une culture ou du lait qui est transformée (en huile, sucre, beurre…) et s'y est arrêtée. Cette part baisse sur l'aliment transformé.",
     "byFamily": {
       "title": "Réchauffement évité en {year}, par groupe de leviers",
-      "note": "La part de chaque groupe est la moyenne de ce qu'il ajoute dans tous les ordres où les groupes pourraient être comptés, pour qu'aucun ne soit compté en premier. Un groupe qui agit sur plusieurs causes est partagé entre elles. Les parts s'additionnent au total.",
+      "note": "La part de chaque groupe est la moyenne de ce qu'il ajoute dans tous les ordres où les groupes pourraient être comptés, pour qu'aucun ne soit compté en premier. Un groupe qui agit sur plusieurs causes est partagé entre elles. Les parts s'additionnent au total. Sous un groupe partagé par aliment, chaque aliment a ce qu'il évite seul, plus une part du reste de celle du groupe selon sa taille.",
       "added": "{value} ajoutés",
       "diet": "Des aliments animaux aux végétaux"
     },
+    "byFood": { "label": "{group}, par aliment", "other": "Autres aliments" },
     "live": "Réchauffement évité en {year} : {value}."
   },
   "link": {

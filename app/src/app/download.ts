@@ -228,18 +228,34 @@ export const temperatureRows = (
   };
 };
 
-/** Warming avoided each year from the current year to 2100, median and 5–95%. */
+/**
+ * Warming avoided each year from the current year to 2100, median and 5–95%, then the median's
+ * split by food of each family split by food, as `warming_avoided_<family>_<food>_degC`.
+ */
 export const avoidedRows = (
   result: ScenarioResult,
   currentYear: number,
 ): { header: string[]; rows: Cell[][] } => {
   const tp = result.temperature;
+  const foods = Object.entries(tp.avoidedByFood).flatMap(([family, byFood]) =>
+    Object.entries(byFood).map(([food, series]) => ({ name: `${family}_${food}`, series })),
+  );
   return {
-    header: ['year', ...bandColumns('warming_avoided', 'degC')],
+    header: [
+      'year',
+      ...bandColumns('warming_avoided', 'degC'),
+      ...foods.map((f) => `warming_avoided_${f.name}_degC`),
+    ],
     rows: tp.years
       .map((year, i) => ({ year, i }))
       .filter(({ year }) => year >= currentYear)
-      .map(({ year, i }) => [year, tp.avoided.median[i], tp.avoided.p05[i], tp.avoided.p95[i]]),
+      .map(({ year, i }) => [
+        year,
+        tp.avoided.median[i],
+        tp.avoided.p05[i],
+        tp.avoided.p95[i],
+        ...foods.map((f) => f.series[i]),
+      ]),
   };
 };
 

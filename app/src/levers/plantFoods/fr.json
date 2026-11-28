@@ -13,5 +13,9 @@
   "palmOil": {
     "title": "Huile de palme vers d'autres huiles végétales",
     "description": "Les plantations de palmiers à huile défrichent la forêt et drainent la tourbe, surtout en Indonésie et en Malaisie. Les huiles de palme et de palmiste consommées comme aliments sont remplacées par les autres huiles végétales du pays. Les terres et le défrichement liés à ces huiles sont aussi comptés. L'huile de palme brûlée comme carburant ou utilisée dans les savons et les cosmétiques n'est pas remplacée."
+  },
+  "foods": {
+    "rice": "Riz",
+    "palmOil": "Huile de palme"
   }
 }

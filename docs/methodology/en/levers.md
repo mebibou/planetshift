@@ -138,6 +138,19 @@ Sharing by the signed values would not work. A part that adds warming would take
 
 The avoided emissions in CO₂e in the year the levers are complete are shared out the same way. CO₂e, or CO₂-equivalent, adds the gases up with 100-year weights (see [From emissions to temperature](#method-climate)). These emissions leave out aviation's non-CO₂ forcing and permafrost, which are not emissions of a lever.
 
+### The breakdown by food
+
+The summary also splits the diet by the animal foods it shifts, and the plant food swaps by the foods they swap. Each food's part comes from its group's part, cause by cause:
+
+1. Each food is worth what its group would avoid if it moved that food alone, in full, times the share of it moved. This is the figure beside each animal food in the panel, scaled to the slider.
+2. Each food gets its worth, and the rest of its group's part is shared out between the foods by the size of their worth, as the permafrost change is. The foods of a group therefore add up exactly to its part, in each cause, in 2050, in 2100 and in CO₂e.
+
+A food that adds warming in a cause keeps its sign. Swapping rice, for example, avoids the methane of paddies in farming. It adds a little after the farm, under fossil fuels and industry, where the other cereals are processed and carried.
+
+The foods' worth is computed once per food in full. It is kept while the options, the ramp and the diet's **Kept equal**, **Replaced by** and **Where** settings are unchanged, so moving a slider only scales it. The interactions between foods, such as a smaller herd needing less of the same feed, are counted in the rest that is shared out. A Shapley value over the foods would need a run for every set of foods, up to 64 for the diet, on every move.
+
+The Warming avoided chart can show the warming avoided stacked by these foods, year by year. Each year is split the same way as 2050 and 2100. Each group's part that year takes its share of the feedback and is scaled to FaIR's total, then it is shared between its foods. The rest of the total is the other levers.
+
 ## Why some levers are uncertain
 
 The ranges of the practices (a low and high reduction) and of the removals (a low and high rate) feed the likely range of the warming avoided, with the climate response. The low end takes the smaller reduction and the slower uptake. For the energy levers, the low end takes the most electricity per kilogram of tailpipe CO₂ avoided, the least non-CO₂ forcing per kilogram of aviation CO₂, and the lowest data-centre demand.

@@ -116,7 +116,8 @@
     transform: rotate(-45deg);
     transition: transform 0.15s;
   }
-  details[open] > &::before {
+  details[open] > &::before,
+  &[aria-expanded='true']::before {
     transform: rotate(45deg);
   }
 }

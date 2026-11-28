@@ -149,6 +149,7 @@ const result = {
     baseline: band(2),
     scenario: band(1.5),
     avoided: band(0.5),
+    avoidedByFood: { diet: { ruminantMeat: [0, 0.3, 0.3], dairy: [0, 0.1, 0.1] } },
   },
   summary: { avoidedCo2e: 7 },
 } as unknown as ScenarioResult;
@@ -210,12 +211,12 @@ describe('chart csv', () => {
     expect(second?.split(',').at(-1)).toBe('4000000000');
   });
 
-  it('gives the warming avoided from the current year', () => {
+  it('gives the warming avoided from the current year, then its split by food', () => {
     const [header, ...rows] = lines(chart('avoided')?.text ?? '');
     expect(header).toBe(
-      'year,warming_avoided_median_degC,warming_avoided_p05_degC,warming_avoided_p95_degC',
+      'year,warming_avoided_median_degC,warming_avoided_p05_degC,warming_avoided_p95_degC,warming_avoided_diet_ruminantMeat_degC,warming_avoided_diet_dairy_degC',
     );
-    expect(rows).toEqual(['2026,0.5,-0.5,1.5', '2027,0.5,-0.5,1.5']);
+    expect(rows).toEqual(['2026,0.5,-0.5,1.5,0.3,0.1', '2027,0.5,-0.5,1.5,0.3,0.1']);
   });
 
   it('gives the modelled rise from 2000 and with levers from the current year in cm, or nothing without it', () => {

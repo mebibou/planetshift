@@ -130,4 +130,46 @@ describe('causeGroups', () => {
     expect(groups.map((g) => g.cause)).toEqual(['agriculture', 'landUse']);
     expect(groups[1]?.rows[0]?.value).toBeCloseTo(-0.01);
   });
+  it('lists the foods of a family split by food under it, biggest first, on the same scale', () => {
+    const foods = {
+      diet: {
+        ruminantMeat: of(0, 0.03, 0.008),
+        dairy: of(0, 0.01, 0.002),
+        eggs: of(0, 0.0001, 0),
+      },
+    };
+    const groups = causeGroups({ ...zero, diet: of(0, 0.04, 0.01), energy: of(0.08, 0, 0) }, foods);
+    const foodsIn = (cause: string) => groups.find((g) => g.cause === cause)?.rows[0]?.foods ?? [];
+    expect(foodsIn('agriculture').map((f) => [f.food, f.value])).toEqual([
+      ['ruminantMeat', expect.closeTo(0.03 + 0.0001 * 0.75, 12)],
+      ['dairy', expect.closeTo(0.01 + 0.0001 * 0.25, 12)],
+    ]);
+    expect(foodsIn('agriculture')[0]?.width).toBeCloseTo(0.03 / 0.08);
+    expect(foodsIn('fossilIndustry')).toEqual([]);
+  });
+  it('shows a single family when it has foods to list, and no foods when only one shows', () => {
+    const two = { diet: { ruminantMeat: of(0, 0.03, 0), dairy: of(0, 0.01, 0) } };
+    expect(causeGroups({ ...zero, diet: of(0, 0.04, 0) }, two)[0]?.rows[0]?.foods).toHaveLength(2);
+    const one = { diet: { ruminantMeat: of(0, 0.04, 0) } };
+    expect(causeGroups({ ...zero, diet: of(0, 0.04, 0) }, one)).toEqual([]);
+  });
+  it('lists the four largest foods of a family, then the others added up', () => {
+    const values = [0.01, 0.009, 0.008, 0.007, 0.002, 0.001, 0.0001];
+    const foods = { waste: Object.fromEntries(values.map((v, k) => [`f${k}`, of(0, v, 0)])) };
+    const groups = causeGroups({ ...zero, waste: of(0, 0.0371, 0) }, foods);
+    const rows = groups[0]?.rows[0]?.foods ?? [];
+    expect(rows.map((r) => r.food)).toEqual(['f0', 'f1', 'f2', 'f3', 'other']);
+    expect(rows[4]?.value).toBeCloseTo(0.0031, 12);
+  });
+  it('shares a rest that adds warming out between the foods of a family that avoids it', () => {
+    const values = [0.06, 0.03, 0.01, 0.005, 0.0004, -0.002];
+    const foods = { diet: Object.fromEntries(values.map((v, k) => [`f${k}`, of(0, v, 0)])) };
+    const rows =
+      causeGroups({ ...zero, diet: of(0, 0.1034, 0), energy: of(0.2, 0, 0) }, foods).find(
+        (g) => g.cause === 'agriculture',
+      )?.rows[0]?.foods ?? [];
+    expect(rows.map((r) => r.food)).toEqual(['f0', 'f1', 'f2', 'f3']);
+    expect(rows.every((r) => r.value > 0)).toBe(true);
+    expect(rows.reduce((s, r) => s + r.value, 0)).toBeCloseTo(0.1034, 12);
+  });
 });

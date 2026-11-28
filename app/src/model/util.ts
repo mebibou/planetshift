@@ -55,12 +55,19 @@ export const addVectors = (first: ItemVector, ...rest: readonly ItemVector[]): I
   return out;
 };
 
-/** The element-wise sum of rows of `length` numbers, added in their order; zeros when none. */
-export const sumRows = (rows: readonly (readonly number[])[], length: number): number[] => {
+/**
+ * The element-wise sum of `length` numbers of rows from `from`, added in their order; zeros
+ * when none.
+ */
+export const sumRows = (
+  rows: readonly (readonly number[])[],
+  length: number,
+  from = 0,
+): number[] => {
   const out = new Array<number>(length).fill(0);
   for (const row of rows) {
     for (let k = 0; k < length; k++) {
-      out[k] = (out[k] as number) + (row[k] as number);
+      out[k] = (out[k] as number) + (row[from + k] as number);
     }
   }
   return out;
