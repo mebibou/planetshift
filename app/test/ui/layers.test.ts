@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 import {
   beforeAfter,
   co2e,
+  foodChoice,
+  foodCountry,
   gasValue,
   groupValue,
   layerValue,
@@ -144,5 +146,59 @@ describe('layers', () => {
     expect(layerValue(countryResult({ landArea: 0 }), none)).toBeNull();
     expect(layerValue(countryResult({ mammals: 10, mammalsChange: -10 }), none)).toBe(0);
     expect(mammalDensity(countryResult({ landArea: 0 }))).toEqual([0, 0]);
+  });
+});
+
+describe('a food on the emissions layers', () => {
+  const rice = {
+    farm: { co2: 10, ch4: 40, n2o: 1, hfc: 0 },
+    farmChange: { co2: -1, ch4: -20, n2o: 0, hfc: 0 },
+    chain: { co2: 5, ch4: 0, n2o: 0, hfc: 0 },
+    chainChange: { co2: -2, ch4: 0, n2o: 0, hfc: 0 },
+    parts: {
+      deforestationCo2: [7, -3] as [number, number],
+      drainedCo2: [4, -1] as [number, number],
+    },
+  };
+  const country = countryResult({
+    foods: { rice },
+    chain: { co2: 50, ch4: 0, n2o: 0, hfc: 0 },
+    chainChange: { co2: -5, ch4: 0, n2o: 0, hfc: 0 },
+    deforestationCo2: 70,
+    deforestationChange: -30,
+    footprint: { co2: 1, ch4: 1, n2o: 1, hfc: 0 },
+    footprintChange: { co2: 0, ch4: 0, n2o: 0, hfc: 0 },
+  });
+
+  it('is chosen on the emissions and change in emissions layers only', () => {
+    expect(foodChoice(spec({ layer: 'emissions', group: 'rice' }))).toBe('rice');
+    expect(foodChoice(spec({ layer: 'change', changeOf: 'emissions', group: 'rice' }))).toBe(
+      'rice',
+    );
+    expect(foodChoice(spec({ layer: 'emissions' }))).toBeNull();
+    expect(foodChoice(spec({ layer: 'production', group: 'rice' }))).toBeNull();
+    expect(foodChoice(spec({ layer: 'land', group: 'rice' }))).toBeNull();
+  });
+
+  it('shows the food’s farm emissions, its chain and its clearing, and no footprint', () => {
+    const c = foodCountry(country, 'rice');
+    expect(beforeAfter(c, spec({ layer: 'emissions', gas: 'ch4' }))).toEqual({
+      kind: 'emissions',
+      before: 40,
+      after: 20,
+    });
+    expect(layerValue(c, spec({ layer: 'change', changeOf: 'emissions', gas: 'ch4' }))).toBe(-0.5);
+    expect(c.chain?.co2).toBe(5);
+    expect(c.chainChange?.co2).toBe(-2);
+    expect([c.deforestationCo2, c.deforestationChange, c.drainedCo2, c.drainedChange]).toEqual([
+      7, -3, 4, -1,
+    ]);
+    expect(c.footprint).toBeUndefined();
+  });
+
+  it('has no data for a food the country does not produce, or before the split arrives', () => {
+    const change = spec({ layer: 'change', changeOf: 'emissions' });
+    expect(layerValue(foodCountry(country, 'dairy'), spec({ layer: 'emissions' }))).toBeNull();
+    expect(layerValue(foodCountry(countryResult(), 'rice'), change)).toBeNull();
   });
 });

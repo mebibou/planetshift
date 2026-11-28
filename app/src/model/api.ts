@@ -19,6 +19,7 @@ import type {
   Tier,
 } from '../data/types';
 import type { Family } from '../levers/registry';
+import { unpackFoods, type CountryFoods, type PackedFoods } from './foodEmissions';
 import type { SeaLevel2100, SeaLevelPaths } from './seaLevel';
 
 export type { Family, LeverId } from '../levers/registry';
@@ -126,6 +127,8 @@ export interface CountryResult {
   /** What the food eaten in the country emits per person, kg a year, and its change with the levers. */
   footprint?: GasVector;
   footprintChange?: GasVector;
+  /** Emissions by food group, which come with the breakdown. */
+  foods?: CountryFoods;
   /** The country's latest fire season (fires.json): set by the map, not the run, as no lever changes it. */
   fire?: FireCountry;
 }
@@ -250,6 +253,7 @@ type Temperature = ScenarioResult['temperature'];
 /** What comes after the rest of a run: footprints, the by-family breakdown, the split by cause. */
 export interface Breakdown {
   footprints: Record<string, Pick<CountryResult, 'footprint' | 'footprintChange'>>;
+  foods: PackedFoods;
   summary: Pick<Summary, 'byFamily' | 'byFamilyCause' | 'byCause' | 'byFood'>;
   temperature: Pick<Temperature, 'avoidedByCause' | 'avoidedByGas' | 'avoidedByFood'>;
 }
@@ -264,7 +268,11 @@ export type FirstResult = Omit<ScenarioResult, 'summary' | 'temperature'> & {
 /** A result with its breakdown, its fields where a whole run puts them. */
 export const withBreakdown = (result: FirstResult, breakdown: Breakdown): ScenarioResult => ({
   ...result,
-  countries: result.countries.map((c) => ({ ...c, ...breakdown.footprints[c.iso3] })),
+  countries: result.countries.map((c) => ({
+    ...c,
+    ...breakdown.footprints[c.iso3],
+    foods: unpackFoods(breakdown.foods, c.iso3),
+  })),
   summary: { ...result.summary, ...breakdown.summary },
   temperature: { ...result.temperature, ...breakdown.temperature },
 });

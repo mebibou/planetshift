@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { tooltipModel } from '../../src/map/tooltip';
+import { foodCountry } from '../../src/map/layers';
 import { sourceLink, worstSource } from '../../src/map/sources';
 import { translator } from '../../src/i18n/i18n';
 import type { Intensities } from '../../src/data/types';
@@ -177,6 +178,37 @@ describe('tooltip', () => {
     expect(ch4.rows.map(([k]) => k)).not.toContain('CO₂ from clearing forest for farming, a year');
     const land = tooltipModel('France', c, { ...spec, layer: 'land' }, t, 'en-GB');
     expect(land.rows.map(([k]) => k)).not.toContain('After the farm (processing to waste), a year');
+  });
+
+  it('names the food chosen and gives its own chain and clearing, without the footprint', () => {
+    const c = countryResult({
+      chain: { co2: 2e8, ch4: 1e6, n2o: 0, hfc: 0 },
+      chainChange: { co2: -5e7, ch4: 0, n2o: 0, hfc: 0 },
+      deforestationCo2: 4e8,
+      deforestationChange: -1e8,
+      footprint: { co2: 900, ch4: 20, n2o: 1, hfc: 0 },
+      footprintChange: { co2: -300, ch4: -10, n2o: 0, hfc: 0 },
+      foods: {
+        oilCrops: {
+          farm: { co2: 3e7, ch4: 0, n2o: 0, hfc: 0 },
+          farmChange: { co2: -1e7, ch4: 0, n2o: 0, hfc: 0 },
+          chain: { co2: 2e7, ch4: 0, n2o: 0, hfc: 0 },
+          chainChange: { co2: 0, ch4: 0, n2o: 0, hfc: 0 },
+          parts: { deforestationCo2: [3e8, -2e8] },
+        },
+      },
+    });
+    const food = { ...spec, gas: 'co2', group: 'oilCrops' } as const;
+    const m = tooltipModel('France', foodCountry(c, 'oilCrops'), food, t, 'en-GB');
+    expect(m.rows.map(([k, v]) => [k, v.replace(/\u00a0/g, ' ')])).toEqual([
+      ['Emissions of CO₂ from Oil crops', ''],
+      ['Today', '30 kt'],
+      ['With the levers', '20 kt'],
+      ['Change', '−33.3%'],
+      ['After the farm (processing to waste), a year', '20 kt → 20 kt'],
+      ['CO₂ from clearing forest for farming, a year', '300 kt → 100 kt'],
+      ['Least precise source', 'FAOSTAT, this country'],
+    ]);
   });
 
   it('says when a country has no data', () => {

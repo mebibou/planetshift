@@ -19,6 +19,8 @@ import { scaleOf } from '../map/colours';
 import {
   CHANGE_OF,
   FIRES_OF,
+  foodChoice,
+  foodCountry,
   GAS_CHOICES,
   LAYERS,
   landUseCo2,
@@ -124,7 +126,10 @@ const fireYears = ([start, end, from, to]: readonly number[]) => ({
 /** What each measure shows, for the legend's title. */
 const MEASURE_TITLES: Record<Measure, (t: T, ui: UiState, years: readonly number[]) => string> = {
   production: (t, ui) => t('map.legend.production', { group: t(`groups.${ui.group}`) }),
-  emissions: (t, ui) => t('map.legend.emissions', { gas: t(`gases.${ui.gas}`) }),
+  emissions: (t, ui) =>
+    ui.group === 'all'
+      ? t('map.legend.emissions', { gas: t(`gases.${ui.gas}`) })
+      : t('map.legend.emissionsOf', { gas: t(`gases.${ui.gas}`), group: t(`groups.${ui.group}`) }),
   deforestation: (t) => t('map.legend.deforestation'),
   landShare: (t) => t('map.legend.landShare'),
   land: (t) => t('map.legend.land'),
@@ -288,6 +293,9 @@ const LAYER_PANEL = 'map-layer-panel';
 const noteKey = (ui: UiState): string =>
   ui.layer === 'waste' ? `map.notes.waste.${ui.wasteOf}` : `map.notes.${ui.layer}`;
 
+const noteOf = (t: T, ui: UiState): string =>
+  foodChoice(ui) ? `${t(noteKey(ui))} ${t('map.notes.foodChoice')}` : t(noteKey(ui));
+
 const ViewTabs = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui: UiState }) => (
   <IconTabs<UiState['mapView']>
     label={t('map.views.label')}
@@ -365,7 +373,11 @@ const MapControls = ({ t, ui, setUi }: Pick<MapCardProps, 't' | 'setUi'> & { ui:
         hidden={measure !== 'emissions'}
         onChange={(gas) => setUi((u) => ({ ...u, gas }))}
       />
-      <div className={FIELD} data-control="group" hidden={measure !== 'production'}>
+      <div
+        className={FIELD}
+        data-control="group"
+        hidden={measure !== 'production' && measure !== 'emissions'}
+      >
         <label htmlFor="map-group" className={FIELD_LABEL}>
           {t('map.group')}
         </label>
@@ -472,18 +484,23 @@ const MapCardView = (props: MapCardProps) => {
             caption={legendTitle}
           />
         </div>
-        <p className="map-note m-0 mt-2 text-[0.82rem] text-muted">{t(noteKey(ui))}</p>
+        <p className="map-note m-0 mt-2 text-[0.82rem] text-muted">{noteOf(t, ui)}</p>
       </div>
     </section>
   );
 };
 
-/** The map card, the run's countries given their fires, which no lever changes. */
+/** The map card, the run's countries given their fires, which no lever changes, or one food's figures. */
 export const MapCard = (props: MapCardProps) => {
   const { result, fires } = props;
-  const withFire = useMemo(
-    () => result && { ...result, countries: withFires(result.countries, fires) },
-    [result, fires],
+  const food = foodChoice(props.state.ui);
+  const shown = useMemo(
+    () =>
+      result && {
+        ...result,
+        countries: withFires(result.countries, fires).map((c) => (food ? foodCountry(c, food) : c)),
+      },
+    [result, fires, food],
   );
-  return <MapCardView {...props} result={withFire} />;
+  return <MapCardView {...props} result={shown} />;
 };

@@ -3,6 +3,7 @@ import type { LeverModule } from '../types';
 import { countryCrops } from '../../model/crops';
 import { deforestationSpec } from './spec';
 import {
+  clearingByItem,
   clearingParts,
   countryClearing,
   relativeChanges,
@@ -67,6 +68,10 @@ export const deforestation: LeverModule = {
           jointCh4: { [ID]: ch4.leverJoint },
           n2o: byStep(families, (k) => n2o.steps[k] as number, n2o.lever),
           jointN2o: { [ID]: n2o.leverJoint },
+          byItem: () => ({
+            deforestationCo2: clearingByItem(c.co2, rel, changes.length, share),
+            drainedCo2: clearingByItem(c.drained, rel, changes.length, rewet),
+          }),
           result: {
             deforestationCo2: parts.before,
             deforestationChange: total(parts),

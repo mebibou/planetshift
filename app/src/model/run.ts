@@ -86,6 +86,8 @@ import { speciesOf } from './species';
 import { countryWaterOf } from './water';
 import { countryPollinationOf } from './pollination';
 import { foodFootprints, type IntensityCut as FootprintCut } from './footprint';
+import { countryFoods, type ItemChange } from './foods';
+import type { PackedFoods } from './foodEmissions';
 import {
   allCauses,
   CHAIN_CAUSES,
@@ -506,6 +508,8 @@ interface CountryParts {
   gridFarm: Readonly<Record<string, number>>;
   /** Each production step's emissions after the farm, by the cause they count in. */
   chainFarm: Readonly<Record<string, Partial<Record<ChainCause, GasVector>>>>;
+  byItem: () => Readonly<Record<string, ItemChange>>;
+  foods: (parts: readonly (ItemChange | undefined)[]) => Float64Array;
 }
 
 interface BuiltUp {
@@ -701,6 +705,7 @@ const countryParts = (
   const oilcakes = countryCakes(pc, prepared, options.scope);
   const { change, cake } = stages[stages.length - 1] as Stage;
   const cakeChanges = stages.map((s) => cakeEmissionsChange(oilcakes, s.cake));
+  const lastCakeChange = cakeChanges[cakeChanges.length - 1] as GasVector[];
   const productionChange = totalsOf(change, prepared);
   const emitted = stepEmissions(stages, intensities, cakeChanges);
   const total = emitted[emitted.length - 1] as GasVector;
@@ -710,7 +715,7 @@ const countryParts = (
       intensities,
       oilcakes,
       change,
-      cakeChange: cakeChanges[cakeChanges.length - 1] as GasVector[],
+      cakeChange: lastCakeChange,
       ownKey: `${pc.country.iso3}|${options.scope}`,
     },
     intensityCuts,
@@ -748,6 +753,18 @@ const countryParts = (
   );
   return {
     result: withHookResults(result, extra),
+    byItem: () => Object.assign({}, ...extra.map((e) => e.byItem?.() ?? {})),
+    foods: (parts) =>
+      countryFoods(prepared, {
+        emitting: pc.emitting,
+        change,
+        intensities,
+        cakes: oilcakes,
+        cakeChange: lastCakeChange,
+        cut: intensityCuts.length ? summedCut(intensityCuts.map((c) => c.cut(pc, 'median'))) : null,
+        chain: prepared.data.chain ? chainIntensities(pc, prepared, prepared.data.chain) : null,
+        parts,
+      }),
     farm: stepFarm(stages, emitted),
     cuts,
     ...streamsOf(extra, countryHooks),
@@ -2179,6 +2196,21 @@ const foodSplit = (
 const withPeopleYear = (options: Options, scenario: Scenario): Options =>
   options.people === undefined ? options : { ...options, peopleYear: scenario.rampEnd };
 
+const foodsOf = (parts: readonly CountryParts[], chain: boolean): PackedFoods => {
+  const byItem = parts.map((p) => p.byItem());
+  const keys = [...new Set(byItem.flatMap((r) => Object.keys(r)))];
+  return {
+    chain,
+    parts: keys,
+    byCountry: Object.fromEntries(
+      parts.map((p, k) => [p.result.iso3, p.foods(keys.map((key) => byItem[k]?.[key]))]),
+    ),
+  };
+};
+
+const summedCut = ([first, ...rest]: readonly Record<Gas, ItemVector>[]): Record<Gas, ItemVector> =>
+  gasRecord((g) => addVectors((first as Record<Gas, ItemVector>)[g], ...rest.map((c) => c[g])));
+
 /** The share of each item's intensity that cuts acting one after the other remove: 1 − Π(1 − cut). */
 export const combinedCut = (cuts: readonly Record<Gas, ItemVector>[]): Record<Gas, ItemVector> =>
   gasRecord((g) => {
@@ -2683,6 +2715,7 @@ export const startPrepared = (
       );
       return {
         footprints: footprintsOf(ctx, steps),
+        foods: foodsOf(full.parts, prepared.data.chain !== undefined),
         summary: { ...summary, byFood: foods.summary },
         temperature: {
           ...causeSplit(frame, full, feedbackDelta.median, avoidedSeries.median, fair !== null),

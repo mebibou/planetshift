@@ -228,6 +228,7 @@
     "legend": {
       "production": "Production de : {group} avec les leviers, par an",
       "emissions": "Émissions agricoles de {gas} avec les leviers, par an",
+      "emissionsOf": "Émissions agricoles de {gas} pour : {group}, avec les leviers, par an",
       "land": "Surfaces agricoles (cultures et prairies) avec les leviers",
       "water": "Eau douce prélevée pour l'agriculture avec les leviers, par an",
       "waterScarcity": "Consommation d'eau pondérée par la rareté des cultures que couvre HESTIA avec les leviers, par an (L éq)",
@@ -256,6 +257,7 @@
       "waterScarcity": "La consommation d'eau pondérée par la rareté de l'eau là où elle est utilisée (AWARE 2.0), en litres-équivalent. Elle ne couvre que les cultures pour lesquelles HESTIA a une agrégation du pays lui-même : les pays sont incomplets et ne se comparent pas sur ce chiffre. Elle ne s'ajoute pas aux litres prélevés.",
       "production": "Là où les aliments sont produits, pas là où ils sont consommés.",
       "emissions": "Émissions à la ferme, des cultures et des élevages. Le CO₂e pondère le méthane et le protoxyde d'azote sur 100 ans, pour comparaison seulement.",
+      "foodChoice": "Les émissions d'un aliment sont celles de ses propres produits. Les émissions à la ferme d'un produit animal laissent de côté son alimentation, comptée avec les cultures dont elle est faite. Le tourteau d'un oléagineux compte avec l'oléagineux. L'infobulle ajoute les émissions après la ferme et le CO₂ du défrichement et des sols organiques drainés pour cet aliment. Les animaux qui ne sont pas élevés pour l'alimentation, comme les chevaux, ne comptent que dans Tous les aliments.",
       "land": "Surfaces récoltées pour les aliments du modèle et prairies permanentes, en part de la superficie des terres de chaque pays. C'est la place que prend l'agriculture. Manger moins de viande libère des prairies et les cultures qui nourrissent les animaux. L'infobulle donne les hectares.",
       "change": "La production de chaque pays varie comme la demande mondiale de chaque aliment. Les exportateurs suivent les pays qui leur achètent.",
       "quality": "Des pays voisins peuvent différer simplement parce que leurs chiffres viennent de sources différentes.",
@@ -279,6 +281,7 @@
       "noData": "Pas de données pour ce pays",
       "production": "Production de : {group}",
       "emissions": "Émissions de {gas}",
+      "emissionsOf": "Émissions de {gas} pour : {group}",
       "before": "Aujourd'hui",
       "after": "Avec les leviers",
       "change": "Variation",

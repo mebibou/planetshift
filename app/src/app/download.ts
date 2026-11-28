@@ -69,7 +69,7 @@ const CHOICES: Partial<Record<Layer, (spec: LayerSpec) => string>> = {
 /** What a layer of a measure is of: the gas, the food group, the waste or the fires; '' for none. */
 const selectionOf = (spec: LayerSpec, measure: Measure): string =>
   measure === 'emissions'
-    ? spec.gas
+    ? [spec.gas, spec.group].filter((part) => part !== 'all').join('-')
     : measure === 'production'
       ? spec.group
       : (CHOICES[spec.layer]?.(spec) ?? '');

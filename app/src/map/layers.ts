@@ -9,6 +9,7 @@ import {
   type LandUse,
 } from '../data/types';
 import { GWP100, type CountryResult } from '../model/api';
+import type { FoodEmissions } from '../model/foodEmissions';
 import { speciesAfter } from '../model/species';
 import { wasteMethaneTotal } from '../levers/wasteMethane/data';
 import { hasPollination, pollinationShares } from '../app/pollination';
@@ -244,6 +245,38 @@ const fireValue = (c: CountryResult, kind: FireMeasure): number | undefined =>
 /** Whether fires.json gives a country a figure for the fire measure. */
 export const hasFireData = (c: CountryResult, kind: Measure): boolean =>
   kind in FIRE_FIELDS && fireValue(c, kind as FireMeasure) !== undefined;
+
+const NO_GAS: GasVector = { co2: 0, ch4: 0, n2o: 0, hfc: 0 };
+
+const NO_FOOD: FoodEmissions = { farm: NO_GAS, farmChange: NO_GAS, parts: {} };
+
+const foodChain = (c: CountryResult, food: FoodEmissions) =>
+  c.chain && c.chainChange
+    ? { chain: food.chain ?? NO_GAS, chainChange: food.chainChange ?? NO_GAS }
+    : {};
+
+/** The footprint per person counts all the food eaten, so a single food has none. */
+export const foodCountry = (c: CountryResult, group: Group): CountryResult => {
+  const food = c.foods?.[group] ?? NO_FOOD;
+  const [clearing, clearingChange] = food.parts.deforestationCo2 ?? [0, 0];
+  const [drained, drainedChange] = food.parts.drainedCo2 ?? [0, 0];
+  return {
+    ...c,
+    emissions: food.farm,
+    emissionsChange: food.farmChange,
+    ...foodChain(c, food),
+    deforestationCo2: clearing,
+    deforestationChange: clearingChange,
+    drainedCo2: drained,
+    drainedChange,
+    footprint: undefined,
+    footprintChange: undefined,
+  };
+};
+
+/** The food group the layer's emissions are of, or null for every food and the other measures. */
+export const foodChoice = (spec: MeasureSpec & Pick<LayerSpec, 'group'>): Group | null =>
+  measureOf(spec) === 'emissions' && spec.group !== 'all' ? spec.group : null;
 
 /** The run's countries with their fires from fires.json, which no lever changes. */
 export const withFires = (countries: CountryResult[], fires: Fires | undefined): CountryResult[] =>
